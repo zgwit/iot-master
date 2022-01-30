@@ -13,15 +13,15 @@ func (tr TimeRange) Check(tm *time.Time) bool {
 }
 
 type DailyRange struct {
-	TimeRanges []TimeRange `json:"time_ranges"`
-	WeekRanges []time.Weekday       `json:"week_ranges"`
+	TimeRanges []TimeRange    `json:"time_ranges"`
+	WeekRanges []time.Weekday `json:"week_ranges"`
 }
 
 func (dr DailyRange) Check(tm *time.Time) bool {
 	//检查时间
 	has := false
 
-	for _, tr := range dr.TimeRanges{
+	for _, tr := range dr.TimeRanges {
 		if tr.Check(tm) {
 			has = true
 		}
@@ -44,5 +44,3 @@ func (dr DailyRange) Check(tm *time.Time) bool {
 	}
 	return false
 }
-
-
