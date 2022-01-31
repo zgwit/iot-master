@@ -1,4 +1,4 @@
-package types
+package interval
 
 type Variable struct {
 	Value float64

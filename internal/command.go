@@ -1,4 +1,4 @@
-package types
+package interval
 
 type Command struct {
 	Name  string

@@ -1,4 +1,4 @@
-package types
+package interval
 
 type Directive struct {
 	Value         float64

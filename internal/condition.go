@@ -1,4 +1,4 @@
-package types
+package interval
 
 type Evaluable interface {
 	Evaluate() bool

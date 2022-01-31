@@ -1,4 +1,4 @@
-package types
+package interval
 
 type Invoke struct {
 	Command string
