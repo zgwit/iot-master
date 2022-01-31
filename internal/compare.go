@@ -70,23 +70,25 @@ func (ct CompareType) UnmarshalJSON(buf []byte) error {
 type Compare struct {
 	Type     CompareType `json:"type"`
 	Value    float64     `json:"value"`
-	Variable *Variable   `json:"variable"`
+	Variable string      `json:"variable"`
+
+	variable *Variable
 }
 
 func (comp *Compare) Evaluate() bool {
 	switch comp.Type {
 	case CompareLT:
-		return comp.Variable.Value < comp.Value
+		return comp.variable.Value < comp.Value
 	case CompareLE:
-		return comp.Variable.Value <= comp.Value
+		return comp.variable.Value <= comp.Value
 	case CompareEQ:
-		return comp.Variable.Value == comp.Value
+		return comp.variable.Value == comp.Value
 	case CompareNE:
-		return comp.Variable.Value != comp.Value
+		return comp.variable.Value != comp.Value
 	case CompareGT:
-		return comp.Variable.Value > comp.Value
+		return comp.variable.Value > comp.Value
 	case CompareGE:
-		return comp.Variable.Value >= comp.Value
+		return comp.variable.Value >= comp.Value
 	}
 	return false
 }

@@ -1,4 +1,4 @@
-package db
+package interval
 
 import "github.com/asdine/storm/v3"
 
