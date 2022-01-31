@@ -11,3 +11,10 @@ type Directive struct {
 	device *Device
 	point  *Point
 }
+
+func (d *Directive) Execute(argv []float64) error {
+
+
+
+	return nil
+}

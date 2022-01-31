@@ -9,6 +9,12 @@ type Command struct {
 }
 
 func (c Command) Execute(argv []float64) error {
-
+	for _, d := range c.Directives {
+		err := d.Execute(argv)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 

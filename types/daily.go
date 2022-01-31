@@ -17,12 +17,14 @@ type DailyRange struct {
 	WeekRanges []time.Weekday `json:"week_ranges"`
 }
 
-func (dr DailyRange) Check(tm *time.Time) bool {
+func (dr DailyRange) Check() bool {
+	tm := time.Now()
+
 	//检查时间
 	has := false
 
 	for _, tr := range dr.TimeRanges {
-		if tr.Check(tm) {
+		if tr.Check(&tm) {
 			has = true
 		}
 	}
