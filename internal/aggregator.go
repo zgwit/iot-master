@@ -2,6 +2,7 @@ package interval
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -12,7 +13,6 @@ const (
 	AggregatorSUM
 	AggregatorCOUNT
 	AggregatorAVG
-	AggregatorMEDIAN
 	AggregatorMIN
 	AggregatorMAX
 	AggregatorFIRST
@@ -28,8 +28,6 @@ func (ct AggregatorType) Parse(tp string) error {
 		ct = AggregatorCOUNT
 	case "avg":
 		ct = AggregatorAVG
-	case "median":
-		ct = AggregatorMEDIAN
 	case "min":
 		ct = AggregatorMIN
 	case "max":
@@ -53,8 +51,6 @@ func (ct AggregatorType) String() string {
 		str = "count"
 	case AggregatorAVG:
 		str = "avg"
-	case AggregatorMEDIAN:
-		str = "median"
 	case AggregatorMIN:
 		str = "min"
 	case AggregatorMAX:
@@ -77,10 +73,126 @@ func (ct AggregatorType) UnmarshalJSON(buf []byte) error {
 	return ct.Parse(string(buf))
 }
 
-type Aggregator struct {
-	Type AggregatorType `json:"type"`
-	As   string         `json:"as"`
+type AggregatorTarget struct {
+	device     *Device
+	expression *Expression
+}
 
-	//TODO add device
+type Aggregator struct {
+	Type       AggregatorType `json:"type"`
+	As         string         `json:"as"`
+	From       string         `json:"from"`
+	Expression string         `json:"expression"`
+
 	Tags []string `json:"tags"`
+
+	targets []AggregatorTarget
+	ctx     *Context
+}
+
+func hasTag(a, b []string) bool {
+	for i := len(a); i >= 0; i-- {
+		for j := len(b); j >= 0; j-- {
+			//if a[i] == b[j] {
+			if strings.EqualFold(a[i], b[j]) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (a *Aggregator) Compile(devices []*Device, ctx *Context) error {
+	a.ctx = ctx
+	for _, dev := range devices {
+		if hasTag(a.Tags, dev.Tags) {
+			expr, err := NewExpression(a.Expression, &dev.Context)
+			if err != nil {
+				return err
+			}
+			a.targets = append(a.targets, AggregatorTarget{device: dev, expression: expr})
+		}
+	}
+	return nil
+}
+
+func (a *Aggregator) Evaluate() error {
+	l := len(a.targets)
+	if l == 0 {
+		return nil
+	}
+
+	var ret float64 = 0
+	switch a.Type {
+	case AggregatorSUM:
+		for _, t := range a.targets {
+			val, err := t.expression.Evaluate()
+			if err != nil {
+				return err
+			}
+			ret += val.(float64)
+		}
+	case AggregatorCOUNT:
+		for _, t := range a.targets {
+			val, err := t.expression.Evaluate()
+			if err != nil {
+				return err
+			}
+			if val.(bool) {
+				ret++
+			}
+		}
+	case AggregatorAVG:
+		for _, t := range a.targets {
+			val, err := t.expression.Evaluate()
+			if err != nil {
+				return err
+			}
+			ret += val.(float64)
+		}
+		ret = ret / float64(len(a.targets))
+	case AggregatorMIN:
+		ret = math.MaxFloat64
+		for _, t := range a.targets {
+			val, err := t.expression.Evaluate()
+			if err != nil {
+				return err
+			}
+			v := val.(float64)
+			if v < ret {
+				ret = v
+			}
+		}
+	case AggregatorMAX:
+		ret = math.SmallestNonzeroFloat32
+		for _, t := range a.targets {
+			val, err := t.expression.Evaluate()
+			if err != nil {
+				return err
+			}
+			v := val.(float64)
+			if v > ret {
+				ret = v
+			}
+		}
+	case AggregatorFIRST:
+		val, err := a.targets[0].expression.Evaluate()
+		if err != nil {
+			return err
+		}
+		ret = val.(float64)
+	case AggregatorLAST:
+		val, err := a.targets[l-1].expression.Evaluate()
+		if err != nil {
+			return err
+		}
+		ret = val.(float64)
+	default:
+		return nil //TODO error
+	}
+
+	//写入结果
+	(*a.ctx)[a.As] = ret
+
+	return nil
 }
