@@ -82,6 +82,5 @@ type Aggregator struct {
 	As   string         `json:"as"`
 
 	//TODO add device
-
-	as *Variable
+	Tags []string `json:"tags"`
 }

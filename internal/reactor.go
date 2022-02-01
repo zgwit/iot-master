@@ -2,55 +2,74 @@ package interval
 
 import "time"
 
-type Rector struct {
+type Alarm struct {
+	Code    string `json:"code"`
+	Level   int    `json:"level"`
+	Message string `json:"message"`
+}
+
+type Reactor struct {
 	Disabled bool `json:"disabled"`
 
 	//条件
-	Condition Condition `json:"condition"`
+	Condition string `json:"condition"`
+	condition *Expression
 
 	//重复日
-	Daily DailyRange `json:"daily"`
+	Daily *DailyRange `json:"daily,omitempty"`
 
 	//延迟报警
-	Delay DelayChecker `json:"delay"`
+	Delay *DelayChecker `json:"delay,omitempty"`
 
 	//重复报警
-	Repeat RepeatChecker `json:"repeat"`
+	Repeat *RepeatChecker `json:"repeat,omitempty"`
+
+	//产生告警
+	Alarm *Alarm `json:"alarm,omitempty"`
 
 	//执行命名
-	Invokes []Invoke `json:"invokes"`
+	Invokes []Invoke `json:"invokes,omitempty"`
 }
 
-func (r *Rector) Execute() error {
+func (a *Reactor) Execute() error {
 
 	//条件检查
-	if !r.Condition.Evaluate() {
-		r.Delay.Reset()
-		r.Repeat.Reset()
+	val, err := a.condition.Evaluate()
+	if err != nil {
+		return err
+	}
+	if !val.(bool) {
+		a.Delay.Reset()
+		a.Repeat.Reset()
 		return nil
 	}
 
 	//时间检查
-	if !r.Daily.Check() {
-		r.Delay.Reset()
-		r.Repeat.Reset()
+	if a.Daily != nil && !a.Daily.Check() {
+		a.Delay.Reset()
+		a.Repeat.Reset()
 		return nil
 	}
 
 	now := time.Now().UnixMicro()
 	//时间检查
-	if !r.Delay.Check(now) {
-		r.Repeat.Check(now)
+	if a.Delay != nil && !a.Delay.Check(now) {
+		a.Repeat.Check(now)
 		return nil
 	}
 
 	//重复检查
-	if !r.Repeat.Check(now) {
+	if a.Repeat != nil && !a.Repeat.Check(now) {
 		return nil
 	}
 
+	//TODO 产生报警
+	if a.Alarm != nil {
+		//TODO 使用事件机制？？？
+	}
+
 	//执行响应
-	for _, i := range r.Invokes {
+	for _, i := range a.Invokes {
 		if err := i.Execute(); err != nil {
 			return err
 		}

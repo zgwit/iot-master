@@ -3,7 +3,7 @@ module github.com/zgwit/iot-master
 go 1.14
 
 require (
-	github.com/Knetic/govaluate v3.0.0+incompatible // indirect
+	github.com/antonmedv/expr v1.9.0
 	github.com/asdine/storm/v3 v3.2.1
 	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/gin v1.7.7

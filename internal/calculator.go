@@ -1,16 +1,29 @@
 package interval
 
-import "github.com/Knetic/govaluate"
-
 type Calculator struct {
-	Variable   string `json:"variable"`
 	Expression string `json:"expression"`
+	Variable   string `json:"variable"`
 
-	variable   *Variable
-	expression *govaluate.EvaluableExpression
+	expr *Expression
+	//ctx  *Context
 }
 
-func (c Calculator) Evaluate() error {
+func (c *Calculator) Compile(ctx  *Context) error {
 
+	var err error
+	c.expr, err = NewExpression(c.Expression, ctx)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Calculator) Evaluate() error {
+	val, err := c.expr.Evaluate()
+	if err != nil {
+		return err
+	}
+	//回写
+	(*c.expr.ctx)[c.Variable] = val
 	return nil
 }
