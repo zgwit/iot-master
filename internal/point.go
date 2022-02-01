@@ -8,6 +8,7 @@ type Point struct {
 
 	Code      int `json:"code"`
 	Address   int `json:"address"`
+	//TODO address2
 	Precision int `json:"precision"`
 
 	LittleEndian bool `json:"little_endian"`

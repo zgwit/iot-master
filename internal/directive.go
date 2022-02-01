@@ -1,15 +1,20 @@
 package interval
 
 type Directive struct {
-	Value         float64 `json:"value"`
-	ArgumentIndex int     `json:"argument_index"`
-	Delay         int64   `json:"delay"`
+	Value      float64 `json:"value,omitempty"`
+	Arg        int     `json:"arg,omitempty"` //1 2 3
+	Expression string  `json:"expression,omitempty"`
+	expression *Expression
 
-	Device string `json:"device"`
-	Point  string `json:"point"`
+	Delay int64 `json:"delay"`
 
-	device *Device
-	point  *Point
+	//TODO 表达式
+
+	Device string   `json:"device"` //name
+	Tags   []string `json:"tags"`
+	Point  string   `json:"point"`
+
+	devices *[]Device
 }
 
 func (d *Directive) Execute(argv []float64) error {
