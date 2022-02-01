@@ -1,11 +1,11 @@
 package interval
 
 type Command struct {
-	Name  string
-	Label string
-	Argc  int
+	Name  string `json:"name"`
+	Label string `json:"label"`
+	Argc  int    `json:"argc"`
 
-	Directives []Directive
+	Directives []Directive `json:"directives"`
 }
 
 func (c Command) Execute(argv []float64) error {
@@ -17,4 +17,3 @@ func (c Command) Execute(argv []float64) error {
 	}
 	return nil
 }
-

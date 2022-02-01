@@ -1,7 +1,7 @@
 package interval
 
 type Project struct {
-	Device []string
+	Device []string `json:"device"`
 
 	Aggregators []Aggregator
 	Commands    []Command

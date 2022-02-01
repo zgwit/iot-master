@@ -1,8 +1,13 @@
 package interval
 
+import "github.com/Knetic/govaluate"
+
 type Calculator struct {
-	Variable   string
-	Expression string
+	Variable   string `json:"variable"`
+	Expression string `json:"expression"`
+
+	variable   *Variable
+	expression *govaluate.EvaluableExpression
 }
 
 func (c Calculator) Evaluate() error {

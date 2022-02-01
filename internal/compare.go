@@ -8,7 +8,7 @@ import (
 type CompareType int
 
 const (
-	CompareNone CompareType = iota
+	CompareNONE CompareType = iota
 	CompareLT
 	CompareLE
 	CompareEQ

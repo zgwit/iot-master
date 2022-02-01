@@ -8,58 +8,58 @@ import (
 type DataType int
 
 const (
-	TypeNone DataType = iota
-	TypeBit
-	TypeByte
-	TypeWord
-	TypeDWord
-	TypeQWord
-	TypeShort
-	TypeInteger
-	TypeLong
-	TypeFloat
-	TypeDouble
+	TypeNONE DataType = iota
+	TypeBIT
+	TypeBYTE
+	TypeWORD
+	TypeDWORD
+	TypeQWORD
+	TypeSHORT
+	TypeINTEGER
+	TypeLONG
+	TypeFLOAT
+	TypeDOUBLE
 )
 
 func (dt DataType) Parse(tp string) error {
 	strings.ToLower(tp)
 	switch strings.ToLower(tp) {
 	case "bit":
-		dt = TypeBit
+		dt = TypeBIT
 	case "byte":
-		dt = TypeByte
+		dt = TypeBYTE
 	case "word":
 		fallthrough
 	case "uint16":
-		dt = TypeWord
+		dt = TypeWORD
 	case "dword":
 		fallthrough
 	case "uint32":
-		dt = TypeDWord
+		dt = TypeDWORD
 	case "qword":
 		fallthrough
 	case "uint64":
-		dt = TypeQWord
+		dt = TypeQWORD
 	case "short":
 		fallthrough
 	case "int16":
-		dt = TypeShort
+		dt = TypeSHORT
 	case "integer":
 		fallthrough
 	case "int32":
 		fallthrough
 	case "int":
-		dt = TypeInteger
+		dt = TypeINTEGER
 	case "long":
 		fallthrough
 	case "int64":
-		dt = TypeLong
+		dt = TypeLONG
 	case "float":
-		dt = TypeFloat
+		dt = TypeFLOAT
 	case "double":
 		fallthrough
 	case "float64":
-		dt = TypeDouble
+		dt = TypeDOUBLE
 	default:
 		return fmt.Errorf("Unknown data type: %s ", tp)
 	}
@@ -69,25 +69,25 @@ func (dt DataType) Parse(tp string) error {
 func (dt DataType) String() string {
 	var str string
 	switch dt {
-	case TypeBit:
+	case TypeBIT:
 		str = "bit"
-	case TypeByte:
+	case TypeBYTE:
 		str = "byte"
-	case TypeWord:
+	case TypeWORD:
 		str = "word"
-	case TypeDWord:
+	case TypeDWORD:
 		str = "dword"
-	case TypeQWord:
+	case TypeQWORD:
 		str = "qword"
-	case TypeShort:
+	case TypeSHORT:
 		str = "short"
-	case TypeInteger:
+	case TypeINTEGER:
 		str = "integer"
-	case TypeLong:
+	case TypeLONG:
 		str = "long"
-	case TypeFloat:
+	case TypeFLOAT:
 		str = "float"
-	case TypeDouble:
+	case TypeDOUBLE:
 		str = "double"
 	default:
 		str = "none"

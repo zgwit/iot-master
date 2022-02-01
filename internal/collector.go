@@ -1,15 +1,16 @@
 package interval
 
 type Collector struct {
-	Disabled bool
-	Type     string //interval, clock, crontab
-	Interval int
-	Clock    int
-	Crontab  string
+	Disabled bool   `json:"disabled"`
+	Type     string `json:"type"` //interval, clock, crontab
+	Interval int    `json:"interval"`
+	Clock    int    `json:"clock"`
+	Crontab  string `json:"crontab"`
 
-	Code    int
-	Address int
-	Length  int
+	Code    int `json:"code"`
+	Address int `json:"address"`
+	//TODO Address2
+	Length  int `json:"length"`
 
 	//TODO Filters
 
@@ -18,7 +19,6 @@ type Collector struct {
 func (c *Collector) Start() error {
 	return nil
 }
-
 
 func (c *Collector) Stop() error {
 	return nil

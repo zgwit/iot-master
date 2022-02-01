@@ -1,8 +1,8 @@
 package interval
 
 type Invoke struct {
-	Command string
-	Argv []float64
+	Command string `json:"command"`
+	Argv []float64 `json:"argv"`
 
 	command* Command
 }
