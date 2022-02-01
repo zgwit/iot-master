@@ -30,7 +30,7 @@ func (d *DelayChecker) Check(now int64) bool {
 
 type RepeatChecker struct {
 	Interval int64 `json:"interval"`
-	Total    int   `json:"total"`
+	Total    int   `json:"total,omitempty"`
 
 	last int64
 

@@ -84,7 +84,7 @@ type Aggregator struct {
 	From       string         `json:"from"`
 	Expression string         `json:"expression"`
 
-	Tags []string `json:"tags"`
+	Tags []string `json:"tags,omitempty"`
 
 	targets []AggregatorTarget
 	ctx     *Context

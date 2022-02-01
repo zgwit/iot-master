@@ -3,7 +3,7 @@ package interval
 type Command struct {
 	Name  string `json:"name"`
 	Label string `json:"label"`
-	Argc  int    `json:"argc"`
+	Argc  int    `json:"argc,omitempty"`
 
 	Directives []Directive `json:"directives"`
 }

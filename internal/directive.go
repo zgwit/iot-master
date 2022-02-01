@@ -10,8 +10,8 @@ type Directive struct {
 
 	//TODO 表达式
 
-	Device string   `json:"device"` //name
-	Tags   []string `json:"tags"`
+	Device string   `json:"device,omitempty"` //name
+	Tags   []string `json:"tags,omitempty"`
 	Point  string   `json:"point"`
 
 	devices *[]Device

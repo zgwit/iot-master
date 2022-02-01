@@ -9,7 +9,7 @@ type Job struct {
 	Clock   int    `json:"clock"`
 	Crontab string `json:"crontab"`
 
-	WeekRanges []time.Weekday `json:"week_ranges"`
+	Weekdays []time.Weekday `json:"weekdays"`
 
 	Invokes []Invoke `json:"invokes"`
 }

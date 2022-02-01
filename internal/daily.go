@@ -7,23 +7,23 @@ type TimeRange struct {
 	End   int `json:"end"`
 }
 
-func (tr TimeRange) Check(tm *time.Time) bool {
+func (tr *TimeRange) Check(tm *time.Time) bool {
 	min := tm.Hour()*60 + tm.Minute()
 	return tr.Start <= min && min <= tr.End
 }
 
 type DailyRange struct {
-	TimeRanges []TimeRange    `json:"time_ranges"`
-	WeekRanges []time.Weekday `json:"week_ranges"`
+	Times    []TimeRange    `json:"times"`
+	Weekdays []time.Weekday `json:"weekdays"`
 }
 
-func (dr DailyRange) Check() bool {
+func (dr *DailyRange) Check() bool {
 	tm := time.Now()
 
 	//检查时间
 	has := false
 
-	for _, tr := range dr.TimeRanges {
+	for _, tr := range dr.Times {
 		if tr.Check(&tm) {
 			has = true
 		}
@@ -34,12 +34,12 @@ func (dr DailyRange) Check() bool {
 
 	//检查星期
 	//不设置星期，则为真
-	if len(dr.WeekRanges) == 0 {
+	if len(dr.Weekdays) == 0 {
 		return true
 	}
 
 	week := tm.Weekday()
-	for _, w := range dr.WeekRanges {
+	for _, w := range dr.Weekdays {
 		if w == week {
 			return true
 		}
