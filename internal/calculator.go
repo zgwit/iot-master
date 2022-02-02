@@ -8,7 +8,7 @@ type Calculator struct {
 	//ctx  *Context
 }
 
-func (c *Calculator) Compile(ctx  *Context) error {
+func (c *Calculator) Compile(ctx *Context) error {
 
 	var err error
 	c.expr, err = NewExpression(c.Expression, ctx)
