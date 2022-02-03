@@ -95,6 +95,46 @@ func (dt DataType) String() string {
 	return str
 }
 
+
+func (dt DataType) Size() int {
+	var s int
+	switch dt {
+	case TypeBIT:
+		s = 1
+	case TypeBYTE:
+		s = 1
+	case TypeWORD:
+		s = 2
+	case TypeDWORD:
+		s = 4
+	case TypeQWORD:
+		s = 8
+	case TypeSHORT:
+		s = 2
+	case TypeINTEGER:
+		s = 4
+	case TypeLONG:
+		s = 8
+	case TypeFLOAT:
+		s = 4
+	case TypeDOUBLE:
+		s = 8
+	default:
+		s = 1
+	}
+	return s
+}
+
+func (dt DataType) Encode(val float64) []byte {
+
+	return nil
+}
+
+func (dt DataType) Decode(val []byte) (float64, error) {
+
+	return 0, nil
+}
+
 func (dt DataType) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + dt.String() + `"`), nil
 }
