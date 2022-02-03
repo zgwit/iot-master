@@ -2,6 +2,7 @@ package interval
 
 import (
 	"fmt"
+	"github.com/zgwit/iot-master/protocol/helper"
 	"strings"
 )
 
@@ -95,7 +96,6 @@ func (dt DataType) String() string {
 	return str
 }
 
-
 func (dt DataType) Size() int {
 	var s int
 	switch dt {
@@ -125,14 +125,134 @@ func (dt DataType) Size() int {
 	return s
 }
 
-func (dt DataType) Encode(val float64) []byte {
-
+func (dt DataType) Encode(val float64, le bool) []byte {
+	buf := make([]byte, 8)
+	switch dt {
+	case TypeBIT:
+		if val > 0 {
+			buf[0] = 1 //?????
+		} else {
+			buf[0] = 0
+		}
+	case TypeBYTE:
+		buf[0] = uint8(val)
+	case TypeWORD:
+		if le {
+			helper.WriteUint16LittleEndian(buf, uint16(val))
+		} else {
+			helper.WriteUint16(buf, uint16(val))
+		}
+	case TypeDWORD:
+		if le {
+			helper.WriteUint32LittleEndian(buf, uint32(val))
+		} else {
+			helper.WriteUint32(buf, uint32(val))
+		}
+	case TypeQWORD:
+		if le {
+			helper.WriteUint64LittleEndian(buf, uint64(val))
+		} else {
+			helper.WriteUint64(buf, uint64(val))
+		}
+	case TypeSHORT:
+		if le {
+			helper.WriteUint16LittleEndian(buf, uint16(int16(val)))
+		} else {
+			helper.WriteUint16(buf, uint16(int16(val)))
+		}
+	case TypeINTEGER:
+		if le {
+			helper.WriteUint32LittleEndian(buf, uint32(int32(val)))
+		} else {
+			helper.WriteUint32(buf, uint32(int32(val)))
+		}
+	case TypeLONG:
+		if le {
+			helper.WriteUint64LittleEndian(buf, uint64(int64(val)))
+		} else {
+			helper.WriteUint64(buf, uint64(int64(val)))
+		}
+	case TypeFLOAT:
+		if le {
+			helper.WriteFloat32LittleEndian(buf, float32(val))
+		} else {
+			helper.WriteFloat32(buf, float32(val))
+		}
+	case TypeDOUBLE:
+		if le {
+			helper.WriteFloat64LittleEndian(buf, val)
+		} else {
+			helper.WriteFloat64(buf, val)
+		}
+	default:
+		//TODO error
+	}
 	return nil
 }
 
-func (dt DataType) Decode(val []byte) (float64, error) {
-
-	return 0, nil
+func (dt DataType) Decode(buf []byte, le bool) (float64, error) {
+	var val float64
+	switch dt {
+	case TypeBIT:
+		if buf[0] > 0 {
+			val = 1
+		} else {
+			val = 0
+		}
+	case TypeBYTE:
+		val = float64(buf[0])
+	case TypeWORD:
+		if le {
+			val = float64(helper.ParseUint16LittleEndian(buf))
+		} else {
+			val = float64(helper.ParseUint16(buf))
+		}
+	case TypeDWORD:
+		if le {
+			val = float64(helper.ParseUint32LittleEndian(buf))
+		} else {
+			val = float64(helper.ParseUint32(buf))
+		}
+	case TypeQWORD:
+		if le {
+			val = float64(helper.ParseUint64LittleEndian(buf))
+		} else {
+			val = float64(helper.ParseUint64(buf))
+		}
+	case TypeSHORT:
+		if le {
+			val = float64(int16(helper.ParseUint16LittleEndian(buf)))
+		} else {
+			val = float64(int16(helper.ParseUint16(buf)))
+		}
+	case TypeINTEGER:
+		if le {
+			val = float64(int32(helper.ParseUint32LittleEndian(buf)))
+		} else {
+			val = float64(int32(helper.ParseUint32(buf)))
+		}
+	case TypeLONG:
+		if le {
+			val = float64(int64(helper.ParseUint64LittleEndian(buf)))
+		} else {
+			val = float64(int64(helper.ParseUint64(buf)))
+		}
+	case TypeFLOAT:
+		if le {
+			val = float64(helper.ParseFloat32LittleEndian(buf))
+		} else {
+			val = float64(helper.ParseFloat32(buf))
+		}
+	case TypeDOUBLE:
+		if le {
+			val = helper.ParseFloat64LittleEndian(buf)
+		} else {
+			val = helper.ParseFloat64(buf)
+		}
+	default:
+		//TODO error
+	}
+	return val, nil
 }
 
 func (dt DataType) MarshalJSON() ([]byte, error) {
