@@ -2,7 +2,7 @@ package interval
 
 type Command struct {
 	Name  string `json:"name"`
-	Label string `json:"label"`
+	Label string `json:"label,omitempty"`
 	Argc  int    `json:"argc,omitempty"`
 
 	Directives []Directive `json:"directives"`
@@ -18,20 +18,20 @@ func (c Command) Execute(argv []float64) error {
 	return nil
 }
 
-
 type Directive struct {
-	Value      float64 `json:"value,omitempty"`
-	Arg        int     `json:"arg,omitempty"` //1 2 3
-	Expression string  `json:"expression,omitempty"`
-	expression *Expression
+	Point string  `json:"point"`
+	Value float64 `json:"value,omitempty"`
+	Delay int64   `json:"delay"`
 
-	Delay int64 `json:"delay"`
+	//使用参数
+	Arg int `json:"arg,omitempty"` //0:默认参数 1 2 3
 
-	//TODO 表达式
+	//TODO 使用表达式
+	Expression string `json:"expression,omitempty"`
 
+	//目标设备（Project中使用）（不合适！！！）
 	Device string   `json:"device,omitempty"` //name
 	Tags   []string `json:"tags,omitempty"`
-	Point  string   `json:"point"`
 
 	devices *[]Device
 }
@@ -40,7 +40,6 @@ func (d *Directive) Execute(argv []float64) error {
 
 	return nil
 }
-
 
 type Invoke struct {
 	Command string    `json:"command"`
