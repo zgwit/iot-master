@@ -28,12 +28,6 @@ type Directive struct {
 
 	//TODO 使用表达式
 	Expression string `json:"expression,omitempty"`
-
-	//目标设备（Project中使用）（不合适！！！）
-	Device string   `json:"device,omitempty"` //name
-	Tags   []string `json:"tags,omitempty"`
-
-	devices *[]Device
 }
 
 func (d *Directive) Execute(argv []float64) error {
@@ -45,9 +39,14 @@ type Invoke struct {
 	Command string    `json:"command"`
 	Argv    []float64 `json:"argv"`
 
-	command *Command
+	//目标设备（Project中使用）（不合适！！！）
+	Device string   `json:"device,omitempty"` //name
+	Ids    []int    `json:"ids,omitempty"`
+	Tags   []string `json:"tags,omitempty"`
 }
 
 func (i Invoke) Execute() error {
-	return i.command.Execute(i.Argv)
+	//return i.command.Execute(i.Argv)
+
+	return nil
 }
