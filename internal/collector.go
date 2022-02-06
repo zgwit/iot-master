@@ -1,6 +1,9 @@
 package interval
 
-import "github.com/asaskevich/EventBus"
+import (
+	"github.com/asaskevich/EventBus"
+	"github.com/go-co-op/gocron"
+)
 
 type Collector struct {
 	Disabled bool   `json:"disabled"`
@@ -16,18 +19,40 @@ type Collector struct {
 
 	//TODO Filters
 
-
+	job    *gocron.Job
 	events EventBus.Bus
 }
 
-func (c *Collector)Init()  {
+func (c *Collector) Init() {
 	c.events = EventBus.New()
 }
 
-func (c *Collector) Start() error {
-	return nil
+func (c *Collector) Start() (err error) {
+	switch c.Type {
+	case "interval":
+		c.job, err = Scheduler.Every(1).Milliseconds().Do(func() {
+			c.Execute()
+		})
+	case "clock":
+		hours := c.Clock / 60
+		minutes := c.Clock % 60
+		c.job, err = Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
+			c.Execute()
+		})
+	case "crontab":
+		c.job, err = Scheduler.Cron(c.Crontab).Do(func() {
+			c.Execute()
+		})
+	}
+	return
 }
 
-func (c *Collector) Stop() error {
-	return nil
+func (c *Collector) Execute() {
+	//TODO 上报？？采集？？
+	//c.events.Publish("action")
+	return
+}
+
+func (c *Collector) Stop() {
+	Scheduler.Remove(c.job)
 }

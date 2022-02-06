@@ -32,11 +32,11 @@ func (j *Job) Start() error {
 	case "clock":
 		hours := j.Clock / 60
 		minutes := j.Clock % 60
-		j.job, err = Cron.At(hours).Hours().At(minutes).Minutes().Do(func() {
+		j.job, err = Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
 			j.Execute()
 		})
 	case "crontab":
-		j.job, err = Cron.Cron(j.Crontab).Do(func() {
+		j.job, err = Scheduler.Cron(j.Crontab).Do(func() {
 			j.Execute()
 		})
 	}
@@ -50,5 +50,5 @@ func (j *Job) Execute() {
 }
 
 func (j *Job) Stop() {
-	Cron.Remove(j.job)
+	Scheduler.Remove(j.job)
 }

@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-var Cron *gocron.Scheduler
+var Scheduler *gocron.Scheduler
 
 func init()  {
-	Cron = gocron.NewScheduler(time.UTC)
+	Scheduler = gocron.NewScheduler(time.UTC)
 }
