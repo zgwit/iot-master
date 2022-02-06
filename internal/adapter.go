@@ -42,7 +42,7 @@ func (a *Adapter) Get(key string) (float64, error) {
 	return 0, fmt.Errorf("Unknown point %s ", key)
 }
 
-func (a *Adapter) Read(code, address, length int) error {
+func (a *Adapter) Read(code, address, length int) (Context, error) {
 
-	return nil
+	return nil, nil
 }

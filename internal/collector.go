@@ -21,6 +21,7 @@ type Collector struct {
 
 	job    *gocron.Job
 	events EventBus.Bus
+	adapter *Adapter
 }
 
 func (c *Collector) Init() {
@@ -47,10 +48,16 @@ func (c *Collector) Start() (err error) {
 	return
 }
 
-func (c *Collector) Execute() {
+func (c *Collector) Execute() error {
 	//TODO 上报？？采集？？
 	//c.events.Publish("action")
-	return
+	data, err := c.adapter.Read(c.Code, c.Address, c.Length)
+	if err != nil {
+		return err
+	}
+	//上报
+	c.events.Publish("data", data)
+	return nil
 }
 
 func (c *Collector) Stop() {
