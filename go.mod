@@ -8,7 +8,7 @@ require (
 	github.com/asdine/storm/v3 v3.2.1
 	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/gin v1.7.7
-	github.com/go-co-op/gocron v1.11.0 // indirect
+	github.com/go-co-op/gocron v1.11.0
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect

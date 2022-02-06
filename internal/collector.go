@@ -1,7 +1,6 @@
 package interval
 
 import (
-	"github.com/asaskevich/EventBus"
 	"github.com/go-co-op/gocron"
 )
 
@@ -19,19 +18,18 @@ type Collector struct {
 
 	//TODO Filters
 
-	job    *gocron.Job
-	events EventBus.Bus
-	adapter *Adapter
-}
+	//等待结果
+	Parallel bool `json:"parallel,omitempty"`
 
-func (c *Collector) Init() {
-	c.events = EventBus.New()
+	reading bool
+	job     *gocron.Job
+	adapter *Adapter
 }
 
 func (c *Collector) Start() (err error) {
 	switch c.Type {
 	case "interval":
-		c.job, err = Scheduler.Every(1).Milliseconds().Do(func() {
+		c.job, err = Scheduler.Every(c.Interval).Milliseconds().Do(func() {
 			c.Execute()
 		})
 	case "clock":
@@ -48,16 +46,19 @@ func (c *Collector) Start() (err error) {
 	return
 }
 
-func (c *Collector) Execute() error {
-	//TODO 上报？？采集？？
-	//c.events.Publish("action")
-	data, err := c.adapter.Read(c.Code, c.Address, c.Length)
-	if err != nil {
-		return err
+func (c *Collector) Execute() {
+	//阻塞情况下，采集数据，要等待，避免大量读指令阻塞
+	if !c.Parallel && c.reading {
+		return
 	}
-	//上报
-	c.events.Publish("data", data)
-	return nil
+
+	//此举会不断创建协程
+	go func() {
+		c.reading = true
+		_, _ = c.adapter.Read(c.Code, c.Address, c.Length)
+		//log error
+		c.reading = false
+	}()
 }
 
 func (c *Collector) Stop() {

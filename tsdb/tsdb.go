@@ -2,20 +2,12 @@ package tsdb
 
 import (
 	"github.com/nakabonne/tstorage"
-	"github.com/zgwit/iot-master/internal/config"
+	"github.com/zgwit/iot-master/config"
 	"time"
 )
 
-func Test() {
-	store, _ := tstorage.NewStorage(
-		tstorage.WithTimestampPrecision(tstorage.Seconds),
-		tstorage.WithDataPath("history"),
-	)
-	defer store.Close()
 
-}
-
-var storage tstorage.Storage
+var Storage tstorage.Storage
 
 func Open() error {
 
@@ -46,13 +38,13 @@ func Open() error {
 	}
 
 	var err error
-	storage, err = tstorage.NewStorage(opts...)
+	Storage, err = tstorage.NewStorage(opts...)
 
 	return err
 }
 
 func Close() error {
-	err := storage.Close()
-	storage = nil
+	err := Storage.Close()
+	Storage = nil
 	return err
 }

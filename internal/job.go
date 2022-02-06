@@ -10,8 +10,8 @@ type Job struct {
 	Disabled bool   `json:"disabled"`
 	Type     string `json:"type"` //clock, crontab
 
-	Clock   int    `json:"clock"`
-	Crontab string `json:"crontab"`
+	Clock   int    `json:"clock,omitempty"`
+	Crontab string `json:"crontab,omitempty"`
 
 	Weekdays []time.Weekday `json:"weekdays"`
 
@@ -44,9 +44,11 @@ func (j *Job) Start() error {
 }
 
 func (j *Job) Execute() {
-	for _, i:= range j.Invokes {
-		j.events.Publish("invoke", i)
-	}
+	//for _, i:= range j.Invokes {
+	//	j.events.Publish("invoke", i)
+	//}
+	//避免拥堵计时器
+	go j.events.Publish("invoke")
 }
 
 func (j *Job) Stop() {

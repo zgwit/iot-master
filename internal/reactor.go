@@ -47,7 +47,7 @@ type Reactor struct {
 	events EventBus.Bus
 }
 
-func (a *Reactor) Init(){
+func (a *Reactor) Init() {
 	a.events = EventBus.New()
 }
 
@@ -83,14 +83,17 @@ func (a *Reactor) Execute() error {
 		return nil
 	}
 
-	//TODO 产生报警
+	//产生报警
 	if a.Alarm != nil {
-		//TODO 使用事件机制？？？
+		a.events.Publish("alarm", &a.Alarm)
 	}
 
 	//执行响应
-	for _, i := range a.Invokes {
-		a.events.Publish("invoke", i)
+	//for _, i := range a.Invokes {
+	//	a.events.Publish("invoke", i)
+	//}
+	if a.Invokes != nil && len(a.Invokes) > 0 {
+		a.events.Publish("invoke")
 	}
 
 	return nil

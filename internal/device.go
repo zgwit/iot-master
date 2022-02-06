@@ -35,43 +35,65 @@ type Device struct {
 }
 
 func (c *Device) Start() error {
+
+	//处理数据变化结果
+	_ = c.adapter.events.Subscribe("data", func(data Context) {
+		//更新上下文
+		for k, v := range data {
+			c.Context[k] = v
+		}
+
+		//数据变化后，更新计算
+		for _, v := range c.Calculators {
+			val, err := v.Evaluate()
+			if err != nil {
+				c.events.Publish("error", err)
+			} else {
+				c.Context[v.Variable] = val
+			}
+		}
+
+		//处理响应
+		for _, v := range c.Reactors {
+			err := v.Execute()
+			if err != nil {
+				c.events.Publish("error", err)
+			}
+		}
+
+		//向上广播
+		c.events.Publish("data", data)
+	})
+
 	//采集器数据变化
 	for _, v := range c.Collectors {
-		_ = v.events.Subscribe("data", func(data Context) {
-			//更新上下文
-			for k, v := range data {
-				c.Context[k] = v
-			}
-			//数据变化后，更新计算
-			for _, c := range c.Calculators {
-				_ = c.Evaluate()
-			}
-
-			//向上广播
-			c.events.Publish("data", data)
-		})
+		err := v.Start()
+		if err != nil {
+			return err
+		}
 	}
 
 	//计算器数据变化
 	for _, v := range c.Calculators {
 		_ = v.Init(c.Context)
-		_ = v.events.Subscribe("data", func(data Context) {
-			for k, v := range data {
-				c.Context[k] = v
-			}
-			//向上汇报
-			c.events.Publish("data", data)
-		})
 	}
 
-	//订阅数据变化
-	err := c.events.Subscribe("data", func(data Context) {
-		for k, v := range data {
-			c.Context[k] = v
+	//定时任务
+	for _, v := range c.Jobs {
+		err := v.Start()
+		if err != nil {
+			return err
 		}
-	})
-	if err != nil {
-		return err
+
+		_ = v.events.Subscribe("invoke", func() {
+			//TODO 日志
+			for _, i := range v.Invokes {
+				err := c.Execute(i.Command, i.Argv)
+				if err != nil {
+					c.events.Publish("error", err)
+				}
+			}
+		})
 	}
 
 	//订阅告警
@@ -89,11 +111,17 @@ func (c *Device) Start() error {
 			//上报
 			c.events.Publish("alarm", da)
 		})
-	}
 
-	_ = c.events.Subscribe("invoke", func(invoke *Invoke) {
-		_ = c.Execute(invoke.Command, invoke.Argv)
-	})
+		_ = v.events.Subscribe("invoke", func() {
+			//TODO 日志
+			for _, i := range v.Invokes {
+				err := c.Execute(i.Command, i.Argv)
+				if err != nil {
+					c.events.Publish("error", err)
+				}
+			}
+		})
+	}
 
 	return nil
 }
@@ -111,6 +139,7 @@ func (c *Device) Execute(command string, argv []float64) error {
 		if d.Arg > 0 {
 			val = argv[d.Arg-1]
 		} else if d.Expression != "" {
+			//TODO 参数加入环境变量
 			v, err := expr.Eval(d.Expression, c.Context)
 			if err != nil {
 				//c.events.Publish("error", err)
