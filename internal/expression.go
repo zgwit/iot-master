@@ -9,11 +9,11 @@ type Context map[string]interface{}
 
 type Expression struct {
 	program *vm.Program
-	ctx  *Context
+	ctx  Context
 }
 
-func NewExpression(input string, ctx *Context) (*Expression, error) {
-	program, err := expr.Compile(input, expr.Env(*ctx))
+func NewExpression(input string, ctx Context) (*Expression, error) {
+	program, err := expr.Compile(input, expr.Env(ctx))
 	if err != nil {
 		return nil, err
 	}

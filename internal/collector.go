@@ -1,5 +1,7 @@
 package interval
 
+import "github.com/asaskevich/EventBus"
+
 type Collector struct {
 	Disabled bool   `json:"disabled"`
 	Type     string `json:"type"` //interval, clock, crontab
@@ -10,10 +12,16 @@ type Collector struct {
 	Code    int `json:"code"`
 	Address int `json:"address"`
 	//TODO Address2
-	Length  int `json:"length"`
+	Length int `json:"length"`
 
 	//TODO Filters
 
+
+	events EventBus.Bus
+}
+
+func (c *Collector)Init()  {
+	c.events = EventBus.New()
 }
 
 func (c *Collector) Start() error {

@@ -8,16 +8,6 @@ type Command struct {
 	Directives []Directive `json:"directives"`
 }
 
-func (c Command) Execute(argv []float64) error {
-	for _, d := range c.Directives {
-		err := d.Execute(argv)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 type Directive struct {
 	Point string  `json:"point"`
 	Value float64 `json:"value,omitempty"`
@@ -26,27 +16,17 @@ type Directive struct {
 	//使用参数
 	Arg int `json:"arg,omitempty"` //0:默认参数 1 2 3
 
-	//TODO 使用表达式
+	//使用表达式
 	Expression string `json:"expression,omitempty"`
 }
 
-func (d *Directive) Execute(argv []float64) error {
-
-	return nil
-}
 
 type Invoke struct {
 	Command string    `json:"command"`
 	Argv    []float64 `json:"argv"`
 
-	//目标设备（Project中使用）（不合适！！！）
+	//目标设备（只在Project中使用）
 	Device string   `json:"device,omitempty"` //name
 	Ids    []int    `json:"ids,omitempty"`
 	Tags   []string `json:"tags,omitempty"`
-}
-
-func (i Invoke) Execute() error {
-	//return i.command.Execute(i.Argv)
-
-	return nil
 }

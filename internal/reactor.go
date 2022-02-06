@@ -1,11 +1,25 @@
 package interval
 
-import "time"
+import (
+	"github.com/asaskevich/EventBus"
+	"time"
+)
 
 type Alarm struct {
 	Code    string `json:"code"`
 	Level   int    `json:"level"`
 	Message string `json:"message"`
+}
+
+type DeviceAlarm struct {
+	Alarm
+	DeviceId int       `json:"device_id"`
+	Created  time.Time `json:"time"`
+}
+
+type ProjectAlarm struct {
+	DeviceAlarm
+	ProjectId int `json:"project_id"`
 }
 
 type Reactor struct {
@@ -29,6 +43,12 @@ type Reactor struct {
 
 	//执行命名
 	Invokes []Invoke `json:"invokes,omitempty"`
+
+	events EventBus.Bus
+}
+
+func (a *Reactor) Init(){
+	a.events = EventBus.New()
 }
 
 func (a *Reactor) Execute() error {
@@ -70,9 +90,7 @@ func (a *Reactor) Execute() error {
 
 	//执行响应
 	for _, i := range a.Invokes {
-		if err := i.Execute(); err != nil {
-			return err
-		}
+		a.events.Publish("invoke", i)
 	}
 
 	return nil
