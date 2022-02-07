@@ -23,7 +23,18 @@ type Project struct {
 	deviceIndex map[string]interface{}
 }
 
+func (c *Project) Init() error {
+
+	for _, d := range c.Devices {
+
+	}
+
+	return nil
+}
+
 func (c *Project) Start() error {
+
+
 	return nil
 }
 
