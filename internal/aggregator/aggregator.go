@@ -49,84 +49,86 @@ func (a *Aggregator) Compile(devices []*interval.Device, ctx *interval.Context) 
 	return nil
 }
 
-func (a *Aggregator) Evaluate() error {
+func (a *Aggregator) Evaluate() (val float64, err error) {
 	l := len(a.targets)
 	if l == 0 {
-		return nil
+		return 0, nil
 	}
+	var res interface{}
 
 	//TODO 拆成子类，多态实现？？？
-	var ret float64 = 0
+	//var val float64 = 0
+	val = 0
 	switch a.Type {
 	case SUM:
 		for _, t := range a.targets {
-			val, err := t.expression.Evaluate()
+			res, err = t.expression.Evaluate()
 			if err != nil {
-				return err
+				return
 			}
-			ret += val.(float64)
+			val += res.(float64)
 		}
 	case COUNT:
 		for _, t := range a.targets {
-			val, err := t.expression.Evaluate()
+			res, err = t.expression.Evaluate()
 			if err != nil {
-				return err
+				return
 			}
-			if val.(bool) {
-				ret++
+			if res.(bool) {
+				val++
 			}
 		}
 	case AVG:
 		for _, t := range a.targets {
-			val, err := t.expression.Evaluate()
+			res, err = t.expression.Evaluate()
 			if err != nil {
-				return err
+				return
 			}
-			ret += val.(float64)
+			val += res.(float64)
 		}
-		ret = ret / float64(len(a.targets))
+		val = val / float64(len(a.targets))
 	case MIN:
-		ret = math.MaxFloat64
+		val = math.MaxFloat64
 		for _, t := range a.targets {
-			val, err := t.expression.Evaluate()
+			res, err = t.expression.Evaluate()
 			if err != nil {
-				return err
+				return
 			}
-			v := val.(float64)
-			if v < ret {
-				ret = v
+			v := res.(float64)
+			if v < val {
+				val = v
 			}
 		}
 	case MAX:
-		ret = math.SmallestNonzeroFloat32
+		val = math.SmallestNonzeroFloat32
 		for _, t := range a.targets {
-			val, err := t.expression.Evaluate()
+			res, err = t.expression.Evaluate()
 			if err != nil {
-				return err
+				return
 			}
-			v := val.(float64)
-			if v > ret {
-				ret = v
+			v := res.(float64)
+			if v > val {
+				val = v
 			}
 		}
 	case FIRST:
-		val, err := a.targets[0].expression.Evaluate()
+		res, err = a.targets[0].expression.Evaluate()
 		if err != nil {
-			return err
+			return
 		}
-		ret = val.(float64)
+		val = res.(float64)
 	case LAST:
-		val, err := a.targets[l-1].expression.Evaluate()
+		res, err = a.targets[l-1].expression.Evaluate()
 		if err != nil {
-			return err
+			return
 		}
-		ret = val.(float64)
+		val = res.(float64)
 	default:
-		return nil //TODO error
+		return 0, nil //TODO error
 	}
 
 	//写入结果
-	(*a.ctx)[a.As] = ret
+	//(*a.ctx)[a.As] = val
 
-	return nil
+	return
 }

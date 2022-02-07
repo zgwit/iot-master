@@ -20,13 +20,12 @@ type Directive struct {
 	Expression string `json:"expression,omitempty"`
 }
 
-
 type Invoke struct {
 	Command string    `json:"command"`
 	Argv    []float64 `json:"argv"`
 
 	//目标设备（只在Project中使用）
-	Device string   `json:"device,omitempty"` //name
-	Ids    []int    `json:"ids,omitempty"`
-	Tags   []string `json:"tags,omitempty"`
+	Names []string `json:"device,omitempty"` //name
+	Ids   []int    `json:"ids,omitempty"`
+	Tags  []string `json:"tags,omitempty"`
 }
