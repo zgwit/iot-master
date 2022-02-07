@@ -39,7 +39,7 @@ func (a *Aggregator) Compile(devices []*interval.Device, ctx *interval.Context) 
 	a.ctx = ctx
 	for _, dev := range devices {
 		if hasTag(a.Tags, dev.Tags) {
-			expr, err := interval.NewExpression(a.Expression, &dev.Context)
+			expr, err := interval.NewExpression(a.Expression, dev.Context)
 			if err != nil {
 				return err
 			}

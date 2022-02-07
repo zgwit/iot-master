@@ -3,11 +3,12 @@ package interval
 import "github.com/zgwit/iot-master/internal/aggregator"
 
 type ProjectDevice struct {
+	Id   int    `json:"id" storm:"id,increment"`
 	Name string `json:"name"`
-	Id   int    `json:"id"`
 }
 
 type Project struct {
+	Id       int  `json:"id"`
 	Disabled bool `json:"disabled"`
 
 	Devices []ProjectDevice `json:"devices"`
@@ -19,6 +20,7 @@ type Project struct {
 
 	Context Context `json:"context"`
 
+	deviceIndex map[string]interface{}
 }
 
 func (c *Project) Start() error {

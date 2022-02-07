@@ -18,7 +18,9 @@ func (a *Adapter) Init() {
 }
 
 func (a *Adapter) Set(key string, value float64) error {
-	for _, p := range a.points {
+	//for _, p := range a.points {
+	for i := 0; i < len(a.points); i++ {
+		p := &a.points[i]
 		if p.Name == key {
 			data := p.Type.Encode(value, p.LittleEndian)
 			return a.protocol.Write(a.slave, p.Code, p.Address, data)
@@ -29,7 +31,10 @@ func (a *Adapter) Set(key string, value float64) error {
 }
 
 func (a *Adapter) Get(key string) (float64, error) {
-	for _, p := range a.points {
+
+	//for _, p := range a.points {
+	for i := 0; i < len(a.points); i++ {
+		p := &a.points[i]
 		if p.Name == key {
 			//使用立即读
 			b, err := a.protocol.ImmediateRead(a.slave, p.Code, p.Address, p.Type.Size())
@@ -59,7 +64,8 @@ func (a *Adapter) Read(code, address, length int) (Context, error) {
 
 	//解析数据
 	ctx := make(Context)
-	for _, p := range a.points {
+	for i := 0; i < len(a.points); i++ {
+		p := &a.points[i]
 		if address <= p.Address && p.Address < address+length {
 			v, err := p.Type.Decode(buf[p.Address-p.Address:], p.LittleEndian)
 			if err != nil {

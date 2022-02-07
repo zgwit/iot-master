@@ -52,13 +52,15 @@ func (c *Collector) Execute() {
 		return
 	}
 
-	//此举会不断创建协程
-	go func() {
-		c.reading = true
-		_, _ = c.adapter.Read(c.Code, c.Address, c.Length)
-		//log error
-		c.reading = false
-	}()
+	//TODO 此举会不断创建协程 需要再确定gocron的协程机制
+	go c.read()
+}
+
+func (c *Collector) read()  {
+	c.reading = true
+	_, _ = c.adapter.Read(c.Code, c.Address, c.Length)
+	//log error
+	c.reading = false
 }
 
 func (c *Collector) Stop() {
