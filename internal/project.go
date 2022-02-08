@@ -1,7 +1,6 @@
 package interval
 
 import (
-	"github.com/antonmedv/expr"
 	"github.com/asaskevich/EventBus"
 	"github.com/zgwit/iot-master/internal/aggregator"
 	"time"
@@ -31,11 +30,13 @@ type Project struct {
 
 	events EventBus.Bus
 
-	handler func(data Context)
+	deviceDataHandler  func(data Context)
+	deviceAlarmHandler func(alarm *DeviceAlarm)
 }
 
 func (prj *Project) Init() error {
-	prj.handler = func(data Context) {
+	//设备数据变化的处理函数
+	prj.deviceDataHandler = func(data Context) {
 		//数据变化后，更新计算
 		for i := 0; i < len(prj.Aggregators); i++ {
 			agg := &prj.Aggregators[i]
@@ -57,34 +58,58 @@ func (prj *Project) Init() error {
 		}
 	}
 
+	//设备告警的处理函数
+	prj.deviceAlarmHandler = func(alarm *DeviceAlarm) {
+		pa := &ProjectAlarm{
+			DeviceAlarm: *alarm,
+			ProjectId:   prj.Id,
+		}
+		//TODO 入库
+
+		//上报
+		prj.events.Publish("alarm", pa)
+	}
+
+	//初始化设备
 	for i := 0; i < len(prj.Devices); i++ {
 		d := &prj.Devices[i]
 		dev := GetDevice(d.Id)
+		//TODO 如果找不到设备，该怎么处理
 		d.device = dev
 		prj.deviceNameIndex[d.Name] = dev
 		prj.deviceIdIndex[d.Id] = dev
 		prj.Context[d.Name] = dev.Context //两级上下文
-		//_ = dev.events.Subscribe("data", prj.handler)
+		//_ = dev.events.Subscribe("data", prj.deviceDataHandler)
 	}
 
 	//定时任务
-	//for _, v := range dev.Jobs {
 	for i := 0; i < len(prj.Jobs); i++ {
 		v := &prj.Jobs[i]
-		err := v.Start()
-		if err != nil {
-			return err
-		}
+		v.Init()
 
 		_ = v.events.Subscribe("invoke", func() {
 			//TODO 日志
 			for _, invoke := range v.Invokes {
-				err := prj.Execute(invoke.Command, invoke.Argv)
+				err := prj.execute(&invoke)
 				if err != nil {
 					prj.events.Publish("error", err)
 				}
 			}
 		})
+	}
+
+	//初始化聚合器
+	for i := 0; i < len(prj.Aggregators); i++ {
+		a := &prj.Aggregators[i]
+		a.Init()
+		for _, d := range prj.Devices {
+			if a.Select.has(&d) {
+				err := a.Push(d.device.Context)
+				if err != nil {
+					return err
+				}
+			}
+		}
 	}
 
 	//订阅告警
@@ -93,10 +118,13 @@ func (prj *Project) Init() error {
 		reactor := &prj.Reactors[i]
 		reactor.Init()
 
-		_ = reactor.events.Subscribe("alarm", func(alarm *DeviceAlarm) {
+		_ = reactor.events.Subscribe("alarm", func(alarm *Alarm) {
 			pa := &ProjectAlarm{
-				DeviceAlarm: *alarm,
-				ProjectId:   prj.Id,
+				DeviceAlarm: DeviceAlarm{
+					Alarm:   *alarm,
+					Created: time.Now(),
+				},
+				ProjectId: prj.Id,
 			}
 			//TODO 入库
 
@@ -107,7 +135,7 @@ func (prj *Project) Init() error {
 		_ = reactor.events.Subscribe("invoke", func() {
 			//TODO 日志
 			for _, invoke := range reactor.Invokes {
-				err := prj.Execute(invoke.Command, invoke.Argv)
+				err := prj.execute(&invoke)
 				if err != nil {
 					prj.events.Publish("error", err)
 				}
@@ -119,9 +147,11 @@ func (prj *Project) Init() error {
 }
 
 func (prj *Project) Start() error {
-
+	//订阅设备的数据变化和报警
 	for i := 0; i < len(prj.Devices); i++ {
-		_ = prj.Devices[i].device.events.Subscribe("data", prj.handler)
+		dev := prj.Devices[i].device
+		_ = dev.events.Subscribe("data", prj.deviceDataHandler)
+		_ = dev.events.Subscribe("alarm", prj.deviceAlarmHandler)
 	}
 
 	//定时任务
@@ -136,7 +166,9 @@ func (prj *Project) Start() error {
 
 func (prj *Project) Stop() error {
 	for i := 0; i < len(prj.Devices); i++ {
-		_ = prj.Devices[i].device.events.Unsubscribe("data", prj.handler)
+		dev := prj.Devices[i].device
+		_ = dev.events.Unsubscribe("data", prj.deviceDataHandler)
+		_ = dev.events.Unsubscribe("alarm", prj.deviceAlarmHandler)
 	}
 	for i := 0; i < len(prj.Jobs); i++ {
 		prj.Jobs[i].Stop()
@@ -145,32 +177,13 @@ func (prj *Project) Stop() error {
 }
 
 func (prj *Project) execute(in *Invoke) error {
-	devices := make(map[*Device]bool) //set
-	for _, id:= range in.Ids {
-		d := prj.deviceIdIndex[id]
-		devices[d] = true
-	}
-	for _, name:= range in.Names {
-		d := prj.deviceNameIndex[name]
-		devices[d] = true
-	}
 	for _, d := range prj.Devices {
-		//TODO 判断tags交积
-		devices[d.device] = true
-	}
-	if len(devices)==0 {
-		return nil
-	}
-
-	//让设备依次执行
-	for dev, _ := range devices {
-		err := dev.Execute(in.Command, in.Argv)
-		if err != nil {
-			return err
+		if in.Select.has(&d) {
+			err := d.device.Execute(in.Command, in.Argv)
+			if err != nil {
+				return err
+			}
 		}
 	}
-
-	//TODO 以上代码可以再整合，外循环为遍历prj.Devices
-
 	return nil
 }

@@ -7,20 +7,18 @@ import (
 )
 
 type Target struct {
-	device     *interval.Device
+	context    interval.Context
 	expression *interval.Expression
 }
 
 type Aggregator struct {
-	Type       Type   `json:"type"`
-	As         string `json:"as"`
-	From       string `json:"from"`
-	Expression string `json:"expression"`
+	Type       Type            `json:"type"`
+	As         string          `json:"as"`
+	From       string          `json:"from"`
+	Select     interval.Select `json:"select"`
+	Expression string          `json:"expression"`
 
-	Tags []string `json:"tags,omitempty"`
-
-	targets []Target
-	ctx     *interval.Context
+	targets []*interval.Expression
 }
 
 func hasTag(a, b []string) bool {
@@ -35,18 +33,21 @@ func hasTag(a, b []string) bool {
 	return false
 }
 
-func (a *Aggregator) Compile(devices []*interval.Device, ctx *interval.Context) error {
-	a.ctx = ctx
-	for _, dev := range devices {
-		if hasTag(a.Tags, dev.Tags) {
-			expr, err := interval.NewExpression(a.Expression, dev.Context)
-			if err != nil {
-				return err
-			}
-			a.targets = append(a.targets, Target{device: dev, expression: expr})
-		}
+func (a *Aggregator) Init() {
+	a.targets = make([]*interval.Expression, 0)
+}
+
+func (a *Aggregator) Push(ctx interval.Context) error {
+	expr, err := interval.NewExpression(a.Expression, ctx)
+	if err != nil {
+		return err
 	}
+	a.targets = append(a.targets, expr)
 	return nil
+}
+
+func (a *Aggregator) Clear() {
+	a.targets = make([]*interval.Expression, 0)
 }
 
 func (a *Aggregator) Evaluate() (val float64, err error) {
@@ -62,7 +63,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 	switch a.Type {
 	case SUM:
 		for _, t := range a.targets {
-			res, err = t.expression.Evaluate()
+			res, err = t.Evaluate()
 			if err != nil {
 				return
 			}
@@ -70,7 +71,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 		}
 	case COUNT:
 		for _, t := range a.targets {
-			res, err = t.expression.Evaluate()
+			res, err = t.Evaluate()
 			if err != nil {
 				return
 			}
@@ -80,7 +81,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 		}
 	case AVG:
 		for _, t := range a.targets {
-			res, err = t.expression.Evaluate()
+			res, err = t.Evaluate()
 			if err != nil {
 				return
 			}
@@ -90,7 +91,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 	case MIN:
 		val = math.MaxFloat64
 		for _, t := range a.targets {
-			res, err = t.expression.Evaluate()
+			res, err = t.Evaluate()
 			if err != nil {
 				return
 			}
@@ -102,7 +103,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 	case MAX:
 		val = math.SmallestNonzeroFloat32
 		for _, t := range a.targets {
-			res, err = t.expression.Evaluate()
+			res, err = t.Evaluate()
 			if err != nil {
 				return
 			}
@@ -112,13 +113,13 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 			}
 		}
 	case FIRST:
-		res, err = a.targets[0].expression.Evaluate()
+		res, err = a.targets[0].Evaluate()
 		if err != nil {
 			return
 		}
 		val = res.(float64)
 	case LAST:
-		res, err = a.targets[l-1].expression.Evaluate()
+		res, err = a.targets[l-1].Evaluate()
 		if err != nil {
 			return
 		}

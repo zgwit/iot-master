@@ -3,7 +3,6 @@ package interval
 import (
 	"github.com/antonmedv/expr"
 	"github.com/asaskevich/EventBus"
-	"sync"
 	"time"
 )
 
