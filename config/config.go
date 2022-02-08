@@ -6,7 +6,17 @@ type Configure struct {
 	History  History  `yaml:"history"`
 }
 
-var Config Configure
+var Config Configure = Configure{
+	Web: Web{
+		Addr: ":8080",
+	},
+	Database: Database{
+		Path: ".",
+	},
+	History: History{
+		DataPath: ".",
+	},
+}
 
 func Load() error {
 
