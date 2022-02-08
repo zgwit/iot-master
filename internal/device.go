@@ -17,12 +17,12 @@ type Device struct {
 	//从机号
 	Slave int `json:"slave"`
 
-	Points      []Point      `json:"points"`
-	Collectors  []Collector  `json:"collectors"`
-	Calculators []Calculator `json:"calculators"`
-	Commands    []Command    `json:"commands"`
-	Reactors    []Reactor    `json:"reactors"`
-	Jobs        []Job        `json:"jobs"`
+	Points      []*Point      `json:"points"`
+	Collectors  []*Collector  `json:"collectors"`
+	Calculators []*Calculator `json:"calculators"`
+	Commands    []*Command    `json:"commands"`
+	Reactors    []*Reactor    `json:"reactors"`
+	Jobs        []*Job        `json:"jobs"`
 
 	//上下文
 	Context Context `json:"context"`
@@ -45,9 +45,7 @@ func (dev *Device) Init() error {
 		}
 
 		//数据变化后，更新计算
-		//for _, v := range dev.Calculators {
-		for i := 0; i < len(dev.Calculators); i++ {
-			calculator := &dev.Calculators[i]
+		for _, calculator := range dev.Calculators {
 			val, err := calculator.Evaluate()
 			if err != nil {
 				dev.events.Publish("error", err)
@@ -57,9 +55,7 @@ func (dev *Device) Init() error {
 		}
 
 		//处理响应
-		//for _, v := range dev.Reactors {
-		for i := 0; i < len(dev.Reactors); i++ {
-			reactor := &dev.Reactors[i]
+		for _, reactor := range dev.Reactors {
 			err := reactor.Execute()
 			if err != nil {
 				dev.events.Publish("error", err)
@@ -72,24 +68,20 @@ func (dev *Device) Init() error {
 
 
 	//初始化计算器
-	//for _, v := range dev.Calculators {
-	for i := 0; i < len(dev.Calculators); i++ {
-		calculator := &dev.Calculators[i]
+	for _, calculator := range dev.Calculators {
 		_ = calculator.Init(dev.Context)
 	}
 
 	//定时任务
-	//for _, v := range dev.Jobs {
-	for i := 0; i < len(dev.Jobs); i++ {
-		v := &dev.Jobs[i]
-		err := v.Start()
+	for _, job := range dev.Jobs {
+		err := job.Start()
 		if err != nil {
 			return err
 		}
 
-		_ = v.events.Subscribe("invoke", func() {
+		_ = job.events.Subscribe("invoke", func() {
 			//TODO 日志
-			for _, invoke := range v.Invokes {
+			for _, invoke := range job.Invokes {
 				err := dev.Execute(invoke.Command, invoke.Argv)
 				if err != nil {
 					dev.events.Publish("error", err)
@@ -99,9 +91,7 @@ func (dev *Device) Init() error {
 	}
 
 	//订阅告警
-	//for _, v := range dev.Reactors {
-	for i := 0; i < len(dev.Reactors); i++ {
-		reactor := &dev.Reactors[i]
+	for _, reactor := range dev.Reactors {
 		reactor.Init()
 
 		_ = reactor.events.Subscribe("alarm", func(alarm *Alarm) {
@@ -132,15 +122,15 @@ func (dev *Device) Init() error {
 
 func (dev *Device) Start() error {
 	//采集器
-	for i := 0; i < len(dev.Collectors); i++ {
-		err := dev.Collectors[i].Start()
+	for _, collector := range dev.Collectors {
+		err := collector.Start()
 		if err != nil {
 			return err
 		}
 	}
 	//定时任务
-	for i := 0; i < len(dev.Jobs); i++ {
-		err := dev.Jobs[i].Start()
+	for _, job := range dev.Jobs {
+		err := job.Start()
 		if err != nil {
 			return err
 		}
@@ -149,11 +139,11 @@ func (dev *Device) Start() error {
 }
 
 func (dev *Device) Stop() error {
-	for i := 0; i < len(dev.Collectors); i++ {
-		dev.Collectors[i].Stop()
+	for _, collector := range dev.Collectors {
+		collector.Stop()
 	}
-	for i := 0; i < len(dev.Jobs); i++ {
-		dev.Jobs[i].Stop()
+	for _, job := range dev.Jobs {
+		job.Stop()
 	}
 	return nil
 }
@@ -161,9 +151,7 @@ func (dev *Device) Stop() error {
 func (dev *Device) Execute(command string, argv []float64) error {
 	cmd := dev.commandIndex[command]
 	//直接执行
-	//for _, d := range cmd.Directives {
-	for i := 0; i < len(cmd.Directives); i++ {
-		directive := &cmd.Directives[i]
+	for _, directive := range cmd.Directives {
 		val := directive.Value
 		//优先级：参数 > 表达式 > 初始值
 		if directive.Arg > 0 {

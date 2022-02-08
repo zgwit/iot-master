@@ -15,7 +15,7 @@ type Job struct {
 
 	Crontab string `json:"crontab,omitempty"`
 
-	Invokes []Invoke `json:"invokes"`
+	Invokes []*Invoke `json:"invokes"`
 
 	job *gocron.Job
 	events EventBus.Bus

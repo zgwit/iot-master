@@ -42,7 +42,7 @@ type Reactor struct {
 	Alarm *Alarm `json:"alarm,omitempty"`
 
 	//执行命名
-	Invokes []Invoke `json:"invokes,omitempty"`
+	Invokes []*Invoke `json:"invokes,omitempty"`
 
 	events EventBus.Bus
 }

@@ -5,7 +5,7 @@ type Command struct {
 	Label string `json:"label,omitempty"`
 	Argc  int    `json:"argc,omitempty"`
 
-	Directives []Directive `json:"directives"`
+	Directives []*Directive `json:"directives"`
 }
 
 type Directive struct {

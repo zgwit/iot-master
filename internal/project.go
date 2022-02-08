@@ -13,15 +13,15 @@ type ProjectDevice struct {
 }
 
 type Project struct {
-	Id       int  `json:"id"`
+	Id       int  `json:"id" storm:"id,increment"`
 	Disabled bool `json:"disabled"`
 
-	Devices []ProjectDevice `json:"devices"`
+	Devices []*ProjectDevice `json:"devices"`
 
-	Aggregators []aggregator.Aggregator `json:"aggregators"`
-	Commands    []Command               `json:"commands"`
-	Reactors    []Reactor               `json:"reactors"`
-	Jobs        []Job                   `json:"jobs"`
+	Aggregators []*aggregator.Aggregator `json:"aggregators"`
+	Commands    []*Command               `json:"commands"`
+	Reactors    []*Reactor               `json:"reactors"`
+	Jobs        []*Job                   `json:"jobs"`
 
 	Context Context `json:"context"`
 
@@ -38,8 +38,7 @@ func (prj *Project) Init() error {
 	//设备数据变化的处理函数
 	prj.deviceDataHandler = func(data Context) {
 		//数据变化后，更新计算
-		for i := 0; i < len(prj.Aggregators); i++ {
-			agg := &prj.Aggregators[i]
+		for _, agg := range prj.Aggregators{
 			val, err := agg.Evaluate()
 			if err != nil {
 				prj.events.Publish("error", err)
@@ -49,8 +48,7 @@ func (prj *Project) Init() error {
 		}
 
 		//处理响应
-		for i := 0; i < len(prj.Reactors); i++ {
-			reactor := &prj.Reactors[i]
+		for _,reactor := range prj.Reactors {
 			err := reactor.Execute()
 			if err != nil {
 				prj.events.Publish("error", err)
@@ -71,8 +69,7 @@ func (prj *Project) Init() error {
 	}
 
 	//初始化设备
-	for i := 0; i < len(prj.Devices); i++ {
-		d := &prj.Devices[i]
+	for _,d:= range prj.Devices {
 		dev := GetDevice(d.Id)
 		//TODO 如果找不到设备，该怎么处理
 		d.device = dev
@@ -83,14 +80,13 @@ func (prj *Project) Init() error {
 	}
 
 	//定时任务
-	for i := 0; i < len(prj.Jobs); i++ {
-		v := &prj.Jobs[i]
-		v.Init()
+	for _, job := range prj.Jobs {
+		job.Init()
 
-		_ = v.events.Subscribe("invoke", func() {
+		_ = job.events.Subscribe("invoke", func() {
 			//TODO 日志
-			for _, invoke := range v.Invokes {
-				err := prj.execute(&invoke)
+			for _, invoke := range job.Invokes {
+				err := prj.execute(invoke)
 				if err != nil {
 					prj.events.Publish("error", err)
 				}
@@ -99,12 +95,11 @@ func (prj *Project) Init() error {
 	}
 
 	//初始化聚合器
-	for i := 0; i < len(prj.Aggregators); i++ {
-		a := &prj.Aggregators[i]
-		a.Init()
+	for _, agg := range prj.Aggregators {
+		agg.Init()
 		for _, d := range prj.Devices {
-			if a.Select.has(&d) {
-				err := a.Push(d.device.Context)
+			if agg.Select.has(d) {
+				err := agg.Push(d.device.Context)
 				if err != nil {
 					return err
 				}
@@ -113,9 +108,7 @@ func (prj *Project) Init() error {
 	}
 
 	//订阅告警
-	//for _, v := range dev.Reactors {
-	for i := 0; i < len(prj.Reactors); i++ {
-		reactor := &prj.Reactors[i]
+	for _, reactor := range prj.Reactors {
 		reactor.Init()
 
 		_ = reactor.events.Subscribe("alarm", func(alarm *Alarm) {
@@ -135,7 +128,7 @@ func (prj *Project) Init() error {
 		_ = reactor.events.Subscribe("invoke", func() {
 			//TODO 日志
 			for _, invoke := range reactor.Invokes {
-				err := prj.execute(&invoke)
+				err := prj.execute(invoke)
 				if err != nil {
 					prj.events.Publish("error", err)
 				}
@@ -148,15 +141,14 @@ func (prj *Project) Init() error {
 
 func (prj *Project) Start() error {
 	//订阅设备的数据变化和报警
-	for i := 0; i < len(prj.Devices); i++ {
-		dev := prj.Devices[i].device
-		_ = dev.events.Subscribe("data", prj.deviceDataHandler)
-		_ = dev.events.Subscribe("alarm", prj.deviceAlarmHandler)
+	for _,dev := range prj.Devices {
+		_ = dev.device.events.Subscribe("data", prj.deviceDataHandler)
+		_ = dev.device.events.Subscribe("alarm", prj.deviceAlarmHandler)
 	}
 
 	//定时任务
-	for i := 0; i < len(prj.Jobs); i++ {
-		err := prj.Jobs[i].Start()
+	for _, job := range prj.Jobs {
+		err := job.Start()
 		if err != nil {
 			return err
 		}
@@ -165,20 +157,19 @@ func (prj *Project) Start() error {
 }
 
 func (prj *Project) Stop() error {
-	for i := 0; i < len(prj.Devices); i++ {
-		dev := prj.Devices[i].device
-		_ = dev.events.Unsubscribe("data", prj.deviceDataHandler)
-		_ = dev.events.Unsubscribe("alarm", prj.deviceAlarmHandler)
+	for _,dev := range prj.Devices {
+		_ = dev.device.events.Unsubscribe("data", prj.deviceDataHandler)
+		_ = dev.device.events.Unsubscribe("alarm", prj.deviceAlarmHandler)
 	}
-	for i := 0; i < len(prj.Jobs); i++ {
-		prj.Jobs[i].Stop()
+	for _, job := range prj.Jobs {
+		job.Stop()
 	}
 	return nil
 }
 
 func (prj *Project) execute(in *Invoke) error {
 	for _, d := range prj.Devices {
-		if in.Select.has(&d) {
+		if in.Select.has(d) {
 			err := d.device.Execute(in.Command, in.Argv)
 			if err != nil {
 				return err
