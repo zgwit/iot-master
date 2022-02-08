@@ -5,14 +5,14 @@ import (
 )
 
 type ProjectHistory struct {
-	Id        int
-	ProjectId int
-	History   string
-	Created   time.Time
+	Id        int       `json:"id" storm:"id,increment"`
+	ProjectId int       `json:"project_id"`
+	History   string    `json:"history"`
+	Created   time.Time `json:"created"`
 }
 
 type ProjectHistoryAlarm struct {
-	Id int
+	Id int `json:"id" storm:"id,increment"`
 
 	ProjectId int    `json:"project_id"`
 	DeviceId  int    `json:"device_id"`
@@ -20,12 +20,12 @@ type ProjectHistoryAlarm struct {
 	Level     int    `json:"level"`
 	Message   string `json:"message"`
 
-	Created time.Time
+	Created time.Time `json:"created"`
 }
 
 type ProjectHistoryJob struct {
-	Id      int
-	Job     string
-	Result  string
-	Created time.Time
+	Id      int       `json:"id" storm:"id,increment"`
+	Job     string    `json:"job"`
+	Result  string    `json:"result"`
+	Created time.Time `json:"created"`
 }

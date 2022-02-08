@@ -3,8 +3,8 @@ package model
 import "time"
 
 type ServiceHistory struct {
-	Id        int
-	ServiceId int
-	History   string
-	Created   time.Time
+	Id        int `json:"id" storm:"id,increment"`
+	ServiceId int`json:"service_id"`
+	History   string`json:"history"`
+	Created   time.Time`json:"created"`
 }
