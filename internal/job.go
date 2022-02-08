@@ -11,9 +11,9 @@ type Job struct {
 	Type     string `json:"type"` //clock, crontab
 
 	Clock   int    `json:"clock,omitempty"`
-	Crontab string `json:"crontab,omitempty"`
-
 	Weekdays []time.Weekday `json:"weekdays"`
+
+	Crontab string `json:"crontab,omitempty"`
 
 	Invokes []Invoke `json:"invokes"`
 
@@ -32,6 +32,7 @@ func (j *Job) Start() error {
 	case "clock":
 		hours := j.Clock / 60
 		minutes := j.Clock % 60
+		//TODO 处理weekdays
 		j.job, err = Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
 			j.Execute()
 		})
@@ -53,4 +54,9 @@ func (j *Job) Execute() {
 
 func (j *Job) Stop() {
 	Scheduler.Remove(j.job)
+}
+
+func (j *Job) String() string {
+	//TODO 转化成字符串
+	return "switch type"
 }
