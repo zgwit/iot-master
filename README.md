@@ -1,6 +1,6 @@
-[![真格智能实验室](https://labs.zgwit.com/logo.png)](https://labs.zgwit.com)
+# 物联大师
 
-# IoT Master 物联大师
+[![CircleCI](https://circleci.com/gh/zgwit/iot-master/tree/main.svg?style=svg)](https://circleci.com/gh/zgwit/iot-master/tree/main)
 
 [iot-master.com](https://iot-master.com)
 
@@ -88,3 +88,5 @@
 - 手机：[15161515197](tel:15161515197)(微信同号)
 
 ![微信号](https://labs.zgwit.com/qrcode.jpg)
+
+[![真格智能实验室](https://labs.zgwit.com/logo.png)](https://labs.zgwit.com)
