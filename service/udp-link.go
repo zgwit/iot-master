@@ -8,12 +8,14 @@ import (
 type UdpLink struct {
 	Id     int
 	conn   *net.UDPConn
+	addr   *net.UDPAddr
 	events EventBus.Bus
 }
 
-func newUdpLink(conn *net.UDPConn) *UdpLink {
+func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
 	return &UdpLink{
 		conn:   conn,
+		addr:   addr,
 		events: EventBus.New(),
 	}
 }
@@ -31,8 +33,7 @@ func (l *UdpLink) Write(data []byte) error {
 }
 
 func (l *UdpLink) Read(data []byte) (int, error) {
-	//n, err := l.conn.Read(data)
-	n, _, err := l.conn.ReadFromUDP(data)
+	n, err := l.conn.Read(data)
 	if err != nil {
 		l.onClose()
 	}
@@ -50,4 +51,8 @@ func (l *UdpLink) onClose() {
 
 func (l *UdpLink) OnClose(fn func()) {
 	_ = l.events.SubscribeOnce("close", fn)
+}
+
+func (l *UdpLink) OnData(fn func(data []byte)) {
+	_ = l.events.Subscribe("data", fn)
 }

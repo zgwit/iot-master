@@ -16,13 +16,13 @@ func NewService(service *model.Service) (Service, error)  {
 	var svc Service
 	switch service.Type {
 	case "tcp-client":
-		svc = NewTcpClient(service)
+		svc = newNetClient(service, "tcp")
 		break
 	case "tcp-server":
-		svc = NewTcpServer(service)
+		svc = newTcpServer(service)
 		break
 	case "udp-client":
-		svc = NewUdpClient(service)
+		svc = newNetClient(service, "udp")
 		break
 	case "udp-server":
 		svc = NewUdpServer(service)

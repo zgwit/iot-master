@@ -9,29 +9,29 @@ import (
 	"time"
 )
 
-type UdpClient struct {
+type NetClient struct {
 	service *model.Service
-	link    *UdpLink
+	link    *NetLink
 	events  EventBus.Bus
+	net     string
 }
 
-func NewUdpClient(service *model.Service) *UdpClient {
-	return &UdpClient{
+func newNetClient(service *model.Service, net string) *NetClient {
+	return &NetClient{
 		service: service,
-		events: EventBus.New(),
+		events:  EventBus.New(),
+		net: net,
 	}
 }
 
-func (client *UdpClient) Open() error {
-	addr ,err := net.ResolveUDPAddr("udp", client.service.Addr)
+func (client *NetClient) Open() error {
+	conn, err := net.Dial(client.net, client.service.Addr)
 	if err != nil {
 		return err
 	}
-	conn, err := net.DialUDP("udp", nil, addr)
-	if err != nil {
-		return err
-	}
-	client.link = newUdpLink(conn)
+	client.link = newNetLink(conn)
+	go client.link.receive()
+
 	//Store link
 	lnk := model.Link{
 		ServiceId: client.service.Id,
@@ -51,18 +51,17 @@ func (client *UdpClient) Open() error {
 	return nil
 }
 
-
-func (client *UdpClient) Close() error {
+func (client *NetClient) Close() error {
 	if client.link != nil {
 		return client.link.Close()
 	}
 	return nil //TODO return error
 }
 
-func (client *UdpClient) GetLink(id int) (Link, error) {
+func (client *NetClient) GetLink(id int) (Link, error) {
 	return client.link, nil
 }
 
-func (client *UdpClient) OnLink(fn func(link Link)) {
+func (client *NetClient) OnLink(fn func(link Link)) {
 	_ = client.events.Subscribe("link", fn)
 }

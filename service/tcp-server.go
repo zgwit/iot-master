@@ -12,20 +12,20 @@ import (
 
 type TcpServer struct {
 	service  *model.Service
-	link     *TcpLink
-	children map[int]*TcpLink
+	link     *NetLink
+	children map[int]*NetLink
 
 	listener *net.TCPListener
 	events  EventBus.Bus
 }
 
-func NewTcpServer(service *model.Service) *TcpServer {
+func newTcpServer(service *model.Service) *TcpServer {
 	svr := &TcpServer{
 		service: service,
 		events: EventBus.New(),
 	}
 	if service.Register != nil {
-		svr.children = make(map[int]*TcpLink)
+		svr.children = make(map[int]*NetLink)
 	}
 	return svr
 }
@@ -88,14 +88,15 @@ func (server *TcpServer) Open() error {
 				continue
 			}
 
-			link := newTcpLink(conn)
+			link := newNetLink(conn)
+			go link.receive()
+
 			link.Id = lnk.Id
 			if server.service.Register == nil {
 				server.link = link
 			} else {
 				server.children[lnk.Id] = link
 			}
-			//TODO 启动对应的设备 发消息
 
 			server.events.Publish("link", link)
 
