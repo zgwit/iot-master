@@ -9,6 +9,7 @@ type Service interface {
 	Open() error
 	Close() error
 	GetLink(id int)(Link, error)
+	OnLink(fn func(link Link))
 }
 
 func NewService(service *model.Service) (Service, error)  {

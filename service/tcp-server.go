@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/asaskevich/EventBus"
 	"github.com/asdine/storm/v3"
 	"github.com/asdine/storm/v3/q"
 	"github.com/zgwit/iot-master/database"
@@ -11,45 +12,52 @@ import (
 
 type TcpServer struct {
 	service  *model.Service
-	link     *NetLink
-	children map[int]*NetLink
+	link     *TcpLink
+	children map[int]*TcpLink
 
-	listener net.Listener
+	listener *net.TCPListener
+	events  EventBus.Bus
 }
 
 func NewTcpServer(service *model.Service) *TcpServer {
-	svc := &TcpServer{service: service}
-	if service.Register != nil {
-		svc.children = make(map[int]*NetLink)
+	svr := &TcpServer{
+		service: service,
+		events: EventBus.New(),
 	}
-	return svc
+	if service.Register != nil {
+		svr.children = make(map[int]*TcpLink)
+	}
+	return svr
 }
 
-func (c *TcpServer) Open() error {
-	var err error
-	c.listener, err = net.Listen("tcp", c.service.Addr)
+func (server *TcpServer) Open() error {
+	addr, err := net.ResolveTCPAddr("tcp", server.service.Addr)
+	if err != nil {
+		return err
+	}
+	server.listener, err = net.ListenTCP("tcp", addr)
 	if err != nil {
 		return err
 	}
 	go func() {
 		for {
-			conn, err := c.listener.Accept()
+			conn, err := server.listener.AcceptTCP()
 			if err != nil {
 				//TODO 需要正确处理接收错误
 				break
 			}
 
 			lnk := model.Link{
-				ServiceId: c.service.Id,
+				ServiceId: server.service.Id,
 				Created:   time.Now(),
 			}
 
-			if c.service.Register == nil {
+			if server.service.Register == nil {
 				//TODO 等待链接结束，再重新接收
-				if c.link != nil {
-					_ = c.link.Close()
+				if server.link != nil {
+					_ = server.link.Close()
 				}
-				err = database.Link.One("ServiceId", c.service.Id, &lnk)
+				err = database.Link.One("ServiceId", server.service.Id, &lnk)
 			} else {
 				buf := make([]byte, 128)
 				n, err := conn.Read(buf)
@@ -58,7 +66,7 @@ func (c *TcpServer) Open() error {
 					continue
 				}
 				data := buf[n:]
-				if !c.service.Register.Check(data) {
+				if !server.service.Register.Check(data) {
 					_ = conn.Close()
 					continue
 				}
@@ -66,7 +74,7 @@ func (c *TcpServer) Open() error {
 				lnk.SN = sn
 				err = database.Link.Select(
 					q.And(
-						q.Eq("ServiceId", c.service.Id),
+						q.Eq("ServiceId", server.service.Id),
 						q.Eq("SN", sn),
 					),
 				).First(&lnk)
@@ -80,22 +88,24 @@ func (c *TcpServer) Open() error {
 				continue
 			}
 
-			link := NewNetLink(conn)
+			link := newTcpLink(conn)
 			link.Id = lnk.Id
-			if c.service.Register == nil {
-				c.link = link
+			if server.service.Register == nil {
+				server.link = link
 			} else {
-				c.children[lnk.Id] = link
+				server.children[lnk.Id] = link
 			}
 			//TODO 启动对应的设备 发消息
+
+			server.events.Publish("link", link)
 
 			link.OnClose(func() {
 				//TODO 记录
 
-				if c.service.Register == nil {
-					c.link = nil
+				if server.service.Register == nil {
+					server.link = nil
 				} else {
-					delete(c.children, link.Id)
+					delete(server.children, link.Id)
 				}
 			})
 		}
@@ -105,15 +115,27 @@ func (c *TcpServer) Open() error {
 }
 
 
-func (c *TcpServer) Close() (err error) {
-	//TODO close links
-	return c.listener.Close()
+func (server *TcpServer) Close() (err error) {
+	//close links
+	if server.link != nil {
+		_ = server.link.Close()
+	}
+	if server.children != nil {
+		for _, l := range server.children {
+			_ = l.Close()
+		}
+	}
+	return server.listener.Close()
 }
 
-func (c *TcpServer) GetLink(id int) (Link, error) {
-	if c.service.Register == nil {
-		return c.link, nil
+func (server *TcpServer) GetLink(id int) (Link, error) {
+	if server.service.Register == nil {
+		return server.link, nil
 	} else {
-		return c.children[id], nil
+		return server.children[id], nil
 	}
+}
+
+func (server *TcpServer) OnLink(fn func(link Link)) {
+	_ = server.events.Subscribe("link", fn)
 }
