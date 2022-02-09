@@ -10,7 +10,7 @@ import (
 
 type TcpClient struct {
 	service *model.Service
-	link    Link
+	link    *NetLink
 }
 
 func NewTcpClient(service *model.Service) *TcpClient {
@@ -22,8 +22,7 @@ func (c *TcpClient) Open() error {
 	if err != nil {
 		return err
 	}
-	link := NewNetLink(conn)
-	c.link = link
+	c.link = NewNetLink(conn)
 	//TODO store link
 	lnk := model.Link{
 		ServiceId: c.service.Id,
@@ -36,7 +35,7 @@ func (c *TcpClient) Open() error {
 	} else if err != nil {
 		return err
 	}
-	link.Id = lnk.Id
+	c.link.Id = lnk.Id
 
 	//TODO 启动对应的设备
 
