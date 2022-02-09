@@ -13,24 +13,27 @@ type TcpServer struct {
 	service  *model.Service
 	link     *NetLink
 	children map[int]*NetLink
+
+	listener net.Listener
 }
 
 func NewTcpServer(service *model.Service) *TcpServer {
 	svc := &TcpServer{service: service}
-	if !service.Single {
+	if service.Register != nil {
 		svc.children = make(map[int]*NetLink)
 	}
 	return svc
 }
 
 func (c *TcpServer) Open() error {
-	l, err := net.Listen("tcp", c.service.Addr)
+	var err error
+	c.listener, err = net.Listen("tcp", c.service.Addr)
 	if err != nil {
 		return err
 	}
 	go func() {
 		for {
-			conn, err := l.Accept()
+			conn, err := c.listener.Accept()
 			if err != nil {
 				//TODO 需要正确处理接收错误
 				break
@@ -41,17 +44,25 @@ func (c *TcpServer) Open() error {
 				Created:   time.Now(),
 			}
 
-			if c.service.Single {
+			if c.service.Register == nil {
 				//TODO 等待链接结束，再重新接收
-
+				if c.link != nil {
+					_ = c.link.Close()
+				}
 				err = database.Link.One("ServiceId", c.service.Id, &lnk)
 			} else {
 				buf := make([]byte, 128)
 				n, err := conn.Read(buf)
 				if err != nil {
+					_ = conn.Close()
 					continue
 				}
-				sn := string(buf[n:])
+				data := buf[n:]
+				if !c.service.Register.Check(data) {
+					_ = conn.Close()
+					continue
+				}
+				sn := string(data)
 				lnk.SN = sn
 				err = database.Link.Select(
 					q.And(
@@ -69,32 +80,38 @@ func (c *TcpServer) Open() error {
 				continue
 			}
 
-			c.link = NewNetLink(conn)
-			c.link.Id = lnk.Id
-			if !c.service.Single {
-				c.children[lnk.Id] = c.link
+			link := NewNetLink(conn)
+			link.Id = lnk.Id
+			if c.service.Register == nil {
+				c.link = link
+			} else {
+				c.children[lnk.Id] = link
 			}
-			//TODO 启动对应的设备
+			//TODO 启动对应的设备 发消息
 
+			link.OnClose(func() {
+				//TODO 记录
+
+				if c.service.Register == nil {
+					c.link = nil
+				} else {
+					delete(c.children, link.Id)
+				}
+			})
 		}
 	}()
 
 	return nil
 }
 
-func (c *TcpServer) HasAcceptor() bool {
-	return false
-}
 
-func (c *TcpServer) Close() error {
-	if c.link != nil {
-		return c.link.Close()
-	}
-	return nil //TODO return error
+func (c *TcpServer) Close() (err error) {
+	//TODO close links
+	return c.listener.Close()
 }
 
 func (c *TcpServer) GetLink(id int) (Link, error) {
-	if c.service.Single {
+	if c.service.Register == nil {
 		return c.link, nil
 	} else {
 		return c.children[id], nil
