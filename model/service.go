@@ -7,6 +7,7 @@ type Service struct {
 	Name     string    `json:"name"`
 	Type     string    `json:"type"` //serial tcp-client tcp-server udp-client udp-server
 	Addr     string    `json:"addr"`
+	Single   bool      `json:"single"` //单线类型，针对server类型
 	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created"`
 }

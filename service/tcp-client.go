@@ -1,20 +1,45 @@
 package service
 
-import "net"
+import (
+	"github.com/asdine/storm/v3"
+	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/model"
+	"net"
+	"time"
+)
 
 type TcpClient struct {
-	Addr string
-	conn net.Conn
-	link Link
+	service *model.Service
+	link    Link
+}
+
+func NewTcpClient(service *model.Service) *TcpClient {
+	return &TcpClient{service: service}
 }
 
 func (c *TcpClient) Open() error {
-	conn, err := net.Dial("tcp", c.Addr)
+	conn, err := net.Dial("tcp", c.service.Addr)
 	if err != nil {
 		return err
 	}
-	c.conn = conn
-	//TODO 封装conn
+	link := NewNetLink(conn)
+	c.link = link
+	//TODO store link
+	lnk := model.Link{
+		ServiceId: c.service.Id,
+		Created:   time.Now(),
+	}
+	err = database.Link.Find("ServiceId", c.service.Id, &lnk)
+	if err == storm.ErrNotFound {
+		//保存一条新记录
+		_ = database.Link.Save(&lnk)
+	} else if err != nil {
+		return err
+	}
+	link.Id = lnk.Id
+
+	//TODO 启动对应的设备
+
 	return nil
 }
 
@@ -23,8 +48,8 @@ func (c *TcpClient) HasAcceptor() bool {
 }
 
 func (c *TcpClient) Close() error {
-	if c.conn != nil {
-		return c.conn.Close()
+	if c.link != nil {
+		return c.link.Close()
 	}
 	return nil //TODO return error
 }

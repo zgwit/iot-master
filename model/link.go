@@ -12,7 +12,7 @@ type Link struct {
 
 type LinkHistory struct {
 	Id      int       `json:"id" storm:"id,increment"`
-	LinkId  int       `json:"link_id"`
+	LinkId  int       `json:"link_id" storm:"index"`
 	History string    `json:"history"`
 	Created time.Time `json:"created"`
 }
