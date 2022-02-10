@@ -25,19 +25,11 @@ func (l *UdpLink) ID() int {
 }
 
 func (l *UdpLink) Write(data []byte) error {
-	_, err := l.conn.Write(data)
+	_, err := l.conn.WriteToUDP(data, l.addr)
 	if err != nil {
 		l.onClose()
 	}
 	return err
-}
-
-func (l *UdpLink) Read(data []byte) (int, error) {
-	n, err := l.conn.Read(data)
-	if err != nil {
-		l.onClose()
-	}
-	return n, err
 }
 
 func (l *UdpLink) Close() error {
@@ -51,6 +43,10 @@ func (l *UdpLink) onClose() {
 
 func (l *UdpLink) OnClose(fn func()) {
 	_ = l.events.SubscribeOnce("close", fn)
+}
+
+func (l *UdpLink) onData(data []byte) {
+	l.events.Publish("data", data)
 }
 
 func (l *UdpLink) OnData(fn func(data []byte)) {

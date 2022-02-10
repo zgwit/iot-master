@@ -11,18 +11,18 @@ import (
 )
 
 type TcpServer struct {
-	service  *model.Service
-	link     *NetLink
+	service *model.Service
+
 	children map[int]*NetLink
 
 	listener *net.TCPListener
-	events  EventBus.Bus
+	events   EventBus.Bus
 }
 
 func newTcpServer(service *model.Service) *TcpServer {
 	svr := &TcpServer{
 		service: service,
-		events: EventBus.New(),
+		events:  EventBus.New(),
 	}
 	if service.Register != nil {
 		svr.children = make(map[int]*NetLink)
@@ -53,9 +53,9 @@ func (server *TcpServer) Open() error {
 			}
 
 			if server.service.Register == nil {
-				//TODO 等待链接结束，再重新接收
-				if server.link != nil {
-					_ = server.link.Close()
+				//先结束历史链接
+				for _, link := range server.children {
+					_ = link.Close()
 				}
 				err = database.Link.One("ServiceId", server.service.Id, &lnk)
 			} else {
@@ -92,22 +92,15 @@ func (server *TcpServer) Open() error {
 			go link.receive()
 
 			link.Id = lnk.Id
-			if server.service.Register == nil {
-				server.link = link
-			} else {
-				server.children[lnk.Id] = link
-			}
+			server.children[lnk.Id] = link
 
+			//启动对应的设备 发消息
 			server.events.Publish("link", link)
 
 			link.OnClose(func() {
 				//TODO 记录
 
-				if server.service.Register == nil {
-					server.link = nil
-				} else {
-					delete(server.children, link.Id)
-				}
+				delete(server.children, link.Id)
 			})
 		}
 	}()
@@ -115,12 +108,8 @@ func (server *TcpServer) Open() error {
 	return nil
 }
 
-
 func (server *TcpServer) Close() (err error) {
 	//close links
-	if server.link != nil {
-		_ = server.link.Close()
-	}
 	if server.children != nil {
 		for _, l := range server.children {
 			_ = l.Close()
@@ -130,11 +119,7 @@ func (server *TcpServer) Close() (err error) {
 }
 
 func (server *TcpServer) GetLink(id int) (Link, error) {
-	if server.service.Register == nil {
-		return server.link, nil
-	} else {
-		return server.children[id], nil
-	}
+	return server.children[id], nil
 }
 
 func (server *TcpServer) OnLink(fn func(link Link)) {

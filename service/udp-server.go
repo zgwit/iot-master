@@ -11,21 +11,23 @@ import (
 )
 
 type UdpServer struct {
-	service  *model.Service
-	link     *UdpLink
+	service *model.Service
+
 	children map[int]*UdpLink
+	links    map[string]*UdpLink
 
 	listener *net.UDPConn
-	events  EventBus.Bus
+	events   EventBus.Bus
 }
 
 func NewUdpServer(service *model.Service) *UdpServer {
 	svr := &UdpServer{
 		service: service,
-		events: EventBus.New(),
+		events:  EventBus.New(),
 	}
 	if service.Register != nil {
 		svr.children = make(map[int]*UdpLink)
+		svr.links = make(map[string]*UdpLink)
 	}
 	return svr
 }
@@ -35,12 +37,28 @@ func (server *UdpServer) Open() error {
 	if err != nil {
 		return err
 	}
+	conn, err := net.ListenUDP("udp", addr)
+	if err != nil {
+		//TODO 需要正确处理接收错误
+		return err
+	}
+	server.listener = conn //共用连接
+
 	go func() {
 		for {
-			conn, err := net.ListenUDP("udp", addr)
+			buf := make([]byte, 1024)
+			n, addr, err := conn.ReadFromUDP(buf)
 			if err != nil {
-				//TODO 需要正确处理接收错误
-				break
+				_ = conn.Close()
+				continue
+			}
+			data := buf[n:]
+
+			//如果已经保存了链接 TODO 要有超时处理
+			link, ok := server.links[addr.String()]
+			if ok {
+				link.onData(data)
+				continue
 			}
 
 			lnk := model.Link{
@@ -49,20 +67,12 @@ func (server *UdpServer) Open() error {
 			}
 
 			if server.service.Register == nil {
-				//TODO 等待链接结束，再重新接收
-				if server.link != nil {
-					_ = server.link.Close()
+				//先结束其他链接
+				for _, link := range server.links {
+					_ = link.Close()
 				}
 				err = database.Link.One("ServiceId", server.service.Id, &lnk)
 			} else {
-				buf := make([]byte, 128)
-				//n, err := conn.Read(buf)
-				n, r, err := conn.ReadFromUDP(buf)
-				if err != nil {
-					_ = conn.Close()
-					continue
-				}
-				data := buf[n:]
 				if !server.service.Register.Check(data) {
 					_ = conn.Close()
 					continue
@@ -85,25 +95,17 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			link := newUdpLink(conn, addr)
+			link = newUdpLink(conn, addr)
 			link.Id = lnk.Id
-			if server.service.Register == nil {
-				server.link = link
-			} else {
-				server.children[lnk.Id] = link
-			}
-			//TODO 启动对应的设备 发消息
+			server.children[lnk.Id] = link
 
+			//启动对应的设备 发消息
 			server.events.Publish("link", link)
 
 			link.OnClose(func() {
-				//TODO 记录
-
-				if server.service.Register == nil {
-					server.link = nil
-				} else {
-					delete(server.children, link.Id)
-				}
+				//TODO 记录离线
+				delete(server.children, link.Id)
+				delete(server.links, link.conn.RemoteAddr().String())
 			})
 		}
 	}()
@@ -111,12 +113,8 @@ func (server *UdpServer) Open() error {
 	return nil
 }
 
-
 func (server *UdpServer) Close() (err error) {
 	//close links
-	if server.link != nil {
-		_ = server.link.Close()
-	}
 	if server.children != nil {
 		for _, l := range server.children {
 			_ = l.Close()
@@ -126,11 +124,7 @@ func (server *UdpServer) Close() (err error) {
 }
 
 func (server *UdpServer) GetLink(id int) (Link, error) {
-	if server.service.Register == nil {
-		return server.link, nil
-	} else {
-		return server.children[id], nil
-	}
+	return server.children[id], nil
 }
 
 func (server *UdpServer) OnLink(fn func(link Link)) {
