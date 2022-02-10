@@ -20,7 +20,7 @@ type NetClient struct {
 func newNetClient(service *model.Service, net string) *NetClient {
 	return &NetClient{
 		service: service,
-		net: net,
+		net:     net,
 	}
 }
 
@@ -47,6 +47,16 @@ func (client *NetClient) Open() error {
 	client.link.Id = lnk.Id
 
 	client.Emit("link", client.link)
+
+	client.link.Once("close", func() {
+		retry := client.service.Retry
+		if retry == 0 {
+			retry = 10 //默认10秒重试
+		}
+		time.AfterFunc(time.Second*time.Duration(retry), func() {
+			_ = client.Open()
+		})
+	})
 
 	return nil
 }

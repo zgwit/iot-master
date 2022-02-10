@@ -4,6 +4,7 @@ import (
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/model"
+	"time"
 )
 
 type Serial struct {
@@ -38,7 +39,18 @@ func (s *Serial) Open() error {
 	s.link = newSerialLink(port)
 	go s.link.receive()
 
-	//TODO 断线后，要重连
+	s.Emit("link", s.link)
+
+	//断线后，要重连
+	s.link.Once("close", func() {
+		retry := s.service.Retry
+		if retry == 0 {
+			retry = 5 //默认5秒重试
+		}
+		time.AfterFunc(time.Second*time.Duration(retry), func() {
+			_ = s.Open()
+		})
+	})
 
 	return nil
 }

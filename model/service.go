@@ -12,6 +12,7 @@ type Service struct {
 	Name      string           `json:"name"`
 	Type      string           `json:"type"` //serial tcp-client tcp-server udp-client udp-server
 	Addr      string           `json:"addr"`
+	Retry     int              `json:"retry"` //重试
 	Register  *RegisterPacket  `json:"register,omitempty"`
 	Heartbeat *HeartBeatPacket `json:"heartbeat,omitempty"`
 	Serial    *SerialOptions   `json:"serial,omitempty"`
