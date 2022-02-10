@@ -26,7 +26,7 @@ type RTU struct {
 func newRTU(link service.Link) *RTU {
 	rtu := &RTU{
 		link:  link,
-		queue: make(chan *request),
+		queue: make(chan *request, 1),
 	}
 	link.On("data", func(data []byte) {
 		rtu.OnData(data)
@@ -38,7 +38,7 @@ func newRTU(link service.Link) *RTU {
 func (m *RTU) execute(cmd []byte) ([]byte, error) {
 	req := &request{
 		cmd:  cmd,
-		resp: make(chan response),
+		resp: make(chan response, 1),
 	}
 	//排队等待
 	m.queue <- req
