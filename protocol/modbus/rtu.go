@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/zgwit/iot-master/protocol/helper"
 	"github.com/zgwit/iot-master/service"
+	"time"
 )
 
 type response struct {
@@ -19,13 +20,13 @@ type request struct {
 
 type RTU struct {
 	link  service.Link
-	queue chan request //in
+	queue chan *request //in
 }
 
-func NewModbusRtu(link service.Link) *RTU {
+func newRTU(link service.Link) *RTU {
 	rtu := &RTU{
 		link:  link,
-		queue: make(chan request),
+		queue: make(chan *request),
 	}
 	link.On("data", func(data []byte) {
 		rtu.OnData(data)
@@ -35,8 +36,8 @@ func NewModbusRtu(link service.Link) *RTU {
 }
 
 func (m *RTU) execute(cmd []byte) ([]byte, error) {
-	req := request{
-		cmd: cmd,
+	req := &request{
+		cmd:  cmd,
 		resp: make(chan response),
 	}
 	//排队等待
@@ -46,17 +47,28 @@ func (m *RTU) execute(cmd []byte) ([]byte, error) {
 	err := m.link.Write(cmd)
 	if err != nil {
 		//释放队列
-		<- m.queue
+		<-m.queue
 		return nil, err
 	}
 
 	//等待结果
-	resp := <-req.resp
-	return resp.buf, resp.err
+	select {
+	case <-time.After(5 * time.Second):
+		<-m.queue //清空
+		return nil, errors.New("timeout")
+	case resp := <-req.resp:
+		return resp.buf, resp.err
+	}
 }
 
 func (m *RTU) OnData(buf []byte) {
-	req := <- m.queue
+	if len(m.queue) == 0 {
+		//无效数据
+		return
+	}
+
+	//取出请求，并让出队列，可以开始下一个请示了
+	req := <-m.queue
 
 	//解析数据
 	l := len(buf)
