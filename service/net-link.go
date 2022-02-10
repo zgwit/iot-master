@@ -1,20 +1,20 @@
 package service
 
 import (
-	"github.com/asaskevich/EventBus"
+	"github.com/zgwit/iot-master/common"
 	"net"
 )
 
 type NetLink struct {
+	common.EventEmitter
+
 	Id     int
 	conn   net.Conn
-	events EventBus.Bus
 }
 
 func newNetLink(conn net.Conn) *NetLink {
 	return &NetLink{
 		conn:   conn,
-		events: EventBus.New(),
 	}
 }
 
@@ -46,7 +46,7 @@ func (l *NetLink) receive() {
 			l.onClose()
 			break
 		}
-		l.events.Publish("data", buf[n:])
+		l.Emit("data", buf[n:])
 	}
 }
 
@@ -56,13 +56,5 @@ func (l *NetLink) Close() error {
 }
 
 func (l *NetLink) onClose() {
-	l.events.Publish("close")
-}
-
-func (l *NetLink) OnClose(fn func()) {
-	_ = l.events.SubscribeOnce("close", fn)
-}
-
-func (l *NetLink) OnData(fn func(data []byte)) {
-	_ = l.events.Subscribe("data", fn)
+	l.Emit("close")
 }

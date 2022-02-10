@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/asaskevich/EventBus"
 	"github.com/asdine/storm/v3"
+	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 	"net"
@@ -10,17 +10,16 @@ import (
 )
 
 type NetClient struct {
+	common.EventEmitter
+
 	service *model.Service
 	link    *NetLink
 	net     string
-
-	events  EventBus.Bus
 }
 
 func newNetClient(service *model.Service, net string) *NetClient {
 	return &NetClient{
 		service: service,
-		events:  EventBus.New(),
 		net: net,
 	}
 }
@@ -47,7 +46,7 @@ func (client *NetClient) Open() error {
 	}
 	client.link.Id = lnk.Id
 
-	client.events.Publish("link", client.link)
+	client.Emit("link", client.link)
 
 	return nil
 }
@@ -61,8 +60,4 @@ func (client *NetClient) Close() error {
 
 func (client *NetClient) GetLink(id int) (Link, error) {
 	return client.link, nil
-}
-
-func (client *NetClient) OnLink(fn func(link Link)) {
-	_ = client.events.Subscribe("link", fn)
 }

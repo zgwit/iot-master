@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/asaskevich/EventBus"
 	"github.com/asdine/storm/v3"
 	"github.com/asdine/storm/v3/q"
+	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 	"net"
@@ -11,18 +11,18 @@ import (
 )
 
 type TcpServer struct {
+	common.EventEmitter
+
 	service *model.Service
 
 	children map[int]*NetLink
 
 	listener *net.TCPListener
-	events   EventBus.Bus
 }
 
 func newTcpServer(service *model.Service) *TcpServer {
 	svr := &TcpServer{
 		service: service,
-		events:  EventBus.New(),
 	}
 	if service.Register != nil {
 		svr.children = make(map[int]*NetLink)
@@ -95,9 +95,9 @@ func (server *TcpServer) Open() error {
 			server.children[lnk.Id] = link
 
 			//启动对应的设备 发消息
-			server.events.Publish("link", link)
+			server.Emit("link", link)
 
-			link.OnClose(func() {
+			link.Once("close", func() {
 				//TODO 记录
 
 				delete(server.children, link.Id)
@@ -120,8 +120,4 @@ func (server *TcpServer) Close() (err error) {
 
 func (server *TcpServer) GetLink(id int) (Link, error) {
 	return server.children[id], nil
-}
-
-func (server *TcpServer) OnLink(fn func(link Link)) {
-	_ = server.events.Subscribe("link", fn)
 }

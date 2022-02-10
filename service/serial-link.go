@@ -1,20 +1,20 @@
 package service
 
 import (
-	"github.com/asaskevich/EventBus"
+	"github.com/zgwit/iot-master/common"
 	"io"
 )
 
 type SerialLink struct {
+	common.EventEmitter
+
 	Id     int
 	port   io.ReadWriteCloser
-	events EventBus.Bus
 }
 
 func newSerialLink(port   io.ReadWriteCloser) *SerialLink {
 	return &SerialLink{
 		port:   port,
-		events: EventBus.New(),
 	}
 }
 
@@ -38,7 +38,7 @@ func (l *SerialLink) receive() {
 			l.onClose()
 			break
 		}
-		l.events.Publish("data", buf[n:])
+		l.Emit("data", buf[n:])
 	}
 }
 
@@ -48,13 +48,5 @@ func (l *SerialLink) Close() error {
 }
 
 func (l *SerialLink) onClose() {
-	l.events.Publish("close")
-}
-
-func (l *SerialLink) OnClose(fn func()) {
-	_ = l.events.SubscribeOnce("close", fn)
-}
-
-func (l *SerialLink) OnData(fn func(data []byte)) {
-	_ = l.events.Subscribe("data", fn)
+	l.Emit("close")
 }

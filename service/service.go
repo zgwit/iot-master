@@ -2,14 +2,16 @@ package service
 
 import (
 	"fmt"
+	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/model"
 )
 
 type Service interface {
+	common.EventEmitterInterface
+
 	Open() error
 	Close() error
 	GetLink(id int)(Link, error)
-	OnLink(fn func(link Link))
 }
 
 func NewService(service *model.Service) (Service, error)  {

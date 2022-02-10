@@ -1,22 +1,22 @@
 package service
 
 import (
-	"github.com/asaskevich/EventBus"
+	"github.com/zgwit/iot-master/common"
 	"net"
 )
 
 type UdpLink struct {
+	common.EventEmitter
+
 	Id     int
 	conn   *net.UDPConn
 	addr   *net.UDPAddr
-	events EventBus.Bus
 }
 
 func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
 	return &UdpLink{
 		conn:   conn,
 		addr:   addr,
-		events: EventBus.New(),
 	}
 }
 
@@ -38,17 +38,9 @@ func (l *UdpLink) Close() error {
 }
 
 func (l *UdpLink) onClose() {
-	l.events.Publish("close")
-}
-
-func (l *UdpLink) OnClose(fn func()) {
-	_ = l.events.SubscribeOnce("close", fn)
+	l.Emit("close")
 }
 
 func (l *UdpLink) onData(data []byte) {
-	l.events.Publish("data", data)
-}
-
-func (l *UdpLink) OnData(fn func(data []byte)) {
-	_ = l.events.Subscribe("data", fn)
+	l.Emit("data", data)
 }

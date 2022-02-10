@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/asaskevich/EventBus"
 	"github.com/asdine/storm/v3"
 	"github.com/asdine/storm/v3/q"
+	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 	"net"
@@ -11,19 +11,19 @@ import (
 )
 
 type UdpServer struct {
+	common.EventEmitter
+
 	service *model.Service
 
 	children map[int]*UdpLink
 	links    map[string]*UdpLink
 
 	listener *net.UDPConn
-	events   EventBus.Bus
 }
 
 func NewUdpServer(service *model.Service) *UdpServer {
 	svr := &UdpServer{
 		service: service,
-		events:  EventBus.New(),
 	}
 	if service.Register != nil {
 		svr.children = make(map[int]*UdpLink)
@@ -100,9 +100,9 @@ func (server *UdpServer) Open() error {
 			server.children[lnk.Id] = link
 
 			//启动对应的设备 发消息
-			server.events.Publish("link", link)
+			server.Emit("link", link)
 
-			link.OnClose(func() {
+			link.Once("close", func() {
 				//TODO 记录离线
 				delete(server.children, link.Id)
 				delete(server.links, link.addr.String())
@@ -125,8 +125,4 @@ func (server *UdpServer) Close() (err error) {
 
 func (server *UdpServer) GetLink(id int) (Link, error) {
 	return server.children[id], nil
-}
-
-func (server *UdpServer) OnLink(fn func(link Link)) {
-	_ = server.events.Subscribe("link", fn)
 }
