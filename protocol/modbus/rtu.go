@@ -13,20 +13,19 @@ type response struct {
 }
 
 type request struct {
-	cmd []byte
+	cmd  []byte
+	resp chan response //out
 }
 
 type RTU struct {
-	link service.Link
-	resp chan response //out
-	req  chan request  //in
+	link  service.Link
+	queue chan request //in
 }
 
 func NewModbusRtu(link service.Link) *RTU {
 	rtu := &RTU{
-		link: link,
-		resp: make(chan response, 1),
-		req:  make(chan request, 1),
+		link:  link,
+		queue: make(chan request),
 	}
 	link.On("data", func(data []byte) {
 		rtu.OnData(data)
@@ -35,25 +34,29 @@ func NewModbusRtu(link service.Link) *RTU {
 	return rtu
 }
 
-//清空管道
-func (m *RTU) clearResponse() {
-	select {
-	case <-m.resp:
-	default: //不阻塞
+func (m *RTU) execute(cmd []byte) ([]byte, error) {
+	req := request{
+		cmd: cmd,
+		resp: make(chan response),
 	}
-}
-
-func (m *RTU) execute(cmd []byte) error {
 	//排队等待
-	m.req <- request{}
+	m.queue <- req
 
-	resp := <-m.resp
-	return resp.err
+	//下发指令
+	err := m.link.Write(cmd)
+	if err != nil {
+		//释放队列
+		<- m.queue
+		return nil, err
+	}
+
+	//等待结果
+	resp := <-req.resp
+	return resp.buf, resp.err
 }
 
 func (m *RTU) OnData(buf []byte) {
-	//清理管道
-	m.clearResponse()
+	req := <- m.queue
 
 	//解析数据
 	l := len(buf)
@@ -61,13 +64,13 @@ func (m *RTU) OnData(buf []byte) {
 
 	if crc != CRC16(buf[:l-2]) {
 		//检验错误
-		m.resp <- response{err: errors.New("校验错误")}
+		req.resp <- response{err: errors.New("校验错误")}
 		return
 	}
 
 	//解析错误码
 	if buf[1]&0x80 > 0 {
-		m.resp <- response{err: fmt.Errorf("错误码：%d", buf[2])}
+		req.resp <- response{err: fmt.Errorf("错误码：%d", buf[2])}
 		return
 	}
 
@@ -84,33 +87,30 @@ func (m *RTU) OnData(buf []byte) {
 
 		if l < length {
 			//长度不够
-			m.resp <- response{err: errors.New("长度不够")}
+			req.resp <- response{err: errors.New("长度不够")}
 			return
 		}
 		b := buf[2 : l-2]
 		//数组解压
 		bb := helper.ExpandBool(b, count)
-		m.resp <- response{buf: bb}
+		req.resp <- response{buf: bb}
 	case FuncCodeReadInputRegisters,
 		FuncCodeReadHoldingRegisters,
 		FuncCodeReadWriteMultipleRegisters:
 		length += 1 + count*2
 		if l < length {
 			//长度不够
-			m.resp <- response{err: errors.New("长度不够")}
+			req.resp <- response{err: errors.New("长度不够")}
 			return
 		}
 		b := buf[2 : l-2]
-		m.resp <- response{buf: b}
+		req.resp <- response{buf: b}
 	default:
-		m.resp <- response{}
+		req.resp <- response{}
 	}
 }
 
 func (m *RTU) Read(slave uint8, code uint8, offset uint16, size uint16) ([]byte, error) {
-	//清理管道
-	m.clearResponse()
-
 	b := make([]byte, 8)
 	b[0] = slave
 	b[1] = code
@@ -118,21 +118,10 @@ func (m *RTU) Read(slave uint8, code uint8, offset uint16, size uint16) ([]byte,
 	helper.WriteUint16(b[4:], size)
 	helper.WriteUint16(b[6:], CRC16(b[:6]))
 
-	err := m.link.Write(b)
-	if err != nil {
-		return nil, err
-	}
-
-	//等待结果
-	resp := <-m.resp
-
-	return resp.buf, resp.err
+	return m.execute(b)
 }
 
 func (m *RTU) Write(slave uint8, code uint8, offset uint16, buf []byte) error {
-	//清理管道
-	m.clearResponse()
-
 	length := len(buf)
 	//如果是线圈，需要Shrink
 	if code == 1 {
@@ -180,13 +169,6 @@ func (m *RTU) Write(slave uint8, code uint8, offset uint16, buf []byte) error {
 	copy(b[4:], buf)
 	helper.WriteUint16(b[l-2:], CRC16(b[:l-2]))
 
-	err := m.link.Write(b)
-	if err != nil {
-		return err
-	}
-
-	//等待结果
-	resp := <-m.resp
-
-	return resp.err
+	_, err := m.execute(b)
+	return err
 }
