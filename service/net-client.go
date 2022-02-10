@@ -12,8 +12,9 @@ import (
 type NetClient struct {
 	service *model.Service
 	link    *NetLink
-	events  EventBus.Bus
 	net     string
+
+	events  EventBus.Bus
 }
 
 func newNetClient(service *model.Service, net string) *NetClient {

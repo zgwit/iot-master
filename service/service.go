@@ -28,6 +28,7 @@ func NewService(service *model.Service) (Service, error)  {
 		svc = NewUdpServer(service)
 		break
 	case "serial":
+		svc = newSerial(service)
 		break
 	default:
 		return nil, fmt.Errorf("Unsupport type %s ", service.Type)

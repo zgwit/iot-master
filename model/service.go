@@ -12,10 +12,19 @@ type Service struct {
 	Name      string           `json:"name"`
 	Type      string           `json:"type"` //serial tcp-client tcp-server udp-client udp-server
 	Addr      string           `json:"addr"`
-	Register  *RegisterPacket  `json:"register"`
-	Heartbeat *HeartBeatPacket `json:"heartbeat"`
+	Register  *RegisterPacket  `json:"register,omitempty"`
+	Heartbeat *HeartBeatPacket `json:"heartbeat,omitempty"`
+	Serial    *SerialOptions   `json:"serial,omitempty"`
 	Disabled  bool             `json:"disabled"`
 	Created   time.Time        `json:"created"`
+}
+
+type SerialOptions struct {
+	//PortName   string `json:"port_name"`   // /dev/tty.usb.. COM1
+	BaudRate   uint `json:"baud_rate"`   //9600 ... 115200 ...
+	DataBits   uint `json:"data_bits"`   //5 6 7 8
+	StopBits   uint `json:"stop_bits"`   // 1 2
+	ParityMode uint `json:"parity_mode"` // 0:NONE 1:ODD 2:EVEN
 }
 
 type RegisterPacket struct {
