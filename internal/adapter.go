@@ -2,7 +2,7 @@ package interval
 
 import (
 	"fmt"
-	"github.com/asaskevich/EventBus"
+	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/protocol"
 )
 
@@ -10,11 +10,8 @@ type Adapter struct {
 	slave    int
 	protocol protocol.Protocol
 	points   []Point
-	events   EventBus.Bus
-}
 
-func (a *Adapter) Init() {
-	a.events = EventBus.New()
+	common.EventEmitter
 }
 
 func (a *Adapter) Set(key string, value float64) error {
@@ -43,7 +40,7 @@ func (a *Adapter) Get(key string) (float64, error) {
 				return 0, err
 			}
 			//go func
-			a.events.Publish("data", Context{key: v})
+			a.Emit("data", Context{key: v})
 			return v, nil
 		}
 	}
@@ -70,7 +67,7 @@ func (a *Adapter) Read(code, address, length int) (Context, error) {
 		}
 	}
 	//TODO 放这里不太合适
-	a.events.Publish("data", ctx)
+	a.Emit("data", ctx)
 
 	return ctx, nil
 }

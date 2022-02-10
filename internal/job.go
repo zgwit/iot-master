@@ -1,8 +1,8 @@
 package interval
 
 import (
-	"github.com/asaskevich/EventBus"
 	"github.com/go-co-op/gocron"
+	"github.com/zgwit/iot-master/common"
 	"time"
 )
 
@@ -18,11 +18,8 @@ type Job struct {
 	Invokes []*Invoke `json:"invokes"`
 
 	job *gocron.Job
-	events EventBus.Bus
-}
 
-func (j *Job) Init() {
-	j.events = EventBus.New()
+	common.EventEmitter
 }
 
 func (j *Job) Start() error {
@@ -48,8 +45,8 @@ func (j *Job) Execute() {
 	//for _, i:= range j.Invokes {
 	//	j.events.Publish("invoke", i)
 	//}
-	//避免拥堵计时器
-	go j.events.Publish("invoke")
+	//TODO 避免拥堵计时器(需要确认)
+	go j.Emit("invoke")
 }
 
 func (j *Job) Stop() {

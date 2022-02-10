@@ -1,7 +1,7 @@
 package interval
 
 import (
-	"github.com/asaskevich/EventBus"
+	"github.com/zgwit/iot-master/common"
 	"time"
 )
 
@@ -44,11 +44,7 @@ type Reactor struct {
 	//执行命名
 	Invokes []*Invoke `json:"invokes,omitempty"`
 
-	events EventBus.Bus
-}
-
-func (a *Reactor) Init() {
-	a.events = EventBus.New()
+	common.EventEmitter
 }
 
 func (a *Reactor) Execute() error {
@@ -85,7 +81,7 @@ func (a *Reactor) Execute() error {
 
 	//产生报警
 	if a.Alarm != nil {
-		a.events.Publish("alarm", &a.Alarm)
+		a.Emit("alarm", &a.Alarm)
 	}
 
 	//执行响应
@@ -93,7 +89,7 @@ func (a *Reactor) Execute() error {
 	//	a.events.Publish("invoke", i)
 	//}
 	if a.Invokes != nil && len(a.Invokes) > 0 {
-		a.events.Publish("invoke")
+		a.Emit("invoke")
 	}
 
 	return nil

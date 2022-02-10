@@ -2,7 +2,7 @@ package interval
 
 import (
 	"github.com/antonmedv/expr"
-	"github.com/asaskevich/EventBus"
+	"github.com/zgwit/iot-master/common"
 	"time"
 )
 
@@ -30,15 +30,15 @@ type Device struct {
 	//命令索引
 	commandIndex map[string]*Command
 
-	events EventBus.Bus
-
 	adapter *Adapter
+
+	common.EventEmitter
 }
 
 func (dev *Device) Init() error {
 
 	//处理数据变化结果
-	_ = dev.adapter.events.Subscribe("data", func(data Context) {
+	dev.adapter.On("data", func(data Context) {
 		//更新上下文
 		for k, v := range data {
 			dev.Context[k] = v
@@ -48,7 +48,7 @@ func (dev *Device) Init() error {
 		for _, calculator := range dev.Calculators {
 			val, err := calculator.Evaluate()
 			if err != nil {
-				dev.events.Publish("error", err)
+				dev.Emit("error", err)
 			} else {
 				dev.Context[calculator.Variable] = val
 			}
@@ -58,12 +58,12 @@ func (dev *Device) Init() error {
 		for _, reactor := range dev.Reactors {
 			err := reactor.Execute()
 			if err != nil {
-				dev.events.Publish("error", err)
+				dev.Emit("error", err)
 			}
 		}
 
 		//向上广播
-		dev.events.Publish("data", data)
+		dev.Emit("data", data)
 	})
 
 
@@ -79,12 +79,12 @@ func (dev *Device) Init() error {
 			return err
 		}
 
-		_ = job.events.Subscribe("invoke", func() {
+		job.On("invoke", func() {
 			//TODO 日志
 			for _, invoke := range job.Invokes {
 				err := dev.Execute(invoke.Command, invoke.Argv)
 				if err != nil {
-					dev.events.Publish("error", err)
+					dev.Emit("error", err)
 				}
 			}
 		})
@@ -92,9 +92,7 @@ func (dev *Device) Init() error {
 
 	//订阅告警
 	for _, reactor := range dev.Reactors {
-		reactor.Init()
-
-		_ = reactor.events.Subscribe("alarm", func(alarm *Alarm) {
+		reactor.On("alarm", func(alarm *Alarm) {
 			da := &DeviceAlarm{
 				Alarm:    *alarm,
 				DeviceId: dev.Id,
@@ -103,15 +101,15 @@ func (dev *Device) Init() error {
 			//TODO 入库
 
 			//上报
-			dev.events.Publish("alarm", da)
+			dev.Emit("alarm", da)
 		})
 
-		_ = reactor.events.Subscribe("invoke", func() {
+		reactor.On("invoke", func() {
 			//TODO 日志
 			for _, invoke := range reactor.Invokes {
 				err := dev.Execute(invoke.Command, invoke.Argv)
 				if err != nil {
-					dev.events.Publish("error", err)
+					dev.Emit("error", err)
 				}
 			}
 		})
@@ -170,7 +168,7 @@ func (dev *Device) Execute(command string, argv []float64) error {
 		if directive.Delay > 0 {
 			time.AfterFunc(time.Duration(directive.Delay)*time.Millisecond, func() {
 				err := dev.adapter.Set(directive.Point, val)
-				dev.events.Publish("error", err)
+				dev.Emit("error", err)
 			})
 		} else {
 			err := dev.adapter.Set(directive.Point, val)
