@@ -105,7 +105,7 @@ func (server *UdpServer) Open() error {
 			link.OnClose(func() {
 				//TODO 记录离线
 				delete(server.children, link.Id)
-				delete(server.links, link.conn.RemoteAddr().String())
+				delete(server.links, link.addr.String())
 			})
 		}
 	}()
