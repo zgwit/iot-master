@@ -122,18 +122,22 @@ func (m *RTU) OnData(buf []byte) {
 	}
 }
 
-func (m *RTU) Read(slave uint8, code uint8, offset uint16, size uint16) ([]byte, error) {
+func (m *RTU) Read(slave int, code int, offset int, size int) ([]byte, error) {
 	b := make([]byte, 8)
-	b[0] = slave
-	b[1] = code
-	helper.WriteUint16(b[2:], offset)
-	helper.WriteUint16(b[4:], size)
+	b[0] = uint8(slave)
+	b[1] = uint8(code)
+	helper.WriteUint16(b[2:], uint16(offset))
+	helper.WriteUint16(b[4:], uint16(size))
 	helper.WriteUint16(b[6:], CRC16(b[:6]))
 
 	return m.execute(b)
 }
 
-func (m *RTU) Write(slave uint8, code uint8, offset uint16, buf []byte) error {
+func (m *RTU) ImmediateRead(slave int, code int, offset int, size int) ([]byte, error) {
+	return m.Read(slave, code, offset, size)
+}
+
+func (m *RTU) Write(slave int, code int, offset int, buf []byte) error {
 	length := len(buf)
 	//如果是线圈，需要Shrink
 	if code == 1 {
@@ -142,7 +146,7 @@ func (m *RTU) Write(slave uint8, code uint8, offset uint16, buf []byte) error {
 			if length == 1 {
 				code = 5
 				//数据 转成 0x0000 0xFF00
-				if buf[1] > 0 {
+				if buf[0] > 0 {
 					buf = []byte{0xFF, 0}
 				} else {
 					buf = []byte{0, 0}
@@ -175,9 +179,9 @@ func (m *RTU) Write(slave uint8, code uint8, offset uint16, buf []byte) error {
 
 	l := 6 + len(buf)
 	b := make([]byte, l)
-	b[0] = slave
-	b[1] = code
-	helper.WriteUint16(b[2:], offset)
+	b[0] = uint8(slave)
+	b[1] = uint8(code)
+	helper.WriteUint16(b[2:], uint16(offset))
 	copy(b[4:], buf)
 	helper.WriteUint16(b[l-2:], CRC16(b[:l-2]))
 
