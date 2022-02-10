@@ -80,15 +80,18 @@ func (m *RTU) OnData(buf []byte) {
 		return
 	}
 
+	//slave := buf[0]
+	fc := buf[1]
+
 	//解析错误码
-	if buf[1]&0x80 > 0 {
+	if fc&0x80 > 0 {
 		req.resp <- response{err: fmt.Errorf("错误码：%d", buf[2])}
 		return
 	}
 
 	//解析数据
 	length := 4
-	count := int(helper.ParseUint16(buf[1:]))
+	count := int(buf[2])
 	switch buf[1] {
 	case FuncCodeReadDiscreteInputs,
 		FuncCodeReadCoils:
@@ -102,7 +105,7 @@ func (m *RTU) OnData(buf []byte) {
 			req.resp <- response{err: errors.New("长度不够")}
 			return
 		}
-		b := buf[2 : l-2]
+		b := buf[3 : l-2]
 		//数组解压
 		bb := helper.ExpandBool(b, count)
 		req.resp <- response{buf: bb}
@@ -115,8 +118,8 @@ func (m *RTU) OnData(buf []byte) {
 			req.resp <- response{err: errors.New("长度不够")}
 			return
 		}
-		b := buf[2 : l-2]
-		req.resp <- response{buf: b}
+		b := buf[3 : l-2]
+		req.resp <- response{buf: helper.Dup(b)}
 	default:
 		req.resp <- response{}
 	}

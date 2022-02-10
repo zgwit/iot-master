@@ -176,7 +176,6 @@ func WriteFloat64LittleEndian(buf []byte, value float64) {
 	WriteUint64LittleEndian(buf, val)
 }
 
-
 func BoolToAscii(buf []byte) []byte {
 	length := len(buf)
 	ret := make([]byte, length)

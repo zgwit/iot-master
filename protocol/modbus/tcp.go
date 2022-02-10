@@ -101,8 +101,10 @@ func (m *TCP) OnData(buf []byte) {
 	}
 	req := r.(*request)
 
+	//slave := buf[6]
+	fc := buf[7]
 	//解析错误码
-	if buf[1]&0x80 > 0 {
+	if fc&0x80 > 0 {
 		req.resp <- response{err: fmt.Errorf("错误码：%d", buf[2])}
 		return
 	}
@@ -110,7 +112,7 @@ func (m *TCP) OnData(buf []byte) {
 	//解析数据
 	length = 4
 	count := int(buf[8])
-	switch buf[7] {
+	switch fc {
 	case FuncCodeReadDiscreteInputs,
 		FuncCodeReadCoils:
 		//数组解压
