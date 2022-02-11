@@ -1,6 +1,6 @@
 # 物联大师
 
-[![CircleCI](https://circleci.com/gh/zgwit/iot-master/tree/main.svg?style=svg)](https://circleci.com/gh/zgwit/iot-master/tree/main)
+[![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 
 [iot-master.com](https://iot-master.com)
 
