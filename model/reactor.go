@@ -1,4 +1,4 @@
-package interval
+package model
 
 import (
 	"github.com/zgwit/iot-master/common"
@@ -27,7 +27,7 @@ type Reactor struct {
 
 	//条件
 	Condition string `json:"condition"`
-	condition *Expression
+	condition *common.Expression
 
 	//重复日
 	Daily *DailyRange `json:"daily,omitempty"`
@@ -47,10 +47,10 @@ type Reactor struct {
 	common.EventEmitter
 }
 
-func (a *Reactor) Execute() error {
+func (a *Reactor) Execute(ctx common.Context) error {
 
 	//条件检查
-	val, err := a.condition.Evaluate()
+	val, err := a.condition.Evaluate(ctx)
 	if err != nil {
 		return err
 	}

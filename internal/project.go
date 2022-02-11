@@ -1,8 +1,9 @@
-package interval
+package internal
 
 import (
 	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/internal/aggregator"
+	"github.com/zgwit/iot-master/model"
 	"time"
 )
 
@@ -19,24 +20,24 @@ type Project struct {
 	Devices []*ProjectDevice `json:"devices"`
 
 	Aggregators []*aggregator.Aggregator `json:"aggregators"`
-	Commands    []*Command               `json:"commands"`
-	Reactors    []*Reactor               `json:"reactors"`
-	Jobs        []*Job                   `json:"jobs"`
+	Commands    []*model.Command         `json:"commands"`
+	Reactors    []*model.Reactor         `json:"reactors"`
+	Jobs        []*model.Job             `json:"jobs"`
 
-	Context Context `json:"context"`
+	Context common.Context `json:"context"`
 
 	deviceNameIndex map[string]*Device
 	deviceIdIndex   map[int]*Device
 
 	common.EventEmitter
 
-	deviceDataHandler  func(data Context)
-	deviceAlarmHandler func(alarm *DeviceAlarm)
+	deviceDataHandler  func(data common.Context)
+	deviceAlarmHandler func(alarm *model.DeviceAlarm)
 }
 
 func (prj *Project) Init() error {
 	//设备数据变化的处理函数
-	prj.deviceDataHandler = func(data Context) {
+	prj.deviceDataHandler = func(data common.Context) {
 		//数据变化后，更新计算
 		for _, agg := range prj.Aggregators{
 			val, err := agg.Evaluate()
@@ -49,7 +50,7 @@ func (prj *Project) Init() error {
 
 		//处理响应
 		for _,reactor := range prj.Reactors {
-			err := reactor.Execute()
+			err := reactor.Execute(prj.Context)
 			if err != nil {
 				prj.Emit("error", err)
 			}
@@ -57,8 +58,8 @@ func (prj *Project) Init() error {
 	}
 
 	//设备告警的处理函数
-	prj.deviceAlarmHandler = func(alarm *DeviceAlarm) {
-		pa := &ProjectAlarm{
+	prj.deviceAlarmHandler = func(alarm *model.DeviceAlarm) {
+		pa := &model.ProjectAlarm{
 			DeviceAlarm: *alarm,
 			ProjectId:   prj.Id,
 		}
@@ -94,22 +95,22 @@ func (prj *Project) Init() error {
 
 	//初始化聚合器
 	for _, agg := range prj.Aggregators {
-		agg.Init()
+		err := agg.Init()
+		if err != nil {
+			return err
+		}
 		for _, d := range prj.Devices {
-			if agg.Select.has(d) {
-				err := agg.Push(d.device.Context)
-				if err != nil {
-					return err
-				}
+			if hasSelect(&agg.Select, d) {
+				agg.Push(d.device.Context)
 			}
 		}
 	}
 
 	//订阅告警
 	for _, reactor := range prj.Reactors {
-		reactor.On("alarm", func(alarm *Alarm) {
-			pa := &ProjectAlarm{
-				DeviceAlarm: DeviceAlarm{
+		reactor.On("alarm", func(alarm *model.Alarm) {
+			pa := &model.ProjectAlarm{
+				DeviceAlarm: model.DeviceAlarm{
 					Alarm:   *alarm,
 					Created: time.Now(),
 				},
@@ -163,9 +164,9 @@ func (prj *Project) Stop() error {
 	return nil
 }
 
-func (prj *Project) execute(in *Invoke) error {
+func (prj *Project) execute(in *model.Invoke) error {
 	for _, d := range prj.Devices {
-		if in.Select.has(d) {
+		if hasSelect(&in.Select, d) {
 			err := d.device.Execute(in.Command, in.Argv)
 			if err != nil {
 				return err

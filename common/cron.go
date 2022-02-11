@@ -1,4 +1,4 @@
-package interval
+package common
 
 import (
 	"github.com/go-co-op/gocron"

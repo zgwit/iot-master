@@ -1,4 +1,4 @@
-package interval
+package model
 
 type Checker interface {
 	Reset()

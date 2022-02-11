@@ -1,4 +1,4 @@
-package interval
+package model
 
 import (
 	"github.com/go-co-op/gocron"
@@ -30,11 +30,11 @@ func (j *Job) Start() error {
 		hours := j.Clock / 60
 		minutes := j.Clock % 60
 		//TODO 处理weekdays
-		j.job, err = Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
+		j.job, err = common.Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
 			j.Execute()
 		})
 	case "crontab":
-		j.job, err = Scheduler.Cron(j.Crontab).Do(func() {
+		j.job, err = common.Scheduler.Cron(j.Crontab).Do(func() {
 			j.Execute()
 		})
 	}
@@ -50,7 +50,7 @@ func (j *Job) Execute() {
 }
 
 func (j *Job) Stop() {
-	Scheduler.Remove(j.job)
+	common.Scheduler.Remove(j.job)
 }
 
 func (j *Job) String() string {

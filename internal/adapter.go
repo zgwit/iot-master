@@ -1,15 +1,16 @@
-package interval
+package internal
 
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/common"
+	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 )
 
 type Adapter struct {
 	slave    int
 	protocol protocol.Protocol
-	points   []Point
+	points   []model.Point
 
 	common.EventEmitter
 }
@@ -40,7 +41,7 @@ func (a *Adapter) Get(key string) (float64, error) {
 				return 0, err
 			}
 			//go func
-			a.Emit("data", Context{key: v})
+			a.Emit("data", common.Context{key: v})
 			return v, nil
 		}
 	}
@@ -48,7 +49,7 @@ func (a *Adapter) Get(key string) (float64, error) {
 	return 0, fmt.Errorf("Unknown point %s ", key)
 }
 
-func (a *Adapter) Read(code, address, length int) (Context, error) {
+func (a *Adapter) Read(code, address, length int) (common.Context, error) {
 	//读取数据
 	buf, err := a.protocol.Read(a.slave, code, address, length)
 	if err != nil {
@@ -56,7 +57,7 @@ func (a *Adapter) Read(code, address, length int) (Context, error) {
 	}
 
 	//解析数据
-	ctx := make(Context)
+	ctx := make(common.Context)
 	for _, p := range a.points {
 		if address <= p.Address && p.Address < address+length {
 			v, err := p.Type.Decode(buf[p.Address-p.Address:], p.LittleEndian)

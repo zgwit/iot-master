@@ -1,53 +1,41 @@
 package aggregator
 
 import (
-	"github.com/zgwit/iot-master/internal"
+	"github.com/zgwit/iot-master/common"
+	"github.com/zgwit/iot-master/model"
 	"math"
-	"strings"
 )
 
 type Target struct {
-	context    interval.Context
-	expression *interval.Expression
+	context    common.Context
+	expression *common.Expression
 }
 
 type Aggregator struct {
-	Type       Type            `json:"type"`
-	As         string          `json:"as"`
-	From       string          `json:"from"`
-	Select     interval.Select `json:"select"`
-	Expression string          `json:"expression"`
+	Type       Type         `json:"type"`
+	As         string       `json:"as"`
+	From       string       `json:"from"`
+	Select     model.Select `json:"select"`
+	Expression string       `json:"expression"`
 
-	targets []*interval.Expression
+	expression *common.Expression
+	//targets []*common.Expression
+	targets []common.Context
 }
 
-func hasTag(a, b []string) bool {
-	for i := len(a); i >= 0; i-- {
-		for j := len(b); j >= 0; j-- {
-			//if a[i] == b[j] {
-			if strings.EqualFold(a[i], b[j]) {
-				return true
-			}
-		}
-	}
-	return false
+
+func (a *Aggregator) Init() (err error) {
+	a.targets = make([]common.Context, 0)
+	a.expression, err = common.NewExpression(a.Expression)
+	return
 }
 
-func (a *Aggregator) Init() {
-	a.targets = make([]*interval.Expression, 0)
-}
-
-func (a *Aggregator) Push(ctx interval.Context) error {
-	expr, err := interval.NewExpression(a.Expression, ctx)
-	if err != nil {
-		return err
-	}
-	a.targets = append(a.targets, expr)
-	return nil
+func (a *Aggregator) Push(ctx common.Context) {
+	a.targets = append(a.targets, ctx)
 }
 
 func (a *Aggregator) Clear() {
-	a.targets = make([]*interval.Expression, 0)
+	a.targets = make([]common.Context, 0)
 }
 
 func (a *Aggregator) Evaluate() (val float64, err error) {
@@ -63,7 +51,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 	switch a.Type {
 	case SUM:
 		for _, t := range a.targets {
-			res, err = t.Evaluate()
+			res, err = a.expression.Evaluate(t)
 			if err != nil {
 				return
 			}
@@ -71,7 +59,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 		}
 	case COUNT:
 		for _, t := range a.targets {
-			res, err = t.Evaluate()
+			res, err = a.expression.Evaluate(t)
 			if err != nil {
 				return
 			}
@@ -81,7 +69,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 		}
 	case AVG:
 		for _, t := range a.targets {
-			res, err = t.Evaluate()
+			res, err = a.expression.Evaluate(t)
 			if err != nil {
 				return
 			}
@@ -91,7 +79,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 	case MIN:
 		val = math.MaxFloat64
 		for _, t := range a.targets {
-			res, err = t.Evaluate()
+			res, err = a.expression.Evaluate(t)
 			if err != nil {
 				return
 			}
@@ -103,7 +91,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 	case MAX:
 		val = math.SmallestNonzeroFloat32
 		for _, t := range a.targets {
-			res, err = t.Evaluate()
+			res, err = a.expression.Evaluate(t)
 			if err != nil {
 				return
 			}
@@ -113,13 +101,13 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 			}
 		}
 	case FIRST:
-		res, err = a.targets[0].Evaluate()
+		res, err = a.expression.Evaluate(a.targets[0])
 		if err != nil {
 			return
 		}
 		val = res.(float64)
 	case LAST:
-		res, err = a.targets[l-1].Evaluate()
+		res, err = a.expression.Evaluate(a.targets[l-1])
 		if err != nil {
 			return
 		}

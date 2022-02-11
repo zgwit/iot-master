@@ -1,4 +1,4 @@
-package interval
+package model
 
 type Point struct {
 	Name    string   `json:"name"`

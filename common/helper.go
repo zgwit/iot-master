@@ -1,4 +1,4 @@
-package interval
+package common
 
 import "strings"
 
@@ -7,7 +7,7 @@ func foreach(array []interface{}, fn func(item interface{})) {
 
 }
 
-func hasId(a, b []int) bool {
+func HasId(a, b []int) bool {
 	for i := len(a); i >= 0; i-- {
 		for j := len(b); j >= 0; j-- {
 			if a[i] == b[j] {
@@ -19,7 +19,7 @@ func hasId(a, b []int) bool {
 }
 
 
-func hasTag(a, b []string) bool {
+func HasTag(a, b []string) bool {
 	for i := len(a); i >= 0; i-- {
 		for j := len(b); j >= 0; j-- {
 			if strings.EqualFold(a[i], b[j]) {

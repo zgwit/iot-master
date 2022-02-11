@@ -1,9 +1,13 @@
-package interval
+package internal
 
 import "sync"
 
 var devices sync.Map
 var projects sync.Map
+
+func Start() error {
+	return nil
+}
 
 func GetDevice(id int) *Device  {
 	d, ok := devices.Load(id)

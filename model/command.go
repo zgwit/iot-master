@@ -1,4 +1,4 @@
-package interval
+package model
 
 type Command struct {
 	Name  string `json:"name"`
@@ -32,21 +32,4 @@ type Select struct {
 	Names []string `json:"device,omitempty"` //name
 	Ids   []int    `json:"ids,omitempty"`
 	Tags  []string `json:"tags,omitempty"`
-}
-
-func (s *Select) has(d *ProjectDevice) bool {
-	for _, name := range s.Names {
-		if name == d.Name {
-			return true
-		}
-	}
-	for _, name := range s.Ids {
-		if name == d.Id {
-			return true
-		}
-	}
-	if hasTag(s.Tags, d.device.Tags) {
-		return true
-	}
-	return false
 }

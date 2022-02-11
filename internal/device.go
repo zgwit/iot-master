@@ -1,8 +1,9 @@
-package interval
+package internal
 
 import (
 	"github.com/antonmedv/expr"
 	"github.com/zgwit/iot-master/common"
+	"github.com/zgwit/iot-master/model"
 	"time"
 )
 
@@ -17,18 +18,18 @@ type Device struct {
 	//从机号
 	Slave int `json:"slave"`
 
-	Points      []*Point      `json:"points"`
-	Collectors  []*Collector  `json:"collectors"`
-	Calculators []*Calculator `json:"calculators"`
-	Commands    []*Command    `json:"commands"`
-	Reactors    []*Reactor    `json:"reactors"`
-	Jobs        []*Job        `json:"jobs"`
+	Points      []*model.Point      `json:"points"`
+	Collectors  []*Collector        `json:"collectors"`
+	Calculators []*model.Calculator `json:"calculators"`
+	Commands    []*model.Command    `json:"commands"`
+	Reactors    []*model.Reactor    `json:"reactors"`
+	Jobs        []*model.Job        `json:"jobs"`
 
 	//上下文
-	Context Context `json:"context"`
+	Context common.Context `json:"context"`
 
 	//命令索引
-	commandIndex map[string]*Command
+	commandIndex map[string]*model.Command
 
 	adapter *Adapter
 
@@ -38,7 +39,7 @@ type Device struct {
 func (dev *Device) Init() error {
 
 	//处理数据变化结果
-	dev.adapter.On("data", func(data Context) {
+	dev.adapter.On("data", func(data common.Context) {
 		//更新上下文
 		for k, v := range data {
 			dev.Context[k] = v
@@ -46,7 +47,7 @@ func (dev *Device) Init() error {
 
 		//数据变化后，更新计算
 		for _, calculator := range dev.Calculators {
-			val, err := calculator.Evaluate()
+			val, err := calculator.Evaluate(dev.Context)
 			if err != nil {
 				dev.Emit("error", err)
 			} else {
@@ -56,7 +57,7 @@ func (dev *Device) Init() error {
 
 		//处理响应
 		for _, reactor := range dev.Reactors {
-			err := reactor.Execute()
+			err := reactor.Execute(dev.Context)
 			if err != nil {
 				dev.Emit("error", err)
 			}
@@ -69,7 +70,10 @@ func (dev *Device) Init() error {
 
 	//初始化计算器
 	for _, calculator := range dev.Calculators {
-		_ = calculator.Init(dev.Context)
+		err := calculator.Init()
+		if err != nil {
+			return err
+		}
 	}
 
 	//定时任务
@@ -92,8 +96,8 @@ func (dev *Device) Init() error {
 
 	//订阅告警
 	for _, reactor := range dev.Reactors {
-		reactor.On("alarm", func(alarm *Alarm) {
-			da := &DeviceAlarm{
+		reactor.On("alarm", func(alarm *model.Alarm) {
+			da := &model.DeviceAlarm{
 				Alarm:    *alarm,
 				DeviceId: dev.Id,
 				Created:  time.Now(),
@@ -178,4 +182,22 @@ func (dev *Device) Execute(command string, argv []float64) error {
 	}
 
 	return nil
+}
+
+
+func hasSelect(s *model.Select, d *ProjectDevice) bool {
+	for _, name := range s.Names {
+		if name == d.Name {
+			return true
+		}
+	}
+	for _, name := range s.Ids {
+		if name == d.Id {
+			return true
+		}
+	}
+	if common.HasTag(s.Tags, d.device.Tags) {
+		return true
+	}
+	return false
 }

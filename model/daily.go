@@ -1,4 +1,4 @@
-package interval
+package model
 
 import "time"
 
