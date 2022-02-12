@@ -2,10 +2,8 @@ package internal
 
 import (
 	"github.com/antonmedv/expr"
-	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal/calc"
-	"github.com/zgwit/iot-master/internal/select"
 	"time"
 )
 
@@ -184,24 +182,6 @@ func (dev *Device) Execute(command string, argv []float64) error {
 	}
 
 	return nil
-}
-
-
-func hasSelect(s *_select.Select, d *ProjectDevice) bool {
-	for _, name := range s.Names {
-		if name == d.Name {
-			return true
-		}
-	}
-	for _, name := range s.Ids {
-		if name == d.Id {
-			return true
-		}
-	}
-	if common.HasTag(s.Tags, d.device.Tags) {
-		return true
-	}
-	return false
 }
 
 

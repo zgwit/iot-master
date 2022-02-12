@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/service"
+	"github.com/zgwit/iot-master/tunnel"
 	"time"
 )
 
@@ -19,11 +19,11 @@ type request struct {
 }
 
 type RTU struct {
-	link  service.Conn
+	link  tunnel.Conn
 	queue chan *request //in
 }
 
-func newRTU(link service.Conn) *RTU {
+func newRTU(link tunnel.Conn) *RTU {
 	rtu := &RTU{
 		link:  link,
 		queue: make(chan *request, 1),

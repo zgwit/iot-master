@@ -4,6 +4,8 @@ import (
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal/aggregator"
 	"github.com/zgwit/iot-master/internal/calc"
+	_select "github.com/zgwit/iot-master/internal/select"
+	"strings"
 	"time"
 )
 
@@ -11,6 +13,34 @@ type ProjectDevice struct {
 	Id     int    `json:"id" storm:"id,increment"`
 	Name   string `json:"name"`
 	device *Device
+}
+
+func hasTag(a, b []string) bool {
+	for i := len(a); i >= 0; i-- {
+		for j := len(b); j >= 0; j-- {
+			if strings.EqualFold(a[i], b[j]) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (d *ProjectDevice) checkSelect(s *_select.Select) bool {
+	for _, name := range s.Names {
+		if name == d.Name {
+			return true
+		}
+	}
+	for _, name := range s.Ids {
+		if name == d.Id {
+			return true
+		}
+	}
+	if hasTag(s.Tags, d.device.Tags) {
+		return true
+	}
+	return false
 }
 
 type Project struct {
@@ -100,7 +130,7 @@ func (prj *Project) Init() error {
 			return err
 		}
 		for _, d := range prj.Devices {
-			if hasSelect(&agg.Select, d) {
+			if d.checkSelect(&agg.Select) {
 				agg.Push(d.device.Context)
 			}
 		}
@@ -166,7 +196,7 @@ func (prj *Project) Stop() error {
 
 func (prj *Project) execute(in *Invoke) error {
 	for _, d := range prj.Devices {
-		if hasSelect(&in.Select, d) {
+		if d.checkSelect(&in.Select) {
 			err := d.device.Execute(in.Command, in.Argv)
 			if err != nil {
 				return err

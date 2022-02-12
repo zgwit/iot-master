@@ -1,9 +1,7 @@
 package _select
 
-
 type Select struct {
-	Names []string `json:"device,omitempty"` //name
 	Ids   []int    `json:"ids,omitempty"`
+	Names []string `json:"names,omitempty"` //name
 	Tags  []string `json:"tags,omitempty"`
 }
-

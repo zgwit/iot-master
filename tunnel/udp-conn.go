@@ -1,4 +1,4 @@
-package service
+package tunnel
 
 import (
 	"github.com/zgwit/iot-master/events"

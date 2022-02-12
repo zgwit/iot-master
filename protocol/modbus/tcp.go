@@ -4,20 +4,20 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/service"
+	"github.com/zgwit/iot-master/tunnel"
 	"sync"
 	"time"
 )
 
 type TCP struct {
-	link  service.Conn
+	link  tunnel.Conn
 	queue chan interface{} //in
 
 	requests  sync.Map
 	increment uint16
 }
 
-func newTCP(link service.Conn) *TCP {
+func newTCP(link tunnel.Conn) *TCP {
 	rtu := &TCP{
 		link:      link,
 		queue:     make(chan interface{}, 10), //TODO 改成参数

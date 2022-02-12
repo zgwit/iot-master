@@ -4,15 +4,15 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/service"
+	"github.com/zgwit/iot-master/tunnel"
 )
 
 type FinsHostLink struct {
 	frame UdpFrame
-	link  service.Conn
+	link  tunnel.Conn
 }
 
-func NewFinsHostLink(link service.Conn) *FinsHostLink {
+func NewFinsHostLink(link tunnel.Conn) *FinsHostLink {
 	a := &FinsHostLink{}
 	a.link = link
 	return a

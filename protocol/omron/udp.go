@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/service"
+	"github.com/zgwit/iot-master/tunnel"
 )
 
 type UdpFrame struct {
@@ -41,10 +41,10 @@ type UdpFrame struct {
 
 type FinsUdp struct {
 	frame UdpFrame
-	link  service.Conn
+	link  tunnel.Conn
 }
 
-func NewFinsUdp(link service.Conn) *FinsUdp {
+func NewFinsUdp(link tunnel.Conn) *FinsUdp {
 	return &FinsUdp{
 		link: link,
 	}

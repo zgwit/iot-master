@@ -3,7 +3,7 @@ package mitsubishi
 import (
 	"errors"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/service"
+	"github.com/zgwit/iot-master/tunnel"
 	"strconv"
 	"strings"
 )
@@ -75,7 +75,7 @@ func parseFxProgramAddress(address string) (addr fxProgramAddr, err error) {
 }
 
 type FxProgram struct {
-	link service.Conn
+	link tunnel.Conn
 }
 
 func NewFxSerial() *FxProgram {

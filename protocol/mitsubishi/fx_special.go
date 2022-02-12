@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/service"
+	"github.com/zgwit/iot-master/tunnel"
 	"strconv"
 	"strings"
 )
@@ -68,7 +68,7 @@ type FxSpecial struct {
 	CheckSum bool //默认true
 	Delay    uint8
 
-	link service.Conn
+	link tunnel.Conn
 }
 
 func NewFxSpecial() *FxSpecial {

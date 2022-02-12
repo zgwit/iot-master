@@ -1,4 +1,4 @@
-package service
+package tunnel
 
 import (
 	"github.com/jacobsa/go-serial/serial"
