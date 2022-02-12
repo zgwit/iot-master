@@ -5,7 +5,6 @@ import (
 	"github.com/asdine/storm/v3/q"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/internal"
 	"net"
 	"time"
 )
@@ -13,21 +12,21 @@ import (
 type UdpServer struct {
 	events.EventEmitter
 
-	service *internal.Service
+	service *Tunnel
 
-	children map[int]*UdpLink
-	links    map[string]*UdpLink
+	children map[int]*UdpConn
+	links    map[string]*UdpConn
 
 	listener *net.UDPConn
 }
 
-func NewUdpServer(service *internal.Service) *UdpServer {
+func NewUdpServer(service *Tunnel) *UdpServer {
 	svr := &UdpServer{
 		service: service,
 	}
 	if service.Register != nil {
-		svr.children = make(map[int]*UdpLink)
-		svr.links = make(map[string]*UdpLink)
+		svr.children = make(map[int]*UdpConn)
+		svr.links = make(map[string]*UdpConn)
 	}
 	return svr
 }
@@ -61,7 +60,7 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			lnk := internal.Link{
+			lnk := Link{
 				ServiceId: server.service.Id,
 				Created:   time.Now(),
 			}
@@ -123,6 +122,6 @@ func (server *UdpServer) Close() (err error) {
 	return server.listener.Close()
 }
 
-func (server *UdpServer) GetLink(id int) (Link, error) {
+func (server *UdpServer) GetLink(id int) (Conn, error) {
 	return server.children[id], nil
 }

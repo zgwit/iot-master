@@ -3,7 +3,6 @@ package service
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/internal"
 )
 
 type Service interface {
@@ -11,29 +10,29 @@ type Service interface {
 
 	Open() error
 	Close() error
-	GetLink(id int)(Link, error)
+	GetLink(id int)(Conn, error)
 }
 
-func NewService(service *internal.Service) (Service, error)  {
+func NewService(tunnel *Tunnel) (Service, error)  {
 	var svc Service
-	switch service.Type {
+	switch tunnel.Type {
 	case "tcp-client":
-		svc = newNetClient(service, "tcp")
+		svc = newNetClient(tunnel, "tcp")
 		break
 	case "tcp-server":
-		svc = newTcpServer(service)
+		svc = newTcpServer(tunnel)
 		break
 	case "udp-client":
-		svc = newNetClient(service, "udp")
+		svc = newNetClient(tunnel, "udp")
 		break
 	case "udp-server":
-		svc = NewUdpServer(service)
+		svc = NewUdpServer(tunnel)
 		break
 	case "serial":
-		svc = newSerial(service)
+		svc = newSerial(tunnel)
 		break
 	default:
-		return nil, fmt.Errorf("Unsupport type %s ", service.Type)
+		return nil, fmt.Errorf("Unsupport type %s ", tunnel.Type)
 	}
 	return svc, nil
 }

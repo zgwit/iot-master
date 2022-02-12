@@ -1,14 +1,18 @@
 package service
 
-import (
-	"github.com/zgwit/iot-master/events"
-)
+import "time"
 
-type Link interface {
-	events.EventInterface
+type Link struct {
+	Id        int       `json:"id" storm:"id,increment"`
+	ServiceId int       `json:"service_id" storm:"index"`
+	SN        string    `json:"sn"`
+	Disabled  bool      `json:"disabled"`
+	Created   time.Time `json:"created"`
+}
 
-	ID() int
-	Write(data []byte) error
-	//Read(data []byte) (int, error)
-	Close() error
+type LinkHistory struct {
+	Id      int       `json:"id" storm:"id,increment"`
+	LinkId  int       `json:"link_id" storm:"index"`
+	History string    `json:"history"`
+	Created time.Time `json:"created"`
 }

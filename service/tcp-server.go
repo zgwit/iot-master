@@ -5,7 +5,6 @@ import (
 	"github.com/asdine/storm/v3/q"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/internal"
 	"net"
 	"time"
 )
@@ -13,19 +12,19 @@ import (
 type TcpServer struct {
 	events.EventEmitter
 
-	service *internal.Service
+	service *Tunnel
 
-	children map[int]*NetLink
+	children map[int]*NetConn
 
 	listener *net.TCPListener
 }
 
-func newTcpServer(service *internal.Service) *TcpServer {
+func newTcpServer(service *Tunnel) *TcpServer {
 	svr := &TcpServer{
 		service: service,
 	}
 	if service.Register != nil {
-		svr.children = make(map[int]*NetLink)
+		svr.children = make(map[int]*NetConn)
 	}
 	return svr
 }
@@ -47,7 +46,7 @@ func (server *TcpServer) Open() error {
 				break
 			}
 
-			lnk := internal.Link{
+			lnk := Link{
 				ServiceId: server.service.Id,
 				Created:   time.Now(),
 			}
@@ -88,7 +87,7 @@ func (server *TcpServer) Open() error {
 				continue
 			}
 
-			link := newNetLink(conn)
+			link := newNetConn(conn)
 			go link.receive()
 
 			link.Id = lnk.Id
@@ -118,6 +117,6 @@ func (server *TcpServer) Close() (err error) {
 	return server.listener.Close()
 }
 
-func (server *TcpServer) GetLink(id int) (Link, error) {
+func (server *TcpServer) GetLink(id int) (Conn, error) {
 	return server.children[id], nil
 }

@@ -3,7 +3,7 @@ package siemens
 import "github.com/zgwit/iot-master/service"
 
 type PPI struct {
-	link service.Link
+	link service.Conn
 }
 
 //Read 读到数据

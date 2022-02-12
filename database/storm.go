@@ -20,8 +20,8 @@ var Project storm.Node
 // Device 设备
 var Device storm.Node
 
-// Service 服务
-var Service storm.Node
+// Tunnel 服务
+var Tunnel storm.Node
 
 // Link 连接
 var Link storm.Node
@@ -53,8 +53,8 @@ var DeviceHistoryJob storm.Node
 // DeviceHistoryCommand 设备命令历史
 var DeviceHistoryCommand storm.Node
 
-// ServiceHistory 服务历史
-var ServiceHistory storm.Node
+// TunnelHistory 服务历史
+var TunnelHistory storm.Node
 
 // LinkHistory 连接历史
 var LinkHistory storm.Node
@@ -72,7 +72,7 @@ func Open(cfg *Option) error {
 	}
 	Project = Storm.From("project")
 	Device = Storm.From("device")
-	Service = Storm.From("service")
+	Tunnel = Storm.From("tunnel")
 	Link = Storm.From("link")
 	User = Storm.From("user")
 	Password = Storm.From("password")
@@ -91,7 +91,7 @@ func Open(cfg *Option) error {
 	DeviceHistoryJob = History.From("device", "job")
 	DeviceHistoryCommand = History.From("device", "command")
 
-	ServiceHistory = History.From("service")
+	TunnelHistory = History.From("tunnel")
 	LinkHistory = History.From("link")
 	UserHistory = History.From("user")
 

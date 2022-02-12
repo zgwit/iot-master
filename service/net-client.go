@@ -4,7 +4,6 @@ import (
 	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/internal"
 	"net"
 	"time"
 )
@@ -12,12 +11,12 @@ import (
 type NetClient struct {
 	events.EventEmitter
 
-	service *internal.Service
-	link    *NetLink
+	service *Tunnel
+	link    *NetConn
 	net     string
 }
 
-func newNetClient(service *internal.Service, net string) *NetClient {
+func newNetClient(service *Tunnel, net string) *NetClient {
 	return &NetClient{
 		service: service,
 		net:     net,
@@ -29,11 +28,11 @@ func (client *NetClient) Open() error {
 	if err != nil {
 		return err
 	}
-	client.link = newNetLink(conn)
+	client.link = newNetConn(conn)
 	go client.link.receive()
 
 	//Store link
-	lnk := internal.Link{
+	lnk := Link{
 		ServiceId: client.service.Id,
 		Created:   time.Now(),
 	}
@@ -68,6 +67,6 @@ func (client *NetClient) Close() error {
 	return nil //TODO return error
 }
 
-func (client *NetClient) GetLink(id int) (Link, error) {
+func (client *NetClient) GetLink(id int) (Conn, error) {
 	return client.link, nil
 }

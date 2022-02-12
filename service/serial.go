@@ -3,19 +3,18 @@ package service
 import (
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/internal"
 	"time"
 )
 
 type Serial struct {
 	events.EventEmitter
 
-	service *internal.Service
+	service *Tunnel
 
-	link *SerialLink
+	link *SerialConn
 }
 
-func newSerial(service *internal.Service) *Serial {
+func newSerial(service *Tunnel) *Serial {
 	return &Serial{
 		service: service,
 	}
@@ -62,6 +61,6 @@ func (s *Serial) Close() error {
 	return nil //TODO return error
 }
 
-func (s *Serial) GetLink(id int) (Link, error) {
+func (s *Serial) GetLink(id int) (Conn, error) {
 	return s.link, nil
 }

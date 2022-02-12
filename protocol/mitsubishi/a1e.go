@@ -4,7 +4,7 @@ import "github.com/zgwit/iot-master/service"
 
 type A1eAdapter struct {
 	PlcNumber byte
-	link      service.Link
+	link      service.Conn
 }
 
 func NewA1eAdapter() *A1eAdapter {

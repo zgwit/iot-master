@@ -41,10 +41,10 @@ type UdpFrame struct {
 
 type FinsUdp struct {
 	frame UdpFrame
-	link  service.Link
+	link  service.Conn
 }
 
-func NewFinsUdp(link service.Link) *FinsUdp {
+func NewFinsUdp(link service.Conn) *FinsUdp {
 	return &FinsUdp{
 		link: link,
 	}

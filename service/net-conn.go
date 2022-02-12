@@ -5,24 +5,24 @@ import (
 	"net"
 )
 
-type NetLink struct {
+type NetConn struct {
 	events.EventEmitter
 
 	Id     int
 	conn   net.Conn
 }
 
-func newNetLink(conn net.Conn) *NetLink {
-	return &NetLink{
+func newNetConn(conn net.Conn) *NetConn {
+	return &NetConn{
 		conn:   conn,
 	}
 }
 
-func (l *NetLink) ID() int {
+func (l *NetConn) ID() int {
 	return l.Id
 }
 
-func (l *NetLink) Write(data []byte) error {
+func (l *NetConn) Write(data []byte) error {
 	_, err := l.conn.Write(data)
 	if err != nil {
 		l.onClose()
@@ -30,7 +30,7 @@ func (l *NetLink) Write(data []byte) error {
 	return err
 }
 
-func (l *NetLink) Read(data []byte) (int, error) {
+func (l *NetConn) Read(data []byte) (int, error) {
 	n, err := l.conn.Read(data)
 	if err != nil {
 		l.onClose()
@@ -38,7 +38,7 @@ func (l *NetLink) Read(data []byte) (int, error) {
 	return n, err
 }
 
-func (l *NetLink) receive() {
+func (l *NetConn) receive() {
 	buf := make([]byte, 1024)
 	for {
 		n, err := l.conn.Read(buf)
@@ -50,11 +50,11 @@ func (l *NetLink) receive() {
 	}
 }
 
-func (l *NetLink) Close() error {
+func (l *NetConn) Close() error {
 	l.onClose()
 	return l.conn.Close()
 }
 
-func (l *NetLink) onClose() {
+func (l *NetConn) onClose() {
 	l.Emit("close")
 }

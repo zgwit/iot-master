@@ -19,11 +19,11 @@ type request struct {
 }
 
 type RTU struct {
-	link  service.Link
+	link  service.Conn
 	queue chan *request //in
 }
 
-func newRTU(link service.Link) *RTU {
+func newRTU(link service.Conn) *RTU {
 	rtu := &RTU{
 		link:  link,
 		queue: make(chan *request, 1),

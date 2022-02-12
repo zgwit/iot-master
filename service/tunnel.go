@@ -1,4 +1,4 @@
-package internal
+package service
 
 import (
 	"bytes"
@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type Service struct {
+type Tunnel struct {
 	Id        int              `json:"id" storm:"id,increment"`
 	Name      string           `json:"name"`
 	Type      string           `json:"type"` //serial tcp-client tcp-server udp-client udp-server
@@ -102,7 +102,7 @@ func (p *HeartBeatPacket) Check(buf []byte) bool {
 	return true
 }
 
-type ServiceHistory struct {
+type TunnelHistory struct {
 	Id        int       `json:"id" storm:"id,increment"`
 	ServiceId int       `json:"service_id"`
 	History   string    `json:"history"`

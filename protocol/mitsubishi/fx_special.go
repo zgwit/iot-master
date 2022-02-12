@@ -68,7 +68,7 @@ type FxSpecial struct {
 	CheckSum bool //默认true
 	Delay    uint8
 
-	link service.Link
+	link service.Conn
 }
 
 func NewFxSpecial() *FxSpecial {

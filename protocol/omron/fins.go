@@ -9,10 +9,10 @@ import (
 
 type Fins struct {
 	frame UdpFrame
-	link  service.Link
+	link  service.Conn
 }
 
-func NewFins(link service.Link) *Fins {
+func NewFins(link service.Conn) *Fins {
 	return &Fins{
 		link: link,
 	}
