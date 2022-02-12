@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/go-co-op/gocron"
+	"github.com/zgwit/iot-master/internal/cron"
 	events2 "github.com/zgwit/iot-master/internal/events"
 	"time"
 )
@@ -17,7 +17,7 @@ type Job struct {
 
 	Invokes []*Invoke `json:"invokes"`
 
-	job *gocron.Job
+	job     *cron.Job
 
 	events2.EventEmitter
 }
@@ -30,11 +30,11 @@ func (j *Job) Start() error {
 		hours := j.Clock / 60
 		minutes := j.Clock % 60
 		//TODO 处理weekdays
-		j.job, err = Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
+		j.job, err = cron.Clock(hours, minutes, func() {
 			j.Execute()
 		})
 	case "crontab":
-		j.job, err = Scheduler.Cron(j.Crontab).Do(func() {
+		j.job, err = cron.Schedule(j.Crontab, func() {
 			j.Execute()
 		})
 	}
@@ -50,7 +50,7 @@ func (j *Job) Execute() {
 }
 
 func (j *Job) Stop() {
-	Scheduler.Remove(j.job)
+	j.job.Cancel()
 }
 
 func (j *Job) String() string {

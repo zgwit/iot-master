@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/go-co-op/gocron"
+	"github.com/zgwit/iot-master/internal/cron"
 )
 
 type Collector struct {
@@ -22,24 +22,24 @@ type Collector struct {
 	Parallel bool `json:"parallel,omitempty"`
 
 	reading bool
-	job     *gocron.Job
+	job     *cron.Job
 	adapter *Adapter
 }
 
 func (c *Collector) Start() (err error) {
 	switch c.Type {
 	case "interval":
-		c.job, err = Scheduler.Every(c.Interval).Milliseconds().Do(func() {
+		c.job, err = cron.Interval(c.Interval, func() {
 			c.Execute()
 		})
 	case "clock":
 		hours := c.Clock / 60
 		minutes := c.Clock % 60
-		c.job, err = Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
+		c.job, err = cron.Clock(hours, minutes, func() {
 			c.Execute()
 		})
 	case "crontab":
-		c.job, err = Scheduler.Cron(c.Crontab).Do(func() {
+		c.job, err = cron.Schedule(c.Crontab, func() {
 			c.Execute()
 		})
 	}
@@ -64,5 +64,5 @@ func (c *Collector) read()  {
 }
 
 func (c *Collector) Stop() {
-	Scheduler.Remove(c.job)
+	c.job.Cancel()
 }
