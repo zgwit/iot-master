@@ -1,12 +1,12 @@
 package service
 
 import (
-	"github.com/zgwit/iot-master/common"
+	events2 "github.com/zgwit/iot-master/internal/events"
 	"net"
 )
 
 type UdpLink struct {
-	common.EventEmitter
+	events2.EventEmitter
 
 	Id     int
 	conn   *net.UDPConn

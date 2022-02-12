@@ -3,24 +3,24 @@ package service
 import (
 	"github.com/asdine/storm/v3"
 	"github.com/asdine/storm/v3/q"
-	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/database"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/internal"
+	events2 "github.com/zgwit/iot-master/internal/events"
 	"net"
 	"time"
 )
 
 type TcpServer struct {
-	common.EventEmitter
+	events2.EventEmitter
 
-	service *model.Service
+	service *internal.Service
 
 	children map[int]*NetLink
 
 	listener *net.TCPListener
 }
 
-func newTcpServer(service *model.Service) *TcpServer {
+func newTcpServer(service *internal.Service) *TcpServer {
 	svr := &TcpServer{
 		service: service,
 	}
@@ -47,7 +47,7 @@ func (server *TcpServer) Open() error {
 				break
 			}
 
-			lnk := model.Link{
+			lnk := internal.Link{
 				ServiceId: server.service.Id,
 				Created:   time.Now(),
 			}

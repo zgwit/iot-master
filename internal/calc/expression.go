@@ -1,4 +1,4 @@
-package common
+package calc
 
 import (
 	"github.com/antonmedv/expr"

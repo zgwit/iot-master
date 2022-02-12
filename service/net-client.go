@@ -2,22 +2,22 @@ package service
 
 import (
 	"github.com/asdine/storm/v3"
-	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/database"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/internal"
+	events2 "github.com/zgwit/iot-master/internal/events"
 	"net"
 	"time"
 )
 
 type NetClient struct {
-	common.EventEmitter
+	events2.EventEmitter
 
-	service *model.Service
+	service *internal.Service
 	link    *NetLink
 	net     string
 }
 
-func newNetClient(service *model.Service, net string) *NetClient {
+func newNetClient(service *internal.Service, net string) *NetClient {
 	return &NetClient{
 		service: service,
 		net:     net,
@@ -33,7 +33,7 @@ func (client *NetClient) Open() error {
 	go client.link.receive()
 
 	//Store link
-	lnk := model.Link{
+	lnk := internal.Link{
 		ServiceId: client.service.Id,
 		Created:   time.Now(),
 	}

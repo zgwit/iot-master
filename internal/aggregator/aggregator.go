@@ -1,41 +1,41 @@
 package aggregator
 
 import (
-	"github.com/zgwit/iot-master/common"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/internal/calc"
+	"github.com/zgwit/iot-master/internal/select"
 	"math"
 )
 
 type Target struct {
-	context    common.Context
-	expression *common.Expression
+	context    calc.Context
+	expression *calc.Expression
 }
 
 type Aggregator struct {
-	Type       Type         `json:"type"`
-	As         string       `json:"as"`
-	From       string       `json:"from"`
-	Select     model.Select `json:"select"`
-	Expression string       `json:"expression"`
+	Type       Type           `json:"type"`
+	As         string         `json:"as"`
+	From       string         `json:"from"`
+	Select     _select.Select `json:"select"`
+	Expression string         `json:"expression"`
 
-	expression *common.Expression
+	expression *calc.Expression
 	//targets []*common.Expression
-	targets []common.Context
+	targets []calc.Context
 }
 
 
 func (a *Aggregator) Init() (err error) {
-	a.targets = make([]common.Context, 0)
-	a.expression, err = common.NewExpression(a.Expression)
+	a.targets = make([]calc.Context, 0)
+	a.expression, err = calc.NewExpression(a.Expression)
 	return
 }
 
-func (a *Aggregator) Push(ctx common.Context) {
+func (a *Aggregator) Push(ctx calc.Context) {
 	a.targets = append(a.targets, ctx)
 }
 
 func (a *Aggregator) Clear() {
-	a.targets = make([]common.Context, 0)
+	a.targets = make([]calc.Context, 0)
 }
 
 func (a *Aggregator) Evaluate() (val float64, err error) {

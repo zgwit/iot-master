@@ -1,7 +1,8 @@
-package model
+package internal
 
 import (
-	"github.com/zgwit/iot-master/common"
+	"github.com/zgwit/iot-master/internal/calc"
+	events2 "github.com/zgwit/iot-master/internal/events"
 	"time"
 )
 
@@ -27,7 +28,7 @@ type Reactor struct {
 
 	//条件
 	Condition string `json:"condition"`
-	condition *common.Expression
+	condition *calc.Expression
 
 	//重复日
 	Daily *DailyRange `json:"daily,omitempty"`
@@ -44,10 +45,10 @@ type Reactor struct {
 	//执行命名
 	Invokes []*Invoke `json:"invokes,omitempty"`
 
-	common.EventEmitter
+	events2.EventEmitter
 }
 
-func (a *Reactor) Execute(ctx common.Context) error {
+func (a *Reactor) Execute(ctx calc.Context) error {
 
 	//条件检查
 	val, err := a.condition.Evaluate(ctx)

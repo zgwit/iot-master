@@ -3,7 +3,9 @@ package internal
 import (
 	"github.com/antonmedv/expr"
 	"github.com/zgwit/iot-master/common"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/internal/calc"
+	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/select"
 	"time"
 )
 
@@ -18,28 +20,28 @@ type Device struct {
 	//从机号
 	Slave int `json:"slave"`
 
-	Points      []*model.Point      `json:"points"`
-	Collectors  []*Collector        `json:"collectors"`
-	Calculators []*model.Calculator `json:"calculators"`
-	Commands    []*model.Command    `json:"commands"`
-	Reactors    []*model.Reactor    `json:"reactors"`
-	Jobs        []*model.Job        `json:"jobs"`
+	Points      []*Point      `json:"points"`
+	Collectors  []*Collector  `json:"collectors"`
+	Calculators []*Calculator `json:"calculators"`
+	Commands    []*Command    `json:"commands"`
+	Reactors    []*Reactor    `json:"reactors"`
+	Jobs        []*Job        `json:"jobs"`
 
 	//上下文
-	Context common.Context `json:"context"`
+	Context calc.Context `json:"context"`
 
 	//命令索引
-	commandIndex map[string]*model.Command
+	commandIndex map[string]*Command
 
 	adapter *Adapter
 
-	common.EventEmitter
+	events2.EventEmitter
 }
 
 func (dev *Device) Init() error {
 
 	//处理数据变化结果
-	dev.adapter.On("data", func(data common.Context) {
+	dev.adapter.On("data", func(data calc.Context) {
 		//更新上下文
 		for k, v := range data {
 			dev.Context[k] = v
@@ -96,8 +98,8 @@ func (dev *Device) Init() error {
 
 	//订阅告警
 	for _, reactor := range dev.Reactors {
-		reactor.On("alarm", func(alarm *model.Alarm) {
-			da := &model.DeviceAlarm{
+		reactor.On("alarm", func(alarm *Alarm) {
+			da := &DeviceAlarm{
 				Alarm:    *alarm,
 				DeviceId: dev.Id,
 				Created:  time.Now(),
@@ -185,7 +187,7 @@ func (dev *Device) Execute(command string, argv []float64) error {
 }
 
 
-func hasSelect(s *model.Select, d *ProjectDevice) bool {
+func hasSelect(s *_select.Select, d *ProjectDevice) bool {
 	for _, name := range s.Names {
 		if name == d.Name {
 			return true
@@ -201,3 +203,38 @@ func hasSelect(s *model.Select, d *ProjectDevice) bool {
 	}
 	return false
 }
+
+
+type DeviceHistory struct {
+	Id       int       `json:"id" storm:"id,increment"`
+	DeviceId int       `json:"device_id"`
+	History  string    `json:"history"`
+	Created  time.Time `json:"created"`
+}
+
+type DeviceHistoryAlarm struct {
+	Id int `json:"id" storm:"id,increment"`
+
+	DeviceId int    `json:"Device_id"`
+	Code     string `json:"code"`
+	Level    int    `json:"level"`
+	Message  string `json:"message"`
+
+	Created time.Time `json:"created"`
+}
+
+type DeviceHistoryJob struct {
+	Id      int       `json:"id" storm:"id,increment"`
+	Job     string    `json:"job"`
+	Result  string    `json:"result"`
+	Created time.Time `json:"created"`
+}
+
+type DeviceHistoryCommand struct {
+	Id      int       `json:"id" storm:"id,increment"`
+	Command string    `json:"command"`
+	Argv    string    `json:"argv"`
+	Result  string    `json:"result"`
+	Created time.Time `json:"created"`
+}
+

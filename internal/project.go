@@ -1,9 +1,9 @@
 package internal
 
 import (
-	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/internal/aggregator"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/internal/calc"
+	events2 "github.com/zgwit/iot-master/internal/events"
 	"time"
 )
 
@@ -20,24 +20,24 @@ type Project struct {
 	Devices []*ProjectDevice `json:"devices"`
 
 	Aggregators []*aggregator.Aggregator `json:"aggregators"`
-	Commands    []*model.Command         `json:"commands"`
-	Reactors    []*model.Reactor         `json:"reactors"`
-	Jobs        []*model.Job             `json:"jobs"`
+	Commands    []*Command               `json:"commands"`
+	Reactors    []*Reactor               `json:"reactors"`
+	Jobs        []*Job                   `json:"jobs"`
 
-	Context common.Context `json:"context"`
+	Context calc.Context `json:"context"`
 
 	deviceNameIndex map[string]*Device
 	deviceIdIndex   map[int]*Device
 
-	common.EventEmitter
+	events2.EventEmitter
 
-	deviceDataHandler  func(data common.Context)
-	deviceAlarmHandler func(alarm *model.DeviceAlarm)
+	deviceDataHandler  func(data calc.Context)
+	deviceAlarmHandler func(alarm *DeviceAlarm)
 }
 
 func (prj *Project) Init() error {
 	//设备数据变化的处理函数
-	prj.deviceDataHandler = func(data common.Context) {
+	prj.deviceDataHandler = func(data calc.Context) {
 		//数据变化后，更新计算
 		for _, agg := range prj.Aggregators{
 			val, err := agg.Evaluate()
@@ -58,8 +58,8 @@ func (prj *Project) Init() error {
 	}
 
 	//设备告警的处理函数
-	prj.deviceAlarmHandler = func(alarm *model.DeviceAlarm) {
-		pa := &model.ProjectAlarm{
+	prj.deviceAlarmHandler = func(alarm *DeviceAlarm) {
+		pa := &ProjectAlarm{
 			DeviceAlarm: *alarm,
 			ProjectId:   prj.Id,
 		}
@@ -108,9 +108,9 @@ func (prj *Project) Init() error {
 
 	//订阅告警
 	for _, reactor := range prj.Reactors {
-		reactor.On("alarm", func(alarm *model.Alarm) {
-			pa := &model.ProjectAlarm{
-				DeviceAlarm: model.DeviceAlarm{
+		reactor.On("alarm", func(alarm *Alarm) {
+			pa := &ProjectAlarm{
+				DeviceAlarm: DeviceAlarm{
 					Alarm:   *alarm,
 					Created: time.Now(),
 				},
@@ -164,7 +164,7 @@ func (prj *Project) Stop() error {
 	return nil
 }
 
-func (prj *Project) execute(in *model.Invoke) error {
+func (prj *Project) execute(in *Invoke) error {
 	for _, d := range prj.Devices {
 		if hasSelect(&in.Select, d) {
 			err := d.device.Execute(in.Command, in.Argv)
@@ -174,4 +174,31 @@ func (prj *Project) execute(in *model.Invoke) error {
 		}
 	}
 	return nil
+}
+
+
+type ProjectHistory struct {
+	Id        int       `json:"id" storm:"id,increment"`
+	ProjectId int       `json:"project_id"`
+	History   string    `json:"history"`
+	Created   time.Time `json:"created"`
+}
+
+type ProjectHistoryAlarm struct {
+	Id int `json:"id" storm:"id,increment"`
+
+	ProjectId int    `json:"project_id"`
+	DeviceId  int    `json:"device_id"`
+	Code      string `json:"code"`
+	Level     int    `json:"level"`
+	Message   string `json:"message"`
+
+	Created time.Time `json:"created"`
+}
+
+type ProjectHistoryJob struct {
+	Id      int       `json:"id" storm:"id,increment"`
+	Job     string    `json:"job"`
+	Result  string    `json:"result"`
+	Created time.Time `json:"created"`
 }

@@ -1,4 +1,4 @@
-package common
+package events
 
 import "github.com/asaskevich/EventBus"
 

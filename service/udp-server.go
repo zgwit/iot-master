@@ -3,17 +3,17 @@ package service
 import (
 	"github.com/asdine/storm/v3"
 	"github.com/asdine/storm/v3/q"
-	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/database"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/internal"
+	events2 "github.com/zgwit/iot-master/internal/events"
 	"net"
 	"time"
 )
 
 type UdpServer struct {
-	common.EventEmitter
+	events2.EventEmitter
 
-	service *model.Service
+	service *internal.Service
 
 	children map[int]*UdpLink
 	links    map[string]*UdpLink
@@ -21,7 +21,7 @@ type UdpServer struct {
 	listener *net.UDPConn
 }
 
-func NewUdpServer(service *model.Service) *UdpServer {
+func NewUdpServer(service *internal.Service) *UdpServer {
 	svr := &UdpServer{
 		service: service,
 	}
@@ -61,7 +61,7 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			lnk := model.Link{
+			lnk := internal.Link{
 				ServiceId: server.service.Id,
 				Created:   time.Now(),
 			}

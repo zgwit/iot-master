@@ -2,20 +2,20 @@ package service
 
 import (
 	"github.com/jacobsa/go-serial/serial"
-	"github.com/zgwit/iot-master/common"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/internal"
+	events2 "github.com/zgwit/iot-master/internal/events"
 	"time"
 )
 
 type Serial struct {
-	common.EventEmitter
+	events2.EventEmitter
 
-	service *model.Service
+	service *internal.Service
 
 	link *SerialLink
 }
 
-func newSerial(service *model.Service) *Serial {
+func newSerial(service *internal.Service) *Serial {
 	return &Serial{
 		service: service,
 	}

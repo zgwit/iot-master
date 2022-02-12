@@ -1,4 +1,4 @@
-package model
+package internal
 
 type Checker interface {
 	Reset()

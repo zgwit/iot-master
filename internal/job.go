@@ -1,8 +1,8 @@
-package model
+package internal
 
 import (
 	"github.com/go-co-op/gocron"
-	"github.com/zgwit/iot-master/common"
+	events2 "github.com/zgwit/iot-master/internal/events"
 	"time"
 )
 
@@ -19,7 +19,7 @@ type Job struct {
 
 	job *gocron.Job
 
-	common.EventEmitter
+	events2.EventEmitter
 }
 
 func (j *Job) Start() error {
@@ -30,11 +30,11 @@ func (j *Job) Start() error {
 		hours := j.Clock / 60
 		minutes := j.Clock % 60
 		//TODO 处理weekdays
-		j.job, err = common.Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
+		j.job, err = Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
 			j.Execute()
 		})
 	case "crontab":
-		j.job, err = common.Scheduler.Cron(j.Crontab).Do(func() {
+		j.job, err = Scheduler.Cron(j.Crontab).Do(func() {
 			j.Execute()
 		})
 	}
@@ -50,7 +50,7 @@ func (j *Job) Execute() {
 }
 
 func (j *Job) Stop() {
-	common.Scheduler.Remove(j.job)
+	Scheduler.Remove(j.job)
 }
 
 func (j *Job) String() string {

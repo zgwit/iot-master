@@ -1,4 +1,6 @@
-package model
+package internal
+
+import "github.com/zgwit/iot-master/internal/select"
 
 type Command struct {
 	Name  string `json:"name"`
@@ -25,11 +27,5 @@ type Invoke struct {
 	Argv    []float64 `json:"argv"`
 
 	//目标设备（只在Project中使用）
-	Select Select `json:"select"`
-}
-
-type Select struct {
-	Names []string `json:"device,omitempty"` //name
-	Ids   []int    `json:"ids,omitempty"`
-	Tags  []string `json:"tags,omitempty"`
+	Select _select.Select `json:"select"`
 }

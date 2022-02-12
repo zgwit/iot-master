@@ -2,19 +2,19 @@ package service
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/common"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/internal"
+	events2 "github.com/zgwit/iot-master/internal/events"
 )
 
 type Service interface {
-	common.EventEmitterInterface
+	events2.EventEmitterInterface
 
 	Open() error
 	Close() error
 	GetLink(id int)(Link, error)
 }
 
-func NewService(service *model.Service) (Service, error)  {
+func NewService(service *internal.Service) (Service, error)  {
 	var svc Service
 	switch service.Type {
 	case "tcp-client":

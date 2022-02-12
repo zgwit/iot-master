@@ -2,7 +2,6 @@ package internal
 
 import (
 	"github.com/go-co-op/gocron"
-	"github.com/zgwit/iot-master/common"
 )
 
 type Collector struct {
@@ -30,17 +29,17 @@ type Collector struct {
 func (c *Collector) Start() (err error) {
 	switch c.Type {
 	case "interval":
-		c.job, err = common.Scheduler.Every(c.Interval).Milliseconds().Do(func() {
+		c.job, err = Scheduler.Every(c.Interval).Milliseconds().Do(func() {
 			c.Execute()
 		})
 	case "clock":
 		hours := c.Clock / 60
 		minutes := c.Clock % 60
-		c.job, err = common.Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
+		c.job, err = Scheduler.At(hours).Hours().At(minutes).Minutes().Do(func() {
 			c.Execute()
 		})
 	case "crontab":
-		c.job, err = common.Scheduler.Cron(c.Crontab).Do(func() {
+		c.job, err = Scheduler.Cron(c.Crontab).Do(func() {
 			c.Execute()
 		})
 	}
@@ -65,5 +64,5 @@ func (c *Collector) read()  {
 }
 
 func (c *Collector) Stop() {
-	common.Scheduler.Remove(c.job)
+	Scheduler.Remove(c.job)
 }
