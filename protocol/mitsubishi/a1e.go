@@ -1,10 +1,10 @@
 package mitsubishi
 
-import "github.com/zgwit/iot-master/service"
+import "github.com/zgwit/iot-master/tunnel"
 
 type A1eAdapter struct {
 	PlcNumber byte
-	link      service.Conn
+	link      tunnel.Conn
 }
 
 func NewA1eAdapter() *A1eAdapter {
