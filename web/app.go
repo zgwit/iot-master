@@ -5,7 +5,6 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/config"
 	"log"
 	"net/http"
 	"time"
@@ -15,8 +14,7 @@ import (
 //go:embed www
 var wwwFiles embed.FS
 
-func Serve() {
-	cfg := config.Config.Web
+func Serve(cfg *Option) {
 	if !cfg.Debug {
 		gin.SetMode(gin.ReleaseMode)
 	}

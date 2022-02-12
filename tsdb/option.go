@@ -1,8 +1,8 @@
-package config
+package tsdb
 
 import "time"
 
-type History struct {
+type Option struct {
 	DataPath           string        `yaml:"data_path"`
 	TimestampPrecision string        `yaml:"timestamp_precision"` //ns us ms s
 	RetentionDuration  time.Duration `yaml:"retention_duration"`  //s

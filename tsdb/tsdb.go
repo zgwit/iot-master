@@ -2,16 +2,13 @@ package tsdb
 
 import (
 	"github.com/nakabonne/tstorage"
-	"github.com/zgwit/iot-master/config"
 	"time"
 )
 
 
 var Storage tstorage.Storage
 
-func Open() error {
-
-	cfg := &config.Config.History
+func Open(cfg *Option) error {
 
 	opts := make([]tstorage.Option, 0)
 

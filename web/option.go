@@ -1,6 +1,6 @@
-package config
+package web
 
-type Web struct {
+type Option struct {
 	Addr  string `yaml:"addr"`
 	Debug bool   `yaml:"debug,omitempty"`
 }

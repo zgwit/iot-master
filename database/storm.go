@@ -2,7 +2,6 @@ package database
 
 import (
 	"github.com/asdine/storm/v3"
-	"github.com/zgwit/iot-master/config"
 	"path/filepath"
 )
 
@@ -63,9 +62,8 @@ var LinkHistory storm.Node
 // UserHistory 用户历史
 var UserHistory storm.Node
 
-func Open() error {
+func Open(cfg *Option) error {
 	var err error
-	cfg := &config.Config.Database
 
 	//基础数据
 	Storm, err = storm.Open(filepath.Join(cfg.Path, "storm.db"))

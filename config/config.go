@@ -1,19 +1,25 @@
 package config
 
+import (
+	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/tsdb"
+	"github.com/zgwit/iot-master/web"
+)
+
 type Configure struct {
-	Web      Web      `yaml:"web"`
-	Database Database `yaml:"database"`
-	History  History  `yaml:"history"`
+	Web      web.Option      `yaml:"web"`
+	Database database.Option `yaml:"database"`
+	History  tsdb.Option     `yaml:"history"`
 }
 
 var Config Configure = Configure{
-	Web: Web{
+	Web: web.Option{
 		Addr: ":8080",
 	},
-	Database: Database{
+	Database: database.Option{
 		Path: ".",
 	},
-	History: History{
+	History: tsdb.Option{
 		DataPath: ".",
 	},
 }
