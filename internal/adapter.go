@@ -2,8 +2,8 @@ package internal
 
 import (
 	"fmt"
+	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal/calc"
-	"github.com/zgwit/iot-master/internal/events"
 	"github.com/zgwit/iot-master/protocol"
 )
 

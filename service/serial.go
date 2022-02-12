@@ -2,8 +2,8 @@ package service
 
 import (
 	"github.com/jacobsa/go-serial/serial"
+	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal"
-	"github.com/zgwit/iot-master/internal/events"
 	"time"
 )
 

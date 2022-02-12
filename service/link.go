@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/events"
 )
 
 type Link interface {

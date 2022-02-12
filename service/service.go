@@ -2,8 +2,8 @@ package service
 
 import (
 	"fmt"
+	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal"
-	"github.com/zgwit/iot-master/internal/events"
 )
 
 type Service interface {

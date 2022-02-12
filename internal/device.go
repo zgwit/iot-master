@@ -3,8 +3,8 @@ package internal
 import (
 	"github.com/antonmedv/expr"
 	"github.com/zgwit/iot-master/common"
+	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal/calc"
-	"github.com/zgwit/iot-master/internal/events"
 	"github.com/zgwit/iot-master/internal/select"
 	"time"
 )
