@@ -1,5 +1,7 @@
 # 物联大师
+
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
+[![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
 
 
 物联大师是[真格智能实验室](https://labs.zgwit.com)推出的一款物联网自动控制系统，
