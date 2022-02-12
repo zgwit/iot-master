@@ -3,12 +3,12 @@ package service
 import (
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/zgwit/iot-master/internal"
-	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/events"
 	"time"
 )
 
 type Serial struct {
-	events2.EventEmitter
+	events.EventEmitter
 
 	service *internal.Service
 

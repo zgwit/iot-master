@@ -2,7 +2,7 @@ package internal
 
 import (
 	"github.com/zgwit/iot-master/internal/calc"
-	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/events"
 	"time"
 )
 
@@ -45,7 +45,7 @@ type Reactor struct {
 	//执行命名
 	Invokes []*Invoke `json:"invokes,omitempty"`
 
-	events2.EventEmitter
+	events.EventEmitter
 }
 
 func (a *Reactor) Execute(ctx calc.Context) error {

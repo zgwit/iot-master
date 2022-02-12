@@ -3,7 +3,7 @@ package internal
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/internal/calc"
-	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/events"
 	"github.com/zgwit/iot-master/protocol"
 )
 
@@ -12,7 +12,7 @@ type Adapter struct {
 	protocol protocol.Protocol
 	points   []Point
 
-	events2.EventEmitter
+	events.EventEmitter
 }
 
 func (a *Adapter) Set(key string, value float64) error {

@@ -4,7 +4,7 @@ import (
 	"github.com/antonmedv/expr"
 	"github.com/zgwit/iot-master/common"
 	"github.com/zgwit/iot-master/internal/calc"
-	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/events"
 	"github.com/zgwit/iot-master/internal/select"
 	"time"
 )
@@ -35,7 +35,7 @@ type Device struct {
 
 	adapter *Adapter
 
-	events2.EventEmitter
+	events.EventEmitter
 }
 
 func (dev *Device) Init() error {

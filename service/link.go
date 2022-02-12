@@ -1,11 +1,11 @@
 package service
 
 import (
-	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/events"
 )
 
 type Link interface {
-	events2.EventEmitterInterface
+	events.EventEmitterInterface
 
 	ID() int
 	Write(data []byte) error

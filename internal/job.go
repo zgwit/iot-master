@@ -2,7 +2,7 @@ package internal
 
 import (
 	"github.com/zgwit/iot-master/internal/cron"
-	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/events"
 	"time"
 )
 
@@ -19,7 +19,7 @@ type Job struct {
 
 	job     *cron.Job
 
-	events2.EventEmitter
+	events.EventEmitter
 }
 
 func (j *Job) Start() error {

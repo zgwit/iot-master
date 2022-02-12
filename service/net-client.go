@@ -4,13 +4,13 @@ import (
 	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/internal"
-	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/events"
 	"net"
 	"time"
 )
 
 type NetClient struct {
-	events2.EventEmitter
+	events.EventEmitter
 
 	service *internal.Service
 	link    *NetLink

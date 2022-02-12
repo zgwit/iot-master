@@ -3,11 +3,11 @@ package service
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/internal"
-	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/events"
 )
 
 type Service interface {
-	events2.EventEmitterInterface
+	events.EventEmitterInterface
 
 	Open() error
 	Close() error

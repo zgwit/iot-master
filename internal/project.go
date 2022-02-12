@@ -3,7 +3,7 @@ package internal
 import (
 	"github.com/zgwit/iot-master/internal/aggregator"
 	"github.com/zgwit/iot-master/internal/calc"
-	events2 "github.com/zgwit/iot-master/internal/events"
+	"github.com/zgwit/iot-master/internal/events"
 	"time"
 )
 
@@ -29,7 +29,7 @@ type Project struct {
 	deviceNameIndex map[string]*Device
 	deviceIdIndex   map[int]*Device
 
-	events2.EventEmitter
+	events.EventEmitter
 
 	deviceDataHandler  func(data calc.Context)
 	deviceAlarmHandler func(alarm *DeviceAlarm)
