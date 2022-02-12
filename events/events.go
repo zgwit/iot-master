@@ -2,7 +2,7 @@ package events
 
 import "github.com/asaskevich/EventBus"
 
-type EventEmitterInterface interface {
+type EventInterface interface {
 	Emit(event string, data ...interface{})
 	On(event string, fn interface{})
 	Once(event string, fn interface{})

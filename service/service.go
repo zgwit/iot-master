@@ -7,7 +7,7 @@ import (
 )
 
 type Service interface {
-	events.EventEmitterInterface
+	events.EventInterface
 
 	Open() error
 	Close() error

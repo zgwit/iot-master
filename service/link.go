@@ -5,7 +5,7 @@ import (
 )
 
 type Link interface {
-	events.EventEmitterInterface
+	events.EventInterface
 
 	ID() int
 	Write(data []byte) error
