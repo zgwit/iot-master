@@ -107,15 +107,15 @@ func (t *FxSpecial) Read(address string, length int) ([]byte, error) {
 	}
 
 	//发送请求
-	if _, e := t.link.Write(buf); e != nil {
+	if e := t.link.Write(buf); e != nil {
 		return nil, e
 	}
 
 	recv := make([]byte, recvLength+8)
-	_, err = t.link.Read(recv)
-	if err != nil {
-		return nil, err
-	}
+	//_, err = t.link.Read(recv)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	//STX 站号 PLC号 数据 ETX 和校验
 	ret := recv[5 : len(recv)-3]
@@ -170,15 +170,15 @@ func (t *FxSpecial) Write(address string, values []byte) error {
 	}
 
 	//发送请求
-	if _, e := t.link.Write(buf); e != nil {
+	if e := t.link.Write(buf); e != nil {
 		return e
 	}
 
-	recv := make([]byte, 5)
-	_, err = t.link.Read(recv)
-	if err != nil {
-		return err
-	}
+	//recv := make([]byte, 5)
+	//_, err = t.link.Read(recv)
+	//if err != nil {
+	//	return err
+	//}
 
 	//ACK 站号 PLC号
 	return nil

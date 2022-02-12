@@ -28,17 +28,17 @@ func NewA3EAdapter() *A3EAdapter {
 
 
 func (t *A3EAdapter) request(cmd []byte) ([]byte, error) {
-	if _, e := t.link.Write(cmd); e != nil {
+	if e := t.link.Write(cmd); e != nil {
 		return nil, e
 	}
 
 	// 副标题 D 0 0 0 网络号 0 0 PLC号 F F IO编号 0 3 F F 站号 0 0 应答长度 H . . L 结束代码 H . . L
 	//
 	buf := make([]byte, 22)
-	_, e := t.link.Read(buf)
-	if e != nil {
-		return nil, e
-	}
+	//_, e := t.link.Read(buf)
+	//if e != nil {
+	//	return nil, e
+	//}
 
 	status := helper.ParseUint32(buf[12:])
 	if status != 0 {
@@ -48,7 +48,7 @@ func (t *A3EAdapter) request(cmd []byte) ([]byte, error) {
 	length := helper.ParseUint32(buf[4:]) - 8
 
 	payload := make([]byte, length)
-	t.link.Read(payload)
+	//t.link.Read(payload)
 
 	return payload, nil
 }
@@ -103,7 +103,7 @@ func (t *A3EAdapter) Read(address string, length int) ([]byte, error) {
 	cmd := t.BuildCommand(buf)
 
 	//发送命令
-	if _, err := t.link.Write(cmd); err != nil {
+	if err := t.link.Write(cmd); err != nil {
 		return nil, err
 	}
 
@@ -114,9 +114,9 @@ func (t *A3EAdapter) Read(address string, length int) ([]byte, error) {
 
 	//接收响应
 	recv := make([]byte, 11+length)
-	if _, err := t.link.Read(recv); err != nil {
-		return nil, err
-	}
+	//if _, err := t.link.Read(recv); err != nil {
+	//	return nil, err
+	//}
 
 	// 正确
 	// STX  帧识别号 站编号 网络编号 PLC编号 上位站编号 ---内容--- ETX 和校验
@@ -206,15 +206,15 @@ func (t *A3EAdapter) Write(address string, values []byte) error {
 	cmd := t.BuildCommand(buf)
 
 	//发送命令
-	if _, err := t.link.Write(cmd); err != nil {
+	if err := t.link.Write(cmd); err != nil {
 		return err
 	}
 
 	//接收响应
-	recv := make([]byte, 15)
-	if _, err := t.link.Read(recv); err != nil {
-		return err
-	}
+	//recv := make([]byte, 15)
+	//if _, err := t.link.Read(recv); err != nil {
+	//	return err
+	//}
 
 	// 正确
 	// ACK  帧识别号 站编号 网络编号 PLC编号 上位站编号

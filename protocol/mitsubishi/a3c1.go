@@ -82,7 +82,7 @@ func (t *A3C1) Read(address string, length int) ([]byte, error) {
 	cmd := t.BuildCommand(buf)
 
 	//发送命令
-	if _, err := t.link.Write(cmd); err != nil {
+	if err := t.link.Write(cmd); err != nil {
 		return nil, err
 	}
 
@@ -93,9 +93,9 @@ func (t *A3C1) Read(address string, length int) ([]byte, error) {
 
 	//接收响应
 	recv := make([]byte, 11+length)
-	if _, err := t.link.Read(recv); err != nil {
-		return nil, err
-	}
+	//if _, err := t.link.Read(recv); err != nil {
+	//	return nil, err
+	//}
 
 	// 正确
 	// STX  帧识别号 站编号 网络编号 PLC编号 上位站编号 ---内容--- ETX 和校验
@@ -192,15 +192,15 @@ func (t *A3C1) Write(address string, values []byte) error {
 	cmd := t.BuildCommand(buf)
 
 	//发送命令
-	if _, err := t.link.Write(cmd); err != nil {
+	if err := t.link.Write(cmd); err != nil {
 		return err
 	}
 
 	//接收响应
-	recv := make([]byte, 15)
-	if _, err := t.link.Read(recv); err != nil {
-		return err
-	}
+	//recv := make([]byte, 15)
+	//if _, err := t.link.Read(recv); err != nil {
+	//	return err
+	//}
 
 	// 正确
 	// ACK  帧识别号 站编号 网络编号 PLC编号 上位站编号

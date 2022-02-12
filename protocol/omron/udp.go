@@ -51,12 +51,12 @@ func NewFinsUdp(link service.Link) *FinsUdp {
 }
 
 func (t *FinsUdp) request(cmd []byte) ([]byte, error) {
-	if _, e := t.link.Write(cmd); e != nil {
+	if e := t.link.Write(cmd); e != nil {
 		return nil, e
 	}
 
 	payload := make([]byte, 1024)
-	t.link.Read(payload)
+	//t.link.Read(payload)
 
 	//[UDP 10字节]
 

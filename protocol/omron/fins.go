@@ -19,16 +19,16 @@ func NewFins(link service.Link) *Fins {
 }
 
 func (t *Fins) request(cmd []byte) ([]byte, error) {
-	if _, e := t.link.Write(cmd); e != nil {
+	if e := t.link.Write(cmd); e != nil {
 		return nil, e
 	}
 
 	//接收头16字节：FINS + 长度 + 命令 + 错误码
 	buf := make([]byte, 16)
-	_, e := t.link.Read(buf)
-	if e != nil {
-		return nil, e
-	}
+	//_, e := t.link.Read(buf)
+	//if e != nil {
+	//	return nil, e
+	//}
 
 	status := helper.ParseUint32(buf[12:])
 	if status != 0 {
@@ -38,7 +38,7 @@ func (t *Fins) request(cmd []byte) ([]byte, error) {
 	length := helper.ParseUint32(buf[4:]) - 8
 
 	payload := make([]byte, length)
-	t.link.Read(payload)
+	//t.link.Read(payload)
 
 	return payload, nil
 }

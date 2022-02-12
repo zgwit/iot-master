@@ -44,15 +44,15 @@ func (t *A1eAdapter) Read(address string, length int) ([]byte, error) {
 	buf[11] = 0x00
 
 	//发送命令
-	if _, err := t.link.Write(buf); err != nil {
+	if err := t.link.Write(buf); err != nil {
 		return nil, err
 	}
 
 	//接收响应
 	recv := make([]byte, 2+length)
-	if _, err := t.link.Read(recv); err != nil {
-		return nil, err
-	}
+	//if _, err := t.link.Read(recv); err != nil {
+	//	return nil, err
+	//}
 
 	// 80/81 00 ....
 	return recv[2:], nil
@@ -94,15 +94,15 @@ func (t *A1eAdapter) Write(address string, values []byte) error {
 	copy(buf[12:], values)
 
 	//发送命令
-	if _, err := t.link.Write(buf); err != nil {
+	if err := t.link.Write(buf); err != nil {
 		return err
 	}
 
 	//接收响应
-	recv := make([]byte, 2)
-	if _, err := t.link.Read(recv); err != nil {
-		return err
-	}
+	//recv := make([]byte, 2)
+	//if _, err := t.link.Read(recv); err != nil {
+	//	return err
+	//}
 
 	// 82/83 00
 	return nil

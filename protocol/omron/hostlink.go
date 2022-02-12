@@ -19,15 +19,16 @@ func NewFinsHostLink(link service.Link) *FinsHostLink {
 }
 
 func (t *FinsHostLink) request(cmd []byte) ([]byte, error) {
-	if _, e := t.link.Write(cmd); e != nil {
+	if e := t.link.Write(cmd); e != nil {
 		return nil, e
 	}
 
 	payload := make([]byte, 1024)
-	n, err := t.link.Read(payload)
-	if err != nil {
-		return nil, err
-	}
+	n := 80 //fake
+	//n, err := t.link.Read(payload)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	//@ [单元号] [F A] [0 0] [4 0 ICF][0 0 DA2][0 0 SA2][ SID ]
 	//[命令码 4字节] [状态码 4字节] [ ...data... ]

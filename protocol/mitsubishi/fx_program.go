@@ -105,7 +105,7 @@ func (t *FxProgram) Read(address string, length int) ([]byte, error) {
 	helper.WriteUint8Hex(buf[len(buf)-2:], sum)
 
 	//发送请求
-	if _, e := t.link.Write(buf); e != nil {
+	if e := t.link.Write(buf); e != nil {
 		return nil, e
 	}
 
@@ -115,10 +115,10 @@ func (t *FxProgram) Read(address string, length int) ([]byte, error) {
 	}
 
 	recv := make([]byte, recvLength+4)
-	length, err = t.link.Read(recv)
-	if err != nil {
-		return nil, err
-	}
+	//length, err = t.link.Read(recv)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	//NAK ...
 	//STX ... ETX 和检验
@@ -161,15 +161,15 @@ func (t *FxProgram) Write(address string, values []byte) error {
 	helper.WriteUint8Hex(buf[len(buf)-2:], sum)
 
 	//发送请求
-	if _, e := t.link.Write(buf); e != nil {
+	if e := t.link.Write(buf); e != nil {
 		return e
 	}
 
 	recv := make([]byte, 1)
-	length, err = t.link.Read(recv)
-	if err != nil {
-		return err
-	}
+	//length, err = t.link.Read(recv)
+	//if err != nil {
+	//	return err
+	//}
 	//ACK 0x06
 	//NAK 0x15
 	if recv[0] == 0x15 {

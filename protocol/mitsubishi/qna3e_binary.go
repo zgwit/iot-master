@@ -27,17 +27,17 @@ func NewA3EBinaryAdapter() *A3EBinaryAdapter {
 
 
 func (t *A3EBinaryAdapter) request(cmd []byte) ([]byte, error) {
-	if _, e := t.link.Write(cmd); e != nil {
+	if e := t.link.Write(cmd); e != nil {
 		return nil, e
 	}
 
 	// 副标题 D0 00 网络号 00 PLC号 FF IO编号 FF 03 站号 00 应答长度 L H 结束代码 L H
 	//
 	buf := make([]byte, 16)
-	_, e := t.link.Read(buf)
-	if e != nil {
-		return nil, e
-	}
+	//_, e := t.link.Read(buf)
+	//if e != nil {
+	//	return nil, e
+	//}
 
 	status := helper.ParseUint32(buf[12:])
 	if status != 0 {
@@ -47,7 +47,7 @@ func (t *A3EBinaryAdapter) request(cmd []byte) ([]byte, error) {
 	length := helper.ParseUint32(buf[4:]) - 8
 
 	payload := make([]byte, length)
-	t.link.Read(payload)
+	//t.link.Read(payload)
 
 	return payload, nil
 }

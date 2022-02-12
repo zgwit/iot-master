@@ -185,10 +185,10 @@ func (t *S7) BuildWriteCommand(addr s7address, values []byte) []byte {
 
 //Read 读到数据
 func (t *S7) Read(address string, length int) ([]byte, error) {
-
+	return nil, nil
 }
 
 //Write 写入数据
 func (t *S7) Write(address string, values []byte) error {
-
+	return nil
 }
