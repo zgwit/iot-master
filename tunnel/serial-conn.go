@@ -12,7 +12,7 @@ type SerialConn struct {
 	port io.ReadWriteCloser
 }
 
-func newSerialLink(port io.ReadWriteCloser) *SerialConn {
+func newSerialConn(port io.ReadWriteCloser) *SerialConn {
 	return &SerialConn{
 		port: port,
 	}

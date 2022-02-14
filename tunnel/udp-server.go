@@ -94,7 +94,7 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			link = newUdpLink(conn, addr)
+			link = newUdpConn(conn, addr)
 			link.Id = lnk.Id
 			server.children[lnk.Id] = link
 

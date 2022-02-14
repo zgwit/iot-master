@@ -13,7 +13,7 @@ type UdpConn struct {
 	addr   *net.UDPAddr
 }
 
-func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpConn {
+func newUdpConn(conn *net.UDPConn, addr *net.UDPAddr) *UdpConn {
 	return &UdpConn{
 		conn:   conn,
 		addr:   addr,

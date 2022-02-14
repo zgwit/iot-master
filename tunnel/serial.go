@@ -35,7 +35,7 @@ func (s *Serial) Open() error {
 		return err
 	}
 
-	s.link = newSerialLink(port)
+	s.link = newSerialConn(port)
 	go s.link.receive()
 
 	s.Emit("link", s.link)
