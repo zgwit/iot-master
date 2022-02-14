@@ -31,7 +31,7 @@ type Reactor struct {
 	condition *calc.Expression
 
 	//重复日
-	Daily *DailyRange `json:"daily,omitempty"`
+	Daily *DailyChecker `json:"daily,omitempty"`
 
 	//延迟报警
 	Delay *DelayChecker `json:"delay,omitempty"`

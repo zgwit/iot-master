@@ -7,6 +7,7 @@ import (
 type Collector struct {
 	Disabled bool   `json:"disabled"`
 	Type     string `json:"type"` //interval, clock, crontab
+
 	Interval int    `json:"interval,omitempty"`
 	Clock    int    `json:"clock,omitempty"`
 	Crontab  string `json:"crontab,omitempty"`
@@ -19,7 +20,7 @@ type Collector struct {
 	//TODO Filters
 
 	//等待结果
-	Parallel bool `json:"parallel,omitempty"`
+	//Parallel bool `json:"parallel,omitempty"`
 
 	reading bool
 	job     *cron.Job
@@ -48,7 +49,8 @@ func (c *Collector) Start() (err error) {
 
 func (c *Collector) Execute() {
 	//阻塞情况下，采集数据，要等待，避免大量读指令阻塞
-	if !c.Parallel && c.reading {
+	//if !c.Parallel && c.reading {
+	if c.reading {
 		return
 	}
 
@@ -56,7 +58,7 @@ func (c *Collector) Execute() {
 	go c.read()
 }
 
-func (c *Collector) read()  {
+func (c *Collector) read() {
 	c.reading = true
 	_, _ = c.adapter.Read(c.Code, c.Address, c.Length)
 	//log error
