@@ -12,7 +12,7 @@ type NetClient struct {
 	events.EventEmitter
 
 	service *TunnelModel
-	link    *NetConn
+	link    *NetLink
 	net     string
 }
 
@@ -31,7 +31,7 @@ func (client *NetClient) Open() error {
 	if err != nil {
 		return err
 	}
-	client.link = newNetConn(conn)
+	client.link = newNetLink(conn)
 	go client.link.receive()
 
 	//Store link

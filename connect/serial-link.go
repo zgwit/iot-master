@@ -5,24 +5,24 @@ import (
 	"io"
 )
 
-type SerialConn struct {
+type SerialLink struct {
 	events.EventEmitter
 
 	Id   int
 	port io.ReadWriteCloser
 }
 
-func newSerialConn(port io.ReadWriteCloser) *SerialConn {
-	return &SerialConn{
+func newSerialLink(port io.ReadWriteCloser) *SerialLink {
+	return &SerialLink{
 		port: port,
 	}
 }
 
-func (l *SerialConn) ID() int {
+func (l *SerialLink) ID() int {
 	return l.Id
 }
 
-func (l *SerialConn) Write(data []byte) error {
+func (l *SerialLink) Write(data []byte) error {
 	_, err := l.port.Write(data)
 	if err != nil {
 		l.onClose()
@@ -30,7 +30,7 @@ func (l *SerialConn) Write(data []byte) error {
 	return err
 }
 
-func (l *SerialConn) receive() {
+func (l *SerialLink) receive() {
 	buf := make([]byte, 1024)
 	for {
 		n, err := l.port.Read(buf)
@@ -42,11 +42,11 @@ func (l *SerialConn) receive() {
 	}
 }
 
-func (l *SerialConn) Close() error {
+func (l *SerialLink) Close() error {
 	l.onClose()
 	return l.port.Close()
 }
 
-func (l *SerialConn) onClose() {
+func (l *SerialLink) onClose() {
 	l.Emit("close")
 }

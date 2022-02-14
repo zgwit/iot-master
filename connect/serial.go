@@ -11,7 +11,7 @@ type Serial struct {
 
 	service *TunnelModel
 
-	link *SerialConn
+	link *SerialLink
 }
 
 func newSerial(service *TunnelModel) *Serial {
@@ -37,7 +37,7 @@ func (s *Serial) Open() error {
 		return err
 	}
 
-	s.link = newSerialConn(port)
+	s.link = newSerialLink(port)
 	go s.link.receive()
 
 	s.Emit("link", s.link)

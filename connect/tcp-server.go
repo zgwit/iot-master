@@ -14,7 +14,7 @@ type TcpServer struct {
 
 	service *TunnelModel
 
-	children map[int]*NetConn
+	children map[int]*NetLink
 
 	listener *net.TCPListener
 }
@@ -24,7 +24,7 @@ func newTcpServer(service *TunnelModel) *TcpServer {
 		service: service,
 	}
 	if service.Register != nil {
-		svr.children = make(map[int]*NetConn)
+		svr.children = make(map[int]*NetLink)
 	}
 	return svr
 }
@@ -89,7 +89,7 @@ func (server *TcpServer) Open() error {
 				continue
 			}
 
-			link := newNetConn(conn)
+			link := newNetLink(conn)
 			go link.receive()
 
 			link.Id = lnk.Id
