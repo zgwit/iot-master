@@ -27,5 +27,5 @@ type Invoke struct {
 	Argv    []float64 `json:"argv"`
 
 	//目标设备（只在Project中使用）
-	Select _select.Select `json:"select"`
+	Select _select.Select `json:"select,omitempty"`
 }
