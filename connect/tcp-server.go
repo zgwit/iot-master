@@ -12,14 +12,14 @@ import (
 type TcpServer struct {
 	events.EventEmitter
 
-	service *Tunnel
+	service *TunnelModel
 
 	children map[int]*NetConn
 
 	listener *net.TCPListener
 }
 
-func newTcpServer(service *Tunnel) *TcpServer {
+func newTcpServer(service *TunnelModel) *TcpServer {
 	svr := &TcpServer{
 		service: service,
 	}
@@ -48,9 +48,9 @@ func (server *TcpServer) Open() error {
 				break
 			}
 
-			lnk := Link{
-				ServiceId: server.service.Id,
-				Created:   time.Now(),
+			lnk := LinkModel{
+				TunnelId: server.service.Id,
+				Created:  time.Now(),
 			}
 
 			if server.service.Register == nil {
@@ -58,7 +58,7 @@ func (server *TcpServer) Open() error {
 				for _, link := range server.children {
 					_ = link.Close()
 				}
-				err = database.Link.One("ServiceId", server.service.Id, &lnk)
+				err = database.Link.One("TunnelId", server.service.Id, &lnk)
 			} else {
 				buf := make([]byte, 128)
 				n, err := conn.Read(buf)
@@ -75,7 +75,7 @@ func (server *TcpServer) Open() error {
 				lnk.SN = sn
 				err = database.Link.Select(
 					q.And(
-						q.Eq("ServiceId", server.service.Id),
+						q.Eq("TunnelId", server.service.Id),
 						q.Eq("SN", sn),
 					),
 				).First(&lnk)
@@ -119,6 +119,6 @@ func (server *TcpServer) Close() (err error) {
 	return server.listener.Close()
 }
 
-func (server *TcpServer) GetLink(id int) (Conn, error) {
+func (server *TcpServer) GetLink(id int) (Link, error) {
 	return server.children[id], nil
 }

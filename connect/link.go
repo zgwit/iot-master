@@ -1,13 +1,26 @@
 package connect
 
-import "time"
+import (
+	"github.com/zgwit/iot-master/events"
+	"time"
+)
 
-type Link struct {
-	Id        int       `json:"id" storm:"id,increment"`
-	ServiceId int       `json:"service_id" storm:"index"`
-	SN        string    `json:"sn"`
-	Disabled  bool      `json:"disabled"`
-	Created   time.Time `json:"created"`
+type Link interface {
+	events.EventInterface
+
+	ID() int
+
+	Write(data []byte) error
+
+	Close() error
+}
+
+type LinkModel struct {
+	Id       int       `json:"id" storm:"id,increment"`
+	TunnelId int       `json:"tunnel_id" storm:"index"`
+	SN       string    `json:"sn"`
+	Disabled bool      `json:"disabled"`
+	Created  time.Time `json:"created"`
 }
 
 type LinkHistory struct {

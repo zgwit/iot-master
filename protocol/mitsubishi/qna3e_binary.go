@@ -13,7 +13,7 @@ type A3EBinaryAdapter struct {
 	PlcNumber     byte //PLC编号
 	IoNumber      byte //IO编号
 
-	link connect.Conn
+	link connect.Link
 }
 
 func NewA3EBinaryAdapter() *A3EBinaryAdapter {

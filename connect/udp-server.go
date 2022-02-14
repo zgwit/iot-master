@@ -12,7 +12,7 @@ import (
 type UdpServer struct {
 	events.EventEmitter
 
-	service *Tunnel
+	service *TunnelModel
 
 	children map[int]*UdpConn
 	links    map[string]*UdpConn
@@ -20,7 +20,7 @@ type UdpServer struct {
 	listener *net.UDPConn
 }
 
-func NewUdpServer(service *Tunnel) *UdpServer {
+func NewUdpServer(service *TunnelModel) *UdpServer {
 	svr := &UdpServer{
 		service: service,
 	}
@@ -62,9 +62,9 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			lnk := Link{
-				ServiceId: server.service.Id,
-				Created:   time.Now(),
+			lnk := LinkModel{
+				TunnelId: server.service.Id,
+				Created:  time.Now(),
 			}
 
 			if server.service.Register == nil {
@@ -72,7 +72,7 @@ func (server *UdpServer) Open() error {
 				for _, link := range server.links {
 					_ = link.Close()
 				}
-				err = database.Link.One("ServiceId", server.service.Id, &lnk)
+				err = database.Link.One("TunnelId", server.service.Id, &lnk)
 			} else {
 				if !server.service.Register.Check(data) {
 					_ = conn.Close()
@@ -82,7 +82,7 @@ func (server *UdpServer) Open() error {
 				lnk.SN = sn
 				err = database.Link.Select(
 					q.And(
-						q.Eq("ServiceId", server.service.Id),
+						q.Eq("TunnelId", server.service.Id),
 						q.Eq("SN", sn),
 					),
 				).First(&lnk)
@@ -124,6 +124,6 @@ func (server *UdpServer) Close() (err error) {
 	return server.listener.Close()
 }
 
-func (server *UdpServer) GetLink(id int) (Conn, error) {
+func (server *UdpServer) GetLink(id int) (Link, error) {
 	return server.children[id], nil
 }

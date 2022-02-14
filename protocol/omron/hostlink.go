@@ -9,10 +9,10 @@ import (
 
 type FinsHostLink struct {
 	frame UdpFrame
-	link  connect.Conn
+	link  connect.Link
 }
 
-func NewFinsHostLink(link connect.Conn) *FinsHostLink {
+func NewFinsHostLink(link connect.Link) *FinsHostLink {
 	a := &FinsHostLink{}
 	a.link = link
 	return a

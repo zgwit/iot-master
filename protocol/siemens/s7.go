@@ -107,7 +107,7 @@ var handshake2_200 = [25]byte{
 }
 
 type S7 struct {
-	link connect.Conn
+	link connect.Link
 }
 
 func (t *S7) PackCommand(cmd []byte) []byte {

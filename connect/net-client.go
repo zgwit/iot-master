@@ -11,12 +11,12 @@ import (
 type NetClient struct {
 	events.EventEmitter
 
-	service *Tunnel
+	service *TunnelModel
 	link    *NetConn
 	net     string
 }
 
-func newNetClient(service *Tunnel, net string) *NetClient {
+func newNetClient(service *TunnelModel, net string) *NetClient {
 	return &NetClient{
 		service: service,
 		net:     net,
@@ -35,11 +35,11 @@ func (client *NetClient) Open() error {
 	go client.link.receive()
 
 	//Store link
-	lnk := Link{
-		ServiceId: client.service.Id,
-		Created:   time.Now(),
+	lnk := LinkModel{
+		TunnelId: client.service.Id,
+		Created:  time.Now(),
 	}
-	err = database.Link.One("ServiceId", client.service.Id, &lnk)
+	err = database.Link.One("TunnelId", client.service.Id, &lnk)
 	if err == storm.ErrNotFound {
 		//保存一条新记录
 		_ = database.Link.Save(&lnk)
@@ -74,6 +74,6 @@ func (client *NetClient) Close() error {
 	return nil //TODO return error
 }
 
-func (client *NetClient) GetLink(id int) (Conn, error) {
+func (client *NetClient) GetLink(id int) (Link, error) {
 	return client.link, nil
 }

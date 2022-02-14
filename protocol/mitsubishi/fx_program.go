@@ -75,7 +75,7 @@ func parseFxProgramAddress(address string) (addr fxProgramAddr, err error) {
 }
 
 type FxProgram struct {
-	link connect.Conn
+	link connect.Link
 }
 
 func NewFxSerial() *FxProgram {

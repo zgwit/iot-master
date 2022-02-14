@@ -10,14 +10,14 @@ import (
 )
 
 type TCP struct {
-	link  connect.Conn
+	link  connect.Link
 	queue chan interface{} //in
 
 	requests  sync.Map
 	increment uint16
 }
 
-func newTCP(link connect.Conn) *TCP {
+func newTCP(link connect.Link) *TCP {
 	rtu := &TCP{
 		link:      link,
 		queue:     make(chan interface{}, 10), //TODO 改成参数

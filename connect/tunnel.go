@@ -3,11 +3,21 @@ package connect
 import (
 	"bytes"
 	"encoding/hex"
+	"github.com/zgwit/iot-master/events"
 	"regexp"
 	"time"
 )
 
-type Tunnel struct {
+type Tunnel interface {
+	events.EventInterface
+
+	Open() error
+	Close() error
+	GetLink(id int) (Link, error)
+}
+
+
+type TunnelModel struct {
 	Id        int              `json:"id" storm:"id,increment"`
 	Name      string           `json:"name"`
 	Type      string           `json:"type"` //serial tcp-client tcp-server udp-client udp-server
@@ -103,8 +113,8 @@ func (p *HeartBeatPacket) Check(buf []byte) bool {
 }
 
 type TunnelHistory struct {
-	Id        int       `json:"id" storm:"id,increment"`
-	ServiceId int       `json:"service_id"`
-	History   string    `json:"history"`
-	Created   time.Time `json:"created"`
+	Id       int       `json:"id" storm:"id,increment"`
+	TunnelId int       `json:"tunnel_id"`
+	History  string    `json:"history"`
+	Created  time.Time `json:"created"`
 }

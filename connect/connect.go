@@ -3,57 +3,48 @@ package connect
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/database"
-	"github.com/zgwit/iot-master/events"
 	"time"
 )
 
-type Service interface {
-	events.EventInterface
-
-	Open() error
-	Close() error
-	GetLink(id int) (Conn, error)
-}
-
-func NewService(tunnel *Tunnel) (Service, error) {
-	var svc Service
+func NewTunnel(tunnel *TunnelModel) (Tunnel, error) {
+	var tnl Tunnel
 	switch tunnel.Type {
 	case "tcp-client":
-		svc = newNetClient(tunnel, "tcp")
+		tnl = newNetClient(tunnel, "tcp")
 		break
 	case "tcp-server":
-		svc = newTcpServer(tunnel)
+		tnl = newTcpServer(tunnel)
 		break
 	case "udp-client":
-		svc = newNetClient(tunnel, "udp")
+		tnl = newNetClient(tunnel, "udp")
 		break
 	case "udp-server":
-		svc = NewUdpServer(tunnel)
+		tnl = NewUdpServer(tunnel)
 		break
 	case "serial":
-		svc = newSerial(tunnel)
+		tnl = newSerial(tunnel)
 		break
 	default:
 		return nil, fmt.Errorf("Unsupport type %s ", tunnel.Type)
 	}
 
-	svc.On("open", func() {
+	tnl.On("open", func() {
 		_ = database.TunnelHistory.Save(TunnelHistory{
-			ServiceId: tunnel.Id,
-			History:   "open",
-			Created:   time.Now(),
+			TunnelId: tunnel.Id,
+			History:  "open",
+			Created:  time.Now(),
 		})
 	})
 
-	svc.On("close", func() {
+	tnl.On("close", func() {
 		_ = database.TunnelHistory.Save(TunnelHistory{
-			ServiceId: tunnel.Id,
-			History:   "close",
-			Created:   time.Now(),
+			TunnelId: tunnel.Id,
+			History:  "close",
+			Created:  time.Now(),
 		})
 	})
 
-	svc.On("link", func(conn Conn) {
+	tnl.On("link", func(conn Link) {
 		_ = database.LinkHistory.Save(LinkHistory{
 			LinkId:  conn.ID(),
 			History: "online",
@@ -68,5 +59,5 @@ func NewService(tunnel *Tunnel) (Service, error) {
 		})
 	})
 
-	return svc, nil
+	return tnl, nil
 }

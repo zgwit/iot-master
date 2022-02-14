@@ -9,12 +9,12 @@ import (
 type Serial struct {
 	events.EventEmitter
 
-	service *Tunnel
+	service *TunnelModel
 
 	link *SerialConn
 }
 
-func newSerial(service *Tunnel) *Serial {
+func newSerial(service *TunnelModel) *Serial {
 	return &Serial{
 		service: service,
 	}
@@ -64,6 +64,6 @@ func (s *Serial) Close() error {
 	return nil //TODO return error
 }
 
-func (s *Serial) GetLink(id int) (Conn, error) {
+func (s *Serial) GetLink(id int) (Link, error) {
 	return s.link, nil
 }
