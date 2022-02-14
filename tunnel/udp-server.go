@@ -32,6 +32,8 @@ func NewUdpServer(service *Tunnel) *UdpServer {
 }
 
 func (server *UdpServer) Open() error {
+	server.Emit("open")
+
 	addr, err := net.ResolveUDPAddr("udp", server.service.Addr)
 	if err != nil {
 		return err
@@ -102,7 +104,6 @@ func (server *UdpServer) Open() error {
 			server.Emit("link", link)
 
 			link.Once("close", func() {
-				//TODO 记录离线
 				delete(server.children, link.Id)
 				delete(server.links, link.addr.String())
 			})
@@ -113,6 +114,7 @@ func (server *UdpServer) Open() error {
 }
 
 func (server *UdpServer) Close() (err error) {
+	server.Emit("close")
 	//close links
 	if server.children != nil {
 		for _, l := range server.children {

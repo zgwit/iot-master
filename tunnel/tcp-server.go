@@ -30,6 +30,8 @@ func newTcpServer(service *Tunnel) *TcpServer {
 }
 
 func (server *TcpServer) Open() error {
+	server.Emit("open")
+
 	addr, err := net.ResolveTCPAddr("tcp", server.service.Addr)
 	if err != nil {
 		return err
@@ -97,8 +99,6 @@ func (server *TcpServer) Open() error {
 			server.Emit("link", link)
 
 			link.Once("close", func() {
-				//TODO 记录
-
 				delete(server.children, link.Id)
 			})
 		}
@@ -108,6 +108,8 @@ func (server *TcpServer) Open() error {
 }
 
 func (server *TcpServer) Close() (err error) {
+	server.Emit("close")
+
 	//close links
 	if server.children != nil {
 		for _, l := range server.children {

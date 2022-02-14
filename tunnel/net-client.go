@@ -24,6 +24,9 @@ func newNetClient(service *Tunnel, net string) *NetClient {
 }
 
 func (client *NetClient) Open() error {
+	client.Emit("open")
+
+	//发起连接
 	conn, err := net.Dial(client.net, client.service.Addr)
 	if err != nil {
 		return err
@@ -42,6 +45,8 @@ func (client *NetClient) Open() error {
 		_ = database.Link.Save(&lnk)
 	} else if err != nil {
 		return err
+	} else {
+		//上线
 	}
 	client.link.Id = lnk.Id
 
@@ -56,11 +61,13 @@ func (client *NetClient) Open() error {
 			_ = client.Open()
 		})
 	})
-
 	return nil
 }
 
 func (client *NetClient) Close() error {
+	//记录启动
+	client.Emit("close")
+
 	if client.link != nil {
 		return client.link.Close()
 	}

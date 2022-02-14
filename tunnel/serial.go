@@ -21,6 +21,8 @@ func newSerial(service *Tunnel) *Serial {
 }
 
 func (s *Serial) Open() error {
+	s.Emit("open")
+
 	options := serial.OpenOptions{
 		PortName: s.service.Addr,
 	}
@@ -55,6 +57,7 @@ func (s *Serial) Open() error {
 }
 
 func (s *Serial) Close() error {
+	s.Emit("close")
 	if s.link != nil {
 		return s.link.Close()
 	}
