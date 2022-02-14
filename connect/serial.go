@@ -1,4 +1,4 @@
-package tunnel
+package connect
 
 import (
 	"github.com/jacobsa/go-serial/serial"

@@ -3,7 +3,7 @@ package siemens
 import (
 	"errors"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/tunnel"
+	"github.com/zgwit/iot-master/connect"
 	"strconv"
 	"strings"
 )
@@ -107,7 +107,7 @@ var handshake2_200 = [25]byte{
 }
 
 type S7 struct {
-	link tunnel.Conn
+	link connect.Conn
 }
 
 func (t *S7) PackCommand(cmd []byte) []byte {

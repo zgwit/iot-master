@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/tunnel"
+	"github.com/zgwit/iot-master/connect"
 )
 
 type A3EBinaryAdapter struct {
@@ -13,7 +13,7 @@ type A3EBinaryAdapter struct {
 	PlcNumber     byte //PLC编号
 	IoNumber      byte //IO编号
 
-	link tunnel.Conn
+	link connect.Conn
 }
 
 func NewA3EBinaryAdapter() *A3EBinaryAdapter {

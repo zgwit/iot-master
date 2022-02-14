@@ -3,7 +3,7 @@ package mitsubishi
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/tunnel"
+	"github.com/zgwit/iot-master/connect"
 	"strconv"
 )
 
@@ -13,7 +13,7 @@ type A3C1 struct {
 	PlcNumber     byte //PLC编号
 	UpperNumber   byte //上位机编号
 
-	link tunnel.Conn
+	link connect.Conn
 }
 
 func NewA3C1() *A3C1 {

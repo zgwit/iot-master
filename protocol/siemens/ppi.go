@@ -1,9 +1,9 @@
 package siemens
 
-import "github.com/zgwit/iot-master/tunnel"
+import "github.com/zgwit/iot-master/connect"
 
 type PPI struct {
-	link tunnel.Conn
+	link connect.Conn
 }
 
 //Read 读到数据

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/protocol/helper"
-	"github.com/zgwit/iot-master/tunnel"
+	"github.com/zgwit/iot-master/connect"
 	"strconv"
 )
 
@@ -14,7 +14,7 @@ type A3EAdapter struct {
 	PlcNumber     byte //PLC编号
 	IoNumber      byte //IO编号
 
-	link tunnel.Conn
+	link connect.Conn
 }
 
 func NewA3EAdapter() *A3EAdapter {
