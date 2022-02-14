@@ -2,9 +2,9 @@ package tsdb
 
 import (
 	"github.com/nakabonne/tstorage"
+	"strconv"
 	"time"
 )
-
 
 var Storage tstorage.Storage
 
@@ -38,6 +38,21 @@ func Open(cfg *Option) error {
 	Storage, err = tstorage.NewStorage(opts...)
 
 	return err
+}
+
+func Save(metric string, id int, point float64) error {
+	rows := []tstorage.Row{{
+		Metric:    metric,
+		Labels:    []tstorage.Label{{Name: "key", Value: strconv.Itoa(id)}},
+		DataPoint: tstorage.DataPoint{Value: point, Timestamp: time.Now().Unix()},
+	}}
+	return Storage.InsertRows(rows)
+}
+
+func Load(metric string, id int, start, end int64) ([]*tstorage.DataPoint, error) {
+	//TODO 简单查询，并作结果整合
+	return Storage.Select(metric, []tstorage.Label{{Name: "key", Value: strconv.Itoa(id)}}, start, end)
+	//TODO 处理数据
 }
 
 func Close() error {

@@ -45,6 +45,7 @@ func (dev *Device) Init() error {
 			dev.Context[k] = v
 		}
 
+
 		//数据变化后，更新计算
 		for _, calculator := range dev.Calculators {
 			val, err := calculator.Evaluate(dev.Context)
