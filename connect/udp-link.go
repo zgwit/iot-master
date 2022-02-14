@@ -5,7 +5,7 @@ import (
 	"net"
 )
 
-type UdpConn struct {
+type UdpLink struct {
 	events.EventEmitter
 
 	Id     int
@@ -13,18 +13,18 @@ type UdpConn struct {
 	addr   *net.UDPAddr
 }
 
-func newUdpConn(conn *net.UDPConn, addr *net.UDPAddr) *UdpConn {
-	return &UdpConn{
+func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
+	return &UdpLink{
 		conn:   conn,
 		addr:   addr,
 	}
 }
 
-func (l *UdpConn) ID() int {
+func (l *UdpLink) ID() int {
 	return l.Id
 }
 
-func (l *UdpConn) Write(data []byte) error {
+func (l *UdpLink) Write(data []byte) error {
 	_, err := l.conn.WriteToUDP(data, l.addr)
 	if err != nil {
 		l.onClose()
@@ -32,15 +32,15 @@ func (l *UdpConn) Write(data []byte) error {
 	return err
 }
 
-func (l *UdpConn) Close() error {
+func (l *UdpLink) Close() error {
 	l.onClose()
 	return l.conn.Close()
 }
 
-func (l *UdpConn) onClose() {
+func (l *UdpLink) onClose() {
 	l.Emit("close")
 }
 
-func (l *UdpConn) onData(data []byte) {
+func (l *UdpLink) onData(data []byte) {
 	l.Emit("data", data)
 }

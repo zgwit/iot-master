@@ -14,8 +14,8 @@ type UdpServer struct {
 
 	service *TunnelModel
 
-	children map[int]*UdpConn
-	links    map[string]*UdpConn
+	children map[int]*UdpLink
+	links    map[string]*UdpLink
 
 	listener *net.UDPConn
 }
@@ -25,8 +25,8 @@ func NewUdpServer(service *TunnelModel) *UdpServer {
 		service: service,
 	}
 	if service.Register != nil {
-		svr.children = make(map[int]*UdpConn)
-		svr.links = make(map[string]*UdpConn)
+		svr.children = make(map[int]*UdpLink)
+		svr.links = make(map[string]*UdpLink)
 	}
 	return svr
 }
@@ -96,7 +96,7 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			link = newUdpConn(conn, addr)
+			link = newUdpLink(conn, addr)
 			link.Id = lnk.Id
 			server.children[lnk.Id] = link
 
