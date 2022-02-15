@@ -23,7 +23,6 @@ type Aggregator struct {
 	targets []calc.Context
 }
 
-
 func (a *Aggregator) Init() (err error) {
 	a.targets = make([]calc.Context, 0)
 	a.expression, err = calc.NewExpression(a.Expression)

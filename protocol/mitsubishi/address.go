@@ -15,8 +15,8 @@ type Command struct {
 
 type Address struct {
 	Command
-	Name   string
-	Addr   uint64
+	Name string
+	Addr uint64
 }
 
 var commands = map[string]Command{

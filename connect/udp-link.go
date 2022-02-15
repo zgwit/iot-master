@@ -8,15 +8,15 @@ import (
 type UdpLink struct {
 	events.EventEmitter
 
-	Id     int
-	conn   *net.UDPConn
-	addr   *net.UDPAddr
+	Id   int
+	conn *net.UDPConn
+	addr *net.UDPAddr
 }
 
 func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
 	return &UdpLink{
-		conn:   conn,
-		addr:   addr,
+		conn: conn,
+		addr: addr,
 	}
 }
 

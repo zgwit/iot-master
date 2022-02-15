@@ -2,8 +2,8 @@ package mitsubishi
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/protocol/helper"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/protocol/helper"
 	"strconv"
 )
 
@@ -25,7 +25,6 @@ func NewA3C1() *A3C1 {
 	return &a
 
 }
-
 
 func (t *A3C1) BuildCommand(cmd []byte) []byte {
 	length := len(cmd)

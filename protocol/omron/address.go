@@ -12,9 +12,9 @@ type Command struct {
 }
 
 type Address struct {
-	Code byte
-	Addr uint64
-	Bit  uint8
+	Code  byte
+	Addr  uint64
+	Bit   uint8
 	IsBit bool
 }
 

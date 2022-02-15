@@ -7,11 +7,11 @@ type PPI struct {
 }
 
 //Read 读到数据
-func (t *PPI)Read(address string, length int) ([]byte, error) {
-	return nil,nil
+func (t *PPI) Read(address string, length int) ([]byte, error) {
+	return nil, nil
 }
 
 //Write 写入数据
-func (t *PPI)Write(address string, values []byte) error {
+func (t *PPI) Write(address string, values []byte) error {
 	return nil
 }

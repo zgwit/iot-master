@@ -37,4 +37,3 @@ const (
 	ExceptionCodeGatewayPathUnavailable             = 10
 	ExceptionCodeGatewayTargetDeviceFailedToRespond = 11
 )
-

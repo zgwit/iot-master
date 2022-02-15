@@ -3,8 +3,8 @@ package mitsubishi
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/protocol/helper"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/protocol/helper"
 )
 
 type A3EBinaryAdapter struct {
@@ -24,7 +24,6 @@ func NewA3EBinaryAdapter() *A3EBinaryAdapter {
 	a.IoNumber = 0xFF
 	return &a
 }
-
 
 func (t *A3EBinaryAdapter) request(cmd []byte) ([]byte, error) {
 	if e := t.link.Write(cmd); e != nil {
@@ -51,7 +50,6 @@ func (t *A3EBinaryAdapter) request(cmd []byte) ([]byte, error) {
 
 	return payload, nil
 }
-
 
 func (t *A3EBinaryAdapter) BuildCommand(cmd []byte) []byte {
 	length := len(cmd)

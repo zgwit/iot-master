@@ -2,8 +2,8 @@ package mitsubishi
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/protocol/helper"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/protocol/helper"
 	"strconv"
 	"strings"
 )
@@ -127,7 +127,7 @@ func (t *FxProgram) Read(address string, length int) ([]byte, error) {
 		return nil, errors.New("返回错误")
 	}
 
-	ret := helper.FromHex(recv[1: length-3])
+	ret := helper.FromHex(recv[1 : length-3])
 
 	return ret, nil
 }

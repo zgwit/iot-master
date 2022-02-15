@@ -30,16 +30,16 @@ func (t *A1eAdapter) Read(address string, length int) ([]byte, error) {
 
 	//构建命令
 	buf := make([]byte, 12)
-	buf[ 0] = subTitle        //副标题，0：bit 1：byte
-	buf[ 1] = t.PlcNumber     //PLC号
-	buf[ 2] = 0x0A            // CPU监视定时器（L）这里设置为0x00,0x0A，等待CPU返回的时间为10*250ms=2.5秒
-	buf[ 3] = 0x00            // CPU监视定时器（H）
-	buf[ 4] = byte(addr.Addr) // 起始软元件（开始读取的地址）
-	buf[ 5] = byte(addr.Addr >> 8)
-	buf[ 6] = byte(addr.Addr >> 16)
-	buf[ 7] = byte(addr.Addr >> 24)
-	buf[ 8] = 0x20         // 软元件代码（L）
-	buf[ 9] = addr.Code    // 软元件代码（H）
+	buf[0] = subTitle        //副标题，0：bit 1：byte
+	buf[1] = t.PlcNumber     //PLC号
+	buf[2] = 0x0A            // CPU监视定时器（L）这里设置为0x00,0x0A，等待CPU返回的时间为10*250ms=2.5秒
+	buf[3] = 0x00            // CPU监视定时器（H）
+	buf[4] = byte(addr.Addr) // 起始软元件（开始读取的地址）
+	buf[5] = byte(addr.Addr >> 8)
+	buf[6] = byte(addr.Addr >> 16)
+	buf[7] = byte(addr.Addr >> 24)
+	buf[8] = 0x20          // 软元件代码（L）
+	buf[9] = addr.Code     // 软元件代码（H）
 	buf[10] = byte(length) // 软元件点数
 	buf[11] = 0x00
 
@@ -77,16 +77,16 @@ func (t *A1eAdapter) Write(address string, values []byte) error {
 
 	//构建命令
 	buf := make([]byte, 12+length)
-	buf[ 0] = subTitle        //副标题，2：bit 3：byte
-	buf[ 1] = t.PlcNumber     //PLC号
-	buf[ 2] = 0x0A            // CPU监视定时器（L）这里设置为0x00,0x0A，等待CPU返回的时间为10*250ms=2.5秒
-	buf[ 3] = 0x00            // CPU监视定时器（H）
-	buf[ 4] = byte(addr.Addr) // 起始软元件（开始读取的地址）
-	buf[ 5] = byte(addr.Addr >> 8)
-	buf[ 6] = byte(addr.Addr >> 16)
-	buf[ 7] = byte(addr.Addr >> 24)
-	buf[ 8] = 0x20         // 软元件代码（L）
-	buf[ 9] = addr.Code    // 软元件代码（H）
+	buf[0] = subTitle        //副标题，2：bit 3：byte
+	buf[1] = t.PlcNumber     //PLC号
+	buf[2] = 0x0A            // CPU监视定时器（L）这里设置为0x00,0x0A，等待CPU返回的时间为10*250ms=2.5秒
+	buf[3] = 0x00            // CPU监视定时器（H）
+	buf[4] = byte(addr.Addr) // 起始软元件（开始读取的地址）
+	buf[5] = byte(addr.Addr >> 8)
+	buf[6] = byte(addr.Addr >> 16)
+	buf[7] = byte(addr.Addr >> 24)
+	buf[8] = 0x20          // 软元件代码（L）
+	buf[9] = addr.Code     // 软元件代码（H）
 	buf[10] = byte(length) // 软元件点数
 	buf[11] = 0x00
 

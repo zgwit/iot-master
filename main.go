@@ -19,7 +19,6 @@ func main() {
 
 	_ = master.Start()
 
-
 	//TODO，判断是否开启Web
 	web.Serve(&config.Config.Web)
 }

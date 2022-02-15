@@ -3,8 +3,8 @@ package omron
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/protocol/helper"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/protocol/helper"
 )
 
 type FinsHostLink struct {
@@ -40,7 +40,6 @@ func (t *FinsHostLink) request(cmd []byte) ([]byte, error) {
 
 	return recv, nil
 }
-
 
 func (t *FinsHostLink) Read(address string, length int) ([]byte, error) {
 

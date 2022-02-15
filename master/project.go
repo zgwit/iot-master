@@ -70,7 +70,7 @@ func (prj *Project) Init() error {
 	//设备数据变化的处理函数
 	prj.deviceDataHandler = func(data calc.Context) {
 		//数据变化后，更新计算
-		for _, agg := range prj.Aggregators{
+		for _, agg := range prj.Aggregators {
 			val, err := agg.Evaluate()
 			if err != nil {
 				prj.Emit("error", err)
@@ -80,7 +80,7 @@ func (prj *Project) Init() error {
 		}
 
 		//处理响应
-		for _,reactor := range prj.Reactors {
+		for _, reactor := range prj.Reactors {
 			err := reactor.Execute(prj.Context)
 			if err != nil {
 				prj.Emit("error", err)
@@ -101,7 +101,7 @@ func (prj *Project) Init() error {
 	}
 
 	//初始化设备
-	for _,d:= range prj.Devices {
+	for _, d := range prj.Devices {
 		dev := GetDevice(d.Id)
 		//TODO 如果找不到设备，该怎么处理
 		d.device = dev
@@ -121,13 +121,13 @@ func (prj *Project) Init() error {
 					prj.Emit("error", err)
 				}
 			}
-			
+
 			//日志
 			_ = database.ProjectHistoryJob.Save(ProjectHistoryJob{
 				ProjectId: prj.Id,
-				Job:      job.String(),
-				History:  "action",
-				Created:  time.Now()})
+				Job:       job.String(),
+				History:   "action",
+				Created:   time.Now()})
 		})
 	}
 
@@ -158,10 +158,10 @@ func (prj *Project) Init() error {
 			//入库
 			_ = database.ProjectHistoryAlarm.Save(ProjectHistoryAlarm{
 				ProjectId: prj.Id,
-				Code:     alarm.Code,
-				Level:    alarm.Level,
-				Message:  alarm.Message,
-				Created:  time.Now(),
+				Code:      alarm.Code,
+				Level:     alarm.Level,
+				Message:   alarm.Message,
+				Created:   time.Now(),
 			})
 
 			//上报
@@ -179,9 +179,9 @@ func (prj *Project) Init() error {
 			//保存历史
 			history := ProjectHistoryReactor{
 				ProjectId: prj.Id,
-				Name:     reactor.Name,
-				History:  "action",
-				Created:  time.Now(),
+				Name:      reactor.Name,
+				History:   "action",
+				Created:   time.Now(),
 			}
 			if history.Name == "" {
 				history.Name = reactor.Condition
@@ -195,9 +195,9 @@ func (prj *Project) Init() error {
 
 func (prj *Project) Start() error {
 	_ = database.ProjectHistory.Save(ProjectHistory{ProjectId: prj.Id, History: "start", Created: time.Now()})
-	
+
 	//订阅设备的数据变化和报警
-	for _,dev := range prj.Devices {
+	for _, dev := range prj.Devices {
 		dev.device.On("data", prj.deviceDataHandler)
 		dev.device.On("alarm", prj.deviceAlarmHandler)
 	}
@@ -215,7 +215,7 @@ func (prj *Project) Start() error {
 func (prj *Project) Stop() error {
 	_ = database.ProjectHistory.Save(ProjectHistory{ProjectId: prj.Id, History: "stop", Created: time.Now()})
 
-	for _,dev := range prj.Devices {
+	for _, dev := range prj.Devices {
 		dev.device.Off("data", prj.deviceDataHandler)
 		dev.device.Off("alarm", prj.deviceAlarmHandler)
 	}
@@ -238,7 +238,6 @@ func (prj *Project) execute(in *Invoke) error {
 	return nil
 }
 
-
 type ProjectHistory struct {
 	Id        int       `json:"id" storm:"id,increment"`
 	ProjectId int       `json:"project_id"`
@@ -259,18 +258,17 @@ type ProjectHistoryAlarm struct {
 }
 
 type ProjectHistoryReactor struct {
-	Id       int       `json:"id" storm:"id,increment"`
+	Id        int       `json:"id" storm:"id,increment"`
 	ProjectId int       `json:"project_id"`
-	Name     string    `json:"name"`
-	History  string    `json:"result"`
-	Created  time.Time `json:"created"`
+	Name      string    `json:"name"`
+	History   string    `json:"result"`
+	Created   time.Time `json:"created"`
 }
 
-
 type ProjectHistoryJob struct {
-	Id      int       `json:"id" storm:"id,increment"`
+	Id        int       `json:"id" storm:"id,increment"`
 	ProjectId int       `json:"project_id"`
-	Job     string    `json:"job"`
-	History  string    `json:"result"`
-	Created time.Time `json:"created"`
+	Job       string    `json:"job"`
+	History   string    `json:"result"`
+	Created   time.Time `json:"created"`
 }

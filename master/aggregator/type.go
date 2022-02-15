@@ -71,4 +71,3 @@ func (t Type) MarshalJSON() ([]byte, error) {
 func (t Type) UnmarshalJSON(buf []byte) error {
 	return t.Parse(string(buf))
 }
-

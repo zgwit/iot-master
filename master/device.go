@@ -101,7 +101,7 @@ func (dev *Device) Init() error {
 					dev.Emit("error", err)
 				}
 			}
-			
+
 			//日志
 			_ = database.DeviceHistoryJob.Save(DeviceHistoryJob{
 				DeviceId: dev.Id,

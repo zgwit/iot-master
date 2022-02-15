@@ -10,7 +10,6 @@ import (
 	"time"
 )
 
-
 //go:embed www
 var wwwFiles embed.FS
 
@@ -45,7 +44,6 @@ func Serve(cfg *Option) {
 		http.ServeContent(c.Writer, c.Request, filepath, time.Now(), f)
 		_ = f.Close()
 	})
-
 
 	//监听HTTP
 	if err := app.Run(cfg.Addr); err != nil {

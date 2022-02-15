@@ -22,6 +22,3 @@ func NewExpression(input string) (*Expression, error) {
 func (c *Expression) Evaluate(ctx Context) (interface{}, error) {
 	return expr.Run(c.program, ctx)
 }
-
-
-

@@ -90,12 +90,12 @@ func Open(cfg *Option) error {
 	}
 	ProjectHistory = History.From("project")
 	ProjectHistoryAlarm = History.From("project", "alarm")
-	ProjectHistoryReactor= History.From("project", "reactor")
+	ProjectHistoryReactor = History.From("project", "reactor")
 	ProjectHistoryJob = History.From("project", "job")
 
 	DeviceHistory = History.From("device")
 	DeviceHistoryAlarm = History.From("device", "alarm")
-	DeviceHistoryReactor= History.From("device", "reactor")
+	DeviceHistoryReactor = History.From("device", "reactor")
 	DeviceHistoryJob = History.From("device", "job")
 	DeviceHistoryCommand = History.From("device", "command")
 

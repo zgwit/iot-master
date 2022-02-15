@@ -16,7 +16,6 @@ type Tunnel interface {
 	GetLink(id int) (Link, error)
 }
 
-
 type TunnelModel struct {
 	Id        int              `json:"id" storm:"id,increment"`
 	Name      string           `json:"name"`

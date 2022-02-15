@@ -1,4 +1,5 @@
 package helper
+
 import "encoding/hex"
 
 var hexNumbers = []byte("0123456789ABCDEF")
@@ -10,18 +11,18 @@ func ByteToHex(value byte) []byte {
 	return buf
 }
 
-func WriteByteHex(buf []byte, value uint8)  {
+func WriteByteHex(buf []byte, value uint8) {
 	buf[0] = hexNumbers[value>>4]
 	buf[1] = hexNumbers[value&0x0F]
 }
 
-func WriteUint8Hex(buf []byte, value uint8)  {
+func WriteUint8Hex(buf []byte, value uint8) {
 	buf[0] = hexNumbers[value>>4]
 	buf[1] = hexNumbers[value&0x0F]
 }
 
-func WriteUint16Hex(buf []byte, value uint16)  {
-	h, l := value >> 8, value & 0xF
+func WriteUint16Hex(buf []byte, value uint16) {
+	h, l := value>>8, value&0xF
 	buf[0] = hexNumbers[h>>4]
 	buf[1] = hexNumbers[h&0x0F]
 	buf[3] = hexNumbers[l>>4]
@@ -31,7 +32,7 @@ func WriteUint16Hex(buf []byte, value uint16)  {
 
 func ToHex(values []byte) []byte {
 	length := len(values)
-	buf := make([]byte, length << 1) //length * 2
+	buf := make([]byte, length<<1) //length * 2
 	for i := 0; i < length; i++ {
 		value := values[i]
 		j := i << 1 //i * 2

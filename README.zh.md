@@ -5,13 +5,11 @@
 [![codecov](https://codecov.io/gh/zgwit/iot-master/branch/main/graph/badge.svg?token=AK5TD8KQ5C)](https://codecov.io/gh/zgwit/iot-master)
 [![Go Reference](https://pkg.go.dev/badge/github.com/zgwit/iot-master.svg)](https://pkg.go.dev/github.com/zgwit/iot-master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
-[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)  
+[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-物联大师是[真格智能实验室](https://labs.zgwit.com)推出的一款物联网自动控制系统，
-集成了数据采集、历史存储、定时任务、自动控制、异常报警等功能，适用于大部分物联网或工业互联网数据应用场景。
+物联大师是[真格智能实验室](https://labs.zgwit.com)推出的一款物联网自动控制系统， 集成了数据采集、历史存储、定时任务、自动控制、异常报警等功能，适用于大部分物联网或工业互联网数据应用场景。
 
-项目官网 [iot-master.com](https://iot-master.com) 提供丰富的元件库和在线模板，
-可以直接用于大部分物联网项目后端，快速，方便，高效。
+项目官网 [iot-master.com](https://iot-master.com) 提供丰富的元件库和在线模板， 可以直接用于大部分物联网项目后端，快速，方便，高效。
 
 > 作者曾经接触多个物联网实际项目的后端，需求大同小异， 因为团队不同，实现方式就千奇百怪了，
 > 大家其实都在重复地造轮子。痛定思痛，于是决定提取共同的部分，做成了通用的物联大师，
@@ -24,7 +22,6 @@
 - 政府单位，比如：智慧交通、环境监控、水利设施、灾害监测、物联网小镇等
 - 其他
 
-
 ## 怎么用？
 
 1. 下载系统，然后部署在本地或云服务器上（支持工控机）
@@ -32,7 +29,6 @@
 3. 打开系统，创建工程，配置数据采集，定时任务，自动控制，异常告警等，配置组态（可视化）
 4. 远程控制，查看历史曲线
 5. 通过开放接口实现远程操控（需要开发APP或小程序）
-
 
 ## 项目架构图
 
@@ -43,7 +39,6 @@
 项目使用Golang进行开发，普通桌面机实测5w并发无压力，云端未实测，主要看带宽。
 
 > PS：项目曾经使用Nodejs开发后端，但是Nodejs的单线程模型，并不适合物联网程序开发，有兴趣可以查看js分支。
-
 
 | 模块        | 选型    |  说明  |
 | --------   | -----   | ---- |
@@ -77,7 +72,7 @@
     - [x] 短信报警，电话报警
     - [x] 数据透传，虚拟串口，远程调试
     - [x] API服务，对接APP和小程序
-    
+
 ## 其他
 
 - 项目支线版本已经在实际的养猪物联网和养鱼物联网项目中使用，效果良好

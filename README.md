@@ -5,10 +5,10 @@
 [![codecov](https://codecov.io/gh/zgwit/iot-master/branch/main/graph/badge.svg?token=AK5TD8KQ5C)](https://codecov.io/gh/zgwit/iot-master)
 [![Go Reference](https://pkg.go.dev/badge/github.com/zgwit/iot-master.svg)](https://pkg.go.dev/github.com/zgwit/iot-master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
-[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)  
+[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-IoT-Master is [zGwit labs](https://labs.zgwit.com)'s iot control system,
-witch integrated data-acquire, history storage, timer jobs, automatic, alarms.
+IoT-Master is [zGwit labs](https://labs.zgwit.com)'s iot control system, witch integrated data-acquire, history storage,
+timer jobs, automatic, alarms.
 
 Website [iot-master.com](https://iot-master.com) host elements and templates for using directly
 
@@ -26,13 +26,11 @@ Website [iot-master.com](https://iot-master.com) host elements and templates for
 4. Browser remotely
 5. Call API
 
-
 ## Frame
 
 ![结构图](https://github.com/zgwit/iot-master/raw/main/docs/frame.svg)
 
 ## Stacks
-
 
 | Module     | Tech    |  Desc  |
 | --------   | -----   | ---- |
@@ -66,7 +64,7 @@ Website [iot-master.com](https://iot-master.com) host elements and templates for
     - [x] SMS, Voice call
     - [x] Data-throughout, virtual serial port, remote debug
     - [x] API Service
-    
+
 ## Others
 
 - This project has been used in piggy farm and fish farm, run good.
