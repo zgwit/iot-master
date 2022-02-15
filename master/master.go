@@ -1,4 +1,4 @@
-package internal
+package master
 
 import (
 	"github.com/asdine/storm/v3"

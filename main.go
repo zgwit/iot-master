@@ -4,7 +4,7 @@ import (
 	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
-	"github.com/zgwit/iot-master/internal"
+	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/tsdb"
 	"github.com/zgwit/iot-master/web"
 )
@@ -17,7 +17,7 @@ func main() {
 
 	_ = connect.LoadTunnels()
 
-	_ = internal.Start()
+	_ = master.Start()
 
 
 	//TODO，判断是否开启Web

@@ -1,11 +1,11 @@
-package internal
+package master
 
 import (
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/internal/aggregator"
-	"github.com/zgwit/iot-master/internal/calc"
-	_select "github.com/zgwit/iot-master/internal/select"
+	"github.com/zgwit/iot-master/master/aggregator"
+	"github.com/zgwit/iot-master/master/calc"
+	_select "github.com/zgwit/iot-master/master/select"
 	"strings"
 	"time"
 )

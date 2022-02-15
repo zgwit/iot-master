@@ -1,8 +1,8 @@
 package aggregator
 
 import (
-	"github.com/zgwit/iot-master/internal/calc"
-	"github.com/zgwit/iot-master/internal/select"
+	"github.com/zgwit/iot-master/master/calc"
+	"github.com/zgwit/iot-master/master/select"
 	"math"
 )
 

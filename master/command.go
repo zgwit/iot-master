@@ -1,6 +1,6 @@
-package internal
+package master
 
-import "github.com/zgwit/iot-master/internal/select"
+import "github.com/zgwit/iot-master/master/select"
 
 type Command struct {
 	Name  string `json:"name"`

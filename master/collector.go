@@ -1,7 +1,7 @@
-package internal
+package master
 
 import (
-	"github.com/zgwit/iot-master/internal/cron"
+	"github.com/zgwit/iot-master/master/cron"
 )
 
 type Collector struct {

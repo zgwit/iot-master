@@ -1,9 +1,9 @@
-package internal
+package master
 
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/internal/cron"
+	"github.com/zgwit/iot-master/master/cron"
 	"time"
 )
 

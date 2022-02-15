@@ -1,10 +1,10 @@
-package internal
+package master
 
 import (
 	"github.com/antonmedv/expr"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/internal/calc"
+	"github.com/zgwit/iot-master/master/calc"
 	"github.com/zgwit/iot-master/tsdb"
 	"strconv"
 	"time"

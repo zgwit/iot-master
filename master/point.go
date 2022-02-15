@@ -1,4 +1,4 @@
-package internal
+package master
 
 type Point struct {
 	Name    string   `json:"name"`

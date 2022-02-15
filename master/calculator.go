@@ -1,6 +1,6 @@
-package internal
+package master
 
-import "github.com/zgwit/iot-master/internal/calc"
+import "github.com/zgwit/iot-master/master/calc"
 
 type Calculator struct {
 	Expression string `json:"expression"`
