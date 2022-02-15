@@ -6,9 +6,11 @@ import (
 	"strings"
 )
 
+//DataType 数据类型
 type DataType int
 
 const (
+	//TypeNONE 空类型
 	TypeNONE DataType = iota
 	TypeBIT
 	TypeBYTE
@@ -22,6 +24,7 @@ const (
 	TypeDOUBLE
 )
 
+//Parse 解析类型
 func (dt DataType) Parse(tp string) error {
 	strings.ToLower(tp)
 	switch strings.ToLower(tp) {
@@ -67,6 +70,7 @@ func (dt DataType) Parse(tp string) error {
 	return nil
 }
 
+//String 转化成字符串
 func (dt DataType) String() string {
 	var str string
 	switch dt {
@@ -96,6 +100,7 @@ func (dt DataType) String() string {
 	return str
 }
 
+//Size 宽度
 func (dt DataType) Size() int {
 	var s int
 	switch dt {
@@ -125,6 +130,7 @@ func (dt DataType) Size() int {
 	return s
 }
 
+//Encode 编码
 func (dt DataType) Encode(val float64, le bool) []byte {
 	buf := make([]byte, 8)
 	switch dt {
@@ -190,6 +196,7 @@ func (dt DataType) Encode(val float64, le bool) []byte {
 	return nil
 }
 
+//Decode 解码
 func (dt DataType) Decode(buf []byte, le bool) (float64, error) {
 	var val float64
 	switch dt {
@@ -255,10 +262,12 @@ func (dt DataType) Decode(buf []byte, le bool) (float64, error) {
 	return val, nil
 }
 
+//MarshalJSON 序列化
 func (dt DataType) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + dt.String() + `"`), nil
 }
 
+//UnmarshalJSON 解析
 func (dt DataType) UnmarshalJSON(buf []byte) error {
 	return dt.Parse(string(buf))
 }

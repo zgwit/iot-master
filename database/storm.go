@@ -68,6 +68,7 @@ var LinkHistory storm.Node
 // UserHistory 用户历史
 var UserHistory storm.Node
 
+//Open 打开数据库
 func Open(cfg *Option) error {
 	var err error
 
@@ -112,6 +113,7 @@ func Open(cfg *Option) error {
 	return nil
 }
 
+//Close 关闭数据库
 func Close() error {
 	err := Storm.Close()
 	if err != nil {

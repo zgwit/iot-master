@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+//ProjectDevice 项目的设备
 type ProjectDevice struct {
 	Id     int    `json:"id" storm:"id,increment"`
 	Name   string `json:"name"`
@@ -44,6 +45,7 @@ func (d *ProjectDevice) checkSelect(s *_select.Select) bool {
 	return false
 }
 
+//Project 项目
 type Project struct {
 	Id       int  `json:"id" storm:"id,increment"`
 	Disabled bool `json:"disabled"`
@@ -66,6 +68,7 @@ type Project struct {
 	deviceAlarmHandler func(alarm *DeviceAlarm)
 }
 
+//Init 项目初始化
 func (prj *Project) Init() error {
 	//设备数据变化的处理函数
 	prj.deviceDataHandler = func(data calc.Context) {
@@ -193,6 +196,7 @@ func (prj *Project) Init() error {
 	return nil
 }
 
+//Start 项目启动
 func (prj *Project) Start() error {
 	_ = database.ProjectHistory.Save(ProjectHistory{ProjectId: prj.Id, History: "start", Created: time.Now()})
 
@@ -212,6 +216,7 @@ func (prj *Project) Start() error {
 	return nil
 }
 
+//Stop 项目结束
 func (prj *Project) Stop() error {
 	_ = database.ProjectHistory.Save(ProjectHistory{ProjectId: prj.Id, History: "stop", Created: time.Now()})
 
@@ -238,6 +243,7 @@ func (prj *Project) execute(in *Invoke) error {
 	return nil
 }
 
+//ProjectHistory 项目历史
 type ProjectHistory struct {
 	Id        int       `json:"id" storm:"id,increment"`
 	ProjectId int       `json:"project_id"`
@@ -245,6 +251,7 @@ type ProjectHistory struct {
 	Created   time.Time `json:"created"`
 }
 
+//ProjectHistoryAlarm 项目历史告警
 type ProjectHistoryAlarm struct {
 	Id int `json:"id" storm:"id,increment"`
 
@@ -257,6 +264,7 @@ type ProjectHistoryAlarm struct {
 	Created time.Time `json:"created"`
 }
 
+//ProjectHistoryReactor 项目历史响应
 type ProjectHistoryReactor struct {
 	Id        int       `json:"id" storm:"id,increment"`
 	ProjectId int       `json:"project_id"`
@@ -265,6 +273,7 @@ type ProjectHistoryReactor struct {
 	Created   time.Time `json:"created"`
 }
 
+//ProjectHistoryJob 项目历史任务
 type ProjectHistoryJob struct {
 	Id        int       `json:"id" storm:"id,increment"`
 	ProjectId int       `json:"project_id"`

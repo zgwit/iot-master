@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+//Device 设备
 type Device struct {
 	Disabled bool `json:"disabled"`
 
@@ -38,6 +39,7 @@ type Device struct {
 	events.EventEmitter
 }
 
+//Init 设备初始化
 func (dev *Device) Init() error {
 
 	metric := strconv.Itoa(dev.Id)
@@ -158,6 +160,7 @@ func (dev *Device) Init() error {
 	return nil
 }
 
+//Start 设备启动
 func (dev *Device) Start() error {
 	_ = database.DeviceHistory.Save(DeviceHistory{DeviceId: dev.Id, History: "start", Created: time.Now()})
 
@@ -178,6 +181,7 @@ func (dev *Device) Start() error {
 	return nil
 }
 
+//Stop 结束设备
 func (dev *Device) Stop() error {
 	_ = database.DeviceHistory.Save(DeviceHistory{DeviceId: dev.Id, History: "stop", Created: time.Now()})
 
@@ -190,6 +194,7 @@ func (dev *Device) Stop() error {
 	return nil
 }
 
+//Execute 执行命令
 func (dev *Device) Execute(command string, argv []float64) error {
 	_ = database.DeviceHistoryCommand.Save(DeviceHistoryCommand{DeviceId: dev.Id, Command: command, Argv: argv, History: "execute", Created: time.Now()})
 
@@ -226,6 +231,7 @@ func (dev *Device) Execute(command string, argv []float64) error {
 	return nil
 }
 
+//DeviceHistory 设备历史
 type DeviceHistory struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	DeviceId int       `json:"device_id"`
@@ -233,6 +239,7 @@ type DeviceHistory struct {
 	Created  time.Time `json:"created"`
 }
 
+//DeviceHistoryAlarm 设备历史告警
 type DeviceHistoryAlarm struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	DeviceId int       `json:"device_id"`
@@ -242,6 +249,7 @@ type DeviceHistoryAlarm struct {
 	Created  time.Time `json:"created"`
 }
 
+//DeviceHistoryReactor 设备历史响应
 type DeviceHistoryReactor struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	DeviceId int       `json:"device_id"`
@@ -250,6 +258,7 @@ type DeviceHistoryReactor struct {
 	Created  time.Time `json:"created"`
 }
 
+//DeviceHistoryJob 设备历史任务
 type DeviceHistoryJob struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	DeviceId int       `json:"device_id"`
@@ -258,6 +267,7 @@ type DeviceHistoryJob struct {
 	Created  time.Time `json:"created"`
 }
 
+//DeviceHistoryCommand 设备历史命令
 type DeviceHistoryCommand struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	DeviceId int       `json:"device_id"`

@@ -6,8 +6,10 @@ import (
 	"time"
 )
 
+//Storage 引擎
 var Storage tstorage.Storage
 
+//Open 打开
 func Open(cfg *Option) error {
 
 	opts := make([]tstorage.Option, 0)
@@ -40,6 +42,7 @@ func Open(cfg *Option) error {
 	return err
 }
 
+//Save 保存数据
 func Save(metric string, key string, point float64) error {
 	rows := []tstorage.Row{{
 		Metric:    metric,
@@ -49,12 +52,14 @@ func Save(metric string, key string, point float64) error {
 	return Storage.InsertRows(rows)
 }
 
+//Load 加载数据
 func Load(metric string, id int, start, end int64) ([]*tstorage.DataPoint, error) {
 	//TODO 简单查询，并作结果整合
 	return Storage.Select(metric, []tstorage.Label{{Name: "key", Value: strconv.Itoa(id)}}, start, end)
 	//TODO 处理数据
 }
 
+//Close 关闭
 func Close() error {
 	err := Storage.Close()
 	Storage = nil

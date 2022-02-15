@@ -6,11 +6,13 @@ import (
 	"math"
 )
 
+//Target 目标
 type Target struct {
 	context    calc.Context
 	expression *calc.Expression
 }
 
+//Aggregator 聚合器
 type Aggregator struct {
 	Type       Type           `json:"type"`
 	As         string         `json:"as"`
@@ -23,20 +25,24 @@ type Aggregator struct {
 	targets []calc.Context
 }
 
+//Init 初始化
 func (a *Aggregator) Init() (err error) {
 	a.targets = make([]calc.Context, 0)
 	a.expression, err = calc.NewExpression(a.Expression)
 	return
 }
 
+//Push 加入
 func (a *Aggregator) Push(ctx calc.Context) {
 	a.targets = append(a.targets, ctx)
 }
 
+//Clear 清空
 func (a *Aggregator) Clear() {
 	a.targets = make([]calc.Context, 0)
 }
 
+//Evaluate 计算
 func (a *Aggregator) Evaluate() (val float64, err error) {
 	l := len(a.targets)
 	if l == 0 {

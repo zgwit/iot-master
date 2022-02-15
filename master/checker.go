@@ -2,21 +2,29 @@ package master
 
 import "time"
 
+//TimeRange 时间范围
 type TimeRange struct {
 	Start int `json:"start"`
 	End   int `json:"end"`
 }
 
+//Check 检查
 func (tr *TimeRange) Check(tm *time.Time) bool {
-	min := tm.Hour()*60 + tm.Minute()
-	return tr.Start <= min && min <= tr.End
+	minutes := tm.Hour()*60 + tm.Minute()
+	if tr.Start < tr.End {
+		return tr.Start <= minutes && minutes <= tr.End
+	} else {
+		return tr.Start >= minutes && minutes >= tr.End
+	}
 }
 
+//DailyChecker 每日检查
 type DailyChecker struct {
 	Times    []TimeRange    `json:"times"`
 	Weekdays []time.Weekday `json:"weekdays"`
 }
 
+//Check 检查
 func (dr *DailyChecker) Check() bool {
 	tm := time.Now()
 
@@ -47,16 +55,19 @@ func (dr *DailyChecker) Check() bool {
 	return false
 }
 
+//DelayChecker 延时检查
 type DelayChecker struct {
 	Delay int64 `json:"delay"`
 
 	start int64
 }
 
+//Reset 重置
 func (d *DelayChecker) Reset() {
 	d.start = 0
 }
 
+//Check 检查
 func (d *DelayChecker) Check(now int64) bool {
 	if d.Delay <= 0 {
 		return true
@@ -70,6 +81,7 @@ func (d *DelayChecker) Check(now int64) bool {
 	return d.start+d.Delay < now
 }
 
+//RepeatChecker 重复发生器
 type RepeatChecker struct {
 	Interval int64 `json:"interval"`
 	Total    int   `json:"total,omitempty"`
@@ -80,11 +92,13 @@ type RepeatChecker struct {
 	resetTimes int
 }
 
+//Reset 重置
 func (d *RepeatChecker) Reset() {
 	d.raised = false
 	d.resetTimes = 0
 }
 
+//Check 检查
 func (d *RepeatChecker) Check(now int64) bool {
 	//初次
 	if !d.raised {

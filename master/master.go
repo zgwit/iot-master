@@ -9,6 +9,7 @@ import (
 var allDevices sync.Map
 var allProjects sync.Map
 
+//Start 启动
 func Start() error {
 	err := LoadDevices()
 	if err != nil {
@@ -18,6 +19,7 @@ func Start() error {
 	return err
 }
 
+//LoadDevices 加载设备
 func LoadDevices() error {
 	devices := make([]*Device, 0)
 	err := database.Device.All(devices)
@@ -45,6 +47,7 @@ func LoadDevices() error {
 	return nil
 }
 
+//LoadDevice 加载设备
 func LoadDevice(id int) (*Device, error) {
 	device := &Device{}
 	err := database.Device.One("id", id, device)
@@ -65,6 +68,7 @@ func LoadDevice(id int) (*Device, error) {
 	return device, nil
 }
 
+//GetDevice 获取设备
 func GetDevice(id int) *Device {
 	d, ok := allDevices.Load(id)
 	if ok {
@@ -73,6 +77,7 @@ func GetDevice(id int) *Device {
 	return nil
 }
 
+//RemoveDevice 删除设备
 func RemoveDevice(id int) error {
 	d, ok := allDevices.LoadAndDelete(id)
 	if ok {
@@ -82,6 +87,7 @@ func RemoveDevice(id int) error {
 	return nil //error
 }
 
+//GetProject 获取项目
 func GetProject(id int) *Project {
 	d, ok := allProjects.Load(id)
 	if ok {
@@ -90,6 +96,7 @@ func GetProject(id int) *Project {
 	return nil
 }
 
+//RemoveProject 删除项目
 func RemoveProject(id int) error {
 	d, ok := allProjects.LoadAndDelete(id)
 	if ok {
@@ -99,6 +106,7 @@ func RemoveProject(id int) error {
 	return nil //error
 }
 
+//LoadProjects 加载项目
 func LoadProjects() error {
 	project := make([]*Project, 0)
 	err := database.Project.All(project)
@@ -126,6 +134,7 @@ func LoadProjects() error {
 	return nil
 }
 
+//LoadProject 加载项目
 func LoadProject(id int) (*Project, error) {
 	project := &Project{}
 	err := database.Project.One("id", id, project)

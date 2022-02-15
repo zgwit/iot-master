@@ -5,9 +5,11 @@ import (
 	"strings"
 )
 
+//Type 类型
 type Type int
 
 const (
+	//NONE 空类型
 	NONE Type = iota
 	SUM
 	COUNT
@@ -18,6 +20,7 @@ const (
 	LAST
 )
 
+//Parse 解析
 func (t Type) Parse(tp string) error {
 	strings.ToLower(tp)
 	switch strings.ToLower(tp) {
@@ -41,6 +44,7 @@ func (t Type) Parse(tp string) error {
 	return nil
 }
 
+//String 字符串
 func (t Type) String() string {
 	var str string
 	switch t {
@@ -64,10 +68,12 @@ func (t Type) String() string {
 	return str
 }
 
+//MarshalJSON 序列化
 func (t Type) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + t.String() + `"`), nil
 }
 
+//UnmarshalJSON 反序列化
 func (t Type) UnmarshalJSON(buf []byte) error {
 	return t.Parse(string(buf))
 }

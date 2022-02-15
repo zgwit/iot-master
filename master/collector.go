@@ -4,6 +4,7 @@ import (
 	"github.com/zgwit/iot-master/master/cron"
 )
 
+//Collector 采集器
 type Collector struct {
 	Disabled bool   `json:"disabled"`
 	Type     string `json:"type"` //interval, clock, crontab
@@ -27,6 +28,7 @@ type Collector struct {
 	adapter *Adapter
 }
 
+//Start 启动
 func (c *Collector) Start() (err error) {
 	switch c.Type {
 	case "interval":
@@ -47,6 +49,8 @@ func (c *Collector) Start() (err error) {
 	return
 }
 
+
+//Execute 执行
 func (c *Collector) Execute() {
 	//阻塞情况下，采集数据，要等待，避免大量读指令阻塞
 	//if !c.Parallel && c.reading {
@@ -65,6 +69,7 @@ func (c *Collector) read() {
 	c.reading = false
 }
 
+//Stop 结束
 func (c *Collector) Stop() {
 	c.job.Cancel()
 }

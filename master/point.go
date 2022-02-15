@@ -1,5 +1,6 @@
 package master
 
+//Point 数据点
 type Point struct {
 	Name    string   `json:"name"`
 	Label   string   `json:"label"`

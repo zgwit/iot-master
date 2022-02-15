@@ -2,6 +2,7 @@ package master
 
 import "github.com/zgwit/iot-master/master/select"
 
+//Command 命令
 type Command struct {
 	Name  string `json:"name"`
 	Label string `json:"label,omitempty"`
@@ -10,6 +11,7 @@ type Command struct {
 	Directives []*Directive `json:"directives"`
 }
 
+//Directive 指令
 type Directive struct {
 	Point string  `json:"point"`
 	Value float64 `json:"value,omitempty"`
@@ -22,6 +24,7 @@ type Directive struct {
 	Expression string `json:"expression,omitempty"`
 }
 
+//Invoke 执行
 type Invoke struct {
 	Command string    `json:"command"`
 	Argv    []float64 `json:"argv"`

@@ -1,5 +1,6 @@
 package helper
 
+//Sum 和
 func Sum(buf []byte) byte {
 	var sum byte = 0
 	l := len(buf)
@@ -9,6 +10,7 @@ func Sum(buf []byte) byte {
 	return sum
 }
 
+//Xor 异或
 func Xor(buf []byte) byte {
 	var xor byte = buf[0]
 	l := len(buf)

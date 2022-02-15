@@ -2,6 +2,7 @@ package tsdb
 
 import "time"
 
+//Option 参数
 type Option struct {
 	DataPath           string        `yaml:"data_path"`
 	TimestampPrecision string        `yaml:"timestamp_precision"` //ns us ms s

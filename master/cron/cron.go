@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+//Scheduler 调度器
 var Scheduler *gocron.Scheduler
 
 func init() {
@@ -13,6 +14,7 @@ func init() {
 
 //是否是使用单一协程？？？ 是则要改成协程池？？？
 
+//Schedule 创建任务
 func Schedule(crontab string, fn func()) (*Job, error) {
 	job, err := Scheduler.Cron(crontab).Do(fn)
 	if err != nil {
@@ -21,6 +23,7 @@ func Schedule(crontab string, fn func()) (*Job, error) {
 	return &Job{job: job}, nil
 }
 
+//Interval 创建周期任务
 func Interval(interval int, fn func()) (*Job, error) {
 	job, err := Scheduler.Every(interval).Milliseconds().Do(fn)
 	if err != nil {
@@ -29,6 +32,7 @@ func Interval(interval int, fn func()) (*Job, error) {
 	return &Job{job: job}, nil
 }
 
+//Clock 创建每日任务
 func Clock(hours int, minutes int, fn func()) (*Job, error) {
 	job, err := Scheduler.At(hours).Hours().At(minutes).Minutes().Do(fn)
 	if err != nil {
@@ -37,10 +41,12 @@ func Clock(hours int, minutes int, fn func()) (*Job, error) {
 	return &Job{job: job}, nil
 }
 
+//Job 任务
 type Job struct {
 	job *gocron.Job
 }
 
+//Cancel 取消任务
 func (j *Job) Cancel() {
 	Scheduler.Remove(j.job)
 }

@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+//Job 任务
 type Job struct {
 	Disabled bool   `json:"disabled"`
 	Type     string `json:"type"` //clock, crontab
@@ -23,6 +24,7 @@ type Job struct {
 	events.EventEmitter
 }
 
+//Start 启动任务
 func (j *Job) Start() error {
 	var err error
 
@@ -42,6 +44,7 @@ func (j *Job) Start() error {
 	return err
 }
 
+//Execute 执行任务
 func (j *Job) Execute() {
 	//for _, i:= range j.Invokes {
 	//	j.events.Publish("invoke", i)
@@ -50,10 +53,12 @@ func (j *Job) Execute() {
 	go j.Emit("invoke")
 }
 
+//Stop 取消任务
 func (j *Job) Stop() {
 	j.job.Cancel()
 }
 
+//String 任务描述
 func (j *Job) String() string {
 	switch j.Type {
 	case "clock":

@@ -74,15 +74,17 @@ func parseFxProgramAddress(address string) (addr fxProgramAddr, err error) {
 	return
 }
 
-// FxProgram FX协议
+//FxProgram FX协议
 type FxProgram struct {
 	link connect.Link
 }
 
+//NewFxSerial 新建
 func NewFxSerial() *FxProgram {
 	return &FxProgram{}
 }
 
+//Read 解析
 func (t *FxProgram) Read(address string, length int) ([]byte, error) {
 	addr, err := parseFxProgramAddress(address)
 	if err != nil {
@@ -133,6 +135,7 @@ func (t *FxProgram) Read(address string, length int) ([]byte, error) {
 	return ret, nil
 }
 
+//Write 写
 func (t *FxProgram) Write(address string, values []byte) error {
 
 	addr, err := parseFxProgramAddress(address)
