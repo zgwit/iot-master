@@ -4,6 +4,8 @@ import (
 	"github.com/antonmedv/expr"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal/calc"
+	"github.com/zgwit/iot-master/tsdb"
+	"strconv"
 	"time"
 )
 
@@ -38,6 +40,8 @@ type Device struct {
 
 func (dev *Device) Init() error {
 
+	metric := strconv.Itoa(dev.Id)
+
 	//处理数据变化结果
 	dev.adapter.On("data", func(data calc.Context) {
 		//更新上下文
@@ -45,6 +49,12 @@ func (dev *Device) Init() error {
 			dev.Context[k] = v
 		}
 
+		//保存到时序数据库（是否有必要起协程？？？）
+		go func() {
+			for k, v := range data {
+				_ = tsdb.Save(metric, k, v.(float64))
+			}
+		}()
 
 		//数据变化后，更新计算
 		for _, calculator := range dev.Calculators {

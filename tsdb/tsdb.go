@@ -40,10 +40,10 @@ func Open(cfg *Option) error {
 	return err
 }
 
-func Save(metric string, id int, point float64) error {
+func Save(metric string, key string, point float64) error {
 	rows := []tstorage.Row{{
 		Metric:    metric,
-		Labels:    []tstorage.Label{{Name: "key", Value: strconv.Itoa(id)}},
+		Labels:    []tstorage.Label{{Name: "key", Value: key}},
 		DataPoint: tstorage.DataPoint{Value: point, Timestamp: time.Now().Unix()},
 	}}
 	return Storage.InsertRows(rows)
