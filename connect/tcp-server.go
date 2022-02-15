@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+//TcpServer TCP服务器
 type TcpServer struct {
 	events.EventEmitter
 
@@ -29,6 +30,7 @@ func newTcpServer(service *TunnelModel) *TcpServer {
 	return svr
 }
 
+//Open 打开
 func (server *TcpServer) Open() error {
 	server.Emit("open")
 
@@ -107,6 +109,7 @@ func (server *TcpServer) Open() error {
 	return nil
 }
 
+//Close 关闭
 func (server *TcpServer) Close() (err error) {
 	server.Emit("close")
 
@@ -119,6 +122,7 @@ func (server *TcpServer) Close() (err error) {
 	return server.listener.Close()
 }
 
+//GetLink 获取连接
 func (server *TcpServer) GetLink(id int) (Link, error) {
 	return server.children[id], nil
 }

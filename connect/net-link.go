@@ -5,6 +5,7 @@ import (
 	"net"
 )
 
+//NetLink 网络连接
 type NetLink struct {
 	events.EventEmitter
 
@@ -18,10 +19,12 @@ func newNetLink(conn net.Conn) *NetLink {
 	}
 }
 
+//ID ID
 func (l *NetLink) ID() int {
 	return l.Id
 }
 
+//Write 写
 func (l *NetLink) Write(data []byte) error {
 	_, err := l.conn.Write(data)
 	if err != nil {
@@ -30,6 +33,7 @@ func (l *NetLink) Write(data []byte) error {
 	return err
 }
 
+//Read 读
 func (l *NetLink) Read(data []byte) (int, error) {
 	n, err := l.conn.Read(data)
 	if err != nil {
@@ -50,6 +54,7 @@ func (l *NetLink) receive() {
 	}
 }
 
+//Close 关闭
 func (l *NetLink) Close() error {
 	l.onClose()
 	return l.conn.Close()

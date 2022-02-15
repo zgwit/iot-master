@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+//Tunnel 通道
 type Tunnel interface {
 	events.EventInterface
 
@@ -16,6 +17,7 @@ type Tunnel interface {
 	GetLink(id int) (Link, error)
 }
 
+//TunnelModel 通道模型
 type TunnelModel struct {
 	Id        int              `json:"id" storm:"id,increment"`
 	Name      string           `json:"name"`
@@ -29,6 +31,7 @@ type TunnelModel struct {
 	Created   time.Time        `json:"created"`
 }
 
+//SerialOptions 串口参数
 type SerialOptions struct {
 	//PortName   string `json:"port_name"`   // /dev/tty.usb.. COM1
 	BaudRate   uint `json:"baud_rate"`   //9600 ... 115200 ...
@@ -37,6 +40,7 @@ type SerialOptions struct {
 	ParityMode uint `json:"parity_mode"` // 0:NONE 1:ODD 2:EVEN
 }
 
+//RegisterPacket 注册包
 type RegisterPacket struct {
 	Regex  string `json:"regex,omitempty"`
 	Length int    `json:"length,omitempty"`
@@ -44,6 +48,7 @@ type RegisterPacket struct {
 	regex *regexp.Regexp
 }
 
+//Check 检查
 func (p *RegisterPacket) Check(buf []byte) bool {
 	if p.Regex != "" {
 		if p.regex == nil {
@@ -59,6 +64,7 @@ func (p *RegisterPacket) Check(buf []byte) bool {
 	return true
 }
 
+//HeartBeatPacket 心跳包
 type HeartBeatPacket struct {
 	Timeout int64  `json:"timeout"`
 	Regex   string `json:"regex,omitempty"`
@@ -71,6 +77,7 @@ type HeartBeatPacket struct {
 	last  int64
 }
 
+//Check 检查
 func (p *HeartBeatPacket) Check(buf []byte) bool {
 
 	now := time.Now().Unix()
@@ -111,6 +118,7 @@ func (p *HeartBeatPacket) Check(buf []byte) bool {
 	return true
 }
 
+//TunnelHistory 通道历史
 type TunnelHistory struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	TunnelId int       `json:"tunnel_id"`

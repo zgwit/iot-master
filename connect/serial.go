@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+//Serial 串口
 type Serial struct {
 	events.EventEmitter
 
@@ -20,6 +21,7 @@ func newSerial(service *TunnelModel) *Serial {
 	}
 }
 
+//Open 打开
 func (s *Serial) Open() error {
 	s.Emit("open")
 
@@ -56,6 +58,7 @@ func (s *Serial) Open() error {
 	return nil
 }
 
+//Close 关闭
 func (s *Serial) Close() error {
 	s.Emit("close")
 	if s.link != nil {

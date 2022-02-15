@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+//UdpServer UDP服务器
 type UdpServer struct {
 	events.EventEmitter
 
@@ -20,7 +21,7 @@ type UdpServer struct {
 	listener *net.UDPConn
 }
 
-func NewUdpServer(service *TunnelModel) *UdpServer {
+func newUdpServer(service *TunnelModel) *UdpServer {
 	svr := &UdpServer{
 		service: service,
 	}
@@ -31,6 +32,7 @@ func NewUdpServer(service *TunnelModel) *UdpServer {
 	return svr
 }
 
+//Open 打开
 func (server *UdpServer) Open() error {
 	server.Emit("open")
 
@@ -113,6 +115,7 @@ func (server *UdpServer) Open() error {
 	return nil
 }
 
+//Close 关闭
 func (server *UdpServer) Close() (err error) {
 	server.Emit("close")
 	//close links
@@ -124,6 +127,7 @@ func (server *UdpServer) Close() (err error) {
 	return server.listener.Close()
 }
 
+//GetLink 获取链接
 func (server *UdpServer) GetLink(id int) (Link, error) {
 	return server.children[id], nil
 }

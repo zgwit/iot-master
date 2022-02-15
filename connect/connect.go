@@ -22,7 +22,7 @@ func NewTunnel(tunnel *TunnelModel) (Tunnel, error) {
 		tnl = newNetClient(tunnel, "udp")
 		break
 	case "udp-server":
-		tnl = NewUdpServer(tunnel)
+		tnl = newUdpServer(tunnel)
 		break
 	case "serial":
 		tnl = newSerial(tunnel)

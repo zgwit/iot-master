@@ -5,6 +5,7 @@ import (
 	"io"
 )
 
+//SerialLink 串口连接
 type SerialLink struct {
 	events.EventEmitter
 
@@ -18,10 +19,12 @@ func newSerialLink(port io.ReadWriteCloser) *SerialLink {
 	}
 }
 
+//ID ID
 func (l *SerialLink) ID() int {
 	return l.Id
 }
 
+//Write 写
 func (l *SerialLink) Write(data []byte) error {
 	_, err := l.port.Write(data)
 	if err != nil {
@@ -42,6 +45,7 @@ func (l *SerialLink) receive() {
 	}
 }
 
+//Close 关闭
 func (l *SerialLink) Close() error {
 	l.onClose()
 	return l.port.Close()

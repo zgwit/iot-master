@@ -5,6 +5,7 @@ import (
 	"net"
 )
 
+//UdpLink UDP链接
 type UdpLink struct {
 	events.EventEmitter
 
@@ -20,10 +21,12 @@ func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
 	}
 }
 
+//ID ID
 func (l *UdpLink) ID() int {
 	return l.Id
 }
 
+//Write 写
 func (l *UdpLink) Write(data []byte) error {
 	_, err := l.conn.WriteToUDP(data, l.addr)
 	if err != nil {
@@ -32,6 +35,7 @@ func (l *UdpLink) Write(data []byte) error {
 	return err
 }
 
+//Close 关闭
 func (l *UdpLink) Close() error {
 	l.onClose()
 	return l.conn.Close()
