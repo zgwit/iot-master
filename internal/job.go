@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal/cron"
 	"time"
@@ -54,6 +55,13 @@ func (j *Job) Stop() {
 }
 
 func (j *Job) String() string {
-	//TODO 转化成字符串
-	return "switch type"
+	switch j.Type {
+	case "clock":
+		hours := j.Clock / 60
+		minutes := j.Clock % 60
+		return fmt.Sprintf("%02d:%02d", hours, minutes)
+	case "crontab":
+		return j.Crontab
+	}
+	return ""
 }

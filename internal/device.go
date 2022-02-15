@@ -2,6 +2,7 @@ package internal
 
 import (
 	"github.com/antonmedv/expr"
+	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal/calc"
 	"github.com/zgwit/iot-master/tsdb"
@@ -9,13 +10,12 @@ import (
 	"time"
 )
 
-
 type Device struct {
-	Disabled bool     `json:"disabled"`
+	Disabled bool `json:"disabled"`
 
-	Id       int      `json:"id" storm:"id,increment"`
-	Name     string   `json:"name"`
-	Tags     []string `json:"tags"`
+	Id   int      `json:"id" storm:"id,increment"`
+	Name string   `json:"name"`
+	Tags []string `json:"tags"`
 
 	//从机号
 	Slave int `json:"slave"`
@@ -48,14 +48,6 @@ func (dev *Device) Init() error {
 		for k, v := range data {
 			dev.Context[k] = v
 		}
-
-		//保存到时序数据库（是否有必要起协程？？？）
-		go func() {
-			for k, v := range data {
-				_ = tsdb.Save(metric, k, v.(float64))
-			}
-		}()
-
 		//数据变化后，更新计算
 		for _, calculator := range dev.Calculators {
 			val, err := calculator.Evaluate(dev.Context)
@@ -76,8 +68,15 @@ func (dev *Device) Init() error {
 
 		//向上广播
 		dev.Emit("data", data)
-	})
 
+		//保存到时序数据库
+		//是否有必要起协程 或者 使用单一进程进行写入
+		go func() {
+			for k, v := range data {
+				_ = tsdb.Save(metric, k, v.(float64))
+			}
+		}()
+	})
 
 	//初始化计算器
 	for _, calculator := range dev.Calculators {
@@ -95,9 +94,15 @@ func (dev *Device) Init() error {
 		}
 
 		job.On("invoke", func() {
-			//TODO 日志
+			//日志
+			_ = database.DeviceHistoryJob.Save(DeviceHistoryJob{
+				DeviceId: dev.Id,
+				Job:      job.String(),
+				History:  "action",
+				Created:  time.Now()})
+			var err error
 			for _, invoke := range job.Invokes {
-				err := dev.Execute(invoke.Command, invoke.Argv)
+				err = dev.Execute(invoke.Command, invoke.Argv)
 				if err != nil {
 					dev.Emit("error", err)
 				}
@@ -113,20 +118,39 @@ func (dev *Device) Init() error {
 				DeviceId: dev.Id,
 				Created:  time.Now(),
 			}
-			//TODO 入库
+
+			//入库
+			_ = database.DeviceHistoryAlarm.Save(DeviceHistoryAlarm{
+				DeviceId: dev.Id,
+				Code:     alarm.Code,
+				Level:    alarm.Level,
+				Message:  alarm.Message,
+				Created:  time.Now(),
+			})
 
 			//上报
 			dev.Emit("alarm", da)
 		})
 
 		reactor.On("invoke", func() {
-			//TODO 日志
 			for _, invoke := range reactor.Invokes {
 				err := dev.Execute(invoke.Command, invoke.Argv)
 				if err != nil {
 					dev.Emit("error", err)
 				}
 			}
+
+			//保存历史
+			history := DeviceHistoryReactor{
+				DeviceId: dev.Id,
+				Name:     reactor.Name,
+				History:  "action",
+				Created:  time.Now(),
+			}
+			if history.Name == "" {
+				history.Name = reactor.Condition
+			}
+			_ = database.DeviceHistoryReactor.Save(history)
 		})
 	}
 
@@ -195,7 +219,6 @@ func (dev *Device) Execute(command string, argv []float64) error {
 	return nil
 }
 
-
 type DeviceHistory struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	DeviceId int       `json:"device_id"`
@@ -204,28 +227,35 @@ type DeviceHistory struct {
 }
 
 type DeviceHistoryAlarm struct {
-	Id int `json:"id" storm:"id,increment"`
+	Id       int       `json:"id" storm:"id,increment"`
+	DeviceId int       `json:"device_id"`
+	Code     string    `json:"code"`
+	Level    int       `json:"level"`
+	Message  string    `json:"message"`
+	Created  time.Time `json:"created"`
+}
 
-	DeviceId int    `json:"Device_id"`
-	Code     string `json:"code"`
-	Level    int    `json:"level"`
-	Message  string `json:"message"`
-
-	Created time.Time `json:"created"`
+type DeviceHistoryReactor struct {
+	Id       int       `json:"id" storm:"id,increment"`
+	DeviceId int       `json:"device_id"`
+	Name     string    `json:"name"`
+	History  string    `json:"result"`
+	Created  time.Time `json:"created"`
 }
 
 type DeviceHistoryJob struct {
-	Id      int       `json:"id" storm:"id,increment"`
-	Job     string    `json:"job"`
-	Result  string    `json:"result"`
-	Created time.Time `json:"created"`
+	Id       int       `json:"id" storm:"id,increment"`
+	DeviceId int       `json:"device_id"`
+	Job      string    `json:"job"`
+	History  string    `json:"result"`
+	Created  time.Time `json:"created"`
 }
 
 type DeviceHistoryCommand struct {
-	Id      int       `json:"id" storm:"id,increment"`
-	Command string    `json:"command"`
-	Argv    string    `json:"argv"`
-	Result  string    `json:"result"`
-	Created time.Time `json:"created"`
+	Id       int       `json:"id" storm:"id,increment"`
+	DeviceId int       `json:"device_id"`
+	Command  string    `json:"command"`
+	Argv     []float64 `json:"argv"`
+	History  string    `json:"result"`
+	Created  time.Time `json:"created"`
 }
-

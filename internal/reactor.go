@@ -26,6 +26,9 @@ type ProjectAlarm struct {
 type Reactor struct {
 	Disabled bool `json:"disabled"`
 
+	//名称
+	Name string `json:"name"`
+
 	//条件
 	Condition string `json:"condition"`
 	condition *calc.Expression
