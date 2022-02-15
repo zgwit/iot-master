@@ -2,7 +2,9 @@ package connect
 
 import (
 	"fmt"
+	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/database"
+	"sync"
 	"time"
 )
 
@@ -60,4 +62,21 @@ func NewTunnel(tunnel *TunnelModel) (Tunnel, error) {
 	})
 
 	return tnl, nil
+}
+
+var allTunnels sync.Map
+
+func LoadTunnels() error {
+	tunnels := make([]*TunnelModel, 0)
+	err := database.Tunnel.All(tunnels)
+	if err == storm.ErrNotFound {
+		return nil
+	}
+	for _, t := range tunnels {
+		tnl, err := NewTunnel(t)
+		if err != nil {
+			allTunnels.Store(t.Id, tnl)
+		}
+	}
+	return nil
 }
