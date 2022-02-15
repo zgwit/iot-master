@@ -7,6 +7,7 @@ import (
 	"github.com/zgwit/iot-master/protocol"
 )
 
+//Adapter 数据解析器（可能要改名）
 type Adapter struct {
 	slave    int
 	protocol protocol.Protocol
@@ -15,6 +16,7 @@ type Adapter struct {
 	events.EventEmitter
 }
 
+//Set 写数据位
 func (a *Adapter) Set(key string, value float64) error {
 	for _, p := range a.points {
 		if p.Name == key {
@@ -26,6 +28,7 @@ func (a *Adapter) Set(key string, value float64) error {
 	return fmt.Errorf("Unknown point %s ", key)
 }
 
+//Get 读数据位
 func (a *Adapter) Get(key string) (float64, error) {
 
 	for _, p := range a.points {
@@ -49,6 +52,7 @@ func (a *Adapter) Get(key string) (float64, error) {
 	return 0, fmt.Errorf("Unknown point %s ", key)
 }
 
+//Read 读多数据
 func (a *Adapter) Read(code, address, length int) (calc.Context, error) {
 	//读取数据
 	buf, err := a.protocol.Read(a.slave, code, address, length)

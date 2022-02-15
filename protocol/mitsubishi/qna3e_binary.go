@@ -7,6 +7,7 @@ import (
 	"github.com/zgwit/iot-master/protocol/helper"
 )
 
+// A3EBinaryAdapter 协议
 type A3EBinaryAdapter struct {
 	StationNumber byte //站编号
 	NetworkNumber byte //网络编号

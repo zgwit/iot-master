@@ -18,6 +18,7 @@ type request struct {
 	resp chan response //out
 }
 
+//RTU Modbus-RTU协议
 type RTU struct {
 	link  connect.Link
 	queue chan *request //in

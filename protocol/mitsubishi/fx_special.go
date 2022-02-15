@@ -61,6 +61,7 @@ func parseFxSpecialAddress(address string) (addr fxSpecialAddr, err error) {
 	return
 }
 
+// FxSpecial FX协议
 type FxSpecial struct {
 	StationNumber byte //站编号 00
 	PlcNumber     byte //PLC编号 FF

@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// Command 命令
 type Command struct {
 	Code  byte
 	IsBit bool

@@ -74,6 +74,7 @@ func parseFxProgramAddress(address string) (addr fxProgramAddr, err error) {
 	return
 }
 
+// FxProgram FX协议
 type FxProgram struct {
 	link connect.Link
 }

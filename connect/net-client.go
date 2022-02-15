@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+//NetClient 网络链接
 type NetClient struct {
 	events.EventEmitter
 
@@ -23,6 +24,7 @@ func newNetClient(service *TunnelModel, net string) *NetClient {
 	}
 }
 
+//Open 打开
 func (client *NetClient) Open() error {
 	client.Emit("open")
 
@@ -64,6 +66,7 @@ func (client *NetClient) Open() error {
 	return nil
 }
 
+//Close 关闭
 func (client *NetClient) Close() error {
 	//记录启动
 	client.Emit("close")
@@ -74,6 +77,7 @@ func (client *NetClient) Close() error {
 	return nil //TODO return error
 }
 
+//GetLink 获取链接
 func (client *NetClient) GetLink(id int) (Link, error) {
 	return client.link, nil
 }

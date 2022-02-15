@@ -2,6 +2,7 @@ package master
 
 import "time"
 
+//User 用户
 type User struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	Username string    `json:"username"`
@@ -10,11 +11,13 @@ type User struct {
 	Created  time.Time `json:"created"`
 }
 
+//Password 密码
 type Password struct {
-	UserId   int    `json:"user_id"  storm:"id,increment"`
+	Id       int    `json:"id"  storm:"id,increment"`
 	Password string `json:"password"`
 }
 
+//UserHistory 用户行为
 type UserHistory struct {
 	Id      int       `json:"id" storm:"id,increment"`
 	UserId  int       `json:"user_id"`

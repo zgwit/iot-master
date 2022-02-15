@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+//TCP Modbus-TCP协议
 type TCP struct {
 	link  connect.Link
 	queue chan interface{} //in

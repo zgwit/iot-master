@@ -7,6 +7,7 @@ import (
 	"strconv"
 )
 
+// A3C1 A3C1协议
 type A3C1 struct {
 	StationNumber byte //站编号
 	NetworkNumber byte //网络编号

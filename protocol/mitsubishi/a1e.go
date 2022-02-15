@@ -2,6 +2,7 @@ package mitsubishi
 
 import "github.com/zgwit/iot-master/connect"
 
+// A1eAdapter A1E协议
 type A1eAdapter struct {
 	PlcNumber byte
 	link      connect.Link

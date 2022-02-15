@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+// A3EAdapter 协议
 type A3EAdapter struct {
 	StationNumber byte //站编号
 	NetworkNumber byte //网络编号

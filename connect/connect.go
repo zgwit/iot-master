@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+//NewTunnel 创建通道
 func NewTunnel(tunnel *TunnelModel) (Tunnel, error) {
 	var tnl Tunnel
 	switch tunnel.Type {
@@ -66,6 +67,7 @@ func NewTunnel(tunnel *TunnelModel) (Tunnel, error) {
 
 var allTunnels sync.Map
 
+//LoadTunnels 加载通道
 func LoadTunnels() error {
 	tunnels := make([]*TunnelModel, 0)
 	err := database.Tunnel.All(tunnels)

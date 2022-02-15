@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+//Link 链接
 type Link interface {
 	events.EventInterface
 
@@ -15,6 +16,7 @@ type Link interface {
 	Close() error
 }
 
+//LinkModel 链接模型
 type LinkModel struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	TunnelId int       `json:"tunnel_id" storm:"index"`
@@ -23,6 +25,7 @@ type LinkModel struct {
 	Created  time.Time `json:"created"`
 }
 
+//LinkHistory 链接历史
 type LinkHistory struct {
 	Id      int       `json:"id" storm:"id,increment"`
 	LinkId  int       `json:"link_id" storm:"index"`

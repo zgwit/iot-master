@@ -110,6 +110,7 @@ type S7 struct {
 	link connect.Link
 }
 
+//PackCommand 打包命令
 func (t *S7) PackCommand(cmd []byte) []byte {
 	length := len(cmd)
 
@@ -140,6 +141,7 @@ func (t *S7) PackCommand(cmd []byte) []byte {
 	return buf
 }
 
+//BuildReadCommand 构建读命令
 func (t *S7) BuildReadCommand(addr s7address, length uint16) []byte {
 	buf := make([]byte, 14)
 	buf[0] = 0x04 // 4读 5写
@@ -157,6 +159,7 @@ func (t *S7) BuildReadCommand(addr s7address, length uint16) []byte {
 	return t.PackCommand(buf)
 }
 
+//BuildWriteCommand 构建写命令
 func (t *S7) BuildWriteCommand(addr s7address, values []byte) []byte {
 	length := len(values)
 
