@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/internal/aggregator"
 	"github.com/zgwit/iot-master/internal/calc"
@@ -113,13 +114,20 @@ func (prj *Project) Init() error {
 	//定时任务
 	for _, job := range prj.Jobs {
 		job.On("invoke", func() {
-			//TODO 日志
+			var err error
 			for _, invoke := range job.Invokes {
-				err := prj.execute(invoke)
+				err = prj.execute(invoke)
 				if err != nil {
 					prj.Emit("error", err)
 				}
 			}
+			
+			//日志
+			_ = database.ProjectHistoryJob.Save(ProjectHistoryJob{
+				ProjectId: prj.Id,
+				Job:      job.String(),
+				History:  "action",
+				Created:  time.Now()})
 		})
 	}
 
@@ -146,20 +154,39 @@ func (prj *Project) Init() error {
 				},
 				ProjectId: prj.Id,
 			}
-			//TODO 入库
+
+			//入库
+			_ = database.ProjectHistoryAlarm.Save(ProjectHistoryAlarm{
+				ProjectId: prj.Id,
+				Code:     alarm.Code,
+				Level:    alarm.Level,
+				Message:  alarm.Message,
+				Created:  time.Now(),
+			})
 
 			//上报
 			prj.Emit("alarm", pa)
 		})
 
 		reactor.On("invoke", func() {
-			//TODO 日志
 			for _, invoke := range reactor.Invokes {
 				err := prj.execute(invoke)
 				if err != nil {
 					prj.Emit("error", err)
 				}
 			}
+
+			//保存历史
+			history := ProjectHistoryReactor{
+				ProjectId: prj.Id,
+				Name:     reactor.Name,
+				History:  "action",
+				Created:  time.Now(),
+			}
+			if history.Name == "" {
+				history.Name = reactor.Condition
+			}
+			_ = database.ProjectHistoryReactor.Save(history)
 		})
 	}
 
@@ -167,6 +194,8 @@ func (prj *Project) Init() error {
 }
 
 func (prj *Project) Start() error {
+	_ = database.ProjectHistory.Save(ProjectHistory{ProjectId: prj.Id, History: "start", Created: time.Now()})
+	
 	//订阅设备的数据变化和报警
 	for _,dev := range prj.Devices {
 		dev.device.On("data", prj.deviceDataHandler)
@@ -184,6 +213,8 @@ func (prj *Project) Start() error {
 }
 
 func (prj *Project) Stop() error {
+	_ = database.ProjectHistory.Save(ProjectHistory{ProjectId: prj.Id, History: "stop", Created: time.Now()})
+
 	for _,dev := range prj.Devices {
 		dev.device.Off("data", prj.deviceDataHandler)
 		dev.device.Off("alarm", prj.deviceAlarmHandler)
@@ -195,6 +226,7 @@ func (prj *Project) Stop() error {
 }
 
 func (prj *Project) execute(in *Invoke) error {
+
 	for _, d := range prj.Devices {
 		if d.checkSelect(&in.Select) {
 			err := d.device.Execute(in.Command, in.Argv)
@@ -226,9 +258,19 @@ type ProjectHistoryAlarm struct {
 	Created time.Time `json:"created"`
 }
 
+type ProjectHistoryReactor struct {
+	Id       int       `json:"id" storm:"id,increment"`
+	ProjectId int       `json:"project_id"`
+	Name     string    `json:"name"`
+	History  string    `json:"result"`
+	Created  time.Time `json:"created"`
+}
+
+
 type ProjectHistoryJob struct {
 	Id      int       `json:"id" storm:"id,increment"`
+	ProjectId int       `json:"project_id"`
 	Job     string    `json:"job"`
-	Result  string    `json:"result"`
+	History  string    `json:"result"`
 	Created time.Time `json:"created"`
 }

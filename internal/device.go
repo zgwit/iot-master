@@ -94,12 +94,6 @@ func (dev *Device) Init() error {
 		}
 
 		job.On("invoke", func() {
-			//日志
-			_ = database.DeviceHistoryJob.Save(DeviceHistoryJob{
-				DeviceId: dev.Id,
-				Job:      job.String(),
-				History:  "action",
-				Created:  time.Now()})
 			var err error
 			for _, invoke := range job.Invokes {
 				err = dev.Execute(invoke.Command, invoke.Argv)
@@ -107,6 +101,13 @@ func (dev *Device) Init() error {
 					dev.Emit("error", err)
 				}
 			}
+			
+			//日志
+			_ = database.DeviceHistoryJob.Save(DeviceHistoryJob{
+				DeviceId: dev.Id,
+				Job:      job.String(),
+				History:  "action",
+				Created:  time.Now()})
 		})
 	}
 
