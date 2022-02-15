@@ -158,6 +158,8 @@ func (dev *Device) Init() error {
 }
 
 func (dev *Device) Start() error {
+	_ = database.DeviceHistory.Save(DeviceHistory{DeviceId: dev.Id, History: "start", Created: time.Now()})
+
 	//采集器
 	for _, collector := range dev.Collectors {
 		err := collector.Start()
@@ -176,6 +178,8 @@ func (dev *Device) Start() error {
 }
 
 func (dev *Device) Stop() error {
+	_ = database.DeviceHistory.Save(DeviceHistory{DeviceId: dev.Id, History: "stop", Created: time.Now()})
+
 	for _, collector := range dev.Collectors {
 		collector.Stop()
 	}
@@ -186,6 +190,8 @@ func (dev *Device) Stop() error {
 }
 
 func (dev *Device) Execute(command string, argv []float64) error {
+	_ = database.DeviceHistoryCommand.Save(DeviceHistoryCommand{DeviceId: dev.Id, Command: command, Argv: argv, History: "execute", Created: time.Now()})
+
 	cmd := dev.commandIndex[command]
 	//直接执行
 	for _, directive := range cmd.Directives {
