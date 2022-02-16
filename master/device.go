@@ -12,11 +12,11 @@ import (
 
 //Device 设备
 type Device struct {
-	Disabled bool `json:"disabled"`
-
-	Id   int      `json:"id" storm:"id,increment"`
-	Name string   `json:"name"`
-	Tags []string `json:"tags"`
+	Id       int      `json:"id" storm:"id,increment"`
+	Disabled bool     `json:"disabled,omitempty"`
+	Element  string   `json:"element,omitempty"` //元件UUID
+	Name     string   `json:"name"`
+	Tags     []string `json:"tags"`
 
 	//从机号
 	Slave int `json:"slave"`

@@ -47,8 +47,9 @@ func (d *ProjectDevice) checkSelect(s *_select.Select) bool {
 
 //Project 项目
 type Project struct {
-	Id       int  `json:"id" storm:"id,increment"`
-	Disabled bool `json:"disabled"`
+	Id       int    `json:"id" storm:"id,increment"`
+	Disabled bool   `json:"disabled,omitempty"`
+	Template string `json:"template,omitempty"`
 
 	Devices []*ProjectDevice `json:"devices"`
 
