@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/master/cron"
+	"github.com/zgwit/iot-master/model"
 	"time"
 )
 
@@ -17,7 +18,7 @@ type Job struct {
 
 	Crontab string `json:"crontab,omitempty"`
 
-	Invokes []*Invoke `json:"invokes"`
+	Invokes []*model.Invoke `json:"invokes"`
 
 	job *cron.Job
 

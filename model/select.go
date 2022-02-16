@@ -1,4 +1,4 @@
-package _select
+package model
 
 type Select struct {
 	Ids   []int    `json:"ids,omitempty"`

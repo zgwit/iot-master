@@ -5,7 +5,7 @@ import (
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/master/aggregator"
 	"github.com/zgwit/iot-master/master/calc"
-	_select "github.com/zgwit/iot-master/master/select"
+	"github.com/zgwit/iot-master/model"
 	"strings"
 	"time"
 )
@@ -28,7 +28,7 @@ func hasTag(a, b []string) bool {
 	return false
 }
 
-func (d *ProjectDevice) checkSelect(s *_select.Select) bool {
+func (d *ProjectDevice) checkSelect(s *model.Select) bool {
 	for _, name := range s.Names {
 		if name == d.Name {
 			return true
@@ -54,7 +54,7 @@ type Project struct {
 	Devices []*ProjectDevice `json:"devices"`
 
 	Aggregators []*aggregator.Aggregator `json:"aggregators"`
-	Commands    []*Command               `json:"commands"`
+	Commands    []*model.Command         `json:"commands"`
 	Reactors    []*Reactor               `json:"reactors"`
 	Jobs        []*Job                   `json:"jobs"`
 
@@ -231,7 +231,7 @@ func (prj *Project) Stop() error {
 	return nil
 }
 
-func (prj *Project) execute(in *Invoke) error {
+func (prj *Project) execute(in *model.Invoke) error {
 
 	for _, d := range prj.Devices {
 		if d.checkSelect(&in.Select) {

@@ -2,7 +2,7 @@ package aggregator
 
 import (
 	"github.com/zgwit/iot-master/master/calc"
-	"github.com/zgwit/iot-master/master/select"
+	"github.com/zgwit/iot-master/model"
 	"math"
 )
 
@@ -14,11 +14,11 @@ type Target struct {
 
 //Aggregator 聚合器
 type Aggregator struct {
-	Type       Type           `json:"type"`
-	As         string         `json:"as"`
-	From       string         `json:"from"`
-	Select     _select.Select `json:"select"`
-	Expression string         `json:"expression"`
+	Type       Type         `json:"type"`
+	As         string       `json:"as"`
+	From       string       `json:"from"`
+	Select     model.Select `json:"select"`
+	Expression string       `json:"expression"`
 
 	expression *calc.Expression
 	//targets []*common.Expression

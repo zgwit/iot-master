@@ -3,6 +3,7 @@ package master
 import (
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/master/calc"
+	"github.com/zgwit/iot-master/model"
 	"time"
 )
 
@@ -38,19 +39,19 @@ type Reactor struct {
 	condition *calc.Expression
 
 	//重复日
-	Daily *DailyChecker `json:"daily,omitempty"`
+	Daily *model.DailyChecker `json:"daily,omitempty"`
 
 	//延迟报警
-	Delay *DelayChecker `json:"delay,omitempty"`
+	Delay *model.DelayChecker `json:"delay,omitempty"`
 
 	//重复报警
-	Repeat *RepeatChecker `json:"repeat,omitempty"`
+	Repeat *model.RepeatChecker `json:"repeat,omitempty"`
 
 	//产生告警
 	Alarm *Alarm `json:"alarm,omitempty"`
 
 	//执行命名
-	Invokes []*Invoke `json:"invokes,omitempty"`
+	Invokes []*model.Invoke `json:"invokes,omitempty"`
 
 	events.EventEmitter
 }

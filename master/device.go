@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/master/calc"
+	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/tsdb"
 	"strconv"
 	"time"
@@ -21,18 +22,18 @@ type Device struct {
 	//从机号
 	Slave int `json:"slave"`
 
-	Points      []*Point      `json:"points"`
-	Pollers     []*Poller     `json:"pollers"`
-	Calculators []*Calculator `json:"calculators"`
-	Commands    []*Command    `json:"commands"`
-	Reactors    []*Reactor    `json:"reactors"`
-	Jobs        []*Job        `json:"jobs"`
+	Points      []*model.Point      `json:"points"`
+	Pollers     []*Poller           `json:"pollers"`
+	Calculators []*model.Calculator `json:"calculators"`
+	Commands    []*model.Command    `json:"commands"`
+	Reactors    []*Reactor          `json:"reactors"`
+	Jobs        []*Job              `json:"jobs"`
 
 	//上下文
 	Context calc.Context `json:"context"`
 
 	//命令索引
-	commandIndex map[string]*Command
+	commandIndex map[string]*model.Command
 
 	adapter *Adapter
 

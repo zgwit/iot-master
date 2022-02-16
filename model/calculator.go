@@ -1,4 +1,4 @@
-package master
+package model
 
 import "github.com/zgwit/iot-master/master/calc"
 

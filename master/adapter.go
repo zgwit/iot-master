@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/master/calc"
+	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 )
 
@@ -11,7 +12,7 @@ import (
 type Adapter struct {
 	slave    int
 	protocol protocol.Protocol
-	points   []Point
+	points   []model.Point
 
 	events.EventEmitter
 }
