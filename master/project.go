@@ -63,7 +63,7 @@ type Project struct {
 
 	Devices []*ProjectDevice
 
-	Aggregators []*aggregator.Aggregator
+	Aggregators []aggregator.Aggregator
 	Reactors    []*Reactor
 	Jobs        []*Job
 
@@ -85,26 +85,30 @@ func NewProject(m *model.Project) *Project {
 
 	if m.Devices != nil {
 		prj.Devices = make([]*ProjectDevice, len(m.Devices))
-		for i, v := range m.Devices {
-			prj.Devices[i] = &ProjectDevice{ProjectDevice: *v}
+		for _, v := range m.Devices {
+			prj.Devices = append(prj.Devices, &ProjectDevice{ProjectDevice: *v})
 		}
 	} else {
 		prj.Devices = make([]*ProjectDevice, 0)
 	}
 
 	if m.Aggregators != nil {
-		prj.Aggregators = make([]*aggregator.Aggregator, len(m.Aggregators))
-		for i, v := range m.Aggregators {
-			prj.Aggregators[i] = &aggregator.Aggregator{Aggregator: *v}
+		prj.Aggregators = make([]aggregator.Aggregator, len(m.Aggregators))
+		for _, v := range m.Aggregators {
+			agg, err := aggregator.New(v)
+			if err != nil {
+				return nil //TODO err
+			}
+			prj.Aggregators = append(prj.Aggregators, agg)
 		}
 	} else {
-		prj.Aggregators = make([]*aggregator.Aggregator, 0)
+		prj.Aggregators = make([]aggregator.Aggregator, 0)
 	}
 
 	if m.Jobs != nil {
 		prj.Jobs = make([]*Job, len(m.Jobs))
-		for i, v := range m.Jobs {
-			prj.Jobs[i] = &Job{Job: *v}
+		for _, v := range m.Jobs {
+			prj.Jobs = append(prj.Jobs, &Job{Job: *v})
 		}
 	} else {
 		prj.Jobs = make([]*Job, 0)
@@ -112,8 +116,8 @@ func NewProject(m *model.Project) *Project {
 
 	if m.Reactors != nil {
 		prj.Reactors = make([]*Reactor, len(m.Reactors))
-		for i, v := range m.Reactors {
-			prj.Reactors[i] = &Reactor{Reactor: *v}
+		for _, v := range m.Reactors {
+			prj.Reactors = append(prj.Reactors, &Reactor{Reactor: *v})
 		}
 	} else {
 		prj.Reactors = make([]*Reactor, 0)
@@ -132,7 +136,7 @@ func (prj *Project) Init() error {
 			if err != nil {
 				prj.Emit("error", err)
 			} else {
-				prj.Context[agg.As] = val
+				prj.Context[agg.Model().As] = val
 			}
 		}
 
@@ -196,7 +200,7 @@ func (prj *Project) Init() error {
 			return err
 		}
 		for _, d := range prj.Devices {
-			if d.belongSelector(&agg.Select) {
+			if d.belongSelector(&agg.Model().Selector) {
 				agg.Push(d.device.Context)
 			}
 		}

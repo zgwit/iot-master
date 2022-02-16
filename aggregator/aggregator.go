@@ -1,124 +1,68 @@
 package aggregator
 
 import (
+	"fmt"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/model"
-	"math"
 )
 
-//Target 目标
-type Target struct {
-	context    calc.Context
-	expression *calc.Expression
+type Aggregator interface {
+	Model() *model.Aggregator
+	Init() error
+	Push(ctx calc.Context)
+	Clear()
+	Evaluate() (val float64, err error)
 }
 
-//Aggregator 聚合器
-type Aggregator struct {
+//baseAggregator 聚合器
+type baseAggregator struct {
 	model.Aggregator
 
 	expression *calc.Expression
-	//targets []*common.Expression
-	targets []calc.Context
+	targets    []calc.Context
+}
+
+func (a *baseAggregator) Model() *model.Aggregator {
+	return &a.Aggregator
 }
 
 //Init 初始化
-func (a *Aggregator) Init() (err error) {
+func (a *baseAggregator) Init() (err error) {
 	a.targets = make([]calc.Context, 0)
 	a.expression, err = calc.NewExpression(a.Expression)
 	return
 }
 
 //Push 加入
-func (a *Aggregator) Push(ctx calc.Context) {
+func (a *baseAggregator) Push(ctx calc.Context) {
 	a.targets = append(a.targets, ctx)
 }
 
 //Clear 清空
-func (a *Aggregator) Clear() {
+func (a *baseAggregator) Clear() {
 	a.targets = make([]calc.Context, 0)
 }
 
-//Evaluate 计算
-func (a *Aggregator) Evaluate() (val float64, err error) {
-	l := len(a.targets)
-	if l == 0 {
-		return 0, nil
-	}
-	var res interface{}
-
-	//TODO 拆成子类，多态实现？？？
-	//var val float64 = 0
-	val = 0
-	switch a.Type {
+// New 新建
+func New(m *model.Aggregator) (agg Aggregator, err error) {
+	switch m.Type {
 	case "SUM":
-		for _, t := range a.targets {
-			res, err = a.expression.Evaluate(t)
-			if err != nil {
-				return
-			}
-			val += res.(float64)
-		}
-	case "COUNT":
-		for _, t := range a.targets {
-			res, err = a.expression.Evaluate(t)
-			if err != nil {
-				return
-			}
-			if res.(bool) {
-				val++
-			}
-		}
+		agg = &sumAggregator{baseAggregator{Aggregator: *m}}
 	case "AVG":
-		for _, t := range a.targets {
-			res, err = a.expression.Evaluate(t)
-			if err != nil {
-				return
-			}
-			val += res.(float64)
-		}
-		val = val / float64(len(a.targets))
+		agg = &avgAggregator{baseAggregator{Aggregator: *m}}
+	case "COUNT":
+		agg = &countAggregator{baseAggregator{Aggregator: *m}}
 	case "MIN":
-		val = math.MaxFloat64
-		for _, t := range a.targets {
-			res, err = a.expression.Evaluate(t)
-			if err != nil {
-				return
-			}
-			v := res.(float64)
-			if v < val {
-				val = v
-			}
-		}
+		agg = &minAggregator{baseAggregator{Aggregator: *m}}
 	case "MAX":
-		val = math.SmallestNonzeroFloat32
-		for _, t := range a.targets {
-			res, err = a.expression.Evaluate(t)
-			if err != nil {
-				return
-			}
-			v := res.(float64)
-			if v > val {
-				val = v
-			}
-		}
+		agg = &maxAggregator{baseAggregator{Aggregator: *m}}
 	case "FIRST":
-		res, err = a.expression.Evaluate(a.targets[0])
-		if err != nil {
-			return
-		}
-		val = res.(float64)
+		agg = &firstAggregator{baseAggregator{Aggregator: *m}}
 	case "LAST":
-		res, err = a.expression.Evaluate(a.targets[l-1])
-		if err != nil {
-			return
-		}
-		val = res.(float64)
+		agg = &lastAggregator{baseAggregator{Aggregator: *m}}
 	default:
-		return 0, nil //TODO error
+		err = fmt.Errorf("Unkown type %s ", m.Type)
 	}
-
-	//写入结果
-	//(*a.ctx)[a.As] = val
 
 	return
 }
