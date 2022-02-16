@@ -1,7 +1,7 @@
 package model
 
-//Rule 响应，待改名
-type Rule struct {
+//Strategy 响应，待改名
+type Strategy struct {
 	Disabled bool `json:"disabled"`
 
 	//名称

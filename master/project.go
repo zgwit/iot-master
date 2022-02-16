@@ -64,8 +64,8 @@ type Project struct {
 	Devices []*ProjectDevice
 
 	Aggregators []aggregator.Aggregator
-	Reactors    []*Rule
 	Jobs        []*Job
+	Strategies  []*Strategy
 
 	deviceNameIndex map[string]*Device
 	deviceIdIndex   map[int]*Device
@@ -114,13 +114,13 @@ func NewProject(m *model.Project) *Project {
 		prj.Jobs = make([]*Job, 0)
 	}
 
-	if m.Reactors != nil {
-		prj.Reactors = make([]*Rule, len(m.Reactors))
-		for _, v := range m.Reactors {
-			prj.Reactors = append(prj.Reactors, &Rule{Rule: *v})
+	if m.Strategies != nil {
+		prj.Strategies = make([]*Strategy, len(m.Strategies))
+		for _, v := range m.Strategies {
+			prj.Strategies = append(prj.Strategies, &Strategy{Strategy: *v})
 		}
 	} else {
-		prj.Reactors = make([]*Rule, 0)
+		prj.Strategies = make([]*Strategy, 0)
 	}
 
 	return prj
@@ -141,7 +141,7 @@ func (prj *Project) Init() error {
 		}
 
 		//处理响应
-		for _, reactor := range prj.Reactors {
+		for _, reactor := range prj.Strategies {
 			err := reactor.Execute(prj.Context)
 			if err != nil {
 				prj.Emit("error", err)
@@ -207,7 +207,7 @@ func (prj *Project) Init() error {
 	}
 
 	//订阅告警
-	for _, reactor := range prj.Reactors {
+	for _, reactor := range prj.Strategies {
 		reactor.On("alarm", func(alarm *model.Alarm) {
 			pa := &model.ProjectAlarm{
 				DeviceAlarm: model.DeviceAlarm{

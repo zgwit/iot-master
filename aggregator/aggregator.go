@@ -61,7 +61,7 @@ func New(m *model.Aggregator) (agg Aggregator, err error) {
 	case "LAST":
 		agg = &lastAggregator{baseAggregator{Aggregator: *m}}
 	default:
-		err = fmt.Errorf("Unkown type %s ", m.Type)
+		err = fmt.Errorf("Unknown type %s ", m.Type)
 	}
 
 	return

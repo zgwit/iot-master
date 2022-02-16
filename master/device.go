@@ -15,9 +15,9 @@ import (
 type Device struct {
 	model.Device
 
-	Pollers  []*Poller `json:"pollers"`
-	Reactors []*Rule   `json:"reactors"`
-	Jobs     []*Job    `json:"jobs"`
+	Pollers    []*Poller   `json:"pollers"`
+	Strategies []*Strategy `json:"strategies"`
+	Jobs       []*Job      `json:"jobs"`
 
 	//命令索引
 	commandIndex map[string]*model.Command
@@ -51,13 +51,13 @@ func NewDevice(m *model.Device) *Device {
 		dev.Jobs = make([]*Job, 0)
 	}
 
-	if m.Reactors != nil {
-		dev.Reactors = make([]*Rule, len(m.Reactors))
-		for _, v := range m.Reactors {
-			dev.Reactors = append(dev.Reactors, &Rule{Rule: *v})
+	if m.Strategies != nil {
+		dev.Strategies = make([]*Strategy, len(m.Strategies))
+		for _, v := range m.Strategies {
+			dev.Strategies = append(dev.Strategies, &Strategy{Strategy: *v})
 		}
 	} else {
-		dev.Reactors = make([]*Rule, 0)
+		dev.Strategies = make([]*Strategy, 0)
 	}
 
 	return dev
@@ -85,7 +85,7 @@ func (dev *Device) Init() error {
 		}
 
 		//处理响应
-		for _, reactor := range dev.Reactors {
+		for _, reactor := range dev.Strategies {
 			err := reactor.Execute(dev.Context)
 			if err != nil {
 				dev.Emit("error", err)
@@ -138,7 +138,7 @@ func (dev *Device) Init() error {
 	}
 
 	//订阅告警
-	for _, reactor := range dev.Reactors {
+	for _, reactor := range dev.Strategies {
 		reactor.On("alarm", func(alarm *model.Alarm) {
 			da := &model.DeviceAlarm{
 				Alarm:    *alarm,
