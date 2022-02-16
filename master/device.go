@@ -22,7 +22,7 @@ type Device struct {
 	Slave int `json:"slave"`
 
 	Points      []*Point      `json:"points"`
-	Collectors  []*Collector  `json:"collectors"`
+	Pollers     []*Poller     `json:"pollers"`
 	Calculators []*Calculator `json:"calculators"`
 	Commands    []*Command    `json:"commands"`
 	Reactors    []*Reactor    `json:"reactors"`
@@ -165,7 +165,7 @@ func (dev *Device) Start() error {
 	_ = database.DeviceHistory.Save(DeviceHistory{DeviceId: dev.Id, History: "start", Created: time.Now()})
 
 	//采集器
-	for _, collector := range dev.Collectors {
+	for _, collector := range dev.Pollers {
 		err := collector.Start()
 		if err != nil {
 			return err
@@ -185,7 +185,7 @@ func (dev *Device) Start() error {
 func (dev *Device) Stop() error {
 	_ = database.DeviceHistory.Save(DeviceHistory{DeviceId: dev.Id, History: "stop", Created: time.Now()})
 
-	for _, collector := range dev.Collectors {
+	for _, collector := range dev.Pollers {
 		collector.Stop()
 	}
 	for _, job := range dev.Jobs {

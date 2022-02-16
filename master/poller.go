@@ -4,8 +4,8 @@ import (
 	"github.com/zgwit/iot-master/master/cron"
 )
 
-//Collector 采集器
-type Collector struct {
+//Poller 采集器
+type Poller struct {
 	Disabled bool   `json:"disabled"`
 	Type     string `json:"type"` //interval, clock, crontab
 
@@ -29,21 +29,21 @@ type Collector struct {
 }
 
 //Start 启动
-func (c *Collector) Start() (err error) {
-	switch c.Type {
+func (p *Poller) Start() (err error) {
+	switch p.Type {
 	case "interval":
-		c.job, err = cron.Interval(c.Interval, func() {
-			c.Execute()
+		p.job, err = cron.Interval(p.Interval, func() {
+			p.Execute()
 		})
 	case "clock":
-		hours := c.Clock / 60
-		minutes := c.Clock % 60
-		c.job, err = cron.Clock(hours, minutes, func() {
-			c.Execute()
+		hours := p.Clock / 60
+		minutes := p.Clock % 60
+		p.job, err = cron.Clock(hours, minutes, func() {
+			p.Execute()
 		})
 	case "crontab":
-		c.job, err = cron.Schedule(c.Crontab, func() {
-			c.Execute()
+		p.job, err = cron.Schedule(p.Crontab, func() {
+			p.Execute()
 		})
 	}
 	return
@@ -51,25 +51,25 @@ func (c *Collector) Start() (err error) {
 
 
 //Execute 执行
-func (c *Collector) Execute() {
+func (p *Poller) Execute() {
 	//阻塞情况下，采集数据，要等待，避免大量读指令阻塞
-	//if !c.Parallel && c.reading {
-	if c.reading {
+	//if !p.Parallel && p.reading {
+	if p.reading {
 		return
 	}
 
 	//TODO 此举会不断创建协程 需要再确定gocron的协程机制
-	go c.read()
+	go p.read()
 }
 
-func (c *Collector) read() {
-	c.reading = true
-	_, _ = c.adapter.Read(c.Code, c.Address, c.Length)
+func (p *Poller) read() {
+	p.reading = true
+	_, _ = p.adapter.Read(p.Code, p.Address, p.Length)
 	//log error
-	c.reading = false
+	p.reading = false
 }
 
 //Stop 结束
-func (c *Collector) Stop() {
-	c.job.Cancel()
+func (p *Poller) Stop() {
+	p.job.Cancel()
 }
