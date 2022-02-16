@@ -15,9 +15,9 @@ import (
 type Device struct {
 	model.Device
 
-	Pollers  []*Poller  `json:"pollers"`
-	Reactors []*Reactor `json:"reactors"`
-	Jobs     []*Job     `json:"jobs"`
+	Pollers  []*Poller `json:"pollers"`
+	Reactors []*Rule   `json:"reactors"`
+	Jobs     []*Job    `json:"jobs"`
 
 	//命令索引
 	commandIndex map[string]*model.Command
@@ -52,12 +52,12 @@ func NewDevice(m *model.Device) *Device {
 	}
 
 	if m.Reactors != nil {
-		dev.Reactors = make([]*Reactor, len(m.Reactors))
+		dev.Reactors = make([]*Rule, len(m.Reactors))
 		for _, v := range m.Reactors {
-			dev.Reactors = append(dev.Reactors, &Reactor{Reactor: *v})
+			dev.Reactors = append(dev.Reactors, &Rule{Rule: *v})
 		}
 	} else {
-		dev.Reactors = make([]*Reactor, 0)
+		dev.Reactors = make([]*Rule, 0)
 	}
 
 	return dev
@@ -177,7 +177,7 @@ func (dev *Device) Init() error {
 			if history.Name == "" {
 				history.Name = reactor.Condition
 			}
-			_ = database.DeviceHistoryReactor.Save(history)
+			_ = database.DeviceHistoryRule.Save(history)
 		})
 	}
 

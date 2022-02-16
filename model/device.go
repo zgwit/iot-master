@@ -18,7 +18,7 @@ type Device struct {
 	Pollers     []*Poller     `json:"pollers"`
 	Calculators []*Calculator `json:"calculators"`
 	Commands    []*Command    `json:"commands"`
-	Reactors    []*Reactor    `json:"reactors"`
+	Reactors    []*Rule       `json:"reactors"`
 	Jobs        []*Job        `json:"jobs"`
 
 	//上下文

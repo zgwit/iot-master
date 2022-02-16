@@ -64,7 +64,7 @@ type Project struct {
 	Devices []*ProjectDevice
 
 	Aggregators []aggregator.Aggregator
-	Reactors    []*Reactor
+	Reactors    []*Rule
 	Jobs        []*Job
 
 	deviceNameIndex map[string]*Device
@@ -115,12 +115,12 @@ func NewProject(m *model.Project) *Project {
 	}
 
 	if m.Reactors != nil {
-		prj.Reactors = make([]*Reactor, len(m.Reactors))
+		prj.Reactors = make([]*Rule, len(m.Reactors))
 		for _, v := range m.Reactors {
-			prj.Reactors = append(prj.Reactors, &Reactor{Reactor: *v})
+			prj.Reactors = append(prj.Reactors, &Rule{Rule: *v})
 		}
 	} else {
-		prj.Reactors = make([]*Reactor, 0)
+		prj.Reactors = make([]*Rule, 0)
 	}
 
 	return prj
@@ -248,7 +248,7 @@ func (prj *Project) Init() error {
 			if history.Name == "" {
 				history.Name = reactor.Condition
 			}
-			_ = database.ProjectHistoryReactor.Save(history)
+			_ = database.ProjectHistoryRule.Save(history)
 		})
 	}
 

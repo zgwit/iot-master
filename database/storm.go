@@ -38,8 +38,8 @@ var ProjectHistory storm.Node
 // ProjectHistoryAlarm 项目报警历史
 var ProjectHistoryAlarm storm.Node
 
-// ProjectHistoryReactor 项目报警历史
-var ProjectHistoryReactor storm.Node
+// ProjectHistoryRule 项目报警历史
+var ProjectHistoryRule storm.Node
 
 // ProjectHistoryJob 项目任务历史
 var ProjectHistoryJob storm.Node
@@ -50,8 +50,8 @@ var DeviceHistory storm.Node
 // DeviceHistoryAlarm 设备报警历史
 var DeviceHistoryAlarm storm.Node
 
-// DeviceHistoryReactor 设备自动响应历史
-var DeviceHistoryReactor storm.Node
+// DeviceHistoryRule 设备自动响应历史
+var DeviceHistoryRule storm.Node
 
 // DeviceHistoryJob 设备任务历史
 var DeviceHistoryJob storm.Node
@@ -91,12 +91,12 @@ func Open(cfg *Option) error {
 	}
 	ProjectHistory = History.From("project")
 	ProjectHistoryAlarm = History.From("project", "alarm")
-	ProjectHistoryReactor = History.From("project", "reactor")
+	ProjectHistoryRule = History.From("project", "rule")
 	ProjectHistoryJob = History.From("project", "job")
 
 	DeviceHistory = History.From("device")
 	DeviceHistoryAlarm = History.From("device", "alarm")
-	DeviceHistoryReactor = History.From("device", "reactor")
+	DeviceHistoryRule = History.From("device", "rule")
 	DeviceHistoryJob = History.From("device", "job")
 	DeviceHistoryCommand = History.From("device", "command")
 

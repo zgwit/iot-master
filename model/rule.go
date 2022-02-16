@@ -1,7 +1,7 @@
 package model
 
-//Reactor 响应，待改名
-type Reactor struct {
+//Rule 响应，待改名
+type Rule struct {
 	Disabled bool `json:"disabled"`
 
 	//名称

@@ -16,7 +16,7 @@ type Project struct {
 
 	Aggregators []*Aggregator `json:"aggregators"`
 	Commands    []*Command    `json:"commands"`
-	Reactors    []*Reactor    `json:"reactors"`
+	Reactors    []*Rule       `json:"reactors"`
 	Jobs        []*Job        `json:"jobs"`
 
 	Context calc.Context `json:"context"`
