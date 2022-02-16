@@ -3,6 +3,7 @@ package connect
 import (
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/zgwit/iot-master/events"
+	"github.com/zgwit/iot-master/model"
 	"time"
 )
 
@@ -10,12 +11,12 @@ import (
 type Serial struct {
 	events.EventEmitter
 
-	service *TunnelModel
+	service *model.Tunnel
 
 	link *SerialLink
 }
 
-func newSerial(service *TunnelModel) *Serial {
+func newSerial(service *model.Tunnel) *Serial {
 	return &Serial{
 		service: service,
 	}

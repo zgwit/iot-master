@@ -5,6 +5,7 @@ import (
 	"github.com/asdine/storm/v3/q"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
+	"github.com/zgwit/iot-master/model"
 	"net"
 	"time"
 )
@@ -13,7 +14,7 @@ import (
 type UdpServer struct {
 	events.EventEmitter
 
-	service *TunnelModel
+	service *model.Tunnel
 
 	children map[int]*UdpLink
 	links    map[string]*UdpLink
@@ -21,7 +22,7 @@ type UdpServer struct {
 	listener *net.UDPConn
 }
 
-func newUdpServer(service *TunnelModel) *UdpServer {
+func newUdpServer(service *model.Tunnel) *UdpServer {
 	svr := &UdpServer{
 		service: service,
 	}
@@ -64,7 +65,7 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			lnk := LinkModel{
+			lnk := model.Link{
 				TunnelId: server.service.Id,
 				Created:  time.Now(),
 			}

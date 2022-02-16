@@ -5,6 +5,7 @@ import (
 	"github.com/asdine/storm/v3/q"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
+	"github.com/zgwit/iot-master/model"
 	"net"
 	"time"
 )
@@ -13,14 +14,14 @@ import (
 type TcpServer struct {
 	events.EventEmitter
 
-	service *TunnelModel
+	service *model.Tunnel
 
 	children map[int]*NetLink
 
 	listener *net.TCPListener
 }
 
-func newTcpServer(service *TunnelModel) *TcpServer {
+func newTcpServer(service *model.Tunnel) *TcpServer {
 	svr := &TcpServer{
 		service: service,
 	}
@@ -50,7 +51,7 @@ func (server *TcpServer) Open() error {
 				break
 			}
 
-			lnk := LinkModel{
+			lnk := model.Link{
 				TunnelId: server.service.Id,
 				Created:  time.Now(),
 			}

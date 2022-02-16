@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/model"
 	"sync"
 	"time"
 )
 
 //NewTunnel 创建通道
-func NewTunnel(tunnel *TunnelModel) (Tunnel, error) {
+func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 	var tnl Tunnel
 	switch tunnel.Type {
 	case "tcp-client":
@@ -32,7 +33,7 @@ func NewTunnel(tunnel *TunnelModel) (Tunnel, error) {
 	}
 
 	tnl.On("open", func() {
-		_ = database.TunnelHistory.Save(TunnelHistory{
+		_ = database.TunnelHistory.Save(model.TunnelHistory{
 			TunnelId: tunnel.Id,
 			History:  "open",
 			Created:  time.Now(),
@@ -40,7 +41,7 @@ func NewTunnel(tunnel *TunnelModel) (Tunnel, error) {
 	})
 
 	tnl.On("close", func() {
-		_ = database.TunnelHistory.Save(TunnelHistory{
+		_ = database.TunnelHistory.Save(model.TunnelHistory{
 			TunnelId: tunnel.Id,
 			History:  "close",
 			Created:  time.Now(),
@@ -48,13 +49,13 @@ func NewTunnel(tunnel *TunnelModel) (Tunnel, error) {
 	})
 
 	tnl.On("link", func(conn Link) {
-		_ = database.LinkHistory.Save(LinkHistory{
+		_ = database.LinkHistory.Save(model.LinkHistory{
 			LinkId:  conn.ID(),
 			History: "online",
 			Created: time.Now(),
 		})
 		conn.Once("close", func() {
-			_ = database.LinkHistory.Save(LinkHistory{
+			_ = database.LinkHistory.Save(model.LinkHistory{
 				LinkId:  conn.ID(),
 				History: "offline",
 				Created: time.Now(),
@@ -69,7 +70,7 @@ var allTunnels sync.Map
 
 //LoadTunnels 加载通道
 func LoadTunnels() error {
-	tunnels := make([]*TunnelModel, 0)
+	tunnels := make([]*model.Tunnel, 0)
 	err := database.Tunnel.All(tunnels)
 	if err == storm.ErrNotFound {
 		return nil
