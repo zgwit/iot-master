@@ -129,7 +129,7 @@ func (dev *Device) Init() error {
 			}
 
 			//日志
-			_ = database.DeviceHistoryJob.Save(model.DeviceHistoryJob{
+			_ = database.History.Save(model.DeviceHistoryJob{
 				DeviceId: dev.Id,
 				Job:      job.String(),
 				History:  "action",
@@ -147,7 +147,7 @@ func (dev *Device) Init() error {
 			}
 
 			//入库
-			_ = database.DeviceHistoryAlarm.Save(model.DeviceHistoryAlarm{
+			_ = database.History.Save(model.DeviceHistoryAlarm{
 				DeviceId: dev.Id,
 				Code:     alarm.Code,
 				Level:    alarm.Level,
@@ -177,7 +177,7 @@ func (dev *Device) Init() error {
 			if history.Name == "" {
 				history.Name = reactor.Condition
 			}
-			_ = database.DeviceHistoryRule.Save(history)
+			_ = database.History.Save(history)
 		})
 	}
 
@@ -186,7 +186,7 @@ func (dev *Device) Init() error {
 
 //Start 设备启动
 func (dev *Device) Start() error {
-	_ = database.DeviceHistory.Save(model.DeviceHistory{DeviceId: dev.Id, History: "start", Created: time.Now()})
+	_ = database.History.Save(model.DeviceHistory{DeviceId: dev.Id, History: "start", Created: time.Now()})
 
 	//采集器
 	for _, collector := range dev.Pollers {
@@ -207,7 +207,7 @@ func (dev *Device) Start() error {
 
 //Stop 结束设备
 func (dev *Device) Stop() error {
-	_ = database.DeviceHistory.Save(model.DeviceHistory{DeviceId: dev.Id, History: "stop", Created: time.Now()})
+	_ = database.History.Save(model.DeviceHistory{DeviceId: dev.Id, History: "stop", Created: time.Now()})
 
 	for _, collector := range dev.Pollers {
 		collector.Stop()
@@ -220,7 +220,7 @@ func (dev *Device) Stop() error {
 
 //Execute 执行命令
 func (dev *Device) Execute(command string, argv []float64) error {
-	_ = database.DeviceHistoryCommand.Save(model.DeviceHistoryCommand{DeviceId: dev.Id, Command: command, Argv: argv, History: "execute", Created: time.Now()})
+	_ = database.History.Save(model.DeviceHistoryCommand{DeviceId: dev.Id, Command: command, Argv: argv, History: "execute", Created: time.Now()})
 
 	cmd := dev.commandIndex[command]
 	//直接执行

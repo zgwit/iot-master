@@ -42,10 +42,10 @@ func (client *NetClient) Open() error {
 		TunnelId: client.service.Id,
 		Created:  time.Now(),
 	}
-	err = database.Link.One("TunnelId", client.service.Id, &lnk)
+	err = database.Master.One("TunnelId", client.service.Id, &lnk)
 	if err == storm.ErrNotFound {
 		//保存一条新记录
-		_ = database.Link.Save(&lnk)
+		_ = database.Master.Save(&lnk)
 	} else if err != nil {
 		return err
 	} else {

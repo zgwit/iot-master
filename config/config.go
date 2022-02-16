@@ -8,22 +8,16 @@ import (
 
 //Configure 配置
 type Configure struct {
-	Web      web.Option      `yaml:"web"`
-	Database database.Option `yaml:"database"`
-	History  tsdb.Option     `yaml:"history"`
+	Web      *web.Option      `yaml:"web,omitempty"`
+	Database *database.Option `yaml:"database,omitempty"`
+	History  *tsdb.Option     `yaml:"history,omitempty"`
 }
 
 //Config 全局配置
 var Config Configure = Configure{
-	Web: web.Option{
-		Addr: ":8080",
-	},
-	Database: database.Option{
-		Path: ".",
-	},
-	History: tsdb.Option{
-		DataPath: ".",
-	},
+	Web:      web.Default(),
+	Database: database.Default(),
+	History:  tsdb.Default(),
 }
 
 //Load 加载

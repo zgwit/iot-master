@@ -2,11 +2,12 @@ package database
 
 import (
 	"github.com/asdine/storm/v3"
+	"os"
 	"path/filepath"
 )
 
-// Storm 基础数据库
-var Storm *storm.DB
+// Master 基础数据库
+var Master *storm.DB
 
 // History 历史数据库
 var History *storm.DB
@@ -14,95 +15,24 @@ var History *storm.DB
 // Error 错误数据库
 var Error *storm.DB
 
-// Project 项目
-var Project storm.Node
-
-// Device 设备
-var Device storm.Node
-
-// Tunnel 服务
-var Tunnel storm.Node
-
-// Link 连接
-var Link storm.Node
-
-// User 用户
-var User storm.Node
-
-// Password 密码
-var Password storm.Node
-
-// ProjectHistory 项目历史
-var ProjectHistory storm.Node
-
-// ProjectHistoryAlarm 项目报警历史
-var ProjectHistoryAlarm storm.Node
-
-// ProjectHistoryRule 项目报警历史
-var ProjectHistoryRule storm.Node
-
-// ProjectHistoryJob 项目任务历史
-var ProjectHistoryJob storm.Node
-
-// DeviceHistory 设备历史
-var DeviceHistory storm.Node
-
-// DeviceHistoryAlarm 设备报警历史
-var DeviceHistoryAlarm storm.Node
-
-// DeviceHistoryRule 设备自动响应历史
-var DeviceHistoryRule storm.Node
-
-// DeviceHistoryJob 设备任务历史
-var DeviceHistoryJob storm.Node
-
-// DeviceHistoryCommand 设备命令历史
-var DeviceHistoryCommand storm.Node
-
-// TunnelHistory 服务历史
-var TunnelHistory storm.Node
-
-// LinkHistory 连接历史
-var LinkHistory storm.Node
-
-// UserHistory 用户历史
-var UserHistory storm.Node
-
 //Open 打开数据库
 func Open(cfg *Option) error {
-	var err error
-
-	//基础数据
-	Storm, err = storm.Open(filepath.Join(cfg.Path, "storm.db"))
+	err := os.MkdirAll(cfg.Path, os.ModePerm)
 	if err != nil {
 		return err
 	}
-	Project = Storm.From("project")
-	Device = Storm.From("device")
-	Tunnel = Storm.From("tunnel")
-	Link = Storm.From("link")
-	User = Storm.From("user")
-	Password = Storm.From("password")
+
+	//基础数据
+	Master, err = storm.Open(filepath.Join(cfg.Path, "master.db"))
+	if err != nil {
+		return err
+	}
 
 	//历史数据
 	History, err = storm.Open(filepath.Join(cfg.Path, "history.db"))
 	if err != nil {
 		return err
 	}
-	ProjectHistory = History.From("project")
-	ProjectHistoryAlarm = History.From("project", "alarm")
-	ProjectHistoryRule = History.From("project", "rule")
-	ProjectHistoryJob = History.From("project", "job")
-
-	DeviceHistory = History.From("device")
-	DeviceHistoryAlarm = History.From("device", "alarm")
-	DeviceHistoryRule = History.From("device", "rule")
-	DeviceHistoryJob = History.From("device", "job")
-	DeviceHistoryCommand = History.From("device", "command")
-
-	TunnelHistory = History.From("tunnel")
-	LinkHistory = History.From("link")
-	UserHistory = History.From("user")
 
 	//错误日志
 	Error, err = storm.Open(filepath.Join(cfg.Path, "error.db"))
@@ -115,7 +45,7 @@ func Open(cfg *Option) error {
 
 //Close 关闭数据库
 func Close() error {
-	err := Storm.Close()
+	err := Master.Close()
 	if err != nil {
 		return err
 	}

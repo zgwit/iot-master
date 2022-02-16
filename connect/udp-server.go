@@ -75,7 +75,7 @@ func (server *UdpServer) Open() error {
 				for _, link := range server.links {
 					_ = link.Close()
 				}
-				err = database.Link.One("TunnelId", server.service.Id, &lnk)
+				err = database.Master.One("TunnelId", server.service.Id, &lnk)
 			} else {
 				if !server.service.Register.Check(data) {
 					_ = conn.Close()
@@ -83,7 +83,7 @@ func (server *UdpServer) Open() error {
 				}
 				sn := string(data)
 				lnk.SN = sn
-				err = database.Link.Select(
+				err = database.Master.Select(
 					q.And(
 						q.Eq("TunnelId", server.service.Id),
 						q.Eq("SN", sn),
@@ -93,7 +93,7 @@ func (server *UdpServer) Open() error {
 
 			if err == storm.ErrNotFound {
 				//保存一条新记录
-				_ = database.Link.Save(&lnk)
+				_ = database.Master.Save(&lnk)
 			} else if err != nil {
 				//return err
 				continue

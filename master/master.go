@@ -22,8 +22,8 @@ func Start() error {
 
 //LoadDevices 加载设备
 func LoadDevices() error {
-	devices := make([]*model.Device, 0)
-	err := database.Device.All(devices)
+	var devices []*model.Device
+	err := database.Master.All(&devices)
 	if err == storm.ErrNotFound {
 		return nil
 	} else if err != nil {
@@ -53,7 +53,7 @@ func LoadDevices() error {
 //LoadDevice 加载设备
 func LoadDevice(id int) (*Device, error) {
 	device := &model.Device{}
-	err := database.Device.One("id", id, device)
+	err := database.Master.One("id", id, device)
 	if err != nil {
 		return nil, err
 	}
@@ -115,8 +115,8 @@ func RemoveProject(id int) error {
 
 //LoadProjects 加载项目
 func LoadProjects() error {
-	projects := make([]*model.Project, 0)
-	err := database.Project.All(projects)
+	var projects []*model.Project
+	err := database.Master.All(&projects)
 	if err == storm.ErrNotFound {
 		return nil
 	} else if err != nil {
@@ -145,7 +145,7 @@ func LoadProjects() error {
 //LoadProject 加载项目
 func LoadProject(id int) (*Project, error) {
 	project := &model.Project{}
-	err := database.Project.One("id", id, project)
+	err := database.Master.One("id", id, project)
 	if err != nil {
 		return nil, err
 	}

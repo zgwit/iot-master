@@ -61,7 +61,7 @@ func (server *TcpServer) Open() error {
 				for _, link := range server.children {
 					_ = link.Close()
 				}
-				err = database.Link.One("TunnelId", server.service.Id, &lnk)
+				err = database.Master.One("TunnelId", server.service.Id, &lnk)
 			} else {
 				buf := make([]byte, 128)
 				n, err := conn.Read(buf)
@@ -76,7 +76,7 @@ func (server *TcpServer) Open() error {
 				}
 				sn := string(data)
 				lnk.SN = sn
-				err = database.Link.Select(
+				err = database.Master.Select(
 					q.And(
 						q.Eq("TunnelId", server.service.Id),
 						q.Eq("SN", sn),
@@ -86,7 +86,7 @@ func (server *TcpServer) Open() error {
 
 			if err == storm.ErrNotFound {
 				//保存一条新记录
-				_ = database.Link.Save(&lnk)
+				_ = database.Master.Save(&lnk)
 			} else if err != nil {
 				//return err
 				continue

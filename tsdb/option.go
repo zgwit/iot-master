@@ -12,3 +12,9 @@ type Option struct {
 	BufferedSize       int           `yaml:"buffered_size"`
 	Log                bool          `yaml:"log"`
 }
+
+func Default() *Option {
+	return &Option{
+		DataPath: "history",
+	}
+}

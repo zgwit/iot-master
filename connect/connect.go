@@ -33,7 +33,7 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 	}
 
 	tnl.On("open", func() {
-		_ = database.TunnelHistory.Save(model.TunnelHistory{
+		_ = database.History.Save(model.TunnelHistory{
 			TunnelId: tunnel.Id,
 			History:  "open",
 			Created:  time.Now(),
@@ -41,7 +41,7 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 	})
 
 	tnl.On("close", func() {
-		_ = database.TunnelHistory.Save(model.TunnelHistory{
+		_ = database.History.Save(model.TunnelHistory{
 			TunnelId: tunnel.Id,
 			History:  "close",
 			Created:  time.Now(),
@@ -49,13 +49,13 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 	})
 
 	tnl.On("link", func(conn Link) {
-		_ = database.LinkHistory.Save(model.LinkHistory{
+		_ = database.History.Save(model.LinkHistory{
 			LinkId:  conn.ID(),
 			History: "online",
 			Created: time.Now(),
 		})
 		conn.Once("close", func() {
-			_ = database.LinkHistory.Save(model.LinkHistory{
+			_ = database.History.Save(model.LinkHistory{
 				LinkId:  conn.ID(),
 				History: "offline",
 				Created: time.Now(),
@@ -70,8 +70,8 @@ var allTunnels sync.Map
 
 //LoadTunnels 加载通道
 func LoadTunnels() error {
-	tunnels := make([]*model.Tunnel, 0)
-	err := database.Tunnel.All(tunnels)
+	var tunnels []*model.Tunnel
+	err := database.Master.All(&tunnels)
 	if err == storm.ErrNotFound {
 		return nil
 	}
