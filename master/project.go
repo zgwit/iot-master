@@ -1,10 +1,10 @@
 package master
 
 import (
+	"github.com/zgwit/iot-master/aggregator"
+	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/master/aggregator"
-	"github.com/zgwit/iot-master/master/calc"
 	"github.com/zgwit/iot-master/model"
 	"strings"
 	"time"
@@ -12,53 +12,60 @@ import (
 
 //ProjectDevice 项目的设备
 type ProjectDevice struct {
-	Id     int    `json:"id" storm:"id,increment"`
-	Name   string `json:"name"`
+	model.ProjectDevice
+
 	device *Device
 }
 
 func hasTag(a, b []string) bool {
-	for i := len(a); i >= 0; i-- {
-		for j := len(b); j >= 0; j-- {
-			if strings.EqualFold(a[i], b[j]) {
-				return true
+	if a != nil && b != nil {
+		for i := len(a); i >= 0; i-- {
+			for j := len(b); j >= 0; j-- {
+				if strings.EqualFold(a[i], b[j]) {
+					return true
+				}
 			}
 		}
 	}
 	return false
 }
 
-func (d *ProjectDevice) checkSelect(s *model.Select) bool {
-	for _, name := range s.Names {
-		if name == d.Name {
-			return true
+func (d *ProjectDevice) belongSelector(s *model.Selector) bool {
+	if s.Names != nil {
+		for _, name := range s.Names {
+			if name == d.Name {
+				return true
+			}
 		}
 	}
-	for _, name := range s.Ids {
-		if name == d.Id {
-			return true
+	if s.Ids != nil {
+		for _, id := range s.Ids {
+			if id == d.Id {
+				return true
+			}
 		}
 	}
-	if hasTag(s.Tags, d.device.Tags) {
-		return true
+	if s.Tags != nil && len(s.Tags) > 0 && d.device.Tags != nil && len(d.device.Tags) > 0 {
+		for i := len(s.Tags); i >= 0; i-- {
+			for j := len(d.device.Tags); j >= 0; j-- {
+				if strings.EqualFold(s.Tags[i], d.device.Tags[j]) {
+					return true
+				}
+			}
+		}
 	}
 	return false
 }
 
 //Project 项目
 type Project struct {
-	Id       int    `json:"id" storm:"id,increment"`
-	Disabled bool   `json:"disabled,omitempty"`
-	Template string `json:"template,omitempty"`
+	model.Project
 
-	Devices []*ProjectDevice `json:"devices"`
+	Devices []*ProjectDevice
 
-	Aggregators []*aggregator.Aggregator `json:"aggregators"`
-	Commands    []*model.Command         `json:"commands"`
-	Reactors    []*Reactor               `json:"reactors"`
-	Jobs        []*Job                   `json:"jobs"`
-
-	Context calc.Context `json:"context"`
+	Aggregators []*aggregator.Aggregator
+	Reactors    []*Reactor
+	Jobs        []*Job
 
 	deviceNameIndex map[string]*Device
 	deviceIdIndex   map[int]*Device
@@ -66,7 +73,53 @@ type Project struct {
 	events.EventEmitter
 
 	deviceDataHandler  func(data calc.Context)
-	deviceAlarmHandler func(alarm *DeviceAlarm)
+	deviceAlarmHandler func(alarm *model.DeviceAlarm)
+}
+
+func NewProject(m *model.Project) *Project {
+	prj := &Project{
+		Project:         *m,
+		deviceNameIndex: make(map[string]*Device),
+		deviceIdIndex:   make(map[int]*Device),
+	}
+
+	if m.Devices != nil {
+		prj.Devices = make([]*ProjectDevice, len(m.Devices))
+		for i, v := range m.Devices {
+			prj.Devices[i] = &ProjectDevice{ProjectDevice: *v}
+		}
+	} else {
+		prj.Devices = make([]*ProjectDevice, 0)
+	}
+
+	if m.Aggregators != nil {
+		prj.Aggregators = make([]*aggregator.Aggregator, len(m.Aggregators))
+		for i, v := range m.Aggregators {
+			prj.Aggregators[i] = &aggregator.Aggregator{Aggregator: *v}
+		}
+	} else {
+		prj.Aggregators = make([]*aggregator.Aggregator, 0)
+	}
+
+	if m.Jobs != nil {
+		prj.Jobs = make([]*Job, len(m.Jobs))
+		for i, v := range m.Jobs {
+			prj.Jobs[i] = &Job{Job: *v}
+		}
+	} else {
+		prj.Jobs = make([]*Job, 0)
+	}
+
+	if m.Reactors != nil {
+		prj.Reactors = make([]*Reactor, len(m.Reactors))
+		for i, v := range m.Reactors {
+			prj.Reactors[i] = &Reactor{Reactor: *v}
+		}
+	} else {
+		prj.Reactors = make([]*Reactor, 0)
+	}
+
+	return prj
 }
 
 //Init 项目初始化
@@ -93,8 +146,8 @@ func (prj *Project) Init() error {
 	}
 
 	//设备告警的处理函数
-	prj.deviceAlarmHandler = func(alarm *DeviceAlarm) {
-		pa := &ProjectAlarm{
+	prj.deviceAlarmHandler = func(alarm *model.DeviceAlarm) {
+		pa := &model.ProjectAlarm{
 			DeviceAlarm: *alarm,
 			ProjectId:   prj.Id,
 		}
@@ -105,14 +158,15 @@ func (prj *Project) Init() error {
 	}
 
 	//初始化设备
-	for _, d := range prj.Devices {
+	for _, d := range prj.Project.Devices {
 		dev := GetDevice(d.Id)
-		//TODO 如果找不到设备，该怎么处理
-		d.device = dev
+		if dev == nil {
+			//TODO 如果找不到设备，该怎么处理
+			continue
+		}
 		prj.deviceNameIndex[d.Name] = dev
 		prj.deviceIdIndex[d.Id] = dev
 		prj.Context[d.Name] = dev.Context //两级上下文
-		//_ = dev.events.Subscribe("data", prj.deviceDataHandler)
 	}
 
 	//定时任务
@@ -120,14 +174,14 @@ func (prj *Project) Init() error {
 		job.On("invoke", func() {
 			var err error
 			for _, invoke := range job.Invokes {
-				err = prj.execute(invoke)
+				err = prj.execute(&invoke)
 				if err != nil {
 					prj.Emit("error", err)
 				}
 			}
 
 			//日志
-			_ = database.ProjectHistoryJob.Save(ProjectHistoryJob{
+			_ = database.ProjectHistoryJob.Save(model.ProjectHistoryJob{
 				ProjectId: prj.Id,
 				Job:       job.String(),
 				History:   "action",
@@ -142,7 +196,7 @@ func (prj *Project) Init() error {
 			return err
 		}
 		for _, d := range prj.Devices {
-			if d.checkSelect(&agg.Select) {
+			if d.belongSelector(&agg.Select) {
 				agg.Push(d.device.Context)
 			}
 		}
@@ -150,9 +204,9 @@ func (prj *Project) Init() error {
 
 	//订阅告警
 	for _, reactor := range prj.Reactors {
-		reactor.On("alarm", func(alarm *Alarm) {
-			pa := &ProjectAlarm{
-				DeviceAlarm: DeviceAlarm{
+		reactor.On("alarm", func(alarm *model.Alarm) {
+			pa := &model.ProjectAlarm{
+				DeviceAlarm: model.DeviceAlarm{
 					Alarm:   *alarm,
 					Created: time.Now(),
 				},
@@ -160,7 +214,7 @@ func (prj *Project) Init() error {
 			}
 
 			//入库
-			_ = database.ProjectHistoryAlarm.Save(ProjectHistoryAlarm{
+			_ = database.ProjectHistoryAlarm.Save(model.ProjectHistoryAlarm{
 				ProjectId: prj.Id,
 				Code:      alarm.Code,
 				Level:     alarm.Level,
@@ -181,7 +235,7 @@ func (prj *Project) Init() error {
 			}
 
 			//保存历史
-			history := ProjectHistoryReactor{
+			history := model.ProjectHistoryReactor{
 				ProjectId: prj.Id,
 				Name:      reactor.Name,
 				History:   "action",
@@ -199,7 +253,7 @@ func (prj *Project) Init() error {
 
 //Start 项目启动
 func (prj *Project) Start() error {
-	_ = database.ProjectHistory.Save(ProjectHistory{ProjectId: prj.Id, History: "start", Created: time.Now()})
+	_ = database.ProjectHistory.Save(model.ProjectHistory{ProjectId: prj.Id, History: "start", Created: time.Now()})
 
 	//订阅设备的数据变化和报警
 	for _, dev := range prj.Devices {
@@ -219,7 +273,7 @@ func (prj *Project) Start() error {
 
 //Stop 项目结束
 func (prj *Project) Stop() error {
-	_ = database.ProjectHistory.Save(ProjectHistory{ProjectId: prj.Id, History: "stop", Created: time.Now()})
+	_ = database.ProjectHistory.Save(model.ProjectHistory{ProjectId: prj.Id, History: "stop", Created: time.Now()})
 
 	for _, dev := range prj.Devices {
 		dev.device.Off("data", prj.deviceDataHandler)
@@ -234,7 +288,7 @@ func (prj *Project) Stop() error {
 func (prj *Project) execute(in *model.Invoke) error {
 
 	for _, d := range prj.Devices {
-		if d.checkSelect(&in.Select) {
+		if d.belongSelector(&in.Selector) {
 			err := d.device.Execute(in.Command, in.Argv)
 			if err != nil {
 				return err
@@ -242,43 +296,4 @@ func (prj *Project) execute(in *model.Invoke) error {
 		}
 	}
 	return nil
-}
-
-//ProjectHistory 项目历史
-type ProjectHistory struct {
-	Id        int       `json:"id" storm:"id,increment"`
-	ProjectId int       `json:"project_id"`
-	History   string    `json:"history"`
-	Created   time.Time `json:"created"`
-}
-
-//ProjectHistoryAlarm 项目历史告警
-type ProjectHistoryAlarm struct {
-	Id int `json:"id" storm:"id,increment"`
-
-	ProjectId int    `json:"project_id"`
-	DeviceId  int    `json:"device_id"`
-	Code      string `json:"code"`
-	Level     int    `json:"level"`
-	Message   string `json:"message"`
-
-	Created time.Time `json:"created"`
-}
-
-//ProjectHistoryReactor 项目历史响应
-type ProjectHistoryReactor struct {
-	Id        int       `json:"id" storm:"id,increment"`
-	ProjectId int       `json:"project_id"`
-	Name      string    `json:"name"`
-	History   string    `json:"result"`
-	Created   time.Time `json:"created"`
-}
-
-//ProjectHistoryJob 项目历史任务
-type ProjectHistoryJob struct {
-	Id        int       `json:"id" storm:"id,increment"`
-	ProjectId int       `json:"project_id"`
-	Job       string    `json:"job"`
-	History   string    `json:"result"`
-	Created   time.Time `json:"created"`
 }

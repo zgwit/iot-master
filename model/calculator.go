@@ -1,6 +1,8 @@
 package model
 
-import "github.com/zgwit/iot-master/master/calc"
+import (
+	"github.com/zgwit/iot-master/calc"
+)
 
 //Calculator 计算器
 type Calculator struct {

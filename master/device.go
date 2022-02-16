@@ -2,9 +2,9 @@ package master
 
 import (
 	"github.com/antonmedv/expr"
+	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/master/calc"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/tsdb"
 	"strconv"
@@ -13,24 +13,11 @@ import (
 
 //Device 设备
 type Device struct {
-	Id       int      `json:"id" storm:"id,increment"`
-	Disabled bool     `json:"disabled,omitempty"`
-	Element  string   `json:"element,omitempty"` //元件UUID
-	Name     string   `json:"name"`
-	Tags     []string `json:"tags"`
+	model.Device
 
-	//从机号
-	Slave int `json:"slave"`
-
-	Points      []*model.Point      `json:"points"`
-	Pollers     []*Poller           `json:"pollers"`
-	Calculators []*model.Calculator `json:"calculators"`
-	Commands    []*model.Command    `json:"commands"`
-	Reactors    []*Reactor          `json:"reactors"`
-	Jobs        []*Job              `json:"jobs"`
-
-	//上下文
-	Context calc.Context `json:"context"`
+	Pollers  []*Poller  `json:"pollers"`
+	Reactors []*Reactor `json:"reactors"`
+	Jobs     []*Job     `json:"jobs"`
 
 	//命令索引
 	commandIndex map[string]*model.Command
@@ -38,6 +25,42 @@ type Device struct {
 	adapter *Adapter
 
 	events.EventEmitter
+}
+
+func NewDevice(m *model.Device) *Device {
+	dev := &Device{
+		Device:       *m,
+		commandIndex: make(map[string]*model.Command, 0),
+	}
+
+	if m.Pollers != nil {
+		dev.Pollers = make([]*Poller, len(m.Pollers))
+		for i, v := range m.Pollers {
+			dev.Pollers[i] = &Poller{Poller: *v}
+		}
+	} else {
+		dev.Pollers = make([]*Poller, 0)
+	}
+
+	if m.Jobs != nil {
+		dev.Jobs = make([]*Job, len(m.Jobs))
+		for i, v := range m.Jobs {
+			dev.Jobs[i] = &Job{Job: *v}
+		}
+	} else {
+		dev.Jobs = make([]*Job, 0)
+	}
+
+	if m.Reactors != nil {
+		dev.Reactors = make([]*Reactor, len(m.Reactors))
+		for i, v := range m.Reactors {
+			dev.Reactors[i] = &Reactor{Reactor: *v}
+		}
+	} else {
+		dev.Reactors = make([]*Reactor, 0)
+	}
+
+	return dev
 }
 
 //Init 设备初始化
@@ -106,7 +129,7 @@ func (dev *Device) Init() error {
 			}
 
 			//日志
-			_ = database.DeviceHistoryJob.Save(DeviceHistoryJob{
+			_ = database.DeviceHistoryJob.Save(model.DeviceHistoryJob{
 				DeviceId: dev.Id,
 				Job:      job.String(),
 				History:  "action",
@@ -116,15 +139,15 @@ func (dev *Device) Init() error {
 
 	//订阅告警
 	for _, reactor := range dev.Reactors {
-		reactor.On("alarm", func(alarm *Alarm) {
-			da := &DeviceAlarm{
+		reactor.On("alarm", func(alarm *model.Alarm) {
+			da := &model.DeviceAlarm{
 				Alarm:    *alarm,
 				DeviceId: dev.Id,
 				Created:  time.Now(),
 			}
 
 			//入库
-			_ = database.DeviceHistoryAlarm.Save(DeviceHistoryAlarm{
+			_ = database.DeviceHistoryAlarm.Save(model.DeviceHistoryAlarm{
 				DeviceId: dev.Id,
 				Code:     alarm.Code,
 				Level:    alarm.Level,
@@ -145,7 +168,7 @@ func (dev *Device) Init() error {
 			}
 
 			//保存历史
-			history := DeviceHistoryReactor{
+			history := model.DeviceHistoryReactor{
 				DeviceId: dev.Id,
 				Name:     reactor.Name,
 				History:  "action",
@@ -163,7 +186,7 @@ func (dev *Device) Init() error {
 
 //Start 设备启动
 func (dev *Device) Start() error {
-	_ = database.DeviceHistory.Save(DeviceHistory{DeviceId: dev.Id, History: "start", Created: time.Now()})
+	_ = database.DeviceHistory.Save(model.DeviceHistory{DeviceId: dev.Id, History: "start", Created: time.Now()})
 
 	//采集器
 	for _, collector := range dev.Pollers {
@@ -184,7 +207,7 @@ func (dev *Device) Start() error {
 
 //Stop 结束设备
 func (dev *Device) Stop() error {
-	_ = database.DeviceHistory.Save(DeviceHistory{DeviceId: dev.Id, History: "stop", Created: time.Now()})
+	_ = database.DeviceHistory.Save(model.DeviceHistory{DeviceId: dev.Id, History: "stop", Created: time.Now()})
 
 	for _, collector := range dev.Pollers {
 		collector.Stop()
@@ -197,7 +220,7 @@ func (dev *Device) Stop() error {
 
 //Execute 执行命令
 func (dev *Device) Execute(command string, argv []float64) error {
-	_ = database.DeviceHistoryCommand.Save(DeviceHistoryCommand{DeviceId: dev.Id, Command: command, Argv: argv, History: "execute", Created: time.Now()})
+	_ = database.DeviceHistoryCommand.Save(model.DeviceHistoryCommand{DeviceId: dev.Id, Command: command, Argv: argv, History: "execute", Created: time.Now()})
 
 	cmd := dev.commandIndex[command]
 	//直接执行
@@ -230,50 +253,4 @@ func (dev *Device) Execute(command string, argv []float64) error {
 	}
 
 	return nil
-}
-
-//DeviceHistory 设备历史
-type DeviceHistory struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
-	History  string    `json:"history"`
-	Created  time.Time `json:"created"`
-}
-
-//DeviceHistoryAlarm 设备历史告警
-type DeviceHistoryAlarm struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
-	Code     string    `json:"code"`
-	Level    int       `json:"level"`
-	Message  string    `json:"message"`
-	Created  time.Time `json:"created"`
-}
-
-//DeviceHistoryReactor 设备历史响应
-type DeviceHistoryReactor struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
-	Name     string    `json:"name"`
-	History  string    `json:"result"`
-	Created  time.Time `json:"created"`
-}
-
-//DeviceHistoryJob 设备历史任务
-type DeviceHistoryJob struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
-	Job      string    `json:"job"`
-	History  string    `json:"result"`
-	Created  time.Time `json:"created"`
-}
-
-//DeviceHistoryCommand 设备历史命令
-type DeviceHistoryCommand struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
-	Command  string    `json:"command"`
-	Argv     []float64 `json:"argv"`
-	History  string    `json:"result"`
-	Created  time.Time `json:"created"`
 }

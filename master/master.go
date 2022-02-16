@@ -3,6 +3,7 @@ package master
 import (
 	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/model"
 	"sync"
 )
 
@@ -21,7 +22,7 @@ func Start() error {
 
 //LoadDevices 加载设备
 func LoadDevices() error {
-	devices := make([]*Device, 0)
+	devices := make([]*model.Device, 0)
 	err := database.Device.All(devices)
 	if err == storm.ErrNotFound {
 		return nil
@@ -29,16 +30,18 @@ func LoadDevices() error {
 		return err
 	}
 	for _, d := range devices {
-		allDevices.Store(d.Id, d)
 		if d.Disabled {
 			continue
 		}
 
-		err = d.Init()
+		dev := NewDevice(d)
+		allDevices.Store(d.Id, dev)
+
+		err = dev.Init()
 		if err != nil {
 			//TODO log
 		} else {
-			err = d.Start()
+			err = dev.Start()
 			if err != nil {
 				//TODO log
 			}
@@ -49,23 +52,27 @@ func LoadDevices() error {
 
 //LoadDevice 加载设备
 func LoadDevice(id int) (*Device, error) {
-	device := &Device{}
+	device := &model.Device{}
 	err := database.Device.One("id", id, device)
 	if err != nil {
 		return nil, err
 	}
-	allDevices.Store(id, device)
 
-	err = device.Init()
+	dev := NewDevice(device)
+	allDevices.Store(device.Id, dev)
+
+	allDevices.Store(id, dev)
+
+	err = dev.Init()
 	if err != nil {
 		return nil, err
 	} else {
-		err = device.Start()
+		err = dev.Start()
 		if err != nil {
 			return nil, err
 		}
 	}
-	return device, nil
+	return dev, nil
 }
 
 //GetDevice 获取设备
@@ -108,24 +115,25 @@ func RemoveProject(id int) error {
 
 //LoadProjects 加载项目
 func LoadProjects() error {
-	project := make([]*Project, 0)
-	err := database.Project.All(project)
+	projects := make([]*model.Project, 0)
+	err := database.Project.All(projects)
 	if err == storm.ErrNotFound {
 		return nil
 	} else if err != nil {
 		return err
 	}
-	for _, p := range project {
-		allProjects.Store(p.Id, project)
+	for _, p := range projects {
+		allProjects.Store(p.Id, projects)
 		if p.Disabled {
 			continue
 		}
 
-		err = p.Init()
+		prj := NewProject(p)
+		err = prj.Init()
 		if err != nil {
 			//TODO log
 		} else {
-			err = p.Start()
+			err = prj.Start()
 			if err != nil {
 				//TODO log
 			}
@@ -136,21 +144,23 @@ func LoadProjects() error {
 
 //LoadProject 加载项目
 func LoadProject(id int) (*Project, error) {
-	project := &Project{}
+	project := &model.Project{}
 	err := database.Project.One("id", id, project)
 	if err != nil {
 		return nil, err
 	}
-	allProjects.Store(id, project)
 
-	err = project.Init()
+	prj := NewProject(project)
+	allProjects.Store(id, prj)
+
+	err = prj.Init()
 	if err != nil {
 		return nil, err
 	} else {
-		err = project.Start()
+		err = prj.Start()
 		if err != nil {
 			return nil, err
 		}
 	}
-	return project, nil
+	return prj, nil
 }

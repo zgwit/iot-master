@@ -1,30 +1,16 @@
 package master
 
 import (
-	"github.com/zgwit/iot-master/master/cron"
+	cron2 "github.com/zgwit/iot-master/cron"
+	"github.com/zgwit/iot-master/model"
 )
 
 //Poller 采集器
 type Poller struct {
-	Disabled bool   `json:"disabled"`
-	Type     string `json:"type"` //interval, clock, crontab
-
-	Interval int    `json:"interval,omitempty"`
-	Clock    int    `json:"clock,omitempty"`
-	Crontab  string `json:"crontab,omitempty"`
-
-	Code    int `json:"code"`
-	Address int `json:"address"`
-	//TODO Address2
-	Length int `json:"length"`
-
-	//TODO Filters
-
-	//等待结果
-	//Parallel bool `json:"parallel,omitempty"`
+	model.Poller
 
 	reading bool
-	job     *cron.Job
+	job     *cron2.Job
 	adapter *Adapter
 }
 
@@ -32,17 +18,17 @@ type Poller struct {
 func (p *Poller) Start() (err error) {
 	switch p.Type {
 	case "interval":
-		p.job, err = cron.Interval(p.Interval, func() {
+		p.job, err = cron2.Interval(p.Interval, func() {
 			p.Execute()
 		})
 	case "clock":
 		hours := p.Clock / 60
 		minutes := p.Clock % 60
-		p.job, err = cron.Clock(hours, minutes, func() {
+		p.job, err = cron2.Clock(hours, minutes, func() {
 			p.Execute()
 		})
 	case "crontab":
-		p.job, err = cron.Schedule(p.Crontab, func() {
+		p.job, err = cron2.Schedule(p.Crontab, func() {
 			p.Execute()
 		})
 	}

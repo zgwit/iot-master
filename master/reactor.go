@@ -1,58 +1,17 @@
 package master
 
 import (
+	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/master/calc"
 	"github.com/zgwit/iot-master/model"
 	"time"
 )
 
-//Alarm 告警内容
-type Alarm struct {
-	Code    string `json:"code"`
-	Level   int    `json:"level"`
-	Message string `json:"message"`
-}
-
-//DeviceAlarm 设备告警
-type DeviceAlarm struct {
-	Alarm
-	DeviceId int       `json:"device_id"`
-	Created  time.Time `json:"time"`
-}
-
-//ProjectAlarm 项目告警
-type ProjectAlarm struct {
-	DeviceAlarm
-	ProjectId int `json:"project_id"`
-}
-
 //Reactor 响应
 type Reactor struct {
-	Disabled bool `json:"disabled"`
+	model.Reactor
 
-	//名称
-	Name string `json:"name"`
-
-	//条件
-	Condition string `json:"condition"`
 	condition *calc.Expression
-
-	//重复日
-	Daily *model.DailyChecker `json:"daily,omitempty"`
-
-	//延迟报警
-	Delay *model.DelayChecker `json:"delay,omitempty"`
-
-	//重复报警
-	Repeat *model.RepeatChecker `json:"repeat,omitempty"`
-
-	//产生告警
-	Alarm *Alarm `json:"alarm,omitempty"`
-
-	//执行命名
-	Invokes []*model.Invoke `json:"invokes,omitempty"`
-
 	events.EventEmitter
 }
 

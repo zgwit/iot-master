@@ -2,25 +2,16 @@ package master
 
 import (
 	"fmt"
+	cron2 "github.com/zgwit/iot-master/cron"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/master/cron"
 	"github.com/zgwit/iot-master/model"
-	"time"
 )
 
 //Job 任务
 type Job struct {
-	Disabled bool   `json:"disabled"`
-	Type     string `json:"type"` //clock, crontab
+	model.Job
 
-	Clock    int            `json:"clock,omitempty"`
-	Weekdays []time.Weekday `json:"weekdays"`
-
-	Crontab string `json:"crontab,omitempty"`
-
-	Invokes []*model.Invoke `json:"invokes"`
-
-	job *cron.Job
+	job *cron2.Job
 
 	events.EventEmitter
 }
@@ -34,11 +25,11 @@ func (j *Job) Start() error {
 		hours := j.Clock / 60
 		minutes := j.Clock % 60
 		//TODO 处理weekdays
-		j.job, err = cron.Clock(hours, minutes, func() {
+		j.job, err = cron2.Clock(hours, minutes, func() {
 			j.Execute()
 		})
 	case "crontab":
-		j.job, err = cron.Schedule(j.Crontab, func() {
+		j.job, err = cron2.Schedule(j.Crontab, func() {
 			j.Execute()
 		})
 	}

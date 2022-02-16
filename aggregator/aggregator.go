@@ -1,7 +1,7 @@
 package aggregator
 
 import (
-	"github.com/zgwit/iot-master/master/calc"
+	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/model"
 	"math"
 )
@@ -14,11 +14,7 @@ type Target struct {
 
 //Aggregator 聚合器
 type Aggregator struct {
-	Type       Type         `json:"type"`
-	As         string       `json:"as"`
-	From       string       `json:"from"`
-	Select     model.Select `json:"select"`
-	Expression string       `json:"expression"`
+	model.Aggregator
 
 	expression *calc.Expression
 	//targets []*common.Expression
@@ -54,7 +50,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 	//var val float64 = 0
 	val = 0
 	switch a.Type {
-	case SUM:
+	case "SUM":
 		for _, t := range a.targets {
 			res, err = a.expression.Evaluate(t)
 			if err != nil {
@@ -62,7 +58,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 			}
 			val += res.(float64)
 		}
-	case COUNT:
+	case "COUNT":
 		for _, t := range a.targets {
 			res, err = a.expression.Evaluate(t)
 			if err != nil {
@@ -72,7 +68,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 				val++
 			}
 		}
-	case AVG:
+	case "AVG":
 		for _, t := range a.targets {
 			res, err = a.expression.Evaluate(t)
 			if err != nil {
@@ -81,7 +77,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 			val += res.(float64)
 		}
 		val = val / float64(len(a.targets))
-	case MIN:
+	case "MIN":
 		val = math.MaxFloat64
 		for _, t := range a.targets {
 			res, err = a.expression.Evaluate(t)
@@ -93,7 +89,7 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 				val = v
 			}
 		}
-	case MAX:
+	case "MAX":
 		val = math.SmallestNonzeroFloat32
 		for _, t := range a.targets {
 			res, err = a.expression.Evaluate(t)
@@ -105,13 +101,13 @@ func (a *Aggregator) Evaluate() (val float64, err error) {
 				val = v
 			}
 		}
-	case FIRST:
+	case "FIRST":
 		res, err = a.expression.Evaluate(a.targets[0])
 		if err != nil {
 			return
 		}
 		val = res.(float64)
-	case LAST:
+	case "LAST":
 		res, err = a.expression.Evaluate(a.targets[l-1])
 		if err != nil {
 			return

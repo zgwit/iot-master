@@ -2,8 +2,8 @@ package master
 
 import (
 	"fmt"
+	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/master/calc"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 )

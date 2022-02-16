@@ -1,7 +1,8 @@
 package model
 
-type Select struct {
+//Selector 选择器
+type Selector struct {
 	Ids   []int    `json:"ids,omitempty"`
-	Names []string `json:"names,omitempty"` //name
 	Tags  []string `json:"tags,omitempty"`
+	Names []string `json:"names,omitempty"` //name
 }

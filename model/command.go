@@ -6,7 +6,7 @@ type Command struct {
 	Label string `json:"label,omitempty"`
 	Argc  int    `json:"argc,omitempty"`
 
-	Directives []*Directive `json:"directives"`
+	Directives []Directive `json:"directives"`
 }
 
 //Directive 指令
@@ -20,13 +20,4 @@ type Directive struct {
 
 	//使用表达式
 	Expression string `json:"expression,omitempty"`
-}
-
-//Invoke 执行
-type Invoke struct {
-	Command string    `json:"command"`
-	Argv    []float64 `json:"argv"`
-
-	//目标设备（只在Project中使用）
-	Select Select `json:"select,omitempty"`
 }
