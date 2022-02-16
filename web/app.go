@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"embed"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
@@ -12,6 +13,8 @@ import (
 
 //go:embed www
 var wwwFiles embed.FS
+
+var server *http.Server
 
 func Serve(cfg *Options) {
 	if cfg == nil {
@@ -50,7 +53,23 @@ func Serve(cfg *Options) {
 	})
 
 	//监听HTTP
-	if err := app.Run(cfg.Addr); err != nil {
-		log.Fatal("HTTP 服务启动错误", err)
+	//if err := app.Run(cfg.Addr); err != nil {
+	//	log.Fatal("HTTP 服务启动错误", err)
+	//}
+
+	server = &http.Server{
+		Addr:    cfg.Addr,
+		Handler: app,
 	}
+
+	err := server.ListenAndServe()
+	if err != nil {
+		log.Fatal("Web服务启动错误", err)
+	}
+}
+
+func Close() error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	return server.Shutdown(ctx)
 }
