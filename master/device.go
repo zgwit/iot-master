@@ -35,8 +35,8 @@ func NewDevice(m *model.Device) *Device {
 
 	if m.Pollers != nil {
 		dev.Pollers = make([]*Poller, len(m.Pollers))
-		for i, v := range m.Pollers {
-			dev.Pollers[i] = &Poller{Poller: *v}
+		for _, v := range m.Pollers {
+			dev.Pollers = append(dev.Pollers, &Poller{Poller: *v})
 		}
 	} else {
 		dev.Pollers = make([]*Poller, 0)
@@ -44,8 +44,8 @@ func NewDevice(m *model.Device) *Device {
 
 	if m.Jobs != nil {
 		dev.Jobs = make([]*Job, len(m.Jobs))
-		for i, v := range m.Jobs {
-			dev.Jobs[i] = &Job{Job: *v}
+		for _, v := range m.Jobs {
+			dev.Jobs = append(dev.Jobs, &Job{Job: *v})
 		}
 	} else {
 		dev.Jobs = make([]*Job, 0)
@@ -53,8 +53,8 @@ func NewDevice(m *model.Device) *Device {
 
 	if m.Reactors != nil {
 		dev.Reactors = make([]*Reactor, len(m.Reactors))
-		for i, v := range m.Reactors {
-			dev.Reactors[i] = &Reactor{Reactor: *v}
+		for _, v := range m.Reactors {
+			dev.Reactors = append(dev.Reactors, &Reactor{Reactor: *v})
 		}
 	} else {
 		dev.Reactors = make([]*Reactor, 0)
