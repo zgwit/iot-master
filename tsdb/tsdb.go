@@ -10,7 +10,10 @@ import (
 var Storage tstorage.Storage
 
 //Open 打开
-func Open(cfg *Option) error {
+func Open(cfg *Options) error {
+	if cfg == nil {
+		cfg = DefaultOptions()
+	}
 
 	opts := make([]tstorage.Option, 0)
 

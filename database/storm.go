@@ -16,7 +16,11 @@ var History *storm.DB
 var Error *storm.DB
 
 //Open 打开数据库
-func Open(cfg *Option) error {
+func Open(cfg *Options) error {
+	if cfg == nil {
+		cfg = DefaultOptions()
+	}
+
 	err := os.MkdirAll(cfg.Path, os.ModePerm)
 	if err != nil {
 		return err

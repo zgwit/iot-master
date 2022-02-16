@@ -13,7 +13,11 @@ import (
 //go:embed www
 var wwwFiles embed.FS
 
-func Serve(cfg *Option) {
+func Serve(cfg *Options) {
+	if cfg == nil {
+		cfg = DefaultOptions()
+	}
+
 	if !cfg.Debug {
 		gin.SetMode(gin.ReleaseMode)
 	}

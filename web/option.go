@@ -1,14 +1,14 @@
 package web
 
-//Option 参数
-type Option struct {
+//Options 参数
+type Options struct {
 	Addr  string `yaml:"addr"`
 	Debug bool   `yaml:"debug,omitempty"`
 }
 
-//Default 默认
-func Default() *Option {
-	return &Option{
+//DefaultOptions 默认
+func DefaultOptions() *Options {
+	return &Options{
 		Addr:  ":8080",
 		Debug: false,
 	}

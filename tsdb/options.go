@@ -2,8 +2,8 @@ package tsdb
 
 import "time"
 
-//Option 参数
-type Option struct {
+//Options 参数
+type Options struct {
 	DataPath           string        `yaml:"data_path"`
 	TimestampPrecision string        `yaml:"timestamp_precision"` //ns us ms s
 	RetentionDuration  time.Duration `yaml:"retention_duration"`  //s
@@ -13,8 +13,8 @@ type Option struct {
 	Log                bool          `yaml:"log"`
 }
 
-func Default() *Option {
-	return &Option{
+func DefaultOptions() *Options {
+	return &Options{
 		DataPath: "history",
 	}
 }

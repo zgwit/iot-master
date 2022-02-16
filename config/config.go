@@ -8,17 +8,13 @@ import (
 
 //Configure 配置
 type Configure struct {
-	Web      *web.Option      `yaml:"web,omitempty"`
-	Database *database.Option `yaml:"database,omitempty"`
-	History  *tsdb.Option     `yaml:"history,omitempty"`
+	Web      *web.Options      `yaml:"web,omitempty"`
+	Database *database.Options `yaml:"database,omitempty"`
+	History  *tsdb.Options     `yaml:"history,omitempty"`
 }
 
 //Config 全局配置
-var Config Configure = Configure{
-	Web:      web.Default(),
-	Database: database.Default(),
-	History:  tsdb.Default(),
-}
+var Config Configure
 
 //Load 加载
 func Load() error {
