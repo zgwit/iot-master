@@ -65,46 +65,10 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.Use(mustLogin)
 
 	projectRoutes(app.Group("/project"))
-
-	//TODO 转移至子目录，并使用中间件，检查session及权限
-	//mod := reflect.TypeOf(model.Tunnel{})
-	////app.POST("/project/:id/tunnels", curdApiListByID(mod, "project_id"))
-	//app.POST("/tunnels", curdApiList(mod))
-	//app.POST("/tunnel", curdApiCreate(mod, nil, nil))                  //TODO 启动
-	//app.DELETE("/tunnel/:id", curdApiDelete(mod, nil, nil))            //TODO 停止
-	//app.PUT("/tunnel/:id", curdApiModify(mod, []string{""}, nil, nil)) //TODO 重新启动
-	//app.GET("/tunnel/:id", curdApiGet(mod))
-	//
-	//app.GET("/tunnel/:id/start", tunnelStart)
-	//app.GET("/tunnel/:id/stop", tunnelStop)
-
-	//app.POST("/channel/:id/links")
-
-	//连接管理
-	//mod = reflect.TypeOf(model.Link{})
-	////app.POST("/tunnel/:id/links", curdApiListByID(mod, "tunnel_id"))
-	//app.POST("/links", curdApiList(mod))
-	//app.DELETE("/link/:id", curdApiDelete(mod, nil, nil)) //TODO 停止
-	//app.PUT("/link/:id", curdApiModify(mod, []string{""}, nil, nil))
-	//app.GET("/link/:id", curdApiGet(mod))
-	//
-	////设备管理
-	//mod = reflect.TypeOf(model.Device{})
-	////app.POST("/project/:id/devices", curdApiListByID(mod, "project_id"))
-	//app.POST("/devices", curdApiList(mod))
-	//app.POST("/device", curdApiCreate(mod, nil, nil))
-	//app.DELETE("/device/:id", curdApiDelete(mod, nil, nil))
-	//app.PUT("/device/:id", curdApiModify(mod, []string{""}, nil, nil))
-	//app.GET("/device/:id", curdApiGet(mod))
-	//
-	////项目管理
-	//mod = reflect.TypeOf(model.Project{})
-	//app.POST("/projects", curdApiList(mod))
-	//app.POST("/project", curdApiCreate(mod, projectBeforeCreate, projectAfterCreate))
-	//app.DELETE("/project/:id", curdApiDelete(mod, nil, projectAfterDelete))
-	//app.PUT("/project/:id", curdApiModify(mod, []string{""}, nil, projectAfterModify))
-	//app.GET("/project/:id", curdApiGet(mod))
-
+	deviceRoutes(app.Group("/device"))
+	tunnelRoutes(app.Group("/tunnel"))
+	linkRoutes(app.Group("/link"))
+	userRoutes(app.Group("/user"))
 }
 
 func replyList(ctx *gin.Context, data interface{}, total int) {

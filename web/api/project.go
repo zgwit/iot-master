@@ -16,6 +16,8 @@ func projectRoutes(app *gin.RouterGroup) {
 	app.GET(":id/delete", projectDelete)
 	app.GET(":id/start", projectStart)
 	app.GET(":id/stop", projectStop)
+	app.GET(":id/enable", projectEnable)
+	app.GET(":id/disable", projectDisable)
 
 }
 
@@ -108,5 +110,26 @@ func projectStop(ctx *gin.Context) {
 		return
 	}
 
+	replyOk(ctx, nil)
+}
+
+
+func projectEnable(ctx *gin.Context) {
+	err := database.Master.UpdateField(&model.Project{ID: ctx.GetInt("id")}, "Disabled", false)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	//TODO 启动
+	replyOk(ctx, nil)
+}
+
+func projectDisable(ctx *gin.Context) {
+	err := database.Master.UpdateField(&model.Project{ID: ctx.GetInt("id")}, "Disabled", true)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	//TODO 关闭
 	replyOk(ctx, nil)
 }

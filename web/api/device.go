@@ -16,6 +16,8 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.GET(":id/delete", deviceDelete)
 	app.GET(":id/start", deviceStart)
 	app.GET(":id/stop", deviceStop)
+	app.GET(":id/enable", deviceEnable)
+	app.GET(":id/disable", deviceDisable)
 
 }
 
@@ -121,5 +123,26 @@ func deviceStop(ctx *gin.Context) {
 		return
 	}
 
+	replyOk(ctx, nil)
+}
+
+
+func deviceEnable(ctx *gin.Context) {
+	err := database.Master.UpdateField(&model.Device{ID: ctx.GetInt("id")}, "Disabled", false)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	//TODO 启动
+	replyOk(ctx, nil)
+}
+
+func deviceDisable(ctx *gin.Context) {
+	err := database.Master.UpdateField(&model.Device{ID: ctx.GetInt("id")}, "Disabled", true)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	//TODO 关闭
 	replyOk(ctx, nil)
 }

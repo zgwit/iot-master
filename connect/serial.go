@@ -68,6 +68,6 @@ func (s *Serial) Close() error {
 	return nil //TODO return error
 }
 
-func (s *Serial) GetLink(id int) (Link, error) {
-	return s.link, nil
+func (s *Serial) GetLink(id int) Link {
+	return s.link
 }

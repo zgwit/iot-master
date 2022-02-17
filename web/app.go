@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/web/api"
 	"log"
 	"net/http"
 	"time"
@@ -32,7 +33,7 @@ func Serve(cfg *Options) {
 	app.Use(sessions.Sessions("iot-master", memstore.NewStore([]byte("iot-master"))))
 
 	//注册前端接口
-	//api.RegisterRoutes(app.Group("/api"))
+	api.RegisterRoutes(app.Group("/api"))
 
 	//前端静态文件
 	//app.StaticFS("/", http.FS(wwwFiles))

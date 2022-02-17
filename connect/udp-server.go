@@ -129,6 +129,6 @@ func (server *UdpServer) Close() (err error) {
 }
 
 //GetLink 获取链接
-func (server *UdpServer) GetLink(id int) (Link, error) {
-	return server.children[id], nil
+func (server *UdpServer) GetLink(id int) Link {
+	return server.children[id]
 }

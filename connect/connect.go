@@ -83,3 +83,13 @@ func LoadTunnels() error {
 	}
 	return nil
 }
+
+//GetTunnel 获取通道
+func GetTunnel(id int) Tunnel {
+	d, ok := allTunnels.Load(id)
+	if ok {
+		return d.(Tunnel)
+	}
+	return nil
+}
+

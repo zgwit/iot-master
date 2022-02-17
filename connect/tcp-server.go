@@ -124,6 +124,6 @@ func (server *TcpServer) Close() (err error) {
 }
 
 //GetLink 获取连接
-func (server *TcpServer) GetLink(id int) (Link, error) {
-	return server.children[id], nil
+func (server *TcpServer) GetLink(id int) Link {
+	return server.children[id]
 }
