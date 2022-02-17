@@ -66,7 +66,7 @@ func NewDevice(m *model.Device) *Device {
 //Init 设备初始化
 func (dev *Device) Init() error {
 
-	metric := strconv.Itoa(dev.Id)
+	metric := strconv.Itoa(dev.ID)
 
 	//处理数据变化结果
 	dev.adapter.On("data", func(data calc.Context) {
@@ -130,7 +130,7 @@ func (dev *Device) Init() error {
 
 			//日志
 			_ = database.History.Save(model.DeviceHistoryJob{
-				DeviceId: dev.Id,
+				DeviceID: dev.ID,
 				Job:      job.String(),
 				History:  "action",
 				Created:  time.Now()})
@@ -142,13 +142,13 @@ func (dev *Device) Init() error {
 		reactor.On("alarm", func(alarm *model.Alarm) {
 			da := &model.DeviceAlarm{
 				Alarm:    *alarm,
-				DeviceId: dev.Id,
+				DeviceID: dev.ID,
 				Created:  time.Now(),
 			}
 
 			//入库
 			_ = database.History.Save(model.DeviceHistoryAlarm{
-				DeviceId: dev.Id,
+				DeviceID: dev.ID,
 				Code:     alarm.Code,
 				Level:    alarm.Level,
 				Message:  alarm.Message,
@@ -169,7 +169,7 @@ func (dev *Device) Init() error {
 
 			//保存历史
 			history := model.DeviceHistoryReactor{
-				DeviceId: dev.Id,
+				DeviceID: dev.ID,
 				Name:     reactor.Name,
 				History:  "action",
 				Created:  time.Now(),
@@ -186,7 +186,7 @@ func (dev *Device) Init() error {
 
 //Start 设备启动
 func (dev *Device) Start() error {
-	_ = database.History.Save(model.DeviceHistory{DeviceId: dev.Id, History: "start", Created: time.Now()})
+	_ = database.History.Save(model.DeviceHistory{DeviceID: dev.ID, History: "start", Created: time.Now()})
 
 	//采集器
 	for _, collector := range dev.Pollers {
@@ -207,7 +207,7 @@ func (dev *Device) Start() error {
 
 //Stop 结束设备
 func (dev *Device) Stop() error {
-	_ = database.History.Save(model.DeviceHistory{DeviceId: dev.Id, History: "stop", Created: time.Now()})
+	_ = database.History.Save(model.DeviceHistory{DeviceID: dev.ID, History: "stop", Created: time.Now()})
 
 	for _, collector := range dev.Pollers {
 		collector.Stop()
@@ -220,7 +220,7 @@ func (dev *Device) Stop() error {
 
 //Execute 执行命令
 func (dev *Device) Execute(command string, argv []float64) error {
-	_ = database.History.Save(model.DeviceHistoryCommand{DeviceId: dev.Id, Command: command, Argv: argv, History: "execute", Created: time.Now()})
+	_ = database.History.Save(model.DeviceHistoryCommand{DeviceID: dev.ID, Command: command, Argv: argv, History: "execute", Created: time.Now()})
 
 	cmd := dev.commandIndex[command]
 	//直接执行

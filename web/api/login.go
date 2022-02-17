@@ -35,15 +35,29 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	//if user.Password != obj.Password {
-	//	replyFail(ctx, "密钥错误")
-	//	return
-	//}
-	//
-	//if user.Disabled {
-	//	replyFail(ctx, "用户已禁用")
-	//	return
-	//}
+
+	if user.Disabled {
+		replyFail(ctx, "用户已禁用")
+		return
+	}
+
+	var password model.Password
+	err = database.Master.One("ID", user.ID, &password)
+	//初始化密码
+	if err == storm.ErrNotFound {
+		password.ID = user.ID
+		password.Password = "123456" //TODO 加密，可配置，或随机
+		err = database.Master.Save(&password)
+	}
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	if password.Password != obj.Password {
+		replyFail(ctx, "密钥错误")
+		return
+	}
 
 	//存入session
 	session.Set("user", user)

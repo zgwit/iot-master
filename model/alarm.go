@@ -12,12 +12,12 @@ type Alarm struct {
 //DeviceAlarm 设备告警
 type DeviceAlarm struct {
 	Alarm
-	DeviceId int       `json:"device_id"`
+	DeviceID int       `json:"device_id"`
 	Created  time.Time `json:"time"`
 }
 
 //ProjectAlarm 项目告警
 type ProjectAlarm struct {
 	DeviceAlarm
-	ProjectId int `json:"project_id"`
+	ProjectID int `json:"project_id"`
 }

@@ -6,7 +6,7 @@ import (
 )
 
 type Device struct {
-	Id      int      `json:"id" storm:"id,increment"`
+	ID      int      `json:"id" storm:"id,increment"`
 	Element string   `json:"element,omitempty"` //元件UUID
 	Name    string   `json:"name"`
 	Tags    []string `json:"tags,omitempty"`
@@ -29,16 +29,16 @@ type Device struct {
 
 //DeviceHistory 设备历史
 type DeviceHistory struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
+	ID       int       `json:"id" storm:"id,increment"`
+	DeviceID int       `json:"device_id"`
 	History  string    `json:"history"`
 	Created  time.Time `json:"created"`
 }
 
 //DeviceHistoryAlarm 设备历史告警
 type DeviceHistoryAlarm struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
+	ID       int       `json:"id" storm:"id,increment"`
+	DeviceID int       `json:"device_id"`
 	Code     string    `json:"code"`
 	Level    int       `json:"level"`
 	Message  string    `json:"message"`
@@ -47,8 +47,8 @@ type DeviceHistoryAlarm struct {
 
 //DeviceHistoryReactor 设备历史响应
 type DeviceHistoryReactor struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
+	ID       int       `json:"id" storm:"id,increment"`
+	DeviceID int       `json:"device_id"`
 	Name     string    `json:"name"`
 	History  string    `json:"result"`
 	Created  time.Time `json:"created"`
@@ -56,8 +56,8 @@ type DeviceHistoryReactor struct {
 
 //DeviceHistoryJob 设备历史任务
 type DeviceHistoryJob struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
+	ID       int       `json:"id" storm:"id,increment"`
+	DeviceID int       `json:"device_id"`
 	Job      string    `json:"job"`
 	History  string    `json:"result"`
 	Created  time.Time `json:"created"`
@@ -65,8 +65,8 @@ type DeviceHistoryJob struct {
 
 //DeviceHistoryCommand 设备历史命令
 type DeviceHistoryCommand struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id"`
+	ID       int       `json:"id" storm:"id,increment"`
+	DeviceID int       `json:"device_id"`
 	Command  string    `json:"command"`
 	Argv     []float64 `json:"argv"`
 	History  string    `json:"result"`

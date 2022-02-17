@@ -39,10 +39,10 @@ func (client *NetClient) Open() error {
 
 	//Store link
 	lnk := model.Link{
-		TunnelId: client.service.Id,
+		TunnelID: client.service.ID,
 		Created:  time.Now(),
 	}
-	err = database.Master.One("TunnelId", client.service.Id, &lnk)
+	err = database.Master.One("TunnelID", client.service.ID, &lnk)
 	if err == storm.ErrNotFound {
 		//保存一条新记录
 		_ = database.Master.Save(&lnk)
@@ -51,7 +51,7 @@ func (client *NetClient) Open() error {
 	} else {
 		//上线
 	}
-	client.link.Id = lnk.Id
+	client.link.id = lnk.ID
 
 	client.Emit("link", client.link)
 

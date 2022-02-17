@@ -28,21 +28,33 @@ type paramSearch struct {
 	//Keyword   string        `form:"keyword"`
 }
 
-type paramId struct {
-	Id int64 `uri:"id"`
+type paramID struct {
+	ID int `uri:"id"`
 }
 
-func mustLogin(c *gin.Context) {
-	session := sessions.Default(c)
+func mustLogin(ctx *gin.Context) {
+	session := sessions.Default(ctx)
 	if user := session.Get("user"); user != nil {
-		c.Set("user", user)
-		c.Next()
+		ctx.Set("user", user)
+		ctx.Next()
 	} else {
 		//TODO 检查OAuth2返回的code，进一步获取用户信息，放置到session中
 
-		c.JSON(http.StatusUnauthorized, gin.H{"ok": false, "error": "Unauthorized"})
-		c.Abort()
+		ctx.JSON(http.StatusUnauthorized, gin.H{"ok": false, "error": "Unauthorized"})
+		ctx.Abort()
 	}
+}
+
+func parseParamId(ctx *gin.Context)  {
+	var pid paramID
+	err := ctx.ShouldBindUri(&pid)
+	if err != nil {
+		replyError(ctx, err)
+		ctx.Abort()
+		return
+	}
+	ctx.Set("id", pid.ID)
+	ctx.Next()
 }
 
 func RegisterRoutes(app *gin.RouterGroup) {
@@ -52,9 +64,11 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	//检查 session，必须登录
 	app.Use(mustLogin)
 
+	projectRoutes(app.Group("/project"))
+
 	//TODO 转移至子目录，并使用中间件，检查session及权限
 	//mod := reflect.TypeOf(model.Tunnel{})
-	////app.POST("/project/:id/tunnels", curdApiListById(mod, "project_id"))
+	////app.POST("/project/:id/tunnels", curdApiListByID(mod, "project_id"))
 	//app.POST("/tunnels", curdApiList(mod))
 	//app.POST("/tunnel", curdApiCreate(mod, nil, nil))                  //TODO 启动
 	//app.DELETE("/tunnel/:id", curdApiDelete(mod, nil, nil))            //TODO 停止
@@ -68,7 +82,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	//连接管理
 	//mod = reflect.TypeOf(model.Link{})
-	////app.POST("/tunnel/:id/links", curdApiListById(mod, "tunnel_id"))
+	////app.POST("/tunnel/:id/links", curdApiListByID(mod, "tunnel_id"))
 	//app.POST("/links", curdApiList(mod))
 	//app.DELETE("/link/:id", curdApiDelete(mod, nil, nil)) //TODO 停止
 	//app.PUT("/link/:id", curdApiModify(mod, []string{""}, nil, nil))
@@ -76,7 +90,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	//
 	////设备管理
 	//mod = reflect.TypeOf(model.Device{})
-	////app.POST("/project/:id/devices", curdApiListById(mod, "project_id"))
+	////app.POST("/project/:id/devices", curdApiListByID(mod, "project_id"))
 	//app.POST("/devices", curdApiList(mod))
 	//app.POST("/device", curdApiCreate(mod, nil, nil))
 	//app.DELETE("/device/:id", curdApiDelete(mod, nil, nil))
@@ -93,7 +107,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 }
 
-func replyList(ctx *gin.Context, data interface{}, total int64) {
+func replyList(ctx *gin.Context, data interface{}, total int) {
 	ctx.JSON(http.StatusOK, gin.H{"data": data, "total": total})
 }
 

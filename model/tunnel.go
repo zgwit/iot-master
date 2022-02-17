@@ -9,7 +9,7 @@ import (
 
 //Tunnel 通道模型
 type Tunnel struct {
-	Id        int              `json:"id" storm:"id,increment"`
+	ID        int              `json:"id" storm:"id,increment"`
 	Name      string           `json:"name"`
 	Type      string           `json:"type"` //serial tcp-client tcp-server udp-client udp-server
 	Addr      string           `json:"addr"`
@@ -110,8 +110,8 @@ func (p *HeartBeatPacket) Check(buf []byte) bool {
 
 //TunnelHistory 通道历史
 type TunnelHistory struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	TunnelId int       `json:"tunnel_id"`
+	ID       int       `json:"id" storm:"id,increment"`
+	TunnelID int       `json:"tunnel_id"`
 	History  string    `json:"history"`
 	Created  time.Time `json:"created"`
 }

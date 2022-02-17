@@ -9,7 +9,7 @@ import (
 type SerialLink struct {
 	events.EventEmitter
 
-	Id   int
+	id   int
 	port io.ReadWriteCloser
 }
 
@@ -21,7 +21,7 @@ func newSerialLink(port io.ReadWriteCloser) *SerialLink {
 
 //ID ID
 func (l *SerialLink) ID() int {
-	return l.Id
+	return l.id
 }
 
 //Write 写

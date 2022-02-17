@@ -9,7 +9,7 @@ import (
 type UdpLink struct {
 	events.EventEmitter
 
-	Id   int
+	id   int
 	conn *net.UDPConn
 	addr *net.UDPAddr
 }
@@ -23,7 +23,7 @@ func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
 
 //ID ID
 func (l *UdpLink) ID() int {
-	return l.Id
+	return l.id
 }
 
 //Write 写

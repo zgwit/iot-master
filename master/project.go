@@ -38,9 +38,9 @@ func (d *ProjectDevice) belongSelector(s *model.Selector) bool {
 			}
 		}
 	}
-	if s.Ids != nil {
-		for _, id := range s.Ids {
-			if id == d.Id {
+	if s.IDs != nil {
+		for _, id := range s.IDs {
+			if id == d.ID {
 				return true
 			}
 		}
@@ -68,7 +68,7 @@ type Project struct {
 	Strategies  []*Strategy
 
 	deviceNameIndex map[string]*Device
-	deviceIdIndex   map[int]*Device
+	deviceIDIndex   map[int]*Device
 
 	events.EventEmitter
 
@@ -80,7 +80,7 @@ func NewProject(m *model.Project) *Project {
 	prj := &Project{
 		Project:         *m,
 		deviceNameIndex: make(map[string]*Device),
-		deviceIdIndex:   make(map[int]*Device),
+		deviceIDIndex:   make(map[int]*Device),
 	}
 
 	if m.Devices != nil {
@@ -153,7 +153,7 @@ func (prj *Project) Init() error {
 	prj.deviceAlarmHandler = func(alarm *model.DeviceAlarm) {
 		pa := &model.ProjectAlarm{
 			DeviceAlarm: *alarm,
-			ProjectId:   prj.Id,
+			ProjectID:   prj.ID,
 		}
 		//TODO 入库
 
@@ -163,13 +163,13 @@ func (prj *Project) Init() error {
 
 	//初始化设备
 	for _, d := range prj.Project.Devices {
-		dev := GetDevice(d.Id)
+		dev := GetDevice(d.ID)
 		if dev == nil {
 			//TODO 如果找不到设备，该怎么处理
 			continue
 		}
 		prj.deviceNameIndex[d.Name] = dev
-		prj.deviceIdIndex[d.Id] = dev
+		prj.deviceIDIndex[d.ID] = dev
 		prj.Context[d.Name] = dev.Context //两级上下文
 	}
 
@@ -186,7 +186,7 @@ func (prj *Project) Init() error {
 
 			//日志
 			_ = database.History.Save(model.ProjectHistoryJob{
-				ProjectId: prj.Id,
+				ProjectID: prj.ID,
 				Job:       job.String(),
 				History:   "action",
 				Created:   time.Now()})
@@ -214,12 +214,12 @@ func (prj *Project) Init() error {
 					Alarm:   *alarm,
 					Created: time.Now(),
 				},
-				ProjectId: prj.Id,
+				ProjectID: prj.ID,
 			}
 
 			//入库
 			_ = database.History.Save(model.ProjectHistoryAlarm{
-				ProjectId: prj.Id,
+				ProjectID: prj.ID,
 				Code:      alarm.Code,
 				Level:     alarm.Level,
 				Message:   alarm.Message,
@@ -240,7 +240,7 @@ func (prj *Project) Init() error {
 
 			//保存历史
 			history := model.ProjectHistoryReactor{
-				ProjectId: prj.Id,
+				ProjectID: prj.ID,
 				Name:      reactor.Name,
 				History:   "action",
 				Created:   time.Now(),
@@ -257,7 +257,7 @@ func (prj *Project) Init() error {
 
 //Start 项目启动
 func (prj *Project) Start() error {
-	_ = database.History.Save(model.ProjectHistory{ProjectId: prj.Id, History: "start", Created: time.Now()})
+	_ = database.History.Save(model.ProjectHistory{ProjectID: prj.ID, History: "start", Created: time.Now()})
 
 	//订阅设备的数据变化和报警
 	for _, dev := range prj.Devices {
@@ -277,7 +277,7 @@ func (prj *Project) Start() error {
 
 //Stop 项目结束
 func (prj *Project) Stop() error {
-	_ = database.History.Save(model.ProjectHistory{ProjectId: prj.Id, History: "stop", Created: time.Now()})
+	_ = database.History.Save(model.ProjectHistory{ProjectID: prj.ID, History: "stop", Created: time.Now()})
 
 	for _, dev := range prj.Devices {
 		dev.device.Off("data", prj.deviceDataHandler)

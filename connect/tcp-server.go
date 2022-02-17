@@ -52,7 +52,7 @@ func (server *TcpServer) Open() error {
 			}
 
 			lnk := model.Link{
-				TunnelId: server.service.Id,
+				TunnelID: server.service.ID,
 				Created:  time.Now(),
 			}
 
@@ -61,7 +61,7 @@ func (server *TcpServer) Open() error {
 				for _, link := range server.children {
 					_ = link.Close()
 				}
-				err = database.Master.One("TunnelId", server.service.Id, &lnk)
+				err = database.Master.One("TunnelID", server.service.ID, &lnk)
 			} else {
 				buf := make([]byte, 128)
 				n, err := conn.Read(buf)
@@ -78,7 +78,7 @@ func (server *TcpServer) Open() error {
 				lnk.SN = sn
 				err = database.Master.Select(
 					q.And(
-						q.Eq("TunnelId", server.service.Id),
+						q.Eq("TunnelID", server.service.ID),
 						q.Eq("SN", sn),
 					),
 				).First(&lnk)
@@ -95,14 +95,14 @@ func (server *TcpServer) Open() error {
 			link := newNetLink(conn)
 			go link.receive()
 
-			link.Id = lnk.Id
-			server.children[lnk.Id] = link
+			link.id = lnk.ID
+			server.children[lnk.ID] = link
 
 			//启动对应的设备 发消息
 			server.Emit("link", link)
 
 			link.Once("close", func() {
-				delete(server.children, link.Id)
+				delete(server.children, link.id)
 			})
 		}
 	}()

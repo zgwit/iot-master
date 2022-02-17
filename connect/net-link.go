@@ -9,7 +9,7 @@ import (
 type NetLink struct {
 	events.EventEmitter
 
-	Id   int
+	id   int
 	conn net.Conn
 }
 
@@ -21,7 +21,7 @@ func newNetLink(conn net.Conn) *NetLink {
 
 //ID ID
 func (l *NetLink) ID() int {
-	return l.Id
+	return l.id
 }
 
 //Write 写

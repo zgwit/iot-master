@@ -34,7 +34,7 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 
 	tnl.On("open", func() {
 		_ = database.History.Save(model.TunnelHistory{
-			TunnelId: tunnel.Id,
+			TunnelID: tunnel.ID,
 			History:  "open",
 			Created:  time.Now(),
 		})
@@ -42,7 +42,7 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 
 	tnl.On("close", func() {
 		_ = database.History.Save(model.TunnelHistory{
-			TunnelId: tunnel.Id,
+			TunnelID: tunnel.ID,
 			History:  "close",
 			Created:  time.Now(),
 		})
@@ -50,13 +50,13 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 
 	tnl.On("link", func(conn Link) {
 		_ = database.History.Save(model.LinkHistory{
-			LinkId:  conn.ID(),
+			LinkID:  conn.ID(),
 			History: "online",
 			Created: time.Now(),
 		})
 		conn.Once("close", func() {
 			_ = database.History.Save(model.LinkHistory{
-				LinkId:  conn.ID(),
+				LinkID:  conn.ID(),
 				History: "offline",
 				Created: time.Now(),
 			})
@@ -78,7 +78,7 @@ func LoadTunnels() error {
 	for _, t := range tunnels {
 		tnl, err := NewTunnel(t)
 		if err != nil {
-			allTunnels.Store(t.Id, tnl)
+			allTunnels.Store(t.ID, tnl)
 		}
 	}
 	return nil
