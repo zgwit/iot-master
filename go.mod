@@ -9,6 +9,7 @@ require (
 	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-co-op/gocron v1.12.0
+	github.com/google/uuid v1.3.0
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/kardianos/service v1.2.1
 	github.com/nakabonne/tstorage v0.3.5

@@ -8,6 +8,7 @@ import (
 	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/master"
+	"github.com/zgwit/iot-master/mqtt"
 	"github.com/zgwit/iot-master/tsdb"
 	"github.com/zgwit/iot-master/web"
 	"log"
@@ -128,6 +129,9 @@ func originMain() {
 		log.Fatal(err)
 	}
 	//defer master.Close()
+
+	//TODO 正确创建 MQTT Broker
+	mqtt.NewBroker()
 
 	//TODO，判断是否开启Web
 	web.Serve(config.Config.Web)
