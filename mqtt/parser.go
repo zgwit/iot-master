@@ -29,7 +29,7 @@ func (p *Parser) Parse(buf []byte) []Packet {
 
 func (p *Parser) parse(buf []byte) []Packet {
 
-	messages := make([]Packet, 0)
+	packets := make([]Packet, 0)
 
 	for {
 		remain := len(buf)
@@ -52,14 +52,14 @@ func (p *Parser) parse(buf []byte) []Packet {
 			break
 		}
 
-		msg, err := Decode(buf[:packLen])
+		pkt, err := DecodePacket(buf[:packLen])
 		if err != nil {
 			log.Println(err)
 			buf = buf[packLen:]
 			continue
 		}
 
-		messages = append(messages, msg)
+		packets = append(packets, pkt)
 
 		//切片，继续解析
 		buf = buf[packLen:]
@@ -70,5 +70,5 @@ func (p *Parser) parse(buf []byte) []Packet {
 		p.buf = buf
 	}
 
-	return messages
+	return packets
 }

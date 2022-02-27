@@ -22,30 +22,30 @@ type Connack struct {
 	code    byte
 }
 
-func (msg *Connack) SessionPresent() bool {
-	return msg.confirm&0x01 == 0x01 //0000 0001
+func (pkt *Connack) SessionPresent() bool {
+	return pkt.confirm&0x01 == 0x01 //0000 0001
 }
 
-func (msg *Connack) SetSessionPresent(b bool) {
-	msg.dirty = true
+func (pkt *Connack) SetSessionPresent(b bool) {
+	pkt.dirty = true
 	if b {
-		msg.confirm |= 0x01 //0000 0001
+		pkt.confirm |= 0x01 //0000 0001
 	} else {
-		msg.confirm &= 0xFE //1111 1110
+		pkt.confirm &= 0xFE //1111 1110
 	}
 }
 
-func (msg *Connack) Code() ConnackCode {
-	return ConnackCode(msg.code)
+func (pkt *Connack) Code() ConnackCode {
+	return ConnackCode(pkt.code)
 }
 
-func (msg *Connack) SetCode(c ConnackCode) {
-	msg.dirty = true
-	msg.code = byte(c)
+func (pkt *Connack) SetCode(c ConnackCode) {
+	pkt.dirty = true
+	pkt.code = byte(c)
 }
 
-func (msg *Connack) Decode(buf []byte) error {
-	msg.dirty = false
+func (pkt *Connack) Decode(buf []byte) error {
+	pkt.dirty = false
 
 	//Tips. remain length is fixed 2 & total is fixed 4
 	total := len(buf)
@@ -56,7 +56,7 @@ func (msg *Connack) Decode(buf []byte) error {
 	offset := 0
 
 	//Header
-	msg.header = buf[0]
+	pkt.header = buf[0]
 	offset++
 
 	//Remain Length
@@ -65,63 +65,63 @@ func (msg *Connack) Decode(buf []byte) error {
 	} else if l != 2 {
 		return fmt.Errorf("Remain length must be 2, got %d", l)
 	} else {
-		msg.remainLength = l
+		pkt.remainLength = l
 		offset += n
 	}
 
 	//1 Confirm
-	msg.confirm = buf[offset]
+	pkt.confirm = buf[offset]
 	offset++
 
 	//2 Code
-	msg.code = buf[offset]
+	pkt.code = buf[offset]
 	offset++
 
 	// FixHead & VarHead
-	msg.head = buf[0:offset]
+	pkt.head = buf[0:offset]
 
 	return nil
 }
 
-func (msg *Connack) Encode() ([]byte, []byte, error) {
-	if !msg.dirty {
-		return msg.head, nil, nil
+func (pkt *Connack) Encode() ([]byte, []byte, error) {
+	if !pkt.dirty {
+		return pkt.head, nil, nil
 	}
 
 	//Tips. remain length is fixed 2 & total is fixed 4
 	//Remain Length
-	msg.remainLength = 0
+	pkt.remainLength = 0
 	//Confirm
-	msg.remainLength += 1
+	pkt.remainLength += 1
 	//Code
-	msg.remainLength += 1
+	pkt.remainLength += 1
 
 	//FixHead & VarHead
-	hl := msg.remainLength
+	hl := pkt.remainLength
 
-	hl += 1 + LenLen(msg.remainLength)
+	hl += 1 + LenLen(pkt.remainLength)
 	//Alloc buffer
-	msg.head = make([]byte, hl)
+	pkt.head = make([]byte, hl)
 
 	//Header
 	ho := 0
-	msg.head[ho] = msg.header
+	pkt.head[ho] = pkt.header
 	ho++
 
 	//Remain Length
-	if n, err := WriteRemainLength(msg.head[ho:], msg.remainLength); err != nil {
+	if n, err := WriteRemainLength(pkt.head[ho:], pkt.remainLength); err != nil {
 		return nil, nil, err
 	} else {
 		ho += n
 	}
 
 	//1 Confirm
-	msg.head[ho] = msg.confirm
+	pkt.head[ho] = pkt.confirm
 	ho++
 
 	//2 Code
-	msg.head[ho] = msg.code
+	pkt.head[ho] = pkt.code
 	ho++
 
-	return msg.head, nil, nil
+	return pkt.head, nil, nil
 }

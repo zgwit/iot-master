@@ -10,21 +10,21 @@ type SubTopic struct {
 	flag  byte
 }
 
-func (msg *SubTopic) Topic() []byte {
-	return msg.topic
+func (pkt *SubTopic) Topic() []byte {
+	return pkt.topic
 }
 
-func (msg *SubTopic) SetTopic(b []byte) {
-	msg.topic = b
+func (pkt *SubTopic) SetTopic(b []byte) {
+	pkt.topic = b
 }
 
-func (msg *SubTopic) Qos() MsgQos {
-	return MsgQos(msg.flag & 0x03) //0000 0011
+func (pkt *SubTopic) Qos() MsgQos {
+	return MsgQos(pkt.flag & 0x03) //0000 0011
 }
 
-func (msg *SubTopic) SetQos(qos MsgQos) {
-	msg.flag &= 0xFC
-	msg.flag |= byte(qos)
+func (pkt *SubTopic) SetQos(qos MsgQos) {
+	pkt.flag &= 0xFC
+	pkt.flag |= byte(qos)
 }
 
 type Subscribe struct {
@@ -35,61 +35,61 @@ type Subscribe struct {
 	topics []*SubTopic
 }
 
-func (msg *Subscribe) PacketId() uint16 {
-	return msg.packetId
+func (pkt *Subscribe) PacketId() uint16 {
+	return pkt.packetId
 }
 
-func (msg *Subscribe) SetPacketId(p uint16) {
-	msg.dirty = true
-	msg.packetId = p
+func (pkt *Subscribe) SetPacketId(p uint16) {
+	pkt.dirty = true
+	pkt.packetId = p
 }
 
-func (msg *Subscribe) Topics() []*SubTopic {
-	return msg.topics
+func (pkt *Subscribe) Topics() []*SubTopic {
+	return pkt.topics
 }
 
-func (msg *Subscribe) AddTopic(topic []byte, qos MsgQos) {
-	msg.dirty = true
+func (pkt *Subscribe) AddTopic(topic []byte, qos MsgQos) {
+	pkt.dirty = true
 	st := &SubTopic{}
 	st.SetTopic(topic)
 	st.SetQos(qos)
-	msg.topics = append(msg.topics, st)
+	pkt.topics = append(pkt.topics, st)
 }
 
-func (msg *Subscribe) ClearTopic() {
-	msg.dirty = true
-	msg.topics = msg.topics[0:0]
+func (pkt *Subscribe) ClearTopic() {
+	pkt.dirty = true
+	pkt.topics = pkt.topics[0:0]
 }
 
-func (msg *Subscribe) Decode(buf []byte) error {
-	msg.dirty = false
+func (pkt *Subscribe) Decode(buf []byte) error {
+	pkt.dirty = false
 
 	//total := len(buf)
 	offset := 0
 
 	//Header
-	msg.header = buf[0]
+	pkt.header = buf[0]
 	offset++
 
 	//Remain Length
 	if l, n, err := ReadRemainLength(buf[offset:]); err != nil {
 		return err
 	} else {
-		msg.remainLength = l
+		pkt.remainLength = l
 		offset += n
 	}
 	headerLen := offset
 
 	// PacketId
-	msg.packetId = binary.BigEndian.Uint16(buf[offset:])
+	pkt.packetId = binary.BigEndian.Uint16(buf[offset:])
 	offset += 2
 
 	// FixHead & VarHead
-	msg.head = buf[0:offset]
+	pkt.head = buf[0:offset]
 	plo := offset
 
 	// Parse Topics
-	for offset-headerLen < msg.remainLength {
+	for offset-headerLen < pkt.remainLength {
 		st := &SubTopic{}
 		//Topic
 		if b, err := ReadBytes(buf[offset:]); err != nil {
@@ -105,70 +105,70 @@ func (msg *Subscribe) Decode(buf []byte) error {
 		}
 		st.SetQos(MsgQos(qos))
 		offset++
-		msg.topics = append(msg.topics, st)
+		pkt.topics = append(pkt.topics, st)
 	}
 
 	//Payload
-	msg.payload = buf[plo:offset]
+	pkt.payload = buf[plo:offset]
 
 	return nil
 }
 
-func (msg *Subscribe) Encode() ([]byte, []byte, error) {
-	if !msg.dirty {
-		return msg.head, msg.payload, nil
+func (pkt *Subscribe) Encode() ([]byte, []byte, error) {
+	if !pkt.dirty {
+		return pkt.head, pkt.payload, nil
 	}
 
 	//Remain Length
-	msg.remainLength = 0
+	pkt.remainLength = 0
 	//Packet Id
-	msg.remainLength += 2
+	pkt.remainLength += 2
 
 	//FixHead & VarHead
-	hl := msg.remainLength
+	hl := pkt.remainLength
 
 	//Topics
-	for _, t := range msg.topics {
-		msg.remainLength += 2 + len(t.Topic())
-		msg.remainLength += 1
+	for _, t := range pkt.topics {
+		pkt.remainLength += 2 + len(t.Topic())
+		pkt.remainLength += 1
 	}
 
-	pl := msg.remainLength - hl
-	hl += 1 + LenLen(msg.remainLength)
+	pl := pkt.remainLength - hl
+	hl += 1 + LenLen(pkt.remainLength)
 
 	//Alloc buffer
-	msg.head = make([]byte, hl)
-	msg.payload = make([]byte, pl)
+	pkt.head = make([]byte, hl)
+	pkt.payload = make([]byte, pl)
 
 	//Header
 	ho := 0
-	msg.head[ho] = msg.header
+	pkt.head[ho] = pkt.header
 	ho++
 
 	//Remain Length
-	if n, err := WriteRemainLength(msg.head[ho:], msg.remainLength); err != nil {
+	if n, err := WriteRemainLength(pkt.head[ho:], pkt.remainLength); err != nil {
 		return nil, nil, err
 	} else {
 		ho += n
 	}
 
 	//Packet Id
-	binary.BigEndian.PutUint16(msg.head[ho:], msg.packetId)
+	binary.BigEndian.PutUint16(pkt.head[ho:], pkt.packetId)
 	ho += 2
 
 	plo := 0
 	//Topics
-	for _, t := range msg.topics {
+	for _, t := range pkt.topics {
 		//Topic
-		if err := WriteBytes(msg.payload[plo:], t.topic); err != nil {
-			return msg.head, nil, err
+		if err := WriteBytes(pkt.payload[plo:], t.topic); err != nil {
+			return pkt.head, nil, err
 		} else {
 			plo += len(t.topic) + 2
 		}
 		//Qos
-		msg.payload[plo] = t.flag
+		pkt.payload[plo] = t.flag
 		plo++
 	}
 
-	return msg.head, msg.payload, nil
+	return pkt.head, pkt.payload, nil
 }

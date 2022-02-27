@@ -20,7 +20,7 @@ func ValidTopic(topic []byte) error {
 
 func ValidSubscribe(topic []byte) error {
 	if len(topic) == 0 {
-		return errors.New("Blank topic")
+		return errors.New("blank topic")
 	}
 	topics := bytes.Split(topic, []byte("/"))
 	if len(topics[0]) == 0 {

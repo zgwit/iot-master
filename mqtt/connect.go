@@ -37,189 +37,189 @@ type Connect struct {
 	password []byte
 }
 
-func (msg *Connect) ProtoName() []byte {
-	return msg.protoName
+func (pkt *Connect) ProtoName() []byte {
+	return pkt.protoName
 }
 
-func (msg *Connect) SetProtoName(b []byte) {
-	msg.dirty = true
-	msg.protoName = b
+func (pkt *Connect) SetProtoName(b []byte) {
+	pkt.dirty = true
+	pkt.protoName = b
 }
 
-func (msg *Connect) ProtoLevel() byte {
-	return msg.protoLevel
+func (pkt *Connect) ProtoLevel() byte {
+	return pkt.protoLevel
 }
 
-func (msg *Connect) SetProtoLevel(b byte) {
-	msg.dirty = true
-	msg.protoLevel = b
-	msg.protoName = []byte(SupportedVersions[b])
+func (pkt *Connect) SetProtoLevel(b byte) {
+	pkt.dirty = true
+	pkt.protoLevel = b
+	pkt.protoName = []byte(SupportedVersions[b])
 }
 
-func (msg *Connect) UserNameFlag() bool {
-	return msg.flag&0x80 == 0x80 //1000 0000
+func (pkt *Connect) UserNameFlag() bool {
+	return pkt.flag&0x80 == 0x80 //1000 0000
 }
 
-func (msg *Connect) SetUserNameFlag(b bool) {
-	msg.dirty = true
+func (pkt *Connect) SetUserNameFlag(b bool) {
+	pkt.dirty = true
 	if b {
-		msg.flag |= 0x80 //1000 0000
+		pkt.flag |= 0x80 //1000 0000
 	} else {
-		msg.flag &= 0x7F //0111 1111
+		pkt.flag &= 0x7F //0111 1111
 	}
 }
 
-func (msg *Connect) PasswordFlag() bool {
-	return msg.flag&0x40 == 0x40 //0100 0000
+func (pkt *Connect) PasswordFlag() bool {
+	return pkt.flag&0x40 == 0x40 //0100 0000
 }
 
-func (msg *Connect) SetPasswordFlag(b bool) {
-	msg.dirty = true
+func (pkt *Connect) SetPasswordFlag(b bool) {
+	pkt.dirty = true
 	if b {
-		msg.flag |= 0x40 //0100 0000
+		pkt.flag |= 0x40 //0100 0000
 	} else {
-		msg.flag &= 0xBF //1011 1111
+		pkt.flag &= 0xBF //1011 1111
 	}
 }
 
-func (msg *Connect) WillRetain() bool {
-	return msg.flag&0x20 == 0x40 //0010 0000
+func (pkt *Connect) WillRetain() bool {
+	return pkt.flag&0x20 == 0x40 //0010 0000
 }
 
-func (msg *Connect) SetWillRetain(b bool) {
-	msg.dirty = true
+func (pkt *Connect) SetWillRetain(b bool) {
+	pkt.dirty = true
 	if b {
-		msg.flag |= 0x20 //0010 0000
+		pkt.flag |= 0x20 //0010 0000
 	} else {
-		msg.flag &= 0xDF //1101 1111
+		pkt.flag &= 0xDF //1101 1111
 	}
-	msg.SetWillFlag(true)
+	pkt.SetWillFlag(true)
 }
 
-func (msg *Connect) WillQos() MsgQos {
-	return MsgQos((msg.flag & 0x18) >> 2) // 0001 1000
+func (pkt *Connect) WillQos() MsgQos {
+	return MsgQos((pkt.flag & 0x18) >> 2) // 0001 1000
 }
 
-func (msg *Connect) SetWillQos(qos MsgQos) {
-	msg.dirty = true
-	msg.flag &= 0xE7 // 1110 0111
-	msg.flag |= byte(qos << 2)
-	msg.SetWillFlag(true)
+func (pkt *Connect) SetWillQos(qos MsgQos) {
+	pkt.dirty = true
+	pkt.flag &= 0xE7 // 1110 0111
+	pkt.flag |= byte(qos << 2)
+	pkt.SetWillFlag(true)
 }
 
-func (msg *Connect) WillFlag() bool {
-	return msg.flag&0x04 == 0x04 //0000 0100
+func (pkt *Connect) WillFlag() bool {
+	return pkt.flag&0x04 == 0x04 //0000 0100
 }
 
-func (msg *Connect) SetWillFlag(b bool) {
-	msg.dirty = true
+func (pkt *Connect) SetWillFlag(b bool) {
+	pkt.dirty = true
 	if b {
-		msg.flag |= 0x04 //0000 0100
+		pkt.flag |= 0x04 //0000 0100
 	} else {
-		msg.flag &= 0xFB //1111 1011
+		pkt.flag &= 0xFB //1111 1011
 
-		msg.SetWillQos(Qos0)
-		msg.SetWillRetain(false)
-	}
-}
-
-func (msg *Connect) KeepAlive() uint16 {
-	return msg.keepAlive
-}
-
-func (msg *Connect) SetKeepAlive(k uint16) {
-	msg.dirty = true
-	msg.keepAlive = k
-}
-
-func (msg *Connect) ClientId() []byte {
-	return msg.clientId
-}
-
-func (msg *Connect) SetClientId(b []byte) {
-	msg.dirty = true
-	msg.clientId = b
-	//msg.ValidClientId()
-}
-
-func (msg *Connect) WillTopic() []byte {
-	return msg.willTopic
-}
-
-func (msg *Connect) SetWillTopic(b []byte) {
-	msg.dirty = true
-	msg.willTopic = b
-	msg.SetWillFlag(true)
-}
-
-func (msg *Connect) WillMessage() []byte {
-	return msg.willMessage
-}
-
-func (msg *Connect) SetWillMessage(b []byte) {
-	msg.dirty = true
-	msg.willMessage = b
-	msg.SetWillFlag(true)
-}
-
-func (msg *Connect) UserName() []byte {
-	return msg.userName
-}
-
-func (msg *Connect) SetUserName(b []byte) {
-	msg.dirty = true
-	msg.userName = b
-	msg.SetUserNameFlag(true)
-}
-
-func (msg *Connect) Password() []byte {
-	return msg.password
-}
-
-func (msg *Connect) SetPassword(b []byte) {
-	msg.dirty = true
-	msg.password = b
-	msg.SetPasswordFlag(true)
-}
-
-func (msg *Connect) CleanSession() bool {
-	return msg.flag&0x02 == 0x02 //0000 0010
-}
-
-func (msg *Connect) SetCleanSession(b bool) {
-	msg.dirty = true
-	if b {
-		msg.flag |= 0x02 //0000 0010
-	} else {
-		msg.flag &= 0xFD //1111 1101
+		pkt.SetWillQos(Qos0)
+		pkt.SetWillRetain(false)
 	}
 }
 
-func (msg *Connect) ValidClientId() bool {
+func (pkt *Connect) KeepAlive() uint16 {
+	return pkt.keepAlive
+}
 
-	if msg.ProtoLevel() == 0x3 {
+func (pkt *Connect) SetKeepAlive(k uint16) {
+	pkt.dirty = true
+	pkt.keepAlive = k
+}
+
+func (pkt *Connect) ClientId() []byte {
+	return pkt.clientId
+}
+
+func (pkt *Connect) SetClientId(b []byte) {
+	pkt.dirty = true
+	pkt.clientId = b
+	//pkt.ValidClientId()
+}
+
+func (pkt *Connect) WillTopic() []byte {
+	return pkt.willTopic
+}
+
+func (pkt *Connect) SetWillTopic(b []byte) {
+	pkt.dirty = true
+	pkt.willTopic = b
+	pkt.SetWillFlag(true)
+}
+
+func (pkt *Connect) WillMessage() []byte {
+	return pkt.willMessage
+}
+
+func (pkt *Connect) SetWillMessage(b []byte) {
+	pkt.dirty = true
+	pkt.willMessage = b
+	pkt.SetWillFlag(true)
+}
+
+func (pkt *Connect) UserName() []byte {
+	return pkt.userName
+}
+
+func (pkt *Connect) SetUserName(b []byte) {
+	pkt.dirty = true
+	pkt.userName = b
+	pkt.SetUserNameFlag(true)
+}
+
+func (pkt *Connect) Password() []byte {
+	return pkt.password
+}
+
+func (pkt *Connect) SetPassword(b []byte) {
+	pkt.dirty = true
+	pkt.password = b
+	pkt.SetPasswordFlag(true)
+}
+
+func (pkt *Connect) CleanSession() bool {
+	return pkt.flag&0x02 == 0x02 //0000 0010
+}
+
+func (pkt *Connect) SetCleanSession(b bool) {
+	pkt.dirty = true
+	if b {
+		pkt.flag |= 0x02 //0000 0010
+	} else {
+		pkt.flag &= 0xFD //1111 1101
+	}
+}
+
+func (pkt *Connect) ValidClientId() bool {
+
+	if pkt.ProtoLevel() == 0x3 {
 		return true
 	}
 
-	return clientIdRegex.Match(msg.clientId)
+	return clientIdRegex.Match(pkt.clientId)
 }
 
-func (msg *Connect) Decode(buf []byte) error {
-	msg.dirty = false
+func (pkt *Connect) Decode(buf []byte) error {
+	pkt.dirty = false
 
 	//total := len(buf)
 	//TODO 判断buf长度
 	offset := 0
 
 	//Header
-	msg.header = buf[0]
+	pkt.header = buf[0]
 	offset++
 
 	//Remain Length
 	if l, n, err := ReadRemainLength(buf[offset:]); err != nil {
 		return err
 	} else {
-		msg.remainLength = l
+		pkt.remainLength = l
 		offset += n
 	}
 
@@ -227,218 +227,218 @@ func (msg *Connect) Decode(buf []byte) error {
 	if b, err := ReadBytes(buf[offset:]); err != nil {
 		return err
 	} else {
-		msg.protoName = b
+		pkt.protoName = b
 		offset += len(b) + 2
 	}
 
 	//2 Protocol Level
-	msg.protoLevel = buf[offset]
-	if version, ok := SupportedVersions[msg.ProtoLevel()]; !ok {
-		return fmt.Errorf("Protocol level (%d) is not support", msg.ProtoLevel())
-	} else if ver := string(msg.ProtoName()); ver != version {
+	pkt.protoLevel = buf[offset]
+	if version, ok := SupportedVersions[pkt.ProtoLevel()]; !ok {
+		return fmt.Errorf("Protocol level (%d) is not support", pkt.ProtoLevel())
+	} else if ver := string(pkt.ProtoName()); ver != version {
 		return fmt.Errorf("Protocol name (%s) invalid", ver)
 	}
 	offset++
 
 	//3 Connect flag
-	msg.flag = buf[offset]
+	pkt.flag = buf[offset]
 	offset++
 
-	if msg.flag&0x1 != 0 {
-		return fmt.Errorf("Connect Flags (%x) reserved bit 0", msg.flag)
+	if pkt.flag&0x1 != 0 {
+		return fmt.Errorf("Connect Flags (%x) reserved bit 0", pkt.flag)
 	}
 
-	if msg.WillQos() > Qos2 {
-		return fmt.Errorf("Invalid WillQoS (%d)", msg.WillQos())
+	if pkt.WillQos() > Qos2 {
+		return fmt.Errorf("Invalid WillQoS (%d)", pkt.WillQos())
 	}
 
-	if !msg.WillFlag() && (msg.WillRetain() || msg.WillQos() != Qos0) {
-		return fmt.Errorf("Invalid WillFlag (%x)", msg.flag)
+	if !pkt.WillFlag() && (pkt.WillRetain() || pkt.WillQos() != Qos0) {
+		return fmt.Errorf("Invalid WillFlag (%x)", pkt.flag)
 	}
 
-	if msg.UserNameFlag() != msg.PasswordFlag() {
-		return fmt.Errorf("UserName Password must be both exists or not (%x)", msg.flag)
+	if pkt.UserNameFlag() != pkt.PasswordFlag() {
+		return fmt.Errorf("UserName Password must be both exists or not (%x)", pkt.flag)
 	}
 
 	//4 Keep Alive
-	msg.keepAlive = binary.BigEndian.Uint16(buf[offset:])
+	pkt.keepAlive = binary.BigEndian.Uint16(buf[offset:])
 	offset += 2
 
 	// FixHead & VarHead
-	msg.head = buf[0:offset]
+	pkt.head = buf[0:offset]
 	plo := offset
 
 	//5 ClientId
 	if b, err := ReadBytes(buf[offset:]); err != nil {
 		return err
 	} else {
-		msg.clientId = b
+		pkt.clientId = b
 		ln := len(b)
 		offset += ln + 2
 
 		// None ClientId, Must Clean Session
-		if ln == 2 && !msg.CleanSession() {
-			return fmt.Errorf("None ClientId, Must Clean Session (%x)", msg.flag)
+		if ln == 2 && !pkt.CleanSession() {
+			return fmt.Errorf("None ClientId, Must Clean Session (%x)", pkt.flag)
 		}
 
 		// ClientId at most 23 characters
 		if ln > 128+2 {
-			return fmt.Errorf("Too long ClientId (%s)", string(msg.ClientId()))
+			return fmt.Errorf("Too long ClientId (%s)", string(pkt.ClientId()))
 		}
 
 		// ClientId 0-9, a-z, A-Z
-		if ln > 0 && !msg.ValidClientId() {
-			return fmt.Errorf("Invalid ClientId (%s)", string(msg.ClientId()))
+		if ln > 0 && !pkt.ValidClientId() {
+			return fmt.Errorf("Invalid ClientId (%s)", string(pkt.ClientId()))
 		}
 	}
 
 	//6 Will Topic & Packet
-	if msg.WillFlag() {
+	if pkt.WillFlag() {
 		if b, err := ReadBytes(buf[offset:]); err != nil {
 			return err
 		} else {
-			msg.willTopic = b
+			pkt.willTopic = b
 			offset += len(b) + 2
 		}
 
 		if b, err := ReadBytes(buf[offset:]); err != nil {
 			return err
 		} else {
-			msg.willMessage = b
+			pkt.willMessage = b
 			offset += len(b) + 2
 		}
 	}
 
 	//7 UserName & Password
-	if msg.UserNameFlag() {
+	if pkt.UserNameFlag() {
 		if b, err := ReadBytes(buf[offset:]); err != nil {
 			return err
 		} else {
-			msg.userName = b
+			pkt.userName = b
 			offset += len(b) + 2
 		}
 
 		if b, err := ReadBytes(buf[offset:]); err != nil {
 			return err
 		} else {
-			msg.password = b
+			pkt.password = b
 			offset += len(b) + 2
 		}
 	}
 
 	//Payload
-	msg.payload = buf[plo:offset]
+	pkt.payload = buf[plo:offset]
 
 	return nil
 }
 
-func (msg *Connect) Encode() ([]byte, []byte, error) {
-	if !msg.dirty {
-		return msg.head, msg.payload, nil
+func (pkt *Connect) Encode() ([]byte, []byte, error) {
+	if !pkt.dirty {
+		return pkt.head, pkt.payload, nil
 	}
 
 	//Remain Length
-	msg.remainLength = 0
+	pkt.remainLength = 0
 	//Protocol Name
-	msg.remainLength += 2 + len(msg.protoName)
+	pkt.remainLength += 2 + len(pkt.protoName)
 	//Protocol Level
-	msg.remainLength += 1
+	pkt.remainLength += 1
 	//Connect Flags
-	msg.remainLength += 1
+	pkt.remainLength += 1
 	//Keep Alive
-	msg.remainLength += 1
+	pkt.remainLength += 1
 
 	//FixHead & VarHead
-	hl := msg.remainLength
+	hl := pkt.remainLength
 
 	//ClientId
-	msg.remainLength += 2 + len(msg.clientId)
+	pkt.remainLength += 2 + len(pkt.clientId)
 	//Will Topic & Packet
-	if msg.WillFlag() {
-		msg.remainLength += 2 + len(msg.willTopic)
-		msg.remainLength += 2 + len(msg.willMessage)
+	if pkt.WillFlag() {
+		pkt.remainLength += 2 + len(pkt.willTopic)
+		pkt.remainLength += 2 + len(pkt.willMessage)
 	}
 	//UserName & Password
-	if msg.UserNameFlag() {
-		msg.remainLength += 2 + len(msg.userName)
-		msg.remainLength += 2 + len(msg.password)
+	if pkt.UserNameFlag() {
+		pkt.remainLength += 2 + len(pkt.userName)
+		pkt.remainLength += 2 + len(pkt.password)
 	}
 
-	pl := msg.remainLength - hl
-	hl += 1 + LenLen(msg.remainLength)
+	pl := pkt.remainLength - hl
+	hl += 1 + LenLen(pkt.remainLength)
 
 	//Alloc buffer
-	msg.head = make([]byte, hl)
-	msg.payload = make([]byte, pl)
+	pkt.head = make([]byte, hl)
+	pkt.payload = make([]byte, pl)
 
 	//Header
 	ho := 0
-	msg.head[ho] = msg.header
+	pkt.head[ho] = pkt.header
 	ho++
 
 	//Remain Length
-	if n, err := WriteRemainLength(msg.head[ho:], msg.remainLength); err != nil {
+	if n, err := WriteRemainLength(pkt.head[ho:], pkt.remainLength); err != nil {
 		return nil, nil, err
 	} else {
 		ho += n
 	}
 
 	//1 Protocol Name
-	if err := WriteBytes(msg.head[ho:], msg.protoName); err != nil {
+	if err := WriteBytes(pkt.head[ho:], pkt.protoName); err != nil {
 		return nil, nil, err
 	} else {
-		ho += len(msg.protoName) + 2
+		ho += len(pkt.protoName) + 2
 	}
 
 	//2 Protocol Level
-	msg.head[ho] = msg.protoLevel
+	pkt.head[ho] = pkt.protoLevel
 	ho++
 
 	//3 Connect Flags
-	msg.head[ho] = msg.flag
+	pkt.head[ho] = pkt.flag
 	ho++
 
 	//4 Keep Alive
-	binary.BigEndian.PutUint16(msg.head[ho:], msg.keepAlive)
+	binary.BigEndian.PutUint16(pkt.head[ho:], pkt.keepAlive)
 	ho += 2
 
 	plo := 0
 	//5 ClientId
-	if err := WriteBytes(msg.payload[plo:], msg.clientId); err != nil {
-		return msg.head, nil, err
+	if err := WriteBytes(pkt.payload[plo:], pkt.clientId); err != nil {
+		return pkt.head, nil, err
 	} else {
-		plo += len(msg.clientId) + 2
+		plo += len(pkt.clientId) + 2
 	}
 
 	//6 Will Topic & Packet
-	if msg.WillFlag() {
-		if err := WriteBytes(msg.payload[plo:], msg.willTopic); err != nil {
-			return msg.head, nil, err
+	if pkt.WillFlag() {
+		if err := WriteBytes(pkt.payload[plo:], pkt.willTopic); err != nil {
+			return pkt.head, nil, err
 		} else {
-			plo += len(msg.willTopic) + 2
+			plo += len(pkt.willTopic) + 2
 		}
 
-		if err := WriteBytes(msg.payload[plo:], msg.willMessage); err != nil {
-			return msg.head, nil, err
+		if err := WriteBytes(pkt.payload[plo:], pkt.willMessage); err != nil {
+			return pkt.head, nil, err
 		} else {
-			plo += len(msg.willMessage) + 2
+			plo += len(pkt.willMessage) + 2
 		}
 	}
 
 	//7 UserName & Password
-	if msg.UserNameFlag() {
-		if err := WriteBytes(msg.payload[plo:], msg.userName); err != nil {
-			return msg.head, nil, err
+	if pkt.UserNameFlag() {
+		if err := WriteBytes(pkt.payload[plo:], pkt.userName); err != nil {
+			return pkt.head, nil, err
 		} else {
-			plo += len(msg.userName) + 2
+			plo += len(pkt.userName) + 2
 		}
 
-		if err := WriteBytes(msg.payload[plo:], msg.password); err != nil {
-			return msg.head, nil, err
+		if err := WriteBytes(pkt.payload[plo:], pkt.password); err != nil {
+			return pkt.head, nil, err
 		} else {
-			plo += len(msg.password) + 2
+			plo += len(pkt.password) + 2
 		}
 	}
 
-	return msg.head, msg.payload, nil
+	return pkt.head, pkt.payload, nil
 }

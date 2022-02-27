@@ -15,138 +15,138 @@ type Publish struct {
 	//payload []byte
 }
 
-func (msg *Publish) Topic() []byte {
-	return msg.topic
+func (pkt *Publish) Topic() []byte {
+	return pkt.topic
 }
 
-func (msg *Publish) SetTopic(b []byte) {
-	msg.dirty = true
-	msg.topic = b
+func (pkt *Publish) SetTopic(b []byte) {
+	pkt.dirty = true
+	pkt.topic = b
 }
 
-func (msg *Publish) PacketId() uint16 {
-	return msg.packetId
+func (pkt *Publish) PacketId() uint16 {
+	return pkt.packetId
 }
 
-func (msg *Publish) SetPacketId(p uint16) {
-	msg.dirty = true
-	msg.packetId = p
+func (pkt *Publish) SetPacketId(p uint16) {
+	pkt.dirty = true
+	pkt.packetId = p
 }
 
-func (msg *Publish) Payload() []byte {
-	return msg.payload
+func (pkt *Publish) Payload() []byte {
+	return pkt.payload
 }
 
-func (msg *Publish) SetPayload(p []byte) {
-	msg.dirty = true
-	msg.payload = p
+func (pkt *Publish) SetPayload(p []byte) {
+	pkt.dirty = true
+	pkt.payload = p
 }
 
-func (msg *Publish) Decode(buf []byte) error {
-	msg.dirty = false
+func (pkt *Publish) Decode(buf []byte) error {
+	pkt.dirty = false
 
 	total := len(buf)
 	offset := 0
 
 	//Header
-	msg.header = buf[0]
+	pkt.header = buf[0]
 	offset++
 
 	//Remain Length
 	if l, n, err := ReadRemainLength(buf[offset:]); err != nil {
 		return err
 	} else {
-		msg.remainLength = l
+		pkt.remainLength = l
 		offset += n
 	}
 	headerLen := offset
 
-	if total < msg.remainLength+headerLen {
-		fmt.Errorf("Payload is not enough expect %d, got %d", msg.remainLength+headerLen, total)
+	if total < pkt.remainLength+headerLen {
+		return fmt.Errorf("payload is not enough expect %d, got %d", pkt.remainLength+headerLen, total)
 	}
 
 	//1 Topic
 	if b, err := ReadBytes(buf[offset:]); err != nil {
 		return err
 	} else {
-		msg.topic = b
+		pkt.topic = b
 		offset += len(b) + 2
 	}
 
 	//2 PacketId //Only Qos1 Qos2 has packet id
-	if msg.Qos() > Qos0 {
-		msg.packetId = binary.BigEndian.Uint16(buf[offset:])
+	if pkt.Qos() > Qos0 {
+		pkt.packetId = binary.BigEndian.Uint16(buf[offset:])
 		offset += 2
 	}
 
 	// FixHead & VarHead
-	msg.head = buf[0:offset]
+	pkt.head = buf[0:offset]
 	//plo := offset
 
 	//3 Payload
-	l := msg.remainLength + headerLen
+	l := pkt.remainLength + headerLen
 	b := buf[offset:l]
-	msg.payload = b
+	pkt.payload = b
 
 	offset += len(b)
 
 	return nil
 }
 
-func (msg *Publish) Encode() ([]byte, []byte, error) {
-	if !msg.dirty {
-		return msg.head, msg.payload, nil
+func (pkt *Publish) Encode() ([]byte, []byte, error) {
+	if !pkt.dirty {
+		return pkt.head, pkt.payload, nil
 	}
 
 	//Remain Length
-	msg.remainLength = 0
+	pkt.remainLength = 0
 	//Topic
-	msg.remainLength += 2 + len(msg.topic)
+	pkt.remainLength += 2 + len(pkt.topic)
 	//PacketId
-	if msg.Qos() > Qos0 {
-		msg.remainLength += 2
+	if pkt.Qos() > Qos0 {
+		pkt.remainLength += 2
 	}
 
 	//FixHead & VarHead
-	hl := msg.remainLength
+	hl := pkt.remainLength
 
 	//Payload
-	msg.remainLength += len(msg.payload)
+	pkt.remainLength += len(pkt.payload)
 
-	//pl := msg.remainLength - hl
-	hl += 1 + LenLen(msg.remainLength)
+	//pl := pkt.remainLength - hl
+	hl += 1 + LenLen(pkt.remainLength)
 
 	//Alloc buffer
-	msg.head = make([]byte, hl)
-	//msg.payload = make([]byte, pl)
+	pkt.head = make([]byte, hl)
+	//pkt.payload = make([]byte, pl)
 
 	//Header
 	ho := 0
-	msg.head[ho] = msg.header
+	pkt.head[ho] = pkt.header
 	ho++
 
 	//Remain Length
-	if n, err := WriteRemainLength(msg.head[ho:], msg.remainLength); err != nil {
+	if n, err := WriteRemainLength(pkt.head[ho:], pkt.remainLength); err != nil {
 		return nil, nil, err
 	} else {
 		ho += n
 	}
 
 	//1 Topic
-	if err := WriteBytes(msg.head[ho:], msg.topic); err != nil {
+	if err := WriteBytes(pkt.head[ho:], pkt.topic); err != nil {
 		return nil, nil, err
 	} else {
-		ho += len(msg.topic) + 2
+		ho += len(pkt.topic) + 2
 	}
 
 	//2 PacketId
-	if msg.Qos() > Qos0 {
-		binary.BigEndian.PutUint16(msg.head[ho:], msg.packetId)
+	if pkt.Qos() > Qos0 {
+		binary.BigEndian.PutUint16(pkt.head[ho:], pkt.packetId)
 		ho += 2
 	}
 
 	//3 Payload
-	//msg.payload = payload
+	//pkt.payload = payload
 
-	return msg.head, msg.payload, nil
+	return pkt.head, pkt.payload, nil
 }

@@ -8,8 +8,8 @@ type DisConnect struct {
 	Header
 }
 
-func (msg *DisConnect) Decode(buf []byte) error {
-	msg.dirty = false
+func (pkt *DisConnect) Decode(buf []byte) error {
+	pkt.dirty = false
 
 	//Tips. remain length is fixed 0 & total is fixed 2
 	total := len(buf)
@@ -20,7 +20,7 @@ func (msg *DisConnect) Decode(buf []byte) error {
 	offset := 0
 
 	//Header
-	msg.header = buf[0]
+	pkt.header = buf[0]
 	offset++
 
 	//Remain Length
@@ -29,43 +29,43 @@ func (msg *DisConnect) Decode(buf []byte) error {
 	} else if l != 0 {
 		return fmt.Errorf("Remain length must be 0, got %d", l)
 	} else {
-		msg.remainLength = l
+		pkt.remainLength = l
 		offset += n
 	}
 
 	// FixHead & VarHead
-	msg.head = buf[0:offset]
+	pkt.head = buf[0:offset]
 
 	return nil
 }
 
-func (msg *DisConnect) Encode() ([]byte, []byte, error) {
-	if !msg.dirty {
-		return msg.head, nil, nil
+func (pkt *DisConnect) Encode() ([]byte, []byte, error) {
+	if !pkt.dirty {
+		return pkt.head, nil, nil
 	}
 
 	//Tips. remain length is fixed 0 & total is fixed 2
 	//Remain Length
-	msg.remainLength = 0
+	pkt.remainLength = 0
 
 	//FixHead & VarHead
-	hl := msg.remainLength
+	hl := pkt.remainLength
 
-	hl += 1 + LenLen(msg.remainLength)
+	hl += 1 + LenLen(pkt.remainLength)
 	//Alloc buffer
-	msg.head = make([]byte, hl)
+	pkt.head = make([]byte, hl)
 
 	//Header
 	ho := 0
-	msg.head[ho] = msg.header
+	pkt.head[ho] = pkt.header
 	ho++
 
 	//Remain Length
-	if n, err := WriteRemainLength(msg.head[ho:], msg.remainLength); err != nil {
+	if n, err := WriteRemainLength(pkt.head[ho:], pkt.remainLength); err != nil {
 		return nil, nil, err
 	} else {
 		ho += n
 	}
 
-	return msg.head, nil, nil
+	return pkt.head, nil, nil
 }

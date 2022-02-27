@@ -22,7 +22,7 @@ type Client struct {
 	pub2 sync.Map // map[uint16]*packet.Publish
 
 	//Received Qos2 Publish
-	recvPub2 sync.Map // map[uint16]*packet.Publish
+	receivedPub2 sync.Map // map[uint16]*packet.Publish
 
 	//Increment 0~65535
 	packetId uint16
@@ -30,7 +30,7 @@ type Client struct {
 	conn net.Conn
 
 	//消息发送队列，避免主协程任务过重
-	msgQueue chan Packet
+	pktQueue chan Packet
 
 	timeout time.Duration
 
@@ -38,19 +38,19 @@ type Client struct {
 	closed bool
 }
 
-func NewBee(conn net.Conn) *Client {
+func NewClient(conn net.Conn) *Client {
 	return &Client{
 		conn: conn,
 		//timeout: time.Hour * 24,
 	}
 }
 
-func (b*Client) ClientId() string  {
+func (b *Client) ClientId() string {
 	return b.clientId
 }
 
 func (b *Client) Disconnect() error {
-	b.send(&DisConnect{})
+	_ = b.send(&DisConnect{})
 	return b.Close()
 }
 
@@ -60,32 +60,32 @@ func (b *Client) Close() error {
 	return err
 }
 
-func (b *Client) send(msg Packet) error{
-	//log.Printf("Send message to %s: %s QOS(%d) DUP(%t) RETAIN(%t)", b.clientId, msg.Type().Name(), msg.Qos(), msg.Dup(), msg.Retain())
-	if head, payload, err := msg.Encode(); err != nil {
+func (b *Client) send(pkt Packet) error {
+	//log.Printf("Send message to %s: %s QOS(%d) DUP(%t) RETAIN(%t)", b.clientId, pkt.Type().Name(), pkt.Qos(), pkt.Dup(), pkt.Retain())
+	if head, payload, err := pkt.Encode(); err != nil {
 		return err
 	} else {
 		//err := b.conn.SetWriteDeadline(time.Now().Add(b.timeout))
 		_, err = b.conn.Write(head)
 		if err != nil {
-			// 关闭bee
+			// 关闭client
 			return err
 		}
 		if payload != nil && len(payload) > 0 {
 			_, err = b.conn.Write(payload)
 			if err != nil {
-				// 关闭bee
+				// 关闭client
 				return err
 			}
 		}
 	}
 
-	if msg.Type() == PUBLISH {
-		pub := msg.(*Publish)
+	if pkt.Type() == PUBLISH {
+		pub := pkt.(*Publish)
 		//Publish Qos1 Qos2 Need store
-		if msg.Qos() == Qos1 {
+		if pkt.Qos() == Qos1 {
 			b.pub1.Store(pub.PacketId(), pub)
-		} else if msg.Qos() == Qos2 {
+		} else if pkt.Qos() == Qos2 {
 			b.pub2.Store(pub.PacketId(), pub)
 		}
 	}
@@ -93,24 +93,26 @@ func (b *Client) send(msg Packet) error{
 	return nil
 }
 
-func (b *Client) dispatch(msg Packet) {
-	if b.msgQueue != nil {
-		b.msgQueue <- msg
+func (b *Client) dispatch(pkt Packet) {
+	if b.pktQueue != nil {
+		b.pktQueue <- pkt
 		return
 	}
 
-	err := b.send(msg)
+	err := b.send(pkt)
 	if err != nil {
 		log.Println(err)
 		//TODO 关闭
 	}
 }
 
-
-func (b *Client) sender()  {
+func (b *Client) sender() {
 	for b.conn != nil {
 		//TODO select or close
-		msg := <- b.msgQueue
-		b.send(msg)
+		pkt := <-b.pktQueue
+		err := b.send(pkt)
+		if err != nil {
+			break 
+		}
 	}
 }

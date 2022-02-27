@@ -26,54 +26,54 @@ const (
 	RESERVED2
 )
 
-var msgNames = []string{
+var packetNames = []string{
 	"RESERVED", "CONNECT", "CONNACK", "PUBLISH",
 	"PUBACK", "PUBREC", "PUBREL", "PUBCOMP",
 	"SUBSCRIBE", "SUBACK", "UNSUBSCRIBE", "UNSUBACK",
 	"PINGREQ", "PINGRESP", "DISCONNECT", "RESERVED",
 }
 
-func (mt PacketType) Name() string {
-	return msgNames[mt&0x0F]
+func (pkt PacketType) Name() string {
+	return packetNames[pkt&0x0F]
 }
 
-func (mt PacketType) NewPacket() Packet {
-	var msg Packet
-	switch mt {
+func (pkt PacketType) NewPacket() Packet {
+	var packet Packet
+	switch pkt {
 	case CONNECT:
-		msg = new(Connect)
+		packet = new(Connect)
 	case CONNACK:
-		msg = new(Connack)
+		packet = new(Connack)
 	case PUBLISH:
-		msg = new(Publish)
+		packet = new(Publish)
 	case PUBACK:
-		msg = new(PubAck)
+		packet = new(PubAck)
 	case PUBREC:
-		msg = new(PubRec)
+		packet = new(PubRec)
 	case PUBREL:
-		msg = new(PubRel)
+		packet = new(PubRel)
 	case PUBCOMP:
-		msg = new(PubComp)
+		packet = new(PubComp)
 	case SUBSCRIBE:
-		msg = new(Subscribe)
+		packet = new(Subscribe)
 	case SUBACK:
-		msg = new(SubAck)
+		packet = new(SubAck)
 	case UNSUBSCRIBE:
-		msg = new(UnSubscribe)
+		packet = new(UnSubscribe)
 	case UNSUBACK:
-		msg = new(UnSubAck)
+		packet = new(UnSubAck)
 	case PINGREQ:
-		msg = new(PingReq)
+		packet = new(PingReq)
 	case PINGRESP:
-		msg = new(PingResp)
+		packet = new(PingResp)
 	case DISCONNECT:
-		msg = new(DisConnect)
+		packet = new(DisConnect)
 	default:
 		//error
 		return nil
 	}
-	msg.SetType(mt)
-	return msg
+	packet.SetType(pkt)
+	return packet
 }
 
 type MsgQos byte
@@ -92,11 +92,11 @@ func (qos MsgQos) Level() uint8 {
 }
 
 const (
-	//At most once
+	// Qos0 At most once
 	Qos0 MsgQos = iota
-	//At least once
+	// Qos1 At least once
 	Qos1
-	//Exactly once
+	// Qos2 Exactly once
 	Qos2
 )
 
@@ -196,17 +196,17 @@ func BytesDup(buf []byte) []byte {
 	return b
 }
 
-func Decode(buf []byte) (Packet, error) {
+func DecodePacket(buf []byte) (Packet, error) {
 	mt := PacketType(buf[0] >> 4)
-	msg := mt.NewPacket()
-	if msg != nil {
-		err := msg.Decode(buf)
-		return msg, err
+	pkt := mt.NewPacket()
+	if pkt != nil {
+		err := pkt.Decode(buf)
+		return pkt, err
 	} else {
 		return nil, fmt.Errorf("unknown messege type %d", mt)
 	}
 }
 
-func Encode(msg Packet) ([]byte, []byte, error) {
-	return msg.Encode()
+func EncodePacket(pkt Packet) ([]byte, []byte, error) {
+	return pkt.Encode()
 }

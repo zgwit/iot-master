@@ -24,7 +24,7 @@ type Broker struct {
 	retainTree RetainTree
 
 	//ClientId->Client
-	bees sync.Map // map[string]*Client
+	clients sync.Map // map[string]*Client
 
 	onConnect     func(*Connect, *Client) bool
 	onPublish     func(*Publish, *Client) bool
@@ -62,7 +62,7 @@ func (h *Broker) Serve(ln net.Listener) {
 
 func (h *Broker) Receive(conn net.Conn) {
 	//TODO 先解析第一个包，而且必须是Connect
-	bee := NewBee(conn)
+	client := NewClient(conn)
 	var parser Parser
 
 	buf := make([]byte, 1024)
@@ -77,17 +77,17 @@ func (h *Broker) Receive(conn net.Conn) {
 
 		//处理消息
 		//TODO 可以放入队列
-		for _, msg := range ms {
-			h.handle(msg, bee)
+		for _, pkt := range ms {
+			h.handle(pkt, client)
 		}
 	}
 
-	_ = bee.Close()
+	_ = client.Close()
 }
 
 func (h *Broker) Receive2(conn net.Conn) {
 	//TODO 先解析第一个包，而且必须是Connect
-	bee := NewBee(conn)
+	client := NewClient(conn)
 
 	bufSize := 6
 	buf := make([]byte, bufSize)
@@ -135,7 +135,7 @@ func (h *Broker) Receive2(conn net.Conn) {
 		}
 
 		//解析消息
-		msg, err := Decode(buf[:packLen])
+		pkt, err := DecodePacket(buf[:packLen])
 		if err != nil {
 			log.Println(err)
 			break
@@ -143,7 +143,7 @@ func (h *Broker) Receive2(conn net.Conn) {
 
 		//处理消息
 		//TODO 可以放入队列
-		h.handle(msg, bee)
+		h.handle(pkt, client)
 
 		//解析 剩余内容
 		if packLen < bufSize {
@@ -156,163 +156,175 @@ func (h *Broker) Receive2(conn net.Conn) {
 		}
 	}
 
-	_ = bee.Close()
+	_ = client.Close()
 }
 
-func (h *Broker) handle(msg Packet, bee *Client) {
-	switch msg.Type() {
+func (h *Broker) handle(pkt Packet, client *Client) {
+	switch pkt.Type() {
 	case CONNECT:
-		h.handleConnect(msg.(*Connect), bee)
+		h.handleConnect(pkt.(*Connect), client)
 	case PUBLISH:
-		h.handlePublish(msg.(*Publish), bee)
+		h.handlePublish(pkt.(*Publish), client)
 	case PUBACK:
-		bee.pub1.Delete(msg.(*PubAck).PacketId())
+		client.pub1.Delete(pkt.(*PubAck).PacketId())
 	case PUBREC:
-		msg.SetType(PUBREL)
-		bee.dispatch(msg)
+		pkt.SetType(PUBREL)
+		client.dispatch(pkt)
 	case PUBREL:
-		msg.SetType(PUBCOMP)
-		bee.dispatch(msg)
+		pkt.SetType(PUBCOMP)
+		client.dispatch(pkt)
 	case PUBCOMP:
-		bee.pub2.Delete(msg.(*PubComp).PacketId())
+		client.pub2.Delete(pkt.(*PubComp).PacketId())
 	case SUBSCRIBE:
-		h.handleSubscribe(msg.(*Subscribe), bee)
+		h.handleSubscribe(pkt.(*Subscribe), client)
 	case UNSUBSCRIBE:
-		h.handleUnSubscribe(msg.(*UnSubscribe), bee)
+		h.handleUnSubscribe(pkt.(*UnSubscribe), client)
 	case PINGREQ:
-		msg.SetType(PINGRESP)
-		bee.dispatch(msg)
+		pkt.SetType(PINGRESP)
+		client.dispatch(pkt)
 	case DISCONNECT:
-		h.handleDisconnect(msg.(*DisConnect), bee)
+		h.handleDisconnect(pkt.(*DisConnect), client)
 	}
 }
 
-func (h *Broker) handleConnect(msg *Connect, bee *Client) {
+func (h *Broker) handleConnect(pkt *Connect, client *Client) {
 	ack := CONNACK.NewPacket().(*Connack)
 
 	//验证用户名密码
 	if h.onConnect != nil {
-		if !h.onConnect(msg, bee) {
+		if !h.onConnect(pkt, client) {
 			ack.SetCode(CONNACK_INVALID_USERNAME_PASSWORD)
-			bee.dispatch(ack)
+			client.dispatch(ack)
 			// 断开
-			_ = bee.Close()
+			_ = client.Close()
 			return
 		}
 	}
 
 	var clientId string
-	if len(msg.ClientId()) == 0 {
+	if len(pkt.ClientId()) == 0 {
 
-		if !msg.CleanSession() {
+		if !pkt.CleanSession() {
 			//TODO 无ID，必须是清空会话 error
 			//return
-			_ = bee.Close()
+			_ = client.Close()
 			return
 		}
 
 		// Generate unique clientId (uuid random)
 		clientId = uuid.New().String()
 		//UUID不用验重了
-		//for { if _, ok := h.bees.Load(clientId); !ok { break } }
+		//for { if _, ok := h.clients.Load(clientId); !ok { break } }
 	} else {
-		clientId = string(msg.ClientId())
+		clientId = string(pkt.ClientId())
 
-		if v, ok := h.bees.Load(clientId); ok {
+		if v, ok := h.clients.Load(clientId); ok {
 			b := v.(*Client)
 			// ClientId is already used
 			if !b.closed {
 				//error reject
 				ack.SetCode(CONNACK_UNAVAILABLE)
-				bee.dispatch(ack)
-				_ = bee.Close()
+				client.dispatch(ack)
+				_ = client.Close()
 				return
 			} else {
-				if !msg.CleanSession() {
+				if !pkt.CleanSession() {
 					//TODO 复制内容
-					bee.keepAlive = b.keepAlive
-					bee.will = b.will
-					bee.pub1 = b.pub1 //sync.Map不能直接复制。。。。
-					bee.pub2 = b.pub2
-					bee.recvPub2 = b.recvPub2
-					bee.packetId = b.packetId
+					client.keepAlive = b.keepAlive
+					client.will = b.will
+					//client.pub1 = b.pub1 //sync.Map不能直接复制。。。。
+					b.pub1.Range(func(key, value interface{}) bool {
+						client.pub1.Store(key, value)
+						return true
+					})
+					//client.pub2 = b.pub2
+					b.pub2.Range(func(key, value interface{}) bool {
+						client.pub2.Store(key, value)
+						return true
+					})
+					//client.receivedPub2 = b.receivedPub2
+					b.receivedPub2.Range(func(key, value interface{}) bool {
+						client.receivedPub2.Store(key, value)
+						return true
+					})
+					client.packetId = b.packetId
 
 					//ack.SetSessionPresent(true)
 				}
 			}
 		}
 
-		h.bees.Store(clientId, bee)
+		h.clients.Store(clientId, client)
 	}
 
-	bee.clientId = clientId
+	client.clientId = clientId
 
-	if msg.KeepAlive() > 0 {
-		bee.timeout = time.Second * time.Duration(msg.KeepAlive()) * 3 / 2
+	if pkt.KeepAlive() > 0 {
+		client.timeout = time.Second * time.Duration(pkt.KeepAlive()) * 3 / 2
 	}
 
 	//TODO 如果发生错误，与客户端断开连接
 	ack.SetCode(CONNACK_ACCEPTED)
-	bee.dispatch(ack)
+	client.dispatch(ack)
 }
 
-func (h *Broker) handlePublish(msg *Publish, bee *Client) {
+func (h *Broker) handlePublish(pkt *Publish, client *Client) {
 	//外部验证
 	if h.onPublish != nil {
-		if !h.onPublish(msg, bee) {
+		if !h.onPublish(pkt, client) {
 			return
 		}
 	}
 
-	qos := msg.Qos()
+	qos := pkt.Qos()
 	if qos == Qos0 {
 		//不需要回复puback
 	} else if qos == Qos1 {
 		//Reply PUBACK
 		ack := PUBACK.NewPacket().(*PubAck)
-		ack.SetPacketId(msg.PacketId())
-		bee.dispatch(ack)
+		ack.SetPacketId(pkt.PacketId())
+		client.dispatch(ack)
 	} else if qos == Qos2 {
 		//Save & Send PUBREC
-		bee.recvPub2.Store(msg.PacketId(), msg)
+		client.receivedPub2.Store(pkt.PacketId(), pkt)
 		ack := PUBREC.NewPacket().(*PubRec)
-		ack.SetPacketId(msg.PacketId())
-		bee.dispatch(ack)
+		ack.SetPacketId(pkt.PacketId())
+		client.dispatch(ack)
 	} else {
 		//TODO error
 
 	}
 
-	if err := ValidTopic(msg.Topic()); err != nil {
+	if err := ValidTopic(pkt.Topic()); err != nil {
 		//TODO log
 		log.Println("Topic invalid ", err)
 		return
 	}
 
-	if msg.Retain() {
-		if len(msg.Payload()) == 0 {
-			h.retainTree.UnRetain(bee.clientId)
+	if pkt.Retain() {
+		if len(pkt.Payload()) == 0 {
+			h.retainTree.UnRetain(client.clientId)
 		} else {
-			h.retainTree.Retain(msg.Topic(), bee.clientId, msg)
+			h.retainTree.Retain(pkt.Topic(), client.clientId, pkt)
 		}
 	}
 
 	//Fetch subscribers
 	subs := make(map[string]MsgQos)
-	h.subTree.Publish(msg.Topic(), subs)
+	h.subTree.Publish(pkt.Topic(), subs)
 
 	//Send publish message
 	for clientId, qos := range subs {
-		if b, ok := h.bees.Load(clientId); ok {
+		if b, ok := h.clients.Load(clientId); ok {
 			bb := b.(*Client)
 			if bb.closed {
 				continue
 			}
 
 			//clone new pub
-			pub := *msg
+			pub := *pkt
 			pub.SetRetain(false)
-			if msg.Qos() > qos {
+			if pkt.Qos() > qos {
 				pub.SetQos(qos)
 			}
 			bb.dispatch(&pub)
@@ -320,70 +332,70 @@ func (h *Broker) handlePublish(msg *Publish, bee *Client) {
 	}
 }
 
-func (h *Broker) handleSubscribe(msg *Subscribe, bee *Client) {
+func (h *Broker) handleSubscribe(pkt *Subscribe, client *Client) {
 	ack := SUBACK.NewPacket().(*SubAck)
-	ack.SetPacketId(msg.PacketId())
+	ack.SetPacketId(pkt.PacketId())
 
 	//外部验证
 	if h.onSubscribe != nil {
-		if !h.onSubscribe(msg, bee) {
+		if !h.onSubscribe(pkt, client) {
 			//回复失败
 			ack.AddCode(SUB_CODE_ERR)
-			bee.dispatch(ack)
+			client.dispatch(ack)
 			return
 		}
 	}
 
-	for _, st := range msg.Topics() {
+	for _, st := range pkt.Topics() {
 		//log.Print("Subscribe ", string(st.Topic()))
 		if err := ValidSubscribe(st.Topic()); err != nil {
 			log.Println("Invalid topic ", err)
 			//log error
 			ack.AddCode(SUB_CODE_ERR)
 		} else {
-			h.subTree.Subscribe(st.Topic(), bee.clientId, st.Qos())
+			h.subTree.Subscribe(st.Topic(), client.clientId, st.Qos())
 
 			ack.AddCode(SubCode(st.Qos()))
 			h.retainTree.Fetch(st.Topic(), func(clientId string, pub *Publish) {
 				//clone new pub
 				p := *pub
 				p.SetRetain(true)
-				if msg.Qos() > st.Qos() {
+				if pkt.Qos() > st.Qos() {
 					p.SetQos(st.Qos())
 				}
-				bee.dispatch(&p)
+				client.dispatch(&p)
 			})
 		}
 	}
-	bee.dispatch(ack)
+	client.dispatch(ack)
 }
 
-func (h *Broker) handleUnSubscribe(msg *UnSubscribe, bee *Client) {
+func (h *Broker) handleUnSubscribe(pkt *UnSubscribe, client *Client) {
 	//外部验证
 	if h.onUnSubscribe != nil {
-		h.onUnSubscribe(msg, bee)
+		h.onUnSubscribe(pkt, client)
 	}
 
 	ack := UNSUBACK.NewPacket().(*UnSubAck)
-	for _, t := range msg.Topics() {
+	for _, t := range pkt.Topics() {
 		//log.Print("UnSubscribe ", string(t))
 		if err := ValidSubscribe(t); err != nil {
 			//TODO log
 			log.Println(err)
 		} else {
-			h.subTree.UnSubscribe(t, bee.clientId)
+			h.subTree.UnSubscribe(t, client.clientId)
 		}
 	}
-	bee.dispatch(ack)
+	client.dispatch(ack)
 }
 
-func (h *Broker) handleDisconnect(msg *DisConnect, bee *Client) {
+func (h *Broker) handleDisconnect(pkt *DisConnect, client *Client) {
 	if h.onDisconnect != nil {
-		h.onDisconnect(msg, bee)
+		h.onDisconnect(pkt, client)
 	}
 
-	h.bees.Delete(bee.clientId)
-	_ = bee.Close()
+	h.clients.Delete(client.clientId)
+	_ = client.Close()
 }
 
 func (h *Broker) OnConnect(fn func(*Connect, *Client) bool) {

@@ -11,17 +11,17 @@ type PubAck struct {
 	packetId uint16
 }
 
-func (msg *PubAck) PacketId() uint16 {
-	return msg.packetId
+func (pkt *PubAck) PacketId() uint16 {
+	return pkt.packetId
 }
 
-func (msg *PubAck) SetPacketId(p uint16) {
-	msg.dirty = true
-	msg.packetId = p
+func (pkt *PubAck) SetPacketId(p uint16) {
+	pkt.dirty = true
+	pkt.packetId = p
 }
 
-func (msg *PubAck) Decode(buf []byte) error {
-	msg.dirty = false
+func (pkt *PubAck) Decode(buf []byte) error {
+	pkt.dirty = false
 
 	//Tips. remain length is fixed 2 & total is fixed 4
 	total := len(buf)
@@ -32,7 +32,7 @@ func (msg *PubAck) Decode(buf []byte) error {
 	offset := 0
 
 	//Header
-	msg.header = buf[0]
+	pkt.header = buf[0]
 	offset++
 
 	//Remain Length
@@ -41,53 +41,53 @@ func (msg *PubAck) Decode(buf []byte) error {
 	} else if l != 2 {
 		return fmt.Errorf("Remain length must be 2, got %d", l)
 	} else {
-		msg.remainLength = l
+		pkt.remainLength = l
 		offset += n
 	}
 
 	// PacketId
-	msg.packetId = binary.BigEndian.Uint16(buf[offset:])
+	pkt.packetId = binary.BigEndian.Uint16(buf[offset:])
 	offset += 2
 
 	// FixHead & VarHead
-	msg.head = buf[0:offset]
+	pkt.head = buf[0:offset]
 
 	return nil
 }
 
-func (msg *PubAck) Encode() ([]byte, []byte, error) {
-	if !msg.dirty {
-		return msg.head, nil, nil
+func (pkt *PubAck) Encode() ([]byte, []byte, error) {
+	if !pkt.dirty {
+		return pkt.head, nil, nil
 	}
 
 	//Tips. remain length is fixed 2 & total is fixed 4
 	//Remain Length
-	msg.remainLength = 0
+	pkt.remainLength = 0
 	//Packet Id
-	msg.remainLength += 2
+	pkt.remainLength += 2
 
 	//FixHead & VarHead
-	hl := msg.remainLength
+	hl := pkt.remainLength
 
-	hl += 1 + LenLen(msg.remainLength)
+	hl += 1 + LenLen(pkt.remainLength)
 	//Alloc buffer
-	msg.head = make([]byte, hl)
+	pkt.head = make([]byte, hl)
 
 	//Header
 	ho := 0
-	msg.head[ho] = msg.header
+	pkt.head[ho] = pkt.header
 	ho++
 
 	//Remain Length
-	if n, err := WriteRemainLength(msg.head[ho:], msg.remainLength); err != nil {
+	if n, err := WriteRemainLength(pkt.head[ho:], pkt.remainLength); err != nil {
 		return nil, nil, err
 	} else {
 		ho += n
 	}
 
 	//Packet Id
-	binary.BigEndian.PutUint16(msg.head[ho:], msg.packetId)
+	binary.BigEndian.PutUint16(pkt.head[ho:], pkt.packetId)
 	ho += 2
 
-	return msg.head, nil, nil
+	return pkt.head, nil, nil
 }
