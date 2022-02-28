@@ -1,6 +1,7 @@
 package mqtt
 
 import (
+	"github.com/zgwit/iot-master/events"
 	"log"
 	"net"
 	"sync"
@@ -8,6 +9,8 @@ import (
 )
 
 type Client struct {
+	events.EventEmitter
+
 	//Client ID (from CONNECT)
 	clientId string
 

@@ -3,6 +3,7 @@ package mqtt
 import (
 	"encoding/binary"
 	"github.com/google/uuid"
+	"github.com/zgwit/iot-master/events"
 	"log"
 	"net"
 	"sync"
@@ -16,6 +17,7 @@ func reAlloc(buf []byte, l int) []byte {
 }
 
 type Broker struct {
+	events.EventEmitter
 
 	//Subscribe tree
 	subTree SubTree
@@ -25,12 +27,6 @@ type Broker struct {
 
 	//ClientId->Client
 	clients sync.Map // map[string]*Client
-
-	onConnect     func(*Connect, *Client) bool
-	onPublish     func(*Publish, *Client) bool
-	onSubscribe   func(*Subscribe, *Client) bool
-	onUnSubscribe func(*UnSubscribe, *Client)
-	onDisconnect  func(*DisConnect, *Client)
 }
 
 //TODO 添加参数
@@ -190,16 +186,18 @@ func (h *Broker) handle(pkt Packet, client *Client) {
 func (h *Broker) handleConnect(pkt *Connect, client *Client) {
 	ack := CONNACK.NewPacket().(*Connack)
 
-	//验证用户名密码
-	if h.onConnect != nil {
-		if !h.onConnect(pkt, client) {
-			ack.SetCode(CONNACK_INVALID_USERNAME_PASSWORD)
-			client.dispatch(ack)
-			// 断开
-			_ = client.Close()
-			return
-		}
-	}
+	//TODO 验证用户名密码
+	//if h.onConnect != nil {
+	//	if !h.onConnect(pkt, client) {
+	//		ack.SetCode(CONNACK_INVALID_USERNAME_PASSWORD)
+	//		client.dispatch(ack)
+	//		// 断开
+	//		_ = client.Close()
+	//		return
+	//	}
+	//}
+
+	h.Emit("connect", pkt, client)
 
 	var clientId string
 	if len(pkt.ClientId()) == 0 {
@@ -269,12 +267,8 @@ func (h *Broker) handleConnect(pkt *Connect, client *Client) {
 }
 
 func (h *Broker) handlePublish(pkt *Publish, client *Client) {
-	//外部验证
-	if h.onPublish != nil {
-		if !h.onPublish(pkt, client) {
-			return
-		}
-	}
+
+	h.Emit("publish", pkt, client)
 
 	qos := pkt.Qos()
 	if qos == Qos0 {
@@ -336,15 +330,16 @@ func (h *Broker) handleSubscribe(pkt *Subscribe, client *Client) {
 	ack := SUBACK.NewPacket().(*SubAck)
 	ack.SetPacketId(pkt.PacketId())
 
-	//外部验证
-	if h.onSubscribe != nil {
-		if !h.onSubscribe(pkt, client) {
-			//回复失败
-			ack.AddCode(SUB_CODE_ERR)
-			client.dispatch(ack)
-			return
-		}
-	}
+	//TODO 外部验证
+	//if h.onSubscribe != nil {
+	//	if !h.onSubscribe(pkt, client) {
+	//		//回复失败
+	//		ack.AddCode(SUB_CODE_ERR)
+	//		client.dispatch(ack)
+	//		return
+	//	}
+	//}
+	h.Emit("subscribe", pkt, client)
 
 	for _, st := range pkt.Topics() {
 		//log.Print("Subscribe ", string(st.Topic()))
@@ -372,9 +367,10 @@ func (h *Broker) handleSubscribe(pkt *Subscribe, client *Client) {
 
 func (h *Broker) handleUnSubscribe(pkt *UnSubscribe, client *Client) {
 	//外部验证
-	if h.onUnSubscribe != nil {
-		h.onUnSubscribe(pkt, client)
-	}
+	//if h.onUnSubscribe != nil {
+	//	h.onUnSubscribe(pkt, client)
+	//}
+	h.Emit("unsubscribe", pkt, client)
 
 	ack := UNSUBACK.NewPacket().(*UnSubAck)
 	for _, t := range pkt.Topics() {
@@ -390,26 +386,11 @@ func (h *Broker) handleUnSubscribe(pkt *UnSubscribe, client *Client) {
 }
 
 func (h *Broker) handleDisconnect(pkt *DisConnect, client *Client) {
-	if h.onDisconnect != nil {
-		h.onDisconnect(pkt, client)
-	}
+	//if h.onDisconnect != nil {
+	//	h.onDisconnect(pkt, client)
+	//}
+	h.Emit("disconnect", pkt, client)
 
 	h.clients.Delete(client.clientId)
 	_ = client.Close()
-}
-
-func (h *Broker) OnConnect(fn func(*Connect, *Client) bool) {
-	h.onConnect = fn
-}
-func (h *Broker) OnPublish(fn func(*Publish, *Client) bool) {
-	h.onPublish = fn
-}
-func (h *Broker) OnSubscribe(fn func(*Subscribe, *Client) bool) {
-	h.onSubscribe = fn
-}
-func (h *Broker) OnUnSubscribe(fn func(*UnSubscribe, *Client)) {
-	h.onUnSubscribe = fn
-}
-func (h *Broker) OnDisconnect(fn func(*DisConnect, *Client)) {
-	h.onDisconnect = fn
 }
