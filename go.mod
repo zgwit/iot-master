@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/antonmedv/expr v1.9.0
-	github.com/asaskevich/EventBus v0.0.0-20200907212545-49d423059eef
 	github.com/asdine/storm/v3 v3.2.1
 	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/gin v1.7.7
