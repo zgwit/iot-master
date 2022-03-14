@@ -106,7 +106,12 @@ func (p *Program) run() {
 }
 
 func originMain() {
-	err := database.Open(config.Config.Database)
+	err := config.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = database.Open(config.Config.Database)
 	if err != nil {
 		log.Fatal(err)
 	}
