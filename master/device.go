@@ -15,9 +15,10 @@ import (
 type Device struct {
 	model.Device
 
-	Pollers    []*Poller   `json:"pollers"`
-	Strategies []*Strategy `json:"strategies"`
-	Jobs       []*Job      `json:"jobs"`
+	Pollers    []*Poller
+	Strategies []*Strategy
+	Jobs       []*Job
+	UserJobs   []*UserJob
 
 	//命令索引
 	commandIndex map[string]*model.Command

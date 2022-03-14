@@ -1,7 +1,7 @@
 package master
 
 import (
-	cron2 "github.com/zgwit/iot-master/cron"
+	"github.com/zgwit/iot-master/cron"
 	"github.com/zgwit/iot-master/model"
 )
 
@@ -10,7 +10,7 @@ type Poller struct {
 	model.Poller
 
 	reading bool
-	job     *cron2.Job
+	job     *cron.Job
 	adapter *Adapter
 }
 
@@ -18,17 +18,17 @@ type Poller struct {
 func (p *Poller) Start() (err error) {
 	switch p.Type {
 	case "interval":
-		p.job, err = cron2.Interval(p.Interval, func() {
+		p.job, err = cron.Interval(p.Interval, func() {
 			p.Execute()
 		})
 	case "clock":
 		hours := p.Clock / 60
 		minutes := p.Clock % 60
-		p.job, err = cron2.Clock(hours, minutes, func() {
+		p.job, err = cron.Clock(hours, minutes, func() {
 			p.Execute()
 		})
 	case "crontab":
-		p.job, err = cron2.Schedule(p.Crontab, func() {
+		p.job, err = cron.Schedule(p.Crontab, func() {
 			p.Execute()
 		})
 	}

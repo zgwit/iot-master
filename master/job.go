@@ -2,7 +2,7 @@ package master
 
 import (
 	"fmt"
-	cron2 "github.com/zgwit/iot-master/cron"
+	"github.com/zgwit/iot-master/cron"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 )
@@ -11,7 +11,7 @@ import (
 type Job struct {
 	model.Job
 
-	job *cron2.Job
+	job *cron.Job
 
 	events.EventEmitter
 }
@@ -25,11 +25,11 @@ func (j *Job) Start() error {
 		hours := j.Clock / 60
 		minutes := j.Clock % 60
 		//TODO 处理weekdays
-		j.job, err = cron2.Clock(hours, minutes, func() {
+		j.job, err = cron.Clock(hours, minutes, func() {
 			j.Execute()
 		})
 	case "crontab":
-		j.job, err = cron2.Schedule(j.Crontab, func() {
+		j.job, err = cron.Schedule(j.Crontab, func() {
 			j.Execute()
 		})
 	}

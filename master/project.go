@@ -66,6 +66,7 @@ type Project struct {
 	Aggregators []aggregator.Aggregator
 	Jobs        []*Job
 	Strategies  []*Strategy
+	UserJobs    []*UserJob
 
 	deviceNameIndex map[string]*Device
 	deviceIDIndex   map[int]*Device
