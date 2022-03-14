@@ -2,6 +2,7 @@ package master
 
 import (
 	"github.com/antonmedv/expr"
+	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
@@ -60,6 +61,8 @@ func NewDevice(m *model.Device) *Device {
 	} else {
 		dev.Strategies = make([]*Strategy, 0)
 	}
+
+	dev.UserJobs = make([]*UserJob, 0)
 
 	return dev
 }
@@ -139,8 +142,8 @@ func (dev *Device) Init() error {
 	}
 
 	//订阅告警
-	for _, reactor := range dev.Strategies {
-		reactor.On("alarm", func(alarm *model.Alarm) {
+	for _, strategy := range dev.Strategies {
+		strategy.On("alarm", func(alarm *model.Alarm) {
 			da := &model.DeviceAlarm{
 				Alarm:    *alarm,
 				DeviceID: dev.ID,
@@ -160,8 +163,8 @@ func (dev *Device) Init() error {
 			dev.Emit("alarm", da)
 		})
 
-		reactor.On("invoke", func() {
-			for _, invoke := range reactor.Invokes {
+		strategy.On("invoke", func() {
+			for _, invoke := range strategy.Invokes {
 				err := dev.Execute(invoke.Command, invoke.Argv)
 				if err != nil {
 					dev.Emit("error", err)
@@ -171,12 +174,12 @@ func (dev *Device) Init() error {
 			//保存历史
 			history := model.DeviceHistoryReactor{
 				DeviceID: dev.ID,
-				Name:     reactor.Name,
+				Name:     strategy.Name,
 				History:  "action",
 				Created:  time.Now(),
 			}
 			if history.Name == "" {
-				history.Name = reactor.Condition
+				history.Name = strategy.Condition
 			}
 			_ = database.History.Save(history)
 		})
@@ -203,6 +206,13 @@ func (dev *Device) Start() error {
 			return err
 		}
 	}
+	//用户定时任务
+	for _, job := range dev.UserJobs {
+		err := job.Start()
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -214,6 +224,9 @@ func (dev *Device) Stop() error {
 		collector.Stop()
 	}
 	for _, job := range dev.Jobs {
+		job.Stop()
+	}
+	for _, job := range dev.UserJobs {
 		job.Stop()
 	}
 	return nil
@@ -251,6 +264,24 @@ func (dev *Device) Execute(command string, argv []float64) error {
 			//dev.events.Publish("error", err)
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (dev *Device) LoadUserJobs() error {
+	var jobs []model.UserJob
+	err := database.Master.Find("DeviceId", dev.ID, &jobs)
+
+	if err != storm.ErrNotFound {
+		return nil
+	} else if err != nil {
+		return err
+	}
+
+	for _, j := range jobs {
+		job := &UserJob{UserJob: j}
+		dev.UserJobs = append(dev.UserJobs, job)
 	}
 
 	return nil

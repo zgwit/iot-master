@@ -59,7 +59,7 @@ func parseParamId(ctx *gin.Context)  {
 
 func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/login", login)
-	app.Any("/logout", logout)
+	app.GET("/logout", logout)
 
 	//检查 session，必须登录
 	app.Use(mustLogin)
