@@ -54,11 +54,11 @@
 
 ### Web前端
 
-[Angular](https://github.com/angular/angular) 基础框架，Angular1比较熟，所以用了Angular2+
+[Angular](https://github.com/angular/angular) 基础框架，Angular1比较熟，所以沿用了Angular2+
 
 [NG-ZORRO](https://github.com/NG-ZORRO/ng-zorro-antd) UI框架，AntDesign的Angular版本
 
-[SVG.js](https://github.com/svgdotjs/svg.js) 组态框架，实现 SCADA HMI
+[SVG.js](https://github.com/svgdotjs/svg.js) SVG框架，基于SVG实现 SCADA HMI
 
 [ECharts](https://github.com/apache/echarts) 图表框架，可嵌入svg.js
 
