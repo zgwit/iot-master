@@ -9,6 +9,7 @@ import (
 	"github.com/zgwit/iot-master/web/api"
 	"log"
 	"net/http"
+	"path"
 	"time"
 )
 
@@ -38,19 +39,22 @@ func Serve(cfg *Options) {
 	//前端静态文件
 	//app.StaticFS("/", http.FS(wwwFiles))
 	wwwFS := http.FS(wwwFiles)
-	app.GET("/*filepath", func(c *gin.Context) {
-		filepath := c.Param("filepath")
-		f, err := wwwFS.Open("www" + filepath)
-		if err != nil {
-			//默认首页
-			f, err = wwwFS.Open("www/index.html")
+	app.Use(func(c *gin.Context) {
+		if c.Request.Method == http.MethodGet {
+			//支持前端框架的无“#”路由
+			fn := path.Join("www", c.Request.RequestURI)
+			f, err := wwwFS.Open(fn)
 			if err != nil {
-				c.Next()
-				return
+				//默认首页
+				f, err = wwwFS.Open("www/index.html")
+				if err != nil {
+					c.Next()
+					return
+				}
 			}
+			defer f.Close()
+			http.ServeContent(c.Writer, c.Request, fn, time.Now(), f)
 		}
-		http.ServeContent(c.Writer, c.Request, filepath, time.Now(), f)
-		_ = f.Close()
 	})
 
 	//监听HTTP

@@ -69,6 +69,12 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	tunnelRoutes(app.Group("/tunnel"))
 	linkRoutes(app.Group("/link"))
 	userRoutes(app.Group("/user"))
+
+	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）
+	app.Use(func(ctx *gin.Context) {
+		replyFail(ctx, "Not found")
+		ctx.Abort()
+	})
 }
 
 func replyList(ctx *gin.Context, data interface{}, total int) {

@@ -17,9 +17,9 @@
 
 ## 给谁用？
 
-- 物联网企业，比如：智慧养老、智慧小区、智慧农业、智慧养殖、智慧厂房、智慧仓库等
-- 设备制造商，比如：锅炉、液压、锻造、成型、清洗、机床（暂不支持CNC）等
-- 政府单位，比如：智慧交通、环境监控、水利设施、灾害监测、物联网小镇等
+- 物联网企业，比如：智慧养老、智慧小区、智慧农业、智慧养殖、智慧厂房、智慧仓库等等
+- 设备制造商，比如：锅炉、液压、锻造、成型、清洗、机床（暂不支持CNC）等等
+- 政府单位，比如：智慧交通、环境监控、水利设施、灾害监测、物联网小镇等等
 - 其他
 
 ## 怎么用？
@@ -34,18 +34,33 @@
 
 ![结构图](https://github.com/zgwit/iot-master/raw/main/docs/frame.svg)
 
-## 技术栈
+
+## 前后端技术栈
 
 项目使用Golang进行开发，普通桌面机实测5w并发无压力，云端未实测，主要看带宽。
+> 该项目曾经使用Nodejs开发后端，但是Nodejs的是单线程模型，并不太适合物联网程序开发，有兴趣可以查看js分支。
 
-> PS：项目曾经使用Nodejs开发后端，但是Nodejs的单线程模型，并不适合物联网程序开发，有兴趣可以查看js分支。
+### 数据库
 
-| 模块        | 选型    |  说明  |
-| --------   | -----   | ---- |
-| 后端框架     | gin    | 简单好用，灵活高效   |
-| 前端框架     | Angular、ZORRO、SVG.js    |  Angular集成度高，学习成本虽高，但使用方便  |
-| 关系数据库   | storm(boltdb)    |  内嵌数据库，可以省去单独部署关系数据库的麻烦，而且存储结构化数据方便  |
-| 历史数据库   | tstorage | 内嵌时序数据库 |
+嵌入式数据库[Storm(boltdb)](https://github.com/asdine/storm)
+
+嵌入式时序数据库[tstorage](https://github.com/nakabonne/tstorage)
+
+> 原项目使用MySQL和InfluxDB，安装麻烦，CPU和内存占用高，而实际又不需要那么多功能，故采用嵌入式数据库
+
+### Web框架
+
+[GIN](https://github.com/gin-gonic/gin) ，因为不需要模板解析，后续可能直接采用httpRouter或gorilla/mux。
+
+### Web前端
+
+[Angular](https://github.com/angular/angular) 基础框架，Angular1比较熟，所以用了Angular2+
+
+[NG-ZORRO](https://github.com/NG-ZORRO/ng-zorro-antd) UI框架，AntDesign的Angular版本
+
+[SVG.js](https://github.com/svgdotjs/svg.js) 组态框架，实现 SCADA HMI
+
+[ECharts](https://github.com/apache/echarts) 图表框架，可嵌入svg.js
 
 ## 开发目标
 
@@ -68,6 +83,13 @@
     - [x] 自动控制
     - [x] 存入历史数据库
     - [x] 报警器
+- [ ] Web组态
+  - [x] 控件库
+  - [ ] 在线控件库
+  - [x] 组件绘制
+  - [x] 组件编辑
+  - [ ] 数据联动（暂时使用MQTT，OPCUA在研究）
+  - [ ] 保存模板
 - [ ] 远程控制中心（商业版高阶功能，收费）
     - [ ] 统一管理
     - [x] 短信报警，电话报警
