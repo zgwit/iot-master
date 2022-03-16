@@ -1,0 +1,25 @@
+.editor-layout{
+  height: 100vh;
+
+  .header{
+    //padding: 1px 15px;
+    font-size: 20px;
+
+    .btn {
+      padding: 5px;
+    }
+  }
+}
+
+
+.color{
+  //border: none;
+  border: 1px solid white;
+  width: 30px;
+}
+
+.component{
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+}
