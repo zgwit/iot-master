@@ -1,6 +1,7 @@
 package master
 
 import (
+	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/aggregator"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/database"
@@ -66,7 +67,7 @@ type Project struct {
 	Aggregators []aggregator.Aggregator
 	Jobs        []*Job
 	Strategies  []*Strategy
-	UserJobs    []*UserJob
+	Timers      []*Timer
 
 	deviceNameIndex map[string]*Device
 	deviceIDIndex   map[int]*Device
@@ -187,10 +188,13 @@ func (prj *Project) Init() error {
 
 			//日志
 			_ = database.History.Save(model.ProjectHistoryJob{
-				ProjectID: prj.ID,
+				ProjectHistory: model.ProjectHistory{
+					ProjectID: prj.ID,
+					History:   "action",
+					Created:   time.Now(),
+				},
 				Job:       job.String(),
-				History:   "action",
-				Created:   time.Now()})
+			})
 		})
 	}
 
@@ -220,11 +224,14 @@ func (prj *Project) Init() error {
 
 			//入库
 			_ = database.History.Save(model.ProjectHistoryAlarm{
-				ProjectID: prj.ID,
+				ProjectHistory: model.ProjectHistory{
+					ProjectID: prj.ID,
+					History:   "action",
+					Created:   time.Now(),
+				},
 				Code:      alarm.Code,
 				Level:     alarm.Level,
 				Message:   alarm.Message,
-				Created:   time.Now(),
 			})
 
 			//上报
@@ -241,10 +248,12 @@ func (prj *Project) Init() error {
 
 			//保存历史
 			history := model.ProjectHistoryReactor{
-				ProjectID: prj.ID,
+				ProjectHistory: model.ProjectHistory{
+					ProjectID: prj.ID,
+					History:   "action",
+					Created:   time.Now(),
+				},
 				Name:      reactor.Name,
-				History:   "action",
-				Created:   time.Now(),
 			}
 			if history.Name == "" {
 				history.Name = reactor.Condition
@@ -300,5 +309,43 @@ func (prj *Project) execute(in *model.Invoke) error {
 			}
 		}
 	}
+	return nil
+}
+
+func (prj *Project) LoadTimers() error {
+	var timers []model.ProjectTimer
+	err := database.Master.All(&timers) //TODO 判断disabled
+
+	if err != storm.ErrNotFound {
+		return nil
+	} else if err != nil {
+		return err
+	}
+
+	for _, t := range timers {
+		timer := &Timer{Timer: t.Timer}
+		prj.Timers = append(prj.Timers, timer)
+
+		timer.On("invoke", func() {
+			var err error
+			for _, invoke := range timer.Invokes {
+				err = prj.execute(&invoke)
+				if err != nil {
+					prj.Emit("error", err)
+				}
+			}
+
+			//日志
+			_ = database.History.Save(model.ProjectHistoryTimer{
+				ProjectHistory: model.ProjectHistory{
+					ProjectID: prj.ID,
+					History:  "action",
+					Created:  time.Now(),
+				},
+				TimerID: timer.ID,
+			})
+		})
+	}
+
 	return nil
 }

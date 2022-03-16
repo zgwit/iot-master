@@ -30,45 +30,40 @@ type Device struct {
 //DeviceHistory 设备历史
 type DeviceHistory struct {
 	ID       int       `json:"id" storm:"id,increment"`
-	DeviceID int       `json:"device_id"`
+	DeviceID int       `json:"device_id" storm:"index"`
 	History  string    `json:"history"`
 	Created  time.Time `json:"created"`
 }
 
 //DeviceHistoryAlarm 设备历史告警
 type DeviceHistoryAlarm struct {
-	ID       int       `json:"id" storm:"id,increment"`
-	DeviceID int       `json:"device_id"`
+	DeviceHistory `storm:"inline"`
 	Code     string    `json:"code"`
 	Level    int       `json:"level"`
 	Message  string    `json:"message"`
-	Created  time.Time `json:"created"`
 }
 
 //DeviceHistoryReactor 设备历史响应
 type DeviceHistoryReactor struct {
-	ID       int       `json:"id" storm:"id,increment"`
-	DeviceID int       `json:"device_id"`
+	DeviceHistory `storm:"inline"`
 	Name     string    `json:"name"`
-	History  string    `json:"result"`
-	Created  time.Time `json:"created"`
 }
 
 //DeviceHistoryJob 设备历史任务
 type DeviceHistoryJob struct {
-	ID       int       `json:"id" storm:"id,increment"`
-	DeviceID int       `json:"device_id"`
+	DeviceHistory `storm:"inline"`
 	Job      string    `json:"job"`
-	History  string    `json:"result"`
-	Created  time.Time `json:"created"`
 }
 
 //DeviceHistoryCommand 设备历史命令
 type DeviceHistoryCommand struct {
-	ID       int       `json:"id" storm:"id,increment"`
-	DeviceID int       `json:"device_id"`
+	DeviceHistory `storm:"inline"`
 	Command  string    `json:"command"`
 	Argv     []float64 `json:"argv"`
-	History  string    `json:"result"`
-	Created  time.Time `json:"created"`
+}
+
+//DeviceHistoryTimer 设备定时任务
+type DeviceHistoryTimer struct {
+	DeviceHistory `storm:"inline"`
+	TimerID  int       `json:"timer_id" storm:"index"`
 }

@@ -38,31 +38,27 @@ type ProjectHistory struct {
 
 //ProjectHistoryAlarm 项目历史告警
 type ProjectHistoryAlarm struct {
-	ID int `json:"id" storm:"id,increment"`
-
-	ProjectID int    `json:"project_id"`
-	DeviceID  int    `json:"device_id"`
-	Code      string `json:"code"`
-	Level     int    `json:"level"`
-	Message   string `json:"message"`
-
-	Created time.Time `json:"created"`
+	ProjectHistory `storm:"inline"`
+	DeviceID       int    `json:"device_id,omitempty"`
+	Code           string `json:"code"`
+	Level          int    `json:"level"`
+	Message        string `json:"message"`
 }
 
 //ProjectHistoryReactor 项目历史响应
 type ProjectHistoryReactor struct {
-	ID        int       `json:"id" storm:"id,increment"`
-	ProjectID int       `json:"project_id"`
-	Name      string    `json:"name"`
-	History   string    `json:"result"`
-	Created   time.Time `json:"created"`
+	ProjectHistory `storm:"inline"`
+	Name           string `json:"name"`
 }
 
 //ProjectHistoryJob 项目历史任务
 type ProjectHistoryJob struct {
-	ID        int       `json:"id" storm:"id,increment"`
-	ProjectID int       `json:"project_id"`
-	Job       string    `json:"job"`
-	History   string    `json:"result"`
-	Created   time.Time `json:"created"`
+	ProjectHistory `storm:"inline"`
+	Job            string `json:"job"`
+}
+
+//ProjectHistoryTimer 设备定时任务
+type ProjectHistoryTimer struct {
+	ProjectHistory `storm:"inline"`
+	TimerID        int `json:"timer_id" storm:"index"`
 }

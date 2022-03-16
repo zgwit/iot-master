@@ -19,7 +19,7 @@ type Device struct {
 	Pollers    []*Poller
 	Strategies []*Strategy
 	Jobs       []*Job
-	UserJobs   []*UserJob
+	Timers     []*Timer
 
 	//命令索引
 	commandIndex map[string]*model.Command
@@ -62,7 +62,7 @@ func NewDevice(m *model.Device) *Device {
 		dev.Strategies = make([]*Strategy, 0)
 	}
 
-	dev.UserJobs = make([]*UserJob, 0)
+	dev.Timers = make([]*Timer, 0)
 
 	return dev
 }
@@ -118,11 +118,6 @@ func (dev *Device) Init() error {
 
 	//定时任务
 	for _, job := range dev.Jobs {
-		err := job.Start()
-		if err != nil {
-			return err
-		}
-
 		job.On("invoke", func() {
 			var err error
 			for _, invoke := range job.Invokes {
@@ -134,10 +129,13 @@ func (dev *Device) Init() error {
 
 			//日志
 			_ = database.History.Save(model.DeviceHistoryJob{
-				DeviceID: dev.ID,
-				Job:      job.String(),
-				History:  "action",
-				Created:  time.Now()})
+				DeviceHistory: model.DeviceHistory{
+					DeviceID: dev.ID,
+					History:  "action",
+					Created:  time.Now(),
+				},
+				Job: job.String(),
+			})
 		})
 	}
 
@@ -152,11 +150,14 @@ func (dev *Device) Init() error {
 
 			//入库
 			_ = database.History.Save(model.DeviceHistoryAlarm{
-				DeviceID: dev.ID,
+				DeviceHistory: model.DeviceHistory{
+					DeviceID: dev.ID,
+					History:  "action",
+					Created:  time.Now(),
+				},
 				Code:     alarm.Code,
 				Level:    alarm.Level,
 				Message:  alarm.Message,
-				Created:  time.Now(),
 			})
 
 			//上报
@@ -173,10 +174,12 @@ func (dev *Device) Init() error {
 
 			//保存历史
 			history := model.DeviceHistoryReactor{
-				DeviceID: dev.ID,
+				DeviceHistory: model.DeviceHistory{
+					DeviceID: dev.ID,
+					History:  "action",
+					Created:  time.Now(),
+				},
 				Name:     strategy.Name,
-				History:  "action",
-				Created:  time.Now(),
 			}
 			if history.Name == "" {
 				history.Name = strategy.Condition
@@ -207,8 +210,8 @@ func (dev *Device) Start() error {
 		}
 	}
 	//用户定时任务
-	for _, job := range dev.UserJobs {
-		err := job.Start()
+	for _, timer := range dev.Timers {
+		err := timer.Start()
 		if err != nil {
 			return err
 		}
@@ -226,15 +229,23 @@ func (dev *Device) Stop() error {
 	for _, job := range dev.Jobs {
 		job.Stop()
 	}
-	for _, job := range dev.UserJobs {
-		job.Stop()
+	for _, timer := range dev.Timers {
+		timer.Stop()
 	}
 	return nil
 }
 
 //Execute 执行命令
 func (dev *Device) Execute(command string, argv []float64) error {
-	_ = database.History.Save(model.DeviceHistoryCommand{DeviceID: dev.ID, Command: command, Argv: argv, History: "execute", Created: time.Now()})
+	_ = database.History.Save(model.DeviceHistoryCommand{
+		DeviceHistory: model.DeviceHistory{
+			DeviceID: dev.ID,
+			History:  "action",
+			Created:  time.Now(),
+		},
+		Command: command,
+		Argv: argv,
+	})
 
 	cmd := dev.commandIndex[command]
 	//直接执行
@@ -269,9 +280,9 @@ func (dev *Device) Execute(command string, argv []float64) error {
 	return nil
 }
 
-func (dev *Device) LoadUserJobs() error {
-	var jobs []model.UserJob
-	err := database.Master.Find("DeviceId", dev.ID, &jobs)
+func (dev *Device) LoadTimers() error {
+	var timers []model.DeviceTimer
+	err := database.Master.All(&timers) //TODO 判断disabled
 
 	if err != storm.ErrNotFound {
 		return nil
@@ -279,9 +290,29 @@ func (dev *Device) LoadUserJobs() error {
 		return err
 	}
 
-	for _, j := range jobs {
-		job := &UserJob{UserJob: j}
-		dev.UserJobs = append(dev.UserJobs, job)
+	for _, t := range timers {
+		timer := &Timer{Timer: t.Timer}
+		dev.Timers = append(dev.Timers, timer)
+
+		timer.On("invoke", func() {
+			var err error
+			for _, invoke := range timer.Invokes {
+				err = dev.Execute(invoke.Command, invoke.Argv)
+				if err != nil {
+					dev.Emit("error", err)
+				}
+			}
+
+			//日志
+			_ = database.History.Save(model.DeviceHistoryTimer{
+				DeviceHistory: model.DeviceHistory{
+					DeviceID: dev.ID,
+					History:  "action",
+					Created:  time.Now(),
+				},
+				TimerID: timer.ID,
+			})
+		})
 	}
 
 	return nil

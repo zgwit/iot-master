@@ -7,9 +7,9 @@ import (
 	"github.com/zgwit/iot-master/model"
 )
 
-//UserJob 任务
-type UserJob struct {
-	model.UserJob
+//Timer 任务
+type Timer struct {
+	model.Timer
 
 	job *cron.Job
 
@@ -17,7 +17,7 @@ type UserJob struct {
 }
 
 //Start 启动任务
-func (j *UserJob) Start() error {
+func (j *Timer) Start() error {
 	var err error
 	hours := j.Clock / 60
 	minutes := j.Clock % 60
@@ -29,7 +29,7 @@ func (j *UserJob) Start() error {
 }
 
 //Execute 执行任务
-func (j *UserJob) Execute() {
+func (j *Timer) Execute() {
 	//for _, i:= range j.Invokes {
 	//	j.events.Publish("invoke", i)
 	//}
@@ -38,12 +38,12 @@ func (j *UserJob) Execute() {
 }
 
 //Stop 取消任务
-func (j *UserJob) Stop() {
+func (j *Timer) Stop() {
 	j.job.Cancel()
 }
 
 //String 任务描述
-func (j *UserJob) String() string {
+func (j *Timer) String() string {
 	hours := j.Clock / 60
 	minutes := j.Clock % 60
 	return fmt.Sprintf("%02d:%02d", hours, minutes)
