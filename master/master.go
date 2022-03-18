@@ -128,15 +128,19 @@ func LoadProjects() error {
 			continue
 		}
 
-		prj := NewProject(p)
+		prj, err := NewProject(p)
+		if err != nil {
+			//TODO log
+			continue
+		}
 		err = prj.Init()
 		if err != nil {
 			//TODO log
-		} else {
-			err = prj.Start()
-			if err != nil {
-				//TODO log
-			}
+			continue
+		}
+		err = prj.Start()
+		if err != nil {
+			//TODO log
 		}
 	}
 	return nil
@@ -150,17 +154,20 @@ func LoadProject(id int) (*Project, error) {
 		return nil, err
 	}
 
-	prj := NewProject(project)
+	prj, err := NewProject(project)
+	if err != nil {
+		return nil, err
+	}
+
 	allProjects.Store(id, prj)
 
 	err = prj.Init()
 	if err != nil {
 		return nil, err
-	} else {
-		err = prj.Start()
-		if err != nil {
-			return nil, err
-		}
+	}
+	err = prj.Start()
+	if err != nil {
+		return nil, err
 	}
 	return prj, nil
 }

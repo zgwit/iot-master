@@ -281,7 +281,7 @@ func (dev *Device) Execute(command string, argv []float64) error {
 
 func (dev *Device) LoadTimers() error {
 	var timers []model.DeviceTimer
-	err := database.Master.All(&timers) //TODO 判断disabled
+	err := database.Master.Find("Disabled", false, &timers)
 
 	if err != storm.ErrNotFound {
 		return nil

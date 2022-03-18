@@ -1,6 +1,7 @@
 package connect
 
 import (
+	"errors"
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
@@ -63,9 +64,11 @@ func (s *Serial) Open() error {
 func (s *Serial) Close() error {
 	s.Emit("close")
 	if s.link != nil {
-		return s.link.Close()
+		link := s.link
+		s.link = nil
+		return link.Close()
 	}
-	return nil //TODO return error
+	return errors.New("link is closed")
 }
 
 func (s *Serial) GetLink(id int) Link {

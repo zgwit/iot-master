@@ -1,6 +1,7 @@
 package connect
 
 import (
+	"errors"
 	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
@@ -73,9 +74,11 @@ func (client *NetClient) Close() error {
 	client.Emit("close")
 
 	if client.link != nil {
-		return client.link.Close()
+		link := client.link
+		client.link = nil
+		return link.Close()
 	}
-	return nil //TODO return error
+	return errors.New("link is closed")
 }
 
 //GetLink 获取链接

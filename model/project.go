@@ -39,14 +39,11 @@ type ProjectHistory struct {
 //ProjectHistoryAlarm 项目历史告警
 type ProjectHistoryAlarm struct {
 	ProjectHistory `storm:"inline"`
-	DeviceID       int    `json:"device_id,omitempty"`
-	Code           string `json:"code"`
-	Level          int    `json:"level"`
-	Message        string `json:"message"`
+	ProjectAlarm   `storm:"inline"`
 }
 
-//ProjectHistoryReactor 项目历史响应
-type ProjectHistoryReactor struct {
+//ProjectHistoryStrategy 项目历史响应
+type ProjectHistoryStrategy struct {
 	ProjectHistory `storm:"inline"`
 	Name           string `json:"name"`
 }

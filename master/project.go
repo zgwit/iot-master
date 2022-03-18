@@ -77,7 +77,7 @@ type Project struct {
 	deviceAlarmHandler func(alarm *model.DeviceAlarm)
 }
 
-func NewProject(m *model.Project) *Project {
+func NewProject(m *model.Project) (*Project, error) {
 	prj := &Project{
 		Project:         *m,
 		deviceNameIndex: make(map[string]*Device),
@@ -98,7 +98,7 @@ func NewProject(m *model.Project) *Project {
 		for _, v := range m.Aggregators {
 			agg, err := aggregator.New(v)
 			if err != nil {
-				return nil //TODO err
+				return nil, err
 			}
 			prj.aggregators = append(prj.aggregators, agg)
 		}
@@ -124,7 +124,7 @@ func NewProject(m *model.Project) *Project {
 		prj.strategies = make([]*Strategy, 0)
 	}
 
-	return prj
+	return prj, nil
 }
 
 //Init 项目初始化
@@ -156,7 +156,9 @@ func (prj *Project) Init() error {
 			DeviceAlarm: *alarm,
 			ProjectID:   prj.ID,
 		}
-		//TODO 入库
+
+		//历史入库
+		_ = database.History.Save(model.ProjectHistoryAlarm{ProjectHistory: model.ProjectHistory{ProjectID: prj.ID, History: "", Created: time.Now()}, ProjectAlarm: *pa})
 
 		//上报
 		prj.Emit("alarm", pa)
@@ -192,7 +194,7 @@ func (prj *Project) Init() error {
 					History:   "action",
 					Created:   time.Now(),
 				},
-				Job:       job.String(),
+				Job: job.String(),
 			})
 		})
 	}
@@ -228,9 +230,7 @@ func (prj *Project) Init() error {
 					History:   "action",
 					Created:   time.Now(),
 				},
-				Code:      alarm.Code,
-				Level:     alarm.Level,
-				Message:   alarm.Message,
+				ProjectAlarm: *pa,
 			})
 
 			//上报
@@ -246,7 +246,7 @@ func (prj *Project) Init() error {
 			}
 
 			//保存历史
-			history := model.ProjectHistoryReactor{
+			history := model.ProjectHistoryStrategy{
 				ProjectHistory: model.ProjectHistory{
 					ProjectID: prj.ID,
 					History:   "action",
@@ -313,7 +313,7 @@ func (prj *Project) execute(in *model.Invoke) error {
 
 func (prj *Project) LoadTimers() error {
 	var timers []model.ProjectTimer
-	err := database.Master.All(&timers) //TODO 判断disabled
+	err := database.Master.Find("Disabled", false, &timers)
 
 	if err != storm.ErrNotFound {
 		return nil
@@ -338,8 +338,8 @@ func (prj *Project) LoadTimers() error {
 			_ = database.History.Save(model.ProjectHistoryTimer{
 				ProjectHistory: model.ProjectHistory{
 					ProjectID: prj.ID,
-					History:  "action",
-					Created:  time.Now(),
+					History:   "action",
+					Created:   time.Now(),
 				},
 				TimerID: timer.ID,
 			})

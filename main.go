@@ -95,8 +95,9 @@ func (p *Program) run() {
 			select {
 			case <-hup:
 			case <-quit:
-				//TODO 优雅地结束
-				os.Exit(0)
+				//优雅地结束
+				_ = shutdown()
+				//os.Exit(0)
 			}
 		}
 	}()
