@@ -5,7 +5,7 @@ import "time"
 //User 用户
 type User struct {
 	ID       int       `json:"id" storm:"id,increment"`
-	Username string    `json:"username"`
+	Username string    `json:"username" storm:"unique"`
 	Nickname string    `json:"nickname,omitempty"`
 	Email    string    `json:"email,omitempty"`
 	Disabled bool      `json:"disabled,omitempty"`

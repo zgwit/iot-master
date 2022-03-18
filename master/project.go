@@ -61,18 +61,17 @@ func (d *ProjectDevice) belongSelector(s *model.Selector) bool {
 //Project 项目
 type Project struct {
 	model.Project
+	events.EventEmitter
 
 	Devices []*ProjectDevice
 
-	Aggregators []aggregator.Aggregator
-	Jobs        []*Job
-	Strategies  []*Strategy
-	Timers      []*Timer
+	aggregators []aggregator.Aggregator
+	jobs        []*Job
+	strategies  []*Strategy
+	timers      []*Timer
 
 	deviceNameIndex map[string]*Device
 	deviceIDIndex   map[int]*Device
-
-	events.EventEmitter
 
 	deviceDataHandler  func(data calc.Context)
 	deviceAlarmHandler func(alarm *model.DeviceAlarm)
@@ -95,34 +94,34 @@ func NewProject(m *model.Project) *Project {
 	}
 
 	if m.Aggregators != nil {
-		prj.Aggregators = make([]aggregator.Aggregator, len(m.Aggregators))
+		prj.aggregators = make([]aggregator.Aggregator, len(m.Aggregators))
 		for _, v := range m.Aggregators {
 			agg, err := aggregator.New(v)
 			if err != nil {
 				return nil //TODO err
 			}
-			prj.Aggregators = append(prj.Aggregators, agg)
+			prj.aggregators = append(prj.aggregators, agg)
 		}
 	} else {
-		prj.Aggregators = make([]aggregator.Aggregator, 0)
+		prj.aggregators = make([]aggregator.Aggregator, 0)
 	}
 
 	if m.Jobs != nil {
-		prj.Jobs = make([]*Job, len(m.Jobs))
+		prj.jobs = make([]*Job, len(m.Jobs))
 		for _, v := range m.Jobs {
-			prj.Jobs = append(prj.Jobs, &Job{Job: *v})
+			prj.jobs = append(prj.jobs, &Job{Job: *v})
 		}
 	} else {
-		prj.Jobs = make([]*Job, 0)
+		prj.jobs = make([]*Job, 0)
 	}
 
 	if m.Strategies != nil {
-		prj.Strategies = make([]*Strategy, len(m.Strategies))
+		prj.strategies = make([]*Strategy, len(m.Strategies))
 		for _, v := range m.Strategies {
-			prj.Strategies = append(prj.Strategies, &Strategy{Strategy: *v})
+			prj.strategies = append(prj.strategies, &Strategy{Strategy: *v})
 		}
 	} else {
-		prj.Strategies = make([]*Strategy, 0)
+		prj.strategies = make([]*Strategy, 0)
 	}
 
 	return prj
@@ -133,7 +132,7 @@ func (prj *Project) Init() error {
 	//设备数据变化的处理函数
 	prj.deviceDataHandler = func(data calc.Context) {
 		//数据变化后，更新计算
-		for _, agg := range prj.Aggregators {
+		for _, agg := range prj.aggregators {
 			val, err := agg.Evaluate()
 			if err != nil {
 				prj.Emit("error", err)
@@ -143,7 +142,7 @@ func (prj *Project) Init() error {
 		}
 
 		//处理响应
-		for _, reactor := range prj.Strategies {
+		for _, reactor := range prj.strategies {
 			err := reactor.Execute(prj.Context)
 			if err != nil {
 				prj.Emit("error", err)
@@ -176,7 +175,7 @@ func (prj *Project) Init() error {
 	}
 
 	//定时任务
-	for _, job := range prj.Jobs {
+	for _, job := range prj.jobs {
 		job.On("invoke", func() {
 			var err error
 			for _, invoke := range job.Invokes {
@@ -199,7 +198,7 @@ func (prj *Project) Init() error {
 	}
 
 	//初始化聚合器
-	for _, agg := range prj.Aggregators {
+	for _, agg := range prj.aggregators {
 		err := agg.Init()
 		if err != nil {
 			return err
@@ -212,7 +211,7 @@ func (prj *Project) Init() error {
 	}
 
 	//订阅告警
-	for _, reactor := range prj.Strategies {
+	for _, reactor := range prj.strategies {
 		reactor.On("alarm", func(alarm *model.Alarm) {
 			pa := &model.ProjectAlarm{
 				DeviceAlarm: model.DeviceAlarm{
@@ -276,7 +275,7 @@ func (prj *Project) Start() error {
 	}
 
 	//定时任务
-	for _, job := range prj.Jobs {
+	for _, job := range prj.jobs {
 		err := job.Start()
 		if err != nil {
 			return err
@@ -293,7 +292,7 @@ func (prj *Project) Stop() error {
 		dev.device.Off("data", prj.deviceDataHandler)
 		dev.device.Off("alarm", prj.deviceAlarmHandler)
 	}
-	for _, job := range prj.Jobs {
+	for _, job := range prj.jobs {
 		job.Stop()
 	}
 	return nil
@@ -324,7 +323,7 @@ func (prj *Project) LoadTimers() error {
 
 	for _, t := range timers {
 		timer := &Timer{Timer: t.Timer}
-		prj.Timers = append(prj.Timers, timer)
+		prj.timers = append(prj.timers, timer)
 
 		timer.On("invoke", func() {
 			var err error

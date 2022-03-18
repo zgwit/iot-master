@@ -15,18 +15,17 @@ import (
 //Device 设备
 type Device struct {
 	model.Device
+	events.EventEmitter
 
-	Pollers    []*Poller
-	Strategies []*Strategy
-	Jobs       []*Job
-	Timers     []*Timer
+	pollers    []*Poller
+	strategies []*Strategy
+	jobs       []*Job
+	timers     []*Timer
 
 	//命令索引
 	commandIndex map[string]*model.Command
 
 	adapter *Adapter
-
-	events.EventEmitter
 }
 
 func NewDevice(m *model.Device) *Device {
@@ -36,33 +35,33 @@ func NewDevice(m *model.Device) *Device {
 	}
 
 	if m.Pollers != nil {
-		dev.Pollers = make([]*Poller, len(m.Pollers))
+		dev.pollers = make([]*Poller, len(m.Pollers))
 		for _, v := range m.Pollers {
-			dev.Pollers = append(dev.Pollers, &Poller{Poller: *v})
+			dev.pollers = append(dev.pollers, &Poller{Poller: *v})
 		}
 	} else {
-		dev.Pollers = make([]*Poller, 0)
+		dev.pollers = make([]*Poller, 0)
 	}
 
 	if m.Jobs != nil {
-		dev.Jobs = make([]*Job, len(m.Jobs))
+		dev.jobs = make([]*Job, len(m.Jobs))
 		for _, v := range m.Jobs {
-			dev.Jobs = append(dev.Jobs, &Job{Job: *v})
+			dev.jobs = append(dev.jobs, &Job{Job: *v})
 		}
 	} else {
-		dev.Jobs = make([]*Job, 0)
+		dev.jobs = make([]*Job, 0)
 	}
 
 	if m.Strategies != nil {
-		dev.Strategies = make([]*Strategy, len(m.Strategies))
+		dev.strategies = make([]*Strategy, len(m.Strategies))
 		for _, v := range m.Strategies {
-			dev.Strategies = append(dev.Strategies, &Strategy{Strategy: *v})
+			dev.strategies = append(dev.strategies, &Strategy{Strategy: *v})
 		}
 	} else {
-		dev.Strategies = make([]*Strategy, 0)
+		dev.strategies = make([]*Strategy, 0)
 	}
 
-	dev.Timers = make([]*Timer, 0)
+	dev.timers = make([]*Timer, 0)
 
 	return dev
 }
@@ -89,7 +88,7 @@ func (dev *Device) Init() error {
 		}
 
 		//处理响应
-		for _, reactor := range dev.Strategies {
+		for _, reactor := range dev.strategies {
 			err := reactor.Execute(dev.Context)
 			if err != nil {
 				dev.Emit("error", err)
@@ -117,7 +116,7 @@ func (dev *Device) Init() error {
 	}
 
 	//定时任务
-	for _, job := range dev.Jobs {
+	for _, job := range dev.jobs {
 		job.On("invoke", func() {
 			var err error
 			for _, invoke := range job.Invokes {
@@ -140,7 +139,7 @@ func (dev *Device) Init() error {
 	}
 
 	//订阅告警
-	for _, strategy := range dev.Strategies {
+	for _, strategy := range dev.strategies {
 		strategy.On("alarm", func(alarm *model.Alarm) {
 			da := &model.DeviceAlarm{
 				Alarm:    *alarm,
@@ -196,21 +195,21 @@ func (dev *Device) Start() error {
 	_ = database.History.Save(model.DeviceHistory{DeviceID: dev.ID, History: "start", Created: time.Now()})
 
 	//采集器
-	for _, collector := range dev.Pollers {
+	for _, collector := range dev.pollers {
 		err := collector.Start()
 		if err != nil {
 			return err
 		}
 	}
 	//定时任务
-	for _, job := range dev.Jobs {
+	for _, job := range dev.jobs {
 		err := job.Start()
 		if err != nil {
 			return err
 		}
 	}
 	//用户定时任务
-	for _, timer := range dev.Timers {
+	for _, timer := range dev.timers {
 		err := timer.Start()
 		if err != nil {
 			return err
@@ -223,13 +222,13 @@ func (dev *Device) Start() error {
 func (dev *Device) Stop() error {
 	_ = database.History.Save(model.DeviceHistory{DeviceID: dev.ID, History: "stop", Created: time.Now()})
 
-	for _, collector := range dev.Pollers {
+	for _, collector := range dev.pollers {
 		collector.Stop()
 	}
-	for _, job := range dev.Jobs {
+	for _, job := range dev.jobs {
 		job.Stop()
 	}
-	for _, timer := range dev.Timers {
+	for _, timer := range dev.timers {
 		timer.Stop()
 	}
 	return nil
@@ -292,7 +291,7 @@ func (dev *Device) LoadTimers() error {
 
 	for _, t := range timers {
 		timer := &Timer{Timer: t.Timer}
-		dev.Timers = append(dev.Timers, timer)
+		dev.timers = append(dev.timers, timer)
 
 		timer.On("invoke", func() {
 			var err error
