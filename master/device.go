@@ -87,9 +87,9 @@ func (dev *Device) Init() error {
 			}
 		}
 
-		//处理响应
-		for _, reactor := range dev.strategies {
-			err := reactor.Execute(dev.Context)
+		//处理策略
+		for _, strategy := range dev.strategies {
+			err := strategy.Execute(dev.Context)
 			if err != nil {
 				dev.Emit("error", err)
 			}

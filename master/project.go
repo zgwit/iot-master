@@ -142,8 +142,8 @@ func (prj *Project) Init() error {
 		}
 
 		//处理响应
-		for _, reactor := range prj.strategies {
-			err := reactor.Execute(prj.Context)
+		for _, strategy := range prj.strategies {
+			err := strategy.Execute(prj.Context)
 			if err != nil {
 				prj.Emit("error", err)
 			}
@@ -211,8 +211,8 @@ func (prj *Project) Init() error {
 	}
 
 	//订阅告警
-	for _, reactor := range prj.strategies {
-		reactor.On("alarm", func(alarm *model.Alarm) {
+	for _, strategy := range prj.strategies {
+		strategy.On("alarm", func(alarm *model.Alarm) {
 			pa := &model.ProjectAlarm{
 				DeviceAlarm: model.DeviceAlarm{
 					Alarm:   *alarm,
@@ -237,8 +237,8 @@ func (prj *Project) Init() error {
 			prj.Emit("alarm", pa)
 		})
 
-		reactor.On("invoke", func() {
-			for _, invoke := range reactor.Invokes {
+		strategy.On("invoke", func() {
+			for _, invoke := range strategy.Invokes {
 				err := prj.execute(invoke)
 				if err != nil {
 					prj.Emit("error", err)
@@ -252,10 +252,10 @@ func (prj *Project) Init() error {
 					History:   "action",
 					Created:   time.Now(),
 				},
-				Name:      reactor.Name,
+				Name: strategy.Name,
 			}
 			if history.Name == "" {
-				history.Name = reactor.Condition
+				history.Name = strategy.Condition
 			}
 			_ = database.History.Save(history)
 		})
