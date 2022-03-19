@@ -1,5 +1,7 @@
 package protocol
 
+import "github.com/zgwit/iot-master/connect"
+
 //type Protocol interface {
 //	Write(slave, code, address int, data []byte) error
 //	Read(slave, code, address, length int) ([]byte, error)
@@ -15,12 +17,18 @@ type Protocol interface {
 
 	// ImmediateRead 立即读，高优先级
 	ImmediateRead(addr Address, size uint16) ([]byte, error)
+
+	ParseAddress(addr string) (Address, error)
+	//StringifyAddress(addr Address) string
 }
 
-type Factory func(interface{}) Protocol
+type Options map[string]interface{}
 
-type Desc struct {
+type Factory func(link connect.Link, opts Options) Protocol
+
+type Item struct {
 	Name    string `json:"name"`
+	Label   string `json:"label"`
 	Version string `json:"version"`
 	Factory Factory
 }
