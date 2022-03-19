@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/protocol/helper"
 	"time"
 )
@@ -24,7 +25,7 @@ type RTU struct {
 	queue chan *request //in
 }
 
-func newRTU(link connect.Link) *RTU {
+func newRTU(link connect.Link, opts protocol.Options) protocol.Protocol {
 	rtu := &RTU{
 		link:  link,
 		queue: make(chan *request, 1),
@@ -126,66 +127,71 @@ func (m *RTU) OnData(buf []byte) {
 	}
 }
 
-func (m *RTU) Read(slave int, code int, offset int, size int) ([]byte, error) {
+func (m *RTU) ParseAddress(addr string) (protocol.Address, error) {
+	a := protocol.Address{}
+
+	return a, nil
+}
+
+func (m *RTU) Read(addr protocol.Address, size uint16) ([]byte, error) {
 	b := make([]byte, 8)
-	b[0] = uint8(slave)
-	b[1] = uint8(code)
-	helper.WriteUint16(b[2:], uint16(offset))
-	helper.WriteUint16(b[4:], uint16(size))
+	b[0] = addr.Slave
+	b[1] = addr.Code
+	helper.WriteUint16(b[2:], addr.Offset)
+	helper.WriteUint16(b[4:], size)
 	helper.WriteUint16(b[6:], CRC16(b[:6]))
 
 	return m.execute(b)
 }
 
-func (m *RTU) ImmediateRead(slave int, code int, offset int, size int) ([]byte, error) {
-	return m.Read(slave, code, offset, size)
+func (m *RTU) ImmediateRead(addr protocol.Address, size uint16) ([]byte, error) {
+	return m.Read(addr, size)
 }
 
-func (m *RTU) Write(slave int, code int, offset int, buf []byte) error {
+func (m *RTU) Write(addr protocol.Address, buf []byte) error {
 	length := len(buf)
 	//如果是线圈，需要Shrink
-	if code == 1 {
-		switch code {
-		case FuncCodeReadCoils:
-			if length == 1 {
-				code = 5
-				//数据 转成 0x0000 0xFF00
-				if buf[0] > 0 {
-					buf = []byte{0xFF, 0}
-				} else {
-					buf = []byte{0, 0}
-				}
+	code := addr.Code
+	switch code {
+	case FuncCodeReadCoils:
+		if length == 1 {
+			code = 5
+			//数据 转成 0x0000 0xFF00
+			if buf[0] > 0 {
+				buf = []byte{0xFF, 0}
 			} else {
-				code = 15 //0x0F
-				//数组压缩
-				b := helper.ShrinkBool(buf)
-				count := len(b)
-				buf = make([]byte, 3+count)
-				helper.WriteUint16(buf, uint16(length))
-				buf[2] = uint8(count)
-				copy(buf[3:], b)
+				buf = []byte{0, 0}
 			}
-		case FuncCodeReadHoldingRegisters:
-			if length == 2 {
-				code = 6
-			} else {
-				code = 16 //0x10
-				b := make([]byte, 3+length)
-				helper.WriteUint16(b, uint16(length/2))
-				b[2] = uint8(length)
-				copy(b[3:], buf)
-				buf = b
-			}
-		default:
-			return errors.New("功能码不支持")
+		} else {
+			code = 15 //0x0F
+			//数组压缩
+			b := helper.ShrinkBool(buf)
+			count := len(b)
+			buf = make([]byte, 3+count)
+			helper.WriteUint16(buf, uint16(length))
+			buf[2] = uint8(count)
+			copy(buf[3:], b)
 		}
+	case FuncCodeReadHoldingRegisters:
+		if length == 2 {
+			code = 6
+		} else {
+			code = 16 //0x10
+			b := make([]byte, 3+length)
+			helper.WriteUint16(b, uint16(length/2))
+			b[2] = uint8(length)
+			copy(b[3:], buf)
+			buf = b
+		}
+	default:
+		return errors.New("功能码不支持")
 	}
 
 	l := 6 + len(buf)
 	b := make([]byte, l)
-	b[0] = uint8(slave)
-	b[1] = uint8(code)
-	helper.WriteUint16(b[2:], uint16(offset))
+	b[0] = addr.Slave
+	b[1] = code
+	helper.WriteUint16(b[2:], addr.Offset)
 	copy(b[4:], buf)
 	helper.WriteUint16(b[l-2:], CRC16(b[:l-2]))
 

@@ -6,12 +6,12 @@ import (
 	"github.com/zgwit/iot-master/protocols/modbus"
 )
 
-var protocols = []protocol.Desc{
+var protocols = []protocol.Item{
 	modbus.DescRTU,
 	modbus.DescTCP,
 }
 
-func Protocols() []protocol.Desc {
+func Protocols() []protocol.Item {
 	return protocols
 }
 

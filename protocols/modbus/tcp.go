@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/protocol/helper"
 	"sync"
 	"time"
@@ -18,23 +19,23 @@ type TCP struct {
 	increment uint16
 }
 
-func newTCP(link connect.Link) *TCP {
-	rtu := &TCP{
+func newTCP(link connect.Link, opts protocol.Options) protocol.Protocol {
+	tcp := &TCP{
 		link:      link,
 		queue:     make(chan interface{}, 10), //TODO 改成参数
 		increment: 0x0A0A,                     //避免首字节为0，有些DTU可能会异常
 	}
 	link.On("data", func(data []byte) {
-		rtu.OnData(data)
+		tcp.OnData(data)
 	})
 	link.On("close", func() {
-		close(rtu.queue)
-		rtu.requests.Range(func(key, value interface{}) bool {
+		close(tcp.queue)
+		tcp.requests.Range(func(key, value interface{}) bool {
 			close(value.(*request).resp)
 			return true
 		})
 	})
-	return rtu
+	return tcp
 }
 
 func (m *TCP) execute(cmd []byte, immediate bool) ([]byte, error) {
@@ -128,70 +129,75 @@ func (m *TCP) OnData(buf []byte) {
 	}
 }
 
-func (m *TCP) Read(slave int, code int, offset int, size int) ([]byte, error) {
+func (m *TCP) ParseAddress(addr string) (protocol.Address, error) {
+	a := protocol.Address{}
+
+	return a, nil
+}
+
+func (m *TCP) Read(addr protocol.Address, size uint16) ([]byte, error) {
 	b := make([]byte, 12)
 	//helper.WriteUint16(b, id)
 	helper.WriteUint16(b[2:], 0) //协议版本
 	helper.WriteUint16(b[4:], 6) //剩余长度
-	b[6] = uint8(slave)
-	b[7] = uint8(code)
-	helper.WriteUint16(b[8:], uint16(offset))
-	helper.WriteUint16(b[10:], uint16(size))
+	b[6] = addr.Slave
+	b[7] = addr.Code
+	helper.WriteUint16(b[8:], addr.Offset)
+	helper.WriteUint16(b[10:], size)
 
 	return m.execute(b, false)
 }
 
-func (m *TCP) ImmediateRead(slave int, code int, offset int, size int) ([]byte, error) {
+func (m *TCP) ImmediateRead(addr protocol.Address, size uint16) ([]byte, error) {
 	b := make([]byte, 12)
 	//helper.WriteUint16(b, id)
 	helper.WriteUint16(b[2:], 0) //协议版本
 	helper.WriteUint16(b[4:], 6) //剩余长度
-	b[6] = uint8(slave)
-	b[7] = uint8(code)
-	helper.WriteUint16(b[8:], uint16(offset))
+	b[6] = addr.Slave
+	b[7] = addr.Code
+	helper.WriteUint16(b[8:], addr.Offset)
 	helper.WriteUint16(b[10:], uint16(size))
 
 	return m.execute(b, true)
 }
 
-func (m *TCP) Write(slave int, code int, offset int, buf []byte) error {
+func (m *TCP) Write(addr protocol.Address, buf []byte) error {
 	length := len(buf)
 	//如果是线圈，需要Shrink
-	if code == 1 {
-		switch code {
-		case FuncCodeReadCoils:
-			if length == 1 {
-				code = 5
-				//数据 转成 0x0000 0xFF00
-				if buf[0] > 0 {
-					buf = []byte{0xFF, 0}
-				} else {
-					buf = []byte{0, 0}
-				}
+	code := addr.Code
+	switch code {
+	case FuncCodeReadCoils:
+		if length == 1 {
+			code = 5
+			//数据 转成 0x0000 0xFF00
+			if buf[0] > 0 {
+				buf = []byte{0xFF, 0}
 			} else {
-				code = 15 //0x0F
-				//数组压缩
-				b := helper.ShrinkBool(buf)
-				count := len(b)
-				buf = make([]byte, 3+count)
-				helper.WriteUint16(buf, uint16(length))
-				buf[2] = uint8(count)
-				copy(buf[3:], b)
+				buf = []byte{0, 0}
 			}
-		case FuncCodeReadHoldingRegisters:
-			if length == 2 {
-				code = 6
-			} else {
-				code = 16 //0x10
-				b := make([]byte, 3+length)
-				helper.WriteUint16(b, uint16(length/2))
-				b[2] = uint8(length)
-				copy(b[3:], buf)
-				buf = b
-			}
-		default:
-			return errors.New("功能码不支持")
+		} else {
+			code = 15 //0x0F
+			//数组压缩
+			b := helper.ShrinkBool(buf)
+			count := len(b)
+			buf = make([]byte, 3+count)
+			helper.WriteUint16(buf, uint16(length))
+			buf[2] = uint8(count)
+			copy(buf[3:], b)
 		}
+	case FuncCodeReadHoldingRegisters:
+		if length == 2 {
+			code = 6
+		} else {
+			code = 16 //0x10
+			b := make([]byte, 3+length)
+			helper.WriteUint16(b, uint16(length/2))
+			b[2] = uint8(length)
+			copy(b[3:], buf)
+			buf = b
+		}
+	default:
+		return errors.New("功能码不支持")
 	}
 
 	l := 10 + len(buf)
@@ -199,9 +205,9 @@ func (m *TCP) Write(slave int, code int, offset int, buf []byte) error {
 	//helper.WriteUint16(b, id)
 	helper.WriteUint16(b[2:], 0) //协议版本
 	helper.WriteUint16(b[4:], 6) //剩余长度
-	b[6] = uint8(slave)
-	b[7] = uint8(code)
-	helper.WriteUint16(b[8:], uint16(offset))
+	b[6] = addr.Slave
+	b[7] = code
+	helper.WriteUint16(b[8:], addr.Offset)
 	copy(b[10:], buf)
 
 	_, err := m.execute(b, true)
