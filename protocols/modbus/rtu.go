@@ -127,13 +127,9 @@ func (m *RTU) OnData(buf []byte) {
 	}
 }
 
-func (m *RTU) ParseAddress(addr string) (protocol.Address, error) {
-	a := protocol.Address{}
 
-	return a, nil
-}
-
-func (m *RTU) Read(addr protocol.Address, size uint16) ([]byte, error) {
+func (m *RTU) Read(address protocol.Address, size uint16) ([]byte, error) {
+	addr := address.(*Address)
 	b := make([]byte, 8)
 	b[0] = addr.Slave
 	b[1] = addr.Code
@@ -148,7 +144,8 @@ func (m *RTU) ImmediateRead(addr protocol.Address, size uint16) ([]byte, error) 
 	return m.Read(addr, size)
 }
 
-func (m *RTU) Write(addr protocol.Address, buf []byte) error {
+func (m *RTU) Write(address protocol.Address, buf []byte) error {
+	addr := address.(*Address)
 	length := len(buf)
 	//如果是线圈，需要Shrink
 	code := addr.Code

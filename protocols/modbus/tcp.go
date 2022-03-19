@@ -129,13 +129,9 @@ func (m *TCP) OnData(buf []byte) {
 	}
 }
 
-func (m *TCP) ParseAddress(addr string) (protocol.Address, error) {
-	a := protocol.Address{}
 
-	return a, nil
-}
-
-func (m *TCP) Read(addr protocol.Address, size uint16) ([]byte, error) {
+func (m *TCP) Read(address protocol.Address, size uint16) ([]byte, error) {
+	addr := address.(*Address)
 	b := make([]byte, 12)
 	//helper.WriteUint16(b, id)
 	helper.WriteUint16(b[2:], 0) //协议版本
@@ -148,7 +144,8 @@ func (m *TCP) Read(addr protocol.Address, size uint16) ([]byte, error) {
 	return m.execute(b, false)
 }
 
-func (m *TCP) ImmediateRead(addr protocol.Address, size uint16) ([]byte, error) {
+func (m *TCP) ImmediateRead(address protocol.Address, size uint16) ([]byte, error) {
+	addr := address.(*Address)
 	b := make([]byte, 12)
 	//helper.WriteUint16(b, id)
 	helper.WriteUint16(b[2:], 0) //协议版本
@@ -161,7 +158,8 @@ func (m *TCP) ImmediateRead(addr protocol.Address, size uint16) ([]byte, error) 
 	return m.execute(b, true)
 }
 
-func (m *TCP) Write(addr protocol.Address, buf []byte) error {
+func (m *TCP) Write(address protocol.Address, buf []byte) error {
+	addr := address.(*Address)
 	length := len(buf)
 	//如果是线圈，需要Shrink
 	code := addr.Code
