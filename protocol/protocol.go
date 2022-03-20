@@ -23,12 +23,12 @@ type Options map[string]interface{}
 
 type Factory func(link connect.Link, opts Options) Protocol
 
-type AddressParser func(addr string) Address
+type AddressParser func(addr string) (Address, error)
 
 type Item struct {
-	Name          string `json:"name"`
-	Label         string `json:"label"`
-	Version       string `json:"version"`
-	Factory       Factory
-	AddressParser AddressParser
+	Name    string `json:"name"`
+	Label   string `json:"label"`
+	Version string `json:"version"`
+	Factory Factory
+	Address AddressParser
 }
