@@ -19,25 +19,34 @@ func (a *Address) String() string {
 }
 
 var addrRegexp *regexp.Regexp
+
 func init() {
-	addrRegexp, _ = regexp.Compile(`^(X|D|O)(\d+)$`)
+	addrRegexp, _ = regexp.Compile(`^(C|D|DI|H|I)(\d+)$`)
 
 }
 
-func ParseAddress(add string) (protocol.Address, error){
+func ParseAddress(add string) (protocol.Address, error) {
 	ss := addrRegexp.FindStringSubmatch(add)
-	if ss ==  nil || len(ss) != 3 {
+	if ss == nil || len(ss) != 3 {
 		return nil, errors.New("unknown address")
 	}
 	var code uint8 = 1
 	switch ss[1] {
-	case "D": code = 1
-	case "I": code = 2
+	case "C":
+		code = 1
+	case "D":
+		fallthrough
+	case "DI":
+		code = 2
+	case "H":
+		code = 3
+	case "I":
+		code = 4
 	}
 	offset, _ := strconv.ParseUint(ss[2], 10, 10)
 	//offset, _ := strconv.Atoi(ss[2])
 	return &Address{
-		Code: code,
+		Code:   code,
 		Offset: uint16(offset),
 	}, nil
 }
