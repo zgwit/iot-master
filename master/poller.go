@@ -13,7 +13,7 @@ type Poller struct {
 
 	reading bool
 	job     *cron.Job
-	adapter *Adapter
+	adapter *Mapper
 }
 
 //Start 启动

@@ -25,13 +25,14 @@ type Device struct {
 	//命令索引
 	commandIndex map[string]*model.Command
 
-	adapter *Adapter
+	mapper *Mapper
 }
 
 func NewDevice(m *model.Device) *Device {
 	dev := &Device{
 		Device:       *m,
 		commandIndex: make(map[string]*model.Command, 0),
+		//mapper: newMapper(m.Points, protocol), TODO 引入协议
 	}
 
 	if m.Pollers != nil {
@@ -72,7 +73,7 @@ func (dev *Device) Init() error {
 	metric := strconv.Itoa(dev.ID)
 
 	//处理数据变化结果
-	dev.adapter.On("data", func(data calc.Context) {
+	dev.mapper.On("data", func(data calc.Context) {
 		//更新上下文
 		for k, v := range data {
 			dev.Context[k] = v
@@ -266,11 +267,11 @@ func (dev *Device) Execute(command string, argv []float64) error {
 		//延迟执行
 		if directive.Delay > 0 {
 			time.AfterFunc(time.Duration(directive.Delay)*time.Millisecond, func() {
-				err := dev.adapter.Set(directive.Point, val)
+				err := dev.mapper.Set(directive.Point, val)
 				dev.Emit("error", err)
 			})
 		} else {
-			err := dev.adapter.Set(directive.Point, val)
+			err := dev.mapper.Set(directive.Point, val)
 			//dev.events.Publish("error", err)
 			return err
 		}

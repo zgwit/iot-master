@@ -8,8 +8,8 @@ import (
 	"github.com/zgwit/iot-master/protocol"
 )
 
-//Adapter 数据解析器（可能要改名）
-type Adapter struct {
+//Mapper 数据解析器（可能要改名）
+type Mapper struct {
 	events.EventEmitter
 
 	slave int //TODO 从站号
@@ -18,8 +18,8 @@ type Adapter struct {
 	points   []Point
 }
 
-func newAdapter(points []model.Point, protocol protocol.Protocol) *Adapter {
-	adapter := &Adapter{
+func newMapper(points []model.Point, protocol protocol.Protocol) *Mapper {
+	adapter := &Mapper{
 		protocol: protocol,
 		points:   make([]Point, len(points)),
 	}
@@ -34,11 +34,11 @@ func newAdapter(points []model.Point, protocol protocol.Protocol) *Adapter {
 }
 
 //Set 写数据位
-func (a *Adapter) Set(key string, value float64) error {
-	for _, p := range a.points {
+func (m *Mapper) Set(key string, value float64) error {
+	for _, p := range m.points {
 		if p.Name == key {
 			data := p.Type.Encode(value, p.LittleEndian)
-			return a.protocol.Write(p.Addr, data)
+			return m.protocol.Write(p.Addr, data)
 		}
 	}
 
@@ -46,12 +46,12 @@ func (a *Adapter) Set(key string, value float64) error {
 }
 
 //Get 读数据位
-func (a *Adapter) Get(key string) (float64, error) {
+func (m *Mapper) Get(key string) (float64, error) {
 
-	for _, p := range a.points {
+	for _, p := range m.points {
 		if p.Name == key {
 			//使用立即读
-			b, err := a.protocol.Immediate(p.Addr, uint16(p.Type.Size()))
+			b, err := m.protocol.Immediate(p.Addr, uint16(p.Type.Size()))
 			if err != nil {
 				return 0, err
 			}
@@ -61,7 +61,7 @@ func (a *Adapter) Get(key string) (float64, error) {
 				return 0, err
 			}
 			//go func
-			a.Emit("data", calc.Context{key: v})
+			m.Emit("data", calc.Context{key: v})
 			return v, nil
 		}
 	}
@@ -70,16 +70,16 @@ func (a *Adapter) Get(key string) (float64, error) {
 }
 
 //Read 读多数据
-func (a *Adapter) Read(addr protocol.Addr, length int) (calc.Context, error) {
+func (m *Mapper) Read(addr protocol.Addr, length int) (calc.Context, error) {
 	//读取数据
-	buf, err := a.protocol.Read(addr, uint16(length))
+	buf, err := m.protocol.Read(addr, uint16(length))
 	if err != nil {
 		return nil, err
 	}
 
 	//解析数据
 	ctx := make(calc.Context)
-	for _, p := range a.points {
+	for _, p := range m.points {
 		offset := p.Addr.Diff(addr)
 		if offset > 0 && offset < length {
 			v, err := p.Type.Decode(buf[offset:], p.LittleEndian)
@@ -90,7 +90,7 @@ func (a *Adapter) Read(addr protocol.Addr, length int) (calc.Context, error) {
 		}
 	}
 	//TODO 放这里不太合适
-	a.Emit("data", ctx)
+	m.Emit("data", ctx)
 
 	return ctx, nil
 }
