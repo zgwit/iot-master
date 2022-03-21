@@ -3,11 +3,13 @@ package master
 import (
 	"github.com/zgwit/iot-master/cron"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/protocol"
 )
 
 //Poller 采集器
 type Poller struct {
 	model.Poller
+	Addr protocol.Addr
 
 	reading bool
 	job     *cron.Job
@@ -50,7 +52,7 @@ func (p *Poller) Execute() {
 
 func (p *Poller) read() {
 	p.reading = true
-	_, _ = p.adapter.Read(p.Code, p.Address, p.Length)
+	_, _ = p.adapter.Read(p.Addr, p.Length)
 	//log error
 	p.reading = false
 }

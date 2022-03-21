@@ -10,6 +10,6 @@ package protocol
 
 type Addr interface {
 	String() string
-	//Equal(addr Addr) bool
+	Diff(base Addr) int
 }
 

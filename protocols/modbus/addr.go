@@ -13,8 +13,26 @@ type Address struct {
 }
 
 func (a *Address) String() string {
+	code := ""
+	switch a.Code {
+	case 1:
+		code = "C"
+	case 2:
+		code = "D"
+	case 3:
+		code = "H"
+	case 4:
+		code = "I"
+	}
+	return code + strconv.Itoa(int(a.Offset))
+}
 
-	return ""
+func (a *Address) Diff(base protocol.Addr) int {
+	start := base.(*Address)
+	if start.Code != a.Code {
+		return -1
+	}
+	return int(a.Offset - start.Offset)
 }
 
 var addrRegexp *regexp.Regexp

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 )
 
@@ -54,9 +53,9 @@ func (a *Adapter) Get(key string) (float64, error) {
 }
 
 //Read 读多数据
-func (a *Adapter) Read(addr protocol.Addr, length uint16) (calc.Context, error) {
+func (a *Adapter) Read(addr protocol.Addr, length int) (calc.Context, error) {
 	//读取数据
-	buf, err := a.protocol.Read(addr, length)
+	buf, err := a.protocol.Read(addr, uint16(length))
 	if err != nil {
 		return nil, err
 	}
@@ -64,8 +63,9 @@ func (a *Adapter) Read(addr protocol.Addr, length uint16) (calc.Context, error) 
 	//解析数据
 	ctx := make(calc.Context)
 	for _, p := range a.points {
-		if addr <= p.Address && p.Address < addr+length {
-			v, err := p.Type.Decode(buf[p.Address-p.Address:], p.LittleEndian)
+		offset := p.Addr.Diff(addr)
+		if offset > 0 && offset < length {
+			v, err := p.Type.Decode(buf[offset:], p.LittleEndian)
 			if err != nil {
 				return nil, err
 			}

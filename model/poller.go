@@ -9,10 +9,8 @@ type Poller struct {
 	Clock    int    `json:"clock,omitempty"`
 	Crontab  string `json:"crontab,omitempty"`
 
-	Code    int `json:"code"`
-	Address int `json:"address"`
-	//TODO Address2
-	Length int `json:"length"`
+	Address string `json:"address"`
+	Length  int    `json:"length"`
 
 	//TODO Filters
 
