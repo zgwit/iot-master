@@ -10,6 +10,8 @@ import (
 
 //Mapper 数据解析器（可能要改名）
 type Mapper struct {
+	model.Mapping
+
 	events.EventEmitter
 
 	slave int //TODO 从站号

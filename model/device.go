@@ -12,9 +12,8 @@ type Device struct {
 	Tags    []string `json:"tags,omitempty"`
 
 	//从机号
-	Slave int `json:"slave"`
+	Mapper *Mapping `json:"mapper"` //内存映射
 
-	Points      []*Point      `json:"points"`
 	Pollers     []*Poller     `json:"pollers"`
 	Calculators []*Calculator `json:"calculators"`
 	Commands    []*Command    `json:"commands"`
@@ -38,32 +37,32 @@ type DeviceHistory struct {
 //DeviceHistoryAlarm 设备历史告警
 type DeviceHistoryAlarm struct {
 	DeviceHistory `storm:"inline"`
-	Code     string    `json:"code"`
-	Level    int       `json:"level"`
-	Message  string    `json:"message"`
+	Code          string `json:"code"`
+	Level         int    `json:"level"`
+	Message       string `json:"message"`
 }
 
 //DeviceHistoryReactor 设备历史响应
 type DeviceHistoryReactor struct {
 	DeviceHistory `storm:"inline"`
-	Name     string    `json:"name"`
+	Name          string `json:"name"`
 }
 
 //DeviceHistoryJob 设备历史任务
 type DeviceHistoryJob struct {
 	DeviceHistory `storm:"inline"`
-	Job      string    `json:"job"`
+	Job           string `json:"job"`
 }
 
 //DeviceHistoryCommand 设备历史命令
 type DeviceHistoryCommand struct {
 	DeviceHistory `storm:"inline"`
-	Command  string    `json:"command"`
-	Argv     []float64 `json:"argv"`
+	Command       string    `json:"command"`
+	Argv          []float64 `json:"argv"`
 }
 
 //DeviceHistoryTimer 设备定时任务
 type DeviceHistoryTimer struct {
 	DeviceHistory `storm:"inline"`
-	TimerID  int       `json:"timer_id" storm:"index"`
+	TimerID       int `json:"timer_id" storm:"index"`
 }
