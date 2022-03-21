@@ -17,6 +17,8 @@ type TCP struct {
 
 	requests  sync.Map
 	increment uint16
+
+	slave uint8
 }
 
 func newTCP(link connect.Link, opts protocol.Options) protocol.Protocol {
@@ -24,6 +26,7 @@ func newTCP(link connect.Link, opts protocol.Options) protocol.Protocol {
 		link:      link,
 		queue:     make(chan interface{}, 10), //TODO 改成参数
 		increment: 0x0A0A,                     //避免首字节为0，有些DTU可能会异常
+		slave:     opts["slave"].(uint8),
 	}
 	link.On("data", func(data []byte) {
 		tcp.OnData(data)
@@ -129,14 +132,13 @@ func (m *TCP) OnData(buf []byte) {
 	}
 }
 
-
-func (m *TCP) Read(address protocol.Address, size uint16) ([]byte, error) {
+func (m *TCP) Read(address protocol.Addr, size uint16) ([]byte, error) {
 	addr := address.(*Address)
 	b := make([]byte, 12)
 	//helper.WriteUint16(b, id)
 	helper.WriteUint16(b[2:], 0) //协议版本
 	helper.WriteUint16(b[4:], 6) //剩余长度
-	b[6] = addr.Slave
+	b[6] = m.slave
 	b[7] = addr.Code
 	helper.WriteUint16(b[8:], addr.Offset)
 	helper.WriteUint16(b[10:], size)
@@ -144,13 +146,13 @@ func (m *TCP) Read(address protocol.Address, size uint16) ([]byte, error) {
 	return m.execute(b, false)
 }
 
-func (m *TCP) ImmediateRead(address protocol.Address, size uint16) ([]byte, error) {
+func (m *TCP) Immediate(address protocol.Addr, size uint16) ([]byte, error) {
 	addr := address.(*Address)
 	b := make([]byte, 12)
 	//helper.WriteUint16(b, id)
 	helper.WriteUint16(b[2:], 0) //协议版本
 	helper.WriteUint16(b[4:], 6) //剩余长度
-	b[6] = addr.Slave
+	b[6] = m.slave
 	b[7] = addr.Code
 	helper.WriteUint16(b[8:], addr.Offset)
 	helper.WriteUint16(b[10:], uint16(size))
@@ -158,7 +160,7 @@ func (m *TCP) ImmediateRead(address protocol.Address, size uint16) ([]byte, erro
 	return m.execute(b, true)
 }
 
-func (m *TCP) Write(address protocol.Address, buf []byte) error {
+func (m *TCP) Write(address protocol.Addr, buf []byte) error {
 	addr := address.(*Address)
 	length := len(buf)
 	//如果是线圈，需要Shrink
@@ -203,7 +205,7 @@ func (m *TCP) Write(address protocol.Address, buf []byte) error {
 	//helper.WriteUint16(b, id)
 	helper.WriteUint16(b[2:], 0) //协议版本
 	helper.WriteUint16(b[4:], 6) //剩余长度
-	b[6] = addr.Slave
+	b[6] = m.slave
 	b[7] = code
 	helper.WriteUint16(b[8:], addr.Offset)
 	copy(b[10:], buf)

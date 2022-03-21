@@ -8,7 +8,6 @@ import (
 )
 
 type Address struct {
-	Slave  uint8  `json:"slave"`
 	Code   uint8  `json:"code"`
 	Offset uint16 `json:"offset"`
 }
@@ -25,7 +24,7 @@ func init() {
 
 }
 
-func ParseAddress(add string) (protocol.Address, error) {
+func ParseAddress(add string) (protocol.Addr, error) {
 	ss := addrRegexp.FindStringSubmatch(add)
 	if ss == nil || len(ss) != 3 {
 		return nil, errors.New("unknown address")
@@ -52,7 +51,7 @@ func ParseAddress(add string) (protocol.Address, error) {
 }
 
 // TODO const
-var DescRTU = protocol.Item{
+var DescRTU = protocol.Describer{
 	Name:    "ModbusRTU",
 	Version: "1.0",
 	Label:   "Modbus RTU",
@@ -60,7 +59,7 @@ var DescRTU = protocol.Item{
 	Address: ParseAddress,
 }
 
-var DescTCP = protocol.Item{
+var DescTCP = protocol.Describer{
 	Name:    "ModbusTCP",
 	Version: "1.0",
 	Label:   "Modbus TCP",

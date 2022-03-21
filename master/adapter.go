@@ -12,7 +12,7 @@ import (
 type Adapter struct {
 	slave    int
 	protocol protocol.Protocol
-	points   []model.Point
+	points   []Point
 
 	events.EventEmitter
 }
@@ -22,7 +22,7 @@ func (a *Adapter) Set(key string, value float64) error {
 	for _, p := range a.points {
 		if p.Name == key {
 			data := p.Type.Encode(value, p.LittleEndian)
-			return a.protocol.Write(a.slave, p.Code, p.Address, data)
+			return a.protocol.Write(p.Addr, data)
 		}
 	}
 
@@ -35,7 +35,7 @@ func (a *Adapter) Get(key string) (float64, error) {
 	for _, p := range a.points {
 		if p.Name == key {
 			//使用立即读
-			b, err := a.protocol.ImmediateRead(a.slave, p.Code, p.Address, p.Type.Size())
+			b, err := a.protocol.Immediate(p.Addr, uint16(p.Type.Size()))
 			if err != nil {
 				return 0, err
 			}
@@ -54,9 +54,9 @@ func (a *Adapter) Get(key string) (float64, error) {
 }
 
 //Read 读多数据
-func (a *Adapter) Read(code, address, length int) (calc.Context, error) {
+func (a *Adapter) Read(addr protocol.Addr, length uint16) (calc.Context, error) {
 	//读取数据
-	buf, err := a.protocol.Read(a.slave, code, address, length)
+	buf, err := a.protocol.Read(addr, length)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (a *Adapter) Read(code, address, length int) (calc.Context, error) {
 	//解析数据
 	ctx := make(calc.Context)
 	for _, p := range a.points {
-		if address <= p.Address && p.Address < address+length {
+		if addr <= p.Address && p.Address < addr+length {
 			v, err := p.Type.Decode(buf[p.Address-p.Address:], p.LittleEndian)
 			if err != nil {
 				return nil, err
