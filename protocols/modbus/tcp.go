@@ -132,6 +132,10 @@ func (m *TCP) OnData(buf []byte) {
 	}
 }
 
+func (m *TCP) Address(addr string) (protocol.Addr, error) {
+	return ParseAddress(addr)
+}
+
 func (m *TCP) Read(address protocol.Addr, size uint16) ([]byte, error) {
 	addr := address.(*Address)
 	b := make([]byte, 12)

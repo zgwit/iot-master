@@ -4,16 +4,33 @@ import (
 	"fmt"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/events"
+	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 )
 
 //Adapter 数据解析器（可能要改名）
 type Adapter struct {
-	slave    int
+	events.EventEmitter
+
+	slave int //TODO 从站号
+
 	protocol protocol.Protocol
 	points   []Point
+}
 
-	events.EventEmitter
+func newAdapter(points []model.Point, protocol protocol.Protocol) *Adapter {
+	adapter := &Adapter{
+		protocol: protocol,
+		points:   make([]Point, len(points)),
+	}
+	for i, p := range points {
+		addr, _ := protocol.Address(p.Address)
+		adapter.points[i] = Point{
+			Point: p,
+			Addr:  addr,
+		}
+	}
+	return adapter
 }
 
 //Set 写数据位

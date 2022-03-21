@@ -74,7 +74,6 @@ var DescRTU = protocol.Describer{
 	Version: "1.0",
 	Label:   "Modbus RTU",
 	Factory: newRTU,
-	Address: ParseAddress,
 }
 
 var DescTCP = protocol.Describer{
@@ -82,5 +81,4 @@ var DescTCP = protocol.Describer{
 	Version: "1.0",
 	Label:   "Modbus TCP",
 	Factory: newTCP,
-	Address: ParseAddress,
 }

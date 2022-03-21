@@ -129,6 +129,11 @@ func (m *RTU) OnData(buf []byte) {
 	}
 }
 
+
+func (m *RTU) Address(addr string) (protocol.Addr, error) {
+	return ParseAddress(addr)
+}
+
 func (m *RTU) Read(address protocol.Addr, size uint16) ([]byte, error) {
 	addr := address.(*Address)
 	b := make([]byte, 8)
