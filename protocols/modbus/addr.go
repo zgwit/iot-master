@@ -69,14 +69,14 @@ func ParseAddress(add string) (protocol.Addr, error) {
 }
 
 // TODO const
-var DescRTU = protocol.Describer{
+var DescRTU = protocol.Protocol{
 	Name:    "ModbusRTU",
 	Version: "1.0",
 	Label:   "Modbus RTU",
 	Factory: newRTU,
 }
 
-var DescTCP = protocol.Describer{
+var DescTCP = protocol.Protocol{
 	Name:    "ModbusTCP",
 	Version: "1.0",
 	Label:   "Modbus TCP",

@@ -7,16 +7,16 @@ import (
 	"github.com/zgwit/iot-master/protocols/modbus"
 )
 
-var protocols = []protocol.Describer{
+var protocols = []protocol.Protocol{
 	modbus.DescRTU,
 	modbus.DescTCP,
 }
 
-func Protocols() []protocol.Describer {
+func Protocols() []protocol.Protocol {
 	return protocols
 }
 
-func Create(link connect.Link, name string, options protocol.Options) (protocol.Protocol, error) {
+func Create(link connect.Link, name string, options protocol.Options) (protocol.Adapter, error) {
 	for _, d := range protocols {
 		if d.Name == name {
 			return d.Factory(link, options), nil

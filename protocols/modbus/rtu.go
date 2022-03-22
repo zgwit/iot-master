@@ -25,7 +25,7 @@ type RTU struct {
 	queue chan *request //in
 }
 
-func newRTU(link connect.Link, opts protocol.Options) protocol.Protocol {
+func newRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
 	rtu := &RTU{
 		link:  link,
 		queue: make(chan *request, 1),

@@ -2,9 +2,8 @@ package protocol
 
 import "github.com/zgwit/iot-master/connect"
 
-
-//Protocol 协议接口
-type Protocol interface {
+//Adapter 协议接口
+type Adapter interface {
 	//Address 解析地址
 	Address(addr string) (Addr, error)
 
@@ -20,9 +19,9 @@ type Protocol interface {
 
 type Options map[string]interface{}
 
-type Factory func(link connect.Link, opts Options) Protocol
+type Factory func(link connect.Link, opts Options) Adapter
 
-type Describer struct {
+type Protocol struct {
 	Name    string `json:"name"`
 	Label   string `json:"label"`
 	Version string `json:"version"`

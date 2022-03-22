@@ -32,7 +32,7 @@ func NewDevice(m *model.Device) *Device {
 	dev := &Device{
 		Device:       *m,
 		commandIndex: make(map[string]*model.Command, 0),
-		//mapper: newMapper(m.Points, protocol), TODO 引入协议
+		//mapper: newMapper(m.Points, adapter), TODO 引入协议
 	}
 
 	if m.Pollers != nil {
