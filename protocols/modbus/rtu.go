@@ -23,14 +23,13 @@ type request struct {
 type RTU struct {
 	link  connect.Link
 	queue chan *request //in
-	slave uint8
 }
 
 func newRTU(link connect.Link, opts protocol.Options) protocol.Protocol {
 	rtu := &RTU{
 		link:  link,
 		queue: make(chan *request, 1),
-		slave: opts["slave"].(uint8),
+		//slave: opts["slave"].(uint8),
 	}
 	link.On("data", func(data []byte) {
 		rtu.OnData(data)
@@ -134,23 +133,23 @@ func (m *RTU) Address(addr string) (protocol.Addr, error) {
 	return ParseAddress(addr)
 }
 
-func (m *RTU) Read(address protocol.Addr, size uint16) ([]byte, error) {
+func (m *RTU) Read(station int, address protocol.Addr, size int) ([]byte, error) {
 	addr := address.(*Address)
 	b := make([]byte, 8)
-	b[0] = m.slave
+	b[0] = uint8(station)
 	b[1] = addr.Code
 	helper.WriteUint16(b[2:], addr.Offset)
-	helper.WriteUint16(b[4:], size)
+	helper.WriteUint16(b[4:], uint16(size))
 	helper.WriteUint16(b[6:], CRC16(b[:6]))
 
 	return m.execute(b)
 }
 
-func (m *RTU) Immediate(addr protocol.Addr, size uint16) ([]byte, error) {
-	return m.Read(addr, size)
+func (m *RTU) Immediate(station int, addr protocol.Addr, size int) ([]byte, error) {
+	return m.Read(station, addr, size)
 }
 
-func (m *RTU) Write(address protocol.Addr, buf []byte) error {
+func (m *RTU) Write(station int, address protocol.Addr, buf []byte) error {
 	addr := address.(*Address)
 	length := len(buf)
 	//如果是线圈，需要Shrink
@@ -192,7 +191,7 @@ func (m *RTU) Write(address protocol.Addr, buf []byte) error {
 
 	l := 6 + len(buf)
 	b := make([]byte, l)
-	b[0] = m.slave
+	b[0] = uint8(station)
 	b[1] = code
 	helper.WriteUint16(b[2:], addr.Offset)
 	copy(b[4:], buf)

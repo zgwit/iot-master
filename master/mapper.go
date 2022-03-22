@@ -14,7 +14,7 @@ type Mapper struct {
 
 	events.EventEmitter
 
-	slave int //TODO 从站号
+	//slave int //从站号
 
 	protocol protocol.Protocol
 	points   []Point
@@ -40,7 +40,7 @@ func (m *Mapper) Set(key string, value float64) error {
 	for _, p := range m.points {
 		if p.Name == key {
 			data := p.Type.Encode(value, p.LittleEndian)
-			return m.protocol.Write(p.Addr, data)
+			return m.protocol.Write(m.Station, p.Addr, data)
 		}
 	}
 
@@ -53,7 +53,7 @@ func (m *Mapper) Get(key string) (float64, error) {
 	for _, p := range m.points {
 		if p.Name == key {
 			//使用立即读
-			b, err := m.protocol.Immediate(p.Addr, uint16(p.Type.Size()))
+			b, err := m.protocol.Immediate(m.Station, p.Addr, p.Type.Size())
 			if err != nil {
 				return 0, err
 			}
@@ -74,7 +74,7 @@ func (m *Mapper) Get(key string) (float64, error) {
 //Read 读多数据
 func (m *Mapper) Read(addr protocol.Addr, length int) (calc.Context, error) {
 	//读取数据
-	buf, err := m.protocol.Read(addr, uint16(length))
+	buf, err := m.protocol.Read(m.Station, addr, length)
 	if err != nil {
 		return nil, err
 	}

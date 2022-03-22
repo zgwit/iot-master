@@ -9,13 +9,13 @@ type Protocol interface {
 	Address(addr string) (Addr, error)
 
 	//Write 写数据
-	Write(addr Addr, data []byte) error
+	Write(station int, addr Addr, data []byte) error
 
 	//Read 读数据
-	Read(addr Addr, size uint16) ([]byte, error)
+	Read(station int, addr Addr, size int) ([]byte, error)
 
 	//Immediate 立即读，高优先级
-	Immediate(addr Addr, size uint16) ([]byte, error)
+	Immediate(station int, addr Addr, size int) ([]byte, error)
 }
 
 type Options map[string]interface{}
