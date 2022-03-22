@@ -20,19 +20,23 @@ type Mapper struct {
 	points  []Point
 }
 
-func newMapper(points []model.Point, adapter protocol.Adapter) *Mapper {
+func newMapper(m *model.Mapping, adapter protocol.Adapter) (*Mapper, error) {
 	mapper := &Mapper{
+		Mapping: *m,
 		adapter: adapter,
-		points:  make([]Point, len(points)),
+		points:  make([]Point, len(m.Points)),
 	}
-	for i, p := range points {
-		addr, _ := adapter.Address(p.Address)
+	for i, p := range m.Points {
+		addr, err := adapter.Address(p.Address)
+		if err != nil {
+			return nil, err
+		}
 		mapper.points[i] = Point{
-			Point: p,
+			Point: *p,
 			Addr:  addr,
 		}
 	}
-	return mapper
+	return mapper, nil
 }
 
 //Set 写数据位

@@ -34,17 +34,15 @@ func LoadDevices() error {
 			continue
 		}
 
-		dev := NewDevice(d)
+		dev, err := NewDevice(d)
+		if err != nil {
+			return err
+		}
 		allDevices.Store(d.ID, dev)
 
-		err = dev.Init()
+		err = dev.Start()
 		if err != nil {
 			//TODO log
-		} else {
-			err = dev.Start()
-			if err != nil {
-				//TODO log
-			}
 		}
 	}
 	return nil
@@ -58,20 +56,13 @@ func LoadDevice(id int) (*Device, error) {
 		return nil, err
 	}
 
-	dev := NewDevice(device)
-	allDevices.Store(device.ID, dev)
-
-	allDevices.Store(id, dev)
-
-	err = dev.Init()
+	dev, err := NewDevice(device)
 	if err != nil {
-		return nil, err
-	} else {
-		err = dev.Start()
-		if err != nil {
-			return nil, err
-		}
+		return dev, err
 	}
+	//allDevices.Store(device.ID, dev)
+	allDevices.Store(id, dev)
+	err = dev.Start()
 	return dev, nil
 }
 
