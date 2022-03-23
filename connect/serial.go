@@ -2,7 +2,9 @@ package connect
 
 import (
 	"errors"
+	"github.com/asdine/storm/v3"
 	"github.com/jacobsa/go-serial/serial"
+	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"time"
@@ -12,14 +14,14 @@ import (
 type Serial struct {
 	events.EventEmitter
 
-	service *model.Tunnel
+	tunnel *model.Tunnel
 
 	link *SerialLink
 }
 
-func newSerial(service *model.Tunnel) *Serial {
+func newSerial(tunnel *model.Tunnel) *Serial {
 	return &Serial{
-		service: service,
+		tunnel: tunnel,
 	}
 }
 
@@ -28,13 +30,13 @@ func (s *Serial) Open() error {
 	s.Emit("open")
 
 	options := serial.OpenOptions{
-		PortName: s.service.Addr,
+		PortName: s.tunnel.Addr,
 	}
-	if s.service.Serial != nil {
-		options.BaudRate = s.service.Serial.BaudRate
-		options.DataBits = s.service.Serial.DataBits
-		options.StopBits = s.service.Serial.StopBits
-		options.ParityMode = serial.ParityMode(s.service.Serial.ParityMode)
+	if s.tunnel.Serial != nil {
+		options.BaudRate = s.tunnel.Serial.BaudRate
+		options.DataBits = s.tunnel.Serial.DataBits
+		options.StopBits = s.tunnel.Serial.StopBits
+		options.ParityMode = serial.ParityMode(s.tunnel.Serial.ParityMode)
 	}
 	port, err := serial.Open(options)
 	if err != nil {
@@ -43,12 +45,29 @@ func (s *Serial) Open() error {
 
 	s.link = newSerialLink(port)
 	go s.link.receive()
-
+	
+	//Store link
+	lnk := model.Link{
+		TunnelID: s.tunnel.ID,
+		Protocol: s.tunnel.Protocol,
+		Created:  time.Now(),
+	}
+	err = database.Master.One("TunnelID", s.tunnel.ID, &lnk)
+	if err == storm.ErrNotFound {
+		//保存一条新记录
+		_ = database.Master.Save(&lnk)
+	} else if err != nil {
+		return err
+	} else {
+		//上线
+	}
+	s.link.id = lnk.ID
+	
 	s.Emit("link", s.link)
 
 	//断线后，要重连
 	s.link.Once("close", func() {
-		retry := s.service.Retry
+		retry := s.tunnel.Retry
 		if retry == 0 {
 			retry = 5 //默认5秒重试
 		}

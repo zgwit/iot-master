@@ -14,15 +14,15 @@ import (
 type NetClient struct {
 	events.EventEmitter
 
-	service *model.Tunnel
-	link    *NetLink
-	net     string
+	tunnel *model.Tunnel
+	link   *NetLink
+	net    string
 }
 
-func newNetClient(service *model.Tunnel, net string) *NetClient {
+func newNetClient(tunnel *model.Tunnel, net string) *NetClient {
 	return &NetClient{
-		service: service,
-		net:     net,
+		tunnel: tunnel,
+		net:    net,
 	}
 }
 
@@ -31,7 +31,7 @@ func (client *NetClient) Open() error {
 	client.Emit("open")
 
 	//发起连接
-	conn, err := net.Dial(client.net, client.service.Addr)
+	conn, err := net.Dial(client.net, client.tunnel.Addr)
 	if err != nil {
 		return err
 	}
@@ -40,10 +40,11 @@ func (client *NetClient) Open() error {
 
 	//Store link
 	lnk := model.Link{
-		TunnelID: client.service.ID,
+		TunnelID: client.tunnel.ID,
+		Protocol: client.tunnel.Protocol,
 		Created:  time.Now(),
 	}
-	err = database.Master.One("TunnelID", client.service.ID, &lnk)
+	err = database.Master.One("TunnelID", client.tunnel.ID, &lnk)
 	if err == storm.ErrNotFound {
 		//保存一条新记录
 		_ = database.Master.Save(&lnk)
@@ -57,7 +58,7 @@ func (client *NetClient) Open() error {
 	client.Emit("link", client.link)
 
 	client.link.Once("close", func() {
-		retry := client.service.Retry
+		retry := client.tunnel.Retry
 		if retry == 0 {
 			retry = 10 //默认10秒重试
 		}

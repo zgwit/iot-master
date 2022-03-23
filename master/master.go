@@ -78,6 +78,7 @@ func LoadTunnels() error {
 		tnl.On("link", func(link connect.Link) {
 			allLinks.Store(link.ID(), link)
 			//TODO 找到相关Device
+			link.ID()
 		})
 	}
 	return nil

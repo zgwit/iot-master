@@ -14,18 +14,18 @@ import (
 type TcpServer struct {
 	events.EventEmitter
 
-	service *model.Tunnel
+	tunnel *model.Tunnel
 
 	children map[int]*NetLink
 
 	listener *net.TCPListener
 }
 
-func newTcpServer(service *model.Tunnel) *TcpServer {
+func newTcpServer(tunnel *model.Tunnel) *TcpServer {
 	svr := &TcpServer{
-		service: service,
+		tunnel: tunnel,
 	}
-	if service.Register != nil {
+	if tunnel.Register != nil {
 		svr.children = make(map[int]*NetLink)
 	}
 	return svr
@@ -35,7 +35,7 @@ func newTcpServer(service *model.Tunnel) *TcpServer {
 func (server *TcpServer) Open() error {
 	server.Emit("open")
 
-	addr, err := net.ResolveTCPAddr("tcp", server.service.Addr)
+	addr, err := net.ResolveTCPAddr("tcp", server.tunnel.Addr)
 	if err != nil {
 		return err
 	}
@@ -52,16 +52,17 @@ func (server *TcpServer) Open() error {
 			}
 
 			lnk := model.Link{
-				TunnelID: server.service.ID,
+				TunnelID: server.tunnel.ID,
+				Protocol: server.tunnel.Protocol,
 				Created:  time.Now(),
 			}
 
-			if server.service.Register == nil {
+			if server.tunnel.Register == nil {
 				//先结束历史链接
 				for _, link := range server.children {
 					_ = link.Close()
 				}
-				err = database.Master.One("TunnelID", server.service.ID, &lnk)
+				err = database.Master.One("TunnelID", server.tunnel.ID, &lnk)
 			} else {
 				buf := make([]byte, 128)
 				n, err := conn.Read(buf)
@@ -70,7 +71,7 @@ func (server *TcpServer) Open() error {
 					continue
 				}
 				data := buf[n:]
-				if !server.service.Register.Check(data) {
+				if !server.tunnel.Register.Check(data) {
 					_ = conn.Close()
 					continue
 				}
@@ -78,7 +79,7 @@ func (server *TcpServer) Open() error {
 				lnk.SN = sn
 				err = database.Master.Select(
 					q.And(
-						q.Eq("TunnelID", server.service.ID),
+						q.Eq("TunnelID", server.tunnel.ID),
 						q.Eq("SN", sn),
 					),
 				).First(&lnk)

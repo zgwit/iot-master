@@ -3,7 +3,6 @@ package master
 import (
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
-	"sync"
 )
 
 type Link struct {
@@ -11,4 +10,3 @@ type Link struct {
 	adapter protocol.Adapter
 }
 
-var links sync.Map

@@ -14,7 +14,7 @@ import (
 type UdpServer struct {
 	events.EventEmitter
 
-	service *model.Tunnel
+	tunnel *model.Tunnel
 
 	children map[int]*UdpLink
 	links    map[string]*UdpLink
@@ -22,11 +22,11 @@ type UdpServer struct {
 	listener *net.UDPConn
 }
 
-func newUdpServer(service *model.Tunnel) *UdpServer {
+func newUdpServer(tunnel *model.Tunnel) *UdpServer {
 	svr := &UdpServer{
-		service: service,
+		tunnel: tunnel,
 	}
-	if service.Register != nil {
+	if tunnel.Register != nil {
 		svr.children = make(map[int]*UdpLink)
 		svr.links = make(map[string]*UdpLink)
 	}
@@ -37,7 +37,7 @@ func newUdpServer(service *model.Tunnel) *UdpServer {
 func (server *UdpServer) Open() error {
 	server.Emit("open")
 
-	addr, err := net.ResolveUDPAddr("udp", server.service.Addr)
+	addr, err := net.ResolveUDPAddr("udp", server.tunnel.Addr)
 	if err != nil {
 		return err
 	}
@@ -66,18 +66,19 @@ func (server *UdpServer) Open() error {
 			}
 
 			lnk := model.Link{
-				TunnelID: server.service.ID,
+				TunnelID: server.tunnel.ID,
+				Protocol: server.tunnel.Protocol,
 				Created:  time.Now(),
 			}
 
-			if server.service.Register == nil {
+			if server.tunnel.Register == nil {
 				//先结束其他链接
 				for _, link := range server.links {
 					_ = link.Close()
 				}
-				err = database.Master.One("TunnelID", server.service.ID, &lnk)
+				err = database.Master.One("TunnelID", server.tunnel.ID, &lnk)
 			} else {
-				if !server.service.Register.Check(data) {
+				if !server.tunnel.Register.Check(data) {
 					_ = conn.Close()
 					continue
 				}
@@ -85,7 +86,7 @@ func (server *UdpServer) Open() error {
 				lnk.SN = sn
 				err = database.Master.Select(
 					q.And(
-						q.Eq("TunnelID", server.service.ID),
+						q.Eq("TunnelID", server.tunnel.ID),
 						q.Eq("SN", sn),
 					),
 				).First(&lnk)
