@@ -8,6 +8,7 @@ type Link struct {
 	TunnelID int       `json:"tunnel_id" storm:"index"`
 	SN       string    `json:"sn"`
 	Disabled bool      `json:"disabled"`
+	Protocol *Protocol `json:"protocol"`
 	Created  time.Time `json:"created"`
 }
 

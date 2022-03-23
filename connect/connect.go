@@ -2,10 +2,8 @@ package connect
 
 import (
 	"fmt"
-	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
-	"sync"
 	"time"
 )
 
@@ -65,31 +63,3 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 
 	return tnl, nil
 }
-
-var allTunnels sync.Map
-
-//LoadTunnels 加载通道
-func LoadTunnels() error {
-	var tunnels []*model.Tunnel
-	err := database.Master.All(&tunnels)
-	if err == storm.ErrNotFound {
-		return nil
-	}
-	for _, t := range tunnels {
-		tnl, err := NewTunnel(t)
-		if err != nil {
-			allTunnels.Store(t.ID, tnl)
-		}
-	}
-	return nil
-}
-
-//GetTunnel 获取通道
-func GetTunnel(id int) Tunnel {
-	d, ok := allTunnels.Load(id)
-	if ok {
-		return d.(Tunnel)
-	}
-	return nil
-}
-

@@ -2,23 +2,98 @@ package master
 
 import (
 	"github.com/asdine/storm/v3"
+	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 	"sync"
 )
 
+var allTunnels sync.Map
+var allLinks sync.Map
 var allDevices sync.Map
 var allProjects sync.Map
 
 //Start 启动
 func Start() error {
-	err := LoadDevices()
+	err := LoadTunnels()
 	if err != nil {
 		return err
 	}
+
+	err = LoadDevices()
+	if err != nil {
+		return err
+	}
+
 	err = LoadProjects()
 	return err
 }
+
+func Stop() {
+	allTunnels.Range(func(key, value interface{}) bool {
+		tnl := value.(connect.Tunnel)
+		_ = tnl.Close()
+		return true
+	})
+	allDevices.Range(func(key, value interface{}) bool {
+		dev := value.(*Device)
+		_ = dev.Stop()
+		return true
+	})
+	allProjects.Range(func(key, value interface{}) bool {
+		prj := value.(*Project)
+		_ = prj.Stop()
+		return true
+	})
+}
+
+
+//LoadTunnels 加载通道
+func LoadTunnels() error {
+	var tunnels []*model.Tunnel
+	err := database.Master.All(&tunnels)
+	if err == storm.ErrNotFound {
+		return nil
+	} else if err != nil {
+		return err
+	}
+	for _, d := range tunnels {
+		if d.Disabled {
+			continue
+		}
+
+		tnl, err := connect.NewTunnel(d)
+		if err != nil {
+			//return err
+			//TODO log
+			continue
+		}
+		allTunnels.Store(d.ID, tnl)
+
+		err = tnl.Open()
+		if err != nil {
+			//TODO log
+		}
+
+		tnl.On("link", func(link connect.Link) {
+			allLinks.Store(link.ID(), link)
+			//TODO 找到相关Device
+		})
+	}
+	return nil
+}
+
+
+//GetTunnel 获取通道
+func GetTunnel(id int) connect.Tunnel {
+	d, ok := allTunnels.Load(id)
+	if ok {
+		return d.(connect.Tunnel)
+	}
+	return nil
+}
+
+
 
 //LoadDevices 加载设备
 func LoadDevices() error {

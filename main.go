@@ -5,7 +5,6 @@ import (
 	"github.com/kardianos/service"
 	"github.com/zgwit/iot-master/args"
 	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/mqtt"
@@ -124,17 +123,12 @@ func originMain() {
 	}
 	defer tsdb.Close()
 
-	err = connect.LoadTunnels()
-	if err != nil {
-		log.Fatal(err)
-	}
-	//defer connect.Close()
 
 	err = master.Start()
 	if err != nil {
 		log.Fatal(err)
 	}
-	//defer master.Close()
+	defer master.Stop()
 
 	//TODO 正确创建 MQTT Broker
 	mqtt.NewBroker()

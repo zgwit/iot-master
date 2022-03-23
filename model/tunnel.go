@@ -3,9 +3,15 @@ package model
 import (
 	"bytes"
 	"encoding/hex"
+	"github.com/zgwit/iot-master/protocol"
 	"regexp"
 	"time"
 )
+
+type Protocol struct {
+	Name    string           `json:"name"`
+	Options protocol.Options `json:"options"`
+}
 
 //Tunnel 通道模型
 type Tunnel struct {
@@ -17,6 +23,7 @@ type Tunnel struct {
 	Register  *RegisterPacket  `json:"register,omitempty"`
 	Heartbeat *HeartBeatPacket `json:"heartbeat,omitempty"`
 	Serial    *SerialOptions   `json:"serial,omitempty"`
+	Protocol  *Protocol        `json:"protocol"`
 	Disabled  bool             `json:"disabled"`
 	Created   time.Time        `json:"created"`
 }
