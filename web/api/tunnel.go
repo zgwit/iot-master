@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 )
 
@@ -84,7 +84,7 @@ func tunnelDelete(ctx *gin.Context) {
 }
 
 func tunnelStart(ctx *gin.Context) {
-	tunnel := connect.GetTunnel(ctx.GetInt("id"))
+	tunnel := master.GetTunnel(ctx.GetInt("id"))
 	if tunnel == nil {
 		replyFail(ctx, "not found")
 		return
@@ -99,7 +99,7 @@ func tunnelStart(ctx *gin.Context) {
 }
 
 func tunnelStop(ctx *gin.Context) {
-	tunnel := connect.GetTunnel(ctx.GetInt("id"))
+	tunnel := master.GetTunnel(ctx.GetInt("id"))
 	if tunnel == nil {
 		replyFail(ctx, "not found")
 		return

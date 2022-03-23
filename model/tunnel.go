@@ -3,14 +3,13 @@ package model
 import (
 	"bytes"
 	"encoding/hex"
-	"github.com/zgwit/iot-master/protocol"
 	"regexp"
 	"time"
 )
 
 type Protocol struct {
-	Name    string           `json:"name"`
-	Options protocol.Options `json:"options"`
+	Name    string                 `json:"name"`
+	Options map[string]interface{} `json:"options"`
 }
 
 //Tunnel 通道模型

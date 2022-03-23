@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 )
 
@@ -104,7 +104,7 @@ func linkClose(ctx *gin.Context) {
 		return
 	}
 
-	tunnel := connect.GetTunnel(lnk.TunnelID)
+	tunnel := master.GetTunnel(lnk.TunnelID)
 	if tunnel == nil {
 		replyFail(ctx, "tunnel not found")
 		return
