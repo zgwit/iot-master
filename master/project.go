@@ -1,6 +1,7 @@
 package master
 
 import (
+	"fmt"
 	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/aggregator"
 	"github.com/zgwit/iot-master/calc"
@@ -80,104 +81,96 @@ type Project struct {
 func NewProject(m *model.Project) (*Project, error) {
 	prj := &Project{
 		Project:         *m,
+		Devices:         make([]*ProjectDevice, 0),
+		aggregators:     make([]aggregator.Aggregator, 0),
+		jobs:            make([]*Job, 0),
+		strategies:      make([]*Strategy, 0),
+		timers:          make([]*Timer, 0),
 		deviceNameIndex: make(map[string]*Device),
 		deviceIDIndex:   make(map[int]*Device),
 	}
 
-	if m.Devices != nil {
-		prj.Devices = make([]*ProjectDevice, len(m.Devices))
-		for _, v := range m.Devices {
-			prj.Devices = append(prj.Devices, &ProjectDevice{ProjectDevice: *v})
-		}
-	} else {
-		prj.Devices = make([]*ProjectDevice, 0)
+	err := prj.initDevices()
+	if err != nil {
+		return nil, err
 	}
 
-	if m.Aggregators != nil {
-		prj.aggregators = make([]aggregator.Aggregator, len(m.Aggregators))
-		for _, v := range m.Aggregators {
-			agg, err := aggregator.New(v)
-			if err != nil {
-				return nil, err
-			}
-			prj.aggregators = append(prj.aggregators, agg)
-		}
-	} else {
-		prj.aggregators = make([]aggregator.Aggregator, 0)
+	err = prj.initAggregators()
+	if err != nil {
+		return nil, err
 	}
 
-	if m.Jobs != nil {
-		prj.jobs = make([]*Job, len(m.Jobs))
-		for _, v := range m.Jobs {
-			prj.jobs = append(prj.jobs, &Job{Job: *v})
-		}
-	} else {
-		prj.jobs = make([]*Job, 0)
+	err = prj.initHandler()
+	if err != nil {
+		return nil, err
 	}
 
-	if m.Strategies != nil {
-		prj.strategies = make([]*Strategy, len(m.Strategies))
-		for _, v := range m.Strategies {
-			prj.strategies = append(prj.strategies, &Strategy{Strategy: *v})
-		}
-	} else {
-		prj.strategies = make([]*Strategy, 0)
+	err = prj.initJobs()
+	if err != nil {
+		return nil, err
+	}
+
+	err = prj.initStrategies()
+	if err != nil {
+		return nil, err
+	}
+
+	err = prj.initTimers()
+	if err != nil {
+		return nil, err
 	}
 
 	return prj, nil
 }
 
-//Init 项目初始化
-func (prj *Project) Init() error {
-	//设备数据变化的处理函数
-	prj.deviceDataHandler = func(data calc.Context) {
-		//数据变化后，更新计算
-		for _, agg := range prj.aggregators {
-			val, err := agg.Evaluate()
-			if err != nil {
-				prj.Emit("error", err)
-			} else {
-				prj.Context[agg.Model().As] = val
-			}
-		}
-
-		//处理响应
-		for _, strategy := range prj.strategies {
-			err := strategy.Execute(prj.Context)
-			if err != nil {
-				prj.Emit("error", err)
-			}
-		}
+func (prj *Project) initDevices() error {
+	if prj.Devices == nil {
+		return nil
 	}
-
-	//设备告警的处理函数
-	prj.deviceAlarmHandler = func(alarm *model.DeviceAlarm) {
-		pa := &model.ProjectAlarm{
-			DeviceAlarm: *alarm,
-			ProjectID:   prj.ID,
-		}
-
-		//历史入库
-		_ = database.History.Save(model.ProjectHistoryAlarm{ProjectHistory: model.ProjectHistory{ProjectID: prj.ID, History: "", Created: time.Now()}, ProjectAlarm: *pa})
-
-		//上报
-		prj.Emit("alarm", pa)
-	}
-
-	//初始化设备
 	for _, d := range prj.Project.Devices {
 		dev := GetDevice(d.ID)
 		if dev == nil {
-			//TODO 如果找不到设备，该怎么处理
-			continue
+			//如果找不到设备，该怎么处理
+			return fmt.Errorf("device %d not found", d.ID)
 		}
 		prj.deviceNameIndex[d.Name] = dev
 		prj.deviceIDIndex[d.ID] = dev
 		prj.Context[d.Name] = dev.Context //两级上下文
-	}
 
-	//定时任务
-	for _, job := range prj.jobs {
+		prj.Devices = append(prj.Devices, &ProjectDevice{ProjectDevice: *d})
+	}
+	return nil
+}
+
+func (prj *Project) initAggregators() error {
+	if prj.Aggregators == nil {
+		return nil
+	}
+	for _, v := range prj.Aggregators {
+		agg, err := aggregator.New(v)
+		if err != nil {
+			return err
+		}
+		err = agg.Init()
+		if err != nil {
+			return err
+		}
+		for _, d := range prj.Devices {
+			if d.belongSelector(&agg.Model().Selector) {
+				agg.Push(d.device.Context)
+			}
+		}
+		prj.aggregators = append(prj.aggregators, agg)
+	}
+	return nil
+}
+
+func (prj *Project) initJobs() error {
+	if prj.Jobs == nil {
+		return nil
+	}
+	for _, v := range prj.Jobs {
+		job := &Job{Job: *v}
 		job.On("invoke", func() {
 			var err error
 			for _, invoke := range job.Invokes {
@@ -197,23 +190,17 @@ func (prj *Project) Init() error {
 				Job: job.String(),
 			})
 		})
+		prj.jobs = append(prj.jobs, job)
 	}
+	return nil
+}
 
-	//初始化聚合器
-	for _, agg := range prj.aggregators {
-		err := agg.Init()
-		if err != nil {
-			return err
-		}
-		for _, d := range prj.Devices {
-			if d.belongSelector(&agg.Model().Selector) {
-				agg.Push(d.device.Context)
-			}
-		}
+func (prj *Project) initStrategies() error {
+	if prj.Strategies == nil {
+		return nil
 	}
-
-	//订阅告警
-	for _, strategy := range prj.strategies {
+	for _, v := range prj.Strategies {
+		strategy := &Strategy{Strategy: *v}
 		strategy.On("alarm", func(alarm *model.Alarm) {
 			pa := &model.ProjectAlarm{
 				DeviceAlarm: model.DeviceAlarm{
@@ -259,6 +246,96 @@ func (prj *Project) Init() error {
 			}
 			_ = database.History.Save(history)
 		})
+		prj.strategies = append(prj.strategies, strategy)
+	}
+	return nil
+}
+
+func (prj *Project) initTimers() error {
+	var timers []model.ProjectTimer
+	err := database.Master.Find("Disabled", false, &timers)
+
+	if err != storm.ErrNotFound {
+		return nil
+	} else if err != nil {
+		return err
+	}
+
+	for _, t := range timers {
+		timer := &Timer{Timer: t.Timer}
+		prj.timers = append(prj.timers, timer)
+
+		timer.On("invoke", func() {
+			var err error
+			for _, invoke := range timer.Invokes {
+				err = prj.execute(&invoke)
+				if err != nil {
+					prj.Emit("error", err)
+				}
+			}
+
+			//日志
+			_ = database.History.Save(model.ProjectHistoryTimer{
+				ProjectHistory: model.ProjectHistory{
+					ProjectID: prj.ID,
+					History:   "action",
+					Created:   time.Now(),
+				},
+				TimerID: timer.ID,
+			})
+		})
+	}
+
+	return nil
+}
+
+//initHandler 项目初始化
+func (prj *Project) initHandler() error {
+	//设备数据变化的处理函数
+	prj.deviceDataHandler = func(data calc.Context) {
+		//数据变化后，更新计算
+		for _, agg := range prj.aggregators {
+			val, err := agg.Evaluate()
+			if err != nil {
+				prj.Emit("error", err)
+			} else {
+				prj.Context[agg.Model().As] = val
+			}
+		}
+
+		//处理响应
+		for _, strategy := range prj.strategies {
+			err := strategy.Execute(prj.Context)
+			if err != nil {
+				prj.Emit("error", err)
+			}
+		}
+	}
+
+	//设备告警的处理函数
+	prj.deviceAlarmHandler = func(alarm *model.DeviceAlarm) {
+		pa := &model.ProjectAlarm{
+			DeviceAlarm: *alarm,
+			ProjectID:   prj.ID,
+		}
+
+		//历史入库
+		_ = database.History.Save(model.ProjectHistoryAlarm{ProjectHistory: model.ProjectHistory{ProjectID: prj.ID, History: "", Created: time.Now()}, ProjectAlarm: *pa})
+
+		//上报
+		prj.Emit("alarm", pa)
+	}
+
+	//初始化设备
+	for _, d := range prj.Project.Devices {
+		dev := GetDevice(d.ID)
+		if dev == nil {
+			//TODO 如果找不到设备，该怎么处理
+			continue
+		}
+		prj.deviceNameIndex[d.Name] = dev
+		prj.deviceIDIndex[d.ID] = dev
+		prj.Context[d.Name] = dev.Context //两级上下文
 	}
 
 	return nil
@@ -308,43 +385,5 @@ func (prj *Project) execute(in *model.Invoke) error {
 			}
 		}
 	}
-	return nil
-}
-
-func (prj *Project) LoadTimers() error {
-	var timers []model.ProjectTimer
-	err := database.Master.Find("Disabled", false, &timers)
-
-	if err != storm.ErrNotFound {
-		return nil
-	} else if err != nil {
-		return err
-	}
-
-	for _, t := range timers {
-		timer := &Timer{Timer: t.Timer}
-		prj.timers = append(prj.timers, timer)
-
-		timer.On("invoke", func() {
-			var err error
-			for _, invoke := range timer.Invokes {
-				err = prj.execute(&invoke)
-				if err != nil {
-					prj.Emit("error", err)
-				}
-			}
-
-			//日志
-			_ = database.History.Save(model.ProjectHistoryTimer{
-				ProjectHistory: model.ProjectHistory{
-					ProjectID: prj.ID,
-					History:   "action",
-					Created:   time.Now(),
-				},
-				TimerID: timer.ID,
-			})
-		})
-	}
-
 	return nil
 }

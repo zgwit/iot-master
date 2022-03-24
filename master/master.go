@@ -238,7 +238,7 @@ func LoadProjects() error {
 			//TODO log
 			continue
 		}
-		err = prj.Init()
+		err = prj.initHandler()
 		if err != nil {
 			//TODO log
 			continue
@@ -266,7 +266,7 @@ func LoadProject(id int) (*Project, error) {
 
 	allProjects.Store(id, prj)
 
-	err = prj.Init()
+	err = prj.initHandler()
 	if err != nil {
 		return nil, err
 	}
