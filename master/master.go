@@ -5,6 +5,8 @@ import (
 	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/protocol"
+	"github.com/zgwit/iot-master/protocols"
 	"sync"
 )
 
@@ -47,7 +49,6 @@ func Stop() {
 	})
 }
 
-
 //LoadTunnels 加载通道
 func LoadTunnels() error {
 	var tunnels []*model.Tunnel
@@ -76,16 +77,45 @@ func LoadTunnels() error {
 		}
 
 		tnl.On("link", func(link connect.Link) {
-			allLinks.Store(link.ID(), link)
+			var lnk model.Link
+			err := database.Master.One("ID", link.ID(), &lnk)
+			if err != nil && err != storm.ErrNotFound {
+				return
+			}
 
-			//TODO 加载协议
+			//加载协议
+			var adapter protocol.Adapter
+			if lnk.Protocol != nil {
+				adapter, err = protocols.Create(link, lnk.Protocol.Name, lnk.Protocol.Options)
+				if err != nil {
+					//TODO log
+					return
+				}
+			}
 
-			//TODO 找到相关Device，导入Mapper
+			allLinks.Store(link.ID(), &Link{Link: lnk, adapter: adapter})
+
+			//找到相关Device，导入Mapper
+			var devices []model.Device
+			err = database.Master.Find("LinkID", link.ID(), &devices)
+			if err != nil && err != storm.ErrNotFound {
+				return
+			}
+			for _, d := range devices {
+				dev := GetDevice(d.ID)
+				if dev != nil {
+					err := dev.initMapper()
+					if err != nil {
+						//TODO log
+						//return
+					}
+				}
+			}
+
 		})
 	}
 	return nil
 }
-
 
 //GetTunnel 获取通道
 func GetTunnel(id int) connect.Tunnel {
@@ -96,7 +126,13 @@ func GetTunnel(id int) connect.Tunnel {
 	return nil
 }
 
-
+func GetLink(id int) *Link {
+	d, ok := allLinks.Load(id)
+	if ok {
+		return d.(*Link)
+	}
+	return nil
+}
 
 //LoadDevices 加载设备
 func LoadDevices() error {

@@ -74,7 +74,18 @@ func NewDevice(m *model.Device) (*Device, error) {
 
 func (dev *Device) initMapper() error {
 	var err error
-	dev.mapper, err = newMapper(dev.Mapper, nil)
+	//找到链接，导入协议
+	link := GetLink(dev.LinkId)
+	if link == nil {
+		//TODO error
+		return nil
+	}
+	if link.adapter == nil {
+		//TODO error
+		return nil
+	}
+
+	dev.mapper, err = newMapper(dev.Mapper, link.adapter)
 	metric := strconv.Itoa(dev.ID)
 
 	//处理数据变化结果

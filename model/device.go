@@ -7,6 +7,7 @@ import (
 
 type Device struct {
 	ID      int      `json:"id" storm:"id,increment"`
+	LinkId  int      `json:"link_id" storm:"index"`
 	Element string   `json:"element,omitempty"` //元件UUID
 	Name    string   `json:"name"`
 	Tags    []string `json:"tags,omitempty"`
