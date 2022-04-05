@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
+	"golang.org/x/net/websocket"
 )
 
 func linkRoutes(app *gin.RouterGroup) {
@@ -17,7 +18,7 @@ func linkRoutes(app *gin.RouterGroup) {
 	app.GET(":id/close", linkClose)
 	app.GET(":id/enable", linkEnable)
 	app.GET(":id/disable", linkDisable)
-
+	app.GET(":id/watch", linkWatch)
 }
 
 func linkList(ctx *gin.Context) {
@@ -141,4 +142,35 @@ func linkDisable(ctx *gin.Context) {
 	}
 	//TODO 关闭
 	replyOk(ctx, nil)
+}
+
+
+func linkWatch(ctx *gin.Context) {
+	websocket.Handler(func(ws *websocket.Conn) {
+		ws.PayloadType = websocket.TextFrame
+
+		go func() {
+			link := master.GetLink(ctx.GetInt("id"))
+			recvFunc := func (data []byte) {
+
+			}
+			sendFunc := func (data []byte) {
+
+			}
+			link.Instance.On("recv", recvFunc)
+			link.Instance.On("send", sendFunc)
+
+			for {
+				buf := make([]byte, 1)
+				_, err := ws.Read(buf)
+				if err != nil {
+					break
+				}
+			}
+
+			//关闭监听
+			link.Instance.Off("recv", recvFunc)
+			link.Instance.Off("send", sendFunc)
+		}()
+	}).ServeHTTP(ctx.Writer, ctx.Request)
 }
