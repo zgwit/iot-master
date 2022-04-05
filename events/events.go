@@ -1,6 +1,11 @@
 package events
 
-import "github.com/asaskevich/EventBus"
+import (
+	"reflect"
+	"sync"
+)
+
+type Handler func(args ...interface{})
 
 //EventInterface Events接口
 type EventInterface interface {
@@ -10,39 +15,74 @@ type EventInterface interface {
 	Off(event string, fn interface{})
 }
 
-//EventEmitter 引入Emitter函数
 type EventEmitter struct {
-	events EventBus.Bus
+	handlers sync.Map
+}
+
+type eventHandler struct {
+	callback reflect.Value
+	once     bool
 }
 
 //Emit 发送消息
 func (e *EventEmitter) Emit(event string, data ...interface{}) {
-	if e.events == nil {
+	val, ok := e.handlers.Load(event)
+	if !ok {
 		return
 	}
-	e.events.Publish(event, data...)
+	handlers := val.(*sync.Map)
+	args := make([]reflect.Value, 0)
+	for _, v := range data {
+		args = append(args, reflect.ValueOf(v))
+	}
+	handlers.Range(func(key, value interface{}) bool {
+		handler := value.(*eventHandler)
+		handler.callback.Call(args)
+		//处理仅订阅一次
+		if handler.once {
+			handlers.Delete(key)
+		}
+		return true
+	})
 }
 
 //On 监听
 func (e *EventEmitter) On(event string, fn interface{}) {
-	if e.events == nil {
-		e.events = EventBus.New()
+	callback := reflect.ValueOf(fn)
+	val, ok := e.handlers.Load(event)
+	if !ok {
+		val = new(sync.Map)
+		e.handlers.Store(event, val)
 	}
-	_ = e.events.Subscribe(event, fn)
+	handlers := val.(*sync.Map)
+	handlers.Store(callback.Pointer(), &eventHandler{
+		callback: callback,
+		once:     false,
+	})
 }
 
 //Once 监听一次
 func (e *EventEmitter) Once(event string, fn interface{}) {
-	if e.events == nil {
-		e.events = EventBus.New()
+	callback := reflect.ValueOf(fn)
+	val, ok := e.handlers.Load(event)
+	if !ok {
+		val = new(sync.Map)
+		e.handlers.Store(event, val)
 	}
-	_ = e.events.SubscribeOnce(event, fn)
+	handlers := val.(*sync.Map)
+	handlers.Store(callback.Pointer(), &eventHandler{
+		callback: callback,
+		once:     true,
+	})
 }
 
 //Off 取消监听
 func (e *EventEmitter) Off(event string, fn interface{}) {
-	if e.events == nil {
+	callback := reflect.ValueOf(fn)
+	val, ok := e.handlers.Load(event)
+	if !ok {
 		return
 	}
-	_ = e.events.Unsubscribe(event, fn)
+	handlers := val.(*sync.Map)
+	handlers.Delete(callback.Pointer())
 }

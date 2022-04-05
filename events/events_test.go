@@ -4,9 +4,12 @@ import "testing"
 
 func TestOnce(t *testing.T) {
 	e := EventEmitter{}
-	e.Once("test", func(arg ...interface{}) {
-		t.Log(arg)
+	e.On("test", func(arg ...interface{}) {
+		t.Log("On", arg)
 	})
-	e.Emit("test", "publish1")
-	e.Emit("test", "publish2")
+	e.Once("test", func(arg ...interface{}) {
+		t.Log("Once", arg)
+	})
+	e.Emit("test", "msg1")
+	e.Emit("test", "msg2")
 }
