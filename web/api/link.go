@@ -96,7 +96,6 @@ func linkDelete(ctx *gin.Context) {
 	replyOk(ctx, link)
 }
 
-
 func linkClose(ctx *gin.Context) {
 
 	link := master.GetLink(ctx.GetInt("id"))
@@ -132,33 +131,13 @@ func linkDisable(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-
 func linkWatch(ctx *gin.Context) {
+	link := master.GetLink(ctx.GetInt("id"))
+	if link == nil {
+		replyFail(ctx, "找不到链接")
+		return
+	}
 	websocket.Handler(func(ws *websocket.Conn) {
-		ws.PayloadType = websocket.TextFrame
-
-		go func() {
-			link := master.GetLink(ctx.GetInt("id"))
-			recvFunc := func (data []byte) {
-
-			}
-			sendFunc := func (data []byte) {
-
-			}
-			link.Instance.On("recv", recvFunc)
-			link.Instance.On("send", sendFunc)
-
-			for {
-				buf := make([]byte, 1)
-				_, err := ws.Read(buf)
-				if err != nil {
-					break
-				}
-			}
-
-			//关闭监听
-			link.Instance.Off("recv", recvFunc)
-			link.Instance.Off("send", sendFunc)
-		}()
+		watchAllEvents(ws, link.Instance)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
 }

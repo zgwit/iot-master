@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
+	"golang.org/x/net/websocket"
 )
 
 func deviceRoutes(app *gin.RouterGroup) {
@@ -18,6 +19,7 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.GET(":id/stop", deviceStop)
 	app.GET(":id/enable", deviceEnable)
 	app.GET(":id/disable", deviceDisable)
+	app.GET(":id/watch", deviceWatch)
 
 }
 
@@ -145,4 +147,15 @@ func deviceDisable(ctx *gin.Context) {
 	}
 	//TODO 关闭
 	replyOk(ctx, nil)
+}
+
+func deviceWatch(ctx *gin.Context) {
+	device := master.GetDevice(ctx.GetInt("id"))
+	if device == nil {
+		replyFail(ctx, "找不到设备")
+		return
+	}
+	websocket.Handler(func(ws *websocket.Conn) {
+		watchAllEvents(ws, device)
+	}).ServeHTTP(ctx.Writer, ctx.Request)
 }

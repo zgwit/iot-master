@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
+	"golang.org/x/net/websocket"
 )
 
 func projectRoutes(app *gin.RouterGroup) {
@@ -18,6 +19,7 @@ func projectRoutes(app *gin.RouterGroup) {
 	app.GET(":id/stop", projectStop)
 	app.GET(":id/enable", projectEnable)
 	app.GET(":id/disable", projectDisable)
+	app.GET(":id/watch", projectWatch)
 
 }
 
@@ -132,4 +134,15 @@ func projectDisable(ctx *gin.Context) {
 	}
 	//TODO 关闭
 	replyOk(ctx, nil)
+}
+
+func projectWatch(ctx *gin.Context) {
+	project := master.GetProject(ctx.GetInt("id"))
+	if project == nil {
+		replyFail(ctx, "找不到链接")
+		return
+	}
+	websocket.Handler(func(ws *websocket.Conn) {
+		watchAllEvents(ws, project)
+	}).ServeHTTP(ctx.Writer, ctx.Request)
 }

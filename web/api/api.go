@@ -33,8 +33,8 @@ type paramID struct {
 }
 
 type WatchMessage struct {
-	Type string      `json:"type"`
-	Data interface{} `json:"data"`
+	Event string      `json:"event"`
+	Data  interface{} `json:"data"`
 }
 
 func mustLogin(ctx *gin.Context) {

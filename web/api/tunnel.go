@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
+	"golang.org/x/net/websocket"
 )
 
 func tunnelRoutes(app *gin.RouterGroup) {
@@ -18,6 +19,7 @@ func tunnelRoutes(app *gin.RouterGroup) {
 	app.GET(":id/stop", tunnelStop)
 	app.GET(":id/enable", tunnelEnable)
 	app.GET(":id/disable", tunnelDisable)
+	app.GET(":id/watch", tunnelWatch)
 
 }
 
@@ -132,4 +134,15 @@ func tunnelDisable(ctx *gin.Context) {
 	}
 	//TODO 关闭
 	replyOk(ctx, nil)
+}
+
+func tunnelWatch(ctx *gin.Context) {
+	tunnel := master.GetTunnel(ctx.GetInt("id"))
+	if tunnel == nil {
+		replyFail(ctx, "找不到通道")
+		return
+	}
+	websocket.Handler(func(ws *websocket.Conn) {
+		watchAllEvents(ws, tunnel.Instance)
+	}).ServeHTTP(ctx.Writer, ctx.Request)
 }
