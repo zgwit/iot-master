@@ -13,6 +13,7 @@ require (
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/kardianos/service v1.2.1
 	github.com/nakabonne/tstorage v0.3.5
+	golang.org/x/net v0.0.0-20191105084925-a882066a44e0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 

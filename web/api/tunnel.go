@@ -89,7 +89,7 @@ func tunnelStart(ctx *gin.Context) {
 		replyFail(ctx, "not found")
 		return
 	}
-	err := tunnel.Open()
+	err := tunnel.Instance.Open()
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -104,7 +104,7 @@ func tunnelStop(ctx *gin.Context) {
 		replyFail(ctx, "not found")
 		return
 	}
-	err := tunnel.Close()
+	err := tunnel.Instance.Close()
 	if err != nil {
 		replyError(ctx, err)
 		return

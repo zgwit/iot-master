@@ -44,7 +44,10 @@ func LoadTunnels() error {
 			//TODO log
 			continue
 		}
-		allTunnels.Store(d.ID, tnl)
+		allTunnels.Store(d.ID, &Tunnel{
+			Tunnel:   *d,
+			Instance: tnl,
+		})
 
 		err = tnl.Open()
 		if err != nil {
@@ -68,7 +71,7 @@ func LoadTunnels() error {
 				}
 			}
 
-			allLinks.Store(link.ID(), &Link{Link: lnk, adapter: adapter})
+			allLinks.Store(link.ID(), &Link{Link: lnk, Instance: link, adapter: adapter})
 
 			//找到相关Device，导入Mapper
 			var devices []model.Device
@@ -93,10 +96,10 @@ func LoadTunnels() error {
 }
 
 //GetTunnel 获取通道
-func GetTunnel(id int) connect.Tunnel {
+func GetTunnel(id int) *Tunnel {
 	d, ok := allTunnels.Load(id)
 	if ok {
-		return d.(connect.Tunnel)
+		return d.(*Tunnel)
 	}
 	return nil
 }

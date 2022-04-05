@@ -98,25 +98,13 @@ func linkDelete(ctx *gin.Context) {
 
 
 func linkClose(ctx *gin.Context) {
-	var lnk model.Link
-	err := database.Master.One("ID", ctx.GetInt("id"), &lnk)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
 
-	tunnel := master.GetTunnel(lnk.TunnelID)
-	if tunnel == nil {
-		replyFail(ctx, "tunnel not found")
-		return
-	}
-
-	link := tunnel.GetLink(ctx.GetInt("id"))
+	link := master.GetLink(ctx.GetInt("id"))
 	if link == nil {
 		replyFail(ctx, "link not found")
 		return
 	}
-	err = link.Close()
+	err := link.Instance.Close()
 	if err != nil {
 		replyError(ctx, err)
 		return

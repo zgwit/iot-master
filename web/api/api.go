@@ -32,6 +32,11 @@ type paramID struct {
 	ID int `uri:"id"`
 }
 
+type WatchMessage struct {
+	Type string      `json:"type"`
+	Data interface{} `json:"data"`
+}
+
 func mustLogin(ctx *gin.Context) {
 	session := sessions.Default(ctx)
 	if user := session.Get("user"); user != nil {
@@ -45,7 +50,7 @@ func mustLogin(ctx *gin.Context) {
 	}
 }
 
-func parseParamId(ctx *gin.Context)  {
+func parseParamId(ctx *gin.Context) {
 	var pid paramID
 	err := ctx.ShouldBindUri(&pid)
 	if err != nil {
