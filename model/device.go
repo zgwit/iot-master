@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-//Element 设备模板
+//Element 元件
 type Element struct {
 	ID      int    `json:"id" storm:"id,increment"`
 	UUID    string `json:"uuid,omitempty"`
