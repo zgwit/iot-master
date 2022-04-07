@@ -6,7 +6,7 @@
             [nzTrigger]="null">
 
     <div class="sidebar-logo">
-      <a (click)="noop()">
+      <a href="https://iot-master.com" target="_blank">
         <img src="assets/iot.svg" alt="logo">
         <h1>物联大师</h1>
       </a>
@@ -33,8 +33,6 @@
           </ul>
         </li>
       </ng-container>
-
-
     </ul>
   </nz-sider>
   <nz-layout>
@@ -53,18 +51,12 @@
     </nz-header>
     <nz-content>
       <router-outlet></router-outlet>
-
-<!--      <app-tabs></app-tabs>-->
-
-<!--      <nz-tabset nzLinkRouter nzType="editable-card" nzHideAdd (nzClose)="closeTab($event)">-->
-<!--        <nz-tab *ngFor="let tab of tabs" nzClosable>-->
-<!--          <a *nzTabLink nz-tab-link [routerLink]="[tab]" [queryParams]="tab.query" queryParamsHandling="merge">-->
-<!--            Default-->
-<!--          </a>-->
-<!--          Default.-->
-<!--        </nz-tab>-->
-<!--      </nz-tabset>-->
-
     </nz-content>
+    <nz-footer class="app-footer">
+
+      <a href="https://iot-master.com" target="_blank">物联大师</a> v1.0.0
+      &copy; 2016~2022 <a href="https://zgwit.com" target="_blank">真格智能实验室</a>
+
+    </nz-footer>
   </nz-layout>
 </nz-layout>

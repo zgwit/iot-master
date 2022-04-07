@@ -13,7 +13,7 @@ export let SideMenu = [
     // ]
   },
   {
-    title: '通道管理',
+    title: '连接管理',
     icon: 'block',
     children: [
       {
@@ -23,20 +23,6 @@ export let SideMenu = [
       {
         title: '链路',
         router: 'link'
-      },
-    ]
-  },
-  {
-    title: '项目管理',
-    icon: 'cluster', //project
-    children: [
-      {
-        title: '项目',
-        router: 'project'
-      },
-      {
-        title: '模板库',
-        router: 'template'
       },
     ]
   },
@@ -55,14 +41,16 @@ export let SideMenu = [
     ]
   },
   {
-    title: '告警管理',
-    icon: 'bell',
-    open: false,
-    disable: true,
+    title: '项目管理',
+    icon: 'cluster', //project
     children: [
       {
-        title: '告警日志',
-        router: 'alarm'
+        title: '项目',
+        router: 'project'
+      },
+      {
+        title: '模板库',
+        router: 'template'
       },
     ]
   },
