@@ -70,7 +70,9 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.Use(mustLogin)
 
 	projectRoutes(app.Group("/project"))
+	projectTemplateRoutes(app.Group("/project-template"))
 	deviceRoutes(app.Group("/device"))
+	deviceTemplateRoutes(app.Group("/device-template"))
 	tunnelRoutes(app.Group("/tunnel"))
 	linkRoutes(app.Group("/link"))
 	userRoutes(app.Group("/user"))
