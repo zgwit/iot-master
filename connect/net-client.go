@@ -2,7 +2,7 @@ package connect
 
 import (
 	"errors"
-	"github.com/asdine/storm/v3"
+	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"

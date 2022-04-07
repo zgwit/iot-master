@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/antonmedv/expr v1.9.0
-	github.com/asdine/storm/v3 v3.2.1
 	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-co-op/gocron v1.12.0
@@ -12,6 +11,7 @@ require (
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/kardianos/service v1.2.1
 	github.com/nakabonne/tstorage v0.3.5
+	github.com/zgwit/storm/v3 v3.3.2
 	golang.org/x/net v0.0.0-20191105084925-a882066a44e0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )

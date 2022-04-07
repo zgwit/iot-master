@@ -3,7 +3,7 @@ package master
 import (
 	"errors"
 	"fmt"
-	"github.com/asdine/storm/v3"
+	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/iot-master/aggregator"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/database"
