@@ -5,15 +5,15 @@ import (
 	"time"
 )
 
-//DeviceTemplate 设备模板
-type DeviceTemplate struct {
+//Element 设备模板
+type Element struct {
 	ID   int    `json:"id" storm:"id,increment"`
 	UUID string `json:"uuid,omitempty"`
 
-	DeviceTemplateContent `storm:"extends"`
+	ElementContent `storm:"extends"`
 }
 
-type DeviceTemplateContent struct {
+type ElementContent struct {
 	Name string   `json:"name"`
 	Tags []string `json:"tags,omitempty"`
 
@@ -33,7 +33,7 @@ type Device struct {
 	LinkId     int `json:"link_id" storm:"index"`
 	TemplateId int `json:"template_id"`
 
-	DeviceTemplateContent `storm:"extends"`
+	ElementContent `storm:"extends"`
 
 	//上下文
 	Context calc.Context `json:"context"`

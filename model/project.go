@@ -5,14 +5,14 @@ import (
 	"time"
 )
 
-type ProjectTemplate struct {
+type Template struct {
 	ID   int    `json:"id" storm:"id,increment"`
 	UUID string `json:"uuid,omitempty"`
 
-	ProjectTemplateContent `storm:"extends"`
+	TemplateContent `storm:"extends"`
 }
 
-type ProjectTemplateContent struct {
+type TemplateContent struct {
 	Aggregators []*Aggregator `json:"aggregators"`
 	Commands    []*Command    `json:"commands"`
 	Jobs        []*Job        `json:"jobs"`
@@ -27,8 +27,8 @@ type Project struct {
 	Devices []*ProjectDevice `json:"devices"`
 	//Devices []int `json:"devices"`
 
-	TemplateId             int `json:"template_id,omitempty"`
-	ProjectTemplateContent `storm:"extends"`
+	TemplateId      int `json:"template_id,omitempty"`
+	TemplateContent `storm:"extends"`
 
 	Context calc.Context `json:"context"`
 }
