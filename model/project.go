@@ -11,9 +11,9 @@ type Template struct {
 	Name    string `json:"name"`
 	Version string `json:"version"` //SEMVER
 
-	ProjectContent `storm:"extends"`
+	ProjectContent `storm:"inline"`
 
-	Created time.Time `json:"created"`
+	Created time.Time `json:"created" storm:"created"`
 }
 
 type ProjectContent struct {
@@ -32,12 +32,12 @@ type Project struct {
 	//Devices []int `json:"devices"`
 
 	TemplateId     int `json:"template_id,omitempty"`
-	ProjectContent `storm:"extends"`
+	ProjectContent `storm:"inline"`
 
 	Context calc.Context `json:"context"`
 
 	Disabled bool      `json:"disabled,omitempty"`
-	Created  time.Time `json:"created"`
+	Created  time.Time `json:"created" storm:"created"`
 }
 
 //ProjectDevice 项目的设备
@@ -51,7 +51,7 @@ type ProjectHistory struct {
 	ID        int       `json:"id" storm:"id,increment"`
 	ProjectID int       `json:"project_id"`
 	History   string    `json:"history"`
-	Created   time.Time `json:"created"`
+	Created   time.Time `json:"created" storm:"created"`
 }
 
 //ProjectHistoryAlarm 项目历史告警

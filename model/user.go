@@ -9,7 +9,7 @@ type User struct {
 	Nickname string    `json:"nickname,omitempty"`
 	Email    string    `json:"email,omitempty"`
 	Disabled bool      `json:"disabled,omitempty"`
-	Created  time.Time `json:"created"`
+	Created  time.Time `json:"created" storm:"created"`
 }
 
 //Password 密码
@@ -23,5 +23,5 @@ type UserHistory struct {
 	ID      int       `json:"id" storm:"id,increment"`
 	UserID  int       `json:"user_id"`
 	History string    `json:"history"`
-	Created time.Time `json:"created"`
+	Created time.Time `json:"created" storm:"created"`
 }

@@ -3,12 +3,12 @@ package master
 import (
 	"errors"
 	"github.com/antonmedv/expr"
-	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/tsdb"
+	"github.com/zgwit/storm/v3"
 	"strconv"
 	"time"
 )
@@ -169,7 +169,6 @@ func (dev *Device) initJobs() error {
 				DeviceHistory: model.DeviceHistory{
 					DeviceID: dev.ID,
 					History:  "action",
-					Created:  time.Now(),
 				},
 				Job: job.String(),
 			})
@@ -197,7 +196,6 @@ func (dev *Device) initStrategies() error {
 				DeviceHistory: model.DeviceHistory{
 					DeviceID: dev.ID,
 					History:  "action",
-					Created:  time.Now(),
 				},
 				Code:    alarm.Code,
 				Level:   alarm.Level,
@@ -263,7 +261,6 @@ func (dev *Device) LoadTimers() error {
 				DeviceHistory: model.DeviceHistory{
 					DeviceID: dev.ID,
 					History:  "action",
-					Created:  time.Now(),
 				},
 				TimerID: timer.ID,
 			})
@@ -314,7 +311,7 @@ func (dev *Device) Start() error {
 
 //Stop 结束设备
 func (dev *Device) Stop() error {
-	_ = database.History.Save(model.DeviceHistory{DeviceID: dev.ID, History: "stop", Created: time.Now()})
+	_ = database.History.Save(model.DeviceHistory{DeviceID: dev.ID, History: "stop"})
 
 	for _, poller := range dev.pollers {
 		poller.Stop()

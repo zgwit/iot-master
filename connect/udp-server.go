@@ -1,13 +1,12 @@
 package connect
 
 import (
-	"github.com/zgwit/storm/v3"
-	"github.com/zgwit/storm/v3/q"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3"
+	"github.com/zgwit/storm/v3/q"
 	"net"
-	"time"
 )
 
 //UdpServer UDP服务器
@@ -68,7 +67,6 @@ func (server *UdpServer) Open() error {
 			lnk := model.Link{
 				TunnelID: server.tunnel.ID,
 				Protocol: server.tunnel.Protocol,
-				Created:  time.Now(),
 			}
 
 			if server.tunnel.Register == nil {

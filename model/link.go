@@ -9,7 +9,7 @@ type Link struct {
 	SN       string    `json:"sn"`
 	Disabled bool      `json:"disabled"`
 	Protocol *Protocol `json:"protocol"`
-	Created  time.Time `json:"created"`
+	Created  time.Time `json:"created" storm:"created"`
 }
 
 //LinkHistory 链接历史
@@ -17,5 +17,5 @@ type LinkHistory struct {
 	ID      int       `json:"id" storm:"id,increment"`
 	LinkID  int       `json:"link_id" storm:"index"`
 	History string    `json:"history"`
-	Created time.Time `json:"created"`
+	Created time.Time `json:"created" storm:"created"`
 }

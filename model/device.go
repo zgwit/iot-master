@@ -12,9 +12,9 @@ type Element struct {
 	Name    string `json:"name"`
 	Version string `json:"version"` //SEMVER
 
-	DeviceContent `storm:"extends"`
+	DeviceContent `storm:"inline"`
 
-	Created time.Time `json:"created"`
+	Created time.Time `json:"created" storm:"created"`
 }
 
 type DeviceContent struct {
@@ -37,13 +37,13 @@ type Device struct {
 	ElementId int `json:"element_id"`
 
 	Name          string `json:"name"`
-	DeviceContent `storm:"extends"`
+	DeviceContent `storm:"inline"`
 
 	//上下文
 	Context calc.Context `json:"context"`
 
 	Disabled bool      `json:"disabled,omitempty"`
-	Created  time.Time `json:"created"`
+	Created  time.Time `json:"created" storm:"created"`
 }
 
 //DeviceHistory 设备历史
@@ -51,7 +51,7 @@ type DeviceHistory struct {
 	ID       int       `json:"id" storm:"id,increment"`
 	DeviceID int       `json:"device_id" storm:"index"`
 	History  string    `json:"history"`
-	Created  time.Time `json:"created"`
+	Created  time.Time `json:"created" storm:"created"`
 }
 
 //DeviceHistoryAlarm 设备历史告警

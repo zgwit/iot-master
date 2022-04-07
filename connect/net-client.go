@@ -42,7 +42,6 @@ func (client *NetClient) Open() error {
 	lnk := model.Link{
 		TunnelID: client.tunnel.ID,
 		Protocol: client.tunnel.Protocol,
-		Created:  time.Now(),
 	}
 	err = database.Master.One("TunnelID", client.tunnel.ID, &lnk)
 	if err == storm.ErrNotFound {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
-	"time"
 )
 
 //NewTunnel 创建通道
@@ -34,7 +33,6 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 		_ = database.History.Save(model.TunnelHistory{
 			TunnelID: tunnel.ID,
 			History:  "open",
-			Created:  time.Now(),
 		})
 	})
 
@@ -42,7 +40,6 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 		_ = database.History.Save(model.TunnelHistory{
 			TunnelID: tunnel.ID,
 			History:  "close",
-			Created:  time.Now(),
 		})
 	})
 
@@ -50,13 +47,11 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 		_ = database.History.Save(model.LinkHistory{
 			LinkID:  conn.ID(),
 			History: "online",
-			Created: time.Now(),
 		})
 		conn.Once("close", func() {
 			_ = database.History.Save(model.LinkHistory{
 				LinkID:  conn.ID(),
 				History: "offline",
-				Created: time.Now(),
 			})
 		})
 	})

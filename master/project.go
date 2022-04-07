@@ -3,12 +3,12 @@ package master
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/iot-master/aggregator"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3"
 	"strings"
 	"time"
 )
@@ -199,7 +199,6 @@ func (prj *Project) initJobs() error {
 				ProjectHistory: model.ProjectHistory{
 					ProjectID: prj.ID,
 					History:   "action",
-					Created:   time.Now(),
 				},
 				Job: job.String(),
 			})
@@ -229,7 +228,6 @@ func (prj *Project) initStrategies() error {
 				ProjectHistory: model.ProjectHistory{
 					ProjectID: prj.ID,
 					History:   "action",
-					Created:   time.Now(),
 				},
 				ProjectAlarm: *pa,
 			})
@@ -293,7 +291,6 @@ func (prj *Project) initTimers() error {
 				ProjectHistory: model.ProjectHistory{
 					ProjectID: prj.ID,
 					History:   "action",
-					Created:   time.Now(),
 				},
 				TimerID: timer.ID,
 			})
@@ -357,7 +354,7 @@ func (prj *Project) initHandler() error {
 
 //Start 项目启动
 func (prj *Project) Start() error {
-	_ = database.History.Save(model.ProjectHistory{ProjectID: prj.ID, History: "start", Created: time.Now()})
+	_ = database.History.Save(model.ProjectHistory{ProjectID: prj.ID, History: "start"})
 
 	//订阅设备的数据变化和报警
 	for _, dev := range prj.Devices {

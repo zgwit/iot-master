@@ -24,7 +24,7 @@ type Tunnel struct {
 	Serial    *SerialOptions   `json:"serial,omitempty"`
 	Protocol  *Protocol        `json:"protocol"`
 	Disabled  bool             `json:"disabled"`
-	Created   time.Time        `json:"created"`
+	Created   time.Time        `json:"created" storm:"created"`
 }
 
 //SerialOptions 串口参数
@@ -119,5 +119,5 @@ type TunnelHistory struct {
 	ID       int       `json:"id" storm:"id,increment"`
 	TunnelID int       `json:"tunnel_id"`
 	History  string    `json:"history"`
-	Created  time.Time `json:"created"`
+	Created  time.Time `json:"created" storm:"created"`
 }

@@ -50,7 +50,6 @@ func (s *Serial) Open() error {
 	lnk := model.Link{
 		TunnelID: s.tunnel.ID,
 		Protocol: s.tunnel.Protocol,
-		Created:  time.Now(),
 	}
 	err = database.Master.One("TunnelID", s.tunnel.ID, &lnk)
 	if err == storm.ErrNotFound {
