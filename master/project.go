@@ -100,7 +100,7 @@ func NewProject(m *model.Project) (*Project, error) {
 		} else if err != nil {
 			return nil, err
 		}
-		prj.TemplateContent = template.TemplateContent
+		prj.ProjectContent = template.ProjectContent
 	}
 
 

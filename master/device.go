@@ -41,15 +41,15 @@ func NewDevice(m *model.Device) (*Device, error) {
 	}
 
 	//加载模板
-	if dev.TemplateId != 0 {
+	if dev.ElementId != 0 {
 		var template model.Element
-		err := database.Master.One("ID", dev.TemplateId, &template)
+		err := database.Master.One("ID", dev.ElementId, &template)
 		if err == storm.ErrNotFound {
 			return nil, errors.New("找不到模板")
 		} else if err != nil {
 			return nil, err
 		}
-		dev.ElementContent = template.ElementContent
+		dev.DeviceContent = template.DeviceContent
 	}
 
 	err := dev.initMapper()

@@ -7,14 +7,17 @@ import (
 
 //Element 设备模板
 type Element struct {
-	ID   int    `json:"id" storm:"id,increment"`
-	UUID string `json:"uuid,omitempty"`
+	ID      int    `json:"id" storm:"id,increment"`
+	UUID    string `json:"uuid,omitempty"`
+	Name    string `json:"name"`
+	Version string `json:"version"` //SEMVER
 
-	ElementContent `storm:"extends"`
+	DeviceContent `storm:"extends"`
+
+	Created time.Time `json:"created"`
 }
 
-type ElementContent struct {
-	Name string   `json:"name"`
+type DeviceContent struct {
 	Tags []string `json:"tags,omitempty"`
 
 	//从机号
@@ -29,16 +32,18 @@ type ElementContent struct {
 
 //Device 设备
 type Device struct {
-	ID         int `json:"id" storm:"id,increment"`
-	LinkId     int `json:"link_id" storm:"index"`
-	TemplateId int `json:"template_id"`
+	ID        int `json:"id" storm:"id,increment"`
+	LinkId    int `json:"link_id" storm:"index"`
+	ElementId int `json:"element_id"`
 
-	ElementContent `storm:"extends"`
+	Name          string `json:"name"`
+	DeviceContent `storm:"extends"`
 
 	//上下文
 	Context calc.Context `json:"context"`
 
-	Disabled bool `json:"disabled,omitempty"`
+	Disabled bool      `json:"disabled,omitempty"`
+	Created  time.Time `json:"created"`
 }
 
 //DeviceHistory 设备历史

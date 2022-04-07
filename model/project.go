@@ -6,13 +6,17 @@ import (
 )
 
 type Template struct {
-	ID   int    `json:"id" storm:"id,increment"`
-	UUID string `json:"uuid,omitempty"`
+	ID      int    `json:"id" storm:"id,increment"`
+	UUID    string `json:"uuid,omitempty"`
+	Name    string `json:"name"`
+	Version string `json:"version"` //SEMVER
 
-	TemplateContent `storm:"extends"`
+	ProjectContent `storm:"extends"`
+
+	Created time.Time `json:"created"`
 }
 
-type TemplateContent struct {
+type ProjectContent struct {
 	Aggregators []*Aggregator `json:"aggregators"`
 	Commands    []*Command    `json:"commands"`
 	Jobs        []*Job        `json:"jobs"`
@@ -21,16 +25,19 @@ type TemplateContent struct {
 
 //Project 项目
 type Project struct {
-	ID       int  `json:"id" storm:"id,increment"`
-	Disabled bool `json:"disabled,omitempty"`
+	ID   int    `json:"id" storm:"id,increment"`
+	Name string `json:"name"`
 
 	Devices []*ProjectDevice `json:"devices"`
 	//Devices []int `json:"devices"`
 
-	TemplateId      int `json:"template_id,omitempty"`
-	TemplateContent `storm:"extends"`
+	TemplateId     int `json:"template_id,omitempty"`
+	ProjectContent `storm:"extends"`
 
 	Context calc.Context `json:"context"`
+
+	Disabled bool      `json:"disabled,omitempty"`
+	Created  time.Time `json:"created"`
 }
 
 //ProjectDevice 项目的设备
