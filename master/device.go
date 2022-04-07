@@ -1,6 +1,7 @@
 package master
 
 import (
+	"errors"
 	"github.com/antonmedv/expr"
 	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/calc"
@@ -37,6 +38,18 @@ func NewDevice(m *model.Device) (*Device, error) {
 		strategies: make([]*Strategy, 0),
 		jobs:       make([]*Job, 0),
 		timers:     make([]*Timer, 0),
+	}
+
+	//加载模板
+	if dev.TemplateId != 0 {
+		var template model.DeviceTemplate
+		err := database.Master.One("ID", dev.TemplateId, &template)
+		if err == storm.ErrNotFound {
+			return nil, errors.New("找不到模板")
+		} else if err != nil {
+			return nil, err
+		}
+		dev.DeviceTemplateContent = template.DeviceTemplateContent
 	}
 
 	err := dev.initMapper()

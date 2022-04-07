@@ -139,7 +139,7 @@ func projectDisable(ctx *gin.Context) {
 func projectWatch(ctx *gin.Context) {
 	project := master.GetProject(ctx.GetInt("id"))
 	if project == nil {
-		replyFail(ctx, "找不到链接")
+		replyFail(ctx, "找不到项目")
 		return
 	}
 	websocket.Handler(func(ws *websocket.Conn) {

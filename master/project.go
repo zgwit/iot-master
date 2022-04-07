@@ -1,6 +1,7 @@
 package master
 
 import (
+	"errors"
 	"fmt"
 	"github.com/asdine/storm/v3"
 	"github.com/zgwit/iot-master/aggregator"
@@ -89,6 +90,19 @@ func NewProject(m *model.Project) (*Project, error) {
 		deviceNameIndex: make(map[string]*Device),
 		deviceIDIndex:   make(map[int]*Device),
 	}
+
+	//加载模板
+	if prj.TemplateId != 0 {
+		var template model.ProjectTemplate
+		err := database.Master.One("ID", prj.TemplateId, &template)
+		if err == storm.ErrNotFound {
+			return nil, errors.New("找不到模板")
+		} else if err != nil {
+			return nil, err
+		}
+		prj.ProjectTemplateContent = template.ProjectTemplateContent
+	}
+
 
 	err := prj.initDevices()
 	if err != nil {

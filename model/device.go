@@ -5,12 +5,17 @@ import (
 	"time"
 )
 
-type Device struct {
-	ID      int      `json:"id" storm:"id,increment"`
-	LinkId  int      `json:"link_id" storm:"index"`
-	Element string   `json:"element,omitempty"` //元件UUID
-	Name    string   `json:"name"`
-	Tags    []string `json:"tags,omitempty"`
+//DeviceTemplate 设备模板
+type DeviceTemplate struct {
+	ID   int    `json:"id" storm:"id,increment"`
+	UUID string `json:"uuid,omitempty"`
+
+	DeviceTemplateContent `storm:"extends"`
+}
+
+type DeviceTemplateContent struct {
+	Name string   `json:"name"`
+	Tags []string `json:"tags,omitempty"`
 
 	//从机号
 	Mapper *Mapping `json:"mapper"` //内存映射
@@ -20,6 +25,15 @@ type Device struct {
 	Commands    []*Command    `json:"commands"`
 	Jobs        []*Job        `json:"jobs"`
 	Strategies  []*Strategy   `json:"strategies"`
+}
+
+//Device 设备
+type Device struct {
+	ID         int `json:"id" storm:"id,increment"`
+	LinkId     int `json:"link_id" storm:"index"`
+	TemplateId int `json:"template_id"`
+
+	DeviceTemplateContent `storm:"extends"`
 
 	//上下文
 	Context calc.Context `json:"context"`

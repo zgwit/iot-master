@@ -1,6 +1,6 @@
 module github.com/zgwit/iot-master
 
-go 1.18
+go 1.17
 
 require (
 	github.com/antonmedv/expr v1.9.0

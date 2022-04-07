@@ -5,19 +5,30 @@ import (
 	"time"
 )
 
-//Project 项目
-type Project struct {
-	ID       int    `json:"id" storm:"id,increment"`
-	Disabled bool   `json:"disabled,omitempty"`
-	Template string `json:"template,omitempty"`
+type ProjectTemplate struct {
+	ID   int    `json:"id" storm:"id,increment"`
+	UUID string `json:"uuid,omitempty"`
 
-	Devices []*ProjectDevice `json:"devices"`
-	//Devices []int `json:"devices"`
+	ProjectTemplateContent `storm:"extends"`
+}
 
+type ProjectTemplateContent struct {
 	Aggregators []*Aggregator `json:"aggregators"`
 	Commands    []*Command    `json:"commands"`
 	Jobs        []*Job        `json:"jobs"`
 	Strategies  []*Strategy   `json:"strategies"`
+}
+
+//Project 项目
+type Project struct {
+	ID       int  `json:"id" storm:"id,increment"`
+	Disabled bool `json:"disabled,omitempty"`
+
+	Devices []*ProjectDevice `json:"devices"`
+	//Devices []int `json:"devices"`
+
+	TemplateId             int `json:"template_id,omitempty"`
+	ProjectTemplateContent `storm:"extends"`
 
 	Context calc.Context `json:"context"`
 }
