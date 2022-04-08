@@ -17,6 +17,7 @@ type Template struct {
 }
 
 type ProjectContent struct {
+	Thumbnail   string        `json:"thumbnail"`
 	Aggregators []*Aggregator `json:"aggregators"`
 	Commands    []*Command    `json:"commands"`
 	Jobs        []*Job        `json:"jobs"`

@@ -18,7 +18,8 @@ type Element struct {
 }
 
 type DeviceContent struct {
-	Tags []string `json:"tags,omitempty"`
+	Thumbnail string   `json:"thumbnail"`
+	Tags      []string `json:"tags,omitempty"`
 
 	//从机号
 	Mapper *Mapping `json:"mapper"` //内存映射
