@@ -46,6 +46,7 @@ import {AdminComponent} from "./admin.component";
 import {WelcomeComponent} from "./welcome/welcome.component";
 import {UnknownComponent} from "./unknown/unknown.component";
 import {DashComponent} from "./dash/dash.component";
+import {HomeComponent} from "./home/home.component";
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {DashComponent} from "./dash/dash.component";
     WelcomeComponent,
     UnknownComponent,
     DashComponent,
+    HomeComponent,
   ],
   imports: [
     CommonModule,

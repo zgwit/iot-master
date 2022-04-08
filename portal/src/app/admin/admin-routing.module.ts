@@ -5,6 +5,7 @@ import {WelcomeComponent} from "./welcome/welcome.component";
 import {UnknownComponent} from "./unknown/unknown.component";
 import {LogoutGuard} from "./logout.guard";
 import {DashComponent} from "./dash/dash.component";
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
     children: [
       {path: '', component: WelcomeComponent},
       {path: 'dash', component: DashComponent},
+      {path: 'home', component: HomeComponent},
       {
         path: 'logout',
         canActivate: [LogoutGuard],

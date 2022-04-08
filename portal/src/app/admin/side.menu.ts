@@ -1,16 +1,9 @@
 
 export let SideMenu = [
   {
-    title: '控制台',
-    icon: 'dashboard',
-    router: 'dash',
-    // open: true,
-    // children: [
-    //   {
-    //     title: '仪表盘',
-    //     router: 'dash'
-    //   },
-    // ]
+    title: '首页',
+    icon: 'home',
+    router: 'home',
   },
   {
     title: '连接管理',

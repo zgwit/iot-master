@@ -4,6 +4,7 @@ import {NZ_ICONS, NzIconModule} from 'ng-zorro-antd/icon';
 import {
   MenuFoldOutline,
   MenuUnfoldOutline,
+  HomeOutline,
   DashboardOutline,
   SettingOutline,
   LogoutOutline,
@@ -25,7 +26,7 @@ import {CommonModule} from '@angular/common';
 
 const icons = [
   // 菜单相关
-  MenuFoldOutline, MenuUnfoldOutline, DashboardOutline, BlockOutline,
+  MenuFoldOutline, MenuUnfoldOutline, HomeOutline, DashboardOutline, BlockOutline,
   SettingOutline, AppstoreAddOutline, ClusterOutline, LogoutOutline, UserOutline,
   BellOutline,AppstoreOutline, BarChartOutline,
   // 表格操作
