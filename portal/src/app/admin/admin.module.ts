@@ -47,6 +47,17 @@ import {WelcomeComponent} from "./welcome/welcome.component";
 import {UnknownComponent} from "./unknown/unknown.component";
 import {DashComponent} from "./dash/dash.component";
 import {HomeComponent} from "./home/home.component";
+import {TunnelComponent} from "./tunnel/tunnel.component";
+import {LinkComponent} from "./link/link.component";
+import {DeviceComponent} from "./device/device.component";
+import {ElementComponent} from "./element/element.component";
+import {ProjectComponent} from "./project/project.component";
+import {TemplateComponent} from "./template/template.component";
+import {PluginComponent} from "./plugin/plugin.component";
+import {ProtocolComponent} from "./protocol/protocol.component";
+import {SettingComponent} from "./setting/setting.component";
+import {UserComponent} from "./user/user.component";
+import {PasswordComponent} from "./password/password.component";
 
 @NgModule({
   declarations: [
@@ -55,6 +66,17 @@ import {HomeComponent} from "./home/home.component";
     UnknownComponent,
     DashComponent,
     HomeComponent,
+    TunnelComponent,
+    LinkComponent,
+    DeviceComponent,
+    ElementComponent,
+    ProjectComponent,
+    TemplateComponent,
+    PluginComponent,
+    ProtocolComponent,
+    SettingComponent,
+    UserComponent,
+    PasswordComponent,
   ],
   imports: [
     CommonModule,

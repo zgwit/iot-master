@@ -60,10 +60,10 @@ export let SideMenu = [
         title: '协议',
         router: 'protocol'
       },
-      {
-        title: '接口',
-        router: 'api'
-      },
+      // {
+      //   title: '接口',
+      //   router: 'api'
+      // },
     ]
   },
   {
