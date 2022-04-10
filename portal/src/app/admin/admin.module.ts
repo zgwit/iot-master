@@ -70,6 +70,13 @@ import {ProjectDetailComponent} from "./project-detail/project-detail.component"
 import {ProjectEditComponent} from "./project-edit/project-edit.component";
 import {TemplateDetailComponent} from "./template-detail/template-detail.component";
 import {TemplateEditComponent} from "./template-edit/template-edit.component";
+import {EditJobsComponent} from "./edit-jobs/edit-jobs.component";
+import {EditPollersComponent} from "./edit-pollers/edit-pollers.component";
+import {EditMappingComponent} from "./edit-mapping/edit-mapping.component";
+import {EditCalculatorsComponent} from "./edit-calculators/edit-calculators.component";
+import {EditCommandsComponent} from "./edit-commands/edit-commands.component";
+import {EditAggregatorsComponent} from "./edit-aggregators/edit-aggregators.component";
+import {EditStrategiesComponent} from "./edit-strategies/edit-strategies.component";
 
 @NgModule({
   declarations: [
@@ -84,6 +91,8 @@ import {TemplateEditComponent} from "./template-edit/template-edit.component";
     ElementComponent, ElementDetailComponent, ElementEditComponent,
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
+    EditMappingComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
+    EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
     PluginComponent,
     ProtocolComponent,
     SettingComponent,
