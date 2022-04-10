@@ -22,8 +22,8 @@ type DeviceContent struct {
 	Tags      []string `json:"tags,omitempty"`
 
 	//从机号
-	Mapper *Mapping `json:"mapper"` //内存映射
-
+	//Mapper *Mapping `json:"mapper"` //内存映射
+	Points      []*Point      `json:"points"`
 	Pollers     []*Poller     `json:"pollers"`
 	Calculators []*Calculator `json:"calculators"`
 	Commands    []*Command    `json:"commands"`
@@ -38,6 +38,7 @@ type Device struct {
 	ElementId int `json:"element_id"`
 
 	Name          string `json:"name"`
+	Station       int    `json:"station"`
 	DeviceContent `storm:"inline"`
 
 	//上下文

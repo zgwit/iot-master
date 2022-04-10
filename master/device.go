@@ -98,7 +98,7 @@ func (dev *Device) initMapper() error {
 		return nil
 	}
 
-	dev.mapper, err = newMapper(dev.Mapper, link.adapter)
+	dev.mapper, err = newMapper(dev.Station, dev.Points, link.adapter)
 	metric := strconv.Itoa(dev.ID)
 
 	//处理数据变化结果

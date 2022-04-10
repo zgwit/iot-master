@@ -10,23 +10,22 @@ import (
 
 //Mapper 数据解析器（可能要改名）
 type Mapper struct {
-	model.Mapping
-
+	//model.Mapping
 	events.EventEmitter
 
-	//slave int //从站号
+	station int //从站号
 
 	adapter protocol.Adapter
 	points  []Point
 }
 
-func newMapper(m *model.Mapping, adapter protocol.Adapter) (*Mapper, error) {
+func newMapper(station int, points []*model.Point, adapter protocol.Adapter) (*Mapper, error) {
 	mapper := &Mapper{
-		Mapping: *m,
+		station: station,
 		adapter: adapter,
-		points:  make([]Point, len(m.Points)),
+		points:  make([]Point, len(points)),
 	}
-	for i, p := range m.Points {
+	for i, p := range points {
 		addr, err := adapter.Address(p.Address)
 		if err != nil {
 			return nil, err
@@ -44,7 +43,7 @@ func (m *Mapper) Set(key string, value float64) error {
 	for _, p := range m.points {
 		if p.Name == key {
 			data := p.Type.Encode(value, p.LittleEndian)
-			return m.adapter.Write(m.Station, p.Addr, data)
+			return m.adapter.Write(m.station, p.Addr, data)
 		}
 	}
 
@@ -57,7 +56,7 @@ func (m *Mapper) Get(key string) (float64, error) {
 	for _, p := range m.points {
 		if p.Name == key {
 			//使用立即读
-			b, err := m.adapter.Immediate(m.Station, p.Addr, p.Type.Size())
+			b, err := m.adapter.Immediate(m.station, p.Addr, p.Type.Size())
 			if err != nil {
 				return 0, err
 			}
@@ -78,7 +77,7 @@ func (m *Mapper) Get(key string) (float64, error) {
 //Read 读多数据
 func (m *Mapper) Read(addr protocol.Addr, length int) (calc.Context, error) {
 	//读取数据
-	buf, err := m.adapter.Read(m.Station, addr, length)
+	buf, err := m.adapter.Read(m.station, addr, length)
 	if err != nil {
 		return nil, err
 	}
