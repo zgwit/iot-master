@@ -24,8 +24,7 @@ func deviceRoutes(app *gin.RouterGroup) {
 }
 
 func deviceList(ctx *gin.Context) {
-	var devices []model.Device
-	cnt, err := normalSearch(ctx, database.Master, &devices)
+	devices, cnt, err := normalSearch(ctx, database.Master, &model.Device{})
 	if err != nil {
 		replyError(ctx, err)
 		return

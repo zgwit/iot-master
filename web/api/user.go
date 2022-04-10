@@ -20,8 +20,7 @@ func userRoutes(app *gin.RouterGroup) {
 }
 
 func userList(ctx *gin.Context) {
-	var users []model.User
-	cnt, err := normalSearch(ctx, database.Master, &users)
+	users, cnt, err := normalSearch(ctx, database.Master, &model.User{})
 	if err != nil {
 		replyError(ctx, err)
 		return

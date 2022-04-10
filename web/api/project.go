@@ -24,8 +24,7 @@ func projectRoutes(app *gin.RouterGroup) {
 }
 
 func projectList(ctx *gin.Context) {
-	var projects []model.Project
-	cnt, err := normalSearch(ctx, database.Master, &projects)
+	projects, cnt, err := normalSearch(ctx, database.Master, &model.Project{})
 	if err != nil {
 		replyError(ctx, err)
 		return

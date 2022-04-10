@@ -17,8 +17,7 @@ func elementRoutes(app *gin.RouterGroup) {
 }
 
 func elementList(ctx *gin.Context) {
-	var elements []model.Element
-	cnt, err := normalSearch(ctx, database.Master, &elements)
+	elements, cnt, err := normalSearch(ctx, database.Master, &model.Element{})
 	if err != nil {
 		replyError(ctx, err)
 		return

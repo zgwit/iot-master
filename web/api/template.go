@@ -17,8 +17,7 @@ func templateRoutes(app *gin.RouterGroup) {
 }
 
 func templateList(ctx *gin.Context) {
-	var templates []model.Template
-	cnt, err := normalSearch(ctx, database.Master, &templates)
+	templates, cnt, err := normalSearch(ctx, database.Master, &model.Template{})
 	if err != nil {
 		replyError(ctx, err)
 		return

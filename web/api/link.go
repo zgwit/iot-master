@@ -22,8 +22,7 @@ func linkRoutes(app *gin.RouterGroup) {
 }
 
 func linkList(ctx *gin.Context) {
-	var links []model.Link
-	cnt, err := normalSearch(ctx, database.Master, &links)
+	links, cnt, err := normalSearch(ctx, database.Master, &model.Link{})
 	if err != nil {
 		replyError(ctx, err)
 		return

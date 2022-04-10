@@ -24,8 +24,7 @@ func tunnelRoutes(app *gin.RouterGroup) {
 }
 
 func tunnelList(ctx *gin.Context) {
-	var tunnels []model.Tunnel
-	cnt, err := normalSearch(ctx, database.Master, &tunnels)
+	tunnels, cnt, err := normalSearch(ctx, database.Master, &model.Tunnel{})
 	if err != nil {
 		replyError(ctx, err)
 		return

@@ -1,11 +1,12 @@
 package api
 
 import (
-	"github.com/zgwit/storm/v3"
-	"github.com/zgwit/storm/v3/q"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/storm/v3"
+	"github.com/zgwit/storm/v3/q"
 	"net/http"
+	"reflect"
 )
 
 type paramFilter struct {
@@ -104,11 +105,11 @@ func nop(ctx *gin.Context) {
 	ctx.String(http.StatusForbidden, "Unsupported")
 }
 
-func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (int, error) {
+func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (interface{}, int, error) {
 	var body paramSearch
 	err := ctx.ShouldBindJSON(&body)
 	if err != nil {
-		return 0, err
+		return nil, 0, err
 	}
 
 	cond := make([]q.Matcher, 0)
@@ -140,8 +141,9 @@ func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (int, erro
 	//查询总数
 	cnt, err := query.Count(to)
 	if err != nil {
-		return cnt, err
+		return nil, 0, err
 	}
+	//cnt := 0
 
 	//分页
 	query = query.Skip(body.Offset).Limit(body.Length)
@@ -158,10 +160,12 @@ func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (int, erro
 	}
 
 	//查询
-	err = query.Find(to)
+	//res := reflect.MakeSlice(reflect.TypeOf(to), 0, body.Length).Interface()
+	res := reflect.New(reflect.SliceOf(reflect.TypeOf(to))).Interface()
+	err = query.Find(res)
 	if err != nil && err != storm.ErrNotFound {
-		return 0, err
+		return nil, cnt, err
 	}
 
-	return cnt, nil
+	return res, cnt, nil
 }
