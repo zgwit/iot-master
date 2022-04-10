@@ -25,8 +25,9 @@ import {ElementEditComponent} from "./element-edit/element-edit.component";
 import {ProjectDetailComponent} from "./project-detail/project-detail.component";
 import {ProjectEditComponent} from "./project-edit/project-edit.component";
 import {TemplateEditComponent} from "./template-edit/template-edit.component";
-import {Container} from "@svgdotjs/svg.js";
 import {ContainerComponent} from "./container/container.component";
+import {TunnelEditComponent} from "./tunnel-edit/tunnel-edit.component";
+import {LinkEditComponent} from "./link-edit/link-edit.component";
 
 const routes: Routes = [
   {
@@ -41,16 +42,19 @@ const routes: Routes = [
       {
         path: 'tunnel', component: ContainerComponent, data: {breadcrumb: "通道"}, children: [
           {path: '', component: TunnelComponent, data: {breadcrumb: "列表"}},
-          {path: ':id', component: TunnelDetailComponent, data: {breadcrumb: "详情"}},
-          //{path: 'tunnel/edit/:id', component: TunnelEditComponent},
-          //{path: 'tunnel/create', component: TunnelEditComponent},
+          //{path: ':id', component: TunnelDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'detail/:id', component: TunnelDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: TunnelEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: TunnelEditComponent, data: {breadcrumb: "创建"}},
         ]
       },
 
       {
         path: 'link', component: ContainerComponent, data: {breadcrumb: "链接"}, children: [
           {path: '', component: LinkComponent, data: {breadcrumb: "链接"}},
-          {path: ':id', component: LinkDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'detail/:id', component: LinkDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: LinkEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: LinkEditComponent, data: {breadcrumb: "创建"}},
         ]
       },
 
@@ -96,10 +100,10 @@ const routes: Routes = [
       },
 
       {
-        path: 'setting', component: ContainerComponent, children: [
-          {path: '', component: SettingComponent},
-          {path: 'user', component: UserComponent},
-          {path: 'password', component: PasswordComponent},
+        path: 'setting', component: ContainerComponent, data: {breadcrumb: "设置"}, children: [
+          {path: '', component: SettingComponent, data: {breadcrumb: "系统"}},
+          {path: 'user', component: UserComponent, data: {breadcrumb: "用户"}},
+          {path: 'password', component: PasswordComponent, data: {breadcrumb: "修改密码"}},
         ]
       },
 

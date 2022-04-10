@@ -1,1 +1,75 @@
-<p>tunnel-edit works!</p>
+<app-editor [(ngModel)]="data" (ngModelChange)="basicForm.patchValue($event)" [submitting]="submitting" (submit)="submit()">
+
+  <nz-collapse [formGroup]="basicForm" (change)="change()">
+    <nz-collapse-panel nzHeader="基本信息" nzActive>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">名称</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="name" required/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">类型</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-select formControlName="type" (ngModelChange)="change()" (change)="change()">
+            <nz-option nzValue="tcp-server" nzLabel="TCP服务器"></nz-option>
+            <nz-option nzValue="tcp-client" nzLabel="TCP客户端"></nz-option>
+            <nz-option nzValue="udp-server" nzLabel="UDP服务器" nzDisabled></nz-option>
+            <nz-option nzValue="udp-client" nzLabel="UDP客户端" nzDisabled></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="basicForm.value.type==='tcp-client'">
+        <nz-form-label [nzSpan]="5">地址</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="address" required/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">端口</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <!--      <input nz-input formControlName="port" type="number" min="1" max="65535"/>-->
+          <nz-input-number formControlName="port" [nzMin]="1" [nzMax]="65535" [nzStep]="1"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">超时(s)</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-input-number formControlName="timeout" [nzMin]="5" [nzMax]="600" [nzStep]="1"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">启用</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-switch formControlName="enable"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+
+    </nz-collapse-panel>
+
+
+    <nz-collapse-panel nzHeader="注册包">
+      <app-tunnel-edit-register formControlName="register"></app-tunnel-edit-register>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="心跳包">
+      <app-tunnel-edit-heartbeat formControlName="heartbeat"></app-tunnel-edit-heartbeat>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="协议适配">
+      <app-tunnel-edit-protocol formControlName="protocol"></app-tunnel-edit-protocol>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="默认设备">
+      <app-tunnel-edit-devices formControlName="devices"></app-tunnel-edit-devices>
+    </nz-collapse-panel>
+
+  </nz-collapse>
+
+
+</app-editor>

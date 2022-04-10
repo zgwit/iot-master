@@ -1,0 +1,34 @@
+<form [formGroup]="formGroup" (change)="change()">
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">启用</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzErrorTip="">
+      <nz-switch formControlName="enable" (ngModelChange)="change()"></nz-switch>
+    </nz-form-control>
+  </nz-form-item>
+
+  <div *ngIf="formGroup.value.enable">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">协议</nz-form-label>
+      <nz-form-control [nzSpan]="12" nzErrorTip="">
+        <nz-select nzAllowClear formControlName="type" (ngModelChange)="change()" (change)="change()">
+
+            <nz-option *ngFor="let p of protocols"
+                       [nzValue]="p.name" [nzLabel]="p.label || p.name"></nz-option>
+
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">协议参数</nz-form-label>
+      <nz-form-control [nzSpan]="12">
+<!--        <app-yaml-editor formControlName="options"></app-yaml-editor>-->
+<!--        <app-config-editor formControlName="options" (ngModelChange)="change()"></app-config-editor>-->
+        <app-input-yaml formControlName="options" (ngModelChange)="change()"></app-input-yaml>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+</form>
+
