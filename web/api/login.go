@@ -1,11 +1,13 @@
 package api
 
 import (
-	"github.com/zgwit/storm/v3"
+	"crypto/md5"
+	"encoding/hex"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3"
 	"net/http"
 )
 
@@ -13,6 +15,13 @@ type loginObj struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Remember bool   `json:"remember"`
+}
+
+func md5hash(text string) string  {
+	h := md5.New()
+	h.Write([]byte(text))
+	sum := h.Sum(nil)
+	return hex.EncodeToString(sum)
 }
 
 func login(ctx *gin.Context) {
@@ -25,12 +34,20 @@ func login(ctx *gin.Context) {
 	}
 
 	var user model.User
-	err := database.Master.Find("username",obj.Username, &user)
-	if err != nil {
-		if err == storm.ErrNotFound {
+	err := database.Master.One("Username",obj.Username, &user)
+	if err == storm.ErrNotFound {
+		//管理员自动创建
+		if obj.Username == "admin" {
+			user.Username = obj.Username
+			user.Nickname = "管理员"
+			err = database.Master.Save(&user)
+		} else {
 			replyFail(ctx, "找不到用户")
 			return
 		}
+
+	}
+	if err != nil {
 		replyError(ctx, err)
 		return
 	}
@@ -46,7 +63,7 @@ func login(ctx *gin.Context) {
 	//初始化密码
 	if err == storm.ErrNotFound {
 		password.ID = user.ID
-		password.Password = "123456" //TODO 加密，可配置，或随机
+		password.Password = md5hash("123456")
 		err = database.Master.Save(&password)
 	}
 	if err != nil {

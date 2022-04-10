@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"encoding/gob"
+	"time"
+)
 
 //User 用户
 type User struct {
@@ -10,6 +13,10 @@ type User struct {
 	Email    string    `json:"email,omitempty"`
 	Disabled bool      `json:"disabled,omitempty"`
 	Created  time.Time `json:"created" storm:"created"`
+}
+
+func init() {
+	gob.Register(User{})
 }
 
 //Password 密码
