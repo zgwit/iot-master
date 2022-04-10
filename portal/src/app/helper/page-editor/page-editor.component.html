@@ -1,0 +1,21 @@
+<nz-tabset class="tabs" [nzTabBarExtraContent]="extraTemplate" [(nzSelectedIndex)]="tabIndex" [nzAnimated]="false">
+  <nz-tab nzTitle="标准视图">
+    <ng-template nz-tab>
+      <ng-content></ng-content>
+    </ng-template>
+  </nz-tab>
+  <nz-tab nzTitle="专家模式">
+    <ng-template nz-tab>
+      <app-config-editor [(ngModel)]="val"></app-config-editor>
+    </ng-template>
+  </nz-tab>
+</nz-tabset>
+<ng-template #extraTemplate>
+  <nz-space>
+    <button *nzSpaceItem nz-button (click)="cancel()" nzShape="round">取消</button>
+    <button *nzSpaceItem nz-button nzType="primary" nzShape="round" [nzLoading]="submitting"
+            (click)="submit.emit($event)">
+      提交
+    </button>
+  </nz-space>
+</ng-template>

@@ -77,6 +77,7 @@ import {EditCalculatorsComponent} from "./edit-calculators/edit-calculators.comp
 import {EditCommandsComponent} from "./edit-commands/edit-commands.component";
 import {EditAggregatorsComponent} from "./edit-aggregators/edit-aggregators.component";
 import {EditStrategiesComponent} from "./edit-strategies/edit-strategies.component";
+import {HelperModule} from "../helper/helper.module";
 
 @NgModule({
   declarations: [
@@ -140,6 +141,7 @@ import {EditStrategiesComponent} from "./edit-strategies/edit-strategies.compone
     NgxEchartsModule.forRoot({echarts: () => import('echarts')}),
 
     NgxAmapModule.forRoot({apiKey: 'e4c1bd11fe1b25d77dae4cf3993f7034', debug: true}),
+    HelperModule,
   ],
   bootstrap: [AdminComponent],
   providers: []

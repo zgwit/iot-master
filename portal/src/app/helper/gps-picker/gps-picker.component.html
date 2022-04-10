@@ -1,0 +1,21 @@
+
+<div class="container">
+  <!--crs=EPSG3857， -->
+  <ngx-amap class="gps-picker" #map (naMoveEnd)="mapMove()" [center]="center"
+            mapStyle="amap://styles/a761542898e90d2d6071353e148af475">
+    <amap-tool-bar></amap-tool-bar>
+  </ngx-amap>
+
+  <!-- 中心点 -->
+  <div class="center">+</div>
+
+<!--  <input nz-input placeholder="请输入地址关键字..." autocomplete="off"-->
+<!--         amapAutocomplete-->
+<!--         [city]="myCity"-->
+<!--         [citylimit]="!!myCity"-->
+<!--         (naReady)="onEvent($event, 'naReady')"-->
+<!--         (naComplete)="onEvent($event, 'naComplete')"-->
+<!--         (naChoose)="onEvent($event, 'naChoose')"-->
+<!--         (naSelect)="onEvent($event, 'naSelect')"/>-->
+
+</div>
