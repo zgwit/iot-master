@@ -15,8 +15,9 @@
           <nz-select formControlName="type" (ngModelChange)="change()" (change)="change()">
             <nz-option nzValue="tcp-server" nzLabel="TCP服务器"></nz-option>
             <nz-option nzValue="tcp-client" nzLabel="TCP客户端"></nz-option>
-            <nz-option nzValue="udp-server" nzLabel="UDP服务器" nzDisabled></nz-option>
-            <nz-option nzValue="udp-client" nzLabel="UDP客户端" nzDisabled></nz-option>
+            <nz-option nzValue="udp-server" nzLabel="UDP服务器"></nz-option>
+            <nz-option nzValue="udp-client" nzLabel="UDP客户端"></nz-option>
+            <nz-option nzValue="serial" nzLabel="串口"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
@@ -53,19 +54,19 @@
     </nz-collapse-panel>
 
 
-    <nz-collapse-panel nzHeader="注册包">
+    <nz-collapse-panel nzHeader="注册包" nzActive>
       <app-tunnel-edit-register formControlName="register"></app-tunnel-edit-register>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="心跳包">
+    <nz-collapse-panel nzHeader="心跳包" nzActive>
       <app-tunnel-edit-heartbeat formControlName="heartbeat"></app-tunnel-edit-heartbeat>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="协议适配">
+    <nz-collapse-panel nzHeader="协议适配" nzActive>
       <app-tunnel-edit-protocol formControlName="protocol"></app-tunnel-edit-protocol>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="默认设备">
+    <nz-collapse-panel nzHeader="默认设备" nzActive>
       <app-tunnel-edit-devices formControlName="devices"></app-tunnel-edit-devices>
     </nz-collapse-panel>
 
