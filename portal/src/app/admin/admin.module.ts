@@ -79,10 +79,12 @@ import {EditAggregatorsComponent} from "./edit-aggregators/edit-aggregators.comp
 import {EditStrategiesComponent} from "./edit-strategies/edit-strategies.component";
 import {HelperModule} from "../helper/helper.module";
 import {NzBreadCrumbModule} from "ng-zorro-antd/breadcrumb";
+import {ContainerComponent} from "./container/container.component";
 
 @NgModule({
   declarations: [
     AdminComponent,
+    ContainerComponent,
     WelcomeComponent,
     UnknownComponent,
     DashComponent,
