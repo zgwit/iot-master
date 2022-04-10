@@ -58,6 +58,18 @@ import {ProtocolComponent} from "./protocol/protocol.component";
 import {SettingComponent} from "./setting/setting.component";
 import {UserComponent} from "./user/user.component";
 import {PasswordComponent} from "./password/password.component";
+import {TunnelDetailComponent} from "./tunnel-detail/tunnel-detail.component";
+import {TunnelEditComponent} from "./tunnel-edit/tunnel-edit.component";
+import {LinkDetailComponent} from "./link-detail/link-detail.component";
+import {LinkEditComponent} from "./link-edit/link-edit.component";
+import {DeviceDetailComponent} from "./device-detail/device-detail.component";
+import {DeviceEditComponent} from "./device-edit/device-edit.component";
+import {ElementDetailComponent} from "./element-detail/element-detail.component";
+import {ElementEditComponent} from "./element-edit/element-edit.component";
+import {ProjectDetailComponent} from "./project-detail/project-detail.component";
+import {ProjectEditComponent} from "./project-edit/project-edit.component";
+import {TemplateDetailComponent} from "./template-detail/template-detail.component";
+import {TemplateEditComponent} from "./template-edit/template-edit.component";
 
 @NgModule({
   declarations: [
@@ -66,12 +78,12 @@ import {PasswordComponent} from "./password/password.component";
     UnknownComponent,
     DashComponent,
     HomeComponent,
-    TunnelComponent,
-    LinkComponent,
-    DeviceComponent,
-    ElementComponent,
-    ProjectComponent,
-    TemplateComponent,
+    TunnelComponent, TunnelDetailComponent, TunnelEditComponent,
+    LinkComponent, LinkDetailComponent, LinkEditComponent,
+    DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
+    ElementComponent, ElementDetailComponent, ElementEditComponent,
+    ProjectComponent, ProjectDetailComponent, ProjectEditComponent,
+    TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     PluginComponent,
     ProtocolComponent,
     SettingComponent,
