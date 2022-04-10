@@ -39,36 +39,70 @@ const routes: Routes = [
       {path: 'home', component: HomeComponent, data: {breadcrumb: "首页"}},
 
       {
-        path: 'tunnel', component: ContainerComponent, data: {breadcrumb: "通道"},
-        children: [
+        path: 'tunnel', component: ContainerComponent, data: {breadcrumb: "通道"}, children: [
           {path: '', component: TunnelComponent, data: {breadcrumb: "列表"}},
           {path: ':id', component: TunnelDetailComponent, data: {breadcrumb: "详情"}},
+          //{path: 'tunnel/edit/:id', component: TunnelEditComponent},
+          //{path: 'tunnel/create', component: TunnelEditComponent},
         ]
       },
 
-      //{path: 'tunnel/edit/:id', component: TunnelEditComponent},
-      //{path: 'tunnel/create', component: TunnelEditComponent},
-      {path: 'link', component: LinkComponent, data: {breadcrumb: "链接"}},
-      {path: 'link/:id', component: LinkDetailComponent, data: {breadcrumb: "详情"}},
-      {path: 'device', component: DeviceComponent, data: {breadcrumb: "设备"}},
-      {path: 'device/detail/:id', component: DeviceDetailComponent, data: {breadcrumb: "详情"}},
-      {path: 'device/edit/:id', component: DeviceEditComponent, data: {breadcrumb: "编辑"}},
-      {path: 'device/create', component: DeviceEditComponent, data: {breadcrumb: "创建"}},
-      {path: 'element', component: ElementComponent},
-      {path: 'element/edit/:id', component: ElementEditComponent},
-      {path: 'element/create', component: ElementEditComponent},
-      {path: 'project', component: ProjectComponent},
-      {path: 'project/detail/:id', component: ProjectDetailComponent},
-      {path: 'project/edit/:id', component: ProjectEditComponent},
-      {path: 'project/create', component: ProjectEditComponent},
-      {path: 'template', component: TemplateComponent},
-      {path: 'template/edit/:id', component: TemplateEditComponent},
-      {path: 'template/create', component: TemplateEditComponent},
-      {path: 'plugin', component: PluginComponent},
-      {path: 'protocol', component: ProtocolComponent},
-      {path: 'setting', component: SettingComponent},
-      {path: 'user', component: UserComponent},
-      {path: 'password', component: PasswordComponent},
+      {
+        path: 'link', component: ContainerComponent, data: {breadcrumb: "链接"}, children: [
+          {path: '', component: LinkComponent, data: {breadcrumb: "链接"}},
+          {path: ':id', component: LinkDetailComponent, data: {breadcrumb: "详情"}},
+        ]
+      },
+
+      {
+        path: 'device', component: ContainerComponent, data: {breadcrumb: "设备"}, children: [
+          {path: '', component: DeviceComponent, data: {breadcrumb: "设备"}},
+          {path: 'detail/:id', component: DeviceDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: DeviceEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: DeviceEditComponent, data: {breadcrumb: "创建"}},
+        ]
+      },
+
+      {
+        path: 'element', component: ContainerComponent, data: {breadcrumb: "元件"}, children: [
+          {path: '', component: ElementComponent, data: {breadcrumb: "元件"}},
+          {path: 'edit/:id', component: ElementEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: ElementEditComponent, data: {breadcrumb: "创建"}},
+        ]
+      },
+
+      {
+        path: 'project', component: ContainerComponent, data: {breadcrumb: "项目"}, children: [
+          {path: '', component: ProjectComponent, data: {breadcrumb: "项目"}},
+          {path: 'detail/:id', component: ProjectDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: ProjectEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: ProjectEditComponent, data: {breadcrumb: "创建"}},
+        ]
+      },
+
+      {
+        path: 'template', component: ContainerComponent, data: {breadcrumb: "模板"}, children: [
+          {path: '', component: TemplateComponent, data: {breadcrumb: "模板"}},
+          {path: 'edit/:id', component: TemplateEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: TemplateEditComponent, data: {breadcrumb: "创建"}},
+        ]
+      },
+
+      {
+        path: 'extension', component: ContainerComponent, data: {breadcrumb: "扩展"}, children: [
+          {path: 'plugin', component: PluginComponent, data: {breadcrumb: "插件"}},
+          {path: 'protocol', component: ProtocolComponent, data: {breadcrumb: "协议"}},
+        ]
+      },
+
+      {
+        path: 'setting', component: ContainerComponent, children: [
+          {path: '', component: SettingComponent},
+          {path: 'user', component: UserComponent},
+          {path: 'password', component: PasswordComponent},
+        ]
+      },
+
       {
         path: 'logout',
         canActivate: [LogoutGuard],

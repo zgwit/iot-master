@@ -6,7 +6,7 @@ export let SideMenu = [
     router: 'home',
   },
   {
-    title: '连接管理',
+    title: '连接',
     icon: 'block',
     children: [
       {
@@ -14,13 +14,13 @@ export let SideMenu = [
         router: 'tunnel'
       },
       {
-        title: '链路',
+        title: '链接',
         router: 'link'
       },
     ]
   },
   {
-    title: '设备管理',
+    title: '设备',
     icon: 'appstore',
     children: [
       {
@@ -34,7 +34,7 @@ export let SideMenu = [
     ]
   },
   {
-    title: '项目管理',
+    title: '项目',
     icon: 'cluster', //project
     children: [
       {
@@ -48,17 +48,17 @@ export let SideMenu = [
     ]
   },
   {
-    title: '系统扩展',
+    title: '扩展',
     icon: 'appstore-add',
     open: false,
     children: [
       {
         title: '插件',
-        router: 'plugin'
+        router: 'extension/plugin'
       },
       {
         title: '协议',
-        router: 'protocol'
+        router: 'extension/protocol'
       },
       // {
       //   title: '接口',
@@ -77,11 +77,11 @@ export let SideMenu = [
       },
       {
         title: '用户管理',
-        router: 'user'
+        router: 'setting/user'
       },
       {
         title: '修改密码',
-        router: 'password'
+        router: 'setting/password'
       },
     ]
   },
