@@ -9,24 +9,12 @@ import (
 	"reflect"
 )
 
-type paramFilter struct {
-	Key    string        `form:"key"`
-	Values []interface{} `form:"value"`
-}
-
-type paramKeyword struct {
-	Key   string `form:"key"`
-	Value string `json:"value"`
-}
-
-type paramSearch struct {
-	Offset    int            `form:"offset"`
-	Length    int            `form:"length"`
-	SortKey   string         `form:"sortKey"`
-	SortOrder string         `form:"sortOrder"`
-	Filters   []paramFilter  `form:"filters"`
-	Keywords  []paramKeyword `json:"keywords"`
-	//Keyword   string        `form:"keyword"`
+type paramSearchEx struct {
+	Skip     int                      `form:"skip"`
+	Limit    int                      `form:"limit"`
+	Sort     map[string]int           `form:"sort"`
+	Filters  map[string][]interface{} `form:"filter"`
+	Keywords map[string]string        `json:"keyword"`
 }
 
 type paramID struct {
@@ -106,7 +94,7 @@ func nop(ctx *gin.Context) {
 }
 
 func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (interface{}, int, error) {
-	var body paramSearch
+	var body paramSearchEx
 	err := ctx.ShouldBindJSON(&body)
 	if err != nil {
 		return nil, 0, err
@@ -115,21 +103,21 @@ func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (interface
 	cond := make([]q.Matcher, 0)
 
 	//过滤
-	for _, filter := range body.Filters {
-		if len(filter.Values) > 0 {
-			if len(filter.Values) == 1 {
-				cond = append(cond, q.Eq(filter.Key, filter.Values[0]))
+	for k, v := range body.Filters {
+		if len(v) > 0 {
+			if len(v) == 1 {
+				cond = append(cond, q.Eq(k, v[0]))
 			} else {
-				cond = append(cond, q.In(filter.Key, filter.Values))
+				cond = append(cond, q.In(k, v))
 			}
 		}
 	}
 
 	//关键字搜索
 	kws := make([]q.Matcher, 0)
-	for _, keyword := range body.Keywords {
-		if keyword.Value != "" {
-			kws = append(kws, q.Re(keyword.Key, keyword.Value))
+	for k, v := range body.Keywords {
+		if v != "" {
+			kws = append(kws, q.Re(k, v))
 		}
 	}
 	if len(kws) > 0 {
@@ -146,14 +134,16 @@ func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (interface
 	//cnt := 0
 
 	//分页
-	query = query.Skip(body.Offset).Limit(body.Length)
+	query = query.Skip(body.Skip).Limit(body.Limit)
 
 	//排序
-	if body.SortKey != "" {
-		if body.SortOrder == "desc" {
-			query = query.OrderBy(body.SortKey).Reverse()
-		} else {
-			query = query.OrderBy(body.SortKey)
+	if len(body.Sort) > 0 {
+		for k, v := range body.Sort {
+			if v > 0 {
+				query = query.OrderBy(k)
+			} else {
+				query = query.OrderBy(k).Reverse()
+			}
 		}
 	} else {
 		query = query.OrderBy("ID").Reverse()
