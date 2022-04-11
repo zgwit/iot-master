@@ -13,13 +13,13 @@
   >
     <thead>
     <tr>
-      <th nzColumnKey="name" [nzSortFn]="true">名称</th>
-      <th nzColumnKey="type" [nzFilters]="filterGender" [nzFilterFn]="true">类型</th>
-      <th nzColumnKey="address" [nzSortFn]="true">地址</th>
-      <th nzColumnKey="port" [nzSortFn]="true">端口</th>
-      <th nzColumnKey="id" [nzSortFn]="true">创建时间</th>
+      <th nzColumnKey="Name" [nzSortFn]="true">名称</th>
+      <th nzColumnKey="Type" [nzFilters]="filterGender" [nzFilterFn]="true">类型</th>
+      <th nzColumnKey="Address" [nzSortFn]="true">地址</th>
+      <th nzColumnKey="Port" [nzSortFn]="true">端口</th>
+      <th nzColumnKey="ID" [nzSortFn]="true">创建时间</th>
       <th>状态</th>
-      <th nzColumnKey="enable" [nzSortFn]="true">启用</th>
+      <th nzColumnKey="Disabled" [nzSortFn]="true">启用</th>
       <th nzWidth="100">操作</th>
     </tr>
     </thead>
@@ -29,7 +29,7 @@
       <td>{{ data.type }}</td>
       <td>{{ data.address }}</td>
       <td>{{ data.port }}</td>
-      <td>{{data.created }}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow }}</td>
       <td>
         <span *ngIf="data.online">
           {{data.closed?'关闭':'启动'}} {{data.error}}

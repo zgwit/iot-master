@@ -29,6 +29,7 @@ import {YamlPipe} from './yaml.pipe';
 import {GpsPickerComponent} from './gps-picker/gps-picker.component';
 import {InputGpsComponent} from './input-gps/input-gps.component';
 import {NgxAmapModule} from "ngx-amap";
+import { FromNowPipe } from './from-now.pipe';
 
 
 @NgModule({
@@ -50,25 +51,27 @@ import {NgxAmapModule} from "ngx-amap";
     YamlPipe,
     GpsPickerComponent,
     InputGpsComponent,
+    FromNowPipe,
   ],
-  exports: [
-    PageEditorComponent,
-    JsEditorComponent,
-    YamlEditorComponent,
-    JsonEditorComponent,
-    ConfigEditorComponent,
-    PageListComponent,
-    ToolbarComponent,
-    DateStringPipe,
-    MinuteToDatePipe,
-    MinuteTimePickerComponent,
-    InputScriptComponent,
-    ViewConfigDirective,
-    InputYamlComponent,
-    YamlPipe,
-    GpsPickerComponent,
-    InputGpsComponent,
-  ],
+    exports: [
+        PageEditorComponent,
+        JsEditorComponent,
+        YamlEditorComponent,
+        JsonEditorComponent,
+        ConfigEditorComponent,
+        PageListComponent,
+        ToolbarComponent,
+        DateStringPipe,
+        MinuteToDatePipe,
+        MinuteTimePickerComponent,
+        InputScriptComponent,
+        ViewConfigDirective,
+        InputYamlComponent,
+        YamlPipe,
+        GpsPickerComponent,
+        InputGpsComponent,
+        FromNowPipe,
+    ],
   imports: [
     CommonModule,
     FormsModule,
