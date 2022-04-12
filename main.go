@@ -110,18 +110,18 @@ func originMain() {
 		log.Fatal(err)
 	}
 
-	err = log.Open(config.Config.Log)
+	err = log.Open(&config.Config.Log)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = database.Open(config.Config.Database)
+	err = database.Open(&config.Config.Database)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer database.Close()
 
-	err = tsdb.Open(config.Config.History)
+	err = tsdb.Open(&config.Config.History)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -138,7 +138,7 @@ func originMain() {
 	mqtt.NewBroker()
 
 	//判断是否开启Web
-	web.Serve(config.Config.Web)
+	web.Serve(&config.Config.Web)
 }
 
 func shutdown() error {

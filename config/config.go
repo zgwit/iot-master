@@ -12,14 +12,22 @@ import (
 
 //Configure 配置
 type Configure struct {
-	Web      *web.Options      `yaml:"web,omitempty"`
-	Database *database.Options `yaml:"database,omitempty"`
-	History  *tsdb.Options     `yaml:"history,omitempty"`
-	Log      *log.Options      `yaml:"log,omitempty"`
+	Web      web.Options      `yaml:"web"`
+	Database database.Options `yaml:"database"`
+	History  tsdb.Options     `yaml:"history"`
+	Log      log.Options      `yaml:"log"`
 }
 
 //Config 全局配置
 var Config Configure
+
+func init() {
+	Config.Web = *web.DefaultOptions()
+	Config.Database = *database.DefaultOptions()
+	Config.History = *tsdb.DefaultOptions()
+	Config.Log = *log.DefaultOptions()
+
+}
 
 //Load 加载
 func Load() error {
