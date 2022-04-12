@@ -16,30 +16,30 @@ var History *storm.DB
 var Error *storm.DB
 
 //Open 打开数据库
-func Open(cfg *Options) error {
-	if cfg == nil {
-		cfg = DefaultOptions()
+func Open(opts *Options) error {
+	if opts == nil {
+		opts = DefaultOptions()
 	}
 
-	err := os.MkdirAll(cfg.Path, os.ModePerm)
+	err := os.MkdirAll(opts.Path, os.ModePerm)
 	if err != nil {
 		return err
 	}
 
 	//基础数据
-	Master, err = storm.Open(filepath.Join(cfg.Path, "master.db"))
+	Master, err = storm.Open(filepath.Join(opts.Path, "master.db"))
 	if err != nil {
 		return err
 	}
 
 	//历史数据
-	History, err = storm.Open(filepath.Join(cfg.Path, "history.db"))
+	History, err = storm.Open(filepath.Join(opts.Path, "history.db"))
 	if err != nil {
 		return err
 	}
 
 	//错误日志
-	Error, err = storm.Open(filepath.Join(cfg.Path, "error.db"))
+	Error, err = storm.Open(filepath.Join(opts.Path, "error.db"))
 	if err != nil {
 		return err
 	}

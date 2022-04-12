@@ -6,20 +6,13 @@ import (
 	"os"
 )
 
-//Options 参数
-type Options struct {
-	Development bool   `yaml:"development"`
-	Format      string `yaml:"format,omitempty"`
-	Level       string `yaml:"level"`
-	Output      struct {
-		Filename   string `yaml:"filename"`
-		MaxSize    int    `yaml:"max_size"`
-		MaxAge     int    `yaml:"max_age"`
-		MaxBackups int    `yaml:"max_backups"`
-	} `yaml:"output"`
-}
 
-func Init(opts Options) {
+
+func Open(opts *Options) error {
+	if opts == nil {
+		opts = DefaultOptions()
+	}
+
 	if opts.Development {
 		logrus.SetFormatter(&logrus.TextFormatter{TimestampFormat: opts.Format})
 	} else {
@@ -41,8 +34,12 @@ func Init(opts Options) {
 	}
 
 	// Only log the warning severity or above.
-	level, _ := logrus.ParseLevel(opts.Level)
+	level, err := logrus.ParseLevel(opts.Level)
+	if err != nil {
+		return err
+	}
 	logrus.SetLevel(level)
+	return nil
 }
 
 type Fields = logrus.Fields

@@ -3,6 +3,7 @@ package master
 import (
 	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/protocols"
@@ -40,8 +41,7 @@ func LoadTunnels() error {
 
 		tnl, err := connect.NewTunnel(tunnel)
 		if err != nil {
-			//return err
-			//TODO log
+			log.Error(err)
 			continue
 		}
 		allTunnels.Store(tunnel.ID, &Tunnel{
@@ -51,7 +51,8 @@ func LoadTunnels() error {
 
 		err = tnl.Open()
 		if err != nil {
-			//TODO log
+			log.Error(err)
+			//return
 		}
 
 		tnl.On("link", func(link connect.Link) {
@@ -66,7 +67,7 @@ func LoadTunnels() error {
 			if tunnel.Protocol != nil {
 				adapter, err = protocols.Create(link, tunnel.Protocol.Name, tunnel.Protocol.Options)
 				if err != nil {
-					//TODO log
+					log.Error(err)
 					return
 				}
 			}
@@ -84,7 +85,7 @@ func LoadTunnels() error {
 				if dev != nil {
 					err := dev.initMapper()
 					if err != nil {
-						//TODO log
+						log.Error(err)
 						//return
 					}
 				}

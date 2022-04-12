@@ -290,7 +290,6 @@ func (h *Broker) handlePublish(pkt *Publish, client *Client) {
 	}
 
 	if err := ValidTopic(pkt.Topic()); err != nil {
-		//TODO log
 		log.Println("Topic invalid ", err)
 		return
 	}
@@ -376,8 +375,7 @@ func (h *Broker) handleUnSubscribe(pkt *UnSubscribe, client *Client) {
 	for _, t := range pkt.Topics() {
 		//log.Print("UnSubscribe ", string(t))
 		if err := ValidSubscribe(t); err != nil {
-			//TODO log
-			log.Println(err)
+			log.Error(err)
 		} else {
 			h.subTree.UnSubscribe(t, client.clientId)
 		}

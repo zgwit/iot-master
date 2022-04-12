@@ -1,10 +1,11 @@
 package master
 
 import (
-	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3"
 	"sync"
 )
 
@@ -68,7 +69,7 @@ func LoadDevices() error {
 
 		err = dev.Start()
 		if err != nil {
-			//TODO log
+			log.Error(err)
 		}
 	}
 	return nil
@@ -147,17 +148,17 @@ func LoadProjects() error {
 
 		prj, err := NewProject(p)
 		if err != nil {
-			//TODO log
+			log.Error(err)
 			continue
 		}
 		err = prj.initHandler()
 		if err != nil {
-			//TODO log
+			log.Error(err)
 			continue
 		}
 		err = prj.Start()
 		if err != nil {
-			//TODO log
+			log.Error(err)
 		}
 	}
 	return nil

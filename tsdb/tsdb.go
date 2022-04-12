@@ -10,37 +10,37 @@ import (
 var Storage tstorage.Storage
 
 //Open 打开
-func Open(cfg *Options) error {
-	if cfg == nil {
-		cfg = DefaultOptions()
+func Open(opts *Options) error {
+	if opts == nil {
+		opts = DefaultOptions()
 	}
 
-	opts := make([]tstorage.Option, 0)
+	options := make([]tstorage.Option, 0)
 
-	if cfg.DataPath != "" {
-		opts = append(opts, tstorage.WithDataPath(cfg.DataPath))
+	if opts.DataPath != "" {
+		options = append(options, tstorage.WithDataPath(opts.DataPath))
 	}
-	if cfg.TimestampPrecision != "" {
-		opts = append(opts, tstorage.WithTimestampPrecision(tstorage.TimestampPrecision(cfg.TimestampPrecision)))
+	if opts.TimestampPrecision != "" {
+		options = append(options, tstorage.WithTimestampPrecision(tstorage.TimestampPrecision(opts.TimestampPrecision)))
 	}
-	if cfg.RetentionDuration > 0 {
-		opts = append(opts, tstorage.WithRetention(cfg.RetentionDuration*time.Second))
+	if opts.RetentionDuration > 0 {
+		options = append(options, tstorage.WithRetention(opts.RetentionDuration*time.Second))
 	}
-	if cfg.PartitionDuration > 0 {
-		opts = append(opts, tstorage.WithPartitionDuration(cfg.PartitionDuration*time.Second))
+	if opts.PartitionDuration > 0 {
+		options = append(options, tstorage.WithPartitionDuration(opts.PartitionDuration*time.Second))
 	}
-	if cfg.WriteTimeout > 0 {
-		opts = append(opts, tstorage.WithPartitionDuration(cfg.WriteTimeout*time.Second))
+	if opts.WriteTimeout > 0 {
+		options = append(options, tstorage.WithPartitionDuration(opts.WriteTimeout*time.Second))
 	}
-	if cfg.BufferedSize > 0 {
-		opts = append(opts, tstorage.WithWALBufferedSize(cfg.BufferedSize))
+	if opts.BufferedSize > 0 {
+		options = append(options, tstorage.WithWALBufferedSize(opts.BufferedSize))
 	}
-	if cfg.Log {
-		//opts = append(opts, tstorage.WithLogger(nil))
+	if opts.Log {
+		//options = append(options, tstorage.WithLogger(nil))
 	}
 
 	var err error
-	Storage, err = tstorage.NewStorage(opts...)
+	Storage, err = tstorage.NewStorage(options...)
 
 	return err
 }

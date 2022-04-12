@@ -3,10 +3,10 @@ package config
 import (
 	"github.com/zgwit/iot-master/args"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/tsdb"
 	"github.com/zgwit/iot-master/web"
 	"gopkg.in/yaml.v3"
-	"log"
 	"os"
 )
 
@@ -15,6 +15,7 @@ type Configure struct {
 	Web      *web.Options      `yaml:"web,omitempty"`
 	Database *database.Options `yaml:"database,omitempty"`
 	History  *tsdb.Options     `yaml:"history,omitempty"`
+	Log      *log.Options      `yaml:"log,omitempty"`
 }
 
 //Config 全局配置

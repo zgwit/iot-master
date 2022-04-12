@@ -1,16 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"github.com/kardianos/service"
 	"github.com/zgwit/iot-master/args"
 	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/mqtt"
 	"github.com/zgwit/iot-master/tsdb"
 	"github.com/zgwit/iot-master/web"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -42,22 +41,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if args.Install {
-		err = s.Install()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println("安装成功")
-		return
-	}
-
 	if args.Uninstall {
 		err = s.Uninstall()
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("卸载成功")
+		log.Println("卸载服务成功")
 		return
+	}
+
+	if args.Install {
+		err = s.Install()
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println("安装服务成功")
+		//return
 	}
 
 	err = s.Run()
@@ -70,13 +69,13 @@ func main() {
 type Program struct{}
 
 func (p *Program) Start(s service.Service) error {
-	log.Println("===开始服务===")
+	//log.Println("===开始服务===")
 	go p.run()
 	return nil
 }
 
 func (p *Program) Stop(s service.Service) error {
-	log.Println("===停止服务===")
+	//log.Println("===停止服务===")
 	_ = shutdown()
 	return nil
 }
@@ -107,6 +106,11 @@ func (p *Program) run() {
 
 func originMain() {
 	err := config.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = log.Open(config.Config.Log)
 	if err != nil {
 		log.Fatal(err)
 	}
