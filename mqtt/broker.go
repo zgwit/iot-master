@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"github.com/google/uuid"
 	"github.com/zgwit/iot-master/events"
-	"log"
+	"github.com/zgwit/iot-master/log"
 	"net"
 	"sync"
 	"time"

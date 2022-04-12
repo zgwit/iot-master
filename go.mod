@@ -14,10 +14,12 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/zgwit/storm/v3 v3.3.2
 	golang.org/x/net v0.0.0-20191105084925-a882066a44e0
+	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 
 require (
+	github.com/BurntSushi/toml v1.1.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect

@@ -2,7 +2,7 @@ package mqtt
 
 import (
 	"encoding/binary"
-	"log"
+	"github.com/zgwit/iot-master/log"
 )
 
 type Parser struct {
