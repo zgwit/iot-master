@@ -2,11 +2,11 @@ package connect
 
 import (
 	"errors"
-	"github.com/zgwit/storm/v3"
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3"
 	"time"
 )
 
@@ -45,12 +45,9 @@ func (s *Serial) Open() error {
 
 	s.link = newSerialLink(port)
 	go s.link.receive()
-	
+
 	//Store link
-	lnk := model.Link{
-		TunnelID: s.tunnel.ID,
-		Protocol: s.tunnel.Protocol,
-	}
+	lnk := model.Link{TunnelID: s.tunnel.ID}
 	err = database.Master.One("TunnelID", s.tunnel.ID, &lnk)
 	if err == storm.ErrNotFound {
 		//保存一条新记录
@@ -61,7 +58,7 @@ func (s *Serial) Open() error {
 		//上线
 	}
 	s.link.id = lnk.ID
-	
+
 	s.Emit("link", s.link)
 
 	//断线后，要重连

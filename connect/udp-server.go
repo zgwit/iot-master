@@ -64,10 +64,7 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			lnk := model.Link{
-				TunnelID: server.tunnel.ID,
-				Protocol: server.tunnel.Protocol,
-			}
+			lnk := model.Link{TunnelID: server.tunnel.ID}
 
 			if server.tunnel.Register == nil {
 				//先结束其他链接

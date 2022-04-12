@@ -50,10 +50,7 @@ func (server *TcpServer) Open() error {
 				break
 			}
 
-			lnk := model.Link{
-				TunnelID: server.tunnel.ID,
-				Protocol: server.tunnel.Protocol,
-			}
+			lnk := model.Link{TunnelID: server.tunnel.ID}
 
 			if server.tunnel.Register == nil {
 				//先结束历史链接

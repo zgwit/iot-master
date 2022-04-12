@@ -2,10 +2,10 @@ package connect
 
 import (
 	"errors"
-	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3"
 	"net"
 	"time"
 )
@@ -39,10 +39,7 @@ func (client *NetClient) Open() error {
 	go client.link.receive()
 
 	//Store link
-	lnk := model.Link{
-		TunnelID: client.tunnel.ID,
-		Protocol: client.tunnel.Protocol,
-	}
+	lnk := model.Link{TunnelID: client.tunnel.ID}
 	err = database.Master.One("TunnelID", client.tunnel.ID, &lnk)
 	if err == storm.ErrNotFound {
 		//保存一条新记录

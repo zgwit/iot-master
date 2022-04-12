@@ -1,12 +1,12 @@
 package master
 
 import (
-	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/protocols"
+	"github.com/zgwit/storm/v3"
 	"sync"
 )
 
@@ -33,19 +33,19 @@ func LoadTunnels() error {
 	} else if err != nil {
 		return err
 	}
-	for _, d := range tunnels {
-		if d.Disabled {
+	for _, tunnel := range tunnels {
+		if tunnel.Disabled {
 			continue
 		}
 
-		tnl, err := connect.NewTunnel(d)
+		tnl, err := connect.NewTunnel(tunnel)
 		if err != nil {
 			//return err
 			//TODO log
 			continue
 		}
-		allTunnels.Store(d.ID, &Tunnel{
-			Tunnel:   *d,
+		allTunnels.Store(tunnel.ID, &Tunnel{
+			Tunnel:   *tunnel,
 			Instance: tnl,
 		})
 
@@ -63,8 +63,8 @@ func LoadTunnels() error {
 
 			//加载协议
 			var adapter protocol.Adapter
-			if lnk.Protocol != nil {
-				adapter, err = protocols.Create(link, lnk.Protocol.Name, lnk.Protocol.Options)
+			if tunnel.Protocol != nil {
+				adapter, err = protocols.Create(link, tunnel.Protocol.Name, tunnel.Protocol.Options)
 				if err != nil {
 					//TODO log
 					return
