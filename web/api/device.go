@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 	"golang.org/x/net/websocket"
@@ -46,9 +47,17 @@ func deviceCreate(ctx *gin.Context) {
 		return
 	}
 
-	//TODO 启动
-
 	replyOk(ctx, device)
+
+	//启动
+	//deviceStart(ctx)
+	go func() {
+		_, err := master.LoadDevice(device.ID)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func deviceUpdate(ctx *gin.Context) {
@@ -73,9 +82,25 @@ func deviceUpdate(ctx *gin.Context) {
 		return
 	}
 
-	//TODO 重新启动
-
 	replyOk(ctx, device)
+
+	//重新启动
+	go func() {
+		dev := master.GetDevice(ctx.GetInt("id"))
+		if dev == nil {
+			return
+		}
+		err = dev.Stop()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+		err = dev.Start()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func deviceDelete(ctx *gin.Context) {
@@ -92,9 +117,20 @@ func deviceDelete(ctx *gin.Context) {
 		return
 	}
 
-	//TODO 重新启动
-
 	replyOk(ctx, device)
+
+	//关闭
+	go func() {
+		device := master.GetDevice(ctx.GetInt("id"))
+		if device == nil {
+			return
+		}
+		err := device.Stop()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func deviceStart(ctx *gin.Context) {
@@ -134,8 +170,20 @@ func deviceEnable(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	//TODO 启动
 	replyOk(ctx, nil)
+
+	//启动
+	go func() {
+		device := master.GetDevice(ctx.GetInt("id"))
+		if device == nil {
+			return
+		}
+		err := device.Start()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func deviceDisable(ctx *gin.Context) {
@@ -144,8 +192,20 @@ func deviceDisable(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	//TODO 关闭
 	replyOk(ctx, nil)
+
+	//关闭
+	go func() {
+		device := master.GetDevice(ctx.GetInt("id"))
+		if device == nil {
+			return
+		}
+		err := device.Stop()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func deviceWatch(ctx *gin.Context) {

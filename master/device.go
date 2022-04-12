@@ -29,6 +29,10 @@ type Device struct {
 	mapper *Mapper
 }
 
+func (dev *Device) Error() string {
+	panic("implement me")
+}
+
 func NewDevice(m *model.Device) (*Device, error) {
 	dev := &Device{
 		Device:       *m,
