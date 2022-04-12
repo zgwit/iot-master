@@ -14,12 +14,12 @@
     <thead>
     <tr>
       <th nzColumnKey="Name" [nzSortFn]="true">名称</th>
-      <th nzColumnKey="Type" [nzFilters]="filterGender" [nzFilterFn]="true">类型</th>
+      <th nzColumnKey="Type" [nzFilters]="filterType" [nzFilterFn]="true">类型</th>
       <th nzColumnKey="Address" [nzSortFn]="true">地址</th>
       <th nzColumnKey="Port" [nzSortFn]="true">端口</th>
       <th nzColumnKey="ID" [nzSortFn]="true">创建时间</th>
       <th>状态</th>
-      <th nzColumnKey="Disabled" [nzSortFn]="true">启用</th>
+      <th nzColumnKey="Disabled" [nzSortFn]="true">禁用</th>
       <th nzWidth="100">操作</th>
     </tr>
     </thead>
@@ -37,7 +37,7 @@
         <span *ngIf="!data.online">离线</span>
       </td>
       <td>
-        <nz-switch [(ngModel)]="data.enable" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
+        <nz-switch [ngModel]="data.disabled" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
       </td>
       <td>
         <a [routerLink]="'/admin/tunnel/detail/'+data.id">详情</a>

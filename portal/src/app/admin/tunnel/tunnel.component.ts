@@ -17,9 +17,12 @@ export class TunnelComponent implements OnInit {
   total = 1;
   pageSize = 20;
   pageIndex = 1;
-  filterGender = [
+  filterType = [
     {text: 'TCP服务器', value: 'tcp-server'},
-    {text: 'TCP客户端', value: 'tcp-client'}
+    {text: 'TCP客户端', value: 'tcp-client'},
+    {text: 'UDP服务器', value: 'udp-server'},
+    {text: 'UDP客户端', value: 'udp-client'},
+    {text: '串口', value: 'serial'},
   ];
 
   params: any = {filter: {}};
@@ -67,14 +70,14 @@ export class TunnelComponent implements OnInit {
   }
 
   remove(data: any, i: number) {
-    this.rs.delete(`tunnel/${data.id}/delete`).subscribe(res => {
+    this.rs.get(`tunnel/${data.id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
 
-  onEnableChange(data: any, enable: boolean) {
-    if (enable) {
-      this.rs.post(`tunnel/${data.id}/setting`, {enable}).subscribe(res => {
+  onEnableChange(data: any, disabled: boolean) {
+    if (!disabled) {
+      this.rs.get(`tunnel/${data.id}/enable`).subscribe(res => {
       });
       return;
     }
@@ -82,7 +85,7 @@ export class TunnelComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk: () => {
-        this.rs.post(`tunnel/${data.id}/setting`, {enable}).subscribe(res => {
+        this.rs.get(`tunnel/${data.id}/disable`).subscribe(res => {
         });
       },
       nzOnCancel: () => {
