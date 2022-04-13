@@ -22,7 +22,7 @@ func linkRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", linkEnable)
 	app.GET(":id/disable", linkDisable)
 	app.GET(":id/watch", linkWatch)
-	app.GET(":id/event", linkEvent)
+	app.POST(":id/event/list", linkEvent)
 	app.GET(":id/event/clear", linkEventClear)
 }
 

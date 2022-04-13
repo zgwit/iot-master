@@ -25,6 +25,64 @@ type Link struct {
 	adapter  protocol.Adapter
 }
 
+func startTunnel(tunnel *model.Tunnel) error {
+	tnl, err := connect.NewTunnel(tunnel)
+	if err != nil {
+		//log.Error(err)
+		return err
+	}
+	allTunnels.Store(tunnel.ID, &Tunnel{
+		Tunnel:   *tunnel,
+		Instance: tnl,
+	})
+
+	tnl.On("link", func(link connect.Link) {
+		var lnk model.Link
+		err := database.Master.One("ID", link.ID(), &lnk)
+		if err != nil && err != storm.ErrNotFound {
+			return
+		}
+
+		//加载协议
+		var adapter protocol.Adapter
+		if tunnel.Protocol != nil {
+			adapter, err = protocols.Create(link, tunnel.Protocol.Name, tunnel.Protocol.Options)
+			if err != nil {
+				log.Error(err)
+				return
+			}
+		}
+
+		allLinks.Store(link.ID(), &Link{Link: lnk, Instance: link, adapter: adapter})
+
+		//找到相关Device，导入Mapper
+		var devices []model.Device
+		err = database.Master.Find("LinkID", link.ID(), &devices)
+		if err != nil && err != storm.ErrNotFound {
+			return
+		}
+		for _, d := range devices {
+			dev := GetDevice(d.ID)
+			if dev != nil {
+				err := dev.initMapper()
+				if err != nil {
+					log.Error(err)
+					//return
+				}
+			}
+		}
+
+	})
+
+	err = tnl.Open()
+	if err != nil {
+		//log.Error(err)
+		return err
+	}
+
+	return nil
+}
+
 //LoadTunnels 加载通道
 func LoadTunnels() error {
 	var tunnels []*model.Tunnel
@@ -38,60 +96,28 @@ func LoadTunnels() error {
 		if tunnel.Disabled {
 			continue
 		}
-
-		tnl, err := connect.NewTunnel(tunnel)
+		err := startTunnel(tunnel)
 		if err != nil {
 			log.Error(err)
-			continue
 		}
-		allTunnels.Store(tunnel.ID, &Tunnel{
-			Tunnel:   *tunnel,
-			Instance: tnl,
-		})
+	}
+	return nil
+}
 
-		err = tnl.Open()
-		if err != nil {
-			log.Error(err)
-			//return
-		}
+//LoadTunnel 加载通道
+func LoadTunnel(id int) error {
+	var tunnel model.Tunnel
+	err := database.Master.One("ID", id, &tunnel)
+	if err != nil {
+		return err
+	}
 
-		tnl.On("link", func(link connect.Link) {
-			var lnk model.Link
-			err := database.Master.One("ID", link.ID(), &lnk)
-			if err != nil && err != storm.ErrNotFound {
-				return
-			}
-
-			//加载协议
-			var adapter protocol.Adapter
-			if tunnel.Protocol != nil {
-				adapter, err = protocols.Create(link, tunnel.Protocol.Name, tunnel.Protocol.Options)
-				if err != nil {
-					log.Error(err)
-					return
-				}
-			}
-
-			allLinks.Store(link.ID(), &Link{Link: lnk, Instance: link, adapter: adapter})
-
-			//找到相关Device，导入Mapper
-			var devices []model.Device
-			err = database.Master.Find("LinkID", link.ID(), &devices)
-			if err != nil && err != storm.ErrNotFound {
-				return
-			}
-			for _, d := range devices {
-				dev := GetDevice(d.ID)
-				if dev != nil {
-					err := dev.initMapper()
-					if err != nil {
-						log.Error(err)
-						//return
-					}
-				}
-			}
-
-		})
+	if tunnel.Disabled {
+		return nil //TODO error ??
+	}
+	err = startTunnel(&tunnel)
+	if err != nil {
+		return err
 	}
 	return nil
 }

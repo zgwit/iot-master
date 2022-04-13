@@ -8,8 +8,9 @@ type Link struct {
 	TunnelID int       `json:"tunnel_id" storm:"index"`
 	SN       string    `json:"sn"`
 	Disabled bool      `json:"disabled"`
-	//Protocol *Protocol `json:"protocol"`
+	Last     time.Time `json:"last"`
 	Created  time.Time `json:"created" storm:"created"`
+	//Protocol *Protocol `json:"protocol"`
 }
 
 //LinkEvent 链接历史

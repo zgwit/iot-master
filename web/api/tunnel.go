@@ -24,7 +24,7 @@ func tunnelRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", tunnelEnable)
 	app.GET(":id/disable", tunnelDisable)
 	app.GET(":id/watch", tunnelWatch)
-	app.GET(":id/event", tunnelEvent)
+	app.POST(":id/event/list", tunnelEvent)
 	app.GET(":id/event/clear", tunnelEventClear)
 }
 

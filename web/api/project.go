@@ -25,10 +25,10 @@ func projectRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", projectEnable)
 	app.GET(":id/disable", projectDisable)
 	app.GET(":id/watch", projectWatch)
-	app.GET(":id/event", projectEvent)
+	app.POST(":id/event/list", projectEvent)
 	app.GET(":id/event/clear", projectEventClear)
-	app.GET(":id/alarm", projectAlarm)
-	app.GET(":id/event/clear", projectAlarmClear)
+	app.POST(":id/alarm/list", projectAlarm)
+	app.GET(":id/alarm/clear", projectAlarmClear)
 
 }
 

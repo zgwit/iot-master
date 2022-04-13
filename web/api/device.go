@@ -25,10 +25,10 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", deviceEnable)
 	app.GET(":id/disable", deviceDisable)
 	app.GET(":id/watch", deviceWatch)
-	app.GET(":id/event", deviceEvent)
+	app.POST(":id/event/list", deviceEvent)
 	app.GET(":id/event/clear", deviceEventClear)
-	app.GET(":id/alarm", deviceAlarm)
-	app.GET(":id/event/clear", deviceAlarmClear)
+	app.POST(":id/alarm/list", deviceAlarm)
+	app.GET(":id/alarm/clear", deviceAlarmClear)
 }
 
 func deviceList(ctx *gin.Context) {

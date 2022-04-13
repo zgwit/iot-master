@@ -20,7 +20,7 @@ func userRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", userEnable)
 	app.GET(":id/disable", userDisable)
 
-	app.GET(":id/event", userEvent)
+	app.POST(":id/event/list", userEvent)
 	app.GET(":id/event/clear", userEventClear)
 }
 
