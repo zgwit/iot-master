@@ -111,14 +111,8 @@ func deviceUpdate(ctx *gin.Context) {
 }
 
 func deviceDelete(ctx *gin.Context) {
-	var pid paramID
-	err := ctx.ShouldBindUri(&pid)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	device := model.Device{ID: pid.ID}
-	err = database.Master.DeleteStruct(&device)
+	device := model.Device{ID: ctx.GetInt("id")}
+	err := database.Master.DeleteStruct(&device)
 	if err != nil {
 		replyError(ctx, err)
 		return

@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/storm/v3/q"
@@ -74,9 +75,26 @@ func projectUpdate(ctx *gin.Context) {
 		return
 	}
 
-	//TODO 重新启动
-
 	replyOk(ctx, project)
+
+
+	//重新启动
+	go func() {
+		prj := master.GetProject(ctx.GetInt("id"))
+		if prj == nil {
+			return
+		}
+		err = prj.Stop()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+		err = prj.Start()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func projectDelete(ctx *gin.Context) {
@@ -87,9 +105,22 @@ func projectDelete(ctx *gin.Context) {
 		return
 	}
 
-	//TODO 关闭
+
 
 	replyOk(ctx, project)
+
+	//关闭
+	go func() {
+		project := master.GetProject(ctx.GetInt("id"))
+		if project == nil {
+			return
+		}
+		err := project.Stop()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func projectStart(ctx *gin.Context) {
@@ -128,8 +159,20 @@ func projectEnable(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	//TODO 启动
 	replyOk(ctx, nil)
+
+	//启动
+	go func() {
+		project := master.GetProject(ctx.GetInt("id"))
+		if project == nil {
+			return
+		}
+		err := project.Start()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func projectDisable(ctx *gin.Context) {
@@ -138,8 +181,20 @@ func projectDisable(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	//TODO 关闭
 	replyOk(ctx, nil)
+
+	//关闭
+	go func() {
+		project := master.GetProject(ctx.GetInt("id"))
+		if project == nil {
+			return
+		}
+		err := project.Stop()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func projectWatch(ctx *gin.Context) {
