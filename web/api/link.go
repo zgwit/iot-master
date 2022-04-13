@@ -3,14 +3,17 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3/q"
 	"golang.org/x/net/websocket"
 )
 
 func linkRoutes(app *gin.RouterGroup) {
 	app.POST("list", linkList)
-	app.POST("create", linkCreate)
+
+	app.GET("event/clear", linkEventClearAll)
 
 	app.Use(parseParamId)
 	app.POST(":id/update", linkUpdate)
@@ -19,6 +22,8 @@ func linkRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", linkEnable)
 	app.GET(":id/disable", linkDisable)
 	app.GET(":id/watch", linkWatch)
+	app.GET(":id/event", linkEvent)
+	app.GET(":id/event/clear", linkEventClear)
 }
 
 func linkList(ctx *gin.Context) {
@@ -30,40 +35,14 @@ func linkList(ctx *gin.Context) {
 	replyList(ctx, links, cnt)
 }
 
-func linkCreate(ctx *gin.Context) {
+func linkUpdate(ctx *gin.Context) {
 	var link model.Link
 	err := ctx.ShouldBindJSON(&link)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-
-	err = database.Master.Save(&link)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	//TODO 启动
-
-	replyOk(ctx, link)
-}
-
-func linkUpdate(ctx *gin.Context) {
-	var pid paramID
-	err := ctx.ShouldBindUri(&pid)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	var link model.Link
-	err = ctx.ShouldBindJSON(&link)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	link.ID = pid.ID
+	link.ID = ctx.GetInt("id")
 
 	err = database.Master.Update(&link)
 	if err != nil {
@@ -71,32 +50,33 @@ func linkUpdate(ctx *gin.Context) {
 		return
 	}
 
-	//TODO 重新启动
-
 	replyOk(ctx, link)
 }
 
 func linkDelete(ctx *gin.Context) {
-	var pid paramID
-	err := ctx.ShouldBindUri(&pid)
+	link := model.Link{ID: ctx.GetInt("id")}
+	err := database.Master.DeleteStruct(&link)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	link := model.Link{ID: pid.ID}
-	err = database.Master.DeleteStruct(&link)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	//TODO 重新启动
 
 	replyOk(ctx, link)
+	//关闭
+	go func() {
+		link := master.GetLink(ctx.GetInt("id"))
+		if link == nil {
+			return
+		}
+		err := link.Instance.Close()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func linkClose(ctx *gin.Context) {
-
 	link := master.GetLink(ctx.GetInt("id"))
 	if link == nil {
 		replyFail(ctx, "link not found")
@@ -126,8 +106,20 @@ func linkDisable(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	//TODO 关闭
 	replyOk(ctx, nil)
+
+	//关闭
+	go func() {
+		link := master.GetLink(ctx.GetInt("id"))
+		if link == nil {
+			return
+		}
+		err := link.Instance.Close()
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	}()
 }
 
 func linkWatch(ctx *gin.Context) {
@@ -139,4 +131,33 @@ func linkWatch(ctx *gin.Context) {
 	websocket.Handler(func(ws *websocket.Conn) {
 		watchAllEvents(ws, link.Instance)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
+}
+
+func linkEvent(ctx *gin.Context) {
+	events, cnt, err := normalSearchById(ctx, database.History, "LinkID", ctx.GetInt("id"), &model.LinkEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyList(ctx, events, cnt)
+}
+
+func linkEventClear(ctx *gin.Context) {
+	err := database.History.Select(q.Eq("LinkID", ctx.GetInt("id"))).Delete(&model.LinkEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+func linkEventClearAll(ctx *gin.Context) {
+	err := database.History.Drop(&model.LinkEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
 }
