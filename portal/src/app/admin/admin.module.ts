@@ -80,9 +80,9 @@ import {EditStrategiesComponent} from "./edit-strategies/edit-strategies.compone
 import {HelperModule} from "../helper/helper.module";
 import {NzBreadCrumbModule} from "ng-zorro-antd/breadcrumb";
 import {ContainerComponent} from "./container/container.component";
-import {TunnelEditRegisterComponent} from "./tunnel-edit-register/tunnel-edit-register.component";
-import {TunnelEditHeartbeatComponent} from "./tunnel-edit-heartbeat/tunnel-edit-heartbeat.component";
-import {TunnelEditProtocolComponent} from "./tunnel-edit-protocol/tunnel-edit-protocol.component";
+import {EditRegisterComponent} from "./edit-register/edit-register.component";
+import {EditHeartbeatComponent} from "./edit-heartbeat/edit-heartbeat.component";
+import {EditProtocolComponent} from "./edit-protocol/edit-protocol.component";
 import {TunnelEditDevicesComponent} from "./tunnel-edit-devices/tunnel-edit-devices.component";
 
 @NgModule({
@@ -94,7 +94,7 @@ import {TunnelEditDevicesComponent} from "./tunnel-edit-devices/tunnel-edit-devi
     DashComponent,
     HomeComponent,
     TunnelComponent, TunnelDetailComponent, TunnelEditComponent,
-    TunnelEditRegisterComponent, TunnelEditHeartbeatComponent, TunnelEditProtocolComponent, TunnelEditDevicesComponent,
+    EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent, TunnelEditDevicesComponent,
     LinkComponent, LinkDetailComponent, LinkEditComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
     ElementComponent, ElementDetailComponent, ElementEditComponent,

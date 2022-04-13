@@ -2,18 +2,18 @@ import {Component, forwardRef, OnInit} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-tunnel-edit-register',
-  templateUrl: './tunnel-edit-register.component.html',
-  styleUrls: ['./tunnel-edit-register.component.scss'],
+  selector: 'app-edit-heartbeat',
+  templateUrl: './edit-heartbeat.component.html',
+  styleUrls: ['./edit-heartbeat.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TunnelEditRegisterComponent),
+      useExisting: forwardRef(() => EditHeartbeatComponent),
       multi: true
     }
   ]
 })
-export class TunnelEditRegisterComponent implements OnInit, ControlValueAccessor {
+export class EditHeartbeatComponent implements OnInit, ControlValueAccessor {
   onChanged: any = () => {
   }
   onTouched: any = () => {
@@ -32,6 +32,8 @@ export class TunnelEditRegisterComponent implements OnInit, ControlValueAccessor
   buildForm(): void {
     this.formGroup = this.fb.group({
       enable: [this.data.enable, [Validators.required]],
+      interval: [this.data.interval, []],
+      text: [this.data.text, []],
       regex: [this.data.regex, []],
     })
   }

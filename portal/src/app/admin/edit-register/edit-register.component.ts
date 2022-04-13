@@ -1,20 +1,19 @@
 import {Component, forwardRef, OnInit} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
-import {RequestService} from "../../request.service";
 
 @Component({
-  selector: 'app-tunnel-edit-protocol',
-  templateUrl: './tunnel-edit-protocol.component.html',
-  styleUrls: ['./tunnel-edit-protocol.component.scss'],
+  selector: 'app-edit-register',
+  templateUrl: './edit-register.component.html',
+  styleUrls: ['./edit-register.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TunnelEditProtocolComponent),
+      useExisting: forwardRef(() => EditRegisterComponent),
       multi: true
     }
   ]
 })
-export class TunnelEditProtocolComponent implements OnInit, ControlValueAccessor {
+export class EditRegisterComponent implements OnInit, ControlValueAccessor {
   onChanged: any = () => {
   }
   onTouched: any = () => {
@@ -22,23 +21,18 @@ export class TunnelEditProtocolComponent implements OnInit, ControlValueAccessor
 
   data: any = {};
   formGroup = new FormGroup({});
-  protocols: any = [];
 
-  constructor(private fb: FormBuilder, private rs: RequestService) {
+  constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.rs.get('protocol/list').subscribe(res => {
-      this.protocols = res.data;
-    })
     this.buildForm();
   }
 
   buildForm(): void {
     this.formGroup = this.fb.group({
       enable: [this.data.enable, [Validators.required]],
-      type: [this.data.type, []],
-      options: [this.data.options, []],
+      regex: [this.data.regex, []],
     })
   }
 
