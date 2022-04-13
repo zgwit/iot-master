@@ -8,7 +8,6 @@ import (
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/storm/v3"
-	"net/http"
 )
 
 type loginObj struct {
@@ -17,7 +16,7 @@ type loginObj struct {
 	Remember bool   `json:"remember"`
 }
 
-func md5hash(text string) string  {
+func md5hash(text string) string {
 	h := md5.New()
 	h.Write([]byte(text))
 	sum := h.Sum(nil)
@@ -34,7 +33,7 @@ func login(ctx *gin.Context) {
 	}
 
 	var user model.User
-	err := database.Master.One("Username",obj.Username, &user)
+	err := database.Master.One("Username", obj.Username, &user)
 	if err == storm.ErrNotFound {
 		//管理员自动创建
 		if obj.Username == "admin" {
@@ -51,7 +50,6 @@ func login(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-
 
 	if user.Disabled {
 		replyFail(ctx, "用户已禁用")
@@ -76,16 +74,27 @@ func login(ctx *gin.Context) {
 		return
 	}
 
+	_ = database.History.Save(model.UserEvent{UserID: user.ID, Event: "登录"})
+
 	//存入session
-	session.Set("user", user)
+	session.Set("user", &user)
 	_ = session.Save()
 
 	replyOk(ctx, user)
 }
 
-func logout(c *gin.Context) {
-	session := sessions.Default(c)
+func logout(ctx *gin.Context) {
+	session := sessions.Default(ctx)
+	u := session.Get("user")
+	if u == nil {
+		replyFail(ctx, "未登录")
+		return
+	}
+
+	user := u.(*model.User)
+	_ = database.History.Save(model.UserEvent{UserID: user.ID, Event: "登录"})
+
 	session.Clear()
 	_ = session.Save()
-	c.JSON(http.StatusOK, gin.H{})
+	replyOk(ctx, nil)
 }
