@@ -1,1 +1,55 @@
-<p>device-edit works!</p>
+<app-editor [(ngModel)]="data" (ngModelChange)="basicForm.patchValue($event)" [submitting]="submitting" (submit)="submit()">
+
+  <nz-collapse [formGroup]="basicForm" (change)="change()">
+    <nz-collapse-panel nzHeader="基本信息" nzActive>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">名称</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="name" required/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">元件</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <app-choose-element formControlName="element_id"></app-choose-element>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">通道</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <app-choose-tunnel formControlName="tunnel_id"></app-choose-tunnel>
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">从机</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <!--      <input nz-input formControlName="port" type="number" min="1" max="65535"/>-->
+<!--          <nz-input-number formControlName="slave" [nzMin]="1" [nzMax]="65535" [nzStep]="1"></nz-input-number>-->
+          <app-input-yaml formControlName="slave"></app-input-yaml>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">位置</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <app-input-gps formControlName="location"></app-input-gps>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">启用</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-switch formControlName="enable"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+
+    </nz-collapse-panel>
+
+  </nz-collapse>
+
+
+</app-editor>

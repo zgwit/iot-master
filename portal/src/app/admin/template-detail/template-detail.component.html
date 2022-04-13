@@ -1,1 +1,32 @@
-<p>template-detail works!</p>
+
+
+<nz-tabset [nzTabBarExtraContent]="extraTemplate">
+  <nz-tab nzTitle="模板详情">
+    <p>{{data|json}}</p>
+  </nz-tab>
+  <nz-tab nzTitle="项目实例">
+    <ng-template nz-tab>
+      <app-template-project [_id]="id"></app-template-project>
+    </ng-template>
+  </nz-tab>
+  <nz-tab nzTitle="日志">
+    <ng-template nz-tab>
+      <app-event type="template" [_id]="id"></app-event>
+    </ng-template>
+  </nz-tab>
+
+</nz-tabset>
+
+<ng-template #extraTemplate>
+  <a (click)="load()" title="刷新">
+    <i nz-icon nzType="reload" [nzSpin]="loading"></i>
+  </a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a title="原始数据" appViewConfig [config]="data">
+    <i nz-icon nzType="profile"></i>
+  </a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a title="编辑" [routerLink]="'/admin/template/edit/'+id">
+    <i nz-icon nzType="form"></i>
+  </a>
+</ng-template>

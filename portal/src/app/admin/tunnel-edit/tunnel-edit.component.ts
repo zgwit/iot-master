@@ -72,7 +72,6 @@ export class TunnelEditComponent implements OnInit {
   load(): void {
     this.rs.get('tunnel/' + this.id + '/detail').subscribe(res => {
       this.data = res.data;
-      //this.tab.name += '[' + this.data.name + ']';
       this.buildForm();
     })
   }
@@ -82,7 +81,6 @@ export class TunnelEditComponent implements OnInit {
     const uri = this.id ? 'tunnel/' + this.id + '/setting' : 'tunnel/create';
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
-      //this.tab.Close();
     }).add(() => {
       this.submitting = false;
     })

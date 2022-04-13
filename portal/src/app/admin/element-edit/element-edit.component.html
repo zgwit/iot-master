@@ -1,1 +1,83 @@
-<p>element-edit works!</p>
+<app-editor [(ngModel)]="data" (ngModelChange)="basicForm.patchValue($event)" [submitting]="submitting" (submit)="submit()">
+
+  <nz-collapse [formGroup]="basicForm">
+    <nz-collapse-panel nzHeader="基本信息" nzActive>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">名称</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="name" required/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">类型</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="type"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">标签</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',', '，', ';', ' ']" formControlName="tags"
+                     nzSize="small" (ngModelChange)="change()"></nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">图片</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="image" required/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">协议</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-select formControlName="protocol" (ngModelChange)="onProtocolChange($event)">
+            <nz-option *ngFor="let p of protocols"
+                       [nzValue]="p.name" [nzLabel]="p.label || p.name"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">生产厂家</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="manufacturer"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">型号</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="version"/>
+        </nz-form-control>
+      </nz-form-item>
+
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="变量">
+      <app-edit-variables formControlName="variables"></app-edit-variables>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="数据点">
+      <app-edit-mapping formControlName="data_points"></app-edit-mapping>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="定时采集">
+      <app-edit-pollers formControlName="collectors"></app-edit-pollers>
+    </nz-collapse-panel>
+
+
+    <nz-collapse-panel nzHeader="控制命令">
+      <app-edit-commands formControlName="commands"></app-edit-commands>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="定时脚本">
+      <app-edit-jobs formControlName="jobs"></app-edit-jobs>
+    </nz-collapse-panel>
+
+  </nz-collapse>
+
+</app-editor>

@@ -20,8 +20,8 @@
 
     <p>上线时间：{{data.last}}</p>
 
-    <p *ngIf="data.acceptor">
-      服务：<a [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel_id}}</a>
+    <p *ngIf="data.tunnel">
+      通道：<a [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel_id}}</a>
     </p>
 
   </nz-tab>

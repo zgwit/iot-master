@@ -1,5 +1,60 @@
-<p>project works!</p>
-<p>TODO:</p>
-<p>搜索框</p>
-<p>项目列表，无限加载</p>
-<p>打开可视化，打开编辑</p>
+<app-page-list (create)="create()" (refresh)="load()" (search)="search($event)" [loading]="loading">
+
+  <nz-table
+    nzSize="small"
+        [nzData]="datum"
+    [nzFrontPagination]="false"
+    [nzLoading]="loading"
+    [nzTotal]="total"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="pageIndex"
+
+    (nzQueryParams)="onQuery($event)"
+  >
+    <thead>
+    <tr>
+      <th nzColumnKey="template_id" [nzSortFn]="true">模板</th>
+      <th nzColumnKey="name" [nzSortFn]="true">名称</th>
+      <th nzColumnKey="_id" [nzSortFn]="true">创建时间</th>
+      <th>状态</th>
+      <th nzColumnKey="enable" [nzSortFn]="true">启用</th>
+      <th nzWidth="100">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of datum; let i=index" (dblclick)="open(data)">
+      <td>
+        <a [routerLink]="'/admin/template/detail/'+data.template_id">{{data.template?.name}}</a>
+      </td>
+      <td>{{ data.name }}</td>
+      <td>{{data.created | fromNow}}</td>
+      <td>
+        <span *ngIf="data.online">
+          {{data.closed?'关闭':'启动'}} {{data.error}}
+        </span>
+        <span *ngIf="!data.online">离线</span>
+      </td>
+      <td>
+        <nz-switch [(ngModel)]="data.enable" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
+      </td>
+      <td>
+        <a [routerLink]="'/admin/project/detail/'+data._id">详情</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a [routerLink]="'/admin/project/edit/'+data._id">编辑</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
+          更多
+          <i nz-icon nzType="down"></i>
+        </a>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item nzDanger nz-popconfirm nzPopconfirmTitle="确定删除？" (nzOnConfirm)="remove(data, i)">删除</li>
+          </ul>
+        </nz-dropdown-menu>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+
+
+</app-page-list>

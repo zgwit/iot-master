@@ -1,1 +1,50 @@
-<p>project-edit works!</p>
+<app-editor [(ngModel)]="data" (ngModelChange)="basicForm.patchValue($event)" [submitting]="submitting" (submit)="submit()">
+
+  <nz-collapse [formGroup]="basicForm" (change)="change()">
+    <nz-collapse-panel nzHeader="基本信息" nzActive>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">名称</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="name" required/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">模板</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <app-choose-template formControlName="template_id" [showClear]="true"></app-choose-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">启用</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-switch formControlName="enable"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="参数变量">
+      <app-edit-variables formControlName="variables"></app-edit-variables>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="绑定设备">
+      <app-edit-devices formControlName="devices"></app-edit-devices>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="控制命令">
+      <app-edit-commands formControlName="commands"></app-edit-commands>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="控制策略">
+      <app-edit-strategies formControlName="strategies"></app-edit-strategies>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="定时脚本">
+      <app-edit-jobs formControlName="jobs"></app-edit-jobs>
+    </nz-collapse-panel>
+
+  </nz-collapse>
+
+
+</app-editor>

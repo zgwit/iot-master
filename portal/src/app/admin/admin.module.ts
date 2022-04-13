@@ -86,6 +86,18 @@ import {EditProtocolComponent} from "./edit-protocol/edit-protocol.component";
 import {TunnelEditDevicesComponent} from "./tunnel-edit-devices/tunnel-edit-devices.component";
 import {EventComponent} from "./event/event.component";
 import {LinkDeviceComponent} from "./link-device/link-device.component";
+import {TemplateProjectComponent} from "./template-project/template-project.component";
+import {ElementDeviceComponent} from "./element-device/element-device.component";
+import {ElementBrowserComponent} from "./element-browser/element-browser.component";
+import {DeviceBrowserComponent} from "./device-browser/device-browser.component";
+import {LinkBrowserComponent} from "./link-browser/link-browser.component";
+import {ChooseService} from "./choose.service";
+import {PromptComponent} from "./prompt/prompt.component";
+import {UserBrowserComponent} from "./user-browser/user-browser.component";
+import {AlarmComponent} from "./alarm/alarm.component";
+import {UserDetailComponent} from "./user-detail/user-detail.component";
+import {TemplateBrowserComponent} from "./template-browser/template-browser.component";
+import {ChooseTemplateComponent} from "./choose-template/choose-template.component";
 
 @NgModule({
   declarations: [
@@ -98,65 +110,70 @@ import {LinkDeviceComponent} from "./link-device/link-device.component";
     TunnelComponent, TunnelDetailComponent, TunnelEditComponent,
     EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent, TunnelEditDevicesComponent,
     LinkComponent, LinkDetailComponent, LinkEditComponent, LinkDeviceComponent,
+    LinkBrowserComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
+    DeviceBrowserComponent,
     ElementComponent, ElementDetailComponent, ElementEditComponent,
+    ElementDeviceComponent, ElementBrowserComponent,
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
+    TemplateProjectComponent, TemplateBrowserComponent,
     EditMappingComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
-    EventComponent,
+    EventComponent, AlarmComponent,
     PluginComponent,
     ProtocolComponent,
     SettingComponent,
-    UserComponent,
+    UserComponent, UserBrowserComponent, UserDetailComponent,
     PasswordComponent,
+    PromptComponent, ChooseTemplateComponent,
   ],
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        AdminRoutingModule,
-        IconsProviderModule,
-        NzIconModule,
-        NzGridModule,
-        NzLayoutModule,
-        NzMenuModule,
-        NzToolTipModule,
-        NzTableModule,
-        NzModalModule,
-        NzFormModule,
-        NzButtonModule,
-        NzInputModule,
-        NzCheckboxModule,
-        NzSwitchModule,
-        NzPopconfirmModule,
-        NzDividerModule,
-        NzDrawerModule,
-        NzSelectModule,
-        NzSpaceModule,
-        NzInputNumberModule,
-        NzStatisticModule,
-        NzTabsModule,
-        NzCollapseModule,
-        NzTransferModule,
-        NzRadioModule,
-        NzProgressModule,
-        NzCardModule,
-        NzUploadModule,
-        NzDropDownModule,
-        NzTimePickerModule,
-        NzDatePickerModule,
-        DragDropModule,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AdminRoutingModule,
+    IconsProviderModule,
+    NzIconModule,
+    NzGridModule,
+    NzLayoutModule,
+    NzMenuModule,
+    NzToolTipModule,
+    NzTableModule,
+    NzModalModule,
+    NzFormModule,
+    NzButtonModule,
+    NzInputModule,
+    NzCheckboxModule,
+    NzSwitchModule,
+    NzPopconfirmModule,
+    NzDividerModule,
+    NzDrawerModule,
+    NzSelectModule,
+    NzSpaceModule,
+    NzInputNumberModule,
+    NzStatisticModule,
+    NzTabsModule,
+    NzCollapseModule,
+    NzTransferModule,
+    NzRadioModule,
+    NzProgressModule,
+    NzCardModule,
+    NzUploadModule,
+    NzDropDownModule,
+    NzTimePickerModule,
+    NzDatePickerModule,
+    DragDropModule,
 
-        NgxEchartsModule.forRoot({echarts: () => import('echarts')}),
+    NgxEchartsModule.forRoot({echarts: () => import('echarts')}),
 
-        NgxAmapModule.forRoot({apiKey: 'e4c1bd11fe1b25d77dae4cf3993f7034', debug: true}),
-        HelperModule,
-        NzBreadCrumbModule,
-    ],
+    NgxAmapModule.forRoot({apiKey: 'e4c1bd11fe1b25d77dae4cf3993f7034', debug: true}),
+    HelperModule,
+    NzBreadCrumbModule,
+  ],
   bootstrap: [AdminComponent],
-  providers: []
+  providers: [ChooseService]
 })
 export class AdminModule {
 }

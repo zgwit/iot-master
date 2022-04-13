@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
+import {RequestService} from "../../request.service";
 
 @Component({
   selector: 'app-element-detail',
@@ -6,10 +8,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./element-detail.component.scss']
 })
 export class ElementDetailComponent implements OnInit {
+  id: any = '';
+  data: any = {};
+  loading = false;
 
-  constructor() { }
+  constructor(private router: ActivatedRoute, private rs: RequestService) {
+    this.id = router.snapshot.params['id'];
+    this.load();
+  }
 
   ngOnInit(): void {
   }
 
+  load(): void {
+    this.loading = true;
+    this.rs.get(`element/${this.id}/detail`).subscribe(res=>{
+      this.data = res.data;
+      this.loading = false;
+    });
+  }
+
+  enable($event: any) {
+
+  }
 }

@@ -1,4 +1,53 @@
-<p>element works!</p>
-<p>TODO:</p>
-<p>搜索框</p>
-<p>元件列表，无限加载</p>
+<app-page-list (create)="create()" (refresh)="load()" (search)="search($event)" [loading]="loading">
+
+  <nz-table
+    nzSize="small"
+        [nzData]="datum"
+    [nzFrontPagination]="false"
+    [nzLoading]="loading"
+    [nzTotal]="total"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="pageIndex"
+
+    (nzQueryParams)="onQuery($event)"
+  >
+    <thead>
+    <tr>
+      <th nzColumnKey="name" [nzSortFn]="true">名称</th>
+      <th nzColumnKey="type" [nzSortFn]="true">类型</th>
+      <th nzColumnKey="tags">标签</th>
+      <th nzColumnKey="manufacturer" [nzSortFn]="true">厂商</th>
+      <th nzColumnKey="version" [nzSortFn]="true">型号</th>
+      <th nzColumnKey="_id" [nzSortFn]="true">创建时间</th>
+      <th nzWidth="100">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of datum; let i=index" (dblclick)="open(data)">
+      <td>{{ data.name }}</td>
+      <td>{{ data.type }}</td>
+      <td>{{ data.tags?.join(',') }}</td>
+      <td>{{ data.manufacturer }}</td>
+      <td>{{ data.version }}</td>
+      <td>{{data.created | fromNow}}</td>
+      <td>
+        <a [routerLink]="'/admin/element/detail/'+data._id">详情</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a [routerLink]="'/admin/element/edit/'+data._id">编辑</a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
+          更多
+          <i nz-icon nzType="down"></i>
+        </a>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item nzDanger nz-popconfirm nzPopconfirmTitle="确定删除？" (nzOnConfirm)="remove(data, i)">删除</li>
+          </ul>
+        </nz-dropdown-menu>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+
+
+</app-page-list>
