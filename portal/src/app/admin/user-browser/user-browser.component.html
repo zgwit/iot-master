@@ -19,20 +19,20 @@
       <th nzColumnKey="name" [nzSortFn]="true">姓名</th>
       <th nzColumnKey="cellphone">手机号</th>
       <th nzColumnKey="email">邮箱</th>
-      <th nzColumnKey="enable" [nzSortFn]="true">启用</th>
+      <th nzColumnKey="disabled" [nzSortFn]="true">禁用</th>
       <th nzColumnKey="_id" [nzSortFn]="true">创建时间</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let data of datum; let i=index" (click)="onItemClick(data)">
-      <td [nzChecked]="setCheckedOfId.has(data._id)" [nzDisabled]="!data.enable"
+      <td [nzChecked]="setCheckedOfId.has(data._id)" [nzDisabled]="!data.disabled"
           (nzCheckedChange)="onItemChecked(data._id, $event)"
       ></td>
       <td>{{ data.username }}</td>
       <td>{{ data.name }}</td>
       <td>{{ data.cellphone }}</td>
       <td>{{ data.email }}</td>
-      <td>{{data.enable?'√':'×'}}</td>
+      <td>{{data.disabled?'×':''}}</td>
       <td>{{data.created | fromNow}}</td>
     </tr>
     </tbody>

@@ -21,22 +21,22 @@ export class TunnelEditComponent implements OnInit {
     "address": "",
     "port": 1850,
     "timeout": 60,
-    "enable": true,
+    "disabled": true,
     "register": {
-      "enable": true,
+      "disabled": true,
       "regex": '^\\w+$'
     },
     "heartbeat": {
-      "enable": false,
+      "disabled": false,
       "interval": 30,
       "text": "",
       "regex": '^\\w+$'
     },
     "control": {
-      "enable": false,
+      "disabled": false,
     },
     "protocol": {
-      "enable": false,
+      "disabled": false,
       "type": "",
       "options": {}
     },
@@ -56,7 +56,7 @@ export class TunnelEditComponent implements OnInit {
       address: [this.data.address, [Validators.required]],
       port: [this.data.port, [Validators.required]],
       timeout: [this.data.timeout, [Validators.required]],
-      enable: [this.data.enable, [Validators.required]],
+      disabled: [this.data.disabled, [Validators.required]],
       register: [this.data.register, []],
       heartbeat: [this.data.heartbeat, []],
       control: [this.data.control, []],

@@ -28,7 +28,7 @@ export class ElementDetailComponent implements OnInit {
     });
   }
 
-  enable($event: any) {
+  disabled($event: any) {
 
   }
 }

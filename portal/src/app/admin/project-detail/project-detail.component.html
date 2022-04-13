@@ -4,7 +4,7 @@
   <nz-tab nzTitle="项目详情">
     <p>
       名称：{{data.name}} {{data.online ? '启动' : '离线'}}
-      <nz-switch [ngModel]="data.online" (ngModelChange)="enable($event)"></nz-switch>
+      <nz-switch [ngModel]="data.online" (ngModelChange)="disabled($event)"></nz-switch>
     </p>
 
 

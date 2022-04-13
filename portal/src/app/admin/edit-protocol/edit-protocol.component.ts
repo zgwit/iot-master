@@ -36,7 +36,7 @@ export class EditProtocolComponent implements OnInit, ControlValueAccessor {
 
   buildForm(): void {
     this.formGroup = this.fb.group({
-      enable: [this.data.enable, [Validators.required]],
+      disabled: [this.data.disabled, [Validators.required]],
       type: [this.data.type, []],
       options: [this.data.options, []],
     })

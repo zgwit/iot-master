@@ -19,20 +19,20 @@
       <th nzColumnKey="element_id">元件</th>
       <th nzColumnKey="tunnel_id">通道</th>
       <th nzColumnKey="slave">从机</th>
-      <th nzColumnKey="enable" [nzSortFn]="true">启用</th>
+      <th nzColumnKey="disabled" [nzSortFn]="true">禁用</th>
       <th nzColumnKey="_id" [nzSortFn]="true">创建时间</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let data of datum; let i=index" (click)="onItemClick(data)">
-      <td [nzChecked]="setCheckedOfId.has(data._id)" [nzDisabled]="!data.enable"
+      <td [nzChecked]="setCheckedOfId.has(data._id)" [nzDisabled]="!data.disabled"
           (nzCheckedChange)="onItemChecked(data._id, $event)"
       ></td>
       <td>{{ data.name }}</td>
       <td>{{data.element?.name}}</td>
       <td>{{data.tunnel && (data.tunnel.name || data.tunnel.sn)}}</td>
       <td>{{ data.slave | yaml }}</td>
-      <td>{{data.enable?'√':'×'}}</td>
+      <td>{{data.disabled?'×':''}}</td>
       <td>{{data.created | fromNow}}</td>
     </tr>
     </tbody>

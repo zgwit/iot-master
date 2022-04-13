@@ -29,7 +29,7 @@ export class LinkDetailComponent implements OnInit {
     //TODO 监听
   }
 
-  enable($event: any) {
+  disabled($event: any) {
 
   }
 

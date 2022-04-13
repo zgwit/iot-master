@@ -37,7 +37,7 @@ export class ProjectDetailComponent implements OnInit {
   }
 
 
-  enable($event: any) {
+  disabled($event: any) {
 
   }
 }

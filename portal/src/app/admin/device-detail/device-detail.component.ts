@@ -44,7 +44,7 @@ export class DeviceDetailComponent implements OnInit {
     })
   }
 
-  enable($event: any) {
+  disabled($event: any) {
 
   }
 

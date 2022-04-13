@@ -20,6 +20,7 @@ export class PageListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    //console.log("noCreate", this.noCreate)
   }
 
 }

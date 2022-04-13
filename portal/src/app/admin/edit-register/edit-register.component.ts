@@ -31,7 +31,7 @@ export class EditRegisterComponent implements OnInit, ControlValueAccessor {
 
   buildForm(): void {
     this.formGroup = this.fb.group({
-      enable: [this.data.enable, [Validators.required]],
+      disabled: [this.data.disabled, [Validators.required]],
       regex: [this.data.regex, []],
     })
   }

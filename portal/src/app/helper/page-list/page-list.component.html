@@ -5,12 +5,12 @@
       刷新
     </button>
 
-    <button *nzSpaceItem type="button" nz-button nzType="primary" (click)="create.emit()" [hidden]="noCreate">
+    <button *nzSpaceItem type="button" nz-button nzType="primary" (click)="create.emit()" [hidden]="noCreate!==false">
       <i nz-icon nzType="plus"></i>
       {{createButtonText}}
     </button>
 
-    <nz-input-group *nzSpaceItem nzSearch nzPrefixIcon="search" [nzAddOnAfter]="suffixIconButton" [hidden]="noSearch"
+    <nz-input-group *nzSpaceItem nzSearch nzPrefixIcon="search" [nzAddOnAfter]="suffixIconButton" [hidden]="noSearch!==false"
                     [nzSuffix]="suffixIconClear">
       <input type="text" nz-input placeholder="关键字" [(ngModel)]="keyword" [ngModelOptions]="{standalone: true}"/>
     </nz-input-group>

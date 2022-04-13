@@ -70,9 +70,9 @@ export class TemplateProjectComponent implements OnInit {
     });
   }
 
-  onEnableChange(data: any, enable: boolean) {
-    if (enable) {
-      this.rs.post(`project/${data._id}/setting`, {enable}).subscribe(res => {
+  onEnableChange(data: any, disabled: boolean) {
+    if (disabled) {
+      this.rs.post(`project/${data._id}/setting`, {disabled}).subscribe(res => {
       });
       return;
     }
@@ -80,11 +80,11 @@ export class TemplateProjectComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk:()=>{
-        this.rs.post(`project/${data._id}/setting`, {enable}).subscribe(res => {
+        this.rs.post(`project/${data._id}/setting`, {disabled}).subscribe(res => {
         });
       },
       nzOnCancel:()=>{
-        data.enable = true;
+        data.disabled = true;
       }
     })
   }

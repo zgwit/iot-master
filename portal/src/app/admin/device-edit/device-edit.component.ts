@@ -22,7 +22,7 @@ export class DeviceEditComponent implements OnInit {
     "tunnel_id": "",
     "slave": 1,
     "location": [],
-    "enable": true,
+    "disabled": true,
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private rs: RequestService, private message: NzMessageService) {
@@ -39,7 +39,7 @@ export class DeviceEditComponent implements OnInit {
       tunnel_id: [this.data.tunnel_id, [Validators.required]],
       slave: [this.data.slave, [Validators.required]],
       location: [this.data.location, []],
-      enable: [this.data.enable, [Validators.required]],
+      disabled: [this.data.disabled, [Validators.required]],
     });
   }
 

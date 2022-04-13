@@ -4,8 +4,8 @@
   <nz-tab nzTitle="用户详情">
     <p>
       名称：{{data.name}}
-      {{data.enable ? '启用' : '禁用'}}
-      <nz-switch [ngModel]="data.enable" (ngModelChange)="enable($event)"></nz-switch>
+      {{data.disabled ? '禁用' : '禁用'}}
+      <nz-switch [ngModel]="data.disabled" (ngModelChange)="disabled($event)"></nz-switch>
     </p>
     <p>
       手机：{{data.cellphone}}

@@ -5,7 +5,7 @@
     <p>
       名称：{{data.name}}
       {{data.online ? '在线' : '离线'}}
-      <nz-switch [ngModel]="data.enable" (ngModelChange)="enable($event)"></nz-switch>
+      <nz-switch [ngModel]="data.disabled" (ngModelChange)="disabled($event)"></nz-switch>
     </p>
 
     <p>SN：{{data.sn}}</p>
@@ -14,7 +14,7 @@
       心跳包：{{data.regex}} {{data.interval}}
     </p>
 
-    <p *ngIf="data.protocol.enable">
+    <p *ngIf="data.protocol.disabled">
       协议：{{data.type}}
     </p>
 

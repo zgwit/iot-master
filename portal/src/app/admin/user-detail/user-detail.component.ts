@@ -28,7 +28,7 @@ export class UserDetailComponent implements OnInit {
     });
   }
 
-  enable($event: any) {
+  disabled($event: any) {
 
   }
 

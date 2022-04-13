@@ -30,7 +30,7 @@ export class UserBrowserComponent implements OnInit {
   ids: string[] = [];
 
   onCurrentPageDataChange(currentPageData: readonly any[]): void {
-    this.tableData = currentPageData.filter(({enable}) => enable);
+    this.tableData = currentPageData.filter(({disabled}) => disabled);
     this.refreshCheckedStatus();
   }
 
@@ -61,7 +61,7 @@ export class UserBrowserComponent implements OnInit {
   }
 
   onItemClick(data: any) {
-    if (data.enable)
+    if (data.disabled)
       this.onItemChecked(data._id, !this.setCheckedOfId.has(data._id))
   }
 

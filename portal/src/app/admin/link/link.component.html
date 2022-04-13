@@ -20,7 +20,7 @@
       <th nzColumnKey="Created" [nzSortFn]="true">创建时间</th>
       <th nzColumnKey="Last" [nzSortFn]="true">最近上线</th>
       <th>状态</th>
-      <th nzColumnKey="enable" [nzSortFn]="true">启用</th>
+      <th nzColumnKey="disabled" [nzSortFn]="true">禁用</th>
       <th nzWidth="100">操作</th>
     </tr>
     </thead>
@@ -34,7 +34,7 @@
       <td>{{data.last | dateString }}</td>
       <td>{{data.online ? '在线' : '离线'}}</td>
       <td>
-        <nz-switch [(ngModel)]="data.enable" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
+        <nz-switch [(ngModel)]="data.disabled" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
       </td>
       <td>
         <a [routerLink]="'/admin/link/detail/'+data._id">详情</a>

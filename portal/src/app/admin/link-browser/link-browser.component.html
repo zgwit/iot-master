@@ -23,12 +23,12 @@
       <th nzColumnKey="_id" [nzSortFn]="true">创建时间</th>
       <th nzColumnKey="last" [nzSortFn]="true">最近上线</th>
       <th>状态</th>
-      <th nzColumnKey="enable" [nzSortFn]="true">启用</th>
+      <th nzColumnKey="disabled" [nzSortFn]="true">禁用</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let data of datum; let i=index" (click)="onItemClick(data)">
-      <td [nzChecked]="setCheckedOfId.has(data._id)" [nzDisabled]="!data.enable"
+      <td [nzChecked]="setCheckedOfId.has(data._id)" [nzDisabled]="!data.disabled"
           (nzCheckedChange)="onItemChecked(data._id, $event)"
       ></td>
       <td>{{ data.tunnel?.name }}</td>
@@ -38,7 +38,7 @@
       <td>{{data.created | fromNow}}</td>
       <td>{{data.last | date:'short'}}</td>
       <td>{{data.online ? '在线' : '离线'}}</td>
-      <td>{{data.enable ? '√' : '×'}}</td>
+      <td>{{data.disabled ? '√' : '×'}}</td>
     </tr>
     </tbody>
   </nz-table>

@@ -17,7 +17,7 @@
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="_id" [nzSortFn]="true">创建时间</th>
       <th>状态</th>
-      <th nzColumnKey="enable" [nzSortFn]="true">启用</th>
+      <th nzColumnKey="disabled" [nzSortFn]="true">禁用</th>
       <th nzWidth="100">操作</th>
     </tr>
     </thead>
@@ -35,7 +35,7 @@
         <span *ngIf="!data.online">离线</span>
       </td>
       <td>
-        <nz-switch [(ngModel)]="data.enable" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
+        <nz-switch [(ngModel)]="data.disabled" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
       </td>
       <td>
         <a [routerLink]="'/admin/project/detail/'+data._id">详情</a>

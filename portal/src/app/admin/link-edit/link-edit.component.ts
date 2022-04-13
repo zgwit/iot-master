@@ -18,7 +18,7 @@ export class LinkEditComponent implements OnInit {
   data: any = {
     "name": "",
     "timeout": 60,
-    "enable": true,
+    "disabled": true,
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private rs: RequestService, private message: NzMessageService) {
@@ -32,7 +32,7 @@ export class LinkEditComponent implements OnInit {
       name: [this.data.name, [Validators.required]],
       company_id: [this.data.company_id, []],
       timeout: [this.data.timeout, [Validators.required]],
-      enable: [this.data.enable, [Validators.required]],
+      disabled: [this.data.disabled, [Validators.required]],
     });
   }
 
