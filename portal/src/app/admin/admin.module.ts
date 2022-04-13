@@ -98,6 +98,7 @@ import {AlarmComponent} from "./alarm/alarm.component";
 import {UserDetailComponent} from "./user-detail/user-detail.component";
 import {TemplateBrowserComponent} from "./template-browser/template-browser.component";
 import {ChooseTemplateComponent} from "./choose-template/choose-template.component";
+import {EditVariablesComponent} from "./edit-variables/edit-variables.component";
 
 @NgModule({
   declarations: [
@@ -119,7 +120,7 @@ import {ChooseTemplateComponent} from "./choose-template/choose-template.compone
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
     EditMappingComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
-    EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
+    EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent, EditVariablesComponent,
     EventComponent, AlarmComponent,
     PluginComponent,
     ProtocolComponent,

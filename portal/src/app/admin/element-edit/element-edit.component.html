@@ -57,24 +57,23 @@
 
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="变量">
+    <nz-collapse-panel nzHeader="变量" nzActive>
       <app-edit-variables formControlName="variables"></app-edit-variables>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="数据点">
+    <nz-collapse-panel nzHeader="数据点" nzActive>
       <app-edit-mapping formControlName="data_points"></app-edit-mapping>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="定时采集">
+    <nz-collapse-panel nzHeader="定时采集" nzActive>
       <app-edit-pollers formControlName="collectors"></app-edit-pollers>
     </nz-collapse-panel>
 
-
-    <nz-collapse-panel nzHeader="控制命令">
+    <nz-collapse-panel nzHeader="控制命令" nzActive>
       <app-edit-commands formControlName="commands"></app-edit-commands>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="定时脚本">
+    <nz-collapse-panel nzHeader="定时任务" nzActive>
       <app-edit-jobs formControlName="jobs"></app-edit-jobs>
     </nz-collapse-panel>
 
