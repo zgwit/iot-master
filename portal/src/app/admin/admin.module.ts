@@ -84,6 +84,8 @@ import {EditRegisterComponent} from "./edit-register/edit-register.component";
 import {EditHeartbeatComponent} from "./edit-heartbeat/edit-heartbeat.component";
 import {EditProtocolComponent} from "./edit-protocol/edit-protocol.component";
 import {TunnelEditDevicesComponent} from "./tunnel-edit-devices/tunnel-edit-devices.component";
+import {EventComponent} from "./event/event.component";
+import {LinkDeviceComponent} from "./link-device/link-device.component";
 
 @NgModule({
   declarations: [
@@ -95,13 +97,14 @@ import {TunnelEditDevicesComponent} from "./tunnel-edit-devices/tunnel-edit-devi
     HomeComponent,
     TunnelComponent, TunnelDetailComponent, TunnelEditComponent,
     EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent, TunnelEditDevicesComponent,
-    LinkComponent, LinkDetailComponent, LinkEditComponent,
+    LinkComponent, LinkDetailComponent, LinkEditComponent, LinkDeviceComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
     ElementComponent, ElementDetailComponent, ElementEditComponent,
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     EditMappingComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
+    EventComponent,
     PluginComponent,
     ProtocolComponent,
     SettingComponent,

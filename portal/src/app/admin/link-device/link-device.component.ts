@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {Router} from "@angular/router";
 import {RequestService} from "../../request.service";
@@ -6,11 +6,13 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import {parseTableQuery} from "../table";
 
 @Component({
-  selector: 'app-link',
-  templateUrl: './link.component.html',
-  styleUrls: ['./link.component.scss']
+  selector: 'app-link-device',
+  templateUrl: './link-device.component.html',
+  styleUrls: ['./link-device.component.scss']
 })
-export class LinkComponent implements OnInit {
+export class LinkDeviceComponent implements OnInit {
+  @Input() _id = '';
+
   datum: any[] = [];
 
   loading = false;
@@ -21,7 +23,6 @@ export class LinkComponent implements OnInit {
   params: any = {filter: {}};
 
   constructor(private router: Router, private rs: RequestService, private ms: NzModalService) {
-
   }
 
   ngOnInit(): void {
@@ -32,7 +33,7 @@ export class LinkComponent implements OnInit {
     this.pageIndex = 1;
     this.params.skip = 0;
     if (keyword)
-      this.params.filter.$or = [{name: {$regex: keyword}}, {sn: {$regex: keyword}}];
+      this.params.filter.$or = [{name: {$regex: keyword}}, {type: {$regex: keyword}}];
     else
       delete this.params.filter.$or;
     this.load();
@@ -45,7 +46,8 @@ export class LinkComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.post('link/list', this.params).subscribe(res => {
+    this.params.filter.link_id = this._id;
+    this.rs.post('device/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
       this.total = res.total;
@@ -55,22 +57,22 @@ export class LinkComponent implements OnInit {
   }
 
   create(): void {
-    this.router.navigate(["admin/link/create"]);
+    this.router.navigate(["admin/device/create"], {queryParams: {link_id: this._id}});
   }
 
   open(data: any): void {
-    this.router.navigate(['/admin/link/detail/' + data._id]);
+    this.router.navigate(['/admin/device/detail/' + data._id]);
   }
 
   remove(data: any, i: number) {
-    this.rs.delete(`link/${data._id}/delete`).subscribe(res => {
+    this.rs.delete(`device/${data._id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
 
   onEnableChange(data: any, enable: boolean) {
     if (enable) {
-      this.rs.post(`link/${data._id}/setting`, {enable}).subscribe(res => {
+      this.rs.post(`device/${data._id}/setting`, {enable}).subscribe(res => {
       });
       return;
     }
@@ -78,7 +80,7 @@ export class LinkComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk:()=>{
-        this.rs.post(`link/${data._id}/setting`, {enable}).subscribe(res => {
+        this.rs.post(`device/${data._id}/setting`, {enable}).subscribe(res => {
         });
       },
       nzOnCancel:()=>{
