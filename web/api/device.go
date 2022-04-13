@@ -6,12 +6,16 @@ import (
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3/q"
 	"golang.org/x/net/websocket"
 )
 
 func deviceRoutes(app *gin.RouterGroup) {
 	app.POST("list", deviceList)
 	app.POST("create", deviceCreate)
+
+	app.GET("event/clear", deviceEventClearAll)
+	app.GET("alarm/clear", deviceAlarmClearAll)
 
 	app.Use(parseParamId)
 	app.POST(":id/update", deviceUpdate)
@@ -21,7 +25,10 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", deviceEnable)
 	app.GET(":id/disable", deviceDisable)
 	app.GET(":id/watch", deviceWatch)
-
+	app.GET(":id/event", deviceEvent)
+	app.GET(":id/event/clear", deviceEventClear)
+	app.GET(":id/alarm", deviceAlarm)
+	app.GET(":id/event/clear", deviceAlarmClear)
 }
 
 func deviceList(ctx *gin.Context) {
@@ -217,4 +224,63 @@ func deviceWatch(ctx *gin.Context) {
 	websocket.Handler(func(ws *websocket.Conn) {
 		watchAllEvents(ws, device)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
+}
+
+func deviceEvent(ctx *gin.Context) {
+	events, cnt, err := normalSearchById(ctx, database.History, "DeviceID", ctx.GetInt("id"), &model.DeviceEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyList(ctx, events, cnt)
+}
+
+func deviceEventClear(ctx *gin.Context) {
+	err := database.History.Select(q.Eq("DeviceID", ctx.GetInt("id"))).Delete(&model.DeviceEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+func deviceEventClearAll(ctx *gin.Context) {
+	err := database.History.Drop(&model.DeviceEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+func deviceAlarm(ctx *gin.Context) {
+	alarms, cnt, err := normalSearchById(ctx, database.History, "DeviceID", ctx.GetInt("id"), &model.DeviceAlarm{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyList(ctx, alarms, cnt)
+}
+
+func deviceAlarmClear(ctx *gin.Context) {
+	err := database.History.Select(q.Eq("DeviceID", ctx.GetInt("id"))).Delete(&model.DeviceAlarm{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+
+func deviceAlarmClearAll(ctx *gin.Context) {
+	err := database.History.Drop(&model.DeviceAlarm{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
 }

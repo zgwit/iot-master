@@ -5,12 +5,16 @@ import (
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3/q"
 	"golang.org/x/net/websocket"
 )
 
 func projectRoutes(app *gin.RouterGroup) {
 	app.POST("list", projectList)
 	app.POST("create", projectCreate)
+
+	app.GET("event/clear", projectEventClearAll)
+	app.GET("alarm/clear", projectAlarmClearAll)
 
 	app.Use(parseParamId)
 	app.POST(":id/update", projectUpdate)
@@ -20,6 +24,10 @@ func projectRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", projectEnable)
 	app.GET(":id/disable", projectDisable)
 	app.GET(":id/watch", projectWatch)
+	app.GET(":id/event", projectEvent)
+	app.GET(":id/event/clear", projectEventClear)
+	app.GET(":id/alarm", projectAlarm)
+	app.GET(":id/event/clear", projectAlarmClear)
 
 }
 
@@ -114,7 +122,6 @@ func projectStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-
 func projectEnable(ctx *gin.Context) {
 	err := database.Master.UpdateField(&model.Project{ID: ctx.GetInt("id")}, "Disabled", false)
 	if err != nil {
@@ -144,4 +151,63 @@ func projectWatch(ctx *gin.Context) {
 	websocket.Handler(func(ws *websocket.Conn) {
 		watchAllEvents(ws, project)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
+}
+
+func projectEvent(ctx *gin.Context) {
+	events, cnt, err := normalSearchById(ctx, database.History, "ProjectID", ctx.GetInt("id"), &model.ProjectEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyList(ctx, events, cnt)
+}
+
+func projectEventClear(ctx *gin.Context) {
+	err := database.History.Select(q.Eq("ProjectID", ctx.GetInt("id"))).Delete(&model.ProjectEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+func projectEventClearAll(ctx *gin.Context) {
+	err := database.History.Drop(&model.ProjectEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+func projectAlarm(ctx *gin.Context) {
+	alarms, cnt, err := normalSearchById(ctx, database.History, "ProjectID", ctx.GetInt("id"), &model.ProjectAlarm{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyList(ctx, alarms, cnt)
+}
+
+func projectAlarmClear(ctx *gin.Context) {
+	err := database.History.Select(q.Eq("ProjectID", ctx.GetInt("id"))).Delete(&model.ProjectAlarm{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+
+func projectAlarmClearAll(ctx *gin.Context) {
+	err := database.History.Drop(&model.ProjectAlarm{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
 }

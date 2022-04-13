@@ -93,7 +93,7 @@ func nop(ctx *gin.Context) {
 	ctx.String(http.StatusForbidden, "Unsupported")
 }
 
-func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (interface{}, int, error) {
+func normalSearch(ctx *gin.Context, store storm.Node, mod interface{}) (interface{}, int, error) {
 	var body paramSearchEx
 	err := ctx.ShouldBindJSON(&body)
 	if err != nil {
@@ -127,11 +127,10 @@ func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (interface
 	query := store.Select(cond...)
 
 	//查询总数
-	cnt, err := query.Count(to)
+	cnt, err := query.Count(mod)
 	if err != nil {
 		return nil, 0, err
 	}
-	//cnt := 0
 
 	//分页
 	query = query.Skip(body.Skip).Limit(body.Limit)
@@ -150,8 +149,73 @@ func normalSearch(ctx *gin.Context, store storm.Node, to interface{}) (interface
 	}
 
 	//查询
-	//res := reflect.MakeSlice(reflect.TypeOf(to), 0, body.Length).Interface()
-	res := reflect.New(reflect.SliceOf(reflect.TypeOf(to))).Interface()
+	res := reflect.New(reflect.SliceOf(reflect.TypeOf(mod))).Interface()
+	err = query.Find(res)
+	if err != nil && err != storm.ErrNotFound {
+		return nil, cnt, err
+	}
+
+	return res, cnt, nil
+}
+
+func normalSearchById(ctx *gin.Context, store storm.Node, field string, value interface{},  mod interface{}) (interface{}, int, error) {
+	var body paramSearchEx
+	err := ctx.ShouldBindJSON(&body)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	cond := make([]q.Matcher, 0)
+	cond = append(cond, q.Eq(field, value))
+
+	//过滤
+	for k, v := range body.Filters {
+		if len(v) > 0 {
+			if len(v) == 1 {
+				cond = append(cond, q.Eq(k, v[0]))
+			} else {
+				cond = append(cond, q.In(k, v))
+			}
+		}
+	}
+
+	//关键字搜索
+	kws := make([]q.Matcher, 0)
+	for k, v := range body.Keywords {
+		if v != "" {
+			kws = append(kws, q.Re(k, v))
+		}
+	}
+	if len(kws) > 0 {
+		cond = append(cond, q.Or(kws...))
+	}
+
+	query := store.Select(cond...)
+
+	//查询总数
+	cnt, err := query.Count(mod)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	//分页
+	query = query.Skip(body.Skip).Limit(body.Limit)
+
+	//排序
+	if len(body.Sort) > 0 {
+		for k, v := range body.Sort {
+			if v > 0 {
+				query = query.OrderBy(k)
+			} else {
+				query = query.OrderBy(k).Reverse()
+			}
+		}
+	} else {
+		query = query.OrderBy("ID").Reverse()
+	}
+
+	//查询
+	res := reflect.New(reflect.SliceOf(reflect.TypeOf(mod))).Interface()
 	err = query.Find(res)
 	if err != nil && err != storm.ErrNotFound {
 		return nil, cnt, err
