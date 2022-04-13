@@ -47,34 +47,10 @@ type ProjectDevice struct {
 	Name string `json:"name"` //编程名
 }
 
-//ProjectHistory 项目历史
-type ProjectHistory struct {
+//ProjectEvent 项目历史
+type ProjectEvent struct {
 	ID        int       `json:"id" storm:"id,increment"`
 	ProjectID int       `json:"project_id"`
-	History   string    `json:"history"`
+	Event     string    `json:"event"`
 	Created   time.Time `json:"created" storm:"created"`
-}
-
-//ProjectHistoryAlarm 项目历史告警
-type ProjectHistoryAlarm struct {
-	ProjectHistory `storm:"inline"`
-	ProjectAlarm   `storm:"inline"`
-}
-
-//ProjectHistoryStrategy 项目历史响应
-type ProjectHistoryStrategy struct {
-	ProjectHistory `storm:"inline"`
-	Name           string `json:"name"`
-}
-
-//ProjectHistoryJob 项目历史任务
-type ProjectHistoryJob struct {
-	ProjectHistory `storm:"inline"`
-	Job            string `json:"job"`
-}
-
-//ProjectHistoryTimer 设备定时任务
-type ProjectHistoryTimer struct {
-	ProjectHistory `storm:"inline"`
-	TimerID        int `json:"timer_id" storm:"index"`
 }

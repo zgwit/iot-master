@@ -11,13 +11,16 @@ type Alarm struct {
 
 //DeviceAlarm 设备告警
 type DeviceAlarm struct {
-	Alarm
-	DeviceID int       `json:"device_id"`
-	Created  time.Time `json:"time"`
+	ID       int `json:"id" storm:"id,increment"`
+	DeviceID int `json:"device_id" storm:"index"`
+	Alarm    `storm:"inline"`
+	Created  time.Time `json:"created"`
 }
 
 //ProjectAlarm 项目告警
 type ProjectAlarm struct {
-	DeviceAlarm
-	ProjectID int `json:"project_id"`
+	ID        int `json:"id" storm:"id,increment"`
+	ProjectID int `json:"project_id" storm:"index"`
+	Alarm     `storm:"inline"`
+	Created   time.Time `json:"created"`
 }

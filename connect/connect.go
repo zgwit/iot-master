@@ -30,28 +30,28 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 	}
 
 	tnl.On("open", func() {
-		_ = database.History.Save(model.TunnelHistory{
+		_ = database.History.Save(model.TunnelEvent{
 			TunnelID: tunnel.ID,
-			History:  "open",
+			Event:    "打开",
 		})
 	})
 
 	tnl.On("close", func() {
-		_ = database.History.Save(model.TunnelHistory{
+		_ = database.History.Save(model.TunnelEvent{
 			TunnelID: tunnel.ID,
-			History:  "close",
+			Event:    "关闭",
 		})
 	})
 
 	tnl.On("link", func(conn Link) {
-		_ = database.History.Save(model.LinkHistory{
-			LinkID:  conn.ID(),
-			History: "online",
+		_ = database.History.Save(model.LinkEvent{
+			LinkID: conn.ID(),
+			Event:  "上线",
 		})
 		conn.Once("close", func() {
-			_ = database.History.Save(model.LinkHistory{
-				LinkID:  conn.ID(),
-				History: "offline",
+			_ = database.History.Save(model.LinkEvent{
+				LinkID: conn.ID(),
+				Event:  "离线",
 			})
 		})
 	})

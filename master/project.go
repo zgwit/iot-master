@@ -10,7 +10,6 @@ import (
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/storm/v3"
 	"strings"
-	"time"
 )
 
 //ProjectDevice 项目的设备
@@ -70,7 +69,6 @@ type Project struct {
 	aggregators []aggregator.Aggregator
 	jobs        []*Job
 	strategies  []*Strategy
-	timers      []*Timer
 
 	deviceNameIndex map[string]*Device
 	deviceIDIndex   map[int]*Device
@@ -86,7 +84,6 @@ func NewProject(m *model.Project) (*Project, error) {
 		aggregators:     make([]aggregator.Aggregator, 0),
 		jobs:            make([]*Job, 0),
 		strategies:      make([]*Strategy, 0),
-		timers:          make([]*Timer, 0),
 		deviceNameIndex: make(map[string]*Device),
 		deviceIDIndex:   make(map[int]*Device),
 	}
@@ -102,7 +99,6 @@ func NewProject(m *model.Project) (*Project, error) {
 		}
 		prj.ProjectContent = template.ProjectContent
 	}
-
 
 	err := prj.initDevices()
 	if err != nil {
@@ -125,11 +121,6 @@ func NewProject(m *model.Project) (*Project, error) {
 	}
 
 	err = prj.initStrategies()
-	if err != nil {
-		return nil, err
-	}
-
-	err = prj.initTimers()
 	if err != nil {
 		return nil, err
 	}
@@ -195,13 +186,7 @@ func (prj *Project) initJobs() error {
 			}
 
 			//日志
-			_ = database.History.Save(model.ProjectHistoryJob{
-				ProjectHistory: model.ProjectHistory{
-					ProjectID: prj.ID,
-					History:   "action",
-				},
-				Job: job.String(),
-			})
+			prj.createEvent("执行定时任务：" + job.String())
 		})
 		prj.jobs = append(prj.jobs, job)
 	}
@@ -215,22 +200,13 @@ func (prj *Project) initStrategies() error {
 	for _, v := range prj.Strategies {
 		strategy := &Strategy{Strategy: *v}
 		strategy.On("alarm", func(alarm *model.Alarm) {
-			pa := &model.ProjectAlarm{
-				DeviceAlarm: model.DeviceAlarm{
-					Alarm:   *alarm,
-					Created: time.Now(),
-				},
-				ProjectID: prj.ID,
-			}
+			pa := &model.ProjectAlarm{ProjectID: prj.ID, Alarm: *alarm}
 
 			//入库
-			_ = database.History.Save(model.ProjectHistoryAlarm{
-				ProjectHistory: model.ProjectHistory{
-					ProjectID: prj.ID,
-					History:   "action",
-				},
-				ProjectAlarm: *pa,
-			})
+			_ = database.History.Save(pa)
+
+			//事件
+			prj.createEvent("告警：" + alarm.Message)
 
 			//上报
 			prj.Emit("alarm", pa)
@@ -245,58 +221,10 @@ func (prj *Project) initStrategies() error {
 			}
 
 			//保存历史
-			history := model.ProjectHistoryStrategy{
-				ProjectHistory: model.ProjectHistory{
-					ProjectID: prj.ID,
-					History:   "action",
-					Created:   time.Now(),
-				},
-				Name: strategy.Name,
-			}
-			if history.Name == "" {
-				history.Name = strategy.Condition
-			}
-			_ = database.History.Save(history)
+			prj.createEvent("执行控制策略：" + strategy.Name)
 		})
 		prj.strategies = append(prj.strategies, strategy)
 	}
-	return nil
-}
-
-func (prj *Project) initTimers() error {
-	var timers []model.ProjectTimer
-	err := database.Master.Find("Disabled", false, &timers)
-
-	if err != storm.ErrNotFound {
-		return nil
-	} else if err != nil {
-		return err
-	}
-
-	for _, t := range timers {
-		timer := &Timer{Timer: t.Timer}
-		prj.timers = append(prj.timers, timer)
-
-		timer.On("invoke", func() {
-			var err error
-			for _, invoke := range timer.Invokes {
-				err = prj.execute(&invoke)
-				if err != nil {
-					prj.Emit("error", err)
-				}
-			}
-
-			//日志
-			_ = database.History.Save(model.ProjectHistoryTimer{
-				ProjectHistory: model.ProjectHistory{
-					ProjectID: prj.ID,
-					History:   "action",
-				},
-				TimerID: timer.ID,
-			})
-		})
-	}
-
 	return nil
 }
 
@@ -325,13 +253,10 @@ func (prj *Project) initHandler() error {
 
 	//设备告警的处理函数
 	prj.deviceAlarmHandler = func(alarm *model.DeviceAlarm) {
-		pa := &model.ProjectAlarm{
-			DeviceAlarm: *alarm,
-			ProjectID:   prj.ID,
-		}
+		pa := &model.ProjectAlarm{ProjectID: prj.ID, Alarm: alarm.Alarm}
 
 		//历史入库
-		_ = database.History.Save(model.ProjectHistoryAlarm{ProjectHistory: model.ProjectHistory{ProjectID: prj.ID, History: "", Created: time.Now()}, ProjectAlarm: *pa})
+		_ = database.History.Save(pa)
 
 		//上报
 		prj.Emit("alarm", pa)
@@ -352,9 +277,13 @@ func (prj *Project) initHandler() error {
 	return nil
 }
 
+func (prj *Project) createEvent(event string) {
+	_ = database.History.Save(model.ProjectEvent{ProjectID: prj.ID, Event: event})
+}
+
 //Start 项目启动
 func (prj *Project) Start() error {
-	_ = database.History.Save(model.ProjectHistory{ProjectID: prj.ID, History: "start"})
+	prj.createEvent("启动")
 
 	//订阅设备的数据变化和报警
 	for _, dev := range prj.Devices {
@@ -374,7 +303,7 @@ func (prj *Project) Start() error {
 
 //Stop 项目结束
 func (prj *Project) Stop() error {
-	_ = database.History.Save(model.ProjectHistory{ProjectID: prj.ID, History: "stop", Created: time.Now()})
+	prj.createEvent("关闭")
 
 	for _, dev := range prj.Devices {
 		dev.device.Off("data", prj.deviceDataHandler)

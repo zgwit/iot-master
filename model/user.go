@@ -25,10 +25,10 @@ type Password struct {
 	Password string `json:"password"`
 }
 
-//UserHistory 用户行为
-type UserHistory struct {
+//UserEvent 用户行为
+type UserEvent struct {
 	ID      int       `json:"id" storm:"id,increment"`
 	UserID  int       `json:"user_id"`
-	History string    `json:"history"`
+	Event   string    `json:"event"`
 	Created time.Time `json:"created" storm:"created"`
 }

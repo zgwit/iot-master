@@ -12,10 +12,10 @@ type Link struct {
 	Created  time.Time `json:"created" storm:"created"`
 }
 
-//LinkHistory 链接历史
-type LinkHistory struct {
+//LinkEvent 链接历史
+type LinkEvent struct {
 	ID      int       `json:"id" storm:"id,increment"`
 	LinkID  int       `json:"link_id" storm:"index"`
-	History string    `json:"history"`
+	Event   string    `json:"event"`
 	Created time.Time `json:"created" storm:"created"`
 }

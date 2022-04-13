@@ -21,7 +21,6 @@ type Device struct {
 	pollers    []*Poller
 	strategies []*Strategy
 	jobs       []*Job
-	timers     []*Timer
 
 	//命令索引
 	commandIndex map[string]*model.Command
@@ -41,7 +40,6 @@ func NewDevice(m *model.Device) (*Device, error) {
 		pollers:    make([]*Poller, 0),
 		strategies: make([]*Strategy, 0),
 		jobs:       make([]*Job, 0),
-		timers:     make([]*Timer, 0),
 	}
 
 	//加载模板
@@ -77,11 +75,6 @@ func NewDevice(m *model.Device) (*Device, error) {
 	}
 
 	err = dev.initStrategies()
-	if err != nil {
-		return nil, err
-	}
-
-	err = dev.LoadTimers()
 	if err != nil {
 		return nil, err
 	}
@@ -169,19 +162,12 @@ func (dev *Device) initJobs() error {
 			}
 
 			//日志
-			_ = database.History.Save(model.DeviceHistoryJob{
-				DeviceHistory: model.DeviceHistory{
-					DeviceID: dev.ID,
-					History:  "action",
-				},
-				Job: job.String(),
-			})
+			dev.createEvent("执行任务：" + job.String())
 		})
 		dev.jobs = append(dev.jobs, job)
 	}
 	return nil
 }
-
 func (dev *Device) initStrategies() error {
 	if dev.Strategies == nil {
 		return nil
@@ -189,22 +175,11 @@ func (dev *Device) initStrategies() error {
 	for _, v := range dev.Strategies {
 		strategy := &Strategy{Strategy: *v}
 		strategy.On("alarm", func(alarm *model.Alarm) {
-			da := &model.DeviceAlarm{
-				Alarm:    *alarm,
-				DeviceID: dev.ID,
-				Created:  time.Now(),
-			}
+			da := &model.DeviceAlarm{DeviceID: dev.ID, Alarm: *alarm}
 
 			//入库
-			_ = database.History.Save(model.DeviceHistoryAlarm{
-				DeviceHistory: model.DeviceHistory{
-					DeviceID: dev.ID,
-					History:  "action",
-				},
-				Code:    alarm.Code,
-				Level:   alarm.Level,
-				Message: alarm.Message,
-			})
+			_ = database.History.Save(da)
+			dev.createEvent("告警：" + alarm.Message)
 
 			//上报
 			dev.Emit("alarm", da)
@@ -219,58 +194,10 @@ func (dev *Device) initStrategies() error {
 			}
 
 			//保存历史
-			history := model.DeviceHistoryReactor{
-				DeviceHistory: model.DeviceHistory{
-					DeviceID: dev.ID,
-					History:  "action",
-					Created:  time.Now(),
-				},
-				Name: strategy.Name,
-			}
-			if history.Name == "" {
-				history.Name = strategy.Condition
-			}
-			_ = database.History.Save(history)
+			dev.createEvent("执行策略：" + strategy.Name)
 		})
 		dev.strategies = append(dev.strategies, strategy)
 	}
-	return nil
-}
-
-func (dev *Device) LoadTimers() error {
-	var timers []model.DeviceTimer
-	err := database.Master.Find("Disabled", false, &timers)
-
-	if err != storm.ErrNotFound {
-		return nil
-	} else if err != nil {
-		return err
-	}
-
-	for _, t := range timers {
-		timer := &Timer{Timer: t.Timer}
-		dev.timers = append(dev.timers, timer)
-
-		timer.On("invoke", func() {
-			var err error
-			for _, invoke := range timer.Invokes {
-				err = dev.Execute(invoke.Command, invoke.Argv)
-				if err != nil {
-					dev.Emit("error", err)
-				}
-			}
-
-			//日志
-			_ = database.History.Save(model.DeviceHistoryTimer{
-				DeviceHistory: model.DeviceHistory{
-					DeviceID: dev.ID,
-					History:  "action",
-				},
-				TimerID: timer.ID,
-			})
-		})
-	}
-
 	return nil
 }
 
@@ -285,9 +212,13 @@ func (dev *Device) initCalculators() error {
 	return nil
 }
 
+func (dev *Device) createEvent(event string) {
+	_ = database.History.Save(model.DeviceEvent{DeviceID: dev.ID, Event: event})
+}
+
 //Start 设备启动
 func (dev *Device) Start() error {
-	_ = database.History.Save(model.DeviceHistory{DeviceID: dev.ID, History: "start", Created: time.Now()})
+	dev.createEvent("启动")
 
 	//采集器
 	for _, poller := range dev.pollers {
@@ -303,19 +234,12 @@ func (dev *Device) Start() error {
 			return err
 		}
 	}
-	//用户定时任务
-	for _, timer := range dev.timers {
-		err := timer.Start()
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
 //Stop 结束设备
 func (dev *Device) Stop() error {
-	_ = database.History.Save(model.DeviceHistory{DeviceID: dev.ID, History: "stop"})
+	dev.createEvent("关闭")
 
 	for _, poller := range dev.pollers {
 		poller.Stop()
@@ -323,23 +247,12 @@ func (dev *Device) Stop() error {
 	for _, job := range dev.jobs {
 		job.Stop()
 	}
-	for _, timer := range dev.timers {
-		timer.Stop()
-	}
 	return nil
 }
 
 //Execute 执行命令
 func (dev *Device) Execute(command string, argv []float64) error {
-	_ = database.History.Save(model.DeviceHistoryCommand{
-		DeviceHistory: model.DeviceHistory{
-			DeviceID: dev.ID,
-			History:  "action",
-			Created:  time.Now(),
-		},
-		Command: command,
-		Argv:    argv,
-	})
+	dev.createEvent("执行：" + command)
 
 	cmd := dev.commandIndex[command]
 	//直接执行

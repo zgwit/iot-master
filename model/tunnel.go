@@ -114,10 +114,10 @@ func (p *HeartBeatPacket) Check(buf []byte) bool {
 	return true
 }
 
-//TunnelHistory 通道历史
-type TunnelHistory struct {
+//TunnelEvent 通道历史
+type TunnelEvent struct {
 	ID       int       `json:"id" storm:"id,increment"`
 	TunnelID int       `json:"tunnel_id"`
-	History  string    `json:"history"`
+	Event    string    `json:"event"`
 	Created  time.Time `json:"created" storm:"created"`
 }
