@@ -25,7 +25,8 @@ func (j *Job) Start() error {
 		hours := j.Clock / 60
 		minutes := j.Clock % 60
 		//TODO 处理weekdays
-		j.job, err = cron.Clock(hours, minutes, func() {
+
+		j.job, err = cron.ClockWithWeekdays(hours, minutes, j.Weekdays, func() {
 			j.Execute()
 		})
 	case "crontab":
