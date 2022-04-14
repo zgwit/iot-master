@@ -17,11 +17,27 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="5">通道</nz-form-label>
+        <nz-form-label [nzSpan]="5">链接</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <app-choose-link formControlName="tunnel_id"></app-choose-link>
+          <app-choose-link formControlName="link_id"></app-choose-link>
         </nz-form-control>
       </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">标签</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',', '，', ';', ' ']" formControlName="tags"
+                     nzSize="small" (ngModelChange)="change()"></nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">图标</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="icon"/>
+        </nz-form-control>
+      </nz-form-item>
+
 
 
       <nz-form-item>

@@ -14,15 +14,20 @@ export class DeviceEditComponent implements OnInit {
   submitting = false;
 
   basicForm: FormGroup = new FormGroup({});
-  jobsArray: FormArray = new FormArray([]);
 
   data: any = {
     "name": "新建设备",
     "element_id": "",
-    "tunnel_id": "",
-    "slave": 1,
-    "location": [],
-    "disabled": true,
+    "link_id": 0,
+    "tags": [],
+    "icon": "",
+    "station": 1,
+    "disabled": false,
+    "points": [],
+    "variables": [],
+    "commands": [],
+    "pollers": [],
+    "jobs": [],
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private rs: RequestService, private message: NzMessageService) {
@@ -35,11 +40,20 @@ export class DeviceEditComponent implements OnInit {
   buildForm(): void {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
+      tags: [this.data.tags, []],
+      icon: [this.data.icon, []],
       element_id: [this.data.element_id, [Validators.required]],
-      tunnel_id: [this.data.tunnel_id, [Validators.required]],
-      slave: [this.data.slave, [Validators.required]],
-      location: [this.data.location, []],
+      link_id: [this.data.link_id, [Validators.required]],
+      station: [this.data.station, [Validators.required]],
+
       disabled: [this.data.disabled, [Validators.required]],
+
+
+      points: [this.data.points || []],
+      variables: [this.data.variables || []],
+      commands: [this.data.commands || []],
+      pollers: [this.data.collectors || []],
+      jobs: [this.data.jobs || []],
     });
   }
 

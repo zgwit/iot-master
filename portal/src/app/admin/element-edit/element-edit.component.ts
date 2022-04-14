@@ -12,25 +12,19 @@ import {NzMessageService} from "ng-zorro-antd/message";
 export class ElementEditComponent implements OnInit {
   id: any;
   submitting = false;
-  protocols: any = [];
-  codes: any = [{name:'请选择协议'}];
 
   basicForm: FormGroup = new FormGroup({});
   data: any = {
     "name": "新建元件",
-    "type": "",
     "tags": [],
-    "image": "",
-    "protocol": "",
+    "icon": "",
     "manufacturer": "",
     "version": "",
-    "data_points": [],
+    "points": [],
     "variables": [],
     "commands": [],
-    "collectors": [],
-    "validators": [],
+    "pollers": [],
     "jobs": [],
-    "scripts": [],
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private rs: RequestService, private message: NzMessageService) {
@@ -42,28 +36,20 @@ export class ElementEditComponent implements OnInit {
   buildForm(): void {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
-      type: [this.data.type, []],
       tags: [this.data.tags, []],
-      image: [this.data.image, []],
-      protocol: [this.data.protocol, []],
+      icon: [this.data.icon, []],
       manufacturer: [this.data.manufacturer, []],
       version: [this.data.version, []],
 
-      data_points: [this.data.data_points || []],
+      points: [this.data.points || []],
       variables: [this.data.variables || []],
       commands: [this.data.commands || []],
-      collectors: [this.data.collectors || []],
-      validators: [this.data.validators || []],
+      pollers: [this.data.collectors || []],
       jobs: [this.data.jobs || []],
-      scripts: [this.data.scripts || []],
     });
   }
 
   ngOnInit(): void {
-    this.rs.get('protocol/list').subscribe(res => {
-      this.protocols = res.data;
-      this._checkCodes();
-    })
   }
 
 
@@ -71,15 +57,6 @@ export class ElementEditComponent implements OnInit {
     this.rs.get('element/' + this.id + '/detail').subscribe(res => {
       this.data = res.data;
       this.buildForm();
-      this._checkCodes();
-    });
-  }
-
-  _checkCodes(): void{
-    this.protocols.forEach((p: any) => {
-      if (p.name === this.data.protocol) {
-        this.codes = p.codes;
-      }
     })
   }
 
@@ -96,15 +73,5 @@ export class ElementEditComponent implements OnInit {
   change() {
     //console.log('change', e)
     this.data = this.basicForm.value;
-  }
-
-  onProtocolChange($event: string) {
-    console.log($event)
-    this.protocols.forEach((p: any) => {
-      if (p.name === $event) {
-        this.codes = p.codes;
-      }
-    })
-
   }
 }
