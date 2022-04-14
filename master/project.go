@@ -89,7 +89,7 @@ func NewProject(m *model.Project) (*Project, error) {
 	}
 
 	//加载模板
-	if prj.TemplateID != 0 {
+	if prj.TemplateID != "" {
 		var template model.Template
 		err := database.Master.One("ID", prj.TemplateID, &template)
 		if err == storm.ErrNotFound {

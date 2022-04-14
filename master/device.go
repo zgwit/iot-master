@@ -43,7 +43,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 	}
 
 	//加载模板
-	if dev.ElementID != 0 {
+	if dev.ElementID != "" {
 		var template model.Element
 		err := database.Master.One("ID", dev.ElementID, &template)
 		if err == storm.ErrNotFound {
