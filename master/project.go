@@ -32,27 +32,15 @@ func hasTag(a, b []string) bool {
 	return false
 }
 
-func (d *ProjectDevice) belongSelector(s *model.Selector) bool {
-	if s.Names != nil {
-		for _, name := range s.Names {
-			if name == d.Name {
-				return true
-			}
+func (d *ProjectDevice) belongTargets(targets []string) bool {
+	for _, target := range targets {
+		if target == d.Name {
+			return true
 		}
-	}
-	if s.IDs != nil {
-		for _, id := range s.IDs {
-			if id == d.ID {
+		for _, tag := range d.device.Tags {
+			//strings.EqualFold
+			if target == tag {
 				return true
-			}
-		}
-	}
-	if s.Tags != nil && len(s.Tags) > 0 && d.device.Tags != nil && len(d.device.Tags) > 0 {
-		for i := len(s.Tags); i >= 0; i-- {
-			for j := len(d.device.Tags); j >= 0; j-- {
-				if strings.EqualFold(s.Tags[i], d.device.Tags[j]) {
-					return true
-				}
 			}
 		}
 	}
@@ -161,7 +149,7 @@ func (prj *Project) initAggregators() error {
 			return err
 		}
 		for _, d := range prj.Devices {
-			if d.belongSelector(&agg.Model().Selector) {
+			if d.belongTargets(agg.Model().Targets) {
 				agg.Push(d.device.Context)
 			}
 		}
@@ -318,7 +306,7 @@ func (prj *Project) Stop() error {
 func (prj *Project) execute(in *model.Invoke) error {
 
 	for _, d := range prj.Devices {
-		if d.belongSelector(&in.Selector) {
+		if d.belongTargets(in.Targets) {
 			err := d.device.Execute(in.Command, in.Argv)
 			if err != nil {
 				return err
