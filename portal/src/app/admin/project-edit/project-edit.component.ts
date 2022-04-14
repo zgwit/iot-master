@@ -23,7 +23,6 @@ export class ProjectEditComponent implements OnInit {
     "variables": [],
     "devices": [],
     "strategies": [],
-    "validators": [],
     "jobs": [],
     "scripts": [],
   }

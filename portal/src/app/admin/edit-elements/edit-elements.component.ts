@@ -1,19 +1,20 @@
 import {Component, forwardRef, OnInit} from '@angular/core';
 import {ControlValueAccessor, FormArray, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
+import {ChooseService} from "../choose.service";
 
 @Component({
-  selector: 'app-edit-calculators',
-  templateUrl: './edit-calculators.component.html',
-  styleUrls: ['./edit-calculators.component.scss'],
+  selector: 'app-edit-elements',
+  templateUrl: './edit-elements.component.html',
+  styleUrls: ['./edit-elements.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => EditCalculatorsComponent),
+      useExisting: forwardRef(() => EditElementsComponent),
       multi: true
     }
   ]
 })
-export class EditCalculatorsComponent implements OnInit, ControlValueAccessor {
+export class EditElementsComponent implements OnInit, ControlValueAccessor {
   onChanged: any = () => {
   }
   onTouched: any = () => {
@@ -23,20 +24,18 @@ export class EditCalculatorsComponent implements OnInit, ControlValueAccessor {
   formGroup = new FormGroup({});
   formArray: FormArray = new FormArray([]);
 
-  constructor(private fb: FormBuilder) {
-  }
+  constructor(private fb: FormBuilder, private cs: ChooseService) { }
 
   ngOnInit(): void {
     this.buildForm();
   }
 
-  buildForm(): void {
+  buildForm(): void{
     this.formGroup = this.fb.group({
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
+          device_id: [d.device_id, [Validators.required]],
           name: [d.name, [Validators.required]],
-          argc: [d.argc, [Validators.required]],
-          script: [d.script, [Validators.required]],
         })
       }))
     })
@@ -44,23 +43,29 @@ export class EditCalculatorsComponent implements OnInit, ControlValueAccessor {
 
   add() {
     this.formArray.push(this.fb.group({
+      device_id: ['', [Validators.required]],
       name: ['', [Validators.required]],
-      argc: [0, [Validators.required]],
-      script: ['', [Validators.required]],
     }))
     //复制controls，让表格可以刷新
     this.formArray.controls = [...this.formArray.controls];
     this.change();
   }
 
-  copy(i: number) {
-    const group = this.formArray.controls[i];
+  addMore() {
+    this.cs.chooseDevice({multiple: true}).subscribe(devices=>{
+      if (devices.length) {
+        devices.forEach((d: string)=>{
+          this.formArray.push(this.fb.group({
+            device_id: [d, [Validators.required]],
+            name: ['', [Validators.required]],
+          }))
+        });
 
-    this.formArray.controls.splice(i, 0, this.fb.group({
-      name: [group.get('name')?.value, [Validators.required]],
-      argc: [group.get('argc')?.value, [Validators.required]],
-      script: [group.get('script')?.value, [Validators.required]],
-    }))
+        //复制controls，让表格可以刷新
+        this.formArray.controls = [...this.formArray.controls];
+        this.change();
+      }
+    })
   }
 
   remove(i: number) {

@@ -19,9 +19,9 @@ export class TemplateEditComponent implements OnInit {
     "name": "新建模板",
     "commands": [],
     "variables": [],
-    "devices": [],
+    "elements": [],
     "strategies": [],
-    "validators": [],
+    "jobs": [],
     "scripts": [],
   }
 
@@ -37,9 +37,9 @@ export class TemplateEditComponent implements OnInit {
 
       commands: [this.data.commands || []],
       variables: [this.data.variables || []],
-      devices: [this.data.devices || []],
+      elements: [this.data.elements || []],
       strategies: [this.data.strategies || []],
-      validators: [this.data.validators || []],
+      jobs: [this.data.jobs || []],
       scripts: [this.data.scripts || []],
     });
   }

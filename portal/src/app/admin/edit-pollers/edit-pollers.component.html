@@ -1,1 +1,59 @@
-<p>edit-pollers works!</p>
+<app-toolbar>
+  <nz-space>
+    <button nz-button *nzSpaceItem nzType="default" (click)="clear()">清空</button>
+    <button nz-button *nzSpaceItem nzType="primary" (click)="add()">添加</button>
+  </nz-space>
+</app-toolbar>
+
+
+<nz-table [nzData]="formArray.controls" [nzFrontPagination]="false" nzSize="small" [formGroup]="formGroup">
+  <thead>
+  <tr>
+    <th>间隔(s)</th>
+    <th>定时</th>
+    <th>功能码</th>
+    <th>地址</th>
+    <th>长度</th>
+    <th>启用</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody formGroupName="items" cdkDropList (cdkDropListDropped)="drop($event)" >
+  <tr *ngFor="let data of formArray.controls; let i=index" [formGroupName]="i" cdkDrag>
+    <td>
+      <nz-input-number formControlName="interval" [nzMin]="1" [nzMax]="65535" [nzStep]="1" nzSize="small" (change)="change()"></nz-input-number>
+    </td>
+    <td>
+      <input nz-input formControlName="crontab" nzSize="small" (change)="change()" required/>
+    </td>
+    <td>
+      <nz-select formControlName="code" nzSize="small" (ngModelChange)="change()" (change)="change()" required style="min-width: 100px">
+        <nz-option *ngFor="let code of codes"
+                   [nzValue]="code.code" [nzLabel]="code.name"></nz-option>
+      </nz-select>
+    </td>
+    <td>
+      <nz-input-number formControlName="address" [nzMin]="0" [nzMax]="65535" [nzStep]="1" nzSize="small" (change)="change()" required></nz-input-number>
+    </td>
+    <td>
+      <nz-input-number formControlName="length" [nzMin]="1" [nzMax]="65535" [nzStep]="1" nzSize="small" (change)="change()" required></nz-input-number>
+    </td>
+    <td>
+      <label nz-checkbox formControlName="enable" (change)="change()" (ngModelChange)="change()"></label>
+    </td>
+    <td>
+      <a cdkDragHandle title="移动">
+        <i nz-icon nzType="drag" nzTheme="outline"></i>
+      </a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a cdkDragHandle title="复制" (click)="copy(i)">
+        <i nz-icon nzType="copy" nzTheme="outline"></i>
+      </a>
+      <nz-divider nzType="vertical"></nz-divider>
+      <a nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="remove(i)" title="删除">
+        <i nz-icon nzType="delete" nzTheme="outline"></i>
+      </a>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>

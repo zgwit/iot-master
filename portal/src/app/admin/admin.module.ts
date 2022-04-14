@@ -102,6 +102,7 @@ import {EditDevicesComponent} from "./edit-devices/edit-devices.component";
 import {ChooseElementComponent} from "./choose-element/choose-element.component";
 import {ChooseDeviceComponent} from "./choose-device/choose-device.component";
 import {ChooseLinkComponent} from "./choose-link/choose-link.component.component";
+import {EditElementsComponent} from "./edit-elements/edit-elements.component";
 
 @NgModule({
   declarations: [
@@ -112,7 +113,8 @@ import {ChooseLinkComponent} from "./choose-link/choose-link.component.component
     DashComponent,
     HomeComponent,
     TunnelComponent, TunnelDetailComponent, TunnelEditComponent,
-    EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent, TunnelEditDevicesComponent,
+    EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent,
+    TunnelEditDevicesComponent,
     LinkComponent, LinkDetailComponent, LinkEditComponent, LinkDeviceComponent,
     LinkBrowserComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
@@ -122,7 +124,8 @@ import {ChooseLinkComponent} from "./choose-link/choose-link.component.component
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
-    EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent, EditDevicesComponent,
+    EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
+    EditDevicesComponent, EditElementsComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
     EventComponent, AlarmComponent,
     PluginComponent,
