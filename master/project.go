@@ -307,7 +307,7 @@ func (prj *Project) execute(in *model.Invoke) error {
 
 	for _, d := range prj.Devices {
 		if d.belongTargets(in.Targets) {
-			err := d.device.Execute(in.Command, in.Argv)
+			err := d.device.Execute(in.Command, in.Arguments)
 			if err != nil {
 				return err
 			}

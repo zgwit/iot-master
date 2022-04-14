@@ -2,6 +2,7 @@ package master
 
 import (
 	"errors"
+	"fmt"
 	"github.com/antonmedv/expr"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/database"
@@ -155,7 +156,7 @@ func (dev *Device) initJobs() error {
 		job.On("invoke", func() {
 			var err error
 			for _, invoke := range job.Invokes {
-				err = dev.Execute(invoke.Command, invoke.Argv)
+				err = dev.Execute(invoke.Command, invoke.Arguments)
 				if err != nil {
 					dev.Emit("error", err)
 				}
@@ -187,7 +188,7 @@ func (dev *Device) initStrategies() error {
 
 		strategy.On("invoke", func() {
 			for _, invoke := range strategy.Invokes {
-				err := dev.Execute(invoke.Command, invoke.Argv)
+				err := dev.Execute(invoke.Command, invoke.Arguments)
 				if err != nil {
 					dev.Emit("error", err)
 				}
@@ -251,21 +252,30 @@ func (dev *Device) Stop() error {
 }
 
 //Execute 执行命令
-func (dev *Device) Execute(command string, argv []float64) error {
+func (dev *Device) Execute(command string, argv []interface{}) error {
 	dev.createEvent("执行：" + command)
 
-	cmd := dev.commandIndex[command]
-	//直接执行
+	cmd, ok := dev.commandIndex[command]
+	if !ok {
+		return fmt.Errorf("找不到命令：%s", command)
+	}
+
+	//参数加入环境变量
+	//优先级：参数 > 表达式 > 初始值
+	env := make(map[string]interface{})
+	for i, v := range argv {
+		env["$"+strconv.Itoa(i)] = v
+	}
+	for k, v := range dev.Context {
+		env[k] = v
+	}
+
+	//执行
 	for _, directive := range cmd.Directives {
 		val := directive.Value
-		//优先级：参数 > 表达式 > 初始值
-		if directive.Arg > 0 {
-			val = argv[directive.Arg-1]
-		} else if directive.Expression != "" {
-			//TODO 参数加入环境变量
-			v, err := expr.Eval(directive.Expression, dev.Context)
+		if directive.Expression != "" {
+			v, err := expr.Eval(directive.Expression, env)
 			if err != nil {
-				//dev.events.Publish("error", err)
 				return err
 			} else {
 				val = v.(float64)
