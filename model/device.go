@@ -7,10 +7,11 @@ import (
 
 //Element 元件
 type Element struct {
-	ID      int    `json:"id" storm:"id,increment"`
-	UUID    string `json:"uuid,omitempty"`
-	Name    string `json:"name"`
-	Version string `json:"version"` //SEMVER
+	ID           int    `json:"id" storm:"id,increment"`
+	UUID         string `json:"uuid,omitempty"`
+	Name         string `json:"name"`
+	Manufacturer string `json:"manufacturer"` //厂家
+	Version      string `json:"version"`      //SEMVER
 
 	DeviceContent `storm:"inline"`
 
@@ -18,8 +19,8 @@ type Element struct {
 }
 
 type DeviceContent struct {
-	Thumbnail string   `json:"thumbnail"`
-	Tags      []string `json:"tags,omitempty"`
+	Icon string   `json:"icon"`
+	Tags []string `json:"tags,omitempty"`
 
 	//从机号
 	//Mapper *Mapping `json:"mapper"` //内存映射
@@ -54,4 +55,14 @@ type DeviceEvent struct {
 	DeviceID int       `json:"device_id" storm:"index"`
 	Event    string    `json:"event"`
 	Created  time.Time `json:"created" storm:"created"`
+}
+
+type DeviceHistory struct {
+	Device   `storm:"inline"`
+	DeviceID int `json:"device_id" storm:"unique"`
+}
+
+type ElementHistory struct {
+	Element   `storm:"inline"`
+	ElementID int `json:"device_id" storm:"unique"`
 }
