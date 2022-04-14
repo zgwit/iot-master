@@ -35,9 +35,9 @@ export class ChooseService {
     return modal.afterClose
   }
 
-  chooseTunnel(params?: any) {
+  chooseLink(params?: any) {
     const modal = this.ms.create({
-      nzTitle: '选择通道',
+      nzTitle: '选择链接',
       nzContent: LinkBrowserComponent,
       nzWidth: '80%',
       nzComponentParams: params,

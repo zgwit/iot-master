@@ -72,7 +72,7 @@ import {TemplateDetailComponent} from "./template-detail/template-detail.compone
 import {TemplateEditComponent} from "./template-edit/template-edit.component";
 import {EditJobsComponent} from "./edit-jobs/edit-jobs.component";
 import {EditPollersComponent} from "./edit-pollers/edit-pollers.component";
-import {EditMappingComponent} from "./edit-mapping/edit-mapping.component";
+import {EditPointsComponent} from "./edit-points/edit-points.component";
 import {EditCalculatorsComponent} from "./edit-calculators/edit-calculators.component";
 import {EditCommandsComponent} from "./edit-commands/edit-commands.component";
 import {EditAggregatorsComponent} from "./edit-aggregators/edit-aggregators.component";
@@ -98,7 +98,10 @@ import {AlarmComponent} from "./alarm/alarm.component";
 import {UserDetailComponent} from "./user-detail/user-detail.component";
 import {TemplateBrowserComponent} from "./template-browser/template-browser.component";
 import {ChooseTemplateComponent} from "./choose-template/choose-template.component";
-import {EditVariablesComponent} from "./edit-variables/edit-variables.component";
+import {EditDevicesComponent} from "./edit-devices/edit-devices.component";
+import {ChooseElementComponent} from "./choose-element/choose-element.component";
+import {ChooseDeviceComponent} from "./choose-device/choose-device.component";
+import {ChooseLinkComponent} from "./choose-link/choose-link.component.component";
 
 @NgModule({
   declarations: [
@@ -119,15 +122,15 @@ import {EditVariablesComponent} from "./edit-variables/edit-variables.component"
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
-    EditMappingComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
-    EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent, EditVariablesComponent,
+    EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent, EditDevicesComponent,
+    EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
     EventComponent, AlarmComponent,
     PluginComponent,
     ProtocolComponent,
     SettingComponent,
     UserComponent, UserBrowserComponent, UserDetailComponent,
     PasswordComponent,
-    PromptComponent, ChooseTemplateComponent,
+    PromptComponent, ChooseTemplateComponent, ChooseElementComponent, ChooseDeviceComponent, ChooseLinkComponent,
   ],
   imports: [
     CommonModule,

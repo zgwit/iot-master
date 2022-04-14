@@ -10,13 +10,6 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="5">类型</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="type"/>
-        </nz-form-control>
-      </nz-form-item>
-
-      <nz-form-item>
         <nz-form-label [nzSpan]="5">标签</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',', '，', ';', ' ']" formControlName="tags"
@@ -27,19 +20,10 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">图片</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="image" required/>
+          <input nz-input formControlName="icon"/>
         </nz-form-control>
       </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label [nzSpan]="5">协议</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <nz-select formControlName="protocol" (ngModelChange)="onProtocolChange($event)">
-            <nz-option *ngFor="let p of protocols"
-                       [nzValue]="p.name" [nzLabel]="p.label || p.name"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">生产厂家</nz-form-label>
@@ -58,17 +42,21 @@
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="变量" nzActive>
-      <app-edit-variables formControlName="variables"></app-edit-variables>
+      <app-yaml-editor formControlName="variables"></app-yaml-editor>
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="数据点" nzActive>
-      <app-edit-mapping formControlName="data_points"></app-edit-mapping>
+      <app-edit-points formControlName="points"></app-edit-points>
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="定时采集" nzActive>
       <app-edit-pollers formControlName="collectors"></app-edit-pollers>
     </nz-collapse-panel>
 
+    <nz-collapse-panel nzHeader="数值计算" nzActive>
+      <app-edit-calculators formControlName="calculators"></app-edit-calculators>
+    </nz-collapse-panel>
+	
     <nz-collapse-panel nzHeader="控制命令" nzActive>
       <app-edit-commands formControlName="commands"></app-edit-commands>
     </nz-collapse-panel>

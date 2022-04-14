@@ -24,23 +24,23 @@
       </nz-form-item>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="参数变量">
-      <app-edit-variables formControlName="variables"></app-edit-variables>
-    </nz-collapse-panel>
-
-    <nz-collapse-panel nzHeader="绑定设备">
+    <nz-collapse-panel nzHeader="绑定设备" nzActive>
       <app-edit-devices formControlName="devices"></app-edit-devices>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="控制命令">
+    <nz-collapse-panel nzHeader="参数变量" nzActive>
+      <app-edit-variables formControlName="variables"></app-edit-variables>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="控制命令" nzActive>
       <app-edit-commands formControlName="commands"></app-edit-commands>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="控制策略">
+    <nz-collapse-panel nzHeader="控制策略" nzActive>
       <app-edit-strategies formControlName="strategies"></app-edit-strategies>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="定时脚本">
+    <nz-collapse-panel nzHeader="定时任务" nzActive>
       <app-edit-jobs formControlName="jobs"></app-edit-jobs>
     </nz-collapse-panel>
 

@@ -4,18 +4,18 @@ import {ChooseService} from "../choose.service";
 import {RequestService} from "../../request.service";
 
 @Component({
-  selector: 'app-choose-tunnel',
-  templateUrl: './choose-tunnel.component.html',
-  styleUrls: ['./choose-tunnel.component.scss'],
+  selector: 'app-choose-link',
+  templateUrl: './choose-link.component.component.html',
+  styleUrls: ['./choose-link.component.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ChooseTunnelComponent),
+      useExisting: forwardRef(() => ChooseLinkComponent),
       multi: true
     }
   ]
 })
-export class ChooseTunnelComponent implements OnInit, ControlValueAccessor {
+export class ChooseLinkComponent implements OnInit, ControlValueAccessor {
   onChanged: any = () => {}
   onTouched: any = () => {}
 
@@ -54,7 +54,7 @@ export class ChooseTunnelComponent implements OnInit, ControlValueAccessor {
   }
 
   choose() {
-    this.cs.chooseTunnel().subscribe(res=>{
+    this.cs.chooseLink().subscribe(res=>{
       if (res){
         this._id = res;
         this.load();

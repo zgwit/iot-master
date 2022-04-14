@@ -19,24 +19,15 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">通道</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <app-choose-tunnel formControlName="tunnel_id"></app-choose-tunnel>
+          <app-choose-link formControlName="tunnel_id"></app-choose-link>
         </nz-form-control>
       </nz-form-item>
 
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="5">从机</nz-form-label>
+        <nz-form-label [nzSpan]="5">从站号</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <!--      <input nz-input formControlName="port" type="number" min="1" max="65535"/>-->
-<!--          <nz-input-number formControlName="slave" [nzMin]="1" [nzMax]="65535" [nzStep]="1"></nz-input-number>-->
-          <app-input-yaml formControlName="slave"></app-input-yaml>
-        </nz-form-control>
-      </nz-form-item>
-
-      <nz-form-item>
-        <nz-form-label [nzSpan]="5">位置</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <app-input-gps formControlName="location"></app-input-gps>
+          <nz-input-number formControlName="station" [nzMin]="1" [nzMax]="65535" [nzStep]="1"></nz-input-number>
         </nz-form-control>
       </nz-form-item>
 
@@ -47,6 +38,30 @@
         </nz-form-control>
       </nz-form-item>
 
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="变量" nzActive>
+      <app-yaml-editor formControlName="variables"></app-yaml-editor>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="数据点" nzActive>
+      <app-edit-points formControlName="points"></app-edit-points>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="定时采集" nzActive>
+      <app-edit-pollers formControlName="collectors"></app-edit-pollers>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="数值计算" nzActive>
+      <app-edit-calculators formControlName="calculators"></app-edit-calculators>
+    </nz-collapse-panel>
+	
+    <nz-collapse-panel nzHeader="控制命令" nzActive>
+      <app-edit-commands formControlName="commands"></app-edit-commands>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="定时任务" nzActive>
+      <app-edit-jobs formControlName="jobs"></app-edit-jobs>
     </nz-collapse-panel>
 
   </nz-collapse>
