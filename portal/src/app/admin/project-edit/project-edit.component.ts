@@ -20,11 +20,11 @@ export class ProjectEditComponent implements OnInit {
     "disabled": false,
     "template_id":"",
     "commands": [],
-    "variables": [],
+    "context": {},
     "devices": [],
     "strategies": [],
     "jobs": [],
-    "scripts": [],
+    "aggregators": [],
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private rs: RequestService, private message: NzMessageService) {
@@ -32,7 +32,7 @@ export class ProjectEditComponent implements OnInit {
     if (this.id) this.load();
     Object.assign(this.data, this.route.snapshot.queryParams);
     if (this.data.device_id) {
-      this.data.devices.push({device_id: this.data.device_id, slave: 1});
+      this.data.devices.push({device_id: this.data.device_id, station: 1});
       delete this.data.device_id;
     }
     this.buildForm();
@@ -45,12 +45,11 @@ export class ProjectEditComponent implements OnInit {
       disabled: [this.data.disabled, [Validators.required]],
 
       commands: [this.data.commands || []],
-      variables: [this.data.variables || []],
+      context: [this.data.variables || {}],
       devices: [this.data.devices || []],
-      strategies: [this.data.strategies || []],
-      validators: [this.data.validators || []],
       jobs: [this.data.jobs || []],
-      scripts: [this.data.scripts || []],
+      strategies: [this.data.strategies || []],
+      aggregators: [this.data.scripts || []],
     });
   }
 
@@ -80,8 +79,4 @@ export class ProjectEditComponent implements OnInit {
     this.data = this.basicForm.value;
   }
 
-  onCompanyChange() {
-    this.basicForm.get("group_id")?.patchValue('');
-    this.change();
-  }
 }

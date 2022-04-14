@@ -18,11 +18,11 @@ export class TemplateEditComponent implements OnInit {
   data: any = {
     "name": "新建模板",
     "commands": [],
-    "variables": [],
+    "context": {},
     "elements": [],
     "strategies": [],
     "jobs": [],
-    "scripts": [],
+    "aggregators": [],
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private rs: RequestService, private message: NzMessageService) {
@@ -36,11 +36,11 @@ export class TemplateEditComponent implements OnInit {
       name: [this.data.name, [Validators.required]],
 
       commands: [this.data.commands || []],
-      variables: [this.data.variables || []],
+      context: [this.data.variables || {}],
       elements: [this.data.elements || []],
-      strategies: [this.data.strategies || []],
       jobs: [this.data.jobs || []],
-      scripts: [this.data.scripts || []],
+      strategies: [this.data.strategies || []],
+      aggregators: [this.data.scripts || []],
     });
   }
 

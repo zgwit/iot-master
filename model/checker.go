@@ -57,7 +57,7 @@ func (dr *DailyChecker) Check() bool {
 
 //DelayChecker 延时检查
 type DelayChecker struct {
-	Delay int64 `json:"delay"`
+	Timeout int64 `json:"timeout"`
 
 	start int64
 }
@@ -69,7 +69,7 @@ func (d *DelayChecker) Reset() {
 
 //Check 检查
 func (d *DelayChecker) Check(now int64) bool {
-	if d.Delay <= 0 {
+	if d.Timeout <= 0 {
 		return true
 	}
 
@@ -78,7 +78,7 @@ func (d *DelayChecker) Check(now int64) bool {
 		return false
 	}
 
-	return d.start+d.Delay < now
+	return d.start+d.Timeout < now
 }
 
 //RepeatChecker 重复发生器

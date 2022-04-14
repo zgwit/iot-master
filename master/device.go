@@ -29,10 +29,6 @@ type Device struct {
 	mapper *Mapper
 }
 
-func (dev *Device) Error() string {
-	panic("implement me")
-}
-
 func NewDevice(m *model.Device) (*Device, error) {
 	dev := &Device{
 		Device:       *m,
@@ -111,7 +107,7 @@ func (dev *Device) initMapper() error {
 			if err != nil {
 				dev.Emit("error", err)
 			} else {
-				dev.Context[calculator.Variable] = val
+				dev.Context[calculator.As] = val
 			}
 		}
 

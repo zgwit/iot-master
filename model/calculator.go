@@ -7,7 +7,7 @@ import (
 //Calculator 计算器
 type Calculator struct {
 	Expression string `json:"expression"`
-	Variable   string `json:"variable"`
+	As         string `json:"as"`
 
 	expr *calc.Expression
 	//ctx  *Context

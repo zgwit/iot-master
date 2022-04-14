@@ -34,9 +34,8 @@ export class EditCalculatorsComponent implements OnInit, ControlValueAccessor {
     this.formGroup = this.fb.group({
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
-          name: [d.name, [Validators.required]],
-          argc: [d.argc, [Validators.required]],
-          script: [d.script, [Validators.required]],
+          as: [d.as, [Validators.required]],
+          expression: [d.expression, [Validators.required]],
         })
       }))
     })
@@ -44,9 +43,8 @@ export class EditCalculatorsComponent implements OnInit, ControlValueAccessor {
 
   add() {
     this.formArray.push(this.fb.group({
-      name: ['', [Validators.required]],
-      argc: [0, [Validators.required]],
-      script: ['', [Validators.required]],
+      as: ['', [Validators.required]],
+      expression: ['', [Validators.required]],
     }))
     //复制controls，让表格可以刷新
     this.formArray.controls = [...this.formArray.controls];
@@ -57,9 +55,8 @@ export class EditCalculatorsComponent implements OnInit, ControlValueAccessor {
     const group = this.formArray.controls[i];
 
     this.formArray.controls.splice(i, 0, this.fb.group({
-      name: [group.get('name')?.value, [Validators.required]],
-      argc: [group.get('argc')?.value, [Validators.required]],
-      script: [group.get('script')?.value, [Validators.required]],
+      as: [group.get('as')?.value, [Validators.required]],
+      expression: [group.get('expression')?.value, [Validators.required]],
     }))
   }
 

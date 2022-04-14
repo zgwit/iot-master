@@ -9,7 +9,7 @@ import (
 var Scheduler *gocron.Scheduler
 
 func init() {
-	Scheduler = gocron.NewScheduler(time.UTC)
+	Scheduler = gocron.NewScheduler(time.Local) // time.UTC
 }
 
 //是否是使用单一协程？？？ 是则要改成协程池？？？

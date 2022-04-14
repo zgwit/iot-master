@@ -14,20 +14,24 @@
       <app-edit-elements formControlName="elements"></app-edit-elements>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="参数变量" nzActive>
-      <app-yaml-editor formControlName="variables"></app-yaml-editor>
+    <nz-collapse-panel nzHeader="上下文" nzActive>
+      <app-yaml-editor formControlName="context"></app-yaml-editor>
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="控制命令" nzActive>
       <app-edit-commands formControlName="commands"></app-edit-commands>
     </nz-collapse-panel>
 
+    <nz-collapse-panel nzHeader="定时任务" nzActive>
+      <app-edit-jobs formControlName="jobs"></app-edit-jobs>
+    </nz-collapse-panel>
+
     <nz-collapse-panel nzHeader="控制策略" nzActive>
       <app-edit-strategies formControlName="strategies"></app-edit-strategies>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="定时任务" nzActive>
-      <app-edit-jobs formControlName="jobs"></app-edit-jobs>
+    <nz-collapse-panel nzHeader="聚合计算" nzActive>
+      <app-edit-aggregators formControlName="aggregators"></app-edit-aggregators>
     </nz-collapse-panel>
 
   </nz-collapse>
