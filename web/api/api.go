@@ -20,6 +20,9 @@ type paramSearchEx struct {
 type paramID struct {
 	ID int `uri:"id"`
 }
+type paramStringID struct {
+	ID string `uri:"id"`
+}
 
 type WatchMessage struct {
 	Event string      `json:"event"`
@@ -40,6 +43,18 @@ func mustLogin(ctx *gin.Context) {
 }
 
 func parseParamId(ctx *gin.Context) {
+	var pid paramID
+	err := ctx.ShouldBindUri(&pid)
+	if err != nil {
+		replyError(ctx, err)
+		ctx.Abort()
+		return
+	}
+	ctx.Set("id", pid.ID)
+	ctx.Next()
+}
+
+func parseParamStringId(ctx *gin.Context) {
 	var pid paramID
 	err := ctx.ShouldBindUri(&pid)
 	if err != nil {
@@ -158,7 +173,7 @@ func normalSearch(ctx *gin.Context, store storm.Node, mod interface{}) (interfac
 	return res, cnt, nil
 }
 
-func normalSearchById(ctx *gin.Context, store storm.Node, field string, value interface{},  mod interface{}) (interface{}, int, error) {
+func normalSearchById(ctx *gin.Context, store storm.Node, field string, value interface{}, mod interface{}) (interface{}, int, error) {
 	var body paramSearchEx
 	err := ctx.ShouldBindJSON(&body)
 	if err != nil {

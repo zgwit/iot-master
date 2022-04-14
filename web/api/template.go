@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 )
@@ -10,7 +11,7 @@ func templateRoutes(app *gin.RouterGroup) {
 	app.POST("list", templateList)
 	app.POST("create", templateCreate)
 
-	app.Use(parseParamId)
+	app.Use(parseParamStringId)
 	app.POST(":id/update", templateUpdate)
 	app.GET(":id/delete", templateDelete)
 
@@ -33,6 +34,9 @@ func templateCreate(ctx *gin.Context) {
 		return
 	}
 
+	//使用UUID作为ID
+	template.ID = uuid.NewString()
+	//保存
 	err = database.Master.Save(&template)
 	if err != nil {
 		replyError(ctx, err)
@@ -49,7 +53,7 @@ func templateUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	template.ID = ctx.GetInt("id")
+	template.ID = ctx.GetString("id")
 
 	err = database.Master.Update(&template)
 	if err != nil {
@@ -61,7 +65,7 @@ func templateUpdate(ctx *gin.Context) {
 }
 
 func templateDelete(ctx *gin.Context) {
-	template := model.Template{ID: ctx.GetInt("id")}
+	template := model.Template{ID: ctx.GetString("id")}
 	err := database.Master.DeleteStruct(&template)
 	if err != nil {
 		replyError(ctx, err)

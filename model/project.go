@@ -6,8 +6,7 @@ import (
 )
 
 type Template struct {
-	ID      int    `json:"id" storm:"id,increment"`
-	UUID    string `json:"uuid,omitempty"`
+	ID      string `json:"id" storm:"id"`
 	Name    string `json:"name"`
 	Version string `json:"version"` //SEMVER
 
@@ -32,7 +31,7 @@ type Project struct {
 	Devices []*ProjectDevice `json:"devices"`
 	//Devices []int `json:"devices"`
 
-	TemplateId     int `json:"template_id,omitempty"`
+	TemplateID     string `json:"template_id,omitempty"`
 	ProjectContent `storm:"inline"`
 
 	Context calc.Context `json:"context"`
@@ -53,4 +52,14 @@ type ProjectEvent struct {
 	ProjectID int       `json:"project_id"`
 	Event     string    `json:"event"`
 	Created   time.Time `json:"created" storm:"created"`
+}
+
+type ProjectHistory struct {
+	Project   `storm:"inline"`
+	ProjectID int `json:"project_id" storm:"index"`
+}
+
+type TemplateHistory struct {
+	Template   `storm:"inline"`
+	TemplateID string `json:"template_id" storm:"index"`
 }

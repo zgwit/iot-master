@@ -89,9 +89,9 @@ func NewProject(m *model.Project) (*Project, error) {
 	}
 
 	//加载模板
-	if prj.TemplateId != 0 {
+	if prj.TemplateID != 0 {
 		var template model.Template
-		err := database.Master.One("ID", prj.TemplateId, &template)
+		err := database.Master.One("ID", prj.TemplateID, &template)
 		if err == storm.ErrNotFound {
 			return nil, errors.New("找不到模板")
 		} else if err != nil {

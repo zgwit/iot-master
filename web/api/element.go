@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 )
@@ -10,7 +11,7 @@ func elementRoutes(app *gin.RouterGroup) {
 	app.POST("list", elementList)
 	app.POST("create", elementCreate)
 
-	app.Use(parseParamId)
+	app.Use(parseParamStringId)
 	app.POST(":id/update", elementUpdate)
 	app.GET(":id/delete", elementDelete)
 
@@ -33,6 +34,9 @@ func elementCreate(ctx *gin.Context) {
 		return
 	}
 
+	//使用UUID作为ID
+	element.ID = uuid.NewString()
+	//保存
 	err = database.Master.Save(&element)
 	if err != nil {
 		replyError(ctx, err)
@@ -49,7 +53,7 @@ func elementUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	element.ID = ctx.GetInt("id")
+	element.ID = ctx.GetString("id")
 
 	err = database.Master.Update(&element)
 	if err != nil {
@@ -61,7 +65,7 @@ func elementUpdate(ctx *gin.Context) {
 }
 
 func elementDelete(ctx *gin.Context) {
-	element := model.Element{ID: ctx.GetInt("id")}
+	element := model.Element{ID: ctx.GetString("id")}
 	err := database.Master.DeleteStruct(&element)
 	if err != nil {
 		replyError(ctx, err)

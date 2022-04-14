@@ -43,9 +43,9 @@ func NewDevice(m *model.Device) (*Device, error) {
 	}
 
 	//加载模板
-	if dev.ElementId != 0 {
+	if dev.ElementID != 0 {
 		var template model.Element
-		err := database.Master.One("ID", dev.ElementId, &template)
+		err := database.Master.One("ID", dev.ElementID, &template)
 		if err == storm.ErrNotFound {
 			return nil, errors.New("找不到模板")
 		} else if err != nil {
@@ -85,7 +85,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 func (dev *Device) initMapper() error {
 	var err error
 	//找到链接，导入协议
-	link := GetLink(dev.LinkId)
+	link := GetLink(dev.LinkID)
 	if link == nil {
 		//TODO error
 		return nil
