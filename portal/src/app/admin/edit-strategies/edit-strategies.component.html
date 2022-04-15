@@ -13,7 +13,7 @@
     <th>条件</th>
     <th>命令</th>
     <th>参数</th>
-    <th>启用</th>
+    <th>禁用</th>
     <th>操作</th>
   </tr>
   </thead>
@@ -32,7 +32,7 @@
       <input nz-input formControlName="parameters" nzSize="small" (change)="change()" required/>
     </td>
     <td>
-      <label nz-checkbox formControlName="enable" (change)="change()" (ngModelChange)="change()"></label>
+      <label nz-checkbox formControlName="disabled" (change)="change()" (ngModelChange)="change()"></label>
     </td>
     <td>
       <a cdkDragHandle title="移动">

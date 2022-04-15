@@ -37,7 +37,7 @@ export class EditStrategiesComponent implements OnInit, ControlValueAccessor {
           condition: [d.condition, [Validators.required]],
           command: [d.command, [Validators.required]],
           parameters: [d.parameters, [Validators.required]],
-          enable: [d.enable, [Validators.required]],
+          disabled: [d.disabled, [Validators.required]],
         })
       }))
     })
@@ -49,7 +49,7 @@ export class EditStrategiesComponent implements OnInit, ControlValueAccessor {
       condition: ['', [Validators.required]],
       command: ['', [Validators.required]],
       parameters: ['', [Validators.required]],
-      enable: [true, [Validators.required]],
+      disabled: [false, [Validators.required]],
     }))
     //复制controls，让表格可以刷新
     this.formArray.controls = [...this.formArray.controls];
@@ -64,7 +64,7 @@ export class EditStrategiesComponent implements OnInit, ControlValueAccessor {
       condition: [group.get('condition')?.value, [Validators.required]],
       command: [group.get('command')?.value, [Validators.required]],
       parameters: [group.get('parameters')?.value, [Validators.required]],
-      enable: [group.get('enable')?.value, [Validators.required]],
+      disabled: [group.get('disabled')?.value, [Validators.required]],
     }))
   }
 

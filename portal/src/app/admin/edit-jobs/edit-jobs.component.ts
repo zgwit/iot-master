@@ -37,7 +37,7 @@ export class EditJobsComponent implements OnInit, ControlValueAccessor {
           name: [d.name, [Validators.required]],
           crontab: [d.crontab, [Validators.required]],
           script: [d.script, [Validators.required]],
-          enable: [d.enable, [Validators.required]],
+          disabled: [d.disabled, [Validators.required]],
         })
       }))
     })
@@ -48,7 +48,7 @@ export class EditJobsComponent implements OnInit, ControlValueAccessor {
           name: ['新建定时任务' + this.formArray.length, [Validators.required]],
       crontab: ['', [Validators.required]],
       script: ['', [Validators.required]],
-      enable: [true, [Validators.required]],
+      disabled: [false, [Validators.required]],
     }))
     //复制controls，让表格可以刷新
     this.formArray.controls = [...this.formArray.controls];
@@ -62,7 +62,7 @@ export class EditJobsComponent implements OnInit, ControlValueAccessor {
       name: [group.get('name')?.value, [Validators.required]],
       crontab: [group.get('crontab')?.value, [Validators.required]],
       script: [group.get('script')?.value, [Validators.required]],
-      enable: [group.get('enable')?.value, [Validators.required]],
+      disabled: [group.get('disabled')?.value, [Validators.required]],
     }))
   }
 

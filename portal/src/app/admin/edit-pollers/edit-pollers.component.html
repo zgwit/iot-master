@@ -9,37 +9,36 @@
 <nz-table [nzData]="formArray.controls" [nzFrontPagination]="false" nzSize="small" [formGroup]="formGroup">
   <thead>
   <tr>
-    <th>间隔(s)</th>
+    <th>类型</th>
     <th>定时</th>
-    <th>功能码</th>
     <th>地址</th>
     <th>长度</th>
-    <th>启用</th>
+    <th>禁用</th>
     <th>操作</th>
   </tr>
   </thead>
   <tbody formGroupName="items" cdkDropList (cdkDropListDropped)="drop($event)" >
   <tr *ngFor="let data of formArray.controls; let i=index" [formGroupName]="i" cdkDrag>
     <td>
-      <nz-input-number formControlName="interval" [nzMin]="1" [nzMax]="65535" [nzStep]="1" nzSize="small" (change)="change()"></nz-input-number>
-    </td>
-    <td>
-      <input nz-input formControlName="crontab" nzSize="small" (change)="change()" required/>
-    </td>
-    <td>
-      <nz-select formControlName="code" nzSize="small" (ngModelChange)="change()" (change)="change()" required style="min-width: 100px">
-        <nz-option *ngFor="let code of codes"
-                   [nzValue]="code.code" [nzLabel]="code.name"></nz-option>
+      <nz-select formControlName="type" nzSize="small" (ngModelChange)="change()" (change)="change()">
+        <nz-option nzValue="interval" nzLabel="间隔ms"></nz-option>
+        <nz-option nzValue="clock" nzLabel="定时"></nz-option>
+        <nz-option nzValue="crontab" nzLabel="crontab"></nz-option>
       </nz-select>
     </td>
     <td>
-      <nz-input-number formControlName="address" [nzMin]="0" [nzMax]="65535" [nzStep]="1" nzSize="small" (change)="change()" required></nz-input-number>
+      <nz-input-number *ngIf="data.value.type=='interval'" formControlName="interval" [nzMin]="1" [nzMax]="65535" [nzStep]="1" nzSize="small" (change)="change()"></nz-input-number>
+      <app-minute-time-picker *ngIf="data.value.type=='clock'"  formControlName="clock" nzSize="small" (change)="change()"></app-minute-time-picker>
+      <input *ngIf="data.value.type=='crontab'"  nz-input formControlName="crontab" nzSize="small" (change)="change()"/>
+    </td>
+    <td>
+      <input nz-input formControlName="address" nzSize="small" (change)="change()"/>
     </td>
     <td>
       <nz-input-number formControlName="length" [nzMin]="1" [nzMax]="65535" [nzStep]="1" nzSize="small" (change)="change()" required></nz-input-number>
     </td>
     <td>
-      <label nz-checkbox formControlName="enable" (change)="change()" (ngModelChange)="change()"></label>
+      <label nz-checkbox formControlName="disabled" (change)="change()" (ngModelChange)="change()"></label>
     </td>
     <td>
       <a cdkDragHandle title="移动">

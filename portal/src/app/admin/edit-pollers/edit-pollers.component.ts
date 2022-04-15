@@ -35,12 +35,13 @@ export class EditPollersComponent implements OnInit, ControlValueAccessor {
     this.formGroup = this.fb.group({
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
+          type: [d.type, [Validators.required]],
           interval: [d.interval, [Validators.required]],
+          clock: [d.clock, [Validators.required]],
           crontab: [d.crontab, [Validators.required]],
-          code: [d.code, [Validators.required]],
           address: [d.address, [Validators.required]],
           length: [d.length, [Validators.required]],
-          enable: [d.enable, [Validators.required]],
+          disabled: [d.disabled, [Validators.required]],
         })
       }))
     })
@@ -48,12 +49,13 @@ export class EditPollersComponent implements OnInit, ControlValueAccessor {
 
   add() {
     this.formArray.push(this.fb.group({
+          type: ["interval", [Validators.required]],
           interval: [60, [Validators.required]],
+          clock: [60, [Validators.required]],
           crontab: ['', [Validators.required]],
-          code: [1, [Validators.required]],
           address: [0, [Validators.required]],
           length: [1, [Validators.required]],
-          enable: [true, [Validators.required]],
+          disabled: [false, [Validators.required]],
     }))
     //复制controls，让表格可以刷新
     this.formArray.controls = [...this.formArray.controls];
@@ -64,12 +66,13 @@ export class EditPollersComponent implements OnInit, ControlValueAccessor {
     const group = this.formArray.controls[i];
 
     this.formArray.controls.splice(i, 0, this.fb.group({
-      interval: [group.get('interval')?.value, [Validators.required]],
+      type: [group.get('type')?.value, [Validators.required]],
+      interval: [group.get('interval')?.value, []],
+      clock: [group.get('clock')?.value, []],
       crontab: [group.get('crontab')?.value, []],
-      code: [group.get('code')?.value, [Validators.required]],
       address: [group.get('address')?.value, [Validators.required]],
       length: [group.get('length')?.value, [Validators.required]],
-      enable: [group.get('enable')?.value, [Validators.required]],
+      disabled: [group.get('disabled')?.value, [Validators.required]],
     }))
   }
 

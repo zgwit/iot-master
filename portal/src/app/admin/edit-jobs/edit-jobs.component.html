@@ -12,7 +12,7 @@
     <th>名称</th>
     <th>定时</th>
     <th>脚本</th>
-    <th>启用</th>
+    <th>禁用</th>
     <th>操作</th>
   </tr>
   </thead>
@@ -28,7 +28,7 @@
       <app-input-script formControlName="script" nzSize="small" (ngModelChange)="change()"></app-input-script>
     </td>
     <td>
-      <label nz-checkbox formControlName="enable" (change)="change()" (ngModelChange)="change()"></label>
+      <label nz-checkbox formControlName="disabled" (change)="change()" (ngModelChange)="change()"></label>
     </td>
     <td>
       <a cdkDragHandle title="移动">
