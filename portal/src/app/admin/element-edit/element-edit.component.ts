@@ -21,7 +21,7 @@ export class ElementEditComponent implements OnInit {
     "manufacturer": "",
     "version": "",
     "points": [],
-    "variables": [],
+    "context": {},
     "commands": [],
     "pollers": [],
     "jobs": [],
@@ -42,7 +42,7 @@ export class ElementEditComponent implements OnInit {
       version: [this.data.version, []],
 
       points: [this.data.points || []],
-      variables: [this.data.variables || []],
+      context: [this.data.context || {}],
       commands: [this.data.commands || []],
       pollers: [this.data.collectors || []],
       jobs: [this.data.jobs || []],

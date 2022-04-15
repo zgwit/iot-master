@@ -45,7 +45,7 @@ export class ProjectEditComponent implements OnInit {
       disabled: [this.data.disabled, [Validators.required]],
 
       commands: [this.data.commands || []],
-      context: [this.data.variables || {}],
+      context: [this.data.context || {}],
       devices: [this.data.devices || []],
       jobs: [this.data.jobs || []],
       strategies: [this.data.strategies || []],

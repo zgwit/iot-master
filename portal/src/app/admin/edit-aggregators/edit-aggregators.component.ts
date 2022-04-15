@@ -34,6 +34,8 @@ export class EditAggregatorsComponent implements OnInit, ControlValueAccessor {
     this.formGroup = this.fb.group({
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
+          targets: [d.targets, [Validators.required]],
+          type: [d.type, [Validators.required]],
           as: [d.as, [Validators.required]],
           expression: [d.expression, [Validators.required]],
         })
@@ -43,6 +45,8 @@ export class EditAggregatorsComponent implements OnInit, ControlValueAccessor {
 
   add() {
     this.formArray.push(this.fb.group({
+      targets: [[], [Validators.required]],
+      type: ['SUM', [Validators.required]],
       as: ['', [Validators.required]],
       expression: ['', [Validators.required]],
     }))

@@ -35,8 +35,8 @@ export class TemplateEditComponent implements OnInit {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
 
+      context: [this.data.context || {}],
       commands: [this.data.commands || []],
-      context: [this.data.variables || {}],
       elements: [this.data.elements || []],
       jobs: [this.data.jobs || []],
       strategies: [this.data.strategies || []],

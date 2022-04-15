@@ -9,6 +9,8 @@
 <nz-table [nzData]="formArray.controls" [nzFrontPagination]="false" nzSize="small" [formGroup]="formGroup">
   <thead>
   <tr>
+    <th>类型</th>
+    <th>目标</th>
     <th>变量</th>
     <th>表达式</th>
     <th>操作</th>
@@ -16,6 +18,21 @@
   </thead>
   <tbody formGroupName="items" cdkDropList (cdkDropListDropped)="drop($event)" >
   <tr *ngFor="let data of formArray.controls; let i=index" [formGroupName]="i" cdkDrag>
+    <td>
+      <nz-select formControlName="type">
+        <nz-option nzValue="SUM" nzLabel="求和"></nz-option>
+        <nz-option nzValue="AVG" nzLabel="均值"></nz-option>
+        <nz-option nzValue="COUNT" nzLabel="计数"></nz-option>
+        <nz-option nzValue="MIN" nzLabel="最小"></nz-option>
+        <nz-option nzValue="MAX" nzLabel="最大"></nz-option>
+        <nz-option nzValue="FIRST" nzLabel="最前"></nz-option>
+        <nz-option nzValue="LAST" nzLabel="最后"></nz-option>
+      </nz-select>
+    </td>
+    <td>
+      <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',', '，', ';', ' ']" formControlName="targets"
+                 nzSize="small" (ngModelChange)="change()"></nz-select>
+    </td>
     <td>
       <input nz-input formControlName="as" nzSize="small" (change)="change()" required/>
     </td>

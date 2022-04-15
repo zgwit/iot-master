@@ -20,7 +20,7 @@
 
     <div class="values" nz-row [nzGutter]="10" *ngIf="data.element">
       <div class="item" nz-col [nzSpan]="4" [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4" [nzXl]="3" [nzXXl]="2"
-           *ngFor="let v of data.element.variables">
+           *ngFor="let v of data.element.context">
         <nz-card>
           <nz-statistic [nzValue]="data.values && data.values[v.name] || '--'" [nzTitle]="v.label"
                         [nzSuffix]="v.unit"></nz-statistic>
