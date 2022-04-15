@@ -38,15 +38,12 @@ export class EditPointsComponent implements OnInit, ControlValueAccessor {
         return this.fb.group({
           name: [d.name, [Validators.required]],
           label: [d.label, []],
-          code: [d.code, [Validators.required]],
           address: [d.address, [Validators.required]],
           type: [d.type, [Validators.required]],
-          le: [d.le, [Validators.required]],
+          little_endian: [d.le, [Validators.required]],
           precision: [d.precision, [Validators.required]],
           default: [d.default, [Validators.required]],
-          rw: [d.rw, [Validators.required]],
           unit: [d.unit, []],
-          store: [d.store, [Validators.required]],
         })
       }))
     })
@@ -56,15 +53,12 @@ export class EditPointsComponent implements OnInit, ControlValueAccessor {
     this.formArray.push(this.fb.group({
       name: ['', [Validators.required]],
       label: ['', []],
-      code: [0, [Validators.required]],
       address: [0, [Validators.required]],
       type: ['', [Validators.required]],
-      le: [false, [Validators.required]],
+      little_endian: [false, [Validators.required]],
       precision: [0, [Validators.required]],
       default: ['', [Validators.required]],
-      rw: [3, [Validators.required]],
       unit: ["", []],
-      store: [false, [Validators.required]],
     }))
     //复制controls，让表格可以刷新
     this.formArray.controls = [...this.formArray.controls];
@@ -77,15 +71,12 @@ export class EditPointsComponent implements OnInit, ControlValueAccessor {
     this.formArray.controls.splice(i, 0, this.fb.group({
       name: [group.get('name')?.value, [Validators.required]],
       label: [group.get('label')?.value, []],
-      code: [group.get('code')?.value, [Validators.required]],
       address: [group.get('address')?.value, [Validators.required]],
       type: [group.get('type')?.value, [Validators.required]],
-      le: [group.get('le')?.value, [Validators.required]],
+      little_endian: [group.get('le')?.value, [Validators.required]],
       precision: [group.get('precision')?.value, [Validators.required]],
       default: [group.get('default')?.value, [Validators.required]],
-      rw: [group.get('rw')?.value, [Validators.required]],
       unit: [group.get('unit')?.value, [Validators.required]],
-      store: [group.get('store')?.value, [Validators.required]],
     }))
   }
 
