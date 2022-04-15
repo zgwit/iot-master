@@ -34,7 +34,7 @@ export class TunnelEditDevicesComponent implements OnInit, ControlValueAccessor 
     this.formGroup = this.fb.group({
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
-          slave: [d.slave, [Validators.required]], //应该是最大值+1
+          station: [d.station, [Validators.required]], //应该是最大值+1
           element_id: [d.element_id, [Validators.required]],
         })
       }))
@@ -43,7 +43,7 @@ export class TunnelEditDevicesComponent implements OnInit, ControlValueAccessor 
 
   add() {
     this.formArray.push(this.fb.group({
-      slave: [this.formArray.controls.length + 1, [Validators.required]], //应该是最大值+1
+      station: [this.formArray.controls.length + 1, [Validators.required]], //应该是最大值+1
       element_id: ['', [Validators.required]],
     }))
     //复制controls，让表格可以刷新
@@ -55,7 +55,7 @@ export class TunnelEditDevicesComponent implements OnInit, ControlValueAccessor 
     const group = this.formArray.controls[i];
 
     this.formArray.controls.splice(i, 0, this.fb.group({
-      slave: [group.get('slave')?.value, [Validators.required]],
+      station: [group.get('station')?.value, [Validators.required]],
       element_id: [group.get('element_id')?.value, [Validators.required]],
     }))
   }
