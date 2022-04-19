@@ -55,6 +55,7 @@ type Project struct {
 	Devices []*ProjectDevice
 
 	aggregators []aggregator.Aggregator
+	validators  []*Validator
 	jobs        []*Job
 	strategies  []*Strategy
 
@@ -70,6 +71,7 @@ func NewProject(m *model.Project) (*Project, error) {
 		Project:         *m,
 		Devices:         make([]*ProjectDevice, 0),
 		aggregators:     make([]aggregator.Aggregator, 0),
+		validators:      make([]*Validator, 0),
 		jobs:            make([]*Job, 0),
 		strategies:      make([]*Strategy, 0),
 		deviceNameIndex: make(map[string]*Device),
@@ -99,6 +101,11 @@ func NewProject(m *model.Project) (*Project, error) {
 	}
 
 	err = prj.initHandler()
+	if err != nil {
+		return nil, err
+	}
+
+	err = prj.initValidators()
 	if err != nil {
 		return nil, err
 	}
@@ -181,13 +188,13 @@ func (prj *Project) initJobs() error {
 	return nil
 }
 
-func (prj *Project) initStrategies() error {
-	if prj.Strategies == nil {
+func (prj *Project) initValidators() error {
+	if prj.Validators == nil {
 		return nil
 	}
-	for _, v := range prj.Strategies {
-		strategy := &Strategy{Strategy: *v}
-		strategy.On("alarm", func(alarm *model.Alarm) {
+	for _, v := range prj.Validators {
+		validator := &Validator{Validator: *v}
+		validator.On("alarm", func(alarm *model.Alarm) {
 			pa := &model.ProjectAlarm{ProjectID: prj.ID, Alarm: *alarm}
 
 			//入库
@@ -199,7 +206,18 @@ func (prj *Project) initStrategies() error {
 			//上报
 			prj.Emit("alarm", pa)
 		})
+		prj.validators = append(prj.validators, validator)
+	}
+	return nil
+}
 
+
+func (prj *Project) initStrategies() error {
+	if prj.Strategies == nil {
+		return nil
+	}
+	for _, v := range prj.Strategies {
+		strategy := &Strategy{Strategy: *v}
 		strategy.On("invoke", func() {
 			for _, invoke := range strategy.Invokes {
 				err := prj.execute(invoke)

@@ -7,16 +7,16 @@ import (
 	"time"
 )
 
-//Strategy 规则
-type Strategy struct {
-	model.Strategy
+//Validator 规则
+type Validator struct {
+	model.Validator
 
 	condition *calc.Expression
 	events.EventEmitter
 }
 
 //Execute 执行
-func (s *Strategy) Execute(ctx calc.Context) error {
+func (s *Validator) Execute(ctx calc.Context) error {
 
 	//条件检查
 	val, err := s.condition.Evaluate(ctx)
@@ -48,8 +48,8 @@ func (s *Strategy) Execute(ctx calc.Context) error {
 		return nil
 	}
 
-	//执行响应
-	s.Emit("invoke")
+	//产生报警
+	s.Emit("alarm", &s.Alarm)
 
 	return nil
 }

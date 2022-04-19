@@ -1,11 +1,8 @@
 package model
 
-//Strategy 响应，待改名
-type Strategy struct {
+//Validator 数据校验
+type Validator struct {
 	Disabled bool `json:"disabled"`
-
-	//名称
-	Name string `json:"name"`
 
 	//条件
 	Condition string `json:"condition"`
@@ -19,6 +16,6 @@ type Strategy struct {
 	//重复报警
 	RepeatChecker
 
-	//执行命令
-	Invokes []*Invoke `json:"invokes,omitempty"`
+	//产生告警
+	Alarm
 }

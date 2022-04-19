@@ -16,8 +16,9 @@ type Template struct {
 }
 
 type ProjectContent struct {
-	Thumbnail   string        `json:"thumbnail"`
+	Icon        string        `json:"icon"`
 	Aggregators []*Aggregator `json:"aggregators"`
+	Validators  []*Validator  `json:"validators"`
 	Commands    []*Command    `json:"commands"`
 	Jobs        []*Job        `json:"jobs"`
 	Strategies  []*Strategy   `json:"strategies"`

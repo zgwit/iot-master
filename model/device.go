@@ -26,9 +26,8 @@ type DeviceContent struct {
 	Points      []*Point      `json:"points"`
 	Pollers     []*Poller     `json:"pollers"`
 	Calculators []*Calculator `json:"calculators"`
+	Validators  []*Validator  `json:"validators"`
 	Commands    []*Command    `json:"commands"`
-	Jobs        []*Job        `json:"jobs"`
-	Strategies  []*Strategy   `json:"strategies"`
 }
 
 //Device 设备

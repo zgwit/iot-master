@@ -57,7 +57,7 @@ func (dr *DailyChecker) Check() bool {
 
 //DelayChecker 延时检查
 type DelayChecker struct {
-	Timeout int64 `json:"timeout"`
+	Delay int64 `json:"delay"`
 
 	start int64
 }
@@ -69,7 +69,7 @@ func (d *DelayChecker) Reset() {
 
 //Check 检查
 func (d *DelayChecker) Check(now int64) bool {
-	if d.Timeout <= 0 {
+	if d.Delay <= 0 {
 		return true
 	}
 
@@ -78,13 +78,13 @@ func (d *DelayChecker) Check(now int64) bool {
 		return false
 	}
 
-	return d.start+d.Timeout < now
+	return d.start+d.Delay < now
 }
 
 //RepeatChecker 重复发生器
 type RepeatChecker struct {
-	Interval int64 `json:"interval"`
-	Total    int   `json:"total,omitempty"`
+	ResetInterval int64 `json:"reset_interval"`
+	ResetTotal    int   `json:"reset_total,omitempty"`
 
 	last int64
 
@@ -110,17 +110,17 @@ func (d *RepeatChecker) Check(now int64) bool {
 	}
 
 	//重置间隔
-	if d.Interval <= 0 {
+	if d.ResetInterval <= 0 {
 		return false
 	}
 
 	//最大重置次数限制
-	if d.Total > 0 && d.resetTimes > d.Total {
+	if d.ResetTotal > 0 && d.resetTimes > d.ResetTotal {
 		return false
 	}
 
 	//如果还没到重置时间，则不提醒
-	if d.last+d.Interval > now {
+	if d.last+d.ResetInterval > now {
 		return false
 	}
 

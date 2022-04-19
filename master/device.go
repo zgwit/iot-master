@@ -20,8 +20,7 @@ type Device struct {
 	events.EventEmitter
 
 	pollers    []*Poller
-	strategies []*Strategy
-	jobs       []*Job
+	validators []*Validator
 
 	//命令索引
 	commandIndex map[string]*model.Command
@@ -35,8 +34,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 		commandIndex: make(map[string]*model.Command, 0),
 		//mapper: newMapper(m.Points, adapter), TODO 引入协议
 		pollers:    make([]*Poller, 0),
-		strategies: make([]*Strategy, 0),
-		jobs:       make([]*Job, 0),
+		validators: make([]*Validator, 0),
 	}
 
 	//加载模板
@@ -66,12 +64,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 		return nil, err
 	}
 
-	err = dev.initJobs()
-	if err != nil {
-		return nil, err
-	}
-
-	err = dev.initStrategies()
+	err = dev.initValidators()
 	if err != nil {
 		return nil, err
 	}
@@ -112,8 +105,8 @@ func (dev *Device) initMapper() error {
 		}
 
 		//处理策略
-		for _, strategy := range dev.strategies {
-			err := strategy.Execute(dev.Context)
+		for _, validator := range dev.validators {
+			err := validator.Execute(dev.Context)
 			if err != nil {
 				dev.Emit("error", err)
 			}
@@ -143,35 +136,13 @@ func (dev *Device) initPollers() error {
 	return nil
 }
 
-func (dev *Device) initJobs() error {
-	if dev.Jobs == nil {
+func (dev *Device) initValidators() error {
+	if dev.Validators == nil {
 		return nil
 	}
-	for _, v := range dev.Jobs {
-		job := &Job{Job: *v}
-		job.On("invoke", func() {
-			var err error
-			for _, invoke := range job.Invokes {
-				err = dev.Execute(invoke.Command, invoke.Arguments)
-				if err != nil {
-					dev.Emit("error", err)
-				}
-			}
-
-			//日志
-			dev.createEvent("执行任务：" + job.String())
-		})
-		dev.jobs = append(dev.jobs, job)
-	}
-	return nil
-}
-func (dev *Device) initStrategies() error {
-	if dev.Strategies == nil {
-		return nil
-	}
-	for _, v := range dev.Strategies {
-		strategy := &Strategy{Strategy: *v}
-		strategy.On("alarm", func(alarm *model.Alarm) {
+	for _, v := range dev.Validators {
+		validator := &Validator{Validator: *v}
+		validator.On("alarm", func(alarm *model.Alarm) {
 			da := &model.DeviceAlarm{DeviceID: dev.ID, Alarm: *alarm}
 
 			//入库
@@ -181,19 +152,7 @@ func (dev *Device) initStrategies() error {
 			//上报
 			dev.Emit("alarm", da)
 		})
-
-		strategy.On("invoke", func() {
-			for _, invoke := range strategy.Invokes {
-				err := dev.Execute(invoke.Command, invoke.Arguments)
-				if err != nil {
-					dev.Emit("error", err)
-				}
-			}
-
-			//保存历史
-			dev.createEvent("执行策略：" + strategy.Name)
-		})
-		dev.strategies = append(dev.strategies, strategy)
+		dev.validators = append(dev.validators, validator)
 	}
 	return nil
 }
@@ -224,13 +183,6 @@ func (dev *Device) Start() error {
 			return err
 		}
 	}
-	//定时任务
-	for _, job := range dev.jobs {
-		err := job.Start()
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -240,9 +192,6 @@ func (dev *Device) Stop() error {
 
 	for _, poller := range dev.pollers {
 		poller.Stop()
-	}
-	for _, job := range dev.jobs {
-		job.Stop()
 	}
 	return nil
 }
