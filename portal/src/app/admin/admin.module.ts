@@ -103,6 +103,7 @@ import {ChooseElementComponent} from "./choose-element/choose-element.component"
 import {ChooseDeviceComponent} from "./choose-device/choose-device.component";
 import {ChooseLinkComponent} from "./choose-link/choose-link.component.component";
 import {EditElementsComponent} from "./edit-elements/edit-elements.component";
+import {EditValidatorsComponent} from "./edit-validators/edit-validators.component";
 
 @NgModule({
   declarations: [
@@ -125,7 +126,7 @@ import {EditElementsComponent} from "./edit-elements/edit-elements.component";
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
     EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
-    EditDevicesComponent, EditElementsComponent,
+    EditDevicesComponent, EditElementsComponent, EditValidatorsComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
     EventComponent, AlarmComponent,
     PluginComponent,

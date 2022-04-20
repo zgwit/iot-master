@@ -27,7 +27,7 @@ export class DeviceEditComponent implements OnInit {
     "context": {},
     "commands": [],
     "pollers": [],
-    "jobs": [],
+    "validators": [],
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private rs: RequestService, private message: NzMessageService) {
@@ -53,7 +53,7 @@ export class DeviceEditComponent implements OnInit {
       context: [this.data.context || {}],
       commands: [this.data.commands || []],
       pollers: [this.data.collectors || []],
-      jobs: [this.data.jobs || []],
+      validators: [this.data.validators || []],
     });
   }
 

@@ -50,8 +50,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'link', component: ContainerComponent, data: {breadcrumb: "链接"}, children: [
-          {path: '', component: LinkComponent, data: {breadcrumb: "链接"}},
+        path: 'link', component: ContainerComponent, data: {breadcrumb: "连接"}, children: [
+          {path: '', component: LinkComponent, data: {breadcrumb: "连接"}},
           {path: 'detail/:id', component: LinkDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: LinkEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: LinkEditComponent, data: {breadcrumb: "创建"}},

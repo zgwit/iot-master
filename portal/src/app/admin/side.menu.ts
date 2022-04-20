@@ -14,7 +14,7 @@ export let SideMenu = [
         router: 'tunnel'
       },
       {
-        title: '链接',
+        title: '连接',
         router: 'link'
       },
     ]
