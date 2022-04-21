@@ -197,7 +197,7 @@ func (dev *Device) Stop() error {
 }
 
 //Execute 执行命令
-func (dev *Device) Execute(command string, argv []interface{}) error {
+func (dev *Device) Execute(command string, argv []float64) error {
 	dev.createEvent("执行：" + command)
 
 	cmd, ok := dev.commandIndex[command]

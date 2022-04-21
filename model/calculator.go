@@ -21,9 +21,5 @@ func (c *Calculator) Init() (err error) {
 
 //Evaluate 计算
 func (c *Calculator) Evaluate(ctx calc.Context) (float64, error) {
-	val, err := c.expr.Evaluate(ctx)
-	if err != nil {
-		return 0, err
-	}
-	return val.(float64), nil
+	return c.expr.Evaluate(ctx)
 }

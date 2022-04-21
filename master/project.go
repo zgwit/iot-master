@@ -211,7 +211,6 @@ func (prj *Project) initValidators() error {
 	return nil
 }
 
-
 func (prj *Project) initStrategies() error {
 	if prj.Strategies == nil {
 		return nil
@@ -322,10 +321,23 @@ func (prj *Project) Stop() error {
 }
 
 func (prj *Project) execute(in *model.Invoke) error {
+	args := make([]float64, 0)
+	for _, d := range in.Arguments {
+		//tp := reflect.TypeOf(d).Kind()
+		//if tp == reflect.String {
+		//} else if tp == reflect.Float64 {
+		//	args = append(args, d.(float64))
+		//}
+		val, err := calc.Evaluate(prj.Context, d)
+		if err != nil {
+			return err
+		}
+		args = append(args, val)
+	}
 
 	for _, d := range prj.Devices {
 		if d.belongTargets(in.Targets) {
-			err := d.device.Execute(in.Command, in.Arguments)
+			err := d.device.Execute(in.Command, args)
 			if err != nil {
 				return err
 			}

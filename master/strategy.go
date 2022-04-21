@@ -19,7 +19,7 @@ type Strategy struct {
 func (s *Strategy) Execute(ctx calc.Context) error {
 
 	//条件检查
-	val, err := s.condition.Evaluate(ctx)
+	val, err := s.condition.Eval(ctx)
 	if err != nil {
 		return err
 	}
