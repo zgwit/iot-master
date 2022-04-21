@@ -83,8 +83,8 @@ func (d *DelayChecker) Check(now int64) bool {
 
 //RepeatChecker 重复发生器
 type RepeatChecker struct {
-	ResetInterval int64 `json:"reset_interval"`
-	ResetTotal    int   `json:"reset_total,omitempty"`
+	ResetTimeout int64 `json:"reset_timeout"`
+	ResetTotal   int   `json:"reset_total,omitempty"`
 
 	last int64
 
@@ -110,7 +110,7 @@ func (d *RepeatChecker) Check(now int64) bool {
 	}
 
 	//重置间隔
-	if d.ResetInterval <= 0 {
+	if d.ResetTimeout <= 0 {
 		return false
 	}
 
@@ -120,7 +120,7 @@ func (d *RepeatChecker) Check(now int64) bool {
 	}
 
 	//如果还没到重置时间，则不提醒
-	if d.last+d.ResetInterval > now {
+	if d.last+d.ResetTimeout > now {
 		return false
 	}
 

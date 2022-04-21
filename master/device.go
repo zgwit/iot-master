@@ -229,11 +229,11 @@ func (dev *Device) Execute(command string, argv []float64) error {
 		//延迟执行
 		if directive.Delay > 0 {
 			time.AfterFunc(time.Duration(directive.Delay)*time.Millisecond, func() {
-				err := dev.mapper.Set(directive.Point, val)
+				err := dev.mapper.Set(directive.Address, val)
 				dev.Emit("error", err)
 			})
 		} else {
-			err := dev.mapper.Set(directive.Point, val)
+			err := dev.mapper.Set(directive.Address, val)
 			//dev.events.Publish("error", err)
 			return err
 		}
