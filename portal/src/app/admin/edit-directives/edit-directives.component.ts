@@ -34,9 +34,10 @@ export class EditDirectivesComponent implements OnInit, ControlValueAccessor {
     this.formGroup = this.fb.group({
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
-          name: [d.name, [Validators.required]],
-          argc: [d.argc, [Validators.required]],
-          script: [d.script, [Validators.required]],
+          address: [d.address, [Validators.required]],
+          value: [d.value, [Validators.required]],
+          delay: [d.delay, [Validators.required]],
+          expression: [d.expression, [Validators.required]],
         })
       }))
     })
@@ -44,9 +45,10 @@ export class EditDirectivesComponent implements OnInit, ControlValueAccessor {
 
   add() {
     this.formArray.push(this.fb.group({
-      name: ['', [Validators.required]],
-      argc: [0, [Validators.required]],
-      script: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      value: [0, [Validators.required]],
+      delay: [0, [Validators.required]],
+      expression: ['', [Validators.required]],
     }))
     //复制controls，让表格可以刷新
     this.formArray.controls = [...this.formArray.controls];
@@ -57,9 +59,10 @@ export class EditDirectivesComponent implements OnInit, ControlValueAccessor {
     const group = this.formArray.controls[i];
 
     this.formArray.controls.splice(i, 0, this.fb.group({
-      name: [group.get('name')?.value, [Validators.required]],
-      argc: [group.get('argc')?.value, [Validators.required]],
-      script: [group.get('script')?.value, [Validators.required]],
+      address: [group.get('address')?.value, [Validators.required]],
+      value: [group.get('value')?.value, [Validators.required]],
+      delay: [group.get('delay')?.value, [Validators.required]],
+      expression: [group.get('expression')?.value, [Validators.required]],
     }))
   }
 
