@@ -104,6 +104,8 @@ import {ChooseDeviceComponent} from "./choose-device/choose-device.component";
 import {ChooseLinkComponent} from "./choose-link/choose-link.component.component";
 import {EditElementsComponent} from "./edit-elements/edit-elements.component";
 import {EditValidatorsComponent} from "./edit-validators/edit-validators.component";
+import {EditDirectivesComponent} from "./edit-directives/edit-directives.component";
+import {EditInvokesComponent} from "./edit-invokes/edit-invokes.component";
 
 @NgModule({
   declarations: [
@@ -128,6 +130,7 @@ import {EditValidatorsComponent} from "./edit-validators/edit-validators.compone
     EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
     EditDevicesComponent, EditElementsComponent, EditValidatorsComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
+    EditDirectivesComponent, EditInvokesComponent,
     EventComponent, AlarmComponent,
     PluginComponent,
     ProtocolComponent,

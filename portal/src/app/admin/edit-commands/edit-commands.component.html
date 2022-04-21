@@ -9,9 +9,8 @@
 <nz-table [nzData]="formArray.controls" [nzFrontPagination]="false" nzSize="small" [formGroup]="formGroup">
   <thead>
   <tr>
-    <th>名称</th>
-    <th>参数个数</th>
-    <th>脚本</th>
+    <th>命令</th>
+    <th>指令</th>
     <th>操作</th>
   </tr>
   </thead>
@@ -21,10 +20,7 @@
       <input nz-input formControlName="name" nzSize="small" (change)="change()" required/>
     </td>
     <td>
-      <nz-input-number formControlName="argc" [nzMin]="0" [nzMax]="10" [nzStep]="1" nzSize="small" (change)="change()" required></nz-input-number>
-    </td>
-    <td>
-      <input nz-input formControlName="script" nzSize="small" (change)="change()" required/>
+      <app-edit-directives formControlName="directives" (change)="change()"></app-edit-directives>
     </td>
     <td>
       <a cdkDragHandle title="移动">
