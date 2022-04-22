@@ -2,16 +2,25 @@ package args
 
 import (
 	"flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
 var (
-	help       bool
-	ConfigPath string
-	Install    bool
-	Uninstall  bool
+	showHelp    bool
+	showVersion bool
+	ConfigPath  string
+	Install     bool
+	Uninstall   bool
+)
+
+var (
+	Version   string
+	GitHash   string
+	BuildTime string
+	GoVersion string
 )
 
 func init() {
@@ -21,7 +30,8 @@ func init() {
 	cfg := strings.TrimSuffix(app, ext) + ".yaml"
 
 	//log.Println("app.path", app)
-	flag.BoolVar(&help, "h", false, "show help")
+	flag.BoolVar(&showVersion, "v", false, "show version")
+	flag.BoolVar(&showHelp, "h", false, "show help")
 	flag.StringVar(&ConfigPath, "c", cfg, "Configure path")
 	flag.BoolVar(&Install, "i", false, "Install service")
 	flag.BoolVar(&Uninstall, "u", false, "Uninstall service")
@@ -29,8 +39,15 @@ func init() {
 
 func Parse() {
 	flag.Parse()
-	if help {
+	if showHelp {
 		flag.Usage()
+		os.Exit(0)
+	}
+	if showVersion {
+		fmt.Printf("Version: %s \n", Version)
+		fmt.Printf("Git Hash: %s \n", GitHash)
+		fmt.Printf("Build Time: %s \n", BuildTime)
+		fmt.Printf("GoLang Version: %s \n", GoVersion)
 		os.Exit(0)
 	}
 }
