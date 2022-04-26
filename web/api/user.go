@@ -14,7 +14,9 @@ func userRoutes(app *gin.RouterGroup) {
 	app.GET("event/clear", userEventClearAll)
 
 	app.Use(parseParamId)
-	app.POST(":id/update", userUpdate)
+
+	app.GET(":id", userDetail)
+	app.POST(":id", userUpdate)
 	app.GET(":id/delete", userDelete)
 	app.GET(":id/password", userPassword)
 	app.GET(":id/enable", userEnable)
@@ -49,6 +51,17 @@ func userCreate(ctx *gin.Context) {
 
 	//TODO 默认密码
 
+	replyOk(ctx, user)
+}
+
+
+func userDetail(ctx *gin.Context) {
+	var user model.User
+	err := database.Master.One("ID", ctx.GetInt("id"), &user)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
 	replyOk(ctx, user)
 }
 

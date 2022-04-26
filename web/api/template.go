@@ -12,7 +12,8 @@ func templateRoutes(app *gin.RouterGroup) {
 	app.POST("create", templateCreate)
 
 	app.Use(parseParamStringId)
-	app.POST(":id/update", templateUpdate)
+	app.GET(":id", templateDetail)
+	app.POST(":id", templateUpdate)
 	app.GET(":id/delete", templateDelete)
 
 }
@@ -43,6 +44,16 @@ func templateCreate(ctx *gin.Context) {
 		return
 	}
 
+	replyOk(ctx, template)
+}
+
+func templateDetail(ctx *gin.Context) {
+	var template model.Template
+	err := database.Master.One("ID", ctx.GetString("id"), &template)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
 	replyOk(ctx, template)
 }
 

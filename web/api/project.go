@@ -18,7 +18,8 @@ func projectRoutes(app *gin.RouterGroup) {
 	app.GET("alarm/clear", projectAlarmClearAll)
 
 	app.Use(parseParamId)
-	app.POST(":id/update", projectUpdate)
+	app.GET(":id", projectDetail)
+	app.POST(":id", projectUpdate)
 	app.GET(":id/delete", projectDelete)
 	app.GET(":id/start", projectStart)
 	app.GET(":id/stop", projectStop)
@@ -57,6 +58,16 @@ func projectCreate(ctx *gin.Context) {
 
 	//TODO 启动
 
+	replyOk(ctx, project)
+}
+
+func projectDetail(ctx *gin.Context) {
+	var project model.Project
+	err := database.Master.One("ID", ctx.GetInt("id"), &project)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
 	replyOk(ctx, project)
 }
 

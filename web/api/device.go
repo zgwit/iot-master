@@ -18,7 +18,8 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.GET("alarm/clear", deviceAlarmClearAll)
 
 	app.Use(parseParamId)
-	app.POST(":id/update", deviceUpdate)
+	app.GET(":id", deviceDetail)
+	app.POST(":id", deviceUpdate)
 	app.GET(":id/delete", deviceDelete)
 	app.GET(":id/start", deviceStart)
 	app.GET(":id/stop", deviceStop)
@@ -67,21 +68,24 @@ func deviceCreate(ctx *gin.Context) {
 	}()
 }
 
-func deviceUpdate(ctx *gin.Context) {
-	var pid paramID
-	err := ctx.ShouldBindUri(&pid)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
+func deviceDetail(ctx *gin.Context) {
 	var device model.Device
-	err = ctx.ShouldBindJSON(&device)
+	err := database.Master.One("ID", ctx.GetInt("id"), &device)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	device.ID = pid.ID
+	replyOk(ctx, device)
+}
+
+func deviceUpdate(ctx *gin.Context) {
+	var device model.Device
+	err := ctx.ShouldBindJSON(&device)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	device.ID = ctx.GetInt("id")
 
 	err = database.Master.Update(&device)
 	if err != nil {
@@ -163,7 +167,6 @@ func deviceStop(ctx *gin.Context) {
 
 	replyOk(ctx, nil)
 }
-
 
 func deviceEnable(ctx *gin.Context) {
 	err := database.Master.UpdateField(&model.Device{ID: ctx.GetInt("id")}, "Disabled", false)
@@ -267,7 +270,6 @@ func deviceAlarmClear(ctx *gin.Context) {
 
 	replyOk(ctx, nil)
 }
-
 
 func deviceAlarmClearAll(ctx *gin.Context) {
 	err := database.History.Drop(&model.DeviceAlarm{})

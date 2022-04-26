@@ -16,7 +16,8 @@ func linkRoutes(app *gin.RouterGroup) {
 	app.GET("event/clear", linkEventClearAll)
 
 	app.Use(parseParamId)
-	app.POST(":id/update", linkUpdate)
+	app.GET(":id", linkDetail)
+	app.POST(":id", linkUpdate)
 	app.GET(":id/delete", linkDelete)
 	app.GET(":id/close", linkClose)
 	app.GET(":id/enable", linkEnable)
@@ -33,6 +34,18 @@ func linkList(ctx *gin.Context) {
 		return
 	}
 	replyList(ctx, links, cnt)
+}
+
+
+
+func linkDetail(ctx *gin.Context) {
+	var link model.Link
+	err := database.Master.One("ID", ctx.GetInt("id"), &link)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyOk(ctx, link)
 }
 
 func linkUpdate(ctx *gin.Context) {

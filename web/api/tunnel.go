@@ -17,7 +17,8 @@ func tunnelRoutes(app *gin.RouterGroup) {
 	app.GET("event/clear", tunnelEventClearAll)
 
 	app.Use(parseParamId)
-	app.POST(":id/update", tunnelUpdate)
+	app.GET(":id", tunnelDetail)
+	app.POST(":id", tunnelUpdate)
 	app.GET(":id/delete", tunnelDelete)
 	app.GET(":id/start", tunnelStart)
 	app.GET(":id/stop", tunnelStop)
@@ -62,6 +63,16 @@ func tunnelCreate(ctx *gin.Context) {
 			return
 		}
 	}()
+}
+
+func tunnelDetail(ctx *gin.Context) {
+	var tunnel model.Tunnel
+	err := database.Master.One("ID", ctx.GetInt("id"), &tunnel)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyOk(ctx, tunnel)
 }
 
 func tunnelUpdate(ctx *gin.Context) {
