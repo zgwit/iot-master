@@ -22,7 +22,7 @@ export class ElementDetailComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.get(`element/${this.id}/detail`).subscribe(res=>{
+    this.rs.get(`element/${this.id}`).subscribe(res=>{
       this.data = res.data;
       this.loading = false;
     });

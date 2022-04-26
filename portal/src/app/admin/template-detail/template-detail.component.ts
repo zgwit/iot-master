@@ -22,7 +22,7 @@ export class TemplateDetailComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.get(`template/${this.id}/detail`).subscribe(res=>{
+    this.rs.get(`template/${this.id}`).subscribe(res=>{
       this.data = res.data;
       this.loading = false;
     });

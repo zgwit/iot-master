@@ -28,6 +28,8 @@ import {TemplateEditComponent} from "./template-edit/template-edit.component";
 import {ContainerComponent} from "./container/container.component";
 import {TunnelEditComponent} from "./tunnel-edit/tunnel-edit.component";
 import {LinkEditComponent} from "./link-edit/link-edit.component";
+import {TemplateDetailComponent} from "./template-detail/template-detail.component";
+import {ElementDetailComponent} from "./element-detail/element-detail.component";
 
 const routes: Routes = [
   {
@@ -70,6 +72,7 @@ const routes: Routes = [
       {
         path: 'element', component: ContainerComponent, data: {breadcrumb: "元件"}, children: [
           {path: '', component: ElementComponent, data: {breadcrumb: "元件"}},
+          {path: 'detail/:id', component: ElementDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: ElementEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: ElementEditComponent, data: {breadcrumb: "创建"}},
         ]
@@ -87,6 +90,7 @@ const routes: Routes = [
       {
         path: 'template', component: ContainerComponent, data: {breadcrumb: "模板"}, children: [
           {path: '', component: TemplateComponent, data: {breadcrumb: "模板"}},
+          {path: 'detail/:id', component: TemplateDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: TemplateEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: TemplateEditComponent, data: {breadcrumb: "创建"}},
         ]

@@ -48,7 +48,7 @@ export class ChooseDeviceComponent implements OnInit, ControlValueAccessor {
   load() {
     if (!this.id) return;
     this.name = "加载中...";
-    this.rs.get(`device/${this.id}/detail`).subscribe(res=>{
+    this.rs.get(`device/${this.id}`).subscribe(res=>{
       this.name = res.data.name;
       if (!this.name)
         this.loadElement(res.data.element_id)

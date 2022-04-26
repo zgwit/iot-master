@@ -22,7 +22,7 @@ export class UserDetailComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.get(`user/${this.id}/detail`).subscribe(res => {
+    this.rs.get(`user/${this.id}`).subscribe(res => {
       this.data = res.data;
       this.loading = false;
     });

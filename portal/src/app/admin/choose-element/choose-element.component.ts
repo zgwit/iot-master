@@ -48,7 +48,7 @@ export class ChooseElementComponent implements OnInit, ControlValueAccessor {
   load() {
     if (!this.id) return;
     this.name = "加载中...";
-    this.rs.get(`element/${this.id}/detail`).subscribe(res=>{
+    this.rs.get(`element/${this.id}`).subscribe(res=>{
       this.name = res.data.name;
     })
   }
