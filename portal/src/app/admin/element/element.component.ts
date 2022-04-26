@@ -57,11 +57,11 @@ export class ElementComponent implements OnInit {
   }
 
   open(data: any): void {
-    this.router.navigate(['/admin/element/detail/' + data._id]);
+    this.router.navigate(['/admin/element/detail/' + data.id]);
   }
 
   remove(data: any, i: number) {
-    this.rs.delete(`element/${data._id}/delete`).subscribe(res=>{
+    this.rs.delete(`element/${data.id}/delete`).subscribe(res=>{
       this.datum.splice(i, 1);
     });
   }

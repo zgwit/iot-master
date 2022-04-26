@@ -60,7 +60,7 @@ export class TemplateBrowserComponent implements OnInit {
   }
 
   onItemClick(data: any) {
-    this.onItemChecked(data._id, !this.setCheckedOfId.has(data._id))
+    this.onItemChecked(data.id, !this.setCheckedOfId.has(data.id))
   }
 
   constructor(private rs: RequestService, private mr: NzModalRef) {

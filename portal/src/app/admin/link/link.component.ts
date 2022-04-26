@@ -59,18 +59,18 @@ export class LinkComponent implements OnInit {
   }
 
   open(data: any): void {
-    this.router.navigate(['/admin/link/detail/' + data._id]);
+    this.router.navigate(['/admin/link/detail/' + data.id]);
   }
 
   remove(data: any, i: number) {
-    this.rs.delete(`link/${data._id}/delete`).subscribe(res => {
+    this.rs.delete(`link/${data.id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
 
   onEnableChange(data: any, disabled: boolean) {
     if (disabled) {
-      this.rs.post(`link/${data._id}/setting`, {disabled}).subscribe(res => {
+      this.rs.post(`link/${data.id}/setting`, {disabled}).subscribe(res => {
       });
       return;
     }
@@ -78,7 +78,7 @@ export class LinkComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk:()=>{
-        this.rs.post(`link/${data._id}/setting`, {disabled}).subscribe(res => {
+        this.rs.post(`link/${data.id}/setting`, {disabled}).subscribe(res => {
         });
       },
       nzOnCancel:()=>{

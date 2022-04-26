@@ -62,7 +62,7 @@ export class DeviceEditComponent implements OnInit {
 
 
   load(): void {
-    this.rs.get('device/' + this.id + '/detail').subscribe(res => {
+    this.rs.get('device/' + this.id).subscribe(res => {
       this.data = res.data;
       this.buildForm();
     })
@@ -70,7 +70,7 @@ export class DeviceEditComponent implements OnInit {
 
   submit(): void {
     this.submitting = true
-    const uri = this.id ? 'device/' + this.id + '/setting' : 'device/create';
+    const uri = this.id ? 'device/' + this.id : 'device/create';
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
     }).add(() => {

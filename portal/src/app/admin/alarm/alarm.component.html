@@ -38,7 +38,7 @@
       <td>{{ data.content }}</td>
       <td>{{data.created | fromNow}}</td>
       <td>
-        <a [routerLink]="'/admin/alarm/detail/'+data._id">详情</a>
+        <a [routerLink]="'/admin/alarm/detail/'+data.id">详情</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
           更多

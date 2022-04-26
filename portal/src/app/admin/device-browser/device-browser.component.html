@@ -25,8 +25,8 @@
     </thead>
     <tbody>
     <tr *ngFor="let data of datum; let i=index" (click)="onItemClick(data)">
-      <td [nzChecked]="setCheckedOfId.has(data._id)" [nzDisabled]="!data.disabled"
-          (nzCheckedChange)="onItemChecked(data._id, $event)"
+      <td [nzChecked]="setCheckedOfId.has(data.id)" [nzDisabled]="!data.disabled"
+          (nzCheckedChange)="onItemChecked(data.id, $event)"
       ></td>
       <td>{{ data.name }}</td>
       <td>{{data.element?.name}}</td>

@@ -55,7 +55,7 @@ func parseParamId(ctx *gin.Context) {
 }
 
 func parseParamStringId(ctx *gin.Context) {
-	var pid paramID
+	var pid paramStringID
 	err := ctx.ShouldBindUri(&pid)
 	if err != nil {
 		replyError(ctx, err)

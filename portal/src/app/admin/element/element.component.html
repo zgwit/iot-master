@@ -31,9 +31,9 @@
       <td>{{ data.version }}</td>
       <td>{{data.created | fromNow}}</td>
       <td>
-        <a [routerLink]="'/admin/element/detail/'+data._id">详情</a>
+        <a [routerLink]="'/admin/element/detail/'+data.id">详情</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <a [routerLink]="'/admin/element/edit/'+data._id">编辑</a>
+        <a [routerLink]="'/admin/element/edit/'+data.id">编辑</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
           更多

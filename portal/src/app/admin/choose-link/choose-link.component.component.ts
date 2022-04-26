@@ -21,7 +21,7 @@ export class ChooseLinkComponent implements OnInit, ControlValueAccessor {
 
   //内容
   @HostBinding('attr.title')
-  _id = "";
+  id = "";
   name = "";
 
   @Input()
@@ -41,14 +41,14 @@ export class ChooseLinkComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(obj: any): void {
-    this._id = obj;
+    this.id = obj;
     this.load();
   }
 
   load() {
-    if (!this._id) return;
+    if (!this.id) return;
     this.name = "加载中...";
-    this.rs.get(`tunnel/${this._id}/detail`).subscribe(res=>{
+    this.rs.get(`tunnel/${this.id}/detail`).subscribe(res=>{
       this.name = res.data.name || res.data.sn;
     })
   }
@@ -56,7 +56,7 @@ export class ChooseLinkComponent implements OnInit, ControlValueAccessor {
   choose() {
     this.cs.chooseLink().subscribe(res=>{
       if (res){
-        this._id = res;
+        this.id = res;
         this.load();
         this.onChanged(res);
         this.onTouched();
@@ -65,7 +65,7 @@ export class ChooseLinkComponent implements OnInit, ControlValueAccessor {
   }
 
   clear() {
-    this._id = '';
+    this.id = '';
     this.name = '';
     this.onChanged('');
     this.onTouched();

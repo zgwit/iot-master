@@ -54,7 +54,7 @@ export class ElementEditComponent implements OnInit {
 
 
   load(): void {
-    this.rs.get('element/' + this.id + '/detail').subscribe(res => {
+    this.rs.get('element/' + this.id).subscribe(res => {
       this.data = res.data;
       this.buildForm();
     })
@@ -62,7 +62,7 @@ export class ElementEditComponent implements OnInit {
 
   submit(): void {
     this.submitting = true
-    const uri = this.id ? 'element/' + this.id + '/setting' : 'element/create';
+    const uri = this.id ? 'element/' + this.id : 'element/create';
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
     }).add(() => {

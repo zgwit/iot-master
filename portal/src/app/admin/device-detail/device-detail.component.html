@@ -6,14 +6,14 @@
     </p>
     <p *ngIf="data.element">
       元件：
-      <a [routerLink]="'/admin/element/detail/'+data.element._id">{{data.element.name}}</a>
+      <a [routerLink]="'/admin/element/detail/'+data.element.id">{{data.element.name}}</a>
     </p>
     <p *ngIf="data.project">
       项目：{{data.project.join(',')}}
     </p>
     <p *ngIf="data.tunnel">
       通道：
-      <a [routerLink]="'/admin/tunnel/detail/'+data.tunnel._id">{{data.tunnel.name || data.tunnel.sn}}</a>
+      <a [routerLink]="'/admin/tunnel/detail/'+data.tunnel.id">{{data.tunnel.name || data.tunnel.sn}}</a>
     </p>
 
     <button nz-button (click)="refreshAll()">刷新全部数据</button>
@@ -24,7 +24,7 @@
         <nz-card>
           <nz-statistic [nzValue]="data.values && data.values[v.name] || '--'" [nzTitle]="v.label"
                         [nzSuffix]="v.unit"></nz-statistic>
-          <div class="history" title="历史" *ngIf="v.store" [routerLink]="'/admin/device/value/'+data._id+'/'+v.name"><i
+          <div class="history" title="历史" *ngIf="v.store" [routerLink]="'/admin/device/value/'+data.id+'/'+v.name"><i
             nz-icon nzType="line-chart" nzTheme="outline"></i></div>
         </nz-card>
       </div>
@@ -33,7 +33,7 @@
           <div class="label">{{v.label}} <span *ngIf="v.unit">({{v.unit}})</span> </div>
           <div class="value">{{data.values && data.values[v.name] | number: '1.0-2'}}</div>
           <div class="refresh" title="刷新" *ngIf="!v.rw || v.rw>1" (click)="refresh(v.name)"><i nz-icon nzType="sync" nzTheme="outline"></i></div>
-          <div class="history" title="历史" *ngIf="v.store" [routerLink]="'/admin/device/value/'+data._id+'/'+v.name"><i
+          <div class="history" title="历史" *ngIf="v.store" [routerLink]="'/admin/device/value/'+data.id+'/'+v.name"><i
             nz-icon nzType="line-chart" nzTheme="outline"></i></div>
         </nz-card>
       </div>
@@ -50,12 +50,12 @@
   </nz-tab>
   <nz-tab nzTitle="告警记录">
     <ng-template nz-tab>
-      <app-alarm type="device" [_id]="id"></app-alarm>
+      <app-alarm type="device" [id]="id"></app-alarm>
     </ng-template>
   </nz-tab>
   <nz-tab nzTitle="日志">
     <ng-template nz-tab>
-      <app-event type="device" [_id]="id"></app-event>
+      <app-event type="device" [id]="id"></app-event>
     </ng-template>
   </nz-tab>
 

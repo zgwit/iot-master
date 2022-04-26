@@ -11,7 +11,7 @@ import {parseTableQuery} from "../table";
   styleUrls: ['./template-project.component.scss']
 })
 export class TemplateProjectComponent implements OnInit {
-  @Input() _id = '';
+  @Input() id = '';
 
   datum: any[] = [];
 
@@ -46,7 +46,7 @@ export class TemplateProjectComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.params.filter.template_id = this._id;
+    this.params.filter.template_id = this.id;
     this.rs.post('project/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
@@ -57,22 +57,22 @@ export class TemplateProjectComponent implements OnInit {
   }
 
   create(): void {
-    this.router.navigate(["admin/project/create"], {queryParams: {template_id: this._id}});
+    this.router.navigate(["admin/project/create"], {queryParams: {template_id: this.id}});
   }
 
   open(data: any): void {
-    this.router.navigate(['/admin/project/detail/' + data._id]);
+    this.router.navigate(['/admin/project/detail/' + data.id]);
   }
 
   remove(data: any, i: number) {
-    this.rs.delete(`project/${data._id}/delete`).subscribe(res => {
+    this.rs.delete(`project/${data.id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
 
   onEnableChange(data: any, disabled: boolean) {
     if (disabled) {
-      this.rs.post(`project/${data._id}/setting`, {disabled}).subscribe(res => {
+      this.rs.post(`project/${data.id}/setting`, {disabled}).subscribe(res => {
       });
       return;
     }
@@ -80,7 +80,7 @@ export class TemplateProjectComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk:()=>{
-        this.rs.post(`project/${data._id}/setting`, {disabled}).subscribe(res => {
+        this.rs.post(`project/${data.id}/setting`, {disabled}).subscribe(res => {
         });
       },
       nzOnCancel:()=>{

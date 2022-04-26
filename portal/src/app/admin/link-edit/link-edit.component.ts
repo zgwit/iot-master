@@ -41,7 +41,7 @@ export class LinkEditComponent implements OnInit {
 
 
   load(): void {
-    this.rs.get('link/' + this.id + '/detail').subscribe(res => {
+    this.rs.get('link/' + this.id).subscribe(res => {
       this.data = res.data;
       this.buildForm();
     })
@@ -49,7 +49,7 @@ export class LinkEditComponent implements OnInit {
 
   submit(): void {
     this.submitting = true
-    const uri = 'link/' + this.id + '/setting';
+    const uri = 'link/' + this.id;
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
     }).add(() => {

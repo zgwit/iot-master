@@ -57,11 +57,11 @@ export class TemplateComponent implements OnInit {
   }
 
   open(data: any): void {
-    this.router.navigate(['/admin/template/detail/' + data._id]);
+    this.router.navigate(['/admin/template/detail/' + data.id]);
   }
 
   remove(data: any, i: number) {
-    this.rs.delete(`template/${data._id}/delete`).subscribe(res=>{
+    this.rs.delete(`template/${data.id}/delete`).subscribe(res=>{
       this.datum.splice(i, 1);
     });
   }

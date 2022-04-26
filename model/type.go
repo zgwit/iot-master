@@ -25,45 +25,49 @@ const (
 )
 
 //Parse 解析类型
-func (dt DataType) Parse(tp string) error {
-	strings.ToLower(tp)
+func (dt *DataType) Parse(tp string) error {
+	//var *dt DataType
+	tp = tp[1:len(tp)-1]
+	//strings.ToLower(tp)
 	switch strings.ToLower(tp) {
+	case "none":
+		*dt = TypeNONE
 	case "bit":
-		dt = TypeBIT
+		*dt = TypeBIT
 	case "byte":
-		dt = TypeBYTE
+		*dt = TypeBYTE
 	case "word":
 		fallthrough
 	case "uint16":
-		dt = TypeWORD
+		*dt = TypeWORD
 	case "dword":
 		fallthrough
 	case "uint32":
-		dt = TypeDWORD
+		*dt = TypeDWORD
 	case "qword":
 		fallthrough
 	case "uint64":
-		dt = TypeQWORD
+		*dt = TypeQWORD
 	case "short":
 		fallthrough
 	case "int16":
-		dt = TypeSHORT
+		*dt = TypeSHORT
 	case "integer":
 		fallthrough
 	case "int32":
 		fallthrough
 	case "int":
-		dt = TypeINTEGER
+		*dt = TypeINTEGER
 	case "long":
 		fallthrough
 	case "int64":
-		dt = TypeLONG
+		*dt = TypeLONG
 	case "float":
-		dt = TypeFLOAT
+		*dt = TypeFLOAT
 	case "double":
 		fallthrough
 	case "float64":
-		dt = TypeDOUBLE
+		*dt = TypeDOUBLE
 	default:
 		return fmt.Errorf("Unknown data type: %s ", tp)
 	}
@@ -71,9 +75,9 @@ func (dt DataType) Parse(tp string) error {
 }
 
 //String 转化成字符串
-func (dt DataType) String() string {
+func (dt *DataType) String() string {
 	var str string
-	switch dt {
+	switch *dt {
 	case TypeBIT:
 		str = "bit"
 	case TypeBYTE:
@@ -101,9 +105,9 @@ func (dt DataType) String() string {
 }
 
 //Size 宽度
-func (dt DataType) Size() int {
+func (dt *DataType) Size() int {
 	var s int
-	switch dt {
+	switch *dt {
 	case TypeBIT:
 		s = 1
 	case TypeBYTE:
@@ -131,9 +135,9 @@ func (dt DataType) Size() int {
 }
 
 //Encode 编码
-func (dt DataType) Encode(val float64, le bool) []byte {
+func (dt *DataType) Encode(val float64, le bool) []byte {
 	buf := make([]byte, 8)
-	switch dt {
+	switch *dt {
 	case TypeBIT:
 		if val > 0 {
 			buf[0] = 1 //?????
@@ -197,9 +201,9 @@ func (dt DataType) Encode(val float64, le bool) []byte {
 }
 
 //Decode 解码
-func (dt DataType) Decode(buf []byte, le bool) (float64, error) {
+func (dt *DataType) Decode(buf []byte, le bool) (float64, error) {
 	var val float64
-	switch dt {
+	switch *dt {
 	case TypeBIT:
 		if buf[0] > 0 {
 			val = 1
@@ -263,11 +267,11 @@ func (dt DataType) Decode(buf []byte, le bool) (float64, error) {
 }
 
 //MarshalJSON 序列化
-func (dt DataType) MarshalJSON() ([]byte, error) {
+func (dt *DataType) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + dt.String() + `"`), nil
 }
 
 //UnmarshalJSON 解析
-func (dt DataType) UnmarshalJSON(buf []byte) error {
+func (dt *DataType) UnmarshalJSON(buf []byte) error {
 	return dt.Parse(string(buf))
 }

@@ -53,11 +53,11 @@ export class EditPointsComponent implements OnInit, ControlValueAccessor {
     this.formArray.push(this.fb.group({
       name: ['', [Validators.required]],
       label: ['', []],
-      address: [0, [Validators.required]],
+      address: ['', [Validators.required]],
       type: ['', [Validators.required]],
       little_endian: [false, [Validators.required]],
       precision: [0, [Validators.required]],
-      default: ['', [Validators.required]],
+      default: [0, [Validators.required]],
       unit: ["", []],
     }))
     //复制controls，让表格可以刷新

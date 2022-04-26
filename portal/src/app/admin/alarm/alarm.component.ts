@@ -11,7 +11,7 @@ import {parseTableQuery} from "../table";
 })
 export class AlarmComponent implements OnInit {
   @Input() type = '';
-  @Input() _id = '';
+  @Input() id = '';
 
   datum: any[] = [];
 
@@ -46,7 +46,7 @@ export class AlarmComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.params.filter[this.type + '_id'] = this._id;
+    this.params.filter[this.type + '_id'] = this.id;
     this.rs.post('alarm/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
@@ -58,7 +58,7 @@ export class AlarmComponent implements OnInit {
 
 
   remove(data: any, i: number) {
-    this.rs.delete(`alarm/${data._id}/delete`).subscribe(res=>{
+    this.rs.delete(`alarm/${data.id}/delete`).subscribe(res=>{
       this.datum.splice(i, 1);
     });
 
