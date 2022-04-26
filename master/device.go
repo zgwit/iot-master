@@ -20,7 +20,7 @@ type Device struct {
 	events.EventEmitter
 
 	pollers    []*Poller
-	validators []*Validator
+	validators []*Alarm
 
 	//命令索引
 	commandIndex map[string]*model.Command
@@ -34,7 +34,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 		commandIndex: make(map[string]*model.Command, 0),
 		//mapper: newMapper(m.Points, adapter), TODO 引入协议
 		pollers:    make([]*Poller, 0),
-		validators: make([]*Validator, 0),
+		validators: make([]*Alarm, 0),
 	}
 
 	//加载模板
@@ -141,9 +141,9 @@ func (dev *Device) initValidators() error {
 		return nil
 	}
 	for _, v := range dev.Validators {
-		validator := &Validator{Validator: *v}
-		validator.On("alarm", func(alarm *model.Alarm) {
-			da := &model.DeviceAlarm{DeviceID: dev.ID, Alarm: *alarm}
+		validator := &Alarm{Alarm: *v}
+		validator.On("alarm", func(alarm *model.AlarmContent) {
+			da := &model.DeviceAlarm{DeviceID: dev.ID, AlarmContent: *alarm}
 
 			//入库
 			_ = database.History.Save(da)

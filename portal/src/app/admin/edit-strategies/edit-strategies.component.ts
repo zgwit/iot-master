@@ -35,7 +35,6 @@ export class EditStrategiesComponent implements OnInit, ControlValueAccessor {
         return this.fb.group({
           name: [d.name, [Validators.required]],
           condition: [d.condition, [Validators.required]],
-          command: [d.command, [Validators.required]],
           delay: [d.delay, [Validators.required]],
           reset_timeout: [d.reset_timeout, []],
           reset_total: [d.reset_total, []],
@@ -50,7 +49,6 @@ export class EditStrategiesComponent implements OnInit, ControlValueAccessor {
     this.formArray.push(this.fb.group({
       name: ['', [Validators.required]],
       condition: ['', [Validators.required]],
-      command: ['', [Validators.required]],
       delay: [0, [Validators.required]],
       reset_timeout: [0, []],
       reset_total: [0, []],
@@ -68,7 +66,6 @@ export class EditStrategiesComponent implements OnInit, ControlValueAccessor {
     this.formArray.controls.splice(i, 0, this.fb.group({
       name: [group.get('name')?.value, [Validators.required]],
       condition: [group.get('condition')?.value, [Validators.required]],
-      command: [group.get('command')?.value, [Validators.required]],
       delay: [group.get('delay')?.value, [Validators.required]],
       reset_timeout: [group.get('reset_timeout')?.value, []],
       reset_total: [group.get('reset_total')?.value, []],

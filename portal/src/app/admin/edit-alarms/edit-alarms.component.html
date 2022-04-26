@@ -11,8 +11,12 @@
   <tr>
     <th>名称</th>
     <th>条件</th>
-    <th>命令</th>
-    <th>参数</th>
+    <th>延迟</th>
+    <th>超时重置</th>
+    <th>重置次数</th>
+    <th>代码</th>
+    <th>内容</th>
+    <th>等级</th>
     <th>禁用</th>
     <th>操作</th>
   </tr>
@@ -26,11 +30,25 @@
       <input nz-input formControlName="condition" nzSize="small" (change)="change()" required/>
     </td>
     <td>
-      <input nz-input formControlName="command" nzSize="small" (change)="change()" required/>
+      <nz-input-number formControlName="delay" nzSize="small" (change)="change()"></nz-input-number>
     </td>
     <td>
-      <input nz-input formControlName="parameters" nzSize="small" (change)="change()" required/>
+      <nz-input-number formControlName="reset_timeout" nzSize="small" (change)="change()"></nz-input-number>
     </td>
+    <td>
+      <nz-input-number formControlName="reset_total" nzSize="small" (change)="change()"></nz-input-number>
+    </td>
+
+    <td>
+      <input nz-input formControlName="code" nzSize="small" (change)="change()" required/>
+    </td>
+    <td>
+      <input nz-input formControlName="message" nzSize="small" (change)="change()" required/>
+    </td>
+    <td>
+      <nz-input-number formControlName="level" nzSize="small" (change)="change()"></nz-input-number>
+    </td>
+
     <td>
       <label nz-checkbox formControlName="disabled" (change)="change()" (ngModelChange)="change()"></label>
     </td>

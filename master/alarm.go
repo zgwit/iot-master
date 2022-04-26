@@ -7,49 +7,49 @@ import (
 	"time"
 )
 
-//Validator 规则
-type Validator struct {
-	model.Validator
+//Alarm 规则
+type Alarm struct {
+	model.Alarm
 
 	condition *calc.Expression
 	events.EventEmitter
 }
 
 //Execute 执行
-func (s *Validator) Execute(ctx calc.Context) error {
+func (a *Alarm) Execute(ctx calc.Context) error {
 
 	//条件检查
-	val, err := s.condition.Eval(ctx)
+	val, err := a.condition.Eval(ctx)
 	if err != nil {
 		return err
 	}
 	if !val.(bool) {
-		s.DelayChecker.Reset()
-		s.RepeatChecker.Reset()
+		a.DelayChecker.Reset()
+		a.RepeatChecker.Reset()
 		return nil
 	}
 
 	//时间检查
-	if !s.DailyChecker.Check() {
-		s.DelayChecker.Reset()
-		s.RepeatChecker.Reset()
+	if !a.DailyChecker.Check() {
+		a.DelayChecker.Reset()
+		a.RepeatChecker.Reset()
 		return nil
 	}
 
 	now := time.Now().UnixMicro()
 	//时间检查
-	if !s.DelayChecker.Check(now) {
-		s.RepeatChecker.Check(now)
+	if !a.DelayChecker.Check(now) {
+		a.RepeatChecker.Check(now)
 		return nil
 	}
 
 	//重复检查
-	if !s.RepeatChecker.Check(now) {
+	if !a.RepeatChecker.Check(now) {
 		return nil
 	}
 
 	//产生报警
-	s.Emit("alarm", &s.Alarm)
+	a.Emit("alarm", &a.AlarmContent)
 
 	return nil
 }

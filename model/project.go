@@ -18,7 +18,7 @@ type Template struct {
 type ProjectContent struct {
 	Icon        string        `json:"icon"`
 	Aggregators []*Aggregator `json:"aggregators"`
-	Validators  []*Validator  `json:"validators"`
+	Validators  []*Alarm      `json:"validators"`
 	Commands    []*Command    `json:"commands"`
 	Jobs        []*Job        `json:"jobs"`
 	Strategies  []*Strategy   `json:"strategies"`
@@ -63,4 +63,10 @@ type ProjectHistory struct {
 type TemplateHistory struct {
 	Template   `storm:"inline"`
 	TemplateID string `json:"template_id" storm:"index"`
+}
+
+type ProjectEx struct {
+	Project
+	Online bool
+	Error  string
 }

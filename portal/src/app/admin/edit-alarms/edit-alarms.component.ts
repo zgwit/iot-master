@@ -2,18 +2,18 @@ import {Component, forwardRef, OnInit} from '@angular/core';
 import {ControlValueAccessor, FormArray, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-edit-validators',
-  templateUrl: './edit-validators.component.html',
-  styleUrls: ['./edit-validators.component.scss'],
+  selector: 'app-edit-alarms',
+  templateUrl: './edit-alarms.component.html',
+  styleUrls: ['./edit-alarms.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => EditValidatorsComponent),
+      useExisting: forwardRef(() => EditAlarmsComponent),
       multi: true
     }
   ]
 })
-export class EditValidatorsComponent implements OnInit, ControlValueAccessor {
+export class EditAlarmsComponent implements OnInit, ControlValueAccessor {
   onChanged: any = () => {
   }
   onTouched: any = () => {
@@ -35,8 +35,12 @@ export class EditValidatorsComponent implements OnInit, ControlValueAccessor {
         return this.fb.group({
           name: [d.name, [Validators.required]],
           condition: [d.condition, [Validators.required]],
-          command: [d.command, [Validators.required]],
-          parameters: [d.parameters, [Validators.required]],
+          delay: [d.delay, [Validators.required]],
+          reset_timeout: [d.reset_timeout, []],
+          reset_total: [d.reset_total, []],
+          code: [d.code, [Validators.required]],
+          message: [d.message, [Validators.required]],
+          level: [d.level, [Validators.required]],
           disabled: [d.disabled, [Validators.required]],
         })
       }))
@@ -47,8 +51,12 @@ export class EditValidatorsComponent implements OnInit, ControlValueAccessor {
     this.formArray.push(this.fb.group({
       name: ['', [Validators.required]],
       condition: ['', [Validators.required]],
-      command: ['', [Validators.required]],
-      parameters: ['', [Validators.required]],
+      delay: [0, [Validators.required]],
+      reset_timeout: [0, []],
+      reset_total: [0, []],
+          code: ['', [Validators.required]],
+          message: ['', [Validators.required]],
+          level: [0, [Validators.required]],
       disabled: [false, [Validators.required]],
     }))
     //复制controls，让表格可以刷新
@@ -62,8 +70,12 @@ export class EditValidatorsComponent implements OnInit, ControlValueAccessor {
     this.formArray.controls.splice(i, 0, this.fb.group({
       name: [group.get('name')?.value, [Validators.required]],
       condition: [group.get('condition')?.value, [Validators.required]],
-      command: [group.get('command')?.value, [Validators.required]],
-      parameters: [group.get('parameters')?.value, [Validators.required]],
+      delay: [group.get('delay')?.value, [Validators.required]],
+      reset_timeout: [group.get('reset_timeout')?.value, []],
+      reset_total: [group.get('reset_total')?.value, []],
+      code: [group.get('code')?.value, [Validators.required]],
+      message: [group.get('message')?.value, [Validators.required]],
+      level: [group.get('level')?.value, [Validators.required]],
       disabled: [group.get('disabled')?.value, [Validators.required]],
     }))
   }

@@ -47,25 +47,25 @@ export let SideMenu = [
       },
     ]
   },
-  {
-    title: '扩展',
-    icon: 'appstore-add',
-    open: false,
-    children: [
-      {
-        title: '插件',
-        router: 'extension/plugin'
-      },
-      {
-        title: '协议',
-        router: 'extension/protocol'
-      },
-      // {
-      //   title: '接口',
-      //   router: 'api'
-      // },
-    ]
-  },
+  // {
+  //   title: '扩展',
+  //   icon: 'appstore-add',
+  //   open: false,
+  //   children: [
+  //     {
+  //       title: '插件',
+  //       router: 'extension/plugin'
+  //     },
+  //     {
+  //       title: '协议',
+  //       router: 'extension/protocol'
+  //     },
+  //     // {
+  //     //   title: '接口',
+  //     //   router: 'api'
+  //     // },
+  //   ]
+  // },
   {
     title: '设置',
     icon: 'setting',

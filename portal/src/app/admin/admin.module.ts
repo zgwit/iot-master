@@ -103,7 +103,7 @@ import {ChooseElementComponent} from "./choose-element/choose-element.component"
 import {ChooseDeviceComponent} from "./choose-device/choose-device.component";
 import {ChooseLinkComponent} from "./choose-link/choose-link.component.component";
 import {EditElementsComponent} from "./edit-elements/edit-elements.component";
-import {EditValidatorsComponent} from "./edit-validators/edit-validators.component";
+import {EditAlarmsComponent} from "./edit-alarms/edit-alarms.component";
 import {EditDirectivesComponent} from "./edit-directives/edit-directives.component";
 import {EditInvokesComponent} from "./edit-invokes/edit-invokes.component";
 
@@ -128,7 +128,7 @@ import {EditInvokesComponent} from "./edit-invokes/edit-invokes.component";
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
     EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
-    EditDevicesComponent, EditElementsComponent, EditValidatorsComponent,
+    EditDevicesComponent, EditElementsComponent, EditAlarmsComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
     EditDirectivesComponent, EditInvokesComponent,
     EventComponent, AlarmComponent,

@@ -55,7 +55,7 @@ type Project struct {
 	Devices []*ProjectDevice
 
 	aggregators []aggregator.Aggregator
-	validators  []*Validator
+	validators  []*Alarm
 	jobs        []*Job
 	strategies  []*Strategy
 
@@ -71,7 +71,7 @@ func NewProject(m *model.Project) (*Project, error) {
 		Project:         *m,
 		Devices:         make([]*ProjectDevice, 0),
 		aggregators:     make([]aggregator.Aggregator, 0),
-		validators:      make([]*Validator, 0),
+		validators:      make([]*Alarm, 0),
 		jobs:            make([]*Job, 0),
 		strategies:      make([]*Strategy, 0),
 		deviceNameIndex: make(map[string]*Device),
@@ -193,9 +193,9 @@ func (prj *Project) initValidators() error {
 		return nil
 	}
 	for _, v := range prj.Validators {
-		validator := &Validator{Validator: *v}
-		validator.On("alarm", func(alarm *model.Alarm) {
-			pa := &model.ProjectAlarm{ProjectID: prj.ID, Alarm: *alarm}
+		validator := &Alarm{Alarm: *v}
+		validator.On("alarm", func(alarm *model.AlarmContent) {
+			pa := &model.ProjectAlarm{ProjectID: prj.ID, AlarmContent: *alarm}
 
 			//入库
 			_ = database.History.Save(pa)
@@ -258,7 +258,7 @@ func (prj *Project) initHandler() error {
 
 	//设备告警的处理函数
 	prj.deviceAlarmHandler = func(alarm *model.DeviceAlarm) {
-		pa := &model.ProjectAlarm{ProjectID: prj.ID, Alarm: alarm.Alarm}
+		pa := &model.ProjectAlarm{ProjectID: prj.ID, AlarmContent: alarm.AlarmContent}
 
 		//历史入库
 		_ = database.History.Save(pa)
