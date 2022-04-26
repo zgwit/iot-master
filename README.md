@@ -1,5 +1,7 @@
 # 物联大师
 
+[![真格智能实验室](https://labs.zgwit.com/logo.png)](https://labs.zgwit.com)
+
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
 [![codecov](https://codecov.io/gh/zgwit/iot-master/branch/main/graph/badge.svg?token=AK5TD8KQ5C)](https://codecov.io/gh/zgwit/iot-master)
@@ -134,6 +136,5 @@
 - 邮箱：[jason@zgwit.com](mailto:jason@zgwit.com)
 - 手机：[15161515197](tel:15161515197)(微信同号)
 
-![微信号](https://labs.zgwit.com/qrcode.jpg)
+![微信群](https://iot-master.com/iot-master.png)
 
-[![真格智能实验室](https://labs.zgwit.com/logo.png)](https://labs.zgwit.com)
