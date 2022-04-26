@@ -6,7 +6,9 @@ import "time"
 type Link struct {
 	Id       int       `json:"id" storm:"id,increment"`
 	TunnelId int       `json:"tunnel_id" storm:"index"`
-	SN       string    `json:"sn"`
+	SN       string    `json:"sn" storm:"index"`
+	Name     string    `json:"name"`
+	Remote   string    `json:"remote"`
 	Disabled bool      `json:"disabled"`
 	Last     time.Time `json:"last"`
 	Created  time.Time `json:"created" storm:"created"`
