@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/iancoleman/strcase"
 	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/storm/v3/q"
 	"net/http"
@@ -120,10 +121,11 @@ func normalSearch(ctx *gin.Context, store storm.Node, mod interface{}) (interfac
 	//过滤
 	for k, v := range body.Filters {
 		if len(v) > 0 {
+			kk := strcase.ToCamel(k)
 			if len(v) == 1 {
-				cond = append(cond, q.Eq(k, v[0]))
+				cond = append(cond, q.Eq(kk, v[0]))
 			} else {
-				cond = append(cond, q.In(k, v))
+				cond = append(cond, q.In(kk, v))
 			}
 		}
 	}
@@ -132,7 +134,8 @@ func normalSearch(ctx *gin.Context, store storm.Node, mod interface{}) (interfac
 	kws := make([]q.Matcher, 0)
 	for k, v := range body.Keywords {
 		if v != "" {
-			kws = append(kws, q.Re(k, v))
+			kk := strcase.ToCamel(k)
+			kws = append(kws, q.Re(kk, v))
 		}
 	}
 	if len(kws) > 0 {
@@ -153,10 +156,11 @@ func normalSearch(ctx *gin.Context, store storm.Node, mod interface{}) (interfac
 	//排序
 	if len(body.Sort) > 0 {
 		for k, v := range body.Sort {
+			kk := strcase.ToCamel(k)
 			if v > 0 {
-				query = query.OrderBy(k)
+				query = query.OrderBy(kk)
 			} else {
-				query = query.OrderBy(k).Reverse()
+				query = query.OrderBy(kk).Reverse()
 			}
 		}
 	} else {
@@ -186,10 +190,11 @@ func normalSearchById(ctx *gin.Context, store storm.Node, field string, value in
 	//过滤
 	for k, v := range body.Filters {
 		if len(v) > 0 {
+			kk := strcase.ToCamel(k)
 			if len(v) == 1 {
-				cond = append(cond, q.Eq(k, v[0]))
+				cond = append(cond, q.Eq(kk, v[0]))
 			} else {
-				cond = append(cond, q.In(k, v))
+				cond = append(cond, q.In(kk, v))
 			}
 		}
 	}
@@ -198,7 +203,8 @@ func normalSearchById(ctx *gin.Context, store storm.Node, field string, value in
 	kws := make([]q.Matcher, 0)
 	for k, v := range body.Keywords {
 		if v != "" {
-			kws = append(kws, q.Re(k, v))
+			kk := strcase.ToCamel(k)
+			kws = append(kws, q.Re(kk, v))
 		}
 	}
 	if len(kws) > 0 {
@@ -219,10 +225,11 @@ func normalSearchById(ctx *gin.Context, store storm.Node, field string, value in
 	//排序
 	if len(body.Sort) > 0 {
 		for k, v := range body.Sort {
+			kk := strcase.ToCamel(k)
 			if v > 0 {
-				query = query.OrderBy(k)
+				query = query.OrderBy(kk)
 			} else {
-				query = query.OrderBy(k).Reverse()
+				query = query.OrderBy(kk).Reverse()
 			}
 		}
 	} else {
