@@ -65,7 +65,7 @@ func LoadDevices() error {
 		if err != nil {
 			return err
 		}
-		allDevices.Store(d.ID, dev)
+		allDevices.Store(d.Id, dev)
 
 		err = dev.Start()
 		if err != nil {
@@ -87,7 +87,7 @@ func LoadDevice(id int) (*Device, error) {
 	if err != nil {
 		return dev, err
 	}
-	//allDevices.Store(device.ID, dev)
+	//allDevices.Store(device.Id, dev)
 	allDevices.Store(id, dev)
 	err = dev.Start()
 	return dev, nil
@@ -141,7 +141,7 @@ func LoadProjects() error {
 		return err
 	}
 	for _, p := range projects {
-		allProjects.Store(p.ID, projects)
+		allProjects.Store(p.Id, projects)
 		if p.Disabled {
 			continue
 		}

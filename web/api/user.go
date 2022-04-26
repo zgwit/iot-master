@@ -57,7 +57,7 @@ func userCreate(ctx *gin.Context) {
 
 func userDetail(ctx *gin.Context) {
 	var user model.User
-	err := database.Master.One("ID", ctx.GetInt("id"), &user)
+	err := database.Master.One("Id", ctx.GetInt("id"), &user)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -72,7 +72,7 @@ func userUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	user.ID = ctx.GetInt("id")
+	user.Id = ctx.GetInt("id")
 
 	err = database.Master.Update(&user)
 	if err != nil {
@@ -84,14 +84,14 @@ func userUpdate(ctx *gin.Context) {
 }
 
 func userDelete(ctx *gin.Context) {
-	user := model.User{ID: ctx.GetInt("id")}
+	user := model.User{Id: ctx.GetInt("id")}
 	err := database.Master.DeleteStruct(&user)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
 
-	_= database.Master.DeleteStruct(model.Password{ID: user.ID})
+	_= database.Master.DeleteStruct(model.Password{Id: user.Id})
 
 	replyOk(ctx, user)
 }
@@ -102,7 +102,7 @@ func userPassword(ctx *gin.Context) {
 }
 
 func userEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(model.User{ID: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(model.User{Id: ctx.GetInt("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -111,7 +111,7 @@ func userEnable(ctx *gin.Context) {
 }
 
 func userDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(model.User{ID: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(model.User{Id: ctx.GetInt("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -120,7 +120,7 @@ func userDisable(ctx *gin.Context) {
 }
 
 func userEvent(ctx *gin.Context) {
-	events, cnt, err := normalSearchById(ctx, database.History, "UserID", ctx.GetInt("id"), &model.UserEvent{})
+	events, cnt, err := normalSearchById(ctx, database.History, "UserId", ctx.GetInt("id"), &model.UserEvent{})
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -129,7 +129,7 @@ func userEvent(ctx *gin.Context) {
 }
 
 func userEventClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("UserID", ctx.GetInt("id"))).Delete(&model.UserEvent{})
+	err := database.History.Select(q.Eq("UserId", ctx.GetInt("id"))).Delete(&model.UserEvent{})
 	if err != nil {
 		replyError(ctx, err)
 		return

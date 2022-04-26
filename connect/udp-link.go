@@ -21,8 +21,8 @@ func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
 	}
 }
 
-//ID ID
-func (l *UdpLink) ID() int {
+//Id Id
+func (l *UdpLink) Id() int {
 	return l.id
 }
 

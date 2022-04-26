@@ -18,11 +18,11 @@ type paramSearchEx struct {
 	Keywords map[string]string        `json:"keyword"`
 }
 
-type paramID struct {
-	ID int `uri:"id"`
+type paramId struct {
+	Id int `uri:"id"`
 }
-type paramStringID struct {
-	ID string `uri:"id"`
+type paramStringId struct {
+	Id string `uri:"id"`
 }
 
 type WatchMessage struct {
@@ -44,26 +44,26 @@ func mustLogin(ctx *gin.Context) {
 }
 
 func parseParamId(ctx *gin.Context) {
-	var pid paramID
+	var pid paramId
 	err := ctx.ShouldBindUri(&pid)
 	if err != nil {
 		replyError(ctx, err)
 		ctx.Abort()
 		return
 	}
-	ctx.Set("id", pid.ID)
+	ctx.Set("id", pid.Id)
 	ctx.Next()
 }
 
 func parseParamStringId(ctx *gin.Context) {
-	var pid paramStringID
+	var pid paramStringId
 	err := ctx.ShouldBindUri(&pid)
 	if err != nil {
 		replyError(ctx, err)
 		ctx.Abort()
 		return
 	}
-	ctx.Set("id", pid.ID)
+	ctx.Set("id", pid.Id)
 	ctx.Next()
 }
 
@@ -164,7 +164,7 @@ func normalSearch(ctx *gin.Context, store storm.Node, mod interface{}) (interfac
 			}
 		}
 	} else {
-		query = query.OrderBy("ID").Reverse()
+		query = query.OrderBy("Id").Reverse()
 	}
 
 	//查询
@@ -233,7 +233,7 @@ func normalSearchById(ctx *gin.Context, store storm.Node, field string, value in
 			}
 		}
 	} else {
-		query = query.OrderBy("ID").Reverse()
+		query = query.OrderBy("Id").Reverse()
 	}
 
 	//查询

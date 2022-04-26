@@ -19,8 +19,8 @@ func newNetLink(conn net.Conn) *NetLink {
 	}
 }
 
-//ID ID
-func (l *NetLink) ID() int {
+//Id Id
+func (l *NetLink) Id() int {
 	return l.id
 }
 

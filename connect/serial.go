@@ -47,8 +47,8 @@ func (s *Serial) Open() error {
 	go s.link.receive()
 
 	//Store link
-	lnk := model.Link{TunnelID: s.tunnel.ID}
-	err = database.Master.One("TunnelID", s.tunnel.ID, &lnk)
+	lnk := model.Link{TunnelId: s.tunnel.Id}
+	err = database.Master.One("TunnelId", s.tunnel.Id, &lnk)
 	if err == storm.ErrNotFound {
 		//保存一条新记录
 		_ = database.Master.Save(&lnk)
@@ -57,7 +57,7 @@ func (s *Serial) Open() error {
 	} else {
 		//上线
 	}
-	s.link.id = lnk.ID
+	s.link.id = lnk.Id
 
 	s.Emit("link", s.link)
 

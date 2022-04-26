@@ -57,10 +57,10 @@ func login(ctx *gin.Context) {
 	}
 
 	var password model.Password
-	err = database.Master.One("ID", user.ID, &password)
+	err = database.Master.One("Id", user.Id, &password)
 	//初始化密码
 	if err == storm.ErrNotFound {
-		password.ID = user.ID
+		password.Id = user.Id
 		password.Password = md5hash("123456")
 		err = database.Master.Save(&password)
 	}
@@ -74,7 +74,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	_ = database.History.Save(model.UserEvent{UserID: user.ID, Event: "登录"})
+	_ = database.History.Save(model.UserEvent{UserId: user.Id, Event: "登录"})
 
 	//存入session
 	session.Set("user", &user)
@@ -92,7 +92,7 @@ func logout(ctx *gin.Context) {
 	}
 
 	user := u.(*model.User)
-	_ = database.History.Save(model.UserEvent{UserID: user.ID, Event: "登录"})
+	_ = database.History.Save(model.UserEvent{UserId: user.Id, Event: "登录"})
 
 	session.Clear()
 	_ = session.Save()

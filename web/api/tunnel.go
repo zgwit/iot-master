@@ -57,7 +57,7 @@ func tunnelCreate(ctx *gin.Context) {
 	//启动
 	//tunnelStart(ctx)
 	go func() {
-		err := master.LoadTunnel(tunnel.ID)
+		err := master.LoadTunnel(tunnel.Id)
 		if err != nil {
 			log.Error(err)
 			return
@@ -67,7 +67,7 @@ func tunnelCreate(ctx *gin.Context) {
 
 func tunnelDetail(ctx *gin.Context) {
 	var tunnel model.Tunnel
-	err := database.Master.One("ID", ctx.GetInt("id"), &tunnel)
+	err := database.Master.One("Id", ctx.GetInt("id"), &tunnel)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -82,7 +82,7 @@ func tunnelUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	tunnel.ID = ctx.GetInt("id")
+	tunnel.Id = ctx.GetInt("id")
 
 	err = database.Master.Update(&tunnel)
 	if err != nil {
@@ -112,7 +112,7 @@ func tunnelUpdate(ctx *gin.Context) {
 }
 
 func tunnelDelete(ctx *gin.Context) {
-	tunnel := model.Tunnel{ID: ctx.GetInt("id")}
+	tunnel := model.Tunnel{Id: ctx.GetInt("id")}
 	err := database.Master.DeleteStruct(&tunnel)
 	if err != nil {
 		replyError(ctx, err)
@@ -167,7 +167,7 @@ func tunnelStop(ctx *gin.Context) {
 
 
 func tunnelEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Tunnel{ID: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(&model.Tunnel{Id: ctx.GetInt("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -189,7 +189,7 @@ func tunnelEnable(ctx *gin.Context) {
 }
 
 func tunnelDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Tunnel{ID: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(&model.Tunnel{Id: ctx.GetInt("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -222,7 +222,7 @@ func tunnelWatch(ctx *gin.Context) {
 }
 
 func tunnelEvent(ctx *gin.Context) {
-	events, cnt, err := normalSearchById(ctx, database.History, "TunnelID", ctx.GetInt("id"), &model.TunnelEvent{})
+	events, cnt, err := normalSearchById(ctx, database.History, "TunnelId", ctx.GetInt("id"), &model.TunnelEvent{})
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -231,7 +231,7 @@ func tunnelEvent(ctx *gin.Context) {
 }
 
 func tunnelEventClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("TunnelID", ctx.GetInt("id"))).Delete(&model.TunnelEvent{})
+	err := database.History.Select(q.Eq("TunnelId", ctx.GetInt("id"))).Delete(&model.TunnelEvent{})
 	if err != nil {
 		replyError(ctx, err)
 		return

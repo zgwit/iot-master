@@ -64,14 +64,14 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			lnk := model.Link{TunnelID: server.tunnel.ID}
+			lnk := model.Link{TunnelId: server.tunnel.Id}
 
 			if server.tunnel.Register == nil {
 				//先结束其他链接
 				for _, link := range server.links {
 					_ = link.Close()
 				}
-				err = database.Master.One("TunnelID", server.tunnel.ID, &lnk)
+				err = database.Master.One("TunnelId", server.tunnel.Id, &lnk)
 			} else {
 				if !server.tunnel.Register.Check(data) {
 					_ = conn.Close()
@@ -81,7 +81,7 @@ func (server *UdpServer) Open() error {
 				lnk.SN = sn
 				err = database.Master.Select(
 					q.And(
-						q.Eq("TunnelID", server.tunnel.ID),
+						q.Eq("TunnelId", server.tunnel.Id),
 						q.Eq("SN", sn),
 					),
 				).First(&lnk)
@@ -96,8 +96,8 @@ func (server *UdpServer) Open() error {
 			}
 
 			link = newUdpLink(conn, addr)
-			link.id = lnk.ID
-			server.children[lnk.ID] = link
+			link.id = lnk.Id
+			server.children[lnk.Id] = link
 
 			//启动对应的设备 发消息
 			server.Emit("link", link)

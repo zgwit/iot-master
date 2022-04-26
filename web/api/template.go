@@ -35,8 +35,8 @@ func templateCreate(ctx *gin.Context) {
 		return
 	}
 
-	//使用UUID作为ID
-	template.ID = uuid.NewString()
+	//使用UUId作为Id
+	template.Id = uuid.NewString()
 	//保存
 	err = database.Master.Save(&template)
 	if err != nil {
@@ -49,7 +49,7 @@ func templateCreate(ctx *gin.Context) {
 
 func templateDetail(ctx *gin.Context) {
 	var template model.Template
-	err := database.Master.One("ID", ctx.GetString("id"), &template)
+	err := database.Master.One("Id", ctx.GetString("id"), &template)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -64,7 +64,7 @@ func templateUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	template.ID = ctx.GetString("id")
+	template.Id = ctx.GetString("id")
 
 	err = database.Master.Update(&template)
 	if err != nil {
@@ -76,7 +76,7 @@ func templateUpdate(ctx *gin.Context) {
 }
 
 func templateDelete(ctx *gin.Context) {
-	template := model.Template{ID: ctx.GetString("id")}
+	template := model.Template{Id: ctx.GetString("id")}
 	err := database.Master.DeleteStruct(&template)
 	if err != nil {
 		replyError(ctx, err)

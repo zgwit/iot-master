@@ -35,8 +35,8 @@ func elementCreate(ctx *gin.Context) {
 		return
 	}
 
-	//使用UUID作为ID
-	element.ID = uuid.NewString()
+	//使用UUId作为Id
+	element.Id = uuid.NewString()
 	//保存
 	err = database.Master.Save(&element)
 	if err != nil {
@@ -49,7 +49,7 @@ func elementCreate(ctx *gin.Context) {
 
 func elementDetail(ctx *gin.Context) {
 	var element model.Element
-	err := database.Master.One("ID", ctx.GetString("id"), &element)
+	err := database.Master.One("Id", ctx.GetString("id"), &element)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -64,7 +64,7 @@ func elementUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	element.ID = ctx.GetString("id")
+	element.Id = ctx.GetString("id")
 
 	err = database.Master.Update(&element)
 	if err != nil {
@@ -76,7 +76,7 @@ func elementUpdate(ctx *gin.Context) {
 }
 
 func elementDelete(ctx *gin.Context) {
-	element := model.Element{ID: ctx.GetString("id")}
+	element := model.Element{Id: ctx.GetString("id")}
 	err := database.Master.DeleteStruct(&element)
 	if err != nil {
 		replyError(ctx, err)

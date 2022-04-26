@@ -8,7 +8,7 @@ import (
 type Link interface {
 	events.EventInterface
 
-	ID() int
+	Id() int
 
 	Write(data []byte) error
 

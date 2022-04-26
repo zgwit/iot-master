@@ -50,14 +50,14 @@ func (server *TcpServer) Open() error {
 				break
 			}
 
-			lnk := model.Link{TunnelID: server.tunnel.ID}
+			lnk := model.Link{TunnelId: server.tunnel.Id}
 
 			if server.tunnel.Register == nil {
 				//先结束历史链接
 				for _, link := range server.children {
 					_ = link.Close()
 				}
-				err = database.Master.One("TunnelID", server.tunnel.ID, &lnk)
+				err = database.Master.One("TunnelId", server.tunnel.Id, &lnk)
 			} else {
 				buf := make([]byte, 128)
 				n, err := conn.Read(buf)
@@ -74,7 +74,7 @@ func (server *TcpServer) Open() error {
 				lnk.SN = sn
 				err = database.Master.Select(
 					q.And(
-						q.Eq("TunnelID", server.tunnel.ID),
+						q.Eq("TunnelId", server.tunnel.Id),
 						q.Eq("SN", sn),
 					),
 				).First(&lnk)
@@ -91,8 +91,8 @@ func (server *TcpServer) Open() error {
 			link := newNetLink(conn)
 			go link.receive()
 
-			link.id = lnk.ID
-			server.children[lnk.ID] = link
+			link.id = lnk.Id
+			server.children[lnk.Id] = link
 
 			//启动对应的设备 发消息
 			server.Emit("link", link)

@@ -40,7 +40,7 @@ func linkList(ctx *gin.Context) {
 
 func linkDetail(ctx *gin.Context) {
 	var link model.Link
-	err := database.Master.One("ID", ctx.GetInt("id"), &link)
+	err := database.Master.One("Id", ctx.GetInt("id"), &link)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -55,7 +55,7 @@ func linkUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	link.ID = ctx.GetInt("id")
+	link.Id = ctx.GetInt("id")
 
 	err = database.Master.Update(&link)
 	if err != nil {
@@ -67,7 +67,7 @@ func linkUpdate(ctx *gin.Context) {
 }
 
 func linkDelete(ctx *gin.Context) {
-	link := model.Link{ID: ctx.GetInt("id")}
+	link := model.Link{Id: ctx.GetInt("id")}
 	err := database.Master.DeleteStruct(&link)
 	if err != nil {
 		replyError(ctx, err)
@@ -105,7 +105,7 @@ func linkClose(ctx *gin.Context) {
 }
 
 func linkEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Link{ID: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(&model.Link{Id: ctx.GetInt("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -114,7 +114,7 @@ func linkEnable(ctx *gin.Context) {
 }
 
 func linkDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Link{ID: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(&model.Link{Id: ctx.GetInt("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -147,7 +147,7 @@ func linkWatch(ctx *gin.Context) {
 }
 
 func linkEvent(ctx *gin.Context) {
-	events, cnt, err := normalSearchById(ctx, database.History, "LinkID", ctx.GetInt("id"), &model.LinkEvent{})
+	events, cnt, err := normalSearchById(ctx, database.History, "LinkId", ctx.GetInt("id"), &model.LinkEvent{})
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -156,7 +156,7 @@ func linkEvent(ctx *gin.Context) {
 }
 
 func linkEventClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("LinkID", ctx.GetInt("id"))).Delete(&model.LinkEvent{})
+	err := database.History.Select(q.Eq("LinkId", ctx.GetInt("id"))).Delete(&model.LinkEvent{})
 	if err != nil {
 		replyError(ctx, err)
 		return

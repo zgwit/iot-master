@@ -19,8 +19,8 @@ func newSerialLink(port io.ReadWriteCloser) *SerialLink {
 	}
 }
 
-//ID ID
-func (l *SerialLink) ID() int {
+//Id Id
+func (l *SerialLink) Id() int {
 	return l.id
 }
 

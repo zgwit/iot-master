@@ -7,7 +7,7 @@ import (
 
 //User 用户
 type User struct {
-	ID       int       `json:"id" storm:"id,increment"`
+	Id       int       `json:"id" storm:"id,increment"`
 	Username string    `json:"username" storm:"unique"`
 	Nickname string    `json:"nickname,omitempty"`
 	Email    string    `json:"email,omitempty"`
@@ -21,14 +21,14 @@ func init() {
 
 //Password 密码
 type Password struct {
-	ID       int    `json:"id"`
+	Id       int    `json:"id"`
 	Password string `json:"password"`
 }
 
 //UserEvent 用户行为
 type UserEvent struct {
-	ID      int       `json:"id" storm:"id,increment"`
-	UserID  int       `json:"user_id"`
+	Id      int       `json:"id" storm:"id,increment"`
+	UserId  int       `json:"user_id"`
 	Event   string    `json:"event"`
 	Created time.Time `json:"created" storm:"created"`
 }

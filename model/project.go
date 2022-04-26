@@ -6,7 +6,7 @@ import (
 )
 
 type Template struct {
-	ID      string `json:"id" storm:"id"`
+	Id      string `json:"id" storm:"id"`
 	Name    string `json:"name"`
 	Version string `json:"version"` //SEMVER
 
@@ -26,13 +26,13 @@ type ProjectContent struct {
 
 //Project 项目
 type Project struct {
-	ID   int    `json:"id" storm:"id,increment"`
+	Id   int    `json:"id" storm:"id,increment"`
 	Name string `json:"name"`
 
 	Devices []*ProjectDevice `json:"devices"`
 	//Devices []int `json:"devices"`
 
-	TemplateID     string `json:"template_id,omitempty"`
+	TemplateId     string `json:"template_id,omitempty"`
 	ProjectContent `storm:"inline"`
 
 	Context calc.Context `json:"context"`
@@ -43,26 +43,26 @@ type Project struct {
 
 //ProjectDevice 项目的设备
 type ProjectDevice struct {
-	ID   int    `json:"id"`
+	Id   int    `json:"id"`
 	Name string `json:"name"` //编程名
 }
 
 //ProjectEvent 项目历史
 type ProjectEvent struct {
-	ID        int       `json:"id" storm:"id,increment"`
-	ProjectID int       `json:"project_id"`
+	Id        int       `json:"id" storm:"id,increment"`
+	ProjectId int       `json:"project_id"`
 	Event     string    `json:"event"`
 	Created   time.Time `json:"created" storm:"created"`
 }
 
 type ProjectHistory struct {
 	Project   `storm:"inline"`
-	ProjectID int `json:"project_id" storm:"index"`
+	ProjectId int `json:"project_id" storm:"index"`
 }
 
 type TemplateHistory struct {
 	Template   `storm:"inline"`
-	TemplateID string `json:"template_id" storm:"index"`
+	TemplateId string `json:"template_id" storm:"index"`
 }
 
 type ProjectEx struct {

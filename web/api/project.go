@@ -63,7 +63,7 @@ func projectCreate(ctx *gin.Context) {
 
 func projectDetail(ctx *gin.Context) {
 	var project model.Project
-	err := database.Master.One("ID", ctx.GetInt("id"), &project)
+	err := database.Master.One("Id", ctx.GetInt("id"), &project)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -78,7 +78,7 @@ func projectUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	project.ID = ctx.GetInt("id")
+	project.Id = ctx.GetInt("id")
 
 	err = database.Master.Update(&project)
 	if err != nil {
@@ -109,7 +109,7 @@ func projectUpdate(ctx *gin.Context) {
 }
 
 func projectDelete(ctx *gin.Context) {
-	project := model.Project{ID: ctx.GetInt("id")}
+	project := model.Project{Id: ctx.GetInt("id")}
 	err := database.Master.DeleteStruct(&project)
 	if err != nil {
 		replyError(ctx, err)
@@ -165,7 +165,7 @@ func projectStop(ctx *gin.Context) {
 }
 
 func projectEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Project{ID: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(&model.Project{Id: ctx.GetInt("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -187,7 +187,7 @@ func projectEnable(ctx *gin.Context) {
 }
 
 func projectDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Project{ID: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(&model.Project{Id: ctx.GetInt("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -220,7 +220,7 @@ func projectWatch(ctx *gin.Context) {
 }
 
 func projectEvent(ctx *gin.Context) {
-	events, cnt, err := normalSearchById(ctx, database.History, "ProjectID", ctx.GetInt("id"), &model.ProjectEvent{})
+	events, cnt, err := normalSearchById(ctx, database.History, "ProjectId", ctx.GetInt("id"), &model.ProjectEvent{})
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -229,7 +229,7 @@ func projectEvent(ctx *gin.Context) {
 }
 
 func projectEventClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("ProjectID", ctx.GetInt("id"))).Delete(&model.ProjectEvent{})
+	err := database.History.Select(q.Eq("ProjectId", ctx.GetInt("id"))).Delete(&model.ProjectEvent{})
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -249,7 +249,7 @@ func projectEventClearAll(ctx *gin.Context) {
 }
 
 func projectAlarm(ctx *gin.Context) {
-	alarms, cnt, err := normalSearchById(ctx, database.History, "ProjectID", ctx.GetInt("id"), &model.ProjectAlarm{})
+	alarms, cnt, err := normalSearchById(ctx, database.History, "ProjectId", ctx.GetInt("id"), &model.ProjectAlarm{})
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -258,7 +258,7 @@ func projectAlarm(ctx *gin.Context) {
 }
 
 func projectAlarmClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("ProjectID", ctx.GetInt("id"))).Delete(&model.ProjectAlarm{})
+	err := database.History.Select(q.Eq("ProjectId", ctx.GetInt("id"))).Delete(&model.ProjectAlarm{})
 	if err != nil {
 		replyError(ctx, err)
 		return

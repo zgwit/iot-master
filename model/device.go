@@ -7,7 +7,7 @@ import (
 
 //Element 元件
 type Element struct {
-	ID           string `json:"id" storm:"id"`
+	Id           string `json:"id" storm:"id"`
 	Name         string `json:"name"`
 	Manufacturer string `json:"manufacturer"` //厂家
 	Version      string `json:"version"`      //SEMVER
@@ -32,9 +32,9 @@ type DeviceContent struct {
 
 //Device 设备
 type Device struct {
-	ID        int    `json:"id" storm:"id,increment"`
-	LinkID    int    `json:"link_id" storm:"index"`
-	ElementID string `json:"element_id"`
+	Id        int    `json:"id" storm:"id,increment"`
+	LinkId    int    `json:"link_id" storm:"index"`
+	ElementId string `json:"element_id"`
 
 	Name          string `json:"name"`
 	Station       int    `json:"station"`
@@ -49,18 +49,18 @@ type Device struct {
 
 //DeviceEvent 设备事件
 type DeviceEvent struct {
-	ID       int       `json:"id" storm:"id,increment"`
-	DeviceID int       `json:"device_id" storm:"index"`
+	Id       int       `json:"id" storm:"id,increment"`
+	DeviceId int       `json:"device_id" storm:"index"`
 	Event    string    `json:"event"`
 	Created  time.Time `json:"created" storm:"created"`
 }
 
 type DeviceHistory struct {
 	Device   `storm:"inline"`
-	DeviceID int `json:"device_id" storm:"index"`
+	DeviceId int `json:"device_id" storm:"index"`
 }
 
 type ElementHistory struct {
 	Element   `storm:"inline"`
-	ElementID string `json:"element_id" storm:"index"`
+	ElementId string `json:"element_id" storm:"index"`
 }

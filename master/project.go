@@ -60,7 +60,7 @@ type Project struct {
 	strategies  []*Strategy
 
 	deviceNameIndex map[string]*Device
-	deviceIDIndex   map[int]*Device
+	deviceIdIndex   map[int]*Device
 
 	deviceDataHandler  func(data calc.Context)
 	deviceAlarmHandler func(alarm *model.DeviceAlarm)
@@ -75,13 +75,13 @@ func NewProject(m *model.Project) (*Project, error) {
 		jobs:            make([]*Job, 0),
 		strategies:      make([]*Strategy, 0),
 		deviceNameIndex: make(map[string]*Device),
-		deviceIDIndex:   make(map[int]*Device),
+		deviceIdIndex:   make(map[int]*Device),
 	}
 
 	//加载模板
-	if prj.TemplateID != "" {
+	if prj.TemplateId != "" {
 		var template model.Template
-		err := database.Master.One("ID", prj.TemplateID, &template)
+		err := database.Master.One("Id", prj.TemplateId, &template)
 		if err == storm.ErrNotFound {
 			return nil, errors.New("找不到模板")
 		} else if err != nil {
@@ -128,13 +128,13 @@ func (prj *Project) initDevices() error {
 		return nil
 	}
 	for _, d := range prj.Project.Devices {
-		dev := GetDevice(d.ID)
+		dev := GetDevice(d.Id)
 		if dev == nil {
 			//如果找不到设备，该怎么处理
-			return fmt.Errorf("device %d not found", d.ID)
+			return fmt.Errorf("device %d not found", d.Id)
 		}
 		prj.deviceNameIndex[d.Name] = dev
-		prj.deviceIDIndex[d.ID] = dev
+		prj.deviceIdIndex[d.Id] = dev
 		prj.Context[d.Name] = dev.Context //两级上下文
 
 		prj.Devices = append(prj.Devices, &ProjectDevice{ProjectDevice: *d})
@@ -195,7 +195,7 @@ func (prj *Project) initValidators() error {
 	for _, v := range prj.Validators {
 		validator := &Alarm{Alarm: *v}
 		validator.On("alarm", func(alarm *model.AlarmContent) {
-			pa := &model.ProjectAlarm{ProjectID: prj.ID, AlarmContent: *alarm}
+			pa := &model.ProjectAlarm{ProjectId: prj.Id, AlarmContent: *alarm}
 
 			//入库
 			_ = database.History.Save(pa)
@@ -258,7 +258,7 @@ func (prj *Project) initHandler() error {
 
 	//设备告警的处理函数
 	prj.deviceAlarmHandler = func(alarm *model.DeviceAlarm) {
-		pa := &model.ProjectAlarm{ProjectID: prj.ID, AlarmContent: alarm.AlarmContent}
+		pa := &model.ProjectAlarm{ProjectId: prj.Id, AlarmContent: alarm.AlarmContent}
 
 		//历史入库
 		_ = database.History.Save(pa)
@@ -269,13 +269,13 @@ func (prj *Project) initHandler() error {
 
 	//初始化设备
 	for _, d := range prj.Project.Devices {
-		dev := GetDevice(d.ID)
+		dev := GetDevice(d.Id)
 		if dev == nil {
 			//TODO 如果找不到设备，该怎么处理
 			continue
 		}
 		prj.deviceNameIndex[d.Name] = dev
-		prj.deviceIDIndex[d.ID] = dev
+		prj.deviceIdIndex[d.Id] = dev
 		prj.Context[d.Name] = dev.Context //两级上下文
 	}
 
@@ -283,7 +283,7 @@ func (prj *Project) initHandler() error {
 }
 
 func (prj *Project) createEvent(event string) {
-	_ = database.History.Save(model.ProjectEvent{ProjectID: prj.ID, Event: event})
+	_ = database.History.Save(model.ProjectEvent{ProjectId: prj.Id, Event: event})
 }
 
 //Start 项目启动

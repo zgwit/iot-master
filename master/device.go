@@ -38,9 +38,9 @@ func NewDevice(m *model.Device) (*Device, error) {
 	}
 
 	//加载模板
-	if dev.ElementID != "" {
+	if dev.ElementId != "" {
 		var template model.Element
-		err := database.Master.One("ID", dev.ElementID, &template)
+		err := database.Master.One("Id", dev.ElementId, &template)
 		if err == storm.ErrNotFound {
 			return nil, errors.New("找不到模板")
 		} else if err != nil {
@@ -75,7 +75,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 func (dev *Device) initMapper() error {
 	var err error
 	//找到链接，导入协议
-	link := GetLink(dev.LinkID)
+	link := GetLink(dev.LinkId)
 	if link == nil {
 		//TODO error
 		return nil
@@ -86,7 +86,7 @@ func (dev *Device) initMapper() error {
 	}
 
 	dev.mapper, err = newMapper(dev.Station, dev.Points, link.adapter)
-	metric := strconv.Itoa(dev.ID)
+	metric := strconv.Itoa(dev.Id)
 
 	//处理数据变化结果
 	dev.mapper.On("data", func(data calc.Context) {
@@ -143,7 +143,7 @@ func (dev *Device) initValidators() error {
 	for _, v := range dev.Validators {
 		validator := &Alarm{Alarm: *v}
 		validator.On("alarm", func(alarm *model.AlarmContent) {
-			da := &model.DeviceAlarm{DeviceID: dev.ID, AlarmContent: *alarm}
+			da := &model.DeviceAlarm{DeviceId: dev.Id, AlarmContent: *alarm}
 
 			//入库
 			_ = database.History.Save(da)
@@ -169,7 +169,7 @@ func (dev *Device) initCalculators() error {
 }
 
 func (dev *Device) createEvent(event string) {
-	_ = database.History.Save(model.DeviceEvent{DeviceID: dev.ID, Event: event})
+	_ = database.History.Save(model.DeviceEvent{DeviceId: dev.Id, Event: event})
 }
 
 //Start 设备启动

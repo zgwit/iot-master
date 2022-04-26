@@ -31,14 +31,14 @@ func startTunnel(tunnel *model.Tunnel) error {
 		//log.Error(err)
 		return err
 	}
-	allTunnels.Store(tunnel.ID, &Tunnel{
+	allTunnels.Store(tunnel.Id, &Tunnel{
 		Tunnel:   *tunnel,
 		Instance: tnl,
 	})
 
 	tnl.On("link", func(link connect.Link) {
 		var lnk model.Link
-		err := database.Master.One("ID", link.ID(), &lnk)
+		err := database.Master.One("Id", link.Id(), &lnk)
 		if err != nil && err != storm.ErrNotFound {
 			return
 		}
@@ -53,16 +53,16 @@ func startTunnel(tunnel *model.Tunnel) error {
 			}
 		}
 
-		allLinks.Store(link.ID(), &Link{Link: lnk, Instance: link, adapter: adapter})
+		allLinks.Store(link.Id(), &Link{Link: lnk, Instance: link, adapter: adapter})
 
 		//找到相关Device，导入Mapper
 		var devices []model.Device
-		err = database.Master.Find("LinkID", link.ID(), &devices)
+		err = database.Master.Find("LinkId", link.Id(), &devices)
 		if err != nil && err != storm.ErrNotFound {
 			return
 		}
 		for _, d := range devices {
-			dev := GetDevice(d.ID)
+			dev := GetDevice(d.Id)
 			if dev != nil {
 				err := dev.initMapper()
 				if err != nil {
@@ -107,7 +107,7 @@ func LoadTunnels() error {
 //LoadTunnel 加载通道
 func LoadTunnel(id int) error {
 	var tunnel model.Tunnel
-	err := database.Master.One("ID", id, &tunnel)
+	err := database.Master.One("Id", id, &tunnel)
 	if err != nil {
 		return err
 	}

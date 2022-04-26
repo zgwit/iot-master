@@ -14,7 +14,7 @@ type Protocol struct {
 
 //Tunnel 通道模型
 type Tunnel struct {
-	ID        int              `json:"id" storm:"id,increment"`
+	Id        int              `json:"id" storm:"id,increment"`
 	Name      string           `json:"name"`
 	Type      string           `json:"type"` //serial tcp-client tcp-server udp-client udp-server
 	Addr      string           `json:"addr"`
@@ -116,8 +116,8 @@ func (p *HeartBeatPacket) Check(buf []byte) bool {
 
 //TunnelEvent 通道历史
 type TunnelEvent struct {
-	ID       int       `json:"id" storm:"id,increment"`
-	TunnelID int       `json:"tunnel_id"`
+	Id       int       `json:"id" storm:"id,increment"`
+	TunnelId int       `json:"tunnel_id"`
 	Event    string    `json:"event"`
 	Created  time.Time `json:"created" storm:"created"`
 }
