@@ -106,6 +106,7 @@ import {EditElementsComponent} from "./edit-elements/edit-elements.component";
 import {EditAlarmsComponent} from "./edit-alarms/edit-alarms.component";
 import {EditDirectivesComponent} from "./edit-directives/edit-directives.component";
 import {EditInvokesComponent} from "./edit-invokes/edit-invokes.component";
+import {TunnelLinkComponent} from "./tunnel-link/tunnel-link.component";
 
 @NgModule({
   declarations: [
@@ -117,7 +118,7 @@ import {EditInvokesComponent} from "./edit-invokes/edit-invokes.component";
     HomeComponent,
     TunnelComponent, TunnelDetailComponent, TunnelEditComponent,
     EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent,
-    TunnelEditDevicesComponent,
+    TunnelEditDevicesComponent, TunnelLinkComponent,
     LinkComponent, LinkDetailComponent, LinkEditComponent, LinkDeviceComponent,
     LinkBrowserComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,

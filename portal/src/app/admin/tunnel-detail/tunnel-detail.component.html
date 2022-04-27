@@ -1,1 +1,52 @@
-<p>tunnel-detail works!</p>
+
+
+<nz-tabset [nzTabBarExtraContent]="extraTemplate">
+  <nz-tab nzTitle="通道详情">
+    <p>
+      名称：{{data.name}} {{data.online ? '启动' : '停止'}}
+      <nz-switch [ngModel]="data.enable" (ngModelChange)="enable($event)"></nz-switch>
+    </p>
+
+    <p>
+      类型：{{data.type}} {{data.address}} {{data.port}}
+    </p>
+
+    <p *ngIf="data.register.enable">
+      注册包：{{data.regex}}
+    </p>
+
+    <p *ngIf="data.heartbeat">
+      心跳包：{{data.regex}} {{data.interval}}
+    </p>
+
+    <p *ngIf="data.protocol.enable">
+      协议：{{data.type}}
+    </p>
+
+  </nz-tab>
+  <nz-tab nzTitle="连接">
+    <ng-template nz-tab>
+      <app-tunnel-link [id]="id"></app-tunnel-link>
+    </ng-template>
+  </nz-tab>
+  <nz-tab nzTitle="日志">
+    <ng-template nz-tab>
+      <app-event type="tunnel" [id]="id"></app-event>
+    </ng-template>
+  </nz-tab>
+
+</nz-tabset>
+
+<ng-template #extraTemplate>
+  <a (click)="load()" title="刷新">
+    <i nz-icon nzType="reload" [nzSpin]="loading"></i>
+  </a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a title="原始数据" appViewConfig [config]="data">
+    <i nz-icon nzType="profile"></i>
+  </a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a title="编辑" [routerLink]="'/admin/tunnel/edit/'+id">
+    <i nz-icon nzType="form"></i>
+  </a>
+</ng-template>
