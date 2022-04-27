@@ -11,11 +11,11 @@ import (
 )
 
 type paramSearchEx struct {
-	Skip     int                      `form:"skip"`
-	Limit    int                      `form:"limit"`
-	Sort     map[string]int           `form:"sort"`
-	Filters  map[string][]interface{} `form:"filter"`
-	Keywords map[string]string        `form:"keyword"`
+	Skip     int                    `form:"skip" json:"skip"`
+	Limit    int                    `form:"limit" json:"limit"`
+	Sort     map[string]int         `form:"sort" json:"sort"`
+	Filters  map[string]interface{} `form:"filter" json:"filter"`
+	Keywords map[string]string      `form:"keyword" json:"keyword"`
 }
 
 type paramId struct {
@@ -120,13 +120,11 @@ func normalSearch(ctx *gin.Context, store storm.Node, mod interface{}) (interfac
 
 	//过滤
 	for k, v := range body.Filters {
-		if len(v) > 0 {
-			kk := strcase.ToCamel(k)
-			if len(v) == 1 {
-				cond = append(cond, q.Eq(kk, v[0]))
-			} else {
-				cond = append(cond, q.In(kk, v))
-			}
+		kk := strcase.ToCamel(k)
+		if reflect.TypeOf(v).Kind() == reflect.Slice {
+			cond = append(cond, q.In(kk, v))
+		} else {
+			cond = append(cond, q.Eq(kk, v))
 		}
 	}
 
@@ -189,13 +187,11 @@ func normalSearchById(ctx *gin.Context, store storm.Node, field string, value in
 
 	//过滤
 	for k, v := range body.Filters {
-		if len(v) > 0 {
-			kk := strcase.ToCamel(k)
-			if len(v) == 1 {
-				cond = append(cond, q.Eq(kk, v[0]))
-			} else {
-				cond = append(cond, q.In(kk, v))
-			}
+		kk := strcase.ToCamel(k)
+		if reflect.TypeOf(v).Kind() == reflect.Slice {
+			cond = append(cond, q.In(kk, v))
+		} else {
+			cond = append(cond, q.Eq(kk, v))
 		}
 	}
 
