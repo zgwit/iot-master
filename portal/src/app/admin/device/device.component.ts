@@ -69,8 +69,8 @@ export class DeviceComponent implements OnInit {
   }
 
   onEnableChange(data: any, disabled: boolean) {
-    if (disabled) {
-      this.rs.post(`device/${data.id}`, {disabled}).subscribe(res => {
+    if (!disabled) {
+      this.rs.get(`device/${data.id}/enable`).subscribe(res => {
       });
       return;
     }
@@ -78,11 +78,11 @@ export class DeviceComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk:()=>{
-        this.rs.post(`device/${data.id}`, {disabled}).subscribe(res => {
+        this.rs.get(`device/${data.id}/disable`).subscribe(res => {
         });
       },
       nzOnCancel:()=>{
-        data.disabled = true;
+        data.disabled = false;
       }
     })
   }

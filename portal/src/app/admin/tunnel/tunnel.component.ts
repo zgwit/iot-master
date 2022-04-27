@@ -77,7 +77,7 @@ export class TunnelComponent implements OnInit {
 
   onEnableChange(data: any, disabled: boolean) {
     if (!disabled) {
-      this.rs.get(`tunnel/${data.id}/disabled`).subscribe(res => {
+      this.rs.get(`tunnel/${data.id}/enable`).subscribe(res => {
       });
       return;
     }
@@ -89,7 +89,7 @@ export class TunnelComponent implements OnInit {
         });
       },
       nzOnCancel: () => {
-        data.disabled = true;
+        data.disabled = false;
       }
     })
   }

@@ -69,7 +69,7 @@ export class TunnelLinkComponent implements OnInit {
 
   onEnableChange(data: any, disabled: boolean) {
     if (!disabled) {
-      this.rs.post(`link/${data.id}`, {disabled}).subscribe(res => {
+      this.rs.get(`link/${data.id}/enable`).subscribe(res => {
       });
       return;
     }
@@ -77,11 +77,11 @@ export class TunnelLinkComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk:()=>{
-        this.rs.post(`link/${data.id}`, {disabled}).subscribe(res => {
+        this.rs.get(`link/${data.id}/disable`).subscribe(res => {
         });
       },
       nzOnCancel:()=>{
-        data.enable = true;
+        data.enable = false;
       }
     })
   }
