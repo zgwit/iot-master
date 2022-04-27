@@ -15,7 +15,7 @@ type paramSearchEx struct {
 	Limit    int                      `form:"limit"`
 	Sort     map[string]int           `form:"sort"`
 	Filters  map[string][]interface{} `form:"filter"`
-	Keywords map[string]string        `json:"keyword"`
+	Keywords map[string]string        `form:"keyword"`
 }
 
 type paramId struct {

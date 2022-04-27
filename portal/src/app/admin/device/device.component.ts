@@ -63,14 +63,14 @@ export class DeviceComponent implements OnInit {
   }
 
   remove(data: any, i: number) {
-    this.rs.delete(`device/${data.id}/delete`).subscribe(res => {
+    this.rs.get(`device/${data.id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
 
   onEnableChange(data: any, disabled: boolean) {
     if (disabled) {
-      this.rs.post(`device/${data.id}/setting`, {disabled}).subscribe(res => {
+      this.rs.post(`device/${data.id}`, {disabled}).subscribe(res => {
       });
       return;
     }
@@ -78,7 +78,7 @@ export class DeviceComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk:()=>{
-        this.rs.post(`device/${data.id}/setting`, {disabled}).subscribe(res => {
+        this.rs.post(`device/${data.id}`, {disabled}).subscribe(res => {
         });
       },
       nzOnCancel:()=>{

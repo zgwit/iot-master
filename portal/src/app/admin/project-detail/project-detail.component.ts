@@ -22,7 +22,7 @@ export class ProjectDetailComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.get(`project/${this.id}/compose`).subscribe(res=>{
+    this.rs.get(`project/${this.id}`).subscribe(res=>{
       this.data = res.data;
       this.loading = false;
     });

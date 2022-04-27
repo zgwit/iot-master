@@ -22,7 +22,7 @@ export class LinkDetailComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.get(`link/${this.id}/compose`).subscribe(res=>{
+    this.rs.get(`link/${this.id}`).subscribe(res=>{
       this.data = res.data;
       this.loading = false;
     });

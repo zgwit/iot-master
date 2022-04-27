@@ -62,14 +62,14 @@ export class TunnelLinkComponent implements OnInit {
   }
 
   remove(data: any, i: number) {
-    this.rs.delete(`link/${data.id}/delete`).subscribe(res => {
+    this.rs.get(`link/${data.id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
 
   onEnableChange(data: any, disabled: boolean) {
     if (!disabled) {
-      this.rs.post(`link/${data.id}/setting`, {disabled}).subscribe(res => {
+      this.rs.post(`link/${data.id}`, {disabled}).subscribe(res => {
       });
       return;
     }

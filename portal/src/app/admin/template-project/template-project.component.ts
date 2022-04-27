@@ -65,14 +65,14 @@ export class TemplateProjectComponent implements OnInit {
   }
 
   remove(data: any, i: number) {
-    this.rs.delete(`project/${data.id}/delete`).subscribe(res => {
+    this.rs.get(`project/${data.id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
 
   onEnableChange(data: any, disabled: boolean) {
     if (disabled) {
-      this.rs.post(`project/${data.id}/setting`, {disabled}).subscribe(res => {
+      this.rs.post(`project/${data.id}`, {disabled}).subscribe(res => {
       });
       return;
     }
@@ -80,7 +80,7 @@ export class TemplateProjectComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk:()=>{
-        this.rs.post(`project/${data.id}/setting`, {disabled}).subscribe(res => {
+        this.rs.post(`project/${data.id}`, {disabled}).subscribe(res => {
         });
       },
       nzOnCancel:()=>{

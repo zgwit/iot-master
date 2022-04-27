@@ -46,8 +46,8 @@ export class AlarmComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.params.filter[this.type + 'id'] = this.id;
-    this.rs.post('alarm/list', this.params).subscribe(res => {
+    //this.params.filter[this.type + 'id'] = this.id;
+    this.rs.post(`${this.type}/${this.id}/alarm/list`, this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
       this.total = res.total;
@@ -57,8 +57,8 @@ export class AlarmComponent implements OnInit {
   }
 
 
-  remove(data: any, i: number) {
-    this.rs.delete(`alarm/${data.id}/delete`).subscribe(res=>{
+  clear(data: any, i: number) {
+    this.rs.get(`${this.type}/${this.id}/alarm/clear`).subscribe(res => {
       this.datum.splice(i, 1);
     });
 
