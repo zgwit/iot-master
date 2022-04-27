@@ -1,6 +1,6 @@
 {
   "name": "iot-master",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -26,6 +26,7 @@
     "dayjs": "^1.10.7",
     "echarts": "^5.2.2",
     "gcoord": "^0.3.2",
+    "monaco-editor": "^0.33.0",
     "ng-zorro-antd": "^13.0.0",
     "ngx-amap": "^3.0.5",
     "ngx-color-picker": "^12.0.0",

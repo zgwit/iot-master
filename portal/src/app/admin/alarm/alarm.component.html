@@ -2,7 +2,7 @@
 
   <nz-table
     nzSize="small"
-        [nzData]="datum"
+    [nzData]="datum"
     [nzFrontPagination]="false"
     [nzLoading]="loading"
     [nzTotal]="total"
@@ -18,7 +18,7 @@
       <th>设备</th>
       <th>名称</th>
       <th>内容</th>
-      <th nzColumnKey="_id" [nzSortFn]="true">时间</th>
+      <th nzColumnKey="id" [nzSortFn]="true">时间</th>
       <th nzWidth="100">操作</th>
     </tr>
     </thead>

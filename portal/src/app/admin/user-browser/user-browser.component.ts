@@ -45,8 +45,8 @@ export class UserBrowserComponent implements OnInit {
   }
 
   refreshCheckedStatus(): void {
-    this.checked = this.tableData.every(({_id}) => this.setCheckedOfId.has(_id));
-    this.indeterminate = this.tableData.some(({_id}) => this.setCheckedOfId.has(_id)) && !this.checked;
+    this.checked = this.tableData.every(({id}) => this.setCheckedOfId.has(id));
+    this.indeterminate = this.tableData.some(({id}) => this.setCheckedOfId.has(id)) && !this.checked;
     this.ids = Array.from(this.setCheckedOfId)
   }
 
@@ -56,7 +56,7 @@ export class UserBrowserComponent implements OnInit {
   }
 
   onAllChecked(checked: boolean): void {
-    this.tableData.forEach(({_id}) => this.updateCheckedSet(_id, checked));
+    this.tableData.forEach(({id}) => this.updateCheckedSet(id, checked));
     this.refreshCheckedStatus();
   }
 

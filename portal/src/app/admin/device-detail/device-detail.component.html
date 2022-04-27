@@ -12,8 +12,8 @@
       项目：{{data.project.join(',')}}
     </p>
     <p *ngIf="data.tunnel">
-      通道：
-      <a [routerLink]="'/admin/tunnel/detail/'+data.tunnel.id">{{data.tunnel.name || data.tunnel.sn}}</a>
+      连接：
+      <a [routerLink]="'/admin/link/detail/'+data.link_id">{{data.link_id}}</a>
     </p>
 
     <button nz-button (click)="refreshAll()">刷新全部数据</button>

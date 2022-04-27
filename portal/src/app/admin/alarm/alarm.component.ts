@@ -46,7 +46,7 @@ export class AlarmComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.params.filter[this.type + '_id'] = this.id;
+    this.params.filter[this.type + 'id'] = this.id;
     this.rs.post('alarm/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;

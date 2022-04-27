@@ -20,8 +20,8 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzCheckboxModule} from 'ng-zorro-antd/checkbox';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzMessageModule} from 'ng-zorro-antd/message';
-import { NzListModule } from 'ng-zorro-antd/list';
-import { NzModalModule } from 'ng-zorro-antd/modal';
+import {NzListModule} from 'ng-zorro-antd/list';
+import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NgxAmapModule} from "ngx-amap";
 //import {HelperModule} from "./helper/helper.module";
 
@@ -58,7 +58,8 @@ export function tokenGetter() {
     NgxAmapModule.forRoot({apiKey: 'e4c1bd11fe1b25d77dae4cf3993f7034', debug: true}),
     //HelperModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }, {provide: LOCALE_ID, useValue: 'zh' }],
+  providers: [{provide: NZ_I18N, useValue: zh_CN}, {provide: LOCALE_ID, useValue: 'zh'}],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

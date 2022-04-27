@@ -24,6 +24,7 @@ export class ElementEditComponent implements OnInit {
     "context": {},
     "commands": [],
     "pollers": [],
+    "calculators": [],
     "validators": [],
   }
 
@@ -45,6 +46,7 @@ export class ElementEditComponent implements OnInit {
       context: [this.data.context || {}],
       commands: [this.data.commands || []],
       pollers: [this.data.collectors || []],
+      calculators: [this.data.collectors || []],
       validators: [this.data.validators || []],
     });
   }
