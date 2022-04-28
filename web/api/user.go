@@ -4,7 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/storm/v3/q"
+	"time"
 )
 
 func userRoutes(app *gin.RouterGroup) {
@@ -12,6 +14,9 @@ func userRoutes(app *gin.RouterGroup) {
 	app.POST("create", userCreate)
 
 	app.GET("event/clear", userEventClearAll)
+
+	app.POST("history", userHistory)
+	app.POST("visit", userVisit)
 
 	app.Use(parseParamId)
 
@@ -24,6 +29,7 @@ func userRoutes(app *gin.RouterGroup) {
 
 	app.POST(":id/event/list", userEvent)
 	app.GET(":id/event/clear", userEventClear)
+
 }
 
 func userList(ctx *gin.Context) {
@@ -53,7 +59,6 @@ func userCreate(ctx *gin.Context) {
 
 	replyOk(ctx, user)
 }
-
 
 func userDetail(ctx *gin.Context) {
 	var user model.User
@@ -91,7 +96,7 @@ func userDelete(ctx *gin.Context) {
 		return
 	}
 
-	_= database.Master.DeleteStruct(model.Password{Id: user.Id})
+	_ = database.Master.DeleteStruct(model.Password{Id: user.Id})
 
 	replyOk(ctx, user)
 }
@@ -140,6 +145,40 @@ func userEventClear(ctx *gin.Context) {
 
 func userEventClearAll(ctx *gin.Context) {
 	err := database.History.Drop(&model.UserEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+func userHistory(ctx *gin.Context) {
+	history, cnt, err := normalSearch(ctx, database.History, &model.UserEvent{})
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyList(ctx, history, cnt)
+}
+
+func userVisit(ctx *gin.Context) {
+	var history, last model.UserHistory
+	err := ctx.ShouldBindJSON(&history)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	user := ctx.MustGet("user").(*model.User)
+
+	err = database.Master.Select(q.Eq("UserId", user.Id), q.Eq("TargetId", history.TargetId), q.Eq("Target", history.Target)).First(&last)
+	if err == storm.ErrNotFound {
+		err = database.Master.Save(&history)
+	} else if err == nil {
+		err = database.Master.UpdateField(&last, "Last", time.Now())
+	}
+
 	if err != nil {
 		replyError(ctx, err)
 		return
