@@ -32,12 +32,3 @@ type UserEvent struct {
 	Event   string    `json:"event"`
 	Created time.Time `json:"created" storm:"created"`
 }
-
-type UserHistory struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	UserId   int       `json:"user_id" storm:"index"`
-	Target   string    `json:"target"` //device project hmi
-	TargetId int       `json:"target_id" storm:"index"`
-	Last     time.Time `json:"last" storm:"index"`
-	//Created  time.Time `json:"created" storm:"created"`
-}
