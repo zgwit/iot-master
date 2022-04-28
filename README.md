@@ -9,9 +9,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-物联大师是[真格智能实验室](https://labs.zgwit.com)推出的一款物联网自动控制系统， 集成了数据采集、历史存储、定时任务、自动控制、异常报警等功能，适用于大部分物联网或工业互联网数据应用场景。
+物联大师是[真格智能实验室](https://labs.zgwit.com)物联大师是开源且免费的物联网采集和控制系统，集成了Modbus和PLC等多种软硬件协议，支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控等功能，适用于大部分物联网或工业互联网应用场景。系统兼容大部分数据网关（DTU），支持远程调试（透传），可以安装在现场的电脑或工控机，也可以部署在云端服务器上。系统支持可视化显示，内置编辑器和组件库，能够实现Web组态（SCADA），可以投放到大屏上。
 
-项目官网 [iot-master.com](https://iot-master.com) 提供丰富的元件库和在线模板， 可以直接用于大部分物联网项目后端，快速，方便，高效。
+项目官网 [iot-master.com](https://iot-master.com) 正在建设中，将提供在线元件和模板，可以直接用于大部分物联网项目，以实现快速部署。
 
 > 作者曾经接触多个物联网实际项目的后端，需求大同小异， 因为团队不同，实现方式就千奇百怪了，
 > 大家其实都在重复地造轮子。痛定思痛，于是决定提取共同的部分，做成了通用的物联大师，
