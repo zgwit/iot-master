@@ -21,7 +21,7 @@ export class TunnelEditComponent implements OnInit {
     "address": "",
     "port": 1850,
     "timeout": 60,
-    "disabled": true,
+    "disabled": false,
     "register": {
       "disabled": true,
       "regex": '^\\w+$'
@@ -36,8 +36,7 @@ export class TunnelEditComponent implements OnInit {
       "disabled": false,
     },
     "protocol": {
-      "disabled": false,
-      "type": "",
+      "name": "",
       "options": {}
     },
     "devices": []

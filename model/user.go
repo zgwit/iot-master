@@ -21,7 +21,7 @@ func init() {
 
 //Password 密码
 type Password struct {
-	Id       int    `json:"id"`
+	Id       int    `json:"id" storm:"id"`
 	Password string `json:"password"`
 }
 

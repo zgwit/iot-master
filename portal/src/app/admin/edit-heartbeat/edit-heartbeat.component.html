@@ -1,13 +1,13 @@
 <form [formGroup]="formGroup" (change)="change()">
 
   <nz-form-item>
-    <nz-form-label [nzSpan]="5">禁用</nz-form-label>
+    <nz-form-label [nzSpan]="5">启用</nz-form-label>
     <nz-form-control [nzSpan]="12" nzErrorTip="">
-      <nz-switch formControlName="disabled" (ngModelChange)="change()"></nz-switch>
+      <nz-switch formControlName="enable" (ngModelChange)="change()"></nz-switch>
     </nz-form-control>
   </nz-form-item>
 
-  <div *ngIf="formGroup.value.disabled">
+  <div *ngIf="formGroup.value.enable">
 
         <nz-form-item>
           <nz-form-label [nzSpan]="5">间隔</nz-form-label>

@@ -25,5 +25,5 @@ type Protocol struct {
 	Name    string `json:"name"`
 	Label   string `json:"label"`
 	Version string `json:"version"`
-	Factory Factory
+	Factory Factory `json:"-"`
 }

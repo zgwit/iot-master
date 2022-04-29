@@ -28,7 +28,7 @@ export class EditProtocolComponent implements OnInit, ControlValueAccessor {
   }
 
   ngOnInit(): void {
-    this.rs.get('protocol/list').subscribe(res => {
+    this.rs.get('system/protocols').subscribe(res => {
       this.protocols = res.data;
     })
     this.buildForm();
@@ -36,8 +36,7 @@ export class EditProtocolComponent implements OnInit, ControlValueAccessor {
 
   buildForm(): void {
     this.formGroup = this.fb.group({
-      disabled: [this.data.disabled, [Validators.required]],
-      type: [this.data.type, []],
+      name: [this.data.type, [Validators.required]],
       options: [this.data.options, []],
     })
   }

@@ -1,0 +1,20 @@
+web:
+    addr: :8080
+database:
+    path: data
+history:
+    data_path: history
+    timestamp_precision: ""
+    retention_duration: 0s
+    partition_duration: 0s
+    write_timeout: 0s
+    buffered_size: 0
+    log: false
+log:
+    development: false
+    level: debug
+    output:
+        filename: log.txt
+        max_size: 0
+        max_age: 0
+        max_backups: 0
