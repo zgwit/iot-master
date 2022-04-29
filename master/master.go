@@ -63,7 +63,8 @@ func LoadDevices() error {
 
 		dev, err := NewDevice(d)
 		if err != nil {
-			return err
+			log.Error(err)
+			continue
 		}
 		allDevices.Store(d.Id, dev)
 
