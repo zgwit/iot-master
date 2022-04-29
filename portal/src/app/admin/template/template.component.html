@@ -2,7 +2,7 @@
 
   <nz-table
     nzSize="small"
-        [nzData]="datum"
+    [nzData]="datum"
     [nzFrontPagination]="false"
     [nzLoading]="loading"
     [nzTotal]="total"
@@ -13,6 +13,7 @@
   >
     <thead>
     <tr>
+      <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="id" [nzSortFn]="true">创建时间</th>
       <th nzWidth="100">操作</th>
@@ -20,6 +21,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let data of datum; let i=index" (dblclick)="open(data)">
+      <td>{{ data.id }}</td>
       <td>{{ data.name }}</td>
       <td>{{data.created | fromNow}}</td>
       <td>

@@ -2,7 +2,7 @@
 
   <nz-table
     nzSize="small"
-        [nzData]="datum"
+    [nzData]="datum"
     [nzFrontPagination]="false"
     [nzLoading]="loading"
     [nzTotal]="total"
@@ -16,6 +16,7 @@
     <tr>
       <th [nzShowCheckbox]="multiple" [nzChecked]="checked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="onAllChecked($event)"></th>
+      <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="tunnel_id" [nzSortFn]="true">通道</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="sn" [nzSortFn]="true">SN</th>
@@ -31,12 +32,13 @@
       <td [nzChecked]="setCheckedOfId.has(data.id)" [nzDisabled]="!data.disabled"
           (nzCheckedChange)="onItemChecked(data.id, $event)"
       ></td>
-      <td>{{ data.tunnel?.name }}</td>
+      <td>{{ data.id }}</td>
+      <td>{{ data.tunnel_id }}</td>
       <td>{{ data.name }}</td>
       <td>{{ data.sn }}</td>
       <td>{{ data.remote }}</td>
       <td>{{data.created | fromNow}}</td>
-      <td>{{data.last | date:'short'}}</td>
+      <td>{{data.last | fromNow}}</td>
       <td>{{data.online ? '在线' : '离线'}}</td>
       <td>{{data.disabled ? '√' : '×'}}</td>
     </tr>

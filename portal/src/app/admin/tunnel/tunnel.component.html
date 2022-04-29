@@ -13,6 +13,7 @@
   >
     <thead>
     <tr>
+      <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="type" [nzFilters]="filterType" [nzFilterFn]="true">类型</th>
       <th nzColumnKey="address" [nzSortFn]="true">地址</th>
@@ -25,6 +26,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let data of datum; let i=index" (dblclick)="open(data)">
+      <td>{{ data.id }}</td>
       <td>{{ data.name }}</td>
       <td>{{ data.type }}</td>
       <td>{{ data.address }}</td>

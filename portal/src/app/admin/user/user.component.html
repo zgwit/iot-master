@@ -2,7 +2,7 @@
 
   <nz-table
     nzSize="small"
-        [nzData]="datum"
+    [nzData]="datum"
     [nzFrontPagination]="false"
     [nzLoading]="loading"
     [nzTotal]="total"
@@ -13,6 +13,7 @@
   >
     <thead>
     <tr>
+      <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="username" [nzSortFn]="true">用户名</th>
       <th nzColumnKey="name" [nzSortFn]="true">姓名</th>
       <th nzColumnKey="cellphone">手机号</th>
@@ -24,13 +25,15 @@
     </thead>
     <tbody>
     <tr *ngFor="let data of datum; let i=index" (dblclick)="open(data)">
+      <td>{{ data.id }}</td>
       <td>{{ data.username }}</td>
       <td>{{ data.name }}</td>
       <td>{{ data.cellphone }}</td>
       <td>{{ data.email }}</td>
       <td>{{data.created | fromNow}}</td>
       <td>
-        <nz-switch [(ngModel)]="data.disabled" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
+        <nz-switch [(ngModel)]="data.disabled" nzSize="small"
+                   (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
       </td>
       <td>
         <a [routerLink]="'/admin/user/detail/'+data.id">详情</a>

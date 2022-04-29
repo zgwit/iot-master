@@ -2,7 +2,7 @@
 
   <nz-table
     nzSize="small"
-        [nzData]="datum"
+    [nzData]="datum"
     [nzFrontPagination]="false"
     [nzLoading]="loading"
     [nzTotal]="total"
@@ -13,6 +13,7 @@
   >
     <thead>
     <tr>
+      <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th>项目</th>
       <th nzColumnKey="element_id">元件</th>
@@ -26,6 +27,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let data of datum; let i=index" (dblclick)="open(data)">
+      <td>{{ data.id }}</td>
       <td>{{ data.name }}</td>
       <td>{{ data.project?.join(',') }}</td>
       <td>
@@ -39,12 +41,13 @@
       <td>{{data.created | fromNow}}</td>
       <td>
         <span *ngIf="data.online">
-          {{data.closed?'关闭':'启动'}} {{data.error}}
+          {{data.closed ? '关闭' : '启动'}} {{data.error}}
         </span>
         <span *ngIf="!data.online">离线</span>
       </td>
       <td>
-        <nz-switch [(ngModel)]="data.disabled" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
+        <nz-switch [(ngModel)]="data.disabled" nzSize="small"
+                   (ngModelChange)="onEnableChange(data, $event)"></nz-switch>
       </td>
       <td>
         <a [routerLink]="'/admin/device/detail/'+data.id">详情</a>
