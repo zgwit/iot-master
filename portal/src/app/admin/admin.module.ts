@@ -108,6 +108,7 @@ import {EditDirectivesComponent} from "./edit-directives/edit-directives.compone
 import {EditInvokesComponent} from "./edit-invokes/edit-invokes.component";
 import {TunnelLinkComponent} from "./tunnel-link/tunnel-link.component";
 import {EditSerialComponent} from "./edit-serial/edit-serial.component";
+import {EditRetryComponent} from "./edit-retry/edit-retry.component";
 
 @NgModule({
   declarations: [
@@ -118,7 +119,7 @@ import {EditSerialComponent} from "./edit-serial/edit-serial.component";
     DashComponent,
     HomeComponent,
     TunnelComponent, TunnelDetailComponent, TunnelEditComponent,
-    EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent, EditSerialComponent,
+    EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent, EditSerialComponent, EditRetryComponent,
     TunnelEditDevicesComponent, TunnelLinkComponent,
     LinkComponent, LinkDetailComponent, LinkEditComponent, LinkDeviceComponent,
     LinkBrowserComponent,

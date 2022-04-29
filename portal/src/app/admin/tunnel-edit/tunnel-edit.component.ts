@@ -34,7 +34,9 @@ export class TunnelEditComponent implements OnInit {
       "regex": '^\\w+$'
     },
     retry:{
-
+      "enable": false,
+      "timeout": 30,
+      "maximum": 0,
     },
     "serial": {
       baud_rate: 9600,

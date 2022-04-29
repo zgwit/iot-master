@@ -54,7 +54,7 @@
     </nz-collapse-panel>
 
 
-    <nz-collapse-panel nzHeader="注册包" nzActive *ngIf="basicForm.value.type!='serial'">
+    <nz-collapse-panel nzHeader="注册包" nzActive *ngIf="basicForm.value.type=='tcp-server'||basicForm.value.type=='udp-server'">
       <app-edit-register formControlName="register"></app-edit-register>
     </nz-collapse-panel>
 
@@ -64,6 +64,10 @@
 
     <nz-collapse-panel nzHeader="串口参数" nzActive *ngIf="basicForm.value.type=='serial'">
       <app-edit-serial formControlName="serial"></app-edit-serial>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="断线重连" nzActive *ngIf="basicForm.value.type=='serial' || basicForm.value.type=='tcp-client' ||basicForm.value.type=='udp-client'">
+      <app-edit-retry formControlName="retry"></app-edit-retry>
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="协议适配" nzActive>
