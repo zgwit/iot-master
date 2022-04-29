@@ -65,7 +65,7 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			lnk := model.Link{TunnelId: server.tunnel.Id, Last: time.Now()}
+			lnk := model.Link{TunnelId: server.tunnel.Id, Last: time.Now(), Remote: conn.RemoteAddr().String()}
 
 			if !server.tunnel.Register.Enable {
 				//先结束其他链接
@@ -92,6 +92,7 @@ func (server *UdpServer) Open() error {
 			} else {
 				//上线
 				_ = database.Master.UpdateField(&lnk, "Last", time.Now())
+				_ = database.Master.UpdateField(&lnk, "Remote", conn.RemoteAddr().String())
 			}
 
 			link = newUdpLink(conn, addr)
