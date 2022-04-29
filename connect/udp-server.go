@@ -7,6 +7,7 @@ import (
 	"github.com/zgwit/storm/v3"
 	"github.com/zgwit/storm/v3/q"
 	"net"
+	"time"
 )
 
 //UdpServer UDP服务器
@@ -64,7 +65,7 @@ func (server *UdpServer) Open() error {
 				continue
 			}
 
-			lnk := model.Link{TunnelId: server.tunnel.Id}
+			lnk := model.Link{TunnelId: server.tunnel.Id, Last: time.Now()}
 
 			if !server.tunnel.Register.Enable {
 				//先结束其他链接
@@ -79,12 +80,7 @@ func (server *UdpServer) Open() error {
 				}
 				sn := string(data)
 				lnk.SN = sn
-				err = database.Master.Select(
-					q.And(
-						q.Eq("TunnelId", server.tunnel.Id),
-						q.Eq("SN", sn),
-					),
-				).First(&lnk)
+				err = database.Master.Select(q.Eq("TunnelId", server.tunnel.Id), q.Eq("SN", sn)).First(&lnk)
 			}
 
 			if err == storm.ErrNotFound {
@@ -93,6 +89,9 @@ func (server *UdpServer) Open() error {
 			} else if err != nil {
 				//return err
 				continue
+			} else {
+				//上线
+				_ = database.Master.UpdateField(&lnk, "Last", time.Now())
 			}
 
 			link = newUdpLink(conn, addr)
