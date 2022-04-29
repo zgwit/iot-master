@@ -36,6 +36,7 @@ func (s *Serial) Open() error {
 		DataBits:   s.tunnel.Serial.DataBits,
 		StopBits:   s.tunnel.Serial.StopBits,
 		ParityMode: serial.ParityMode(s.tunnel.Serial.ParityMode),
+		Rs485Enable: s.tunnel.Serial.RS485,
 	}
 	port, err := serial.Open(options)
 	if err != nil {
