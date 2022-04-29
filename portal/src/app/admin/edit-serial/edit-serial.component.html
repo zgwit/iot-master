@@ -52,9 +52,9 @@
     <nz-form-label [nzSpan]="5">检验位</nz-form-label>
     <nz-form-control [nzSpan]="12" nzErrorTip="">
       <nz-select formControlName="parity_mode">
-        <nz-option nzValue="NONE" nzLabel="无"></nz-option>
-        <nz-option nzValue="ODD" nzLabel="偶"></nz-option>
-        <nz-option nzValue="EVEN" nzLabel="奇"></nz-option>
+        <nz-option [nzValue]="0" nzLabel="无"></nz-option>
+        <nz-option [nzValue]="1" nzLabel="偶"></nz-option>
+        <nz-option [nzValue]="2" nzLabel="奇"></nz-option>
       </nz-select>
     </nz-form-control>
   </nz-form-item>

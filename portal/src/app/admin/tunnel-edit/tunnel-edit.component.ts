@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 
@@ -16,11 +16,9 @@ export class TunnelEditComponent implements OnInit {
   basicForm: FormGroup = new FormGroup({});
 
   data: any = {
-    "name": "新建TCP服务",
+    "name": "新建通道",
     "type": "tcp-server",
-    "address": "",
-    "port": 1850,
-    "timeout": 60,
+    "addr": "",
     "disabled": false,
     "register": {
       "enable": true,
@@ -33,7 +31,7 @@ export class TunnelEditComponent implements OnInit {
       "hex": "",
       "regex": '^\\w+$'
     },
-    retry:{
+    retry: {
       "enable": false,
       "timeout": 30,
       "maximum": 0,
@@ -42,7 +40,7 @@ export class TunnelEditComponent implements OnInit {
       baud_rate: 9600,
       data_bits: 8,
       stop_bits: 1,
-      parity_mode: 'NONE',
+      parity_mode: 0,
       rs485: false,
     },
     "protocol": {
@@ -52,7 +50,7 @@ export class TunnelEditComponent implements OnInit {
     "devices": []
   }
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private rs: RequestService, private message: NzMessageService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
     this.buildForm();
@@ -62,9 +60,7 @@ export class TunnelEditComponent implements OnInit {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
       type: [this.data.type, [Validators.required]],
-      address: [this.data.address, [Validators.required]],
-      port: [this.data.port, [Validators.required]],
-      timeout: [this.data.timeout, [Validators.required]],
+      addr: [this.data.addr, [Validators.required]],
       disabled: [this.data.disabled, []],
       register: [this.data.register, []],
       heartbeat: [this.data.heartbeat, []],
@@ -91,6 +87,7 @@ export class TunnelEditComponent implements OnInit {
     const uri = this.id ? 'tunnel/' + this.id : 'tunnel/create';
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
+      this.router.navigate(['/admin/tunnel/detail/' + res.data.id]);
     }).add(() => {
       this.submitting = false;
     })

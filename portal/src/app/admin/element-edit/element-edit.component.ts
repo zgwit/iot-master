@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 
@@ -28,7 +28,7 @@ export class ElementEditComponent implements OnInit {
     "validators": [],
   }
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private rs: RequestService, private message: NzMessageService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
     this.buildForm();
@@ -67,6 +67,7 @@ export class ElementEditComponent implements OnInit {
     const uri = this.id ? 'element/' + this.id : 'element/create';
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
+      this.router.navigate(['/admin/element/detail/' + res.data.id]);
     }).add(() => {
       this.submitting = false;
     })
