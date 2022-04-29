@@ -75,7 +75,11 @@ func (m *RTU) OnData(buf []byte) {
 
 	//解析数据
 	l := len(buf)
-	crc := helper.ParseUint16(buf[l-2:])
+	if l < 6 {
+		return
+	}
+
+	crc := helper.ParseUint16LittleEndian(buf[l-2:])
 
 	if crc != CRC16(buf[:l-2]) {
 		//检验错误
@@ -115,7 +119,7 @@ func (m *RTU) OnData(buf []byte) {
 	case FuncCodeReadInputRegisters,
 		FuncCodeReadHoldingRegisters,
 		FuncCodeReadWriteMultipleRegisters:
-		length += 1 + count*2
+		length += 1 + count
 		if l < length {
 			//长度不够
 			req.resp <- response{err: errors.New("长度不够")}
@@ -140,7 +144,7 @@ func (m *RTU) Read(station int, address protocol.Addr, size int) ([]byte, error)
 	b[1] = addr.Code
 	helper.WriteUint16(b[2:], addr.Offset)
 	helper.WriteUint16(b[4:], uint16(size))
-	helper.WriteUint16(b[6:], CRC16(b[:6]))
+	helper.WriteUint16LittleEndian(b[6:], CRC16(b[:6]))
 
 	return m.execute(b)
 }
@@ -195,7 +199,7 @@ func (m *RTU) Write(station int, address protocol.Addr, buf []byte) error {
 	b[1] = code
 	helper.WriteUint16(b[2:], addr.Offset)
 	copy(b[4:], buf)
-	helper.WriteUint16(b[l-2:], CRC16(b[:l-2]))
+	helper.WriteUint16LittleEndian(b[l-2:], CRC16(b[:l-2]))
 
 	_, err := m.execute(b)
 	return err

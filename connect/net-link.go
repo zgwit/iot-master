@@ -50,7 +50,7 @@ func (l *NetLink) receive() {
 			l.onClose()
 			break
 		}
-		l.Emit("data", buf[n:])
+		l.Emit("data", buf[:n])
 	}
 }
 

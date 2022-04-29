@@ -32,7 +32,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 	dev := &Device{
 		Device:       *m,
 		commandIndex: make(map[string]*model.Command, 0),
-		//mapper: newMapper(m.Points, adapter), TODO 引入协议
+		//mapper: newMapper(m.Points, mapper), TODO 引入协议
 		pollers:    make([]*Poller, 0),
 		validators: make([]*Alarm, 0),
 	}
@@ -130,8 +130,19 @@ func (dev *Device) initPollers() error {
 	if dev.Pollers == nil {
 		return nil
 	}
+	//找到链接，导入协议
+	link := GetLink(dev.LinkId)
+	if link == nil {
+		//TODO error
+		return nil
+	}
+	if link.adapter == nil {
+		//TODO error
+		return nil
+	}
 	for _, v := range dev.Pollers {
-		dev.pollers = append(dev.pollers, &Poller{Poller: *v})
+		addr, _ := link.adapter.Address(v.Address)
+		dev.pollers = append(dev.pollers, &Poller{Poller: *v, Addr: addr, mapper: dev.mapper})
 	}
 	return nil
 }

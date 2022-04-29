@@ -41,7 +41,10 @@ func (l *SerialLink) receive() {
 			l.onClose()
 			break
 		}
-		l.Emit("data", buf[n:])
+		if n == 0 {
+			continue
+		}
+		l.Emit("data", buf[:n])
 	}
 }
 

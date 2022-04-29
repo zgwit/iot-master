@@ -37,6 +37,7 @@ func (s *Serial) Open() error {
 		StopBits:   s.tunnel.Serial.StopBits,
 		ParityMode: serial.ParityMode(s.tunnel.Serial.ParityMode),
 		Rs485Enable: s.tunnel.Serial.RS485,
+		MinimumReadSize: 4, //避免只读了一个字节就返回
 	}
 	port, err := serial.Open(options)
 	if err != nil {

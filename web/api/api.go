@@ -123,9 +123,13 @@ func normalSearch(ctx *gin.Context, store storm.Node, mod interface{}) (interfac
 	for k, v := range body.Filters {
 		kk := strcase.ToCamel(k)
 		if reflect.TypeOf(v).Kind() == reflect.Slice {
-			cond = append(cond, q.In(kk, v))
+			if len(v.([]interface{})) > 0 {
+				cond = append(cond, q.In(kk, v))
+			}
 		} else {
-			cond = append(cond, q.Eq(kk, v))
+			if v != nil {
+				cond = append(cond, q.Eq(kk, v))
+			}
 		}
 	}
 
@@ -190,9 +194,13 @@ func normalSearchById(ctx *gin.Context, store storm.Node, field string, value in
 	for k, v := range body.Filters {
 		kk := strcase.ToCamel(k)
 		if reflect.TypeOf(v).Kind() == reflect.Slice {
-			cond = append(cond, q.In(kk, v))
+			if len(v.([]interface{})) > 0 {
+				cond = append(cond, q.In(kk, v))
+			}
 		} else {
-			cond = append(cond, q.Eq(kk, v))
+			if v != nil {
+				cond = append(cond, q.Eq(kk, v))
+			}
 		}
 	}
 

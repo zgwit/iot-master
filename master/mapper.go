@@ -6,6 +6,7 @@ import (
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
+	"math"
 )
 
 //Mapper 数据解析器（可能要改名）
@@ -86,10 +87,14 @@ func (m *Mapper) Read(addr protocol.Addr, length int) (calc.Context, error) {
 	ctx := make(calc.Context)
 	for _, p := range m.points {
 		offset := p.Addr.Diff(addr)
-		if offset > 0 && offset < length {
-			v, err := p.Type.Decode(buf[offset:], p.LittleEndian)
+		if offset >= 0 && offset < length {
+			v, err := p.Type.Decode(buf[offset*2:], p.LittleEndian)
 			if err != nil {
 				return nil, err
+			}
+			//倍率计算
+			if p.Precision > 0 {
+				v /= math.Pow10(p.Precision)
 			}
 			ctx[p.Name] = v
 		}

@@ -9,11 +9,11 @@ import (
 //Poller 采集器
 type Poller struct {
 	model.Poller
-	Addr protocol.Addr
+	Addr   protocol.Addr
+	mapper *Mapper
 
 	reading bool
 	job     *cron.Job
-	adapter *Mapper
 }
 
 //Start 启动
@@ -52,7 +52,7 @@ func (p *Poller) Execute() {
 
 func (p *Poller) read() {
 	p.reading = true
-	_, _ = p.adapter.Read(p.Addr, p.Length)
+	_, _ = p.mapper.Read(p.Addr, p.Length)
 	//log error
 	p.reading = false
 }
