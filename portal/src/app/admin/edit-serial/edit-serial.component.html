@@ -1,1 +1,70 @@
-<p>edit-serial works!</p>
+<form [formGroup]="formGroup" (change)="change()">
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">波特率</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzErrorTip="">
+      <nz-select formControlName="baud_rate">
+        <nz-option [nzValue]="150" nzLabel="150"></nz-option>
+        <nz-option [nzValue]="200" nzLabel="200"></nz-option>
+        <nz-option [nzValue]="300" nzLabel="300"></nz-option>
+        <nz-option [nzValue]="600" nzLabel="600"></nz-option>
+        <nz-option [nzValue]="1200" nzLabel="1200"></nz-option>
+        <nz-option [nzValue]="1800" nzLabel="1800"></nz-option>
+        <nz-option [nzValue]="2400" nzLabel="2400"></nz-option>
+        <nz-option [nzValue]="4800" nzLabel="4800"></nz-option>
+        <nz-option [nzValue]="7200" nzLabel="7200"></nz-option>
+        <nz-option [nzValue]="9600" nzLabel="9600"></nz-option>
+        <nz-option [nzValue]="14400" nzLabel="14400"></nz-option>
+        <nz-option [nzValue]="19200" nzLabel="19200"></nz-option>
+        <nz-option [nzValue]="28800" nzLabel="28800"></nz-option>
+        <nz-option [nzValue]="38400" nzLabel="38400"></nz-option>
+        <nz-option [nzValue]="57600" nzLabel="57600"></nz-option>
+        <nz-option [nzValue]="76800" nzLabel="76800"></nz-option>
+        <nz-option [nzValue]="115200" nzLabel="115200"></nz-option>
+        <nz-option [nzValue]="230400" nzLabel="230400"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">数据位</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzErrorTip="">
+      <nz-select formControlName="data_bits">
+        <nz-option [nzValue]="5" nzLabel="5"></nz-option>
+        <nz-option [nzValue]="6" nzLabel="6"></nz-option>
+        <nz-option [nzValue]="7" nzLabel="7"></nz-option>
+        <nz-option [nzValue]="8" nzLabel="8"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">停止位</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzErrorTip="">
+      <nz-select formControlName="stop_bits">
+        <nz-option [nzValue]="1" nzLabel="1"></nz-option>
+        <nz-option [nzValue]="2" nzLabel="2"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">检验位</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzErrorTip="">
+      <nz-select formControlName="parity_mode">
+        <nz-option nzValue="NONE" nzLabel="无"></nz-option>
+        <nz-option nzValue="ODD" nzLabel="偶"></nz-option>
+        <nz-option nzValue="EVEN" nzLabel="奇"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">RS485</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzErrorTip="">
+      <nz-switch formControlName="rs485"></nz-switch>
+    </nz-form-control>
+  </nz-form-item>
+
+</form>
+

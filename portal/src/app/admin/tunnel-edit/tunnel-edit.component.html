@@ -54,12 +54,16 @@
     </nz-collapse-panel>
 
 
-    <nz-collapse-panel nzHeader="注册包" nzActive>
+    <nz-collapse-panel nzHeader="注册包" nzActive *ngIf="basicForm.value.type!='serial'">
       <app-edit-register formControlName="register"></app-edit-register>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="心跳包" nzActive>
+    <nz-collapse-panel nzHeader="心跳包" nzActive *ngIf="basicForm.value.type!='serial'">
       <app-edit-heartbeat formControlName="heartbeat"></app-edit-heartbeat>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="串口参数" nzActive *ngIf="basicForm.value.type=='serial'">
+      <app-edit-serial formControlName="serial"></app-edit-serial>
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="协议适配" nzActive>

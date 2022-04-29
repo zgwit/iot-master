@@ -23,17 +23,24 @@ export class TunnelEditComponent implements OnInit {
     "timeout": 60,
     "disabled": false,
     "register": {
-      "disabled": true,
+      "enable": true,
       "regex": '^\\w+$'
     },
     "heartbeat": {
-      "disabled": false,
+      "enable": false,
       "interval": 30,
       "text": "",
       "regex": '^\\w+$'
     },
-    "control": {
-      "disabled": false,
+    retry:{
+      
+    },
+    "serial": {
+      baud_rate: 9600,
+      data_bits: 8,
+      stop_bits: 1,
+      parity_mode: 'NONE',
+      rs485: false,
     },
     "protocol": {
       "name": "",
@@ -55,10 +62,11 @@ export class TunnelEditComponent implements OnInit {
       address: [this.data.address, [Validators.required]],
       port: [this.data.port, [Validators.required]],
       timeout: [this.data.timeout, [Validators.required]],
-      disabled: [this.data.disabled, [Validators.required]],
+      disabled: [this.data.disabled, []],
       register: [this.data.register, []],
       heartbeat: [this.data.heartbeat, []],
-      control: [this.data.control, []],
+      retry: [this.data.retry, []],
+      serial: [this.data.serial, []],
       protocol: [this.data.protocol, []],
       devices: [this.data.devices, []],
     });
