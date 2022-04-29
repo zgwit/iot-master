@@ -16,7 +16,8 @@ type Serial struct {
 
 	tunnel *model.Tunnel
 
-	link *SerialLink
+	link  *SerialLink
+	retry int
 }
 
 func newSerial(tunnel *model.Tunnel) *Serial {
@@ -30,18 +31,19 @@ func (s *Serial) Open() error {
 	s.Emit("open")
 
 	options := serial.OpenOptions{
-		PortName: s.tunnel.Addr,
-	}
-	if s.tunnel.Serial != nil {
-		options.BaudRate = s.tunnel.Serial.BaudRate
-		options.DataBits = s.tunnel.Serial.DataBits
-		options.StopBits = s.tunnel.Serial.StopBits
-		options.ParityMode = serial.ParityMode(s.tunnel.Serial.ParityMode)
+		PortName:   s.tunnel.Addr,
+		BaudRate:   s.tunnel.Serial.BaudRate,
+		DataBits:   s.tunnel.Serial.DataBits,
+		StopBits:   s.tunnel.Serial.StopBits,
+		ParityMode: serial.ParityMode(s.tunnel.Serial.ParityMode),
 	}
 	port, err := serial.Open(options)
 	if err != nil {
 		return err
 	}
+
+	//清空重连计数
+	s.retry = 0
 
 	s.link = newSerialLink(port)
 	go s.link.receive()
@@ -64,12 +66,12 @@ func (s *Serial) Open() error {
 	//断线后，要重连
 	s.link.Once("close", func() {
 		retry := s.tunnel.Retry
-		if retry == 0 {
-			retry = 5 //默认5秒重试
+		if retry.Enable && s.retry < retry.Maximum {
+			s.retry++
+			time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {
+				_ = s.Open()
+			})
 		}
-		time.AfterFunc(time.Second*time.Duration(retry), func() {
-			_ = s.Open()
-		})
 	})
 
 	return nil

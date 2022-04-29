@@ -25,7 +25,7 @@ func newUdpServer(tunnel *model.Tunnel) *UdpServer {
 	svr := &UdpServer{
 		tunnel: tunnel,
 	}
-	if tunnel.Register != nil {
+	if tunnel.Register.Enable {
 		svr.children = make(map[int]*UdpLink)
 		svr.links = make(map[string]*UdpLink)
 	}
@@ -66,7 +66,7 @@ func (server *UdpServer) Open() error {
 
 			lnk := model.Link{TunnelId: server.tunnel.Id}
 
-			if server.tunnel.Register == nil {
+			if !server.tunnel.Register.Enable {
 				//先结束其他链接
 				for _, link := range server.links {
 					_ = link.Close()

@@ -45,12 +45,10 @@ func startTunnel(tunnel *model.Tunnel) error {
 
 		//加载协议
 		var adapter protocol.Adapter
-		if tunnel.Protocol != nil {
-			adapter, err = protocols.Create(link, tunnel.Protocol.Name, tunnel.Protocol.Options)
-			if err != nil {
-				log.Error(err)
-				return
-			}
+		adapter, err = protocols.Create(link, tunnel.Protocol.Name, tunnel.Protocol.Options)
+		if err != nil {
+			log.Error(err)
+			return
 		}
 
 		allLinks.Store(link.Id(), &Link{Link: lnk, Instance: link, adapter: adapter})

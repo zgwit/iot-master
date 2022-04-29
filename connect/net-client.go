@@ -17,6 +17,7 @@ type NetClient struct {
 	tunnel *model.Tunnel
 	link   *NetLink
 	net    string
+	retry  int
 }
 
 func newNetClient(tunnel *model.Tunnel, net string) *NetClient {
@@ -55,12 +56,12 @@ func (client *NetClient) Open() error {
 
 	client.link.Once("close", func() {
 		retry := client.tunnel.Retry
-		if retry == 0 {
-			retry = 10 //默认10秒重试
+		if retry.Enable && client.retry < retry.Maximum {
+			client.retry++
+			time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {
+				_ = client.Open()
+			})
 		}
-		time.AfterFunc(time.Second*time.Duration(retry), func() {
-			_ = client.Open()
-		})
 	})
 	return nil
 }

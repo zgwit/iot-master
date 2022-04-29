@@ -24,7 +24,7 @@ func newTcpServer(tunnel *model.Tunnel) *TcpServer {
 	svr := &TcpServer{
 		tunnel: tunnel,
 	}
-	if tunnel.Register != nil {
+	if tunnel.Register.Enable {
 		svr.children = make(map[int]*NetLink)
 	}
 	return svr
@@ -52,7 +52,7 @@ func (server *TcpServer) Open() error {
 
 			lnk := model.Link{TunnelId: server.tunnel.Id}
 
-			if server.tunnel.Register == nil {
+			if !server.tunnel.Register.Enable {
 				//先结束历史链接
 				for _, link := range server.children {
 					_ = link.Close()

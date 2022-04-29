@@ -14,17 +14,23 @@ type Protocol struct {
 
 //Tunnel 通道模型
 type Tunnel struct {
-	Id        int              `json:"id" storm:"id,increment"`
-	Name      string           `json:"name"`
-	Type      string           `json:"type"` //serial tcp-client tcp-server udp-client udp-server
-	Addr      string           `json:"addr"`
-	Retry     int              `json:"retry"` //重试
-	Register  *RegisterPacket  `json:"register,omitempty"`
-	Heartbeat *HeartBeatPacket `json:"heartbeat,omitempty"`
-	Serial    *SerialOptions   `json:"serial,omitempty"`
-	Protocol  *Protocol        `json:"protocol"`
-	Disabled  bool             `json:"disabled"`
-	Created   time.Time        `json:"created" storm:"created"`
+	Id        int             `json:"id" storm:"id,increment"`
+	Name      string          `json:"name"`
+	Type      string          `json:"type"` //serial tcp-client tcp-server udp-client udp-server
+	Addr      string          `json:"addr"`
+	Retry     Retry           `json:"retry"` //重试
+	Register  RegisterPacket  `json:"register,omitempty"`
+	Heartbeat HeartBeatPacket `json:"heartbeat,omitempty"`
+	Serial    SerialOptions   `json:"serial,omitempty"`
+	Protocol  Protocol        `json:"protocol"`
+	Disabled  bool            `json:"disabled"`
+	Created   time.Time       `json:"created" storm:"created"`
+}
+
+type Retry struct {
+	Enable  bool `json:"enable"`
+	Timeout int  `json:"timeout"`
+	Maximum int  `json:"maximum"`
 }
 
 //SerialOptions 串口参数
@@ -38,6 +44,7 @@ type SerialOptions struct {
 
 //RegisterPacket 注册包
 type RegisterPacket struct {
+	Enable bool   `json:"enable"`
 	Regex  string `json:"regex,omitempty"`
 	Length int    `json:"length,omitempty"`
 
@@ -62,11 +69,12 @@ func (p *RegisterPacket) Check(buf []byte) bool {
 
 //HeartBeatPacket 心跳包
 type HeartBeatPacket struct {
+	Enable  bool   `json:"enable"`
 	Timeout int64  `json:"timeout"`
 	Regex   string `json:"regex,omitempty"`
-	Length  int    `json:"length,omitempty"`
 	Hex     string `json:"hex,omitempty"`
 	Text    string `json:"text,omitempty"`
+	//Length  int    `json:"length,omitempty"`
 
 	hex   []byte
 	regex *regexp.Regexp
@@ -93,11 +101,11 @@ func (p *HeartBeatPacket) Check(buf []byte) bool {
 		return p.regex.Match(buf)
 	}
 
-	if p.Length > 0 {
-		if len(buf) != p.Length {
-			return false
-		}
-	}
+	//if p.Length > 0 {
+	//	if len(buf) != p.Length {
+	//		return false
+	//	}
+	//}
 
 	if p.Hex != "" {
 		if p.hex == nil {
