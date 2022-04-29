@@ -32,7 +32,8 @@ export class EditHeartbeatComponent implements OnInit, ControlValueAccessor {
   buildForm(): void {
     this.formGroup = this.fb.group({
       enable: [this.data.enable, [Validators.required]],
-      interval: [this.data.interval, []],
+      timeout: [this.data.timeout, []],
+      hex: [this.data.hex, []],
       text: [this.data.text, []],
       regex: [this.data.regex, []],
     })

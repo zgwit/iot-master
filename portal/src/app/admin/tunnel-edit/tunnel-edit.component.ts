@@ -28,12 +28,13 @@ export class TunnelEditComponent implements OnInit {
     },
     "heartbeat": {
       "enable": false,
-      "interval": 30,
+      "timeout": 30,
       "text": "",
+      "hex": "",
       "regex": '^\\w+$'
     },
     retry:{
-      
+
     },
     "serial": {
       baud_rate: 9600,
