@@ -25,6 +25,7 @@ func projectRoutes(app *gin.RouterGroup) {
 	app.GET(":id/stop", projectStop)
 	app.GET(":id/enable", projectEnable)
 	app.GET(":id/disable", projectDisable)
+	app.GET(":id/context", projectContext)
 	app.GET(":id/watch", projectWatch)
 	app.POST(":id/event/list", projectEvent)
 	app.GET(":id/event/clear", projectEventClear)
@@ -206,6 +207,15 @@ func projectDisable(ctx *gin.Context) {
 			return
 		}
 	}()
+}
+
+func projectContext(ctx *gin.Context) {
+	project := master.GetProject(ctx.GetInt("id"))
+	if project == nil {
+		replyFail(ctx, "找不到项目")
+		return
+	}
+	replyOk(ctx, project.Context)
 }
 
 func projectWatch(ctx *gin.Context) {
