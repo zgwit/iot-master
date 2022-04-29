@@ -47,7 +47,7 @@ export class EventComponent implements OnInit {
   load(): void {
     this.loading = true;
     this.params.filter[this.type + 'id'] = this.id;
-    this.rs.post(`${this.type}/${this.id}/event/list'`, this.params).subscribe(res => {
+    this.rs.post(`${this.type}/${this.id}/event/list`, this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
       this.total = res.total;
