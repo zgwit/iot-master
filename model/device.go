@@ -47,6 +47,11 @@ type Device struct {
 	Created  time.Time `json:"created" storm:"created"`
 }
 
+type DeviceEx struct {
+	Device
+	Running bool `json:"running"`
+}
+
 //DeviceEvent 设备事件
 type DeviceEvent struct {
 	Id       int       `json:"id" storm:"id,increment"`

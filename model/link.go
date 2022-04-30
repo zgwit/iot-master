@@ -15,6 +15,11 @@ type Link struct {
 	//Protocol *Protocol `json:"protocol"`
 }
 
+type LinkEx struct {
+	Link
+	Running bool `json:"running"`
+}
+
 //LinkEvent 链接历史
 type LinkEvent struct {
 	Id      int       `json:"id" storm:"id,increment"`

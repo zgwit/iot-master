@@ -41,6 +41,11 @@ type Project struct {
 	Created  time.Time `json:"created" storm:"created"`
 }
 
+type ProjectEx struct {
+	Project
+	Running bool `json:"running"`
+}
+
 //ProjectDevice 项目的设备
 type ProjectDevice struct {
 	Id   int    `json:"id"`
@@ -63,10 +68,4 @@ type ProjectHistory struct {
 type TemplateHistory struct {
 	Template   `storm:"inline"`
 	TemplateId string `json:"template_id" storm:"index"`
-}
-
-type ProjectEx struct {
-	Project
-	Online bool
-	Error  string
 }

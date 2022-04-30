@@ -27,6 +27,12 @@ type Tunnel struct {
 	Created   time.Time       `json:"created" storm:"created"`
 }
 
+
+type TunnelEx struct {
+	Tunnel
+	Running bool `json:"running"`
+}
+
 type Retry struct {
 	Enable  bool `json:"enable"`
 	Timeout int  `json:"timeout"`
