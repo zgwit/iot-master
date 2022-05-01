@@ -19,6 +19,8 @@ type TcpServer struct {
 	children map[int]*NetLink
 
 	listener *net.TCPListener
+
+	running bool
 }
 
 func newTcpServer(tunnel *model.Tunnel) *TcpServer {
@@ -43,6 +45,8 @@ func (server *TcpServer) Open() error {
 	if err != nil {
 		return err
 	}
+
+	server.running = true
 	go func() {
 		for {
 			conn, err := server.listener.AcceptTCP()
@@ -101,6 +105,8 @@ func (server *TcpServer) Open() error {
 				delete(server.children, link.id)
 			})
 		}
+
+		server.running = false
 	}()
 
 	return nil
@@ -122,4 +128,8 @@ func (server *TcpServer) Close() (err error) {
 //GetLink 获取连接
 func (server *TcpServer) GetLink(id int) Link {
 	return server.children[id]
+}
+
+func (server *TcpServer) Running() bool {
+	return server.running
 }

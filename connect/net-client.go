@@ -14,10 +14,11 @@ import (
 type NetClient struct {
 	events.EventEmitter
 
-	tunnel *model.Tunnel
-	link   *NetLink
-	net    string
-	retry  int
+	tunnel  *model.Tunnel
+	link    *NetLink
+	net     string
+	retry   int
+	running bool
 }
 
 func newNetClient(tunnel *model.Tunnel, net string) *NetClient {
@@ -36,6 +37,8 @@ func (client *NetClient) Open() error {
 	if err != nil {
 		return err
 	}
+	client.running = true
+
 	client.link = newNetLink(conn)
 	go client.link.receive()
 
@@ -56,6 +59,9 @@ func (client *NetClient) Open() error {
 	client.Emit("link", client.link)
 
 	client.link.Once("close", func() {
+		if !client.running {
+			return
+		}
 		retry := client.tunnel.Retry
 		if retry.Enable && client.retry < retry.Maximum {
 			client.retry++
@@ -69,6 +75,8 @@ func (client *NetClient) Open() error {
 
 //Close 关闭
 func (client *NetClient) Close() error {
+	client.running = false
+
 	//记录启动
 	client.Emit("close")
 
@@ -83,4 +91,8 @@ func (client *NetClient) Close() error {
 //GetLink 获取链接
 func (client *NetClient) GetLink(id int) Link {
 	return client.link
+}
+
+func (client *NetClient) Running() bool {
+	return client.running
 }

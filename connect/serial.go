@@ -18,6 +18,7 @@ type Serial struct {
 
 	link  *SerialLink
 	retry int
+	running bool
 }
 
 func newSerial(tunnel *model.Tunnel) *Serial {
@@ -44,6 +45,8 @@ func (s *Serial) Open() error {
 		return err
 	}
 
+	s.running = true
+
 	//清空重连计数
 	s.retry = 0
 
@@ -68,6 +71,10 @@ func (s *Serial) Open() error {
 
 	//断线后，要重连
 	s.link.Once("close", func() {
+		//已经关闭，则不再重连
+		if !s.running {
+			return
+		}
 		retry := s.tunnel.Retry
 		if retry.Enable && s.retry < retry.Maximum {
 			s.retry++
@@ -88,9 +95,14 @@ func (s *Serial) Close() error {
 		s.link = nil
 		return link.Close()
 	}
+	s.running = false
 	return errors.New("link is closed")
 }
 
 func (s *Serial) GetLink(id int) Link {
 	return s.link
+}
+
+func (s *Serial) Running() bool {
+	return s.running
 }

@@ -9,9 +9,10 @@ import (
 type UdpLink struct {
 	events.EventEmitter
 
-	id   int
-	conn *net.UDPConn
-	addr *net.UDPAddr
+	id      int
+	conn    *net.UDPConn
+	addr    *net.UDPAddr
+	running bool
 }
 
 func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
@@ -42,9 +43,15 @@ func (l *UdpLink) Close() error {
 }
 
 func (l *UdpLink) onClose() {
+	l.running = false
 	l.Emit("close")
 }
 
 func (l *UdpLink) onData(data []byte) {
+	l.running = true
 	l.Emit("data", data)
+}
+
+func (l *UdpLink) Running() bool {
+	return l.running
 }

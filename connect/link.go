@@ -13,4 +13,6 @@ type Link interface {
 	Write(data []byte) error
 
 	Close() error
+
+	Running() bool
 }

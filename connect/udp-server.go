@@ -20,6 +20,7 @@ type UdpServer struct {
 	links    map[string]*UdpLink
 
 	listener *net.UDPConn
+	running  bool
 }
 
 func newUdpServer(tunnel *model.Tunnel) *UdpServer {
@@ -48,13 +49,15 @@ func (server *UdpServer) Open() error {
 	}
 	server.listener = conn //共用连接
 
+	server.running = true
 	go func() {
 		for {
 			buf := make([]byte, 1024)
 			n, addr, err := conn.ReadFromUDP(buf)
 			if err != nil {
 				_ = conn.Close()
-				continue
+				//continue
+				break
 			}
 			data := buf[n:]
 
@@ -107,6 +110,8 @@ func (server *UdpServer) Open() error {
 				delete(server.links, link.addr.String())
 			})
 		}
+
+		server.running = false
 	}()
 
 	return nil
@@ -127,4 +132,8 @@ func (server *UdpServer) Close() (err error) {
 //GetLink 获取链接
 func (server *UdpServer) GetLink(id int) Link {
 	return server.children[id]
+}
+
+func (server *UdpServer) Running() bool {
+	return server.running
 }

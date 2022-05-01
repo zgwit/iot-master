@@ -11,4 +11,5 @@ type Tunnel interface {
 	Open() error
 	Close() error
 	GetLink(id int) Link
+	Running() bool
 }

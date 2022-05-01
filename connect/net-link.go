@@ -9,8 +9,9 @@ import (
 type NetLink struct {
 	events.EventEmitter
 
-	id   int
-	conn net.Conn
+	id      int
+	conn    net.Conn
+	running bool
 }
 
 func newNetLink(conn net.Conn) *NetLink {
@@ -43,6 +44,7 @@ func (l *NetLink) Read(data []byte) (int, error) {
 }
 
 func (l *NetLink) receive() {
+	l.running = true
 	buf := make([]byte, 1024)
 	for {
 		n, err := l.conn.Read(buf)
@@ -52,6 +54,7 @@ func (l *NetLink) receive() {
 		}
 		l.Emit("data", buf[:n])
 	}
+	l.running = false
 }
 
 //Close 关闭
@@ -62,4 +65,8 @@ func (l *NetLink) Close() error {
 
 func (l *NetLink) onClose() {
 	l.Emit("close")
+}
+
+func (l *NetLink) Running() bool {
+	return l.running
 }

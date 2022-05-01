@@ -9,8 +9,9 @@ import (
 type SerialLink struct {
 	events.EventEmitter
 
-	id   int
-	port io.ReadWriteCloser
+	id      int
+	port    io.ReadWriteCloser
+	running bool
 }
 
 func newSerialLink(port io.ReadWriteCloser) *SerialLink {
@@ -34,6 +35,7 @@ func (l *SerialLink) Write(data []byte) error {
 }
 
 func (l *SerialLink) receive() {
+	l.running = true
 	buf := make([]byte, 1024)
 	for {
 		n, err := l.port.Read(buf)
@@ -46,6 +48,7 @@ func (l *SerialLink) receive() {
 		}
 		l.Emit("data", buf[:n])
 	}
+	l.running = false
 }
 
 //Close 关闭
@@ -56,4 +59,8 @@ func (l *SerialLink) Close() error {
 
 func (l *SerialLink) onClose() {
 	l.Emit("close")
+}
+
+func (l *SerialLink) Running() bool {
+	return l.running
 }
