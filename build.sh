@@ -25,8 +25,8 @@ ldflags="-X 'github.com/zgwit/iot-master/args.Version=$version' \
 
 #epxort GOARCH=amd64
 export GOOS=linux
-go build -ldflags "$ldflags" -o iot-master-${version}-linux-amd64 main.go
+go build -ldflags "$ldflags" -o iot-master-linux-amd64 main.go
 
 
 export GOOS=windows
-go build -ldflags "$ldflags" -o iot-master-${version}-windows-amd64.exe main.go
+go build -ldflags "$ldflags" -o iot-master-windows-amd64.exe main.go

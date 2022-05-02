@@ -55,7 +55,7 @@ type Project struct {
 	Devices []*ProjectDevice
 
 	aggregators []aggregator.Aggregator
-	validators  []*Alarm
+	alarms      []*Alarm
 	jobs        []*Job
 	strategies  []*Strategy
 
@@ -64,6 +64,8 @@ type Project struct {
 
 	deviceDataHandler  func(data calc.Context)
 	deviceAlarmHandler func(alarm *model.DeviceAlarm)
+
+	running bool
 }
 
 func NewProject(m *model.Project) (*Project, error) {
@@ -71,7 +73,7 @@ func NewProject(m *model.Project) (*Project, error) {
 		Project:         *m,
 		Devices:         make([]*ProjectDevice, 0),
 		aggregators:     make([]aggregator.Aggregator, 0),
-		validators:      make([]*Alarm, 0),
+		alarms:          make([]*Alarm, 0),
 		jobs:            make([]*Job, 0),
 		strategies:      make([]*Strategy, 0),
 		deviceNameIndex: make(map[string]*Device),
@@ -206,7 +208,7 @@ func (prj *Project) initValidators() error {
 			//上报
 			prj.Emit("alarm", pa)
 		})
-		prj.validators = append(prj.validators, validator)
+		prj.alarms = append(prj.alarms, validator)
 	}
 	return nil
 }
@@ -300,9 +302,14 @@ func (prj *Project) Start() error {
 	for _, job := range prj.jobs {
 		err := job.Start()
 		if err != nil {
+			//TODO 需要关闭
+			//_ = prj.Stop()
 			return err
 		}
 	}
+
+	prj.running = true
+
 	return nil
 }
 
@@ -317,7 +324,14 @@ func (prj *Project) Stop() error {
 	for _, job := range prj.jobs {
 		job.Stop()
 	}
+
+	prj.running = false
+
 	return nil
+}
+
+func (prj *Project) Running() bool {
+	return prj.running
 }
 
 func (prj *Project) execute(in *model.Invoke) error {

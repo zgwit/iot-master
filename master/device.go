@@ -8,6 +8,7 @@ import (
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/tsdb"
 	"github.com/zgwit/storm/v3"
 	"strconv"
@@ -19,23 +20,25 @@ type Device struct {
 	model.Device
 	events.EventEmitter
 
-	pollers    []*Poller
-	validators []*Alarm
+	pollers []*Poller
+	alarms  []*Alarm
 
 	//命令索引
 	commandIndex map[string]*model.Command
 
 	mapper *Mapper
+
+	running bool
 }
 
 func NewDevice(m *model.Device) (*Device, error) {
 	dev := &Device{
 		Device:       *m,
 		commandIndex: make(map[string]*model.Command, 0),
-		//mapper: newMapper(m.Points, mapper), TODO 引入协议
-		pollers:    make([]*Poller, 0),
-		validators: make([]*Alarm, 0),
+		pollers: make([]*Poller, 0),
+		alarms:  make([]*Alarm, 0),
 	}
+	var err error
 
 	//加载模板
 	if dev.ElementId != "" {
@@ -49,22 +52,12 @@ func NewDevice(m *model.Device) (*Device, error) {
 		dev.DeviceContent = template.DeviceContent
 	}
 
-	err := dev.initMapper()
-	if err != nil {
-		return nil, err
-	}
-
-	err = dev.initPollers()
-	if err != nil {
-		return nil, err
-	}
-
 	err = dev.initCalculators()
 	if err != nil {
 		return nil, err
 	}
 
-	err = dev.initValidators()
+	err = dev.initAlarms()
 	if err != nil {
 		return nil, err
 	}
@@ -72,20 +65,17 @@ func NewDevice(m *model.Device) (*Device, error) {
 	return dev, nil
 }
 
-func (dev *Device) initMapper() error {
+func (dev *Device) BindAdapter(adapter protocol.Adapter) error {
 	var err error
-	//找到链接，导入协议
-	link := GetLink(dev.LinkId)
-	if link == nil {
-		//TODO error
-		return nil
-	}
-	if link.adapter == nil {
-		//TODO error
-		return nil
+	if dev.mapper != nil {
+		if dev.mapper.adapter == adapter {
+			//已经绑定，相同连接，则不用再处理
+			return nil
+		}
+		// else dev.mapper.Off("data")
 	}
 
-	dev.mapper, err = newMapper(dev.Station, dev.Points, link.adapter)
+	dev.mapper, err = newMapper(dev.Station, dev.Points, adapter)
 	metric := strconv.Itoa(dev.Id)
 
 	//处理数据变化结果
@@ -105,8 +95,8 @@ func (dev *Device) initMapper() error {
 		}
 
 		//处理策略
-		for _, validator := range dev.validators {
-			err := validator.Execute(dev.Context)
+		for _, alarm := range dev.alarms {
+			err := alarm.Execute(dev.Context)
 			if err != nil {
 				dev.Emit("error", err)
 			}
@@ -123,37 +113,29 @@ func (dev *Device) initMapper() error {
 			}
 		}()
 	})
-	return err
-}
 
-func (dev *Device) initPollers() error {
+	//关闭之前的轮询
+	for _, p := range dev.pollers {
+		p.Stop()
+	}
 	if dev.Pollers == nil {
 		return nil
 	}
-	//找到链接，导入协议
-	link := GetLink(dev.LinkId)
-	if link == nil {
-		//TODO error
-		return nil
-	}
-	if link.adapter == nil {
-		//TODO error
-		return nil
-	}
 	for _, v := range dev.Pollers {
-		addr, _ := link.adapter.Address(v.Address)
+		addr, _ := adapter.Address(v.Address)
 		dev.pollers = append(dev.pollers, &Poller{Poller: *v, Addr: addr, mapper: dev.mapper})
 	}
-	return nil
+
+	return err
 }
 
-func (dev *Device) initValidators() error {
-	if dev.Validators == nil {
+func (dev *Device) initAlarms() error {
+	if dev.Alarms == nil {
 		return nil
 	}
-	for _, v := range dev.Validators {
-		validator := &Alarm{Alarm: *v}
-		validator.On("alarm", func(alarm *model.AlarmContent) {
+	for _, v := range dev.Alarms {
+		a := &Alarm{Alarm: *v}
+		a.On("alarm", func(alarm *model.AlarmContent) {
 			da := &model.DeviceAlarm{DeviceId: dev.Id, AlarmContent: *alarm}
 
 			//入库
@@ -163,7 +145,7 @@ func (dev *Device) initValidators() error {
 			//上报
 			dev.Emit("alarm", da)
 		})
-		dev.validators = append(dev.validators, validator)
+		dev.alarms = append(dev.alarms, a)
 	}
 	return nil
 }
@@ -187,6 +169,26 @@ func (dev *Device) createEvent(event string) {
 func (dev *Device) Start() error {
 	dev.createEvent("启动")
 
+	//找到链接，导入协议
+	link := GetLink(dev.LinkId)
+	if link == nil {
+		return errors.New("找不到链接")
+	}
+	if link.adapter == nil {
+		return errors.New("未加载协议")
+	}
+
+	//链接关闭，则关闭实例
+	link.Instance.On("close", func() {
+		_ = dev.Stop()
+	})
+
+	//绑定链接
+	err := dev.BindAdapter(link.adapter)
+	if err != nil {
+		return err
+	}
+
 	//采集器
 	for _, poller := range dev.pollers {
 		err := poller.Start()
@@ -194,15 +196,31 @@ func (dev *Device) Start() error {
 			return err
 		}
 	}
+
+	dev.running = true
+
 	return nil
 }
 
 //Stop 结束设备
 func (dev *Device) Stop() error {
+	dev.running = false
+
 	dev.createEvent("关闭")
 
 	for _, poller := range dev.pollers {
 		poller.Stop()
+	}
+	return nil
+}
+
+func (dev *Device) Running() bool {
+	return dev.running
+}
+
+func (dev *Device) Refresh() error {
+	for _, poller := range dev.pollers {
+		poller.Execute()
 	}
 	return nil
 }

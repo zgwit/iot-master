@@ -62,7 +62,7 @@ func startTunnel(tunnel *model.Tunnel) error {
 		for _, d := range devices {
 			dev := GetDevice(d.Id)
 			if dev != nil {
-				err := dev.initMapper()
+				err := dev.Start()
 				if err != nil {
 					log.Error(err)
 					//return

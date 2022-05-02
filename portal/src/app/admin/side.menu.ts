@@ -71,10 +71,10 @@ export let SideMenu = [
     icon: 'setting',
     open: false,
     children: [
-      {
-        title: '系统设置',
-        router: 'setting'
-      },
+      // {
+      //   title: '系统设置',
+      //   router: 'setting'
+      // },
       {
         title: '用户管理',
         router: 'setting/user'

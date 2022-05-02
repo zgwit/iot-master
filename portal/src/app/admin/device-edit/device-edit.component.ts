@@ -28,7 +28,7 @@ export class DeviceEditComponent implements OnInit {
     "commands": [],
     "pollers": [],
     "calculators": [],
-    "validators": [],
+    "alarms": [],
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
@@ -53,9 +53,9 @@ export class DeviceEditComponent implements OnInit {
       points: [this.data.points || []],
       context: [this.data.context || {}],
       commands: [this.data.commands || []],
-      pollers: [this.data.collectors || []],
-      calculators: [this.data.collectors || []],
-      validators: [this.data.validators || []],
+      pollers: [this.data.pollers || []],
+      calculators: [this.data.calculators || []],
+      alarms: [this.data.alarms || []],
     });
   }
 
