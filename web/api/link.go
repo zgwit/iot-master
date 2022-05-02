@@ -42,9 +42,9 @@ func linkList(ctx *gin.Context) {
 	for _, d := range *links {
 		l := &model.LinkEx{Link: *d}
 		ls = append(ls, l)
-		d := master.GetDevice(l.Id)
+		d := master.GetLink(l.Id)
 		if d != nil {
-			l.Running = d.Running()
+			l.Running = d.Instance.Running()
 		}
 
 		var tunnel model.Tunnel

@@ -86,7 +86,7 @@ func tunnelDetail(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	tnl := model.TunnelEx{Tunnel: tunnel}
+	tnl := &model.TunnelEx{Tunnel: tunnel}
 	d := master.GetTunnel(tnl.Id)
 	if d != nil {
 		tnl.Running = d.Instance.Running()
