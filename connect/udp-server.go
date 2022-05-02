@@ -1,6 +1,7 @@
 package connect
 
 import (
+	"errors"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
@@ -36,6 +37,9 @@ func newUdpServer(tunnel *model.Tunnel) *UdpServer {
 
 //Open 打开
 func (server *UdpServer) Open() error {
+	if server.running {
+		return errors.New("server is opened")
+	}
 	server.Emit("open")
 
 	addr, err := net.ResolveUDPAddr("udp", server.tunnel.Addr)

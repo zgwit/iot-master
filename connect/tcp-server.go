@@ -1,6 +1,7 @@
 package connect
 
 import (
+	"errors"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
@@ -35,6 +36,9 @@ func newTcpServer(tunnel *model.Tunnel) *TcpServer {
 
 //Open 打开
 func (server *TcpServer) Open() error {
+	if server.running {
+		return errors.New("server is opened")
+	}
 	server.Emit("open")
 
 	addr, err := net.ResolveTCPAddr("tcp", server.tunnel.Addr)

@@ -29,6 +29,9 @@ func newSerial(tunnel *model.Tunnel) *Serial {
 
 //Open 打开
 func (s *Serial) Open() error {
+	if s.running {
+		return errors.New("serial is opened")
+	}
 	s.Emit("open")
 
 	options := serial.OpenOptions{
@@ -42,6 +45,7 @@ func (s *Serial) Open() error {
 	}
 	port, err := serial.Open(options)
 	if err != nil {
+		//TODO 串口重试
 		return err
 	}
 

@@ -30,6 +30,9 @@ func newNetClient(tunnel *model.Tunnel, net string) *NetClient {
 
 //Open 打开
 func (client *NetClient) Open() error {
+	if client.running {
+		return errors.New("client is opened")
+	}
 	client.Emit("open")
 
 	//发起连接
