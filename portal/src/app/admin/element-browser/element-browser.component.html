@@ -33,7 +33,7 @@
       <td>{{ data.tags?.join(',') }}</td>
       <td>{{ data.manufacturer }}</td>
       <td>{{ data.version }}</td>
-      <td>{{data.created | fromNow}}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
     </tr>
     </tbody>
   </nz-table>

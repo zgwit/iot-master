@@ -35,7 +35,7 @@
       <td>{{ data.cellphone }}</td>
       <td>{{ data.email }}</td>
       <td>{{data.disabled ? '×' : ''}}</td>
-      <td>{{data.created | fromNow}}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
     </tr>
     </tbody>
   </nz-table>

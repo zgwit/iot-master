@@ -15,10 +15,9 @@
     <tr>
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
-      <th>项目</th>
       <th nzColumnKey="element_id">元件</th>
       <th nzColumnKey="link_id">连接</th>
-      <th nzColumnKey="slave">从机</th>
+      <th nzColumnKey="station">从站号</th>
       <th nzColumnKey="id" [nzSortFn]="true">创建时间</th>
       <th>状态</th>
       <th nzColumnKey="disabled" [nzSortFn]="true">禁用</th>
@@ -29,21 +28,20 @@
     <tr *ngFor="let data of datum; let i=index" (dblclick)="open(data)">
       <td>{{ data.id }}</td>
       <td>{{ data.name }}</td>
-      <td>{{ data.project?.join(',') }}</td>
       <td>
-        <a [routerLink]="'/admin/element/detail/'+data.element_id">{{data.element?.name}}</a>
+        <a [routerLink]="'/admin/element/detail/'+data.element_id">{{data.element}}</a>
       </td>
       <td>
         <a
-          [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel?.name || data.tunnel?.sn}}</a>
+          [routerLink]="'/admin/link/detail/'+data.link_id">{{data.link_id}}</a>
       </td>
-      <td>{{ data.slave | yaml }}</td>
-      <td>{{data.created | fromNow}}</td>
+      <td>{{ data.station }}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
       <td>
-        <span *ngIf="data.online">
+        <span *ngIf="data.running">
           {{data.closed ? '关闭' : '启动'}} {{data.error}}
         </span>
-        <span *ngIf="!data.online">离线</span>
+        <span *ngIf="!data.running">离线</span>
       </td>
       <td>
         <nz-switch [(ngModel)]="data.disabled" nzSize="small"

@@ -3,7 +3,7 @@
 <nz-tabset [nzTabBarExtraContent]="extraTemplate">
   <nz-tab nzTitle="通道详情">
     <p>
-      名称：{{data.name}} {{data.online ? '启动' : '停止'}}
+      名称：{{data.name}} {{data.running ? '启动' : '停止'}}
       <nz-switch [ngModel]="data.enable" (ngModelChange)="onEnableChange($event)"></nz-switch>
     </p>
 

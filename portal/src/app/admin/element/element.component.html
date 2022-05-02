@@ -31,7 +31,7 @@
       <td>{{ data.tags?.join(',') }}</td>
       <td>{{ data.manufacturer }}</td>
       <td>{{ data.version }}</td>
-      <td>{{data.created | fromNow}}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
       <td>
         <a [routerLink]="'/admin/element/detail/'+data.id">详情</a>
         <nz-divider nzType="vertical"></nz-divider>

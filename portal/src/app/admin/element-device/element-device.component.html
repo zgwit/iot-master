@@ -15,7 +15,7 @@
     <tr>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="link_id">连接</th>
-      <th nzColumnKey="slave">从机</th>
+      <th nzColumnKey="station">从站号</th>
       <th nzColumnKey="id" [nzSortFn]="true">创建时间</th>
       <th>状态</th>
       <th nzColumnKey="disabled" [nzSortFn]="true">禁用</th>
@@ -29,13 +29,13 @@
         <a
           [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel?.name || data.tunnel?.sn}}</a>
       </td>
-      <td>{{ data.slave | yaml }}</td>
-      <td>{{data.created | fromNow}}</td>
+      <td>{{ data.station }}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
       <td>
-        <span *ngIf="data.online">
+        <span *ngIf="data.running">
           {{data.closed?'关闭':'启动'}} {{data.error}}
         </span>
-        <span *ngIf="!data.online">离线</span>
+        <span *ngIf="!data.running">离线</span>
       </td>
       <td>
         <nz-switch [(ngModel)]="data.disabled" nzSize="small" (ngModelChange)="onEnableChange(data, $event)"></nz-switch>

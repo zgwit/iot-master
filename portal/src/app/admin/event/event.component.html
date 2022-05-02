@@ -20,7 +20,7 @@
     <tbody>
     <tr *ngFor="let data of datum; let i=index">
       <td>{{ data.event }}</td>
-      <td>{{data.created | fromNow}}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
     </tr>
     </tbody>
   </nz-table>

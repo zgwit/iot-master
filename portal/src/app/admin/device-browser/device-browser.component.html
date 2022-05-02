@@ -20,7 +20,7 @@
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="element_id">元件</th>
       <th nzColumnKey="link_id">连接</th>
-      <th nzColumnKey="slave">从机</th>
+      <th nzColumnKey="station">从站号</th>
       <th nzColumnKey="disabled" [nzSortFn]="true">禁用</th>
       <th nzColumnKey="id" [nzSortFn]="true">创建时间</th>
     </tr>
@@ -32,11 +32,11 @@
       ></td>
       <td>{{ data.id }}</td>
       <td>{{ data.name }}</td>
-      <td>{{data.element?.name}}</td>
-      <td>{{data.tunnel && (data.tunnel.name || data.tunnel.sn)}}</td>
-      <td>{{ data.slave | yaml }}</td>
+      <td>{{data.element}}</td>
+      <td>{{data.link_id}}</td>
+      <td>{{ data.station }}</td>
       <td>{{data.disabled ? '×' : ''}}</td>
-      <td>{{data.created | fromNow}}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
     </tr>
     </tbody>
   </nz-table>

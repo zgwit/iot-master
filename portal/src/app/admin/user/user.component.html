@@ -30,7 +30,7 @@
       <td>{{ data.name }}</td>
       <td>{{ data.cellphone }}</td>
       <td>{{ data.email }}</td>
-      <td>{{data.created | fromNow}}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
       <td>
         <nz-switch [(ngModel)]="data.disabled" nzSize="small"
                    (ngModelChange)="onEnableChange(data, $event)"></nz-switch>

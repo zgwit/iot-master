@@ -29,12 +29,12 @@
         <a [routerLink]="'/admin/template/detail/'+data.template_id">{{data.template?.name}}</a>
       </td>
       <td>{{ data.name }}</td>
-      <td>{{data.created | fromNow}}</td>
+      <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
       <td>
-        <span *ngIf="data.online">
+        <span *ngIf="data.running">
           {{data.closed ? '关闭' : '启动'}} {{data.error}}
         </span>
-        <span *ngIf="!data.online">离线</span>
+        <span *ngIf="!data.running">离线</span>
       </td>
       <td>
         <nz-switch [(ngModel)]="data.disabled" nzSize="small"
