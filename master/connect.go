@@ -39,7 +39,7 @@ func startTunnel(tunnel *model.Tunnel) error {
 	tnl.On("link", func(link connect.Link) {
 		var lnk model.Link
 		err := database.Master.One("Id", link.Id(), &lnk)
-		if err != nil && err != storm.ErrNotFound {
+		if err != nil {
 			return
 		}
 
@@ -52,6 +52,25 @@ func startTunnel(tunnel *model.Tunnel) error {
 		}
 
 		allLinks.Store(link.Id(), &Link{Link: lnk, Instance: link, adapter: adapter})
+
+		//第一次连接，初始化默认设备
+		if link.First() && tunnel.Devices != nil {
+			for _, d := range tunnel.Devices {
+				dev :=  model.Device{
+					LinkId: link.Id(),
+					Station: d.Station,
+					ElementId: d.ElementId,
+				}
+				err = database.Master.Save(&dev)
+				if err != nil {
+					log.Error(err)
+				}
+				_, err = LoadDevice(dev.Id)
+				if err != nil {
+					log.Error(err)
+				}
+			}
+		}
 
 		//找到相关Device，导入Mapper
 		var devices []model.Device

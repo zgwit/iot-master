@@ -23,10 +23,15 @@ type Tunnel struct {
 	Heartbeat HeartBeatPacket `json:"heartbeat,omitempty"`
 	Serial    SerialOptions   `json:"serial,omitempty"`
 	Protocol  Protocol        `json:"protocol"`
+	Devices   []TunnelDevice  `json:"devices"` //默认设备
 	Disabled  bool            `json:"disabled"`
 	Created   time.Time       `json:"created" storm:"created"`
 }
 
+type TunnelDevice struct {
+	Station   int    `json:"station"`
+	ElementId string `json:"element_id"`
+}
 
 type TunnelEx struct {
 	Tunnel
@@ -42,9 +47,9 @@ type Retry struct {
 //SerialOptions 串口参数
 type SerialOptions struct {
 	//PortName   string `json:"port_name"`   // /dev/tty.usb.. COM1
-	BaudRate   uint `json:"baud_rate"`   //9600 ... 115200 ...
-	DataBits   uint `json:"data_bits"`   //5 6 7 8
-	StopBits   uint `json:"stop_bits"`   //1 2
+	BaudRate   uint `json:"baud_rate"`             //9600 ... 115200 ...
+	DataBits   uint `json:"data_bits"`             //5 6 7 8
+	StopBits   uint `json:"stop_bits"`             //1 2
 	ParityMode uint `json:"parity_mode,omitempty"` // 0:NONE 1:ODD 2:EVEN
 	RS485      bool `json:"rs485,omitempty"`
 }
