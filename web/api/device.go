@@ -57,6 +57,7 @@ func deviceList(ctx *gin.Context) {
 			err := database.Master.One("Id", dev.ElementId, &element)
 			if err == nil {
 				dev.Element = element.Name
+				dev.DeviceContent = element.DeviceContent
 			}
 		}
 	}

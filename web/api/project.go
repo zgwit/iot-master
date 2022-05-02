@@ -57,7 +57,7 @@ func projectList(ctx *gin.Context) {
 			err := database.Master.One("Id", prj.TemplateId, &template)
 			if err == nil {
 				prj.Template = template.Name
-			}
+			} // else err
 		}
 	}
 
@@ -102,6 +102,7 @@ func projectDetail(ctx *gin.Context) {
 		err := database.Master.One("Id", prj.TemplateId, &template)
 		if err == nil {
 			prj.Template = template.Name
+			prj.ProjectContent = template.ProjectContent
 		}
 	}
 
