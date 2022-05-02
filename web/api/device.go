@@ -26,6 +26,7 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", deviceEnable)
 	app.GET(":id/disable", deviceDisable)
 	app.GET(":id/context", deviceContext)
+	app.GET(":id/refresh", deviceRefresh)
 	app.GET(":id/watch", deviceWatch)
 	app.POST(":id/event/list", deviceEvent)
 	app.GET(":id/event/clear", deviceEventClear)
@@ -220,6 +221,20 @@ func deviceContext(ctx *gin.Context) {
 		return
 	}
 	replyOk(ctx, device.Context)
+}
+
+func deviceRefresh(ctx *gin.Context) {
+	device := master.GetDevice(ctx.GetInt("id"))
+	if device == nil {
+		replyFail(ctx, "找不到设备")
+		return
+	}
+	err := device.Refresh()
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyOk(ctx, nil)
 }
 
 func deviceWatch(ctx *gin.Context) {
