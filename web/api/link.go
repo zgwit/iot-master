@@ -28,12 +28,33 @@ func linkRoutes(app *gin.RouterGroup) {
 }
 
 func linkList(ctx *gin.Context) {
-	links, cnt, err := normalSearch(ctx, database.Master, &model.Link{})
+	records, cnt, err := normalSearch(ctx, database.Master, &model.Link{})
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	replyList(ctx, links, cnt)
+
+
+	//补充信息
+	links := records.(*[]*model.Link)
+	ls := make([]*model.LinkEx, 0) //len(links)
+
+	for _, d := range *links {
+		l := &model.LinkEx{Link: *d}
+		ls = append(ls, l)
+		d := master.GetDevice(l.Id)
+		if d != nil {
+			l.Running = d.Running()
+		}
+
+		var tunnel model.Tunnel
+		err := database.Master.One("Id", l.TunnelId, &tunnel)
+		if err == nil {
+			l.Tunnel = tunnel.Name
+		}
+	}
+
+	replyList(ctx, ls, cnt)
 }
 
 
@@ -45,7 +66,20 @@ func linkDetail(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	replyOk(ctx, link)
+
+	l := &model.LinkEx{Link: link}
+	d := master.GetLink(l.Id)
+	if d != nil {
+		l.Running = d.Instance.Running()
+	}
+
+	var tunnel model.Tunnel
+	err = database.Master.One("Id", l.TunnelId, &tunnel)
+	if err == nil {
+		l.Tunnel = tunnel.Name
+	}
+
+	replyOk(ctx, l)
 }
 
 func linkUpdate(ctx *gin.Context) {

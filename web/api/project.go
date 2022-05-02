@@ -35,12 +35,33 @@ func projectRoutes(app *gin.RouterGroup) {
 }
 
 func projectList(ctx *gin.Context) {
-	projects, cnt, err := normalSearch(ctx, database.Master, &model.Project{})
+	records, cnt, err := normalSearch(ctx, database.Master, &model.Project{})
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	replyList(ctx, projects, cnt)
+
+	//补充信息
+	projects := records.(*[]*model.Project)
+	ps := make([]*model.ProjectEx, 0) //len(projects)
+
+	for _, d := range *projects {
+		prj := &model.ProjectEx{Project: *d}
+		ps = append(ps, prj)
+		d := master.GetProject(prj.Id)
+		if d != nil {
+			prj.Running = d.Running()
+		}
+		if prj.TemplateId != "" {
+			var template model.Template
+			err := database.Master.One("Id", prj.TemplateId, &template)
+			if err == nil {
+				prj.Template = template.Name
+			}
+		}
+	}
+
+	replyList(ctx, ps, cnt)
 }
 
 func projectCreate(ctx *gin.Context) {
@@ -69,7 +90,22 @@ func projectDetail(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	replyOk(ctx, project)
+
+	//补充信息
+	prj := model.ProjectEx{Project: project}
+	d := master.GetProject(prj.Id)
+	if d != nil {
+		prj.Running = d.Running()
+	}
+	if prj.TemplateId != "" {
+		var template model.Template
+		err := database.Master.One("Id", prj.TemplateId, &template)
+		if err == nil {
+			prj.Template = template.Name
+		}
+	}
+
+	replyOk(ctx, prj)
 }
 
 func projectUpdate(ctx *gin.Context) {

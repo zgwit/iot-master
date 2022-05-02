@@ -35,12 +35,33 @@ func deviceRoutes(app *gin.RouterGroup) {
 }
 
 func deviceList(ctx *gin.Context) {
-	devices, cnt, err := normalSearch(ctx, database.Master, &model.Device{})
+	records, cnt, err := normalSearch(ctx, database.Master, &model.Device{})
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	replyList(ctx, devices, cnt)
+
+	//补充信息
+	devices := records.(*[]*model.Device)
+	devs := make([]*model.DeviceEx, 0) //len(devices)
+
+	for _, d := range *devices {
+		dev := &model.DeviceEx{Device: *d}
+		devs = append(devs, dev)
+		d := master.GetDevice(dev.Id)
+		if d != nil {
+			dev.Running = d.Running()
+		}
+		if dev.ElementId != "" {
+			var element model.Element
+			err := database.Master.One("Id", dev.ElementId, &element)
+			if err == nil {
+				dev.Element = element.Name
+			}
+		}
+	}
+
+	replyList(ctx, devs, cnt)
 }
 
 func deviceCreate(ctx *gin.Context) {
@@ -77,7 +98,22 @@ func deviceDetail(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	replyOk(ctx, device)
+
+	//补充信息
+	dev := model.DeviceEx{Device: device}
+	d := master.GetDevice(dev.Id)
+	if d != nil {
+		dev.Running = d.Running()
+	}
+	if dev.ElementId != "" {
+		var element model.Element
+		err := database.Master.One("Id", dev.ElementId, &element)
+		if err == nil {
+			dev.Element = element.Name
+		}
+	}
+
+	replyOk(ctx, dev)
 }
 
 func deviceUpdate(ctx *gin.Context) {

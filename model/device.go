@@ -49,7 +49,8 @@ type Device struct {
 
 type DeviceEx struct {
 	Device
-	Running bool `json:"running"`
+	Running bool   `json:"running"`
+	Element string `json:"element"`
 }
 
 //DeviceEvent 设备事件

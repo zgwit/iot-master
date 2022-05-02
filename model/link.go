@@ -17,7 +17,8 @@ type Link struct {
 
 type LinkEx struct {
 	Link
-	Running bool `json:"running"`
+	Running bool   `json:"running"`
+	Tunnel  string `json:"tunnel"`
 }
 
 //LinkEvent 链接历史

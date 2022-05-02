@@ -43,7 +43,8 @@ type Project struct {
 
 type ProjectEx struct {
 	Project
-	Running bool `json:"running"`
+	Running  bool   `json:"running"`
+	Template string `json:"template"`
 }
 
 //ProjectDevice 项目的设备
