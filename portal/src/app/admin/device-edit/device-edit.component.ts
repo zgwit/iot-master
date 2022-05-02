@@ -20,7 +20,6 @@ export class DeviceEditComponent implements OnInit {
     "element_id": "",
     "link_id": 0,
     "tags": [],
-    "icon": "",
     "station": 1,
     "disabled": false,
     "points": [],
@@ -42,7 +41,6 @@ export class DeviceEditComponent implements OnInit {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
       tags: [this.data.tags, []],
-      icon: [this.data.icon, []],
       element_id: [this.data.element_id, [Validators.required]],
       link_id: [this.data.link_id, [Validators.required]],
       station: [this.data.station, [Validators.required]],
