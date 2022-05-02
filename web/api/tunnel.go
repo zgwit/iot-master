@@ -30,12 +30,26 @@ func tunnelRoutes(app *gin.RouterGroup) {
 }
 
 func tunnelList(ctx *gin.Context) {
-	tunnels, cnt, err := normalSearch(ctx, database.Master, &model.Tunnel{})
+	records, cnt, err := normalSearch(ctx, database.Master, &model.Tunnel{})
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	replyList(ctx, tunnels, cnt)
+
+	//补充信息
+	tunnels := records.(*[]*model.Tunnel)
+	ts := make([]*model.TunnelEx, 0) //len(tunnels)
+
+	for _, d := range *tunnels {
+		l := &model.TunnelEx{Tunnel: *d}
+		ts = append(ts, l)
+		d := master.GetTunnel(l.Id)
+		if d != nil {
+			l.Running = d.Instance.Running()
+		}
+	}
+
+	replyList(ctx, ts, cnt)
 }
 
 func tunnelCreate(ctx *gin.Context) {
@@ -72,7 +86,12 @@ func tunnelDetail(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	replyOk(ctx, tunnel)
+	tnl := model.TunnelEx{Tunnel: tunnel}
+	d := master.GetTunnel(tnl.Id)
+	if d != nil {
+		tnl.Running = d.Instance.Running()
+	}
+	replyOk(ctx, tnl)
 }
 
 func tunnelUpdate(ctx *gin.Context) {
@@ -164,7 +183,6 @@ func tunnelStop(ctx *gin.Context) {
 
 	replyOk(ctx, nil)
 }
-
 
 func tunnelEnable(ctx *gin.Context) {
 	err := database.Master.UpdateField(&model.Tunnel{Id: ctx.GetInt("id")}, "Disabled", false)
