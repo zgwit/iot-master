@@ -11,7 +11,7 @@ type User struct {
 	Username string    `json:"username" storm:"unique"`
 	Nickname string    `json:"nickname,omitempty"`
 	Email    string    `json:"email,omitempty"`
-	Disabled bool      `json:"disabled,omitempty"`
+	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created" storm:"created"`
 }
 

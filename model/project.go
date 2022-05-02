@@ -37,7 +37,7 @@ type Project struct {
 
 	Context calc.Context `json:"context"`
 
-	Disabled bool      `json:"disabled,omitempty"`
+	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created" storm:"created"`
 }
 

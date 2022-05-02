@@ -90,6 +90,7 @@ func (dev *Device) BindAdapter(adapter protocol.Adapter) error {
 			if err != nil {
 				dev.Emit("error", err)
 			} else {
+				data[calculator.As] = val //也上报和保存
 				dev.Context[calculator.As] = val
 			}
 		}

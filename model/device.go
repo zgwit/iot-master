@@ -43,7 +43,7 @@ type Device struct {
 	//上下文
 	Context calc.Context `json:"context"`
 
-	Disabled bool      `json:"disabled,omitempty"`
+	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created" storm:"created"`
 }
 

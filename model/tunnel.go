@@ -19,9 +19,9 @@ type Tunnel struct {
 	Type      string          `json:"type"` //serial tcp-client tcp-server udp-client udp-server
 	Addr      string          `json:"addr"`
 	Retry     Retry           `json:"retry"` //重试
-	Register  RegisterPacket  `json:"register,omitempty"`
-	Heartbeat HeartBeatPacket `json:"heartbeat,omitempty"`
-	Serial    SerialOptions   `json:"serial,omitempty"`
+	Register  RegisterPacket  `json:"register"`
+	Heartbeat HeartBeatPacket `json:"heartbeat"`
+	Serial    SerialOptions   `json:"serial"`
 	Protocol  Protocol        `json:"protocol"`
 	Devices   []TunnelDevice  `json:"devices"` //默认设备
 	Disabled  bool            `json:"disabled"`
@@ -50,8 +50,8 @@ type SerialOptions struct {
 	BaudRate   uint `json:"baud_rate"`             //9600 ... 115200 ...
 	DataBits   uint `json:"data_bits"`             //5 6 7 8
 	StopBits   uint `json:"stop_bits"`             //1 2
-	ParityMode uint `json:"parity_mode,omitempty"` // 0:NONE 1:ODD 2:EVEN
-	RS485      bool `json:"rs485,omitempty"`
+	ParityMode uint `json:"parity_mode"` // 0:NONE 1:ODD 2:EVEN
+	RS485      bool `json:"rs485"`
 }
 
 //RegisterPacket 注册包
