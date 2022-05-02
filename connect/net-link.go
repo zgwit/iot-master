@@ -12,6 +12,7 @@ type NetLink struct {
 	id      int
 	conn    net.Conn
 	running bool
+	first   bool
 }
 
 func newNetLink(conn net.Conn) *NetLink {
@@ -69,4 +70,8 @@ func (l *NetLink) onClose() {
 
 func (l *NetLink) Running() bool {
 	return l.running
+}
+
+func (l *NetLink) First() bool {
+	return l.first
 }

@@ -13,6 +13,7 @@ type UdpLink struct {
 	conn    *net.UDPConn
 	addr    *net.UDPAddr
 	running bool
+	first bool
 }
 
 func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
@@ -53,5 +54,9 @@ func (l *UdpLink) onData(data []byte) {
 }
 
 func (l *UdpLink) Running() bool {
+	return l.running
+}
+
+func (l *UdpLink) First() bool {
 	return l.running
 }

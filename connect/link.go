@@ -15,4 +15,6 @@ type Link interface {
 	Close() error
 
 	Running() bool
+
+	First() bool
 }

@@ -63,6 +63,7 @@ func (s *Serial) Open() error {
 	if err == storm.ErrNotFound {
 		//保存一条新记录
 		_ = database.Master.Save(&lnk)
+		s.link.first = true
 	} else if err != nil {
 		return err
 	} else {
@@ -79,8 +80,10 @@ func (s *Serial) Open() error {
 		if !s.running {
 			return
 		}
+		s.running = false
+
 		retry := s.tunnel.Retry
-		if retry.Enable && s.retry < retry.Maximum {
+		if retry.Enable && (retry.Maximum == 0 || s.retry < retry.Maximum) {
 			s.retry++
 			time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {
 				_ = s.Open()

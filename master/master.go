@@ -14,17 +14,19 @@ var allProjects sync.Map
 
 //Start 启动
 func Start() error {
-	err := LoadTunnels()
-	if err != nil {
-		return err
-	}
-
+	var err error
 	err = LoadDevices()
 	if err != nil {
 		return err
 	}
 
 	err = LoadProjects()
+	if err != nil {
+		return err
+	}
+
+	err = LoadTunnels()
+
 	return err
 }
 

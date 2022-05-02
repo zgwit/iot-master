@@ -51,6 +51,7 @@ func (client *NetClient) Open() error {
 	if err == storm.ErrNotFound {
 		//保存一条新记录
 		_ = database.Master.Save(&lnk)
+		client.link.first = true
 	} else if err != nil {
 		return err
 	} else {
@@ -65,8 +66,10 @@ func (client *NetClient) Open() error {
 		if !client.running {
 			return
 		}
+		client.running = false
+
 		retry := client.tunnel.Retry
-		if retry.Enable && client.retry < retry.Maximum {
+		if retry.Enable && (retry.Maximum == 0 || client.retry < retry.Maximum) {
 			client.retry++
 			time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {
 				_ = client.Open()

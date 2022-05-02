@@ -12,6 +12,7 @@ type SerialLink struct {
 	id      int
 	port    io.ReadWriteCloser
 	running bool
+	first bool
 }
 
 func newSerialLink(port io.ReadWriteCloser) *SerialLink {
@@ -63,4 +64,8 @@ func (l *SerialLink) onClose() {
 
 func (l *SerialLink) Running() bool {
 	return l.running
+}
+
+func (l *SerialLink) First() bool {
+	return l.first
 }

@@ -90,9 +90,12 @@ func (server *UdpServer) Open() error {
 				err = database.Master.Select(q.Eq("TunnelId", server.tunnel.Id), q.Eq("SN", sn)).First(&lnk)
 			}
 
+			link = newUdpLink(conn, addr)
+
 			if err == storm.ErrNotFound {
 				//保存一条新记录
 				_ = database.Master.Save(&lnk)
+				link.first = true
 			} else if err != nil {
 				//return err
 				continue
@@ -102,7 +105,6 @@ func (server *UdpServer) Open() error {
 				_ = database.Master.UpdateField(&lnk, "Remote", conn.RemoteAddr().String())
 			}
 
-			link = newUdpLink(conn, addr)
 			link.id = lnk.Id
 			server.children[lnk.Id] = link
 
