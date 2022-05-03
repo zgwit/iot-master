@@ -49,13 +49,13 @@ export class DeviceDetailComponent implements OnInit {
   }
 
   refresh(name: any) {
-    this.rs.get(`device/${this.id}/values/${name}/refresh`).subscribe(res => {
+    this.rs.get(`device/${this.id}/refresh/${name}`).subscribe(res => {
       this.data.values[name] = res.data;
     })
   }
 
   refreshAll() {
-    this.rs.get(`device/${this.id}/values/refresh`).subscribe(res => {
+    this.rs.get(`device/${this.id}/refresh`).subscribe(res => {
       Object.assign(this.data.values, res.data);
     })
   }
