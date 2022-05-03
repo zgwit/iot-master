@@ -44,7 +44,7 @@
           <tr *ngFor="let data of jobsTable.data; let i=index">
             <td>{{ data.type }}</td>
             <td>
-              <span *ngIf="data.type=='clock'">{{data.clock}}</span>
+              <span *ngIf="data.type=='clock'">{{data.clock | minuteFormat}}</span>
               <span *ngIf="data.type=='crontab'">{{data.crontab}}</span>
             </td>
             <td>{{ data.invokes }}</td>

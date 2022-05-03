@@ -30,6 +30,7 @@ import {GpsPickerComponent} from './gps-picker/gps-picker.component';
 import {InputGpsComponent} from './input-gps/input-gps.component';
 import {NgxAmapModule} from "ngx-amap";
 import { FromNowPipe } from './from-now.pipe';
+import { MinuteFormatPipe } from './minute-format.pipe';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { FromNowPipe } from './from-now.pipe';
     GpsPickerComponent,
     InputGpsComponent,
     FromNowPipe,
+    MinuteFormatPipe,
   ],
     exports: [
         PageEditorComponent,
@@ -71,6 +73,7 @@ import { FromNowPipe } from './from-now.pipe';
         GpsPickerComponent,
         InputGpsComponent,
         FromNowPipe,
+        MinuteFormatPipe,
     ],
   imports: [
     CommonModule,
