@@ -110,6 +110,7 @@ import {TunnelLinkComponent} from "./tunnel-link/tunnel-link.component";
 import {EditSerialComponent} from "./edit-serial/edit-serial.component";
 import {EditRetryComponent} from "./edit-retry/edit-retry.component";
 import {NzListModule} from "ng-zorro-antd/list";
+import {LinkMonitorComponent} from "./link-monitor/link-monitor.component";
 
 @NgModule({
   declarations: [
@@ -122,7 +123,7 @@ import {NzListModule} from "ng-zorro-antd/list";
     TunnelComponent, TunnelDetailComponent, TunnelEditComponent,
     EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent, EditSerialComponent, EditRetryComponent,
     TunnelEditDevicesComponent, TunnelLinkComponent,
-    LinkComponent, LinkDetailComponent, LinkEditComponent, LinkDeviceComponent,
+    LinkComponent, LinkDetailComponent, LinkEditComponent, LinkDeviceComponent,LinkMonitorComponent,
     LinkBrowserComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
     DeviceBrowserComponent,

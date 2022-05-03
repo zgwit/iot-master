@@ -30,6 +30,7 @@ import {TunnelEditComponent} from "./tunnel-edit/tunnel-edit.component";
 import {LinkEditComponent} from "./link-edit/link-edit.component";
 import {TemplateDetailComponent} from "./template-detail/template-detail.component";
 import {ElementDetailComponent} from "./element-detail/element-detail.component";
+import {LinkMonitorComponent} from "./link-monitor/link-monitor.component";
 
 const routes: Routes = [
   {
@@ -58,6 +59,7 @@ const routes: Routes = [
           {path: 'detail/:id', component: LinkDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: LinkEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: LinkEditComponent, data: {breadcrumb: "创建"}},
+          {path: 'monitor/:id', component: LinkMonitorComponent, data: {breadcrumb: "监控"}},
         ]
       },
 

@@ -19,6 +19,8 @@
       <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
     </nz-list>
 
+    <a [routerLink]="'/admin/link/monitor/'+data.id">监控</a>
+    
   </nz-tab>
   <nz-tab nzTitle="相关设备">
     <ng-template nz-tab>

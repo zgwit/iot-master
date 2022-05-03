@@ -1,0 +1,14 @@
+
+
+<textarea nz-input [(ngModel)]="text" placeholder="发送数据"></textarea>
+<label nz-checkbox [(ngModel)]="isHex">HEX</label>
+<label nz-checkbox [(ngModel)]="crlf">自动添加换行回车(\r\n)</label>
+<button type="button" nz-button (click)="send()">发送</button>
+
+
+<div #read class="data">
+</div>
+
+<button type="button" nz-button (click)="clear()">清空</button>
+
+<a [href]="transfer">虚拟串口透传</a>
