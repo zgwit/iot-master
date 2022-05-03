@@ -3,6 +3,7 @@
     <nz-collapse>
       <nz-collapse-panel nzHeader="基础信息" nzActive>
         <nz-list nzBordered>
+          <nz-list-item><span>ID</span>{{data.id}}</nz-list-item>
           <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
           <nz-list-item><span>标签</span>{{data.tags?.join(',')}}</nz-list-item>
           <nz-list-item><span>厂商</span>{{data.manufacturer}}</nz-list-item>

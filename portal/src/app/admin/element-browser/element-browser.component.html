@@ -2,25 +2,25 @@
 
   <nz-table
     nzSize="small"
-        [nzData]="datum"
+    [nzData]="datum"
     [nzFrontPagination]="false"
     [nzLoading]="loading"
     [nzTotal]="total"
     [nzPageSize]="pageSize"
     [nzPageIndex]="pageIndex"
-
     (nzQueryParams)="onQuery($event)"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
   >
     <thead>
     <tr>
-      <th [nzShowCheckbox]="multiple" [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+      <th [nzShowCheckbox]="multiple" [nzChecked]="checked" [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)"></th>
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="tags">标签</th>
       <th nzColumnKey="manufacturer" [nzSortFn]="true">厂商</th>
       <th nzColumnKey="version" [nzSortFn]="true">型号</th>
-      <th nzColumnKey="id" [nzSortFn]="true">创建时间</th>
+      <th nzColumnKey="created" [nzSortFn]="true">创建时间</th>
     </tr>
     </thead>
     <tbody>

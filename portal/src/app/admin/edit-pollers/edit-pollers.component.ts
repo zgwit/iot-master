@@ -50,7 +50,7 @@ export class EditPollersComponent implements OnInit, ControlValueAccessor {
   add() {
     this.formArray.push(this.fb.group({
           type: ["interval", [Validators.required]],
-          interval: [60, [Validators.required]],
+          interval: [1000, [Validators.required]],
           clock: [60, [Validators.required]],
           crontab: ['', [Validators.required]],
           address: [0, [Validators.required]],

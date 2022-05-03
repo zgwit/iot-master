@@ -34,9 +34,10 @@ export class EditJobsComponent implements OnInit, ControlValueAccessor {
     this.formGroup = this.fb.group({
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
-          name: [d.name, [Validators.required]],
+          type: [d.type, [Validators.required]],
+          clock: [d.clock, [Validators.required]],
           crontab: [d.crontab, [Validators.required]],
-          script: [d.script, [Validators.required]],
+          invokes: [d.invokes, [Validators.required]],
           disabled: [d.disabled, [Validators.required]],
         })
       }))
@@ -45,9 +46,10 @@ export class EditJobsComponent implements OnInit, ControlValueAccessor {
 
   add() {
     this.formArray.push(this.fb.group({
-          name: ['新建定时任务' + this.formArray.length, [Validators.required]],
+      type: ["clock", [Validators.required]],
+      clock: [60, [Validators.required]],
       crontab: ['', [Validators.required]],
-      script: ['', [Validators.required]],
+      invokes: [[], [Validators.required]],
       disabled: [false, [Validators.required]],
     }))
     //复制controls，让表格可以刷新
@@ -59,9 +61,10 @@ export class EditJobsComponent implements OnInit, ControlValueAccessor {
     const group = this.formArray.controls[i];
 
     this.formArray.controls.splice(i, 0, this.fb.group({
-      name: [group.get('name')?.value, [Validators.required]],
+      type: [group.get('type')?.value, [Validators.required]],
+      clock: [group.get('clock')?.value, [Validators.required]],
       crontab: [group.get('crontab')?.value, [Validators.required]],
-      script: [group.get('script')?.value, [Validators.required]],
+      invokes: [[].concat(group.get('invokes')?.value), [Validators.required]],
       disabled: [group.get('disabled')?.value, [Validators.required]],
     }))
   }
