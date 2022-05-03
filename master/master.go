@@ -144,7 +144,6 @@ func LoadProjects() error {
 		return err
 	}
 	for _, p := range projects {
-		allProjects.Store(p.Id, projects)
 		if p.Disabled {
 			continue
 		}
@@ -154,11 +153,8 @@ func LoadProjects() error {
 			log.Error(err)
 			continue
 		}
-		err = prj.initHandler()
-		if err != nil {
-			log.Error(err)
-			continue
-		}
+		allProjects.Store(p.Id, prj)
+
 		err = prj.Start()
 		if err != nil {
 			log.Error(err)
@@ -182,10 +178,6 @@ func LoadProject(id int) (*Project, error) {
 
 	allProjects.Store(id, prj)
 
-	err = prj.initHandler()
-	if err != nil {
-		return nil, err
-	}
 	err = prj.Start()
 	if err != nil {
 		return nil, err
