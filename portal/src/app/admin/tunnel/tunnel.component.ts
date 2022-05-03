@@ -39,7 +39,7 @@ export class TunnelComponent implements OnInit {
     this.pageIndex = 1;
     this.params.skip = 0;
     if (keyword)
-      this.params.keyword = {Name: keyword, Type: keyword, Address: keyword};
+      this.params.keyword = {name: keyword, type: keyword, address: keyword};
     else
       delete this.params.keyword;
     this.load();

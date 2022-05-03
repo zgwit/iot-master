@@ -32,9 +32,9 @@ export class DeviceComponent implements OnInit {
     this.pageIndex = 1;
     this.params.skip = 0;
     if (keyword)
-      this.params.filter.$or = [{name: {$regex: keyword}}, {type: {$regex: keyword}}];
+      this.params.keyword = {name: keyword};
     else
-      delete this.params.filter.$or;
+      delete this.params.keyword;
     this.load();
   }
 

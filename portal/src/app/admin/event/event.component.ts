@@ -33,9 +33,9 @@ export class EventComponent implements OnInit {
     this.pageIndex = 1;
     this.params.skip = 0;
     if (keyword)
-      this.params.filter.$or = [{event: {$regex: keyword}}];
+      this.params.keyword = {event: keyword};
     else
-      delete this.params.filter.$or;
+      delete this.params.keyword;
     this.load();
   }
 
