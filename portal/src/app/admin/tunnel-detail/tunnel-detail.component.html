@@ -1,27 +1,17 @@
-
-
 <nz-tabset [nzTabBarExtraContent]="extraTemplate">
   <nz-tab nzTitle="通道详情">
-    <p>
-      名称：{{data.name}} {{data.running ? '启动' : '停止'}}
-      <nz-switch [ngModel]="data.enable" (ngModelChange)="onEnableChange($event)"></nz-switch>
-    </p>
 
-    <p>
-      类型：{{data.type}} {{data.address}} {{data.port}}
-    </p>
-
-    <p *ngIf="data.register.enable">
-      注册包：{{data.regex}}
-    </p>
-
-    <p *ngIf="data.heartbeat">
-      心跳包：{{data.regex}} {{data.interval}}
-    </p>
-
-    <p *ngIf="data.protocol.enable">
-      协议：{{data.type}}
-    </p>
+    <nz-list nzBordered>
+      <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
+      <nz-list-item><span>类型</span>{{data.type}}</nz-list-item>
+      <nz-list-item><span>地址</span>{{data.addr}}</nz-list-item>
+      <nz-list-item><span>状态</span>{{data.running ? '启动' : '停止'}}</nz-list-item>
+      <nz-list-item>
+        <span>禁用</span>
+        <nz-switch [ngModel]="data.disabled" (ngModelChange)="onEnableChange($event)"></nz-switch>
+      </nz-list-item>
+      <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
+    </nz-list>
 
   </nz-tab>
   <nz-tab nzTitle="相关连接">
