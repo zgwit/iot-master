@@ -108,3 +108,17 @@ func (m *Mapper) Read(addr protocol.Addr, length int) (calc.Context, error) {
 
 	return ctx, nil
 }
+
+//Write 写数据
+func (m *Mapper) Write(addr protocol.Addr, data []byte) error {
+	return m.adapter.Write(m.station, addr, data)
+}
+
+//WriteEx 写数据
+func (m *Mapper) WriteEx(address string, data []byte) error {
+	addr, err := m.adapter.Address(address)
+	if err != nil {
+		return err
+	}
+	return m.adapter.Write(m.station, addr, data)
+}

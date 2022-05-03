@@ -234,6 +234,7 @@ func (dev *Device) Refresh() error {
 func (dev *Device) RefreshPoint(name string) (float64, error) {
 	return dev.mapper.Get(name)
 }
+
 //Execute 执行命令
 func (dev *Device) Execute(command string, argv []float64) error {
 	dev.createEvent("执行：" + command)
@@ -267,11 +268,11 @@ func (dev *Device) Execute(command string, argv []float64) error {
 		//延迟执行
 		if directive.Delay > 0 {
 			time.AfterFunc(time.Duration(directive.Delay)*time.Millisecond, func() {
-				err := dev.mapper.Set(directive.Address, val)
+				err := dev.mapper.Set(directive.Point, val)
 				dev.Emit("error", err)
 			})
 		} else {
-			err := dev.mapper.Set(directive.Address, val)
+			err := dev.mapper.Set(directive.Point, val)
 			//dev.events.Publish("error", err)
 			return err
 		}

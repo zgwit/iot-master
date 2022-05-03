@@ -10,9 +10,9 @@ type Command struct {
 
 //Directive 指令
 type Directive struct {
-	Address string  `json:"address"`
-	Value   float64 `json:"value"`
-	Delay   int64   `json:"delay"`
+	Point string  `json:"point"`
+	Value float64 `json:"value"`
+	Delay int64   `json:"delay"`
 
 	//使用表达式
 	Expression string `json:"expression,omitempty"`
