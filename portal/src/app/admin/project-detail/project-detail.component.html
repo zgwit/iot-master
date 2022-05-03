@@ -1,16 +1,27 @@
-
-
 <nz-tabset [nzTabBarExtraContent]="extraTemplate">
   <nz-tab nzTitle="项目详情">
-    <p>
-      名称：{{data.name}} {{data.running ? '启动' : '离线'}}
-      <nz-switch [ngModel]="data.disabled" (ngModelChange)="disabled($event)"></nz-switch>
-    </p>
+
+    <nz-collapse>
+      <nz-collapse-panel nzHeader="基础信息" nzActive>
+        <nz-list nzBordered>
+          <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
+          <nz-list-item>
+            <span>模板</span>
+            <a [routerLink]="'/admin/template/detail/'+data.template_id">{{data.template}}</a>
+          </nz-list-item>
+          <nz-list-item><span>状态</span>{{data.running ? '启动' : '离线'}}</nz-list-item>
+          <nz-list-item><span>禁用</span>
+            <nz-switch [ngModel]="data.disabled" (ngModelChange)="disabled($event)"></nz-switch>
+          </nz-list-item>
+          <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
+        </nz-list>
+      </nz-collapse-panel>
+
+      <nz-collapse-panel nzHeader="相关设备" nzActive>
 
 
-    <p *ngIf="data.element">
-      <button nz-button *ngFor="let cmd of data.commands" (click)="exec(cmd)">{{cmd.name}}</button>
-    </p>
+      </nz-collapse-panel>
+    </nz-collapse>
 
   </nz-tab>
   <nz-tab nzTitle="可视化" nzDisabled>
