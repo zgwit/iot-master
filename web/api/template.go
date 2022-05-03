@@ -36,7 +36,9 @@ func templateCreate(ctx *gin.Context) {
 	}
 
 	//使用UUId作为Id
-	template.Id = uuid.NewString()
+	if template.Id == "" {
+		template.Id = uuid.NewString()
+	}
 	//保存
 	err = database.Master.Save(&template)
 	if err != nil {

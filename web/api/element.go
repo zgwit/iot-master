@@ -36,7 +36,9 @@ func elementCreate(ctx *gin.Context) {
 	}
 
 	//使用UUId作为Id
-	element.Id = uuid.NewString()
+	if element.Id == "" {
+		element.Id = uuid.NewString()
+	}
 	//保存
 	err = database.Master.Save(&element)
 	if err != nil {
