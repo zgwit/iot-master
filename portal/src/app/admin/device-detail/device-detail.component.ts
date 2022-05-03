@@ -57,7 +57,7 @@ export class DeviceDetailComponent implements OnInit {
 
   refresh(name: any) {
     this.rs.get(`device/${this.id}/refresh/${name}`).subscribe(res => {
-      this.data.values[name] = res.data;
+      this.context[name] = res.data;
     })
   }
 

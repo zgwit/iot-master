@@ -18,8 +18,14 @@
       </nz-collapse-panel>
 
       <nz-collapse-panel nzHeader="相关设备" nzActive>
-
-
+        <div nz-row [nzGutter]="10">
+          <div nz-col *ngFor="let dev of data.devices" [nzSpan]="4" [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4"
+               [nzXl]="3" [nzXXl]="2">
+            <nz-card [routerLink]="'/admin/device/detail/'+dev.id">
+              {{dev.name}}
+            </nz-card>
+          </div>
+        </div>
       </nz-collapse-panel>
     </nz-collapse>
 

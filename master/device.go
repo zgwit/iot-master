@@ -52,6 +52,11 @@ func NewDevice(m *model.Device) (*Device, error) {
 		dev.DeviceContent = template.DeviceContent
 	}
 
+	//索引命令
+	for _, cmd := range m.Commands {
+		dev.commandIndex[cmd.Name] = cmd
+	}
+
 	err = dev.initCalculators()
 	if err != nil {
 		return nil, err
@@ -226,6 +231,9 @@ func (dev *Device) Refresh() error {
 	return nil
 }
 
+func (dev *Device) RefreshPoint(name string) (float64, error) {
+	return dev.mapper.Get(name)
+}
 //Execute 执行命令
 func (dev *Device) Execute(command string, argv []float64) error {
 	dev.createEvent("执行：" + command)

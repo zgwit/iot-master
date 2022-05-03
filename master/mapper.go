@@ -66,6 +66,10 @@ func (m *Mapper) Get(key string) (float64, error) {
 			if err != nil {
 				return 0, err
 			}
+			//倍率计算
+			if p.Precision > 0 {
+				v /= math.Pow10(p.Precision)
+			}
 			//go func
 			m.Emit("data", calc.Context{key: v})
 			return v, nil

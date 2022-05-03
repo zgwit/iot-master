@@ -27,6 +27,8 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.GET(":id/disable", deviceDisable)
 	app.GET(":id/context", deviceContext)
 	app.GET(":id/refresh", deviceRefresh)
+	app.GET(":id/refresh/:name", deviceRefreshPoint)
+	app.POST(":id/execute", deviceExecute)
 	app.GET(":id/watch", deviceWatch)
 	app.POST(":id/event/list", deviceEvent)
 	app.GET(":id/event/clear", deviceEventClear)
@@ -252,6 +254,46 @@ func deviceRefresh(ctx *gin.Context) {
 		return
 	}
 	err := device.Refresh()
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyOk(ctx, nil)
+}
+
+func deviceRefreshPoint(ctx *gin.Context) {
+	device := master.GetDevice(ctx.GetInt("id"))
+	if device == nil {
+		replyFail(ctx, "找不到设备")
+		return
+	}
+	val, err := device.RefreshPoint(ctx.Param("name"))
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyOk(ctx, val)
+}
+
+type executeBody struct {
+	Command   string    `json:"command"`
+	Arguments []float64 `json:"arguments"`
+}
+
+func deviceExecute(ctx *gin.Context) {
+	var body executeBody
+	err := ctx.ShouldBindJSON(&body)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	device := master.GetDevice(ctx.GetInt("id"))
+	if device == nil {
+		replyFail(ctx, "找不到设备")
+		return
+	}
+	err = device.Execute(body.Command, body.Arguments)
 	if err != nil {
 		replyError(ctx, err)
 		return
