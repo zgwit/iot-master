@@ -37,7 +37,7 @@ export class EditJobsComponent implements OnInit, ControlValueAccessor {
           type: [d.type, [Validators.required]],
           clock: [d.clock, [Validators.required]],
           crontab: [d.crontab, [Validators.required]],
-          invokes: [d.invokes, [Validators.required]],
+          invokes: [d.invokes || [], [Validators.required]],
           disabled: [d.disabled, [Validators.required]],
         })
       }))

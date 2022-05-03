@@ -38,7 +38,7 @@ export class EditStrategiesComponent implements OnInit, ControlValueAccessor {
           delay: [d.delay, [Validators.required]],
           reset_timeout: [d.reset_timeout, []],
           reset_total: [d.reset_total, []],
-          invokes: [d.invokes,[]],
+          invokes: [d.invokes || [],[]],
           disabled: [d.disabled, [Validators.required]],
         })
       }))
