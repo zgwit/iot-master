@@ -111,14 +111,9 @@ func linkDelete(ctx *gin.Context) {
 	replyOk(ctx, link)
 	//关闭
 	go func() {
-		link := master.GetLink(ctx.GetInt("id"))
-		if link == nil {
-			return
-		}
-		err := link.Instance.Close()
+		err := master.RemoveLink(link.Id)
 		if err != nil {
 			log.Error(err)
-			return
 		}
 	}()
 }

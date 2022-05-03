@@ -155,3 +155,21 @@ func GetLink(id int) *Link {
 	}
 	return nil
 }
+
+func RemoveTunnel(id int) error {
+	d, ok := allTunnels.LoadAndDelete(id)
+	if ok {
+		tnl := d.(*Tunnel)
+		return tnl.Instance.Close()
+	}
+	return nil //error
+}
+
+func RemoveLink(id int) error {
+	d, ok := allLinks.LoadAndDelete(id)
+	if ok {
+		lnk := d.(*Link)
+		return lnk.Instance.Close()
+	}
+	return nil //error
+}

@@ -82,14 +82,15 @@ func deviceCreate(ctx *gin.Context) {
 	replyOk(ctx, device)
 
 	//启动
-	//deviceStart(ctx)
-	go func() {
-		_, err := master.LoadDevice(device.Id)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+	if !device.Disabled {
+		go func() {
+			_, err := master.LoadDevice(device.Id)
+			if err != nil {
+				log.Error(err)
+				return
+			}
+		}()
+	}
 }
 
 func deviceDetail(ctx *gin.Context) {
@@ -111,6 +112,7 @@ func deviceDetail(ctx *gin.Context) {
 		err := database.Master.One("Id", dev.ElementId, &element)
 		if err == nil {
 			dev.Element = element.Name
+			dev.DeviceContent = element.DeviceContent
 		}
 	}
 
@@ -136,16 +138,8 @@ func deviceUpdate(ctx *gin.Context) {
 
 	//重新启动
 	go func() {
-		dev := master.GetDevice(ctx.GetInt("id"))
-		if dev == nil {
-			return
-		}
-		err = dev.Stop()
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		err = dev.Start()
+		_ = master.RemoveDevice(device.Id)
+		_, err = master.LoadDevice(device.Id)
 		if err != nil {
 			log.Error(err)
 			return
@@ -165,14 +159,9 @@ func deviceDelete(ctx *gin.Context) {
 
 	//关闭
 	go func() {
-		device := master.GetDevice(ctx.GetInt("id"))
-		if device == nil {
-			return
-		}
-		err := device.Stop()
+		err := master.RemoveDevice(device.Id)
 		if err != nil {
 			log.Error(err)
-			return
 		}
 	}()
 }
@@ -217,11 +206,7 @@ func deviceEnable(ctx *gin.Context) {
 
 	//启动
 	go func() {
-		device := master.GetDevice(ctx.GetInt("id"))
-		if device == nil {
-			return
-		}
-		err := device.Start()
+		_, err := master.LoadDevice(ctx.GetInt("id"))
 		if err != nil {
 			log.Error(err)
 			return

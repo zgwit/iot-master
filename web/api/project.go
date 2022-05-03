@@ -57,6 +57,7 @@ func projectList(ctx *gin.Context) {
 			err := database.Master.One("Id", prj.TemplateId, &template)
 			if err == nil {
 				prj.Template = template.Name
+				prj.ProjectContent = template.ProjectContent
 			} // else err
 		}
 	}
@@ -129,16 +130,8 @@ func projectUpdate(ctx *gin.Context) {
 
 	//重新启动
 	go func() {
-		prj := master.GetProject(ctx.GetInt("id"))
-		if prj == nil {
-			return
-		}
-		err = prj.Stop()
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		err = prj.Start()
+		_ = master.RemoveProject(project.Id)
+		_, err := master.LoadProject(project.Id)
 		if err != nil {
 			log.Error(err)
 			return
@@ -154,20 +147,13 @@ func projectDelete(ctx *gin.Context) {
 		return
 	}
 
-
-
 	replyOk(ctx, project)
 
 	//关闭
 	go func() {
-		project := master.GetProject(ctx.GetInt("id"))
-		if project == nil {
-			return
-		}
-		err := project.Stop()
+		err := master.RemoveProject(project.Id)
 		if err != nil {
 			log.Error(err)
-			return
 		}
 	}()
 }
@@ -212,11 +198,7 @@ func projectEnable(ctx *gin.Context) {
 
 	//启动
 	go func() {
-		project := master.GetProject(ctx.GetInt("id"))
-		if project == nil {
-			return
-		}
-		err := project.Start()
+		_, err := master.LoadProject(ctx.GetInt("id"))
 		if err != nil {
 			log.Error(err)
 			return

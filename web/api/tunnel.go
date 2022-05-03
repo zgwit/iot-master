@@ -70,13 +70,15 @@ func tunnelCreate(ctx *gin.Context) {
 
 	//启动
 	//tunnelStart(ctx)
-	go func() {
-		err := master.LoadTunnel(tunnel.Id)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+	if !tunnel.Disabled {
+		go func() {
+			err := master.LoadTunnel(tunnel.Id)
+			if err != nil {
+				log.Error(err)
+				return
+			}
+		}()
+	}
 }
 
 func tunnelDetail(ctx *gin.Context) {
@@ -113,16 +115,8 @@ func tunnelUpdate(ctx *gin.Context) {
 
 	//重新启动
 	go func() {
-		tnl := master.GetTunnel(ctx.GetInt("id"))
-		if tnl == nil {
-			return
-		}
-		err = tnl.Instance.Close()
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		err = tnl.Instance.Open()
+		_ = master.RemoveTunnel(tunnel.Id)
+		err := master.LoadTunnel(tunnel.Id)
 		if err != nil {
 			log.Error(err)
 			return
@@ -142,14 +136,9 @@ func tunnelDelete(ctx *gin.Context) {
 
 	//关闭
 	go func() {
-		tunnel := master.GetTunnel(ctx.GetInt("id"))
-		if tunnel == nil {
-			return
-		}
-		err := tunnel.Instance.Close()
+		err := master.RemoveTunnel(tunnel.Id)
 		if err != nil {
 			log.Error(err)
-			return
 		}
 	}()
 }
@@ -194,11 +183,7 @@ func tunnelEnable(ctx *gin.Context) {
 
 	//启动
 	go func() {
-		tunnel := master.GetTunnel(ctx.GetInt("id"))
-		if tunnel == nil {
-			return
-		}
-		err := tunnel.Instance.Open()
+		err := master.LoadTunnel(ctx.GetInt("id"))
 		if err != nil {
 			log.Error(err)
 			return
