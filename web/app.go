@@ -45,24 +45,29 @@ func Serve(cfg *Options) {
 			//支持前端框架的无“#”路由
 			fn := path.Join("www", c.Request.RequestURI)
 			f, err := wwwFS.Open(fn)
-			if err != nil {
-				//默认首页
-				f, err = wwwFS.Open("www/index.html")
-				if err != nil {
-					c.Next()
-					return
-				}
-				fn += ".html" //避免DetectContentType
-				http.ServeContent(c.Writer, c.Request, fn, time.Now(), f)
-			} else {
+			if err == nil {
+				defer f.Close()
 				stat, err := f.Stat()
 				if err != nil {
 					c.Next() //500错误
 					return
 				}
-				http.ServeContent(c.Writer, c.Request, fn, stat.ModTime(), f)
+				if !stat.IsDir() {
+					http.ServeContent(c.Writer, c.Request, fn, stat.ModTime(), f)
+					return
+				}
+			}
+
+			//默认首页
+			f, err = wwwFS.Open("www/index.html")
+			if err != nil {
+				c.Next()
+				return
 			}
 			defer f.Close()
+
+			fn += ".html" //避免DetectContentType
+			http.ServeContent(c.Writer, c.Request, fn, time.Now(), f)
 		}
 	})
 
