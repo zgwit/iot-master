@@ -31,9 +31,9 @@ export class ProjectEditComponent implements OnInit {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
     Object.assign(this.data, this.route.snapshot.queryParams);
-    if (this.data.device_id) {
-      this.data.devices.push({device_id: this.data.device_id, station: 1});
-      delete this.data.device_id;
+    if (this.data.id) {
+      this.data.devices.push({id: this.data.id, station: 1});
+      delete this.data.id;
     }
     this.buildForm();
   }

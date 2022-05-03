@@ -135,11 +135,12 @@ func (prj *Project) initDevices() error {
 			//如果找不到设备，该怎么处理
 			return fmt.Errorf("device %d not found", d.Id)
 		}
+
 		prj.deviceNameIndex[d.Name] = dev
 		prj.deviceIdIndex[d.Id] = dev
 		prj.Context[d.Name] = dev.Context //两级上下文
 
-		prj.Devices = append(prj.Devices, &ProjectDevice{ProjectDevice: *d})
+		prj.Devices = append(prj.Devices, &ProjectDevice{ProjectDevice: *d, device: dev})
 	}
 	return nil
 }

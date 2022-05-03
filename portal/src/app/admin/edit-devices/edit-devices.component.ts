@@ -34,7 +34,7 @@ export class EditDevicesComponent implements OnInit, ControlValueAccessor {
     this.formGroup = this.fb.group({
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
-          device_id: [d.device_id, [Validators.required]],
+          id: [d.id, [Validators.required]],
           name: [d.name, [Validators.required]],
         })
       }))
@@ -43,7 +43,7 @@ export class EditDevicesComponent implements OnInit, ControlValueAccessor {
 
   add() {
     this.formArray.push(this.fb.group({
-      device_id: ['', [Validators.required]],
+      id: ['', [Validators.required]],
       name: ['', [Validators.required]],
     }))
     //复制controls，让表格可以刷新
@@ -56,7 +56,7 @@ export class EditDevicesComponent implements OnInit, ControlValueAccessor {
       if (devices.length) {
         devices.forEach((d: string)=>{
           this.formArray.push(this.fb.group({
-            device_id: [d, [Validators.required]],
+            id: [d, [Validators.required]],
             name: ['', [Validators.required]],
           }))
         });

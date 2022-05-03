@@ -17,7 +17,7 @@
   <tbody formGroupName="items" cdkDropList (cdkDropListDropped)="drop($event)" >
   <tr *ngFor="let data of formArray.controls; let i=index" [formGroupName]="i" cdkDrag>
     <td>
-      <app-choose-device formControlName="device_id" (change)="change()"></app-choose-device>
+      <app-choose-device formControlName="id" (change)="change()" (ngModelChange)="change()"></app-choose-device>
     </td>
     <td>
       <input nz-input formControlName="name" nzSize="small" (change)="change()" required/>
