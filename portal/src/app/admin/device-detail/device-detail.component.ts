@@ -10,7 +10,7 @@ import {RequestService} from "../../request.service";
 export class DeviceDetailComponent implements OnInit {
   id: any = '';
   data: any = {};
-  element: any = {};
+  context: any = {};
   loading = false;
 
   constructor(private router: ActivatedRoute, private rs: RequestService) {
@@ -26,6 +26,9 @@ export class DeviceDetailComponent implements OnInit {
     this.rs.get(`device/${this.id}`).subscribe(res => {
       this.data = res.data;
       this.loading = false;
+    });
+    this.rs.get(`device/${this.id}/context`).subscribe(res => {
+      this.context = res.data;
     });
   }
 
