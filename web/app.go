@@ -37,7 +37,8 @@ func Serve(cfg *Options) {
 	api.RegisterRoutes(app.Group("/api"))
 
 	//前端静态文件
-	//app.StaticFS("/", http.FS(wwwFiles))
+	//app.StaticFS("/www", http.FS(wwwFiles))
+
 	wwwFS := http.FS(wwwFiles)
 	app.Use(func(c *gin.Context) {
 		if c.Request.Method == http.MethodGet {
@@ -51,9 +52,17 @@ func Serve(cfg *Options) {
 					c.Next()
 					return
 				}
+				fn += ".html" //避免DetectContentType
+				http.ServeContent(c.Writer, c.Request, fn, time.Now(), f)
+			} else {
+				stat, err := f.Stat()
+				if err != nil {
+					c.Next() //500错误
+					return
+				}
+				http.ServeContent(c.Writer, c.Request, fn, stat.ModTime(), f)
 			}
 			defer f.Close()
-			http.ServeContent(c.Writer, c.Request, fn, time.Now(), f)
 		}
 	})
 
