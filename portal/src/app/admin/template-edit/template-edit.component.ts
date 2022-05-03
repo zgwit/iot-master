@@ -17,7 +17,7 @@ export class TemplateEditComponent implements OnInit {
 
   data: any = {
     "name": "新建模板",
-    "commands": [],
+
     "context": {},
     "elements": [],
     "alarms": [],
@@ -37,7 +37,6 @@ export class TemplateEditComponent implements OnInit {
       name: [this.data.name, [Validators.required]],
 
       context: [this.data.context || {}],
-      commands: [this.data.commands || []],
       elements: [this.data.elements || []],
       alarms: [this.data.alarms || []],
       jobs: [this.data.jobs || []],

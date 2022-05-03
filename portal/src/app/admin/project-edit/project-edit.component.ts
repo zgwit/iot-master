@@ -19,7 +19,6 @@ export class ProjectEditComponent implements OnInit {
     "name": "新建项目",
     "disabled": false,
     "template_id":"",
-    "commands": [],
     "context": {},
     "devices": [],
     "alarms": [],
@@ -43,9 +42,8 @@ export class ProjectEditComponent implements OnInit {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
       template_id: [this.data.template_id, []],
-      disabled: [this.data.disabled, [Validators.required]],
+      disabled: [this.data.disabled, []],
 
-      commands: [this.data.commands || []],
       context: [this.data.context || {}],
       devices: [this.data.devices || []],
       alarms: [this.data.alarms || []],
