@@ -17,7 +17,7 @@
       <th nzColumnKey="tunnel_id" [nzSortFn]="true">通道</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="sn" [nzSortFn]="true">SN</th>
-      <th nzColumnKey="remote">远程地址</th>
+      <th nzColumnKey="remote">地址</th>
       <th nzColumnKey="created" [nzSortFn]="true">创建时间</th>
       <th nzColumnKey="last" [nzSortFn]="true">最近上线</th>
       <th>状态</th>
@@ -32,7 +32,7 @@
       <td>{{ data.sn }}</td>
       <td>{{ data.remote }}</td>
       <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
-      <td>{{data.last | fromNow }}</td>
+      <td>{{data.last | fromNow}}</td>
       <td>{{data.running ? '在线' : '离线'}}</td>
       <td>
         <a [routerLink]="'/admin/link/detail/'+data.id">详情</a>

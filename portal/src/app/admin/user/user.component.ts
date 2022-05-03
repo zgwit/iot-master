@@ -17,10 +17,6 @@ export class UserComponent implements OnInit {
   total = 1;
   pageSize = 20;
   pageIndex = 1;
-  filterGender = [
-    {text: 'TCP服务器', value: 'tcp-server'},
-    {text: 'TCP客户端', value: 'tcp-client'}
-  ];
 
   params: any = {filter: {}};
 
@@ -72,23 +68,15 @@ export class UserComponent implements OnInit {
     });
   }
 
-  onEnableChange(data: any, disabled: boolean) {
-    if (!disabled) {
-      this.rs.get(`user/${data.id}/enable`).subscribe(res => {
-      });
-      return;
-    }
-    this.ms.confirm({
-      nzTitle: "提示",
-      nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
-      nzOnOk:()=>{
-        this.rs.get(`user/${data.id}/disable`).subscribe(res => {
-        });
-      },
-      nzOnCancel:()=>{
-        data.disabled = false;
-      }
-    })
+  enable(data: any) {
+    this.rs.get(`user/${data.id}/enable`).subscribe(res => {
+      data.disabled = false
+    });
   }
 
+  disable(data: any) {
+    this.rs.get(`user/${data.id}/disable`).subscribe(res => {
+      data.disabled = true
+    });
+  }
 }

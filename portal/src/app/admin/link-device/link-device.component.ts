@@ -70,23 +70,15 @@ export class LinkDeviceComponent implements OnInit {
     });
   }
 
-  onEnableChange(data: any, disabled: boolean) {
-    if (!disabled) {
-      this.rs.get(`device/${data.id}/enable`).subscribe(res => {
-      });
-      return;
-    }
-    this.ms.confirm({
-      nzTitle: "提示",
-      nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
-      nzOnOk:()=>{
-        this.rs.get(`device/${data.id}/disable`, {disabled}).subscribe(res => {
-        });
-      },
-      nzOnCancel:()=>{
-        data.disabled = false;
-      }
-    })
+  enable(data: any) {
+    this.rs.get(`device/${data.id}/enable`).subscribe(res => {
+      data.disabled = false
+    });
   }
 
+  disable(data: any) {
+    this.rs.get(`device/${data.id}/disable`).subscribe(res => {
+      data.disabled = true
+    });
+  }
 }

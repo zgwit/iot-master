@@ -16,10 +16,9 @@
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="type" [nzFilters]="filterType" [nzFilterFn]="true">类型</th>
-      <th nzColumnKey="address" [nzSortFn]="true">地址</th>
+      <th nzColumnKey="addr" [nzSortFn]="true">地址</th>
       <th nzColumnKey="created" [nzSortFn]="true">创建时间</th>
       <th>状态</th>
-      <th nzColumnKey="disabled" [nzSortFn]="true">禁用</th>
       <th nzWidth="100">操作</th>
     </tr>
     </thead>
@@ -30,12 +29,7 @@
       <td>{{ data.type }}</td>
       <td>{{ data.addr }}</td>
       <td [title]="data.created|dateString">{{data.created | fromNow }}</td>
-      <td>
-        <span *ngIf="data.running">
-          {{data.closed?'关闭':'启动'}} {{data.error}}
-        </span>
-        <span *ngIf="!data.running">离线</span>
-      </td>
+      <td>{{data.running ? '在线' : '离线'}}</td>
       <td>
         <a [routerLink]="'/admin/tunnel/detail/'+data.id">详情</a>
         <nz-divider nzType="vertical"></nz-divider>
