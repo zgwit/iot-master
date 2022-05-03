@@ -31,6 +31,7 @@ export class LinkMonitorComponent implements OnInit, OnDestroy {
       write: '发送',
       error: '错误',
       close: '下线',
+      data: '下线',
     }
 
     //此处Angular框架的proxy.conf.json开发模式下不能正常使用，需要替换成原始地址
@@ -49,12 +50,12 @@ export class LinkMonitorComponent implements OnInit, OnDestroy {
       const date = new Date();
       const time = document.createElement("span");
       time.append(date.toTimeString().substr(0, 8));
-      time.style.backgroundColor = '#F0F0F0';
+      //time.style.backgroundColor = '#F0F0F0';
       time.style.margin = '5px 10px';
 
       const type = document.createElement("span");
       // @ts-ignore
-      type.append(types[msg.event])
+      type.append(msg.event)
       type.style.margin = '5px 10px';
       div.append(time, type);
 
