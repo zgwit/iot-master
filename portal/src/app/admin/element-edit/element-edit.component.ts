@@ -24,7 +24,7 @@ export class ElementEditComponent implements OnInit {
     "commands": [],
     "pollers": [],
     "calculators": [],
-    "validators": [],
+    "alarms": [],
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
@@ -45,7 +45,7 @@ export class ElementEditComponent implements OnInit {
       commands: [this.data.commands || []],
       pollers: [this.data.collectors || []],
       calculators: [this.data.collectors || []],
-      validators: [this.data.validators || []],
+      alarms: [this.data.alarms || []],
     });
   }
 
