@@ -7,14 +7,16 @@
           <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
           <nz-list-item>
             <span>元件</span>
-            <a [routerLink]="'/admin/element/detail/'+data.element.id">{{data.element}}</a>
+            <a [routerLink]="'/admin/element/detail/'+data.element_id">{{data.element}}</a>
           </nz-list-item>
           <nz-list-item>
             <span>连接</span>
             <a [routerLink]="'/admin/link/detail/'+data.link_id">{{data.link_id}}</a>
           </nz-list-item>
           <nz-list-item><span>状态</span>{{data.running ? '启动' : '离线'}}</nz-list-item>
-          <nz-list-item><span>禁用</span><nz-switch [ngModel]="data.disabled" (ngModelChange)="disabled($event)"></nz-switch></nz-list-item>
+          <nz-list-item><span>禁用</span>
+            <nz-switch [ngModel]="data.disabled" (ngModelChange)="disabled($event)"></nz-switch>
+          </nz-list-item>
           <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
         </nz-list>
       </nz-collapse-panel>
@@ -22,27 +24,34 @@
       <nz-collapse-panel nzHeader="数据" nzActive>
 
         <div class="values" nz-row [nzGutter]="10">
-          <div class="item" nz-col [nzSpan]="4" [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4" [nzXl]="3" [nzXXl]="2" *ngFor="let v of data.points">
+          <div class="item" nz-col [nzSpan]="4" [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4" [nzXl]="3" [nzXXl]="2"
+               *ngFor="let v of data.points">
             <nz-card>
-              <div class="label">{{v.label}} <span *ngIf="v.unit">({{v.unit}})</span> </div>
-              <div class="value">{{context[v.name] | number: '1.0-2'}}</div>
-              <div class="refresh" title="刷新" (click)="refresh(v.name)"><i nz-icon nzType="sync" nzTheme="outline"></i></div>
+              <div class="label">{{v.label}} <span *ngIf="v.unit">({{v.unit}})</span></div>
+              <div class="value">{{context[v.name] | number: '1.0-' + v.precision}}</div>
+              <div class="refresh" title="刷新" (click)="refresh(v.name)"><i nz-icon nzType="sync" nzTheme="outline"></i>
+              </div>
               <div class="history" title="历史" [routerLink]="'/admin/device/value/'+data.id+'/'+v.name">
                 <i nz-icon nzType="line-chart" nzTheme="outline"></i></div>
             </nz-card>
           </div>
         </div>
 
+        <button nz-button nzType="primary" (click)="refreshAll()">刷新全部数据</button>
+
       </nz-collapse-panel>
 
+      <nz-collapse-panel nzHeader="控制命令" nzActive>
+        <div nz-row>
+          <div nz-col *ngFor="let cmd of data.commands" [nzSpan]="4" [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4"
+               [nzXl]="3" [nzXXl]="2">
+            <button nz-button (click)="exec(cmd)">{{cmd.name}}</button>
+          </div>
+        </div>
+
+      </nz-collapse-panel>
 
     </nz-collapse>
-
-    <button nz-button (click)="refreshAll()">刷新全部数据</button>
-
-    <p>
-      <button nz-button *ngFor="let cmd of data.commands" (click)="exec(cmd)">{{cmd.name}}</button>
-    </p>
 
   </nz-tab>
   <nz-tab nzTitle="可视化" nzDisabled>

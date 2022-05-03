@@ -27,6 +27,10 @@ export class DeviceDetailComponent implements OnInit {
       this.data = res.data;
       this.loading = false;
     });
+    this.loadContext()
+  }
+
+  loadContext(){
     this.rs.get(`device/${this.id}/context`).subscribe(res => {
       this.context = res.data;
     });
@@ -59,7 +63,8 @@ export class DeviceDetailComponent implements OnInit {
 
   refreshAll() {
     this.rs.get(`device/${this.id}/refresh`).subscribe(res => {
-      Object.assign(this.data.values, res.data);
+      //Object.assign(this.data.values, res.data);
+      this.loadContext()
     })
   }
 }
