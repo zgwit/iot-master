@@ -58,7 +58,7 @@ func (s *Serial) Open() error {
 	go s.link.receive()
 
 	//Store link
-	lnk := model.Link{TunnelId: s.tunnel.Id, Last: time.Now()}
+	lnk := model.Link{TunnelId: s.tunnel.Id, Last: time.Now(), Remote: s.tunnel.Addr}
 	err = database.Master.One("TunnelId", s.tunnel.Id, &lnk)
 	if err == storm.ErrNotFound {
 		//保存一条新记录
@@ -69,6 +69,7 @@ func (s *Serial) Open() error {
 	} else {
 		//上线
 		_= database.Master.UpdateField(&lnk, "Last", time.Now())
+		_= database.Master.UpdateField(&lnk, "Remote", s.tunnel.Addr)
 	}
 	s.link.id = lnk.Id
 
