@@ -81,7 +81,7 @@ func LoadDevices() error {
 //LoadDevice 加载设备
 func LoadDevice(id int) (*Device, error) {
 	device := &model.Device{}
-	err := database.Master.One("id", id, device)
+	err := database.Master.One("Id", id, device)
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +170,7 @@ func LoadProjects() error {
 //LoadProject 加载项目
 func LoadProject(id int) (*Project, error) {
 	project := &model.Project{}
-	err := database.Master.One("id", id, project)
+	err := database.Master.One("Id", id, project)
 	if err != nil {
 		return nil, err
 	}
