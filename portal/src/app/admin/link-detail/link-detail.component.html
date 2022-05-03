@@ -2,20 +2,23 @@
 
 <nz-tabset [nzTabBarExtraContent]="extraTemplate">
   <nz-tab nzTitle="连接详情">
-    <p>
-      名称：{{data.name}}
-      {{data.running ? '在线' : '离线'}}
-<!--      <nz-switch [ngModel]="data.disabled" (ngModelChange)="disabled($event)"></nz-switch>-->
-    </p>
 
-    <p>SN：{{data.sn}}</p>
-
-    <p>上线时间：{{data.last | fromNow}}</p>
-
-    <p *ngIf="data.tunnel">
-      通道：<a [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel_id}}</a>
-    </p>
-
+    <nz-list nzBordered>
+      <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
+      <nz-list-item><span>SN</span>{{data.sn}}</nz-list-item>
+      <nz-list-item>
+        <span>通道</span>
+        <a [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel}}</a>
+      </nz-list-item>
+      <nz-list-item><span>状态</span>{{data.running ? '启动' : '停止'}}</nz-list-item>
+      <nz-list-item>
+        <span>禁用</span>
+        <nz-switch [ngModel]="data.disabled" (ngModelChange)="onEnableChange($event)"></nz-switch>
+      </nz-list-item>
+      <nz-list-item><span>上线时间</span>{{data.last|dateString}}</nz-list-item>
+      <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
+    </nz-list>
+	
   </nz-tab>
   <nz-tab nzTitle="相关设备">
     <ng-template nz-tab>
