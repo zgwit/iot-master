@@ -10,6 +10,8 @@ type Template struct {
 	Name    string `json:"name"`
 	Version string `json:"version"` //SEMVER
 
+	Elements []*TemplateElement `json:"elements"`
+
 	ProjectContent `storm:"inline"`
 
 	Created time.Time `json:"created" storm:"created"`
@@ -18,10 +20,10 @@ type Template struct {
 type ProjectContent struct {
 	Icon        string        `json:"icon"`
 	Aggregators []*Aggregator `json:"aggregators"`
-	Validators  []*Alarm      `json:"validators"`
-	Commands    []*Command    `json:"commands"`
 	Jobs        []*Job        `json:"jobs"`
+	Alarms      []*Alarm      `json:"alarms"`
 	Strategies  []*Strategy   `json:"strategies"`
+	//Commands    []*Command    `json:"commands"`
 }
 
 //Project 项目
@@ -50,6 +52,11 @@ type ProjectEx struct {
 //ProjectDevice 项目的设备
 type ProjectDevice struct {
 	Id   int    `json:"id"`
+	Name string `json:"name"` //编程名
+}
+
+type TemplateElement struct {
+	Id   string `json:"id"`
 	Name string `json:"name"` //编程名
 }
 

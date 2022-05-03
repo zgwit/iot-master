@@ -191,10 +191,10 @@ func (prj *Project) initJobs() error {
 }
 
 func (prj *Project) initValidators() error {
-	if prj.Validators == nil {
+	if prj.Alarms == nil {
 		return nil
 	}
-	for _, v := range prj.Validators {
+	for _, v := range prj.Alarms {
 		validator := &Alarm{Alarm: *v}
 		validator.On("alarm", func(alarm *model.AlarmContent) {
 			pa := &model.ProjectAlarm{ProjectId: prj.Id, AlarmContent: *alarm}

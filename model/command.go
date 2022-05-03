@@ -11,8 +11,8 @@ type Command struct {
 //Directive 指令
 type Directive struct {
 	Address string  `json:"address"`
-	Value   float64 `json:"value,omitempty"`
-	Delay   int64   `json:"delay,omitempty"`
+	Value   float64 `json:"value"`
+	Delay   int64   `json:"delay"`
 
 	//使用表达式
 	Expression string `json:"expression,omitempty"`
@@ -20,7 +20,7 @@ type Directive struct {
 
 //Invoke 执行
 type Invoke struct {
-	Targets   []string `json:"targets,omitempty"`
+	Targets   []string `json:"targets"`
 	Command   string   `json:"command"`
 	Arguments []string `json:"arguments"`
 }
