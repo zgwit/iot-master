@@ -15,6 +15,9 @@ func newNetLink(conn net.Conn) *NetLink {
 
 //Write 写
 func (l *NetLink) Write(data []byte) error {
+	if l.pipe != nil {
+		return nil //透传模式下，直接抛弃
+	}
 	_, err := l.link.Write(data)
 	if err != nil {
 		l.onClose()

@@ -66,13 +66,14 @@ func (l *baseLink) Pipe(pipe io.ReadWriteCloser) {
 	if l.pipe != nil {
 		_ = l.pipe.Close()
 	}
+
+	l.pipe = pipe
 	//传入空，则关闭
 	if pipe == nil {
 		return
 	}
 
 	go func() {
-		l.pipe = pipe
 		buf := make([]byte, 1024)
 		for {
 			n ,err := pipe.Read(buf)
