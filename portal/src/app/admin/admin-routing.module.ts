@@ -46,8 +46,8 @@ const routes: Routes = [
     data: {breadcrumb: "后台"},
     children: [
       //{path: '', component: WelcomeComponent, data: {breadcrumb: "欢迎"}},
-      //{path: 'dash', component: DashComponent},
-      {path: '', component: HomeComponent, data: {breadcrumb: "首页"}},
+      {path: '', component: DashComponent, data: {breadcrumb: "控制台"}},
+      {path: 'dash', component: DashComponent, data: {breadcrumb: "控制台"}},
       {path: 'home', component: HomeComponent, data: {breadcrumb: "首页"}},
 
       {

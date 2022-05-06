@@ -1,0 +1,10 @@
+<div *ngFor="let disk of info; let last = last;">
+  <div>
+    {{disk.path}}
+  </div>
+  <div>
+    {{disk.used | filesize}} / {{disk.total | filesize}}
+  </div>
+  <nz-progress [nzPercent]="disk.usedPercent | number: '1.0-2'"></nz-progress>
+  <nz-divider *ngIf="!last"></nz-divider>
+</div>

@@ -3,7 +3,7 @@ export let SideMenu = [
   {
     title: '首页',
     icon: 'home',
-    router: 'home',
+    router: 'dash',
   },
   {
     title: '连接',
