@@ -111,6 +111,9 @@ import {EditSerialComponent} from "./edit-serial/edit-serial.component";
 import {EditRetryComponent} from "./edit-retry/edit-retry.component";
 import {NzListModule} from "ng-zorro-antd/list";
 import {LinkMonitorComponent} from "./link-monitor/link-monitor.component";
+import {PipeComponent} from "./pipe/pipe.component";
+import {PipeDetailComponent} from "./pipe-detail/pipe-detail.component";
+import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
 
 @NgModule({
   declarations: [
@@ -125,6 +128,7 @@ import {LinkMonitorComponent} from "./link-monitor/link-monitor.component";
     TunnelEditDevicesComponent, TunnelLinkComponent,
     LinkComponent, LinkDetailComponent, LinkEditComponent, LinkDeviceComponent,LinkMonitorComponent,
     LinkBrowserComponent,
+    PipeComponent, PipeDetailComponent, PipeEditComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
     DeviceBrowserComponent,
     ElementComponent, ElementDetailComponent, ElementEditComponent,

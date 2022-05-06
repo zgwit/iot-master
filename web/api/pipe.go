@@ -31,18 +31,29 @@ func pipeList(ctx *gin.Context) {
 
 	//补充信息
 	pipes := records.(*[]*model.Pipe)
-	ts := make([]*model.PipeEx, 0) //len(pipes)
+	ps := make([]*model.PipeEx, 0) //len(pipes)
 
 	for _, d := range *pipes {
-		l := &model.PipeEx{Pipe: *d}
-		ts = append(ts, l)
-		d := master.GetPipe(l.Id)
-		if d != nil {
-			l.Running = d.Running()
+		pe := &model.PipeEx{Pipe: *d}
+		ps = append(ps, pe)
+		p := master.GetPipe(pe.Id)
+		if p != nil {
+			pe.Running = p.Running()
+		}
+		var link model.Link
+		err = database.Master.One("Id", d.LinkId, &link)
+		if err == nil {
+			if link.Name != "" {
+				pe.Link = link.Name
+			} else if link.SN != "" {
+				pe.Link = link.SN
+			} else if link.Remote != "" {
+				pe.Link = link.Remote
+			}
 		}
 	}
 
-	replyList(ctx, ts, cnt)
+	replyList(ctx, ps, cnt)
 }
 
 func pipeCreate(ctx *gin.Context) {
@@ -81,12 +92,23 @@ func pipeDetail(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	tnl := &model.PipeEx{Pipe: pipe}
-	d := master.GetPipe(tnl.Id)
+	pe := &model.PipeEx{Pipe: pipe}
+	d := master.GetPipe(pe.Id)
 	if d != nil {
-		tnl.Running = d.Running()
+		pe.Running = d.Running()
 	}
-	replyOk(ctx, tnl)
+	var link model.Link
+	err = database.Master.One("Id", pipe.LinkId, &link)
+	if err == nil {
+		if link.Name != "" {
+			pe.Link = link.Name
+		} else if link.SN != "" {
+			pe.Link = link.SN
+		} else if link.Remote != "" {
+			pe.Link = link.Remote
+		}
+	}
+	replyOk(ctx, pe)
 }
 
 func pipeUpdate(ctx *gin.Context) {

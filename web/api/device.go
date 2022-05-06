@@ -59,6 +59,17 @@ func deviceList(ctx *gin.Context) {
 				dev.DeviceContent = element.DeviceContent
 			}
 		}
+		var link model.Link
+		err := database.Master.One("Id", dev.LinkId, &link)
+		if err == nil {
+			if link.Name != "" {
+				dev.Link = link.Name
+			} else if link.SN != "" {
+				dev.Link = link.SN
+			} else if link.Remote != "" {
+				dev.Link = link.Remote
+			}
+		}
 	}
 
 	replyList(ctx, devs, cnt)
@@ -112,6 +123,17 @@ func deviceDetail(ctx *gin.Context) {
 		if err == nil {
 			dev.Element = element.Name
 			dev.DeviceContent = element.DeviceContent
+		}
+		var link model.Link
+		err = database.Master.One("Id", dev.LinkId, &link)
+		if err == nil {
+			if link.Name != "" {
+				dev.Link = link.Name
+			} else if link.SN != "" {
+				dev.Link = link.SN
+			} else if link.Remote != "" {
+				dev.Link = link.Remote
+			}
 		}
 	}
 

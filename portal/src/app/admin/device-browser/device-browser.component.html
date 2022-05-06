@@ -33,7 +33,7 @@
       <td>{{ data.id }}</td>
       <td>{{data.disabled ? '❌' : ''}}{{ data.name }}</td>
       <td>{{data.element}}</td>
-      <td>{{data.link_id}}</td>
+      <td>{{data.link || data.link_id}}</td>
       <td>{{ data.station }}</td>
       <td>{{data.running ? '启动' : '关闭'}}</td>
       <td [title]="data.created|dateString">{{data.created | fromNow}}</td>

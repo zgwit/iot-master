@@ -17,6 +17,10 @@ export let SideMenu = [
         title: '连接',
         router: 'link'
       },
+      {
+        title: '透传',
+        router: 'pipe'
+      },
     ]
   },
   {

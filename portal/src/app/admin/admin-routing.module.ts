@@ -31,6 +31,9 @@ import {LinkEditComponent} from "./link-edit/link-edit.component";
 import {TemplateDetailComponent} from "./template-detail/template-detail.component";
 import {ElementDetailComponent} from "./element-detail/element-detail.component";
 import {LinkMonitorComponent} from "./link-monitor/link-monitor.component";
+import {PipeComponent} from "./pipe/pipe.component";
+import {PipeDetailComponent} from "./pipe-detail/pipe-detail.component";
+import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
 
 const routes: Routes = [
   {
@@ -60,6 +63,15 @@ const routes: Routes = [
           {path: 'edit/:id', component: LinkEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: LinkEditComponent, data: {breadcrumb: "创建"}},
           {path: 'monitor/:id', component: LinkMonitorComponent, data: {breadcrumb: "监控"}},
+        ]
+      },
+
+      {
+        path: 'pipe', component: ContainerComponent, data: {breadcrumb: "透传"}, children: [
+          {path: '', component: PipeComponent, data: {breadcrumb: "透传"}},
+          {path: 'detail/:id', component: PipeDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: PipeEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: PipeEditComponent, data: {breadcrumb: "创建"}},
         ]
       },
 

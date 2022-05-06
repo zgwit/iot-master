@@ -1,0 +1,40 @@
+<app-editor [(ngModel)]="data" (ngModelChange)="basicForm.patchValue($event)" [submitting]="submitting" (submit)="submit()">
+
+  <nz-collapse [formGroup]="basicForm" (change)="change()">
+    <nz-collapse-panel nzHeader="基本信息" nzActive>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">名称</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="name" required/>
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">连接</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <app-choose-link formControlName="link_id"></app-choose-link>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">地址</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="addr" required/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">禁用</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-switch formControlName="disabled"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+
+    </nz-collapse-panel>
+
+
+  </nz-collapse>
+
+
+</app-editor>
