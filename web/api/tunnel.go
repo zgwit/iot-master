@@ -6,15 +6,12 @@ import (
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3/q"
 	"golang.org/x/net/websocket"
 )
 
 func tunnelRoutes(app *gin.RouterGroup) {
 	app.POST("list", tunnelList)
 	app.POST("create", tunnelCreate)
-
-	app.GET("event/clear", tunnelEventClearAll)
 
 	app.Use(parseParamId)
 	app.GET(":id", tunnelDetail)
@@ -25,8 +22,6 @@ func tunnelRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", tunnelEnable)
 	app.GET(":id/disable", tunnelDisable)
 	app.GET(":id/watch", tunnelWatch)
-	app.POST(":id/event/list", tunnelEvent)
-	app.GET(":id/event/clear", tunnelEventClear)
 }
 
 func tunnelList(ctx *gin.Context) {
@@ -222,33 +217,4 @@ func tunnelWatch(ctx *gin.Context) {
 	websocket.Handler(func(ws *websocket.Conn) {
 		watchAllEvents(ws, tunnel.Instance)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
-}
-
-func tunnelEvent(ctx *gin.Context) {
-	events, cnt, err := normalSearchById(ctx, database.History, "TunnelId", ctx.GetInt("id"), &model.TunnelEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyList(ctx, events, cnt)
-}
-
-func tunnelEventClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("TunnelId", ctx.GetInt("id"))).Delete(&model.TunnelEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
-}
-
-func tunnelEventClearAll(ctx *gin.Context) {
-	err := database.History.Drop(&model.TunnelEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
 }

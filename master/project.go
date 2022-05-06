@@ -286,7 +286,7 @@ func (prj *Project) initHandler() error {
 }
 
 func (prj *Project) createEvent(event string) {
-	_ = database.History.Save(model.ProjectEvent{ProjectId: prj.Id, Event: event})
+	_ = database.History.Save(model.Event{Target:"project", TargetId: prj.Id, Event: event})
 }
 
 //Start 项目启动

@@ -14,7 +14,6 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.POST("list", deviceList)
 	app.POST("create", deviceCreate)
 
-	app.GET("event/clear", deviceEventClearAll)
 	app.GET("alarm/clear", deviceAlarmClearAll)
 
 	app.Use(parseParamId)
@@ -30,8 +29,6 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.GET(":id/refresh/:name", deviceRefreshPoint)
 	app.POST(":id/execute", deviceExecute)
 	app.GET(":id/watch", deviceWatch)
-	app.POST(":id/event/list", deviceEvent)
-	app.GET(":id/event/clear", deviceEventClear)
 	app.POST(":id/alarm/list", deviceAlarm)
 	app.GET(":id/alarm/clear", deviceAlarmClear)
 }
@@ -310,35 +307,6 @@ func deviceWatch(ctx *gin.Context) {
 	websocket.Handler(func(ws *websocket.Conn) {
 		watchAllEvents(ws, device)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
-}
-
-func deviceEvent(ctx *gin.Context) {
-	events, cnt, err := normalSearchById(ctx, database.History, "DeviceId", ctx.GetInt("id"), &model.DeviceEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyList(ctx, events, cnt)
-}
-
-func deviceEventClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("DeviceId", ctx.GetInt("id"))).Delete(&model.DeviceEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
-}
-
-func deviceEventClearAll(ctx *gin.Context) {
-	err := database.History.Drop(&model.DeviceEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
 }
 
 func deviceAlarm(ctx *gin.Context) {

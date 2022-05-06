@@ -18,6 +18,8 @@ type Link interface {
 	Running() bool
 
 	First() bool
+
+	Pipe(pipe io.ReadWriteCloser)
 }
 
 type baseLink struct {

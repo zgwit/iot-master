@@ -20,11 +20,3 @@ type LinkEx struct {
 	Running bool   `json:"running"`
 	Tunnel  string `json:"tunnel"`
 }
-
-//LinkEvent 链接历史
-type LinkEvent struct {
-	Id      int       `json:"id" storm:"id,increment"`
-	LinkId  int       `json:"link_id" storm:"index"`
-	Event   string    `json:"event"`
-	Created time.Time `json:"created" storm:"created"`
-}

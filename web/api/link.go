@@ -6,15 +6,11 @@ import (
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3/q"
 	"golang.org/x/net/websocket"
 )
 
 func linkRoutes(app *gin.RouterGroup) {
 	app.POST("list", linkList)
-
-	app.GET("event/clear", linkEventClearAll)
-
 	app.Use(parseParamId)
 	app.GET(":id", linkDetail)
 	app.POST(":id", linkUpdate)
@@ -23,8 +19,6 @@ func linkRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", linkEnable)
 	app.GET(":id/disable", linkDisable)
 	app.GET(":id/watch", linkWatch)
-	app.POST(":id/event/list", linkEvent)
-	app.GET(":id/event/clear", linkEventClear)
 }
 
 func linkList(ctx *gin.Context) {
@@ -173,33 +167,4 @@ func linkWatch(ctx *gin.Context) {
 	websocket.Handler(func(ws *websocket.Conn) {
 		watchAllEvents(ws, link.Instance)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
-}
-
-func linkEvent(ctx *gin.Context) {
-	events, cnt, err := normalSearchById(ctx, database.History, "LinkId", ctx.GetInt("id"), &model.LinkEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyList(ctx, events, cnt)
-}
-
-func linkEventClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("LinkId", ctx.GetInt("id"))).Delete(&model.LinkEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
-}
-
-func linkEventClearAll(ctx *gin.Context) {
-	err := database.History.Drop(&model.LinkEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
 }

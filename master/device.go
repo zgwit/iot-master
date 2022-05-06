@@ -168,7 +168,7 @@ func (dev *Device) initCalculators() error {
 }
 
 func (dev *Device) createEvent(event string) {
-	_ = database.History.Save(model.DeviceEvent{DeviceId: dev.Id, Event: event})
+	_ = database.History.Save(model.Event{Target:"device", TargetId: dev.Id, Event: event})
 }
 
 //Start 设备启动

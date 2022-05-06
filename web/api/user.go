@@ -4,14 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3/q"
 )
 
 func userRoutes(app *gin.RouterGroup) {
 	app.POST("list", userList)
 	app.POST("create", userCreate)
-
-	app.GET("event/clear", userEventClearAll)
 
 	app.POST("history", visitList)
 	app.POST("visit", visitCreate)
@@ -24,9 +21,6 @@ func userRoutes(app *gin.RouterGroup) {
 	app.GET(":id/password", userPassword)
 	app.GET(":id/enable", userEnable)
 	app.GET(":id/disable", userDisable)
-
-	app.POST(":id/event/list", userEvent)
-	app.GET(":id/event/clear", userEventClear)
 
 }
 
@@ -119,34 +113,5 @@ func userDisable(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	replyOk(ctx, nil)
-}
-
-func userEvent(ctx *gin.Context) {
-	events, cnt, err := normalSearchById(ctx, database.History, "UserId", ctx.GetInt("id"), &model.UserEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyList(ctx, events, cnt)
-}
-
-func userEventClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("UserId", ctx.GetInt("id"))).Delete(&model.UserEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
-}
-
-func userEventClearAll(ctx *gin.Context) {
-	err := database.History.Drop(&model.UserEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
 	replyOk(ctx, nil)
 }

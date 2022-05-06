@@ -50,16 +50,10 @@ type Device struct {
 type DeviceEx struct {
 	Device
 	Running bool   `json:"running"`
+	Link    string `json:"link"`
 	Element string `json:"element"`
 }
 
-//DeviceEvent 设备事件
-type DeviceEvent struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	DeviceId int       `json:"device_id" storm:"index"`
-	Event    string    `json:"event"`
-	Created  time.Time `json:"created" storm:"created"`
-}
 
 type DeviceHistory struct {
 	Device   `storm:"inline"`

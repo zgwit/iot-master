@@ -14,7 +14,6 @@ func projectRoutes(app *gin.RouterGroup) {
 	app.POST("list", projectList)
 	app.POST("create", projectCreate)
 
-	app.GET("event/clear", projectEventClearAll)
 	app.GET("alarm/clear", projectAlarmClearAll)
 
 	app.Use(parseParamId)
@@ -27,8 +26,6 @@ func projectRoutes(app *gin.RouterGroup) {
 	app.GET(":id/disable", projectDisable)
 	app.GET(":id/context", projectContext)
 	app.GET(":id/watch", projectWatch)
-	app.POST(":id/event/list", projectEvent)
-	app.GET(":id/event/clear", projectEventClear)
 	app.POST(":id/alarm/list", projectAlarm)
 	app.GET(":id/alarm/clear", projectAlarmClear)
 
@@ -246,35 +243,6 @@ func projectWatch(ctx *gin.Context) {
 	websocket.Handler(func(ws *websocket.Conn) {
 		watchAllEvents(ws, project)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
-}
-
-func projectEvent(ctx *gin.Context) {
-	events, cnt, err := normalSearchById(ctx, database.History, "ProjectId", ctx.GetInt("id"), &model.ProjectEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyList(ctx, events, cnt)
-}
-
-func projectEventClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("ProjectId", ctx.GetInt("id"))).Delete(&model.ProjectEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
-}
-
-func projectEventClearAll(ctx *gin.Context) {
-	err := database.History.Drop(&model.ProjectEvent{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
 }
 
 func projectAlarm(ctx *gin.Context) {

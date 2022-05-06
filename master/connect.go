@@ -148,14 +148,6 @@ func GetTunnel(id int) *Tunnel {
 	return nil
 }
 
-func GetLink(id int) *Link {
-	d, ok := allLinks.Load(id)
-	if ok {
-		return d.(*Link)
-	}
-	return nil
-}
-
 func RemoveTunnel(id int) error {
 	d, ok := allTunnels.LoadAndDelete(id)
 	if ok {
@@ -163,6 +155,14 @@ func RemoveTunnel(id int) error {
 		return tnl.Instance.Close()
 	}
 	return nil //error
+}
+
+func GetLink(id int) *Link {
+	d, ok := allLinks.Load(id)
+	if ok {
+		return d.(*Link)
+	}
+	return nil
 }
 
 func RemoveLink(id int) error {

@@ -1,7 +1,6 @@
 package master
 
 import (
-	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
@@ -11,42 +10,6 @@ import (
 
 var allDevices sync.Map
 var allProjects sync.Map
-
-//Start 启动
-func Start() error {
-	var err error
-	err = LoadDevices()
-	if err != nil {
-		return err
-	}
-
-	err = LoadProjects()
-	if err != nil {
-		return err
-	}
-
-	err = LoadTunnels()
-
-	return err
-}
-
-func Stop() {
-	allTunnels.Range(func(key, value interface{}) bool {
-		tnl := value.(connect.Tunnel)
-		_ = tnl.Close()
-		return true
-	})
-	allDevices.Range(func(key, value interface{}) bool {
-		dev := value.(*Device)
-		_ = dev.Stop()
-		return true
-	})
-	allProjects.Range(func(key, value interface{}) bool {
-		prj := value.(*Project)
-		_ = prj.Stop()
-		return true
-	})
-}
 
 
 //LoadDevices 加载设备

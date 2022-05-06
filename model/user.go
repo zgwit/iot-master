@@ -24,11 +24,3 @@ type Password struct {
 	Id       int    `json:"id" storm:"id"`
 	Password string `json:"password"`
 }
-
-//UserEvent 用户行为
-type UserEvent struct {
-	Id      int       `json:"id" storm:"id,increment"`
-	UserId  int       `json:"user_id"`
-	Event   string    `json:"event"`
-	Created time.Time `json:"created" storm:"created"`
-}

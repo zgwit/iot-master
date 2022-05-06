@@ -74,7 +74,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	_ = database.History.Save(model.UserEvent{UserId: user.Id, Event: "登录"})
+	_ = database.History.Save(model.Event{UserId: user.Id, Event: "登录"})
 
 	//存入session
 	session.Set("user", &user)
@@ -92,7 +92,7 @@ func logout(ctx *gin.Context) {
 	}
 
 	user := u.(*model.User)
-	_ = database.History.Save(model.UserEvent{UserId: user.Id, Event: "登录"})
+	_ = database.History.Save(model.Event{UserId: user.Id, Event: "登录"})
 
 	session.Clear()
 	_ = session.Save()

@@ -60,13 +60,6 @@ type TemplateElement struct {
 	Name string `json:"name"` //编程名
 }
 
-//ProjectEvent 项目历史
-type ProjectEvent struct {
-	Id        int       `json:"id" storm:"id,increment"`
-	ProjectId int       `json:"project_id"`
-	Event     string    `json:"event"`
-	Created   time.Time `json:"created" storm:"created"`
-}
 
 type ProjectHistory struct {
 	Project   `storm:"inline"`

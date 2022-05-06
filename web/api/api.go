@@ -80,6 +80,8 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	templateRoutes(app.Group("/template"))
 	tunnelRoutes(app.Group("/tunnel"))
 	linkRoutes(app.Group("/link"))
+	eventRoutes(app.Group("/event"))
+	pipeRoutes(app.Group("/pipe"))
 	userRoutes(app.Group("/user"))
 	systemRoutes(app.Group("/system"))
 
