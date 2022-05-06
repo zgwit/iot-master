@@ -1,6 +1,6 @@
 # 物联大师
 
-###[文档链接](https://docs.iot-master.com/)
+[查看文档](https://docs.iot-master.com/)
 
 [![真格智能实验室](https://labs.zgwit.com/logo.png)](https://labs.zgwit.com)
 

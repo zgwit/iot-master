@@ -1,34 +1,21 @@
 package connect
 
 import (
-	"github.com/zgwit/iot-master/events"
 	"net"
 )
 
 //NetLink 网络连接
 type NetLink struct {
-	events.EventEmitter
-
-	id      int
-	conn    net.Conn
-	running bool
-	first   bool
+	baseLink
 }
 
 func newNetLink(conn net.Conn) *NetLink {
-	return &NetLink{
-		conn: conn,
-	}
-}
-
-//Id Id
-func (l *NetLink) Id() int {
-	return l.id
+	return &NetLink{baseLink: baseLink{link: conn}}
 }
 
 //Write 写
 func (l *NetLink) Write(data []byte) error {
-	_, err := l.conn.Write(data)
+	_, err := l.link.Write(data)
 	if err != nil {
 		l.onClose()
 	}
@@ -37,7 +24,7 @@ func (l *NetLink) Write(data []byte) error {
 
 //Read 读
 func (l *NetLink) Read(data []byte) (int, error) {
-	n, err := l.conn.Read(data)
+	n, err := l.link.Read(data)
 	if err != nil {
 		l.onClose()
 	}
@@ -48,30 +35,24 @@ func (l *NetLink) receive() {
 	l.running = true
 	buf := make([]byte, 1024)
 	for {
-		n, err := l.conn.Read(buf)
+		n, err := l.link.Read(buf)
 		if err != nil {
 			l.onClose()
 			break
 		}
+		if n == 0 {
+			continue
+		}
+		//透传转发
+		if l.pipe != nil {
+			_, err = l.pipe.Write(buf[:n])
+			if err != nil {
+				l.pipe = nil
+			} else {
+				continue
+			}
+		}
 		l.Emit("data", buf[:n])
 	}
 	l.running = false
-}
-
-//Close 关闭
-func (l *NetLink) Close() error {
-	l.onClose()
-	return l.conn.Close()
-}
-
-func (l *NetLink) onClose() {
-	l.Emit("close")
-}
-
-func (l *NetLink) Running() bool {
-	return l.running
-}
-
-func (l *NetLink) First() bool {
-	return l.first
 }

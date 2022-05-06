@@ -17,6 +17,7 @@ type Serial struct {
 	tunnel *model.Tunnel
 
 	link  *SerialLink
+
 	retry int
 	running bool
 }
