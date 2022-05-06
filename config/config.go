@@ -12,6 +12,7 @@ import (
 
 //Configure 配置
 type Configure struct {
+	Node     string           `yaml:"node"`
 	Web      web.Options      `yaml:"web"`
 	Database database.Options `yaml:"database"`
 	History  tsdb.Options     `yaml:"history"`
@@ -22,6 +23,7 @@ type Configure struct {
 var Config Configure
 
 func init() {
+	Config.Node, _ = os.Hostname()
 	Config.Web = *web.DefaultOptions()
 	Config.Database = *database.DefaultOptions()
 	Config.History = *tsdb.DefaultOptions()
@@ -49,7 +51,6 @@ func Load() error {
 		d := yaml.NewDecoder(y)
 		return d.Decode(&Config)
 	}
-	return nil
 }
 
 func Store() error {
