@@ -21,6 +21,7 @@ import {
   AppstoreOutline,
   BarChartOutline,
   ProfileOutline,
+  BuildOutline,
 } from '@ant-design/icons-angular/icons';
 import {CommonModule} from '@angular/common';
 
@@ -28,7 +29,7 @@ const icons = [
   // 菜单相关
   MenuFoldOutline, MenuUnfoldOutline, HomeOutline, DashboardOutline, BlockOutline,
   SettingOutline, AppstoreAddOutline, ClusterOutline, LogoutOutline, UserOutline,
-  BellOutline,AppstoreOutline, BarChartOutline,
+  BellOutline,AppstoreOutline, BarChartOutline,BuildOutline,
   // 表格操作
   FormOutline,
   DragOutline,DeleteOutline,

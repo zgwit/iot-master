@@ -51,6 +51,20 @@ export let SideMenu = [
       },
     ]
   },
+  {
+    title: '组态',
+    icon: 'build', //project
+    children: [
+      {
+        title: '组态',
+        router: 'hmi'
+      },
+      {
+        title: '组件库',
+        router: 'component'
+      },
+    ]
+  },
   // {
   //   title: '扩展',
   //   icon: 'appstore-add',

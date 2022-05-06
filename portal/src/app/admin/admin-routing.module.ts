@@ -34,6 +34,10 @@ import {LinkMonitorComponent} from "./link-monitor/link-monitor.component";
 import {PipeComponent} from "./pipe/pipe.component";
 import {PipeDetailComponent} from "./pipe-detail/pipe-detail.component";
 import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
+import {ComponentComponent} from "./component/component.component";
+import {HmiComponent} from "./hmi/hmi.component";
+import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
+import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
 
 const routes: Routes = [
   {
@@ -108,6 +112,21 @@ const routes: Routes = [
           {path: 'detail/:id', component: TemplateDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: TemplateEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: TemplateEditComponent, data: {breadcrumb: "创建"}},
+        ]
+      },
+
+      {
+        path: 'hmi', component: ContainerComponent, data: {breadcrumb: "组态"}, children: [
+          {path: '', component: HmiComponent, data: {breadcrumb: "组态"}},
+          {path: 'detail/:id', component: HmiDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: HmiEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: HmiEditComponent, data: {breadcrumb: "创建"}},
+        ]
+      },
+
+      {
+        path: 'component', component: ContainerComponent, data: {breadcrumb: "组件库"}, children: [
+          {path: '', component: ComponentComponent, data: {breadcrumb: "组件库"}},
         ]
       },
 

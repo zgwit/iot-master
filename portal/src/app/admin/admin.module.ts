@@ -114,6 +114,10 @@ import {LinkMonitorComponent} from "./link-monitor/link-monitor.component";
 import {PipeComponent} from "./pipe/pipe.component";
 import {PipeDetailComponent} from "./pipe-detail/pipe-detail.component";
 import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
+import {HmiComponent} from "./hmi/hmi.component";
+import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
+import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
+import {ComponentComponent} from "./component/component.component";
 
 @NgModule({
   declarations: [
@@ -136,6 +140,8 @@ import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
+    HmiComponent,HmiDetailComponent,HmiEditComponent,
+    ComponentComponent,
     EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
     EditDevicesComponent, EditElementsComponent, EditAlarmsComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
