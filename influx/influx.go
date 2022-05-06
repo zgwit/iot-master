@@ -2,9 +2,9 @@ package influx
 
 import (
 	"context"
-	"fmt"
 	"github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
+	"github.com/influxdata/influxdb-client-go/v2/api/query"
 	"time"
 )
 
@@ -26,24 +26,30 @@ func Close() {
 	//client.Close
 }
 
-func Write(measurement string, tags map[string]string, fields map[string]interface{}) error {
+func Write(measurement string, tags map[string]string, fields map[string]interface{}) error  {
 	point := influxdb2.NewPoint(measurement, tags, fields, time.Now())
 	return writeAPI.WritePoint(context.Background(), point)
 }
 
-func Query() error {
-	result, err := queryAPI.Query(context.Background(), "Flux")
+func Query(window, start, end string, tags map[string]string, field string) ([]*query.FluxRecord, error) {
+	flux := "from(bucket: \"${bucket}\")\n"
+	flux += "|> range(start: " + start + ", stop: " + end + ")\n"
+	for k, v := range tags {
+		flux += "|> filter(fn: (r) => r[\"" + k + "\"] == \"" + v + "\")\n"
+	}
+	flux += "|> filter(fn: (r) => r[\"_field\"] == \"" + field + "\")"
+	flux += "|> aggregateWindow(every: " + window + ", fn: mean, createEmpty: false)\n"
+	flux += "|> yield(name: \"mean\")"
+
+	result, err := queryAPI.Query(context.Background(), flux)
 	if err != nil {
-		return err
+		return nil, err
 	}
+
+	records := make([]*query.FluxRecord, 0)
 	for result.Next() {
-		if result.TableChanged() {
-			fmt.Printf("table: %s\n", result.TableMetadata().String())
-		}
-		fmt.Printf("value: %v\n", result.Record().Value())
+		//result.TableChanged()
+		records = append(records, result.Record())
 	}
-	if result.Err() != nil {
-		fmt.Printf("query parsing error: %s\n", result.Err().Error())
-	}
-	return nil
+	return records, result.Err()
 }
