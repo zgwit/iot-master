@@ -7,6 +7,7 @@ import (
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/events"
+	"github.com/zgwit/iot-master/influx"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/tsdb"
@@ -35,8 +36,8 @@ func NewDevice(m *model.Device) (*Device, error) {
 	dev := &Device{
 		Device:       *m,
 		commandIndex: make(map[string]*model.Command, 0),
-		pollers: make([]*Poller, 0),
-		alarms:  make([]*Alarm, 0),
+		pollers:      make([]*Poller, 0),
+		alarms:       make([]*Alarm, 0),
 	}
 	var err error
 
@@ -114,9 +115,9 @@ func (dev *Device) BindAdapter(adapter protocol.Adapter) error {
 		//保存到时序数据库
 		//是否有必要起协程 或者 使用单一进程进行写入
 		go func() {
-			for k, v := range data {
-				_ = tsdb.Save(metric, k, v.(float64))
-			}
+			_ = tsdb.Write(metric, data)
+
+			_ = influx.Write(map[string]string{"id": metric}, data)
 		}()
 	})
 
@@ -168,7 +169,7 @@ func (dev *Device) initCalculators() error {
 }
 
 func (dev *Device) createEvent(event string) {
-	_ = database.History.Save(model.Event{Target:"device", TargetId: dev.Id, Event: event})
+	_ = database.History.Save(model.Event{Target: "device", TargetId: dev.Id, Event: event})
 }
 
 //Start 设备启动

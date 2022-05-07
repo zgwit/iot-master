@@ -89,6 +89,20 @@ func startTunnel(tunnel *model.Tunnel) error {
 			}
 		}
 
+		//连接关闭时，关闭设备
+		link.On("close", func() {
+			for _, d := range devices {
+				dev := GetDevice(d.Id)
+				if dev != nil {
+					err := dev.Stop()
+					if err != nil {
+						log.Error(err)
+						//return
+					}
+				}
+			}
+		})
+
 	})
 
 	err = tnl.Open()

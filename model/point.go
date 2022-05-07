@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 //Point 数据点
 type Point struct {
 	Name      string   `json:"name"`
@@ -11,4 +13,9 @@ type Point struct {
 	Default   float64  `json:"default"`
 
 	LittleEndian bool `json:"little_endian"`
+}
+
+type DataPoint struct {
+	Value interface{} `json:"value"`
+	Time  time.Time   `json:"time"`
 }

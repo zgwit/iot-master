@@ -10,12 +10,12 @@ type Options struct {
 	RetentionDuration  time.Duration `yaml:"retention_duration"`  //s
 	PartitionDuration  time.Duration `yaml:"partition_duration"`  //s
 	WriteTimeout       time.Duration `yaml:"write_timeout"`       //s
-	BufferedSize       int           `yaml:"buffered_size"`
-	Log                bool          `yaml:"log"`
 }
 
 func DefaultOptions() *Options {
 	return &Options{
-		DataPath: "history",
+		Enable:             true,
+		DataPath:           "history",
+		TimestampPrecision: "ms",
 	}
 }

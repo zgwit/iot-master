@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
+	"github.com/zgwit/iot-master/model"
 	"time"
 )
 
@@ -29,12 +30,7 @@ func Write(tags map[string]string, fields map[string]interface{}) error {
 	return writeAPI.WritePoint(context.Background(), point)
 }
 
-type Point struct {
-	Time  time.Time   `json:"time"`
-	Value interface{} `json:"value"`
-}
-
-func Query(window, start, end string, tags map[string]string, field string) ([]Point, error) {
+func Query(tags map[string]string, field string, start, end, window string) ([]model.DataPoint, error) {
 	flux := "from(bucket: \"" + _opts.Bucket + "\")\n"
 	flux += "|> range(start: " + start + ", stop: " + end + ")\n"
 	for k, v := range tags {
@@ -49,12 +45,12 @@ func Query(window, start, end string, tags map[string]string, field string) ([]P
 		return nil, err
 	}
 
-	records := make([]Point, 0)
+	records := make([]model.DataPoint, 0)
 	for result.Next() {
 		//result.TableChanged()
-		records = append(records, Point{
-			Time:  result.Record().Time(),
+		records = append(records, model.DataPoint{
 			Value: result.Record().Value(),
+			Time:  result.Record().Time(),
 		})
 	}
 	return records, result.Err()
