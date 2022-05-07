@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/zgwit/iot-master/args"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/influx"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/tsdb"
 	"github.com/zgwit/iot-master/web"
@@ -15,6 +16,7 @@ type Configure struct {
 	Node     string           `yaml:"node"`
 	Web      web.Options      `yaml:"web"`
 	Database database.Options `yaml:"database"`
+	Influxdb influx.Options   `yaml:"influxdb"`
 	History  tsdb.Options     `yaml:"history"`
 	Log      log.Options      `yaml:"log"`
 }
@@ -26,9 +28,9 @@ func init() {
 	Config.Node, _ = os.Hostname()
 	Config.Web = *web.DefaultOptions()
 	Config.Database = *database.DefaultOptions()
+	Config.Influxdb = *influx.DefaultOptions()
 	Config.History = *tsdb.DefaultOptions()
 	Config.Log = *log.DefaultOptions()
-
 }
 
 //Load 加载

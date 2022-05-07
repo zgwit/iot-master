@@ -4,35 +4,38 @@ import (
 	"context"
 	"github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
-	"github.com/influxdata/influxdb-client-go/v2/api/query"
 	"time"
 )
 
 var writeAPI api.WriteAPIBlocking
 var queryAPI api.QueryAPI
 
-func Open() {
-	bucket := "example-bucket"
-	org := "example-org"
-	token := "example-token"
-	// Store the URL of your InfluxDB instance
-	url := "http://localhost:8086"
-	client := influxdb2.NewClient(url, token)
-	writeAPI = client.WriteAPIBlocking(org, bucket)
-	queryAPI = client.QueryAPI(org)
+var _opts *Options
+var client influxdb2.Client
+
+func Open(opts *Options) {
+	_opts = opts
+	client = influxdb2.NewClient(opts.URL, opts.Token)
+	writeAPI = client.WriteAPIBlocking(opts.ORG, opts.Bucket)
+	queryAPI = client.QueryAPI(opts.ORG)
 }
 
 func Close() {
-	//client.Close
+	client.Close()
 }
 
-func Write(measurement string, tags map[string]string, fields map[string]interface{}) error  {
-	point := influxdb2.NewPoint(measurement, tags, fields, time.Now())
+func Write(tags map[string]string, fields map[string]interface{}) error {
+	point := influxdb2.NewPoint(_opts.Measurement, tags, fields, time.Now())
 	return writeAPI.WritePoint(context.Background(), point)
 }
 
-func Query(window, start, end string, tags map[string]string, field string) ([]*query.FluxRecord, error) {
-	flux := "from(bucket: \"${bucket}\")\n"
+type Point struct {
+	Time  time.Time   `json:"time"`
+	Value interface{} `json:"value"`
+}
+
+func Query(window, start, end string, tags map[string]string, field string) ([]Point, error) {
+	flux := "from(bucket: \"" + _opts.Bucket + "\")\n"
 	flux += "|> range(start: " + start + ", stop: " + end + ")\n"
 	for k, v := range tags {
 		flux += "|> filter(fn: (r) => r[\"" + k + "\"] == \"" + v + "\")\n"
@@ -46,10 +49,13 @@ func Query(window, start, end string, tags map[string]string, field string) ([]*
 		return nil, err
 	}
 
-	records := make([]*query.FluxRecord, 0)
+	records := make([]Point, 0)
 	for result.Next() {
 		//result.TableChanged()
-		records = append(records, result.Record())
+		records = append(records, Point{
+			Time:  result.Record().Time(),
+			Value: result.Record().Value(),
+		})
 	}
 	return records, result.Err()
 }

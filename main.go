@@ -121,6 +121,8 @@ func originMain() {
 	}
 	defer database.Close()
 
+
+
 	err = tsdb.Open(&config.Config.History)
 	if err != nil {
 		log.Fatal(err)

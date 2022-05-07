@@ -4,6 +4,7 @@ import "time"
 
 //Options 参数
 type Options struct {
+	Enable             bool          `yaml:"enable"`
 	DataPath           string        `yaml:"data_path"`
 	TimestampPrecision string        `yaml:"timestamp_precision"` //ns us ms s
 	RetentionDuration  time.Duration `yaml:"retention_duration"`  //s
