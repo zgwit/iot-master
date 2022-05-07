@@ -381,6 +381,8 @@ func parseTime(tm string) (int64, error) {
 	}
 	val, _ := strconv.ParseInt(ss[1], 10, 64)
 	switch ss[2] {
+	case "d":
+		val *= 24 * 60 * 60 * 1000
 	case "h":
 		val *= 60 * 60 * 1000
 	case "m":
