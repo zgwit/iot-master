@@ -23,6 +23,11 @@ func Open(opts *Options) {
 
 func Close() {
 	client.Close()
+	client = nil
+}
+
+func Opened() bool  {
+	return client != nil
 }
 
 func Write(tags map[string]string, fields map[string]interface{}) error {

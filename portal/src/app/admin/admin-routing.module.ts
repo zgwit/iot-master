@@ -38,6 +38,7 @@ import {ComponentComponent} from "./component/component.component";
 import {HmiComponent} from "./hmi/hmi.component";
 import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
 import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
+import {DeviceValueComponent} from "./device-value/device-value.component";
 
 const routes: Routes = [
   {
@@ -85,6 +86,7 @@ const routes: Routes = [
           {path: 'detail/:id', component: DeviceDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: DeviceEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: DeviceEditComponent, data: {breadcrumb: "创建"}},
+          {path: 'value/:id/:name', component: DeviceValueComponent, data: {breadcrumb: "历史"}},
         ]
       },
 

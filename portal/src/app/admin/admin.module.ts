@@ -119,6 +119,7 @@ import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
 import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
 import {ComponentComponent} from "./component/component.component";
 import {DashModule} from "../dash/dash.module";
+import {DeviceValueComponent} from "./device-value/device-value.component";
 
 @NgModule({
   declarations: [
@@ -135,7 +136,7 @@ import {DashModule} from "../dash/dash.module";
     LinkBrowserComponent,
     PipeComponent, PipeDetailComponent, PipeEditComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
-    DeviceBrowserComponent,
+    DeviceBrowserComponent, DeviceValueComponent,
     ElementComponent, ElementDetailComponent, ElementEditComponent,
     ElementDeviceComponent, ElementBrowserComponent,
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent,

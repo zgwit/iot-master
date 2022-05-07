@@ -115,9 +115,13 @@ func (dev *Device) BindAdapter(adapter protocol.Adapter) error {
 		//保存到时序数据库
 		//是否有必要起协程 或者 使用单一进程进行写入
 		go func() {
-			_ = tsdb.Write(metric, data)
+			if tsdb.Opened() {
+				_ = tsdb.Write(metric, data)
+			}
 
-			_ = influx.Write(map[string]string{"id": metric}, data)
+			if influx.Opened() {
+				_ = influx.Write(map[string]string{"id": metric}, data)
+			}
 		}()
 	})
 

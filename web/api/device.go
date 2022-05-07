@@ -1,13 +1,19 @@
 package api
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/influx"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/tsdb"
 	"github.com/zgwit/storm/v3/q"
 	"golang.org/x/net/websocket"
+	"regexp"
+	"strconv"
+	"time"
 )
 
 func deviceRoutes(app *gin.RouterGroup) {
@@ -31,6 +37,8 @@ func deviceRoutes(app *gin.RouterGroup) {
 	app.GET(":id/watch", deviceWatch)
 	app.POST(":id/alarm/list", deviceAlarm)
 	app.GET(":id/alarm/clear", deviceAlarmClear)
+
+	app.GET(":id/value/:name/history", deviceValueHistory)
 }
 
 func deviceList(ctx *gin.Context) {
@@ -358,4 +366,79 @@ func deviceAlarmClearAll(ctx *gin.Context) {
 	}
 
 	replyOk(ctx, nil)
+}
+
+var timeReg *regexp.Regexp
+
+func init() {
+	timeReg = regexp.MustCompile(`^(-?\d+)(h|m|s)$`)
+}
+
+func parseTime(tm string) (int64, error) {
+	ss := timeReg.FindStringSubmatch(tm)
+	if ss == nil || len(ss) != 3 {
+		return 0, errors.New("错误时间")
+	}
+	val, _ := strconv.ParseInt(ss[1], 10, 64)
+	switch ss[2] {
+	case "h":
+		val *= 60 * 60 * 1000
+	case "m":
+		val *= 60 * 1000
+	case "s":
+		val *= 1000
+	}
+	return val, nil
+}
+
+func deviceValueHistory(ctx *gin.Context) {
+	id := ctx.Param("id")
+	key := ctx.Param("name")
+	start := ctx.DefaultQuery("start", "-5h")
+	end := ctx.DefaultQuery("end", "0h")
+	window := ctx.DefaultQuery("window", "10m")
+
+	//优先查询InfluxDB
+	if influx.Opened() {
+		values, err := influx.Query(map[string]string{"id": id}, key, start, end, window)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+		replyOk(ctx, values)
+		return
+	}
+
+	//查询内部数据库
+	if tsdb.Opened() {
+		//相对时间转化为时间戳
+		s, err := parseTime(start)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+		s += time.Now().UnixMilli()
+
+		e, err := parseTime(end)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+		e += time.Now().UnixMilli()
+
+		w, err := parseTime(window)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+		values, err := tsdb.Query(id, key, s, e, w)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+		replyOk(ctx, values)
+		return
+	}
+
+	replyFail(ctx, "没有开启历史数据库")
 }

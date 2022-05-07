@@ -10,6 +10,10 @@ import (
 //Storage 引擎
 var Storage tstorage.Storage
 
+func Opened() bool  {
+	return Storage != nil
+}
+
 //Open 打开
 func Open(opts *Options) error {
 	if opts == nil {
@@ -59,7 +63,7 @@ func Load(metric string, id int, start, end int64) ([]*tstorage.DataPoint, error
 
 func Write(metric string, values map[string]interface{}) error {
 	rows := make([]tstorage.Row, 0)
-	timestamp := time.Now().Unix()
+	timestamp := time.Now().UnixMilli()
 	for k, v := range values {
 		value := v.(float64)
 		rows = append(rows, tstorage.Row{
@@ -100,6 +104,13 @@ func Query(metric string, key string, start, end, window int64) ([]model.DataPoi
 		total += p.Value
 		count++
 		timestamp = p.Timestamp
+	}
+	//最后一组
+	if count > 0 {
+		results = append(results, model.DataPoint{
+			Value: total / count,
+			Time:  time.UnixMilli(timestamp),
+		})
 	}
 
 	return results, nil
