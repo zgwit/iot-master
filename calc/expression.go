@@ -47,5 +47,6 @@ func (c *Expression) Evaluate(ctx Context) (float64, error) {
 
 //Eval 计算
 func (c *Expression) Eval(ctx Context) (interface{}, error) {
+	//TODO 引入数学计算函数
 	return expr.Run(c.program, ctx)
 }
