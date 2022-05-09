@@ -78,7 +78,12 @@ func Write(metric string, values map[string]interface{}) error {
 //Query 加载数据（毫秒精度）
 func Query(metric string, key string, start, end, window int64) ([]model.DataPoint, error) {
 	points, err := Storage.Select(metric, []tstorage.Label{{Name: "key", Value: key}}, start, end)
+
 	if err != nil {
+		//无数据
+		if err == tstorage.ErrNoDataPoints {
+			return make([]model.DataPoint, 0), nil
+		}
 		return nil, err
 	}
 
