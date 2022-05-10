@@ -38,12 +38,11 @@ func (a *Address) Diff(base protocol.Addr) int {
 var addrRegexp *regexp.Regexp
 
 func init() {
-	addrRegexp, _ = regexp.Compile(`^(C|D|DI|H|I)(\d+)$`)
-
+	addrRegexp = regexp.MustCompile(`^(C|D|DI|H|I)(\d+)$`)
 }
 
-func ParseAddress(add string) (protocol.Addr, error) {
-	ss := addrRegexp.FindStringSubmatch(add)
+func ParseAddress(addr string) (protocol.Addr, error) {
+	ss := addrRegexp.FindStringSubmatch(addr)
 	if ss == nil || len(ss) != 3 {
 		return nil, errors.New("unknown address")
 	}
@@ -60,7 +59,7 @@ func ParseAddress(add string) (protocol.Addr, error) {
 	case "I":
 		code = 4
 	}
-	offset, _ := strconv.ParseUint(ss[2], 10, 10)
+	offset, _ := strconv.ParseUint(ss[2], 10, 16)
 	//offset, _ := strconv.Atoi(ss[2])
 	return &Address{
 		Code:   code,
