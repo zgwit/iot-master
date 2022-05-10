@@ -15,7 +15,7 @@ type FinsHostLink struct {
 	queue chan *request //in
 }
 
-func NewFinsHostLink(link connect.Link) *FinsHostLink {
+func NewHostLink(link connect.Link, opts protocol.Options) protocol.Adapter {
 	fins := &FinsHostLink{
 		link:  link,
 		queue: make(chan *request, 1),

@@ -19,11 +19,25 @@ type Adapter interface {
 
 type Options map[string]interface{}
 
+func (opts Options) GetInt(name string, value int) int {
+	v, ok := opts[name]
+	if ok {
+		return v.(int)
+	}
+	return value
+}
+
 type Factory func(link connect.Link, opts Options) Adapter
 
+type Code struct {
+	Name  string `json:"name"`
+	Label string `json:"label"`
+}
+
 type Protocol struct {
-	Name    string `json:"name"`
-	Label   string `json:"label"`
-	Version string `json:"version"`
+	Name    string  `json:"name"`
+	Label   string  `json:"label"`
+	Version string  `json:"version"`
+	Codes   []Code  `json:"codes"`
 	Factory Factory `json:"-"`
 }

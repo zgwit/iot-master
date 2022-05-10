@@ -25,7 +25,7 @@ type Fins struct {
 	queue chan *request //in
 }
 
-func NewFins(link connect.Link) *Fins {
+func NewFinsTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
 	fins := &Fins{
 		link:  link,
 		queue: make(chan *request, 1),

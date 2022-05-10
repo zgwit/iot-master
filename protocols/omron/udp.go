@@ -47,7 +47,7 @@ type FinsUdp struct {
 	queue chan *request //in
 }
 
-func NewFinsUdp(link connect.Link) *FinsUdp {
+func NewFinsUDP(link connect.Link, opts protocol.Options) protocol.Adapter {
 	fins :=  &FinsUdp{
 		link: link,
 		queue: make(chan *request, 1),

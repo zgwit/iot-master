@@ -15,7 +15,7 @@ var DescHostlink = protocol.Protocol{
 	Version: "1.0",
 	Label:   "Omron Hostlink",
 	Codes:   Codes,
-	//Factory: newHostlink,
+	Factory: NewHostLink,
 }
 
 var DescUDP = protocol.Protocol{
@@ -23,7 +23,7 @@ var DescUDP = protocol.Protocol{
 	Version: "1.0",
 	Label:   "Omron FINS UDP",
 	Codes:   Codes,
-	//Factory: newUDP,
+	Factory: NewFinsUDP,
 }
 
 var DescTCP = protocol.Protocol{
@@ -31,5 +31,5 @@ var DescTCP = protocol.Protocol{
 	Version: "1.0",
 	Label:   "Omron FINS TCP",
 	Codes:   Codes,
-	//Factory: newTCP,
+	Factory: NewFinsTCP,
 }
