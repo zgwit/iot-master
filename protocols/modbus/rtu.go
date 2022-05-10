@@ -35,7 +35,7 @@ func NewRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
 		rtu.OnData(data)
 	})
 	link.On("close", func() {
-		close(rtu.queue)
+		//close(rtu.queue)
 	})
 
 	return rtu

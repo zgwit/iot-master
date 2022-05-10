@@ -31,7 +31,7 @@ func NewTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
 		tcp.OnData(data)
 	})
 	link.On("close", func() {
-		close(tcp.queue)
+		//close(tcp.queue)
 		tcp.requests.Range(func(key, value interface{}) bool {
 			close(value.(*request).resp)
 			return true

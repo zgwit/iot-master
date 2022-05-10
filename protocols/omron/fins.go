@@ -34,7 +34,7 @@ func NewFinsTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
 		fins.OnData(data)
 	})
 	link.On("close", func() {
-		close(fins.queue)
+		//close(fins.queue)
 	})
 	return fins
 }
