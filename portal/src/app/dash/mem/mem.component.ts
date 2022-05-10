@@ -9,7 +9,10 @@ import {RequestService} from "../../request.service";
 export class MemComponent implements OnInit {
   @Input() interval = 30000;
 
-  info:any = {};
+  info: any = {
+    used: 0,
+    total: 0,
+  };
   handle: any;
 
   constructor(private rs: RequestService) {
@@ -17,13 +20,13 @@ export class MemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.handle = setInterval(()=> {
+    this.handle = setInterval(() => {
       this.load()
     }, this.interval);
   }
 
   ngOnDestroy(): void {
-      clearInterval(this.handle)
+    clearInterval(this.handle)
   }
 
   load(): void {
