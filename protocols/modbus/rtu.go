@@ -25,7 +25,7 @@ type RTU struct {
 	queue chan *request //in
 }
 
-func newRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
+func NewRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
 	rtu := &RTU{
 		link:  link,
 		queue: make(chan *request, 1),
@@ -33,6 +33,9 @@ func newRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
 	}
 	link.On("data", func(data []byte) {
 		rtu.OnData(data)
+	})
+	link.On("close", func() {
+		close(rtu.queue)
 	})
 
 	return rtu

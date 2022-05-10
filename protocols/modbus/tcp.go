@@ -19,7 +19,7 @@ type TCP struct {
 	increment uint16
 }
 
-func newTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
+func NewTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
 	tcp := &TCP{
 		link:      link,
 		queue:     make(chan interface{}, 10), //TODO 改成参数

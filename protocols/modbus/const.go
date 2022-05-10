@@ -1,5 +1,7 @@
 package modbus
 
+import "github.com/zgwit/iot-master/protocol"
+
 // Function Code
 const (
 	// Bit access
@@ -37,3 +39,26 @@ const (
 	ExceptionCodeGatewayPathUnavailable             = 10
 	ExceptionCodeGatewayTargetDeviceFailedToRespond = 11
 )
+
+var Codes = []protocol.Code{
+	{"C", "线圈"},
+	{"D", "离散输入"},
+	{"H", "保持寄存器"},
+	{"I", "输入寄存器"},
+}
+
+var DescRTU = protocol.Protocol{
+	Name:    "ModbusRTU",
+	Version: "1.0",
+	Label:   "Modbus RTU",
+	Codes:   Codes,
+	Factory: NewRTU,
+}
+
+var DescTCP = protocol.Protocol{
+	Name:    "ModbusTCP",
+	Version: "1.0",
+	Label:   "Modbus TCP",
+	Codes:   Codes,
+	Factory: NewTCP,
+}

@@ -66,18 +66,3 @@ func ParseAddress(addr string) (protocol.Addr, error) {
 		Offset: uint16(offset),
 	}, nil
 }
-
-// TODO const
-var DescRTU = protocol.Protocol{
-	Name:    "ModbusRTU",
-	Version: "1.0",
-	Label:   "Modbus RTU",
-	Factory: newRTU,
-}
-
-var DescTCP = protocol.Protocol{
-	Name:    "ModbusTCP",
-	Version: "1.0",
-	Label:   "Modbus TCP",
-	Factory: newTCP,
-}
