@@ -7,6 +7,7 @@ import { DiskComponent } from './disk/disk.component';
 import {NzProgressModule} from "ng-zorro-antd/progress";
 import {NgxFilesizeModule} from "ngx-filesize";
 import {NzDividerModule} from "ng-zorro-antd/divider";
+import {NgxEchartsModule} from "ngx-echarts";
 
 
 
@@ -26,7 +27,8 @@ import {NzDividerModule} from "ng-zorro-antd/divider";
     NzStatisticModule,
     NzProgressModule,
     NgxFilesizeModule,
-    NzDividerModule
+    NzDividerModule,
+    NgxEchartsModule,
   ]
 })
 export class DashModule { }

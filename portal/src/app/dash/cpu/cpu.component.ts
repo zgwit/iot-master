@@ -9,7 +9,14 @@ import {RequestService} from "../../request.service";
 export class CpuComponent implements OnInit, OnDestroy {
   @Input() interval = 5000;
 
-  info:any = {
+  options: any = {}
+
+  last = {
+    busy: 0,
+    total: 0,
+  };
+
+  info: any = {
     usage: 0,
   };
   handle: any;
@@ -19,19 +26,46 @@ export class CpuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.handle = setInterval(()=> {
+    this.handle = setInterval(() => {
       this.load()
     }, this.interval);
   }
 
   ngOnDestroy(): void {
-      clearInterval(this.handle)
+    clearInterval(this.handle)
   }
 
   load(): void {
     this.rs.get('system/cpu').subscribe(res => {
       //console.log('cpu info', res)
-      this.info.usage = res.data.user / res.data.idle * 100;
+      let busy = res.data.user + res.data.system;
+      let total = busy + res.data.idle;
+
+      let usage = (busy - this.last.busy) / (total - this.last.total) * 100;
+      this.last.busy = busy
+      this.last.total = total
+
+      console.log(busy, total, usage)
+
+      this.info.usage = usage
+      //this.options.series[0].data[0].value = usage.toFixed(2);
+      this.options = {
+        tooltip: {
+          formatter: '{b} : {c}%'
+        },
+        series: [
+          {
+            name: 'CPU',
+            type: 'gauge',
+            data: [
+              {
+                value: Math.round(usage),
+                name: 'CPU'
+              }
+            ]
+          }
+        ]
+      };
     })
   }
 
