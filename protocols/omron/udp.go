@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
+	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/protocol/helper"
+	"time"
 )
 
 type UdpFrame struct {
@@ -42,43 +44,91 @@ type UdpFrame struct {
 type FinsUdp struct {
 	frame UdpFrame
 	link  connect.Link
+	queue chan *request //in
 }
 
 func NewFinsUdp(link connect.Link) *FinsUdp {
-	return &FinsUdp{
+	fins :=  &FinsUdp{
 		link: link,
+		queue: make(chan *request, 1),
+	}
+	link.On("data", func(data []byte) {
+		fins.OnData(data)
+	})
+	link.On("close", func() {
+		close(fins.queue)
+	})
+	return fins
+}
+
+
+func (f *FinsUdp) execute(cmd []byte) ([]byte, error) {
+	req := &request{
+		cmd:  cmd,
+		resp: make(chan response, 1),
+	}
+	//排队等待
+	f.queue <- req
+
+	//下发指令
+	err := f.link.Write(cmd)
+	if err != nil {
+		//释放队列
+		<-f.queue
+		return nil, err
+	}
+
+	//等待结果
+	select {
+	case <-time.After(5 * time.Second):
+		<-f.queue //清空
+		return nil, errors.New("timeout")
+	case resp := <-req.resp:
+		return resp.buf, resp.err
 	}
 }
 
-func (t *FinsUdp) request(cmd []byte) ([]byte, error) {
-	if e := t.link.Write(cmd); e != nil {
-		return nil, e
+
+func (f *FinsUdp) OnData(buf []byte)  {
+	if len(f.queue) == 0 {
+		//无效数据
+		return
 	}
 
-	payload := make([]byte, 1024)
-	//t.link.Read(payload)
+	//取出请求，并让出队列，可以开始下一个请示了
+	req := <-f.queue
+
+	//解析数据
+	l := len(buf)
+	if l < 10 {
+		return
+	}
 
 	//[UDP 10字节]
 
 	//记录响应的SID
-	t.frame.SID = payload[9]
+	f.frame.SID = buf[9]
 
-	return payload[10:], nil
+	req.resp <- response{buf: buf[10:]}
 }
 
-func (t *FinsUdp) Read(address string, length int) ([]byte, error) {
+func (f *FinsUdp) Address(addr string) (protocol.Addr, error) {
+	return ParseAddress(addr)
+}
+
+func (f *FinsUdp) Read(station int, address protocol.Addr, size int) ([]byte, error) {
 
 	//构建读命令
-	buf, e := buildReadCommand(address, length)
+	buf, e := buildReadCommand(address, size)
 	if e != nil {
 		return nil, e
 	}
 
 	//打包命令
-	cmd := packUDPCommand(&t.frame, buf)
+	cmd := packUDPCommand(&f.frame, buf)
 
 	//发送请求
-	recv, err := t.request(cmd)
+	recv, err := f.execute(cmd)
 	if err != nil {
 		return nil, err
 	}
@@ -86,13 +136,17 @@ func (t *FinsUdp) Read(address string, length int) ([]byte, error) {
 	//[命令码 1 1] [结束码 0 0] , data
 	code := helper.ParseUint16(recv[2:])
 	if code != 0 {
-		return nil, errors.New(fmt.Sprintf("错误码: %d", code))
+		return nil, fmt.Errorf("错误码: %d", code)
 	}
 
 	return recv[4:], nil
 }
 
-func (t *FinsUdp) Write(address string, values []byte) error {
+func (f *FinsUdp) Immediate(station int, addr protocol.Addr, size int) ([]byte, error) {
+	return f.Read(station, addr, size)
+}
+
+func (f *FinsUdp) Write(station int, address protocol.Addr, values []byte) error {
 	//构建写命令
 	buf, e := buildWriteCommand(address, values)
 	if e != nil {
@@ -100,17 +154,17 @@ func (t *FinsUdp) Write(address string, values []byte) error {
 	}
 
 	//打包命令
-	cmd := packUDPCommand(&t.frame, buf)
+	cmd := packUDPCommand(&f.frame, buf)
 
 	//发送请求
-	recv, err := t.request(cmd)
+	recv, err := f.execute(cmd)
 	if err != nil {
 		return err
 	}
 	//[命令码 1 1] [结束码 0 0]
 	code := helper.ParseUint16(recv[2:])
 	if code != 0 {
-		return errors.New(fmt.Sprintf("错误码: %d", code))
+		return fmt.Errorf("错误码: %d", code)
 	}
 
 	return nil

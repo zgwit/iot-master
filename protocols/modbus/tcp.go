@@ -20,11 +20,12 @@ type TCP struct {
 }
 
 func NewTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
+	concurrency := opts.GetInt("concurrency", 10)
+
 	tcp := &TCP{
 		link:      link,
-		queue:     make(chan interface{}, 10), //TODO 改成参数
-		increment: 0x0A0A,                     //避免首字节为0，有些DTU可能会异常
-		//slave:     opts["slave"].(uint8),
+		queue:     make(chan interface{}, concurrency),
+		increment: 0x0A0A, //避免首字节为0，有些DTU可能会异常
 	}
 	link.On("data", func(data []byte) {
 		tcp.OnData(data)

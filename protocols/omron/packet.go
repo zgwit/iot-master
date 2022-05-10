@@ -1,15 +1,13 @@
 package omron
 
 import (
+	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/protocol/helper"
 )
 
-func buildReadCommand(address string, length int) ([]byte, error) {
+func buildReadCommand(address protocol.Addr, length int) ([]byte, error) {
 	//解析地址
-	addr, e := ParseAddress(address)
-	if e != nil {
-		return nil, e
-	}
+	addr := address.(*Address)
 
 	buf := make([]byte, 8)
 
@@ -18,24 +16,21 @@ func buildReadCommand(address string, length int) ([]byte, error) {
 	buf[1] = 0x01 //SRC
 	buf[2] = addr.Code
 	// 地址
-	helper.WriteUint16(buf[3:], uint16(addr.Addr))
+	helper.WriteUint16(buf[3:], uint16(addr.Offset))
 	// 位地址
-	buf[5] = addr.Bit
+	buf[5] = addr.Bits
 	// 长度
 	helper.WriteUint16(buf[6:], uint16(length))
 
 	return buf, nil
 }
 
-func buildWriteCommand(address string, values []byte) ([]byte, error) {
+func buildWriteCommand(address protocol.Addr, values []byte) ([]byte, error) {
+	//解析地址
+	addr := address.(*Address)
 
 	length := len(values)
 
-	//解析地址
-	addr, e := ParseAddress(address)
-	if e != nil {
-		return nil, e
-	}
 
 	buf := make([]byte, 8+length)
 
@@ -44,8 +39,8 @@ func buildWriteCommand(address string, values []byte) ([]byte, error) {
 	buf[2] = addr.Code
 
 	// 地址
-	helper.WriteUint16(buf[3:], uint16(addr.Addr))
-	buf[5] = addr.Bit
+	helper.WriteUint16(buf[3:], uint16(addr.Offset))
+	buf[5] = addr.Bits
 
 	if addr.IsBit {
 		length = length / 2 // 一个word是双字节
