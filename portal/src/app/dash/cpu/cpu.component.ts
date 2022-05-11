@@ -16,13 +16,13 @@ export class CpuComponent implements OnInit, OnDestroy {
     total: 0,
   };
 
-  info: any = {
-    usage: 0,
-  };
+  info: any = {};
+  stats: any = {usage: 0};
   handle: any;
 
   constructor(private rs: RequestService) {
     this.load();
+    this.loadInfo();
   }
 
   ngOnInit(): void {
@@ -35,6 +35,13 @@ export class CpuComponent implements OnInit, OnDestroy {
     clearInterval(this.handle)
   }
 
+  loadInfo(): void {
+    this.rs.get('system/cpu-info').subscribe(res => {
+      console.log(res.data);
+      this.info = res.data;
+    })
+  }
+
   load(): void {
     this.rs.get('system/cpu').subscribe(res => {
       //console.log('cpu info', res)
@@ -45,13 +52,17 @@ export class CpuComponent implements OnInit, OnDestroy {
       this.last.busy = busy
       this.last.total = total
 
-      console.log(busy, total, usage)
+      //console.log(busy, total, usage)
 
-      this.info.usage = usage
+      this.stats.usage = usage
       //this.options.series[0].data[0].value = usage.toFixed(2);
       this.options = {
+        title: {
+          text: 'CPU',
+          left: 'center'
+        },
         tooltip: {
-          formatter: '{b} : {c}%'
+          formatter: '{c}%'
         },
         series: [
           {

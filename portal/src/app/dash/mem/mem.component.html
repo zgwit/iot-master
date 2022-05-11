@@ -1,10 +1,5 @@
-<nz-statistic
-  [nzValue]="(info.usedPercent | number: '1.0-2')!"
-  nzTitle="内存"
-  nzSuffix="%"
-></nz-statistic>
+<div echarts [options]="options"></div>
 
 <div>
-  {{info.used | filesize}} / {{info.total | filesize}}
+  {{info.used | filesize}} / {{info.total | filesize}} {{info.usedPercent | number: '1.0-2'}}%
 </div>
-

@@ -10,16 +10,16 @@ import (
 
 func systemRoutes(app *gin.RouterGroup) {
 	app.GET("version")
-	//app.GET("cpu/info", cpuInfo)
-	app.GET("cpu", cpuTimes)
-	app.GET("memory", memoryInfo)
-	app.GET("disk", diskInfo)
+	app.GET("cpu-info", cpuInfo)
+	app.GET("cpu", cpuStats)
+	app.GET("memory", memStats)
+	app.GET("disk", diskStats)
 	app.GET("cron")
 	app.GET("protocols", protocolList)
 
 }
 
-func memoryInfo(ctx *gin.Context)  {
+func memStats(ctx *gin.Context)  {
 	stat, err := mem.VirtualMemory()
 	if err != nil {
 		replyError(ctx, err)
@@ -34,10 +34,14 @@ func cpuInfo(ctx *gin.Context)  {
 		replyError(ctx, err)
 		return
 	}
-	replyOk(ctx, info)
+	if len(info) == 0 {
+		replyFail(ctx, "查询失败")
+		return
+	}
+	replyOk(ctx, info[0])
 }
 
-func cpuTimes(ctx *gin.Context)  {
+func cpuStats(ctx *gin.Context)  {
 	times, err := cpu.Times(false)
 	if err != nil {
 		replyError(ctx, err)
@@ -50,7 +54,7 @@ func cpuTimes(ctx *gin.Context)  {
 	replyOk(ctx, times[0])
 }
 
-func diskInfo(ctx *gin.Context)  {
+func diskStats(ctx *gin.Context)  {
 	partitions, err := disk.Partitions(false)
 	if err != nil {
 		replyError(ctx, err)

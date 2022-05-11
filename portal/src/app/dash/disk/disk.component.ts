@@ -7,7 +7,7 @@ import {RequestService} from "../../request.service";
   styleUrls: ['./disk.component.scss']
 })
 export class DiskComponent implements OnInit {
-  info:any = {};
+  info:any = [];
 
   constructor(private rs: RequestService) {
     this.load();
