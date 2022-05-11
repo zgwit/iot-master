@@ -38,7 +38,9 @@
         </nz-collapse-panel>
       </nz-collapse>
     </nz-sider>
-    <nz-content id="canvas"></nz-content>
+
+    <nz-content id="hmi-editor-canvas"></nz-content>
+
     <nz-sider>
       属性/事件/数据
       <nz-table nzSize="small">
@@ -56,7 +58,7 @@
             <input nz-input *ngSwitchCase="'number'" type="number">
             <input nz-input *ngSwitchCase="'text'">
             <input nz-input *ngSwitchCase="'color'" [(colorPicker)]="color" [style.background]="color">
-<!--            <input nz-input *ngSwitchCase="'font'">-->
+            <!--            <input nz-input *ngSwitchCase="'font'">-->
             <nz-select *ngSwitchCase="'font'">
               <nz-option nzLabel="默认" nzValue=""></nz-option>
               <nz-option nzLabel="黑体" nzValue="黑体"></nz-option>
@@ -73,7 +75,7 @@
               <nz-option nzLabel="最大" nzValue="xxx-large"></nz-option>
             </nz-select>
             <input nz-input *ngSwitchDefault>
-<!--            {{data.name}}-->
+            <!--            {{data.name}}-->
           </td>
         </tr>
         </tbody>
@@ -88,7 +90,7 @@
     <nz-divider nzType="vertical"></nz-divider>
 
     边框
-<!--    <a (click)="stroke.color='none'">无边框</a>-->
+    <!--    <a (click)="stroke.color='none'">无边框</a>-->
     <nz-select [(ngModel)]="stroke.width">
       <nz-option [nzValue]="0" nzLabel="无"></nz-option>
       <nz-option [nzValue]="1" nzLabel="1"></nz-option>

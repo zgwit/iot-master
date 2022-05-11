@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { EditorComponent } from './editor/editor.component';
-import { ViewComponent } from './view/view.component';
-import {HmiRoutingModule} from "./hmi-routing.module";
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {EditorComponent} from './editor/editor.component';
+import {ViewerComponent} from './viewer/viewer.component';
 import {NzLayoutModule} from "ng-zorro-antd/layout";
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {NzIconModule} from "ng-zorro-antd/icon";
@@ -14,13 +13,17 @@ import {NzSelectModule} from "ng-zorro-antd/select";
 import {FormsModule} from "@angular/forms";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzSwitchModule} from "ng-zorro-antd/switch";
-
+import {HmiRoutingModule} from "./hmi-routing.module";
 
 
 @NgModule({
   declarations: [
     EditorComponent,
-    ViewComponent
+    ViewerComponent,
+  ],
+  exports: [
+    EditorComponent,
+    ViewerComponent,
   ],
   imports: [
     CommonModule,
@@ -31,11 +34,12 @@ import {NzSwitchModule} from "ng-zorro-antd/switch";
     NzIconModule,
     NzDividerModule,
     NzTableModule,
-    IconsProviderModule,
-    ColorPickerModule,
     NzSelectModule,
     NzInputModule,
     NzSwitchModule,
+    IconsProviderModule,
+    ColorPickerModule,
   ]
 })
-export class HmiModule { }
+export class HmiModule {
+}

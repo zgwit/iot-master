@@ -41,15 +41,9 @@ export class MemComponent implements OnInit {
           left: 'center'
         },
         color: [
-          '#fac858',
-          '#91cc75',
-          '#fc8452',
-          '#73c0de',
-          '#3ba272',
-          '#5470c6',
-          '#ee6666',
-          '#9a60b4',
-          '#ea7ccc'
+          '#177DDC',
+          'rgba(255,255,255,0.08)',
+          '#E6EBF8',
         ],
         tooltip: {
           //formatter: '{b} {c}',

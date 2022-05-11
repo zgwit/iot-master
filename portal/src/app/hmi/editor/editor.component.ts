@@ -18,14 +18,14 @@ import {CreateComponentObject, GetDefaultProperties, HmiComponent, HmiEntity} fr
 import {CreateElement} from "../components/create";
 
 @Component({
-  selector: 'app-editor',
+  selector: 'hmi-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit, AfterViewInit {
 
 
-  @ViewChild('canvas') canvasElement: HTMLElement | undefined;
+  @ViewChild('hmi-editor-canvas') canvasElement: HTMLElement | undefined;
   // @ts-ignore
   canvas: Svg;
 
