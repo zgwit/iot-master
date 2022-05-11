@@ -1,5 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {RequestService} from "../../request.service";
+import * as filesize from "filesize";
 
 @Component({
   selector: 'app-dash-mem',
@@ -51,7 +52,8 @@ export class MemComponent implements OnInit {
           '#ea7ccc'
         ],
         tooltip: {
-          formatter: '{b} {c}'
+          //formatter: '{b} {c}',
+          valueFormatter: (value: number) => filesize(value)
         },
         series: [
           {
