@@ -13,9 +13,9 @@ import {
   SVG, Text
 } from '@svgdotjs/svg.js';
 import '@svgdotjs/svg.draggable.js'
-import {GetComponent, GroupedComponents} from "../components/component";
-import {CreateComponentObject, GetDefaultProperties, HmiComponent, HmiEntity} from "../hmi";
-import {CreateElement} from "../components/create";
+import {GetComponent, GroupedComponents} from "../hmi/components";
+import {CreateComponentObject, GetDefaultProperties, HmiComponent, HmiEntity} from "../hmi/hmi";
+import {CreateElement} from "../hmi/create";
 
 @Component({
   selector: 'hmi-editor',
@@ -60,13 +60,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   }
 
-  initGrid():void {
+  initGrid(): void {
     //网格线
     let gridSize = 10
     let gridColor = "#202020"
     let pattern = this.baseLayer.pattern(gridSize, gridSize, pattern => {
-      pattern.line(0,0,gridSize,0).stroke(gridColor)
-      pattern.line(0,0,0,gridSize).stroke(gridColor)
+      pattern.line(0, 0, gridSize, 0).stroke(gridColor)
+      pattern.line(0, 0, 0, gridSize).stroke(gridColor)
     })
     this.grid = this.baseLayer.rect().size("100%", "100%").fill(pattern).stroke(gridColor);
   }
@@ -85,7 +85,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       if (!cmp) return
       entity.$element = CreateElement(this.canvas, cmp)
       entity.$object = CreateComponentObject(cmp, entity.$element)
-      cmp.init?.call(entity.$object, entity.properties)
+      cmp.create?.call(entity.$object, entity.properties)
       cmp.setup.call(entity.$object, entity.properties)
 
       this.makeEntityEditable(entity);
@@ -95,27 +95,27 @@ export class EditorComponent implements OnInit, AfterViewInit {
   makeEntityEditable(entity: HmiEntity) {
     let element = entity.$element;
     // @ts-ignore
-    element.draggable().on('dragmove', (e)=> {
+    element.draggable().on('dragmove', (e) => {
       //console.log("move", e)
       this.onMove(entity)
     });
 
-    element.on('dragstart', e=>{
+    element.on('dragstart', e => {
       this.editLayer.clear()
     })
 
-    element.on('dragend', e=>{
-      this.edit(entity)
+    element.on('dragend', e => {
+      this.editEntity(entity)
     })
 
-    element.on('click', (e)=>{
+    element.on('click', (e) => {
       if (this.current == entity) {
         //TODO 取消编辑
         return
       }
       this.current = entity
       //this.editLayer.clear()
-      this.edit(entity)
+      this.editEntity(entity)
     })
 
   }
@@ -141,13 +141,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
       $object: CreateComponentObject(cmp, element),
     }
     this.entities.push(entity)
-    cmp.init?.call(entity.$object, entity.properties)
-    cmp.setup.call(entity.$object, entity.properties)
 
     //画
     this.drawEntity(entity);
 
     this.makeEntityEditable(entity);
+
+    //组件初始化
+    cmp.create?.call(entity.$object, entity.properties)
+    cmp.setup.call(entity.$object, entity.properties)
   }
 
 
@@ -202,7 +204,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
-  drawLine(line: Line, properties: any) {
+  //drawLine(line: Line, properties: any) {
+  drawLine(entity: HmiEntity) {
+    // @ts-ignore
+    let line: Line = entity.$element
+
     let startX = 0;
     let startY = 0;
     let firstClick = true;
@@ -222,12 +228,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
       } else {
         this.StopDraw()
         //properties.points = line.plot().toArray()
-        this.getLinePoints(line, properties)
+        this.getLinePoints(line, entity.properties)
       }
     });
   }
 
-  drawRect(rect: Rect | Ellipse | Image | Svg | ForeignObject, properties: any) {
+  //drawRect(rect: Rect | Ellipse | Image | Svg | ForeignObject, properties: any) {
+  drawRect(entity: HmiEntity) {
+    // @ts-ignore
+    let rect: Rect | Ellipse | Image | Svg | ForeignObject = entity.$element
+
     //let rect: Rect;
     let startX = 0;
     let startY = 0;
@@ -243,9 +253,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
         startY = e.offsetY
         rect.addTo(this.mainLayer).move(startX, startY)
 
-        outline.addTo(this.editLayer).move(startX, startY).stroke({width:1,color:'#7be',dasharray:"6 2",dashoffset:8}).fill("none")
+        outline.addTo(this.editLayer).move(startX, startY).stroke({
+          width: 1,
+          color: '#7be',
+          dasharray: "6 2",
+          dashoffset: 8
+        }).fill("none")
         // @ts-ignore
-        outline.animate().ease('-').stroke({dashoffset:0}).loop();
+        outline.animate().ease('-').stroke({dashoffset: 0}).loop();
 
         // @ts-ignore
         this.canvas.on('mousemove.draw', (e: MouseEvent) => {
@@ -254,17 +269,22 @@ export class EditorComponent implements OnInit, AfterViewInit {
           if (width > 0 && height > 0) {
             rect.size(width, height)
             outline.size(width, height)
+            entity.$component.setup.call(entity.$object, {width, height})
           }
         })
       } else {
         outline.remove()
         this.StopDraw()
-        this.getRectPosition(rect, properties);
+        this.getRectPosition(rect, entity.properties);
       }
     });
   }
 
-  drawCircle(circle: Circle, properties: any) {
+  //drawCircle(circle: Circle, properties: any) {
+  drawCircle(entity: HmiEntity) {
+    // @ts-ignore
+    let circle: Circle = entity.$element
+
     let startX = 0;
     let startY = 0;
     let firstClick = true;
@@ -287,13 +307,17 @@ export class EditorComponent implements OnInit, AfterViewInit {
         })
       } else {
         this.StopDraw()
-        this.getCirclePosition(circle, properties)
+        this.getCirclePosition(circle, entity.properties)
         //properties.radius = radius
       }
     });
   }
 
-  drawEllipse(ellipse: Ellipse, properties: any) {
+  //drawEllipse(ellipse: Ellipse, properties: any) {
+  drawEllipse(entity: HmiEntity) {
+    // @ts-ignore
+    let ellipse: Ellipse = entity.$element
+
     let startX = 0;
     let startY = 0;
     let firstClick = true;
@@ -308,9 +332,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
         startY = e.offsetY
         ellipse.addTo(this.mainLayer).move(startX, startY)
 
-        outline.addTo(this.editLayer).move(startX, startY).stroke({width:1,color:'#7be',dasharray:"6 2",dashoffset:8}).fill("none")
+        outline.addTo(this.editLayer).move(startX, startY).stroke({
+          width: 1,
+          color: '#7be',
+          dasharray: "6 2",
+          dashoffset: 8
+        }).fill("none")
         // @ts-ignore
-        outline.animate().ease('-').stroke({dashoffset:0}).loop();
+        outline.animate().ease('-').stroke({dashoffset: 0}).loop();
 
         // @ts-ignore
         this.canvas.on('mousemove.draw', (e: MouseEvent) => {
@@ -324,12 +353,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
       } else {
         outline.remove()
         this.StopDraw()
-        this.getRectPosition(ellipse, properties)
+        this.getRectPosition(ellipse, entity.properties)
       }
     });
   }
 
-  drawPoly(poly: Polygon | Polyline, properties: any) {
+  //drawPoly(poly: Polygon | Polyline, properties: any) {
+  drawPoly(entity: HmiEntity) {
+    // @ts-ignore
+    let poly: Polygon | Polyline = entity.$element
+
     let firstClick = true;
 
     // @ts-ignore
@@ -358,7 +391,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
             //line.draw('done');
             that.StopDraw()
             //properties.points = arr.toArray()
-            that.getLinePoints(poly, properties)
+            that.getLinePoints(poly, entity.properties)
 
             //off listener
             document.removeEventListener('keydown', onKeydown)
@@ -386,24 +419,24 @@ export class EditorComponent implements OnInit, AfterViewInit {
       case "svg" :
       case "object":
         // @ts-ignore
-        this.drawRect(entity.$element, entity.properties)
+        this.drawRect(entity)
         break
       case "circle" :
         // @ts-ignore
-        this.drawCircle(entity.$element, entity.properties)
+        this.drawCircle(entity)
         break
       case "ellipse" :
         // @ts-ignore
-        this.drawEllipse(entity.$element, entity.properties)
+        this.drawEllipse(entity)
         break
       case "line" :
         // @ts-ignore
-        this.drawLine(entity.$element, entity.properties)
+        this.drawLine(entity)
         break
       case "polyline" :
       case "polygon" :
         // @ts-ignore
-        this.drawPoly(entity.$element, entity.properties)
+        this.drawPoly(entity)
         break
       case "path" :
       default:
@@ -411,7 +444,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
-  editLine(element: Line | Polygon | Polyline, properties: any) {
+  //editLine(element: Line | Polygon | Polyline, properties: any) {
+  editLine(entity: HmiEntity) {
+    // @ts-ignore
+    let element: Line | Polygon | Polyline = entity.$element
     let points = element.array() //.toArray()
     points.forEach((p, i) => {
       let pt = this.editLayer.circle(8).fill('#7be').center(p[0], p[1]).css('cursor', 'pointer').draggable();
@@ -419,31 +455,39 @@ export class EditorComponent implements OnInit, AfterViewInit {
         p[0] = pt.cx()
         p[1] = pt.cy()
         element.plot(points)
-        this.getLinePoints(element, properties)
+        this.getLinePoints(element, entity.properties)
       })
     })
   }
 
-  editRect(element: Rect | Ellipse | Text | Image | Svg | ForeignObject, properties: any) {
-    let obj = element.attr()
-    let border = this.editLayer.rect(obj.width, obj.height).move(obj.x, obj.y).fill('none').stroke({width:1,color:'#7be',dasharray:"6 2",dashoffset:0});
+  //editRect(element: Rect | Ellipse | Text | Image | Svg | ForeignObject, properties: any) {
+  editRect(entity: HmiEntity) {
     // @ts-ignore
-    border.animate().ease('-').stroke({dashoffset:8}).loop();
+    let element: Rect | Ellipse | Text | Image | Svg | ForeignObject = entity.$element
+    let obj = element.attr()
+    let border = this.editLayer.rect(obj.width, obj.height).move(obj.x, obj.y).fill('none').stroke({
+      width: 1,
+      color: '#7be',
+      dasharray: "6 2",
+      dashoffset: 0
+    });
+    // @ts-ignore
+    border.animate().ease('-').stroke({dashoffset: 8}).loop();
 
-    let lt = this.editLayer.rect(8,8).fill('#7be').center(obj.x, obj.y).css('cursor', 'nw-resize').draggable();
-    let lm = this.editLayer.rect(8,8).fill('#7be').center(obj.x, obj.y + obj.height*0.5).css('cursor', 'w-resize').draggable();
-    let lb = this.editLayer.rect(8,8).fill('#7be').center(obj.x, obj.y + obj.height).css('cursor', 'sw-resize').draggable();
-    let rt = this.editLayer.rect(8,8).fill('#7be').center(obj.x+obj.width, obj.y).css('cursor', 'ne-resize').draggable();
-    let rm = this.editLayer.rect(8,8).fill('#7be').center(obj.x+obj.width, obj.y + obj.height*0.5).css('cursor', 'e-resize').draggable();
-    let rb = this.editLayer.rect(8,8).fill('#7be').center(obj.x+obj.width, obj.y + obj.height).css('cursor', 'se-resize').draggable();
-    let t = this.editLayer.rect(8,8).fill('#7be').center(obj.x+obj.width*0.5, obj.y).css('cursor', 'n-resize').draggable();
-    let b = this.editLayer.rect(8,8).fill('#7be').center(obj.x+obj.width*0.5, obj.y + obj.height).css('cursor', 's-resize').draggable();
+    let lt = this.editLayer.rect(8, 8).fill('#7be').center(obj.x, obj.y).css('cursor', 'nw-resize').draggable();
+    let lm = this.editLayer.rect(8, 8).fill('#7be').center(obj.x, obj.y + obj.height * 0.5).css('cursor', 'w-resize').draggable();
+    let lb = this.editLayer.rect(8, 8).fill('#7be').center(obj.x, obj.y + obj.height).css('cursor', 'sw-resize').draggable();
+    let rt = this.editLayer.rect(8, 8).fill('#7be').center(obj.x + obj.width, obj.y).css('cursor', 'ne-resize').draggable();
+    let rm = this.editLayer.rect(8, 8).fill('#7be').center(obj.x + obj.width, obj.y + obj.height * 0.5).css('cursor', 'e-resize').draggable();
+    let rb = this.editLayer.rect(8, 8).fill('#7be').center(obj.x + obj.width, obj.y + obj.height).css('cursor', 'se-resize').draggable();
+    let t = this.editLayer.rect(8, 8).fill('#7be').center(obj.x + obj.width * 0.5, obj.y).css('cursor', 'n-resize').draggable();
+    let b = this.editLayer.rect(8, 8).fill('#7be').center(obj.x + obj.width * 0.5, obj.y + obj.height).css('cursor', 's-resize').draggable();
 
-    lt.on("dragmove", ()=>{
+    lt.on("dragmove", () => {
       // @ts-ignore
-      if (lt.cx() > element.width() + element.x())   return
+      if (lt.cx() > element.width() + element.x()) return
       // @ts-ignore
-      if (lt.cy() > element.height() + element.y())   return
+      if (lt.cy() > element.height() + element.y()) return
       // @ts-ignore
       element.width(element.width() - lt.cx() + element.x())
       // @ts-ignore
@@ -452,19 +496,19 @@ export class EditorComponent implements OnInit, AfterViewInit {
       element.y(lt.cy())
       update()
     })
-    lm.on("dragmove", ()=>{
+    lm.on("dragmove", () => {
       // @ts-ignore
-      if (lm.cx() > element.width() + element.x())   return
+      if (lm.cx() > element.width() + element.x()) return
       // @ts-ignore
       element.width(element.width() - lm.cx() + element.x())
       element.x(lm.cx())
       update()
     })
-    lb.on("dragmove", ()=>{
+    lb.on("dragmove", () => {
       // @ts-ignore
-      if (lb.cx() > element.width() + element.x())   return
+      if (lb.cx() > element.width() + element.x()) return
       // @ts-ignore
-      if (lb.cy() < element.y())   return
+      if (lb.cy() < element.y()) return
       // @ts-ignore
       element.width(element.width() - lb.cx() + element.x())
       // @ts-ignore
@@ -473,11 +517,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
       update()
     })
 
-    rt.on("dragmove", ()=>{
+    rt.on("dragmove", () => {
       // @ts-ignore
-      if (rt.cx() < element.x())   return
+      if (rt.cx() < element.x()) return
       // @ts-ignore
-      if (rt.cy() > element.height() + element.y())   return
+      if (rt.cy() > element.height() + element.y()) return
       // @ts-ignore
       element.width(rt.cx() - element.x())
       // @ts-ignore
@@ -485,59 +529,65 @@ export class EditorComponent implements OnInit, AfterViewInit {
       element.y(rt.cy())
       update()
     })
-    rm.on("dragmove", ()=>{
+    rm.on("dragmove", () => {
       // @ts-ignore
-      if (rm.cx() < element.x())   return
+      if (rm.cx() < element.x()) return
       // @ts-ignore
       element.width(rm.cx() - element.x())
       update()
     })
-    rb.on("dragmove", ()=>{
+    rb.on("dragmove", () => {
       // @ts-ignore
-      if (rb.cx() < element.x())   return
+      if (rb.cx() < element.x()) return
       // @ts-ignore
-      if (rb.cy() < element.y())   return
+      if (rb.cy() < element.y()) return
       // @ts-ignore
       element.width(rb.cx() - element.x())
       // @ts-ignore
       element.height(rb.cy() - element.y())
       update()
     })
-    t.on("dragmove", ()=>{
+    t.on("dragmove", () => {
       // @ts-ignore
-      if (t.cy() > element.y() + element.height())   return
+      if (t.cy() > element.y() + element.height()) return
       // @ts-ignore
       element.height(element.height() - t.cy() + element.y())
       element.y(t.cy())
       update()
     })
-    b.on("dragmove", ()=>{
+    b.on("dragmove", () => {
       // @ts-ignore
-      if (b.cy() < element.y())   return
+      if (b.cy() < element.y()) return
       // @ts-ignore
       element.height(b.cy() - element.y())
       update()
     })
 
     let that = this
+
     function update() {
-      that.getRectPosition(element, properties)
+      that.getRectPosition(element, entity.properties)
 
       let obj = element.attr()
       border.size(obj.width, obj.height).move(obj.x, obj.y)
+      entity.$component.setup?.call(entity.$object, {width: obj.width, height: obj.height})
+
       //border.attr(obj)
       lt.center(obj.x, obj.y)
-      lm.center(obj.x, obj.y + obj.height*0.5)
+      lm.center(obj.x, obj.y + obj.height * 0.5)
       lb.center(obj.x, obj.y + obj.height)
-      rt.center(obj.x+obj.width, obj.y)
-      rm.center(obj.x+obj.width, obj.y + obj.height*0.5)
-      rb.center(obj.x+obj.width, obj.y + obj.height)
-      t.center(obj.x+obj.width*0.5, obj.y)
-      b.center(obj.x+obj.width*0.5, obj.y + obj.height)
+      rt.center(obj.x + obj.width, obj.y)
+      rm.center(obj.x + obj.width, obj.y + obj.height * 0.5)
+      rb.center(obj.x + obj.width, obj.y + obj.height)
+      t.center(obj.x + obj.width * 0.5, obj.y)
+      b.center(obj.x + obj.width * 0.5, obj.y + obj.height)
     }
   }
 
-  editCircle(element: Circle, properties: any) {
+  //editCircle(element: Circle, properties: any) {
+  editCircle(entity: HmiEntity) {
+    // @ts-ignore
+    let element: Circle = entity.$element
     // @ts-ignore
     let x = element.cx() + element.width() / 2 // / Math.sqrt(2)
     // @ts-ignore
@@ -550,12 +600,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
       let height = pt.cy() - element.cy();
       let radius = Math.sqrt(width * width + height * height)
       element.radius(radius)
-      this.getCirclePosition(element, properties)
+      this.getCirclePosition(element, entity.properties)
     })
   }
 
 
-  edit(entity: HmiEntity) {
+  editEntity(entity: HmiEntity) {
     this.editLayer.clear()
     const type = entity.$component.type || "svg"
     switch (type) {
@@ -567,25 +617,23 @@ export class EditorComponent implements OnInit, AfterViewInit {
       case "svg" :
       case "object":
         // @ts-ignore
-        this.editRect(entity.$element, entity.properties)
+        this.editRect(entity)
         break
       case "circle" :
         // @ts-ignore
-        this.editCircle(entity.$element, entity.properties)
+        this.editCircle(entity)
         break
       case "line" :
       case "polyline" :
       case "polygon" :
         // @ts-ignore
-        this.editLine(entity.$element, entity.properties)
+        this.editLine(entity.$element)
         break
       case "path" :
       default:
         throw new Error("不支持的控件类型：" + type)
     }
   }
-
-
 
 
 }
