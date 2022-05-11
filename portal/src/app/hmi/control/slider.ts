@@ -7,6 +7,9 @@ export let SliderComponent: HmiComponent = {
   group: "控件",
   type: "object",
 
+  color: true,
+  stroke: true,
+
   setup(props: any): void {
 
   }

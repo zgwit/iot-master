@@ -7,6 +7,9 @@ export let InputComponent: HmiComponent = {
   group: "控件",
   type: "object",
 
+  color: true,
+  stroke: true,
+
   setup(props: any): void {
 
   }

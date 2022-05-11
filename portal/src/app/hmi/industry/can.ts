@@ -6,6 +6,8 @@ export let CanComponent: HmiComponent = {
   icon: "/assets/hmi/can.svg",
   group: "工业",
 
+  color: true,
+
   setup(props: any): void {
 
   }

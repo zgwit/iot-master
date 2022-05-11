@@ -6,6 +6,8 @@ export let PumpComponent: HmiComponent = {
   icon: "/assets/hmi/pump.svg",
   group: "工业",
 
+  color: true,
+
   setup(props: any): void {
 
   }

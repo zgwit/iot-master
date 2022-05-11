@@ -1,4 +1,5 @@
 import {ElementAlias} from "@svgdotjs/svg.js";
+import {borderProperties, colorProperties, positionProperties, rotateProperties} from "./properties";
 
 export interface HmiPropertyItem {
   label: string
@@ -29,8 +30,8 @@ export interface HmiComponent {
   //基础配置
   color?: boolean
   stroke?: boolean
-  noRotation?: boolean
-  noPosition?: boolean
+  rotation?: boolean
+  position?: boolean
 
   //扩展配置项
   properties?: Array<HmiPropertyItem>
@@ -60,7 +61,8 @@ export function basicProperties() {
 }
 
 export function GetDefaultProperties(component: HmiComponent): any {
-  let obj: any = {};
+  let obj: any = { };
+
   component.properties?.forEach(p => {
     if (p.hasOwnProperty('default'))
       obj[p.name] = p.default

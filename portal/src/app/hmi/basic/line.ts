@@ -1,14 +1,14 @@
 import {HmiComponent} from "../hmi";
 
-export let CircleComponent: HmiComponent = {
-  uuid: "circle",
-  name: "圆形",
-  icon: "/assets/hmi/circle.svg",
+export let LineComponent: HmiComponent = {
+  uuid: "line",
+  name: "直线",
+  icon: "/assets/hmi/line.svg",
   group: "基础组件",
-  type: "circle",
-  stroke: true,
+  type: "line",
+
   color: true,
-  noRotation: true,
+  stroke: true,
 
   setup(properties: any): void {
     if (properties.stroke) { // @ts-ignore

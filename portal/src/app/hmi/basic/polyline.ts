@@ -1,13 +1,14 @@
 import {HmiComponent} from "../hmi";
 
-export let PolygonComponent: HmiComponent = {
-  uuid: "polygon",
+export let PolylineComponent: HmiComponent = {
+  uuid: "polyline",
   name: "折线",
-  icon: "/assets/hmi/polygon.svg",
+  icon: "/assets/hmi/polyline.svg",
   group: "基础组件",
-  type: "polygon",
-  stroke: true,
+  type: "polyline",
   color: true,
+  stroke: true,
+  rotation: false,
 
   setup(properties: any): void {
     if (properties.stroke) { // @ts-ignore
@@ -15,6 +16,8 @@ export let PolygonComponent: HmiComponent = {
     }
     if (properties.color) { // @ts-ignore
       this.$element.fill(properties.color)
+    } else { // @ts-ignore
+      this.$element.fill("none")
     }
   }
 }

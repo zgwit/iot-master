@@ -7,6 +7,8 @@ export let PipeComponent: HmiComponent = {
   group: "工业",
   type: "polyline",
 
+  color: true,
+
   setup(props: any): void {
 
   }

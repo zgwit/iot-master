@@ -6,6 +6,8 @@ export let FanComponent: HmiComponent = {
   icon: "/assets/hmi/fan.svg",
   group: "工业",
 
+  color: true,
+
   setup(props: any): void {
 
   }

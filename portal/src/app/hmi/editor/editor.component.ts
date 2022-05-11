@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {
   Circle,
   Container,
@@ -10,12 +10,13 @@ import {
   Polyline,
   Rect,
   Svg,
-  SVG, Text
+  SVG,
+  Text
 } from '@svgdotjs/svg.js';
 import '@svgdotjs/svg.draggable.js'
-import {GetComponent, GroupedComponents} from "../hmi/components";
-import {CreateComponentObject, GetDefaultProperties, HmiComponent, HmiEntity} from "../hmi/hmi";
-import {CreateElement} from "../hmi/create";
+import {GetComponent, GroupedComponents} from "../components";
+import {CreateComponentObject, GetDefaultProperties, HmiComponent, HmiEntity} from "../hmi";
+import {CreateElement} from "../create";
 
 @Component({
   selector: 'hmi-editor',

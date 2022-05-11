@@ -29,6 +29,7 @@ import {GaugeChartComponent} from "./chart/gauge";
 import {LineChartComponent} from "./chart/line";
 import {PieChartComponent} from "./chart/pie";
 import {RadarChartComponent} from "./chart/radar";
+import {borderProperties, colorProperties, positionProperties, rotateProperties} from "./properties";
 
 export let GroupedComponents: Array<Group> = [];
 
@@ -45,14 +46,34 @@ export function GetComponent(id: string): HmiComponent {
 }
 
 export function LoadComponent(obj: HmiComponent) {
+  let base = {
+    color: false,
+    stroke: false,
+    rotation: true,
+    position: true,
+    group: "扩展",
+    properties: [],
+  }
+  obj = Object.assign(base, obj)
+
+  if (obj.color)
+    obj.properties?.unshift(...colorProperties)
+  if (obj.stroke)
+    obj.properties?.unshift(...borderProperties)
+  if (obj.rotation)
+    obj.properties?.unshift(...rotateProperties)
+  if (obj.position)
+    obj.properties?.unshift(...positionProperties)
+
   //if (indexedComponents.hasOwnProperty(obj.uuid))
   indexedComponents[obj.uuid] = obj;
 
-  if (!obj.group)
-    obj.group = "扩展";
+  // @ts-ignore
   let group = indexedGroupComponents[obj.group]
   if (!group) {
+    // @ts-ignore
     group = indexedGroupComponents[obj.group] = [];
+    // @ts-ignore
     GroupedComponents.push({name: obj.group, components: group});
   }
   group.push(obj)

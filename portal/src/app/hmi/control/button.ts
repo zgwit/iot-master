@@ -1,5 +1,5 @@
 import {HmiComponent} from "../hmi";
-import {fontProperties} from "../../editor/properties";
+import {fontProperties} from "../properties";
 
 const template = `
     <rect height="100%" width="100%"></rect>

@@ -6,6 +6,8 @@ export let PoolComponent: HmiComponent = {
   icon: "/assets/hmi/pool.svg",
   group: "工业",
 
+  color: true,
+
   setup(props: any): void {
 
   }

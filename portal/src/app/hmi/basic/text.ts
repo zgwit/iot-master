@@ -1,5 +1,5 @@
 import {HmiComponent} from "../hmi";
-import {fontProperties} from "../../editor/properties";
+import {fontProperties} from "../properties";
 
 export let TextComponent: HmiComponent = {
   uuid: "text",
@@ -7,8 +7,8 @@ export let TextComponent: HmiComponent = {
   icon: "/assets/hmi/text.svg",
   group: "基础组件",
   type: "text",
-  //stroke: true,
   color: true,
+  stroke: true,
 
   properties: [...fontProperties],
 

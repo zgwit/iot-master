@@ -37,7 +37,6 @@ import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
 import {ComponentComponent} from "./component/component.component";
 import {HmiComponent} from "./hmi/hmi.component";
 import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
-import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
 import {DeviceValueComponent} from "./device-value/device-value.component";
 
 const routes: Routes = [
@@ -121,8 +120,8 @@ const routes: Routes = [
         path: 'hmi', component: ContainerComponent, data: {breadcrumb: "组态"}, children: [
           {path: '', component: HmiComponent, data: {breadcrumb: "组态"}},
           {path: 'detail/:id', component: HmiDetailComponent, data: {breadcrumb: "详情"}},
-          {path: 'edit/:id', component: HmiEditComponent, data: {breadcrumb: "编辑"}},
-          {path: 'create', component: HmiEditComponent, data: {breadcrumb: "创建"}},
+          //{path: 'edit/:id', component: HmiEditComponent, data: {breadcrumb: "编辑"}},
+          //{path: 'create', component: HmiEditComponent, data: {breadcrumb: "创建"}},
         ]
       },
 

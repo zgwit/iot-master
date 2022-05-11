@@ -6,6 +6,8 @@ export let LightComponent: HmiComponent = {
   icon: "/assets/hmi/light.svg",
   group: "工业",
 
+  color: true,
+
   setup(props: any): void {
 
   }

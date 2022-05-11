@@ -1,13 +1,14 @@
 import {HmiComponent} from "../hmi";
 
-export let EllipseComponent: HmiComponent = {
-  uuid: "ellipse",
-  name: "椭圆",
-  icon: "/assets/hmi/ellipse.svg",
+export let PolygonComponent: HmiComponent = {
+  uuid: "polygon",
+  name: "折线",
+  icon: "/assets/hmi/polygon.svg",
   group: "基础组件",
-  type: "ellipse",
-  stroke: true,
+  type: "polygon",
   color: true,
+  stroke: true,
+  rotation: false,
 
   setup(properties: any): void {
     if (properties.stroke) { // @ts-ignore

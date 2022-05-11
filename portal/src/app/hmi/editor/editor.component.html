@@ -43,12 +43,14 @@
       <div id="hmi-editor-canvas"></div>
     </nz-content>
 
-    <nz-sider>
+    <nz-sider class="properties">
       属性/事件/数据
-      <nz-table nzSize="small">
+      <nz-divider nzType="horizontal"></nz-divider>
+
+      <nz-table nzSize="small" nzNoResult=" " [nzBordered]="false" [nzFrontPagination]="false">
         <thead>
         <tr>
-          <th nzWidth="60px">属性</th>
+          <th width="60">属性</th>
           <th>值</th>
         </tr>
         </thead>
@@ -57,16 +59,16 @@
           <td>{{data.label}}</td>
           <td [ngSwitch]="data.type">
             <nz-switch *ngSwitchCase="'boolean'"></nz-switch>
-            <input nz-input *ngSwitchCase="'number'" type="number">
-            <input nz-input *ngSwitchCase="'text'">
-            <input nz-input *ngSwitchCase="'color'" [(colorPicker)]="color" [style.background]="color">
+            <input nz-input *ngSwitchCase="'number'" nzSize="small" type="number">
+            <input nz-input *ngSwitchCase="'text'" nzSize="small">
+            <input nz-input *ngSwitchCase="'color'" nzSize="small" [(colorPicker)]="color" [style.background]="color">
             <!--            <input nz-input *ngSwitchCase="'font'">-->
-            <nz-select *ngSwitchCase="'font'">
+            <nz-select *ngSwitchCase="'font'" nzSize="small">
               <nz-option nzLabel="默认" nzValue=""></nz-option>
               <nz-option nzLabel="黑体" nzValue="黑体"></nz-option>
               <nz-option nzLabel="宋体" nzValue="宋体"></nz-option>
             </nz-select>
-            <nz-select *ngSwitchCase="'fontsize'">
+            <nz-select *ngSwitchCase="'fontsize'" nzSize="small">
               <nz-option nzLabel="最小" nzValue="xx-small"></nz-option>
               <nz-option nzLabel="较小" nzValue="x-small"></nz-option>
               <nz-option nzLabel="小号" nzValue="small"></nz-option>
@@ -76,7 +78,7 @@
               <nz-option nzLabel="超大" nzValue="xx-large"></nz-option>
               <nz-option nzLabel="最大" nzValue="xxx-large"></nz-option>
             </nz-select>
-            <input nz-input *ngSwitchDefault>
+            <input nz-input *ngSwitchDefault nzSize="small">
             <!--            {{data.name}}-->
           </td>
         </tr>

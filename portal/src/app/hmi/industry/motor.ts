@@ -6,6 +6,8 @@ export let MotorComponent: HmiComponent = {
   icon: "/assets/hmi/motor.svg",
   group: "工业",
 
+  color: true,
+
   setup(props: any): void {
 
   }

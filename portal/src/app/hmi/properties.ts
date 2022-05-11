@@ -1,4 +1,4 @@
-import {HmiPropertyItem} from "../hmi/hmi";
+import {HmiPropertyItem} from "./hmi";
 
 export let positionProperties: Array<HmiPropertyItem> = [
   {
@@ -33,7 +33,7 @@ export let rotateProperties: Array<HmiPropertyItem> = [
 
 export let borderProperties: Array<HmiPropertyItem> = [
   {
-    label: '颜色',
+    label: '边框色',
     name: 'color',
     type: 'color',
     default: '#fff'
@@ -48,7 +48,7 @@ export let borderProperties: Array<HmiPropertyItem> = [
 
 export let colorProperties: Array<HmiPropertyItem> = [
   {
-    label: '填充颜色',
+    label: '填充色',
     name: 'fill',
     type: 'color',
     default: 'none'

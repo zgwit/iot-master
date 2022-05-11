@@ -7,6 +7,9 @@ export let ValueComponent: HmiComponent = {
   group: "控件",
   type: "text",
 
+  color: true,
+  stroke: true,
+
   setup(props: any): void {
     //elem.text(props.text || '0')
   }

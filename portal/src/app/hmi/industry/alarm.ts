@@ -6,6 +6,8 @@ export let AlarmComponent: HmiComponent = {
   icon: "/assets/hmi/alarm.svg",
   group: "工业",
 
+  color: true,
+
   setup(props: any): void {
 
   }
