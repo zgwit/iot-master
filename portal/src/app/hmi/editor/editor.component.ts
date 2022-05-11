@@ -23,14 +23,14 @@ import {CreateElement} from "../components/create";
   styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit, AfterViewInit {
-
-
-  @ViewChild('hmi-editor-canvas') canvasElement: HTMLElement | undefined;
   // @ts-ignore
   canvas: Svg;
 
   // @ts-ignore
   baseLayer: Container;
+
+  // @ts-ignore
+  grid: Rect;
 
   // @ts-ignore
   mainLayer: Container;
@@ -60,10 +60,23 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   }
 
+  initGrid():void {
+    //网格线
+    let gridSize = 10
+    let gridColor = "#202020"
+    let pattern = this.baseLayer.pattern(gridSize, gridSize, pattern => {
+      pattern.line(0,0,gridSize,0).stroke(gridColor)
+      pattern.line(0,0,0,gridSize).stroke(gridColor)
+    })
+    this.grid = this.baseLayer.rect().size("100%", "100%").fill(pattern).stroke(gridColor);
+  }
+
   ngAfterViewInit(): void {
     // @ts-ignore
-    this.canvas = SVG().addTo('#canvas').size("100%", "100%");
+    this.canvas = SVG().addTo('#hmi-editor-canvas').size(800, 600);
     this.baseLayer = this.canvas.group();
+    this.initGrid();
+
     this.mainLayer = this.canvas.group();
     this.editLayer = this.canvas.group();
 
