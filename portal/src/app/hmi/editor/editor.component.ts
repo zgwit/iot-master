@@ -211,7 +211,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
       $element: element,
       $component: cmp,
       $object: CreateComponentObject(cmp, element),
+
     }
+    
+    // @ts-ignore
+    entity.__proto__ = {
+      //$emit: ()=>{}
+    }
+
+
     this.entities.push(entity)
 
     //画
