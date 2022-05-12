@@ -22,6 +22,14 @@ type Link interface {
 	Pipe(pipe io.ReadWriteCloser)
 }
 
+
+func WriteAndRead(data []byte) ([]byte, error) {
+	//link.read channel
+	//link.Once("data", )
+
+	return nil, nil
+}
+
 type baseLink struct {
 	events.EventEmitter
 
@@ -59,7 +67,6 @@ func (l *baseLink) onClose() {
 	}
 	l.Emit("close")
 }
-
 
 func (l *baseLink) Pipe(pipe io.ReadWriteCloser) {
 	//关闭之前的透传
