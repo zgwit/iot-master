@@ -61,9 +61,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
   onKeyup(event: KeyboardEvent) {
     console.log("onKeyup", event)
     switch (event.key) {
-      case "Delete":
-        //删除
-
+      case "Delete": //删除
+        let index = this.entities.findIndex(v => v == this.current)
+        if (index > -1)
+          this.entities.splice(index, 1)
         break;
       case "s": //保存
         if (event.ctrlKey) {
@@ -77,13 +78,32 @@ export class EditorComponent implements OnInit, AfterViewInit {
         break;
       //case "v": break;
       case "ArrowUp":
-        this.current?.$element.dmove(0, -5)
+        if (this.current) {
+          this.current.$element.dmove(0, -5)
+          this.current.properties.y -= 5
+          this.editEntity(this.current)
+        }
         break;
       case "ArrowDown":
+        if (this.current) {
+          this.current.$element.dmove(0, 5)
+          this.current.properties.y += 5
+          this.editEntity(this.current)
+        }
         break;
       case "ArrowLeft":
+        if (this.current) {
+          this.current.$element.dmove(-5, 0)
+          this.current.properties.x -= 5
+          this.editEntity(this.current)
+        }
         break;
       case "ArrowRight":
+        if (this.current) {
+          this.current.$element.dmove(5, 0)
+          this.current.properties.x += 5
+          this.editEntity(this.current)
+        }
         break;
     }
   }
