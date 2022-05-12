@@ -7,12 +7,11 @@ import {
   Polyline,
   Rect,
   Svg,
-  Text, TextPath,
-  Use
+  Text, TextPath
 } from "@svgdotjs/svg.js";
-import {GetComponentAllProperties} from "./components";
+import {borderProperties, colorProperties, positionProperties, rotateProperties} from "./properties";
 
-export type SvgElement =
+export type HmiElement =
   Svg
   | Rect
   | Line
@@ -95,13 +94,22 @@ export interface HmiComponent {
   data?(): any
 }
 
-export function basicProperties() {
-  return {
-    line: false,
-    fill: false,
-    rotate: true,
-    position: true
-  }
+export function GetComponentGlobalProperties(obj: HmiComponent) {
+  let properties = [];
+  if (obj.color)
+    properties?.unshift(...colorProperties)
+  if (obj.stroke)
+    properties?.unshift(...borderProperties)
+  if (obj.rotation)
+    properties?.unshift(...rotateProperties)
+  if (obj.position)
+    properties?.unshift(...positionProperties)
+  return properties
+}
+
+export function GetComponentAllProperties(obj: HmiComponent) {
+  //@ts-ignore
+  return GetComponentGlobalProperties(obj).concat(obj.properties)
 }
 
 export function GetPropertiesDefault(component: HmiComponent): any {
@@ -114,7 +122,7 @@ export function GetPropertiesDefault(component: HmiComponent): any {
   return obj;
 }
 
-export function CreateComponentObject(component: HmiComponent, element: SvgElement): any {
+export function CreateComponentObject(component: HmiComponent, element: HmiElement): any {
   let obj = component.data ? component.data() : {}
   obj.__proto__ = {
     //$name: entity.name,
@@ -134,7 +142,7 @@ export interface HmiEntity {
   //绑定
   bindings: any //{ [name: string]: any }
 
-  $element: SvgElement
+  $element: HmiElement
   $component: HmiComponent
   $object: any;
 }

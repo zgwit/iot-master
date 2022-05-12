@@ -12,9 +12,6 @@ import {InputComponent} from "./control/input";
 import {SwitchComponent} from "./control/switch";
 import {SliderComponent} from "./control/slider";
 import {ValueComponent} from "./control/value";
-import {ClockComponent} from "./control/clock";
-import {CameraComponent} from "./control/camera";
-import {WeatherComponent} from "./control/weather";
 import {AlarmComponent} from "./industry/alarm";
 import {CanComponent} from "./industry/can";
 import {FanComponent} from "./industry/fan";
@@ -29,7 +26,6 @@ import {GaugeChartComponent} from "./chart/gauge";
 import {LineChartComponent} from "./chart/line";
 import {PieChartComponent} from "./chart/pie";
 import {RadarChartComponent} from "./chart/radar";
-import {borderProperties, colorProperties, positionProperties, rotateProperties} from "./properties";
 
 export let GroupedComponents: Array<Group> = [];
 
@@ -45,23 +41,6 @@ export function GetComponent(id: string): HmiComponent {
   return indexedComponents[id];
 }
 
-export function GetComponentGlobalProperties(obj: HmiComponent) {
-  let properties = [];
-  if (obj.color)
-    properties?.unshift(...colorProperties)
-  if (obj.stroke)
-    properties?.unshift(...borderProperties)
-  if (obj.rotation)
-    properties?.unshift(...rotateProperties)
-  if (obj.position)
-    properties?.unshift(...positionProperties)
-  return properties
-}
-
-export function GetComponentAllProperties(obj: HmiComponent) {
-  //@ts-ignore
-  return GetComponentGlobalProperties(obj).concat(obj.properties)
-}
 
 export function LoadComponent(obj: HmiComponent) {
   let base = {
@@ -93,7 +72,8 @@ let internalComponents = [
   //基础
   LineComponent, CircleComponent, EllipseComponent, PolylineComponent, PolygonComponent, RectComponent, TextComponent, ImageComponent,
   //控件
-  ButtonComponent, InputComponent, SwitchComponent, SliderComponent, ValueComponent, ClockComponent, CameraComponent, WeatherComponent,
+  ButtonComponent, InputComponent, SwitchComponent, SliderComponent, ValueComponent,
+  //ClockComponent, CameraComponent, WeatherComponent,
   //工业
   AlarmComponent, CanComponent, FanComponent, LightComponent, PipeComponent, PoolComponent, PumpComponent, ValveComponent, MotorComponent,
   //图表

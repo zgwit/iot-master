@@ -11,10 +11,10 @@ import {
   Svg,
   Text,
 } from "@svgdotjs/svg.js";
-import {HmiComponent, SvgElement} from "./hmi";
+import {HmiComponent, HmiElement} from "./hmi";
 
-export function CreateElement(container: Container, component: HmiComponent): SvgElement {
-  let element: SvgElement
+export function CreateElement(container: Container, component: HmiComponent): HmiElement {
+  let element: HmiElement
   const type = component.type || "svg"
   switch (type) {
     case "rect" :

@@ -14,14 +14,14 @@ import {
   Text
 } from '@svgdotjs/svg.js';
 import '@svgdotjs/svg.draggable.js'
-import {GetComponentAllProperties, GetComponent, GetComponentGlobalProperties, GroupedComponents} from "../components";
+import {GetComponent, GroupedComponents} from "../components";
 import {
   CreateComponentObject,
   GetPropertiesDefault,
   HmiComponent,
   HmiEntity,
   HmiPropertyItem,
-  SvgElement
+  HmiElement, GetComponentAllProperties
 } from "../hmi";
 import {CreateElement} from "../create";
 
