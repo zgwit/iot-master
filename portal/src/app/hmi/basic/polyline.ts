@@ -10,14 +10,10 @@ export let PolylineComponent: HmiComponent = {
   //color: true,
   stroke: true,
 
-  properties:[
-    {
-      label: '填充色',
-      name: 'fill',
-      type: 'color',
-      default: 'none'
-    },
-  ],
+  create(props: any): void {
+    // @ts-ignore
+    this.$element.fill("none")
+  },
 
   setup(properties: any): void {
 

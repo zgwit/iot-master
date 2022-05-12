@@ -743,7 +743,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
           this.editEntity(this.current)
           break;
         case "rotate":
-          elem.rotate(this.properties.rotate)
+          elem.transform({rotate: this.properties.rotate})
           this.editEntity(this.current)
           break;
       }
