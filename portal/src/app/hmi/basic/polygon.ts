@@ -11,11 +11,6 @@ export let PolygonComponent: HmiComponent = {
   rotation: false,
 
   setup(properties: any): void {
-    if (properties.stroke) { // @ts-ignore
-      this.$element.stroke(properties.stroke)
-    }
-    if (properties.color) { // @ts-ignore
-      this.$element.fill(properties.color)
-    }
+
   }
 }

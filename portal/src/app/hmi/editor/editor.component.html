@@ -1,31 +1,32 @@
 <nz-layout class="editor-layout">
   <nz-header class="header">
     <i nz-icon class="btn" nzType="save" title="保存"></i>
-<!--    <i nz-icon class="btn" nzType="export" title="导出"></i>-->
+    <!--    <i nz-icon class="btn" nzType="export" title="导出"></i>-->
     <nz-divider nzType="vertical"></nz-divider>
     <i nz-icon class="btn" nzType="undo" title="撤销"></i>
     <i nz-icon class="btn" nzType="redo" title="重做"></i>
     <nz-divider nzType="vertical"></nz-divider>
     <i nz-icon class="btn" nzType="scissor" title="剪切"></i>
     <i nz-icon class="btn" nzType="copy" title="复制"></i>
-<!--    <i nz-icon class="btn" nzType="snippets" title="粘贴"></i>-->
+    <!--    <i nz-icon class="btn" nzType="snippets" title="粘贴"></i>-->
     <i nz-icon class="btn" nzType="delete" title="删除"></i>
-<!--    <nz-divider nzType="vertical"></nz-divider>-->
-<!--    <i nz-icon class="btn" nzType="align-left" title="左对齐"></i>-->
-<!--    <i nz-icon class="btn" nzType="align-center" title="居中对齐"></i>-->
-<!--    <i nz-icon class="btn" nzType="align-right" title="右对齐"></i>-->
-<!--    <nz-divider nzType="vertical"></nz-divider>-->
-<!--    <i nz-icon class="btn" nzType="vertical-align-top" title="上对齐"></i>-->
-<!--    <i nz-icon class="btn" nzType="vertical-align-middle" title="居中对齐"></i>-->
-<!--    <i nz-icon class="btn" nzType="vertical-align-bottom" title="下对齐"></i>-->
+    <!--    <nz-divider nzType="vertical"></nz-divider>-->
+    <!--    <i nz-icon class="btn" nzType="align-left" title="左对齐"></i>-->
+    <!--    <i nz-icon class="btn" nzType="align-center" title="居中对齐"></i>-->
+    <!--    <i nz-icon class="btn" nzType="align-right" title="右对齐"></i>-->
+    <!--    <nz-divider nzType="vertical"></nz-divider>-->
+    <!--    <i nz-icon class="btn" nzType="vertical-align-top" title="上对齐"></i>-->
+    <!--    <i nz-icon class="btn" nzType="vertical-align-middle" title="居中对齐"></i>-->
+    <!--    <i nz-icon class="btn" nzType="vertical-align-bottom" title="下对齐"></i>-->
     <nz-divider nzType="vertical"></nz-divider>
     <i nz-icon class="btn" nzType="vertical-right" title="置顶" [nzRotate]="90"></i>
     <i nz-icon class="btn" nzType="up" title="上移一层"></i>
     <i nz-icon class="btn" nzType="down" title="下移一层"></i>
     <i nz-icon class="btn" nzType="vertical-left" title="置底" [nzRotate]="90"></i>
-<!--    <nz-divider nzType="vertical"></nz-divider>-->
-<!--    <i nz-icon class="btn" nzType="group" title="组合"></i>-->
-<!--    <i nz-icon class="btn" nzType="ungroup" title="解除组合"></i>-->
+    <!--    <nz-divider nzType="vertical"></nz-divider>-->
+    <!--    <i nz-icon class="btn" nzType="group" title="组合"></i>-->
+    <!--    <i nz-icon class="btn" nzType="ungroup" title="解除组合"></i>-->
+
   </nz-header>
   <nz-layout>
     <nz-sider>
@@ -50,24 +51,39 @@
           <nz-table nzSize="small" nzNoResult=" " [nzBordered]="false" [nzFrontPagination]="false">
             <thead>
             <tr>
-              <th width="60">属性</th>
+              <th>属性</th>
               <th>值</th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let data of currentComponent?.properties">
+            <tr *ngFor="let data of $properties">
               <td>{{data.label}}</td>
               <td [ngSwitch]="data.type">
-                <nz-switch *ngSwitchCase="'boolean'" nzSize="small"></nz-switch>
-                <input nz-input *ngSwitchCase="'number'" nzSize="small" type="number">
-                <input nz-input *ngSwitchCase="'text'" nzSize="small">
-                <input nz-input *ngSwitchCase="'color'" nzSize="small" [value]="color" [(colorPicker)]="color" [style.background]="color">
-                <nz-select *ngSwitchCase="'font'" nzSize="small">
+                <nz-switch *ngSwitchCase="'boolean'" nzSize="small"
+                           [(ngModel)]="properties[data.name]"
+                           (ngModelChange)="onPropertyChange(data.name)"></nz-switch>
+                <input nz-input *ngSwitchCase="'number'" nzSize="small" type="number"
+                       [(ngModel)]="properties[data.name]"
+                       (change)="onPropertyChange(data.name)">
+                <input nz-input *ngSwitchCase="'text'" nzSize="small"
+                       [(ngModel)]="properties[data.name]"
+                       (change)="onPropertyChange(data.name)">
+                <ng-container *ngSwitchCase="'color'">
+                  <input nz-input nzSize="small" [value]="properties[data.name]" [(colorPicker)]="properties[data.name]"
+                         [style.background]="properties[data.name]"
+                         (colorPickerChange)="onPropertyChange(data.name)">
+                  <a (click)="properties[data.name]='none'; onPropertyChange(data.name)" *ngIf="properties[data.name]!='none'">无</a>
+                </ng-container>
+                <nz-select *ngSwitchCase="'font'" nzSize="small"
+                           [(ngModel)]="properties[data.name]"
+                           (ngModelChange)="onPropertyChange(data.name)">
                   <nz-option nzLabel="默认" nzValue=""></nz-option>
                   <nz-option nzLabel="黑体" nzValue="黑体"></nz-option>
                   <nz-option nzLabel="宋体" nzValue="宋体"></nz-option>
                 </nz-select>
-                <nz-select *ngSwitchCase="'fontsize'" nzSize="small">
+                <nz-select *ngSwitchCase="'fontsize'" nzSize="small"
+                           [(ngModel)]="properties[data.name]"
+                           (ngModelChange)="onPropertyChange(data.name)">
                   <nz-option nzLabel="最小" nzValue="xx-small"></nz-option>
                   <nz-option nzLabel="较小" nzValue="x-small"></nz-option>
                   <nz-option nzLabel="小号" nzValue="small"></nz-option>
@@ -77,7 +93,9 @@
                   <nz-option nzLabel="超大" nzValue="xx-large"></nz-option>
                   <nz-option nzLabel="最大" nzValue="xxx-large"></nz-option>
                 </nz-select>
-                <input nz-input *ngSwitchDefault nzSize="small">
+                <input nz-input *ngSwitchDefault nzSize="small"
+                       [(ngModel)]="properties[data.name]"
+                       (change)="onPropertyChange(data.name)">
                 <!--            {{data.name}}-->
               </td>
             </tr>
@@ -93,26 +111,27 @@
         </nz-tab>
       </nz-tabset>
 
-
     </nz-sider>
   </nz-layout>
-<!--  <nz-footer>-->
-<!--    填充-->
-<!--    <input class="color" [(colorPicker)]="color" [style.background]="color"/>-->
-<!--    <a (click)="color='none'">无填充</a>-->
-<!--    <nz-divider nzType="vertical"></nz-divider>-->
+  <nz-footer>
 
-<!--    边框-->
-<!--    &lt;!&ndash;    <a (click)="stroke.color='none'">无边框</a>&ndash;&gt;-->
-<!--    <nz-select [(ngModel)]="stroke.width">-->
-<!--      <nz-option [nzValue]="0" nzLabel="无"></nz-option>-->
-<!--      <nz-option [nzValue]="1" nzLabel="1"></nz-option>-->
-<!--      <nz-option [nzValue]="2" nzLabel="2"></nz-option>-->
-<!--      <nz-option [nzValue]="3" nzLabel="3"></nz-option>-->
-<!--      <nz-option [nzValue]="4" nzLabel="4"></nz-option>-->
-<!--      <nz-option [nzValue]="5" nzLabel="5"></nz-option>-->
-<!--    </nz-select>-->
-<!--    <input class="color" *ngIf="stroke.width > 0" [(colorPicker)]="stroke.color" [style.background]="stroke.color"/>-->
+    填充
+    <input class="color" [(colorPicker)]="fill" [style.background]="fill"/>
+    <a (click)="fill='none'" *ngIf="fill!='none'">无</a>
 
-<!--  </nz-footer>-->
+    <nz-divider nzType="vertical"></nz-divider>
+    边框
+    <nz-select [(ngModel)]="stroke" nzSize="small">
+      <nz-option [nzValue]="0" nzLabel="无"></nz-option>
+      <nz-option [nzValue]="1" nzLabel="1"></nz-option>
+      <nz-option [nzValue]="2" nzLabel="2"></nz-option>
+      <nz-option [nzValue]="3" nzLabel="3"></nz-option>
+      <nz-option [nzValue]="4" nzLabel="4"></nz-option>
+      <nz-option [nzValue]="5" nzLabel="5"></nz-option>
+    </nz-select>
+    <ng-container *ngIf="stroke > 0">
+      <input class="color" [(colorPicker)]="color" [style.background]="color"/>
+      <a (click)="color='none'" *ngIf="color!='none'">无</a>
+    </ng-container>
+  </nz-footer>
 </nz-layout>

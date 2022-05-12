@@ -13,8 +13,6 @@ export let TextComponent: HmiComponent = {
   properties: [...fontProperties],
 
   setup(properties: any): void {
-    if (properties.color) { // @ts-ignore
-      this.$element.fill(properties.color)
-    }
+
   }
 }

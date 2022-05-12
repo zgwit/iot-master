@@ -45,6 +45,19 @@ export function GetComponent(id: string): HmiComponent {
   return indexedComponents[id];
 }
 
+export function GetComponentGlobalProperties(obj: HmiComponent) {
+  let properties = [];
+  if (obj.color)
+    properties?.unshift(...colorProperties)
+  if (obj.stroke)
+    properties?.unshift(...borderProperties)
+  if (obj.rotation)
+    properties?.unshift(...rotateProperties)
+  if (obj.position)
+    properties?.unshift(...positionProperties)
+  return properties
+}
+
 export function LoadComponent(obj: HmiComponent) {
   let base = {
     color: false,
@@ -55,15 +68,6 @@ export function LoadComponent(obj: HmiComponent) {
     properties: [],
   }
   obj = Object.assign(base, obj)
-
-  if (obj.color)
-    obj.properties?.unshift(...colorProperties)
-  if (obj.stroke)
-    obj.properties?.unshift(...borderProperties)
-  if (obj.rotation)
-    obj.properties?.unshift(...rotateProperties)
-  if (obj.position)
-    obj.properties?.unshift(...positionProperties)
 
   //if (indexedComponents.hasOwnProperty(obj.uuid))
   indexedComponents[obj.uuid] = obj;

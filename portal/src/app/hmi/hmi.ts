@@ -1,9 +1,6 @@
 import {
   Circle,
-  ClipPath,
-  Dom, Element,
-  ElementAlias,
-  Ellipse, ForeignObject, G, Gradient, Image,
+  Ellipse, ForeignObject, Image,
   Line,
   Path,
   Polygon,
@@ -14,7 +11,19 @@ import {
   Use
 } from "@svgdotjs/svg.js";
 
-export type SvgElement = Svg | Rect | Line | Polygon | Polyline | Ellipse | Text | Path | TextPath | Circle | Image | ForeignObject
+export type SvgElement =
+  Svg
+  | Rect
+  | Line
+  | Polygon
+  | Polyline
+  | Ellipse
+  | Text
+  | Path
+  | TextPath
+  | Circle
+  | Image
+  | ForeignObject
 
 export interface HmiPropertyItem {
   label: string
@@ -53,10 +62,10 @@ export interface HmiComponent {
   svg?: string
 
   //基础配置
-  color?: boolean
-  stroke?: boolean
-  rotation?: boolean
-  position?: boolean
+  color?: boolean //填充色
+  stroke?: boolean //线条
+  rotation?: boolean //旋转
+  position?: boolean //位置
 
   //扩展配置项
   properties?: Array<HmiPropertyItem>
@@ -68,6 +77,9 @@ export interface HmiComponent {
   watches?: Array<HmiValue>
 
   //[prop: string]: any
+
+  //缩放 svg foreignObject
+  resize?(): void
 
   //初始化
   create?(props: any): void
@@ -91,7 +103,7 @@ export function basicProperties() {
   }
 }
 
-export function GetDefaultProperties(component: HmiComponent): any {
+export function GetPropertiesDefault(component: HmiComponent): any {
   let obj: any = {};
 
   component.properties?.forEach(p => {
@@ -113,18 +125,17 @@ export function CreateComponentObject(component: HmiComponent, element: SvgEleme
 export interface HmiEntity {
   name: string
   component: string //uuid
+
+  //属性
   properties: any //{ [name: string]: any }
-  triggers: any
-  bindings: any
+  //响应
+  handlers: any //{ [event: string]: []invokes | script }
+  //绑定
+  bindings: any //{ [name: string]: any }
 
   $element: SvgElement
   $component: HmiComponent
   $object: any;
-
-  //TODO
-  //参数绑定
-  //事件响应
-  //脚本
 }
 
 export interface HmiEntities {

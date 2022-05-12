@@ -14,8 +14,8 @@ import {
   Text
 } from '@svgdotjs/svg.js';
 import '@svgdotjs/svg.draggable.js'
-import {GetComponent, GroupedComponents} from "../components";
-import {CreateComponentObject, GetDefaultProperties, HmiComponent, HmiEntity} from "../hmi";
+import {GetComponent, GetComponentGlobalProperties, GroupedComponents} from "../components";
+import {CreateComponentObject, GetPropertiesDefault, HmiComponent, HmiEntity, HmiPropertyItem} from "../hmi";
 import {CreateElement} from "../create";
 
 @Component({
@@ -46,13 +46,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
   entities: Array<HmiEntity> = []
   current: HmiEntity | undefined;
 
-  color = "none"
-  //stroke = "white"
-  //strokeWidth = 1;
-  stroke = {
-    color: 'white',
-    width: 1,
-  }
+  properties: any = {}
+  $properties: Array<HmiPropertyItem> = []
+
+  color = "#FFFFFF"
+  fill = "#FFFFFF"
+  stroke = 2
 
   constructor() {
   }
@@ -172,22 +171,34 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   }
 
-  draw(cmp: HmiComponent) {
-    this.currentComponent = cmp;
+  getComponentProperties(cmp: HmiComponent) {
+    this.$properties = GetComponentGlobalProperties(cmp);
+    // @ts-ignore
+    this.$properties = this.$properties.concat(cmp.properties)
+  }
 
-    let properties = GetDefaultProperties(cmp)
+  draw(cmp: HmiComponent) {
+    //清空选择
+    this.current = undefined;
+
+    this.currentComponent = cmp;
+    this.getComponentProperties(cmp);
+
+    this.properties = GetPropertiesDefault(cmp)
     if (cmp.color)
-      properties.color = this.color
-    if (cmp.stroke)
-      properties.stroke = this.stroke
+      this.properties.fill = this.fill
+    if (cmp.stroke) {
+      this.properties.color = this.color
+      this.properties.stroke = this.stroke
+    }
 
     let element = CreateElement(this.mainLayer, cmp)
 
     let entity: HmiEntity = {
       name: "",
       component: cmp.uuid,
-      properties,
-      triggers: {},
+      properties: this.properties,
+      handlers: {},
       bindings: {},
 
       $element: element,
@@ -323,7 +334,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
           if (width > 0 && height > 0) {
             rect.size(width, height)
             outline.size(width, height)
-            entity.$component.setup.call(entity.$object, {width, height})
+            //entity.$component.setup.call(entity.$object, {width, height})
+            entity.$component.resize?.call(entity.$object)
           }
         })
       } else {
@@ -624,7 +636,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
       let obj = element.attr()
       border.size(obj.width, obj.height).move(obj.x, obj.y)
-      entity.$component.setup?.call(entity.$object, {width: obj.width, height: obj.height})
+      //entity.$component.setup?.call(entity.$object, {width: obj.width, height: obj.height})
+      entity.$component.resize?.call(entity.$object)
 
       //border.attr(obj)
       lt.center(obj.x, obj.y)
@@ -658,9 +671,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
     })
   }
 
-
   editEntity(entity: HmiEntity) {
     this.editLayer.clear()
+    this.getComponentProperties(entity.$component);
+    this.properties = entity.properties
     const type = entity.$component.type || "svg"
     switch (type) {
       case "ellipse" :
@@ -689,5 +703,46 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onPropertyChange(name: string) {
+    if (this.current) {
+      let val = this.properties[name];
+      let cmp = this.current.$component;
+      let elem = this.current.$element;
+      // @ts-ignore
+      let index = cmp.properties.findIndex(p => p.name == name)
+      if (index > -1) {
+        let props = {[name]: val}
+        cmp.setup.call(this.current.$object, props)
+        return
+      }
 
+      switch (name) {
+        case "fill":
+          elem.fill(this.properties.fill)
+          break;
+        case "stroke":
+        case "color":
+          elem.stroke({color: this.properties.color, width: this.properties.stroke})
+          break;
+        case "x":
+        case "y":
+          elem.move(this.properties.x, this.properties.y)
+          this.editEntity(this.current)
+          break;
+        case "width":
+        case "height":
+          elem.size(this.properties.width, this.properties.height)
+          cmp.resize?.call(this.current.$object)
+          this.editEntity(this.current)
+          break;
+        case "rotate":
+          elem.rotate(this.properties.rotate)
+          this.editEntity(this.current)
+          break;
+      }
+    }
+
+    //entity.$component.setup?.call(entity.$object, {width: obj.width, height: obj.height})
+
+  }
 }

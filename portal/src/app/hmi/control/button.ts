@@ -1,4 +1,4 @@
-import {HmiComponent} from "../hmi";
+import {HmiComponent, HmiPropertyItem} from "../hmi";
 import {fontProperties} from "../properties";
 
 const template = `
@@ -12,10 +12,21 @@ export let ButtonComponent: HmiComponent = {
   icon: "/assets/hmi/button.svg",
   //template,
 
-  color: true,
-  stroke: true,
-
-  properties: [...fontProperties],
+  properties: [
+    {
+      label: '颜色',
+      name: 'color',
+      type: 'color',
+      default: '#fff'
+    },
+    {
+      label: '背景',
+      name: 'fill',
+      type: 'color',
+      default: 'none'
+    },
+    ...fontProperties
+  ],
 
   //配置
   create(props: any) {
@@ -32,22 +43,31 @@ export let ButtonComponent: HmiComponent = {
     this.text.center(box.cx, box.cy)
   },
 
+  resize() {
+    // @ts-ignore
+    let box = this.rect.bbox()
+    // @ts-ignore
+    this.text.center(box.cx, box.cy)
+  },
+
   //配置
   setup(props: any) {
-    //console.log(props)
-    if (props.width || props.height) {
-      // @ts-ignore
-      let box = this.rect.bbox()
-      // @ts-ignore
-      this.text.center(box.cx, box.cy)
+    if (props.color) { // @ts-ignore
+      this.text.fill(props.color)
+    }
+    if (props.fill) { // @ts-ignore
+      this.rect.fill(props.fill)
+    }
+    if (props.hasOwnProperty("font")) {// @ts-ignore
+      this.text.font({family: props.font})
+    }
+    if (props.hasOwnProperty("fontsize")) {// @ts-ignore
+      this.text.font({size: props.fontsize})
+    }
+    if (props.hasOwnProperty("bold")) {// @ts-ignore
+      this.text.font({weight: props.bold ? "bold" : "normal"})
     }
 
-    if (props.stroke) { // @ts-ignore
-      this.text.fill(props.stroke)
-    }
-    if (props.color) { // @ts-ignore
-      this.rect.fill(props.color)
-    }
   },
 
   //更新数据
