@@ -1,5 +1,20 @@
-import {ElementAlias} from "@svgdotjs/svg.js";
-import {borderProperties, colorProperties, positionProperties, rotateProperties} from "./properties";
+import {
+  Circle,
+  ClipPath,
+  Dom, Element,
+  ElementAlias,
+  Ellipse, ForeignObject, G, Gradient, Image,
+  Line,
+  Path,
+  Polygon,
+  Polyline,
+  Rect,
+  Svg,
+  Text, TextPath,
+  Use
+} from "@svgdotjs/svg.js";
+
+export type SvgElement = Svg | Rect | Line | Polygon | Polyline | Ellipse | Text | Path | TextPath | Circle | Image | ForeignObject
 
 export interface HmiPropertyItem {
   label: string
@@ -11,6 +26,16 @@ export interface HmiPropertyItem {
   default?: boolean | number | string
 
   [prop: string]: any
+}
+
+export interface HmiEvent {
+  event: string
+  label: string
+}
+
+export interface HmiValue {
+  value: string
+  label: string
 }
 
 export interface HmiComponent {
@@ -35,6 +60,12 @@ export interface HmiComponent {
 
   //扩展配置项
   properties?: Array<HmiPropertyItem>
+
+  //事件
+  events?: Array<HmiEvent>
+
+  //监听
+  watches?: Array<HmiValue>
 
   //[prop: string]: any
 
@@ -61,7 +92,7 @@ export function basicProperties() {
 }
 
 export function GetDefaultProperties(component: HmiComponent): any {
-  let obj: any = { };
+  let obj: any = {};
 
   component.properties?.forEach(p => {
     if (p.hasOwnProperty('default'))
@@ -70,7 +101,7 @@ export function GetDefaultProperties(component: HmiComponent): any {
   return obj;
 }
 
-export function CreateComponentObject(component: HmiComponent, element: ElementAlias): any {
+export function CreateComponentObject(component: HmiComponent, element: SvgElement): any {
   let obj = component.data ? component.data() : {}
   obj.__proto__ = {
     //$name: entity.name,
@@ -83,8 +114,10 @@ export interface HmiEntity {
   name: string
   component: string //uuid
   properties: any //{ [name: string]: any }
+  triggers: any
+  bindings: any
 
-  $element: ElementAlias
+  $element: SvgElement
   $component: HmiComponent
   $object: any;
 

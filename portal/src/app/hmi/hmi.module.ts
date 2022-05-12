@@ -14,6 +14,7 @@ import {FormsModule} from "@angular/forms";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzSwitchModule} from "ng-zorro-antd/switch";
 import {HmiRoutingModule} from "./hmi-routing.module";
+import {NzTabsModule} from "ng-zorro-antd/tabs";
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import {HmiRoutingModule} from "./hmi-routing.module";
     NzSwitchModule,
     IconsProviderModule,
     ColorPickerModule,
+    NzTabsModule,
   ]
 })
 export class HmiModule {

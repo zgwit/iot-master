@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, HostListener, OnInit} from '@angular/core';
 import {
   Circle,
   Container,
@@ -55,6 +55,37 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   constructor() {
+  }
+
+  @HostListener("document:keyup", ['$event'])
+  onKeyup(event: KeyboardEvent) {
+    console.log("onKeyup", event)
+    switch (event.key) {
+      case "Delete":
+        //删除
+
+        break;
+      case "s": //保存
+        if (event.ctrlKey) {
+
+        }
+        break;
+      case "c": //复制
+        if (event.ctrlKey) {
+
+        }
+        break;
+      //case "v": break;
+      case "ArrowUp":
+        this.current?.$element.dmove(0, -5)
+        break;
+      case "ArrowDown":
+        break;
+      case "ArrowLeft":
+        break;
+      case "ArrowRight":
+        break;
+    }
   }
 
   ngOnInit(): void {
@@ -136,6 +167,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
       name: "",
       component: cmp.uuid,
       properties,
+      triggers: {},
+      bindings: {},
 
       $element: element,
       $component: cmp,
