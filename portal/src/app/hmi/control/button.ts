@@ -23,7 +23,7 @@ export let ButtonComponent: HmiComponent = {
       label: '背景',
       name: 'fill',
       type: 'color',
-      default: 'none'
+      default: '#8BBB11'
     },
     ...fontProperties
   ],
@@ -32,7 +32,7 @@ export let ButtonComponent: HmiComponent = {
   create(props: any) {
     // @ts-ignore
     //this.$element.svg(template)
-    this.rect = this.$element.rect().size("100%", "100%")
+    this.rect = this.$element.rect().size("100%", "100%").radius(10)
 
     // @ts-ignore
     this.text = this.$element.text("按钮")

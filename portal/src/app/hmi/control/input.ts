@@ -9,8 +9,18 @@ export let InputComponent: HmiComponent = {
   type: "object",
 
   properties: [
-    ...colorProperties,
-    ...borderProperties,
+    {
+      label: '颜色',
+      name: 'color',
+      type: 'color',
+      default: '#fff'
+    },
+    {
+      label: '背景',
+      name: 'fill',
+      type: 'color',
+      default: '#8BBB11'
+    },
     ...fontProperties
   ],
 
@@ -33,6 +43,12 @@ export let InputComponent: HmiComponent = {
   },
 
   setup(props: any): void {
+    if (props.color) { // @ts-ignore
+      this.input.setAttribute("style","width:100%; height:100%;color:"+props.color+";");
+    }
+    if (props.fill) { // @ts-ignore
+      this.input.setAttribute("style","width:100%; height:100%;background-color:"+props.fill+";");
+    }
 
   }
 }

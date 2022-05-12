@@ -18,7 +18,7 @@ export let SwitchComponent: HmiComponent = {
       label: '背景',
       name: 'fill',
       type: 'color',
-      default: '#fff'
+      default: '#8BBB11'
     },
   ],
 
@@ -36,7 +36,7 @@ export let SwitchComponent: HmiComponent = {
     // @ts-ignore
     let box2 = this.cell.bbox()
     // @ts-ignore
-    this.cell.radius(box2.height / 2).move(0.1*box.width, 0.1*box.height)
+    this.cell.radius(box2.height / 2).move(0.1*box.height, 0.1*box.height)
   },
 
   resize() {
@@ -47,7 +47,7 @@ export let SwitchComponent: HmiComponent = {
     // @ts-ignore
     let box2 = this.cell.bbox()
     // @ts-ignore
-    this.cell.radius(box2.height / 2).move(0.1*box.width, 0.1*box.height)
+    this.cell.radius(box2.height / 2).move(0.1*box.height, 0.1*box.height)
   },
 
   //配置
