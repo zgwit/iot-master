@@ -10,6 +10,7 @@ import {
   Text, TextPath,
   Use
 } from "@svgdotjs/svg.js";
+import {GetComponentAllProperties} from "./components";
 
 export type SvgElement =
   Svg
@@ -105,8 +106,8 @@ export function basicProperties() {
 
 export function GetPropertiesDefault(component: HmiComponent): any {
   let obj: any = {};
-
-  component.properties?.forEach(p => {
+  let properties = GetComponentAllProperties(component)
+  properties.forEach(p => {
     if (p.hasOwnProperty('default'))
       obj[p.name] = p.default
   })

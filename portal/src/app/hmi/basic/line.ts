@@ -7,7 +7,6 @@ export let LineComponent: HmiComponent = {
   group: "基础组件",
   type: "line",
 
-  color: true,
   stroke: true,
 
   setup(properties: any): void {

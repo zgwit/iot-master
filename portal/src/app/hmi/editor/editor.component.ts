@@ -14,8 +14,15 @@ import {
   Text
 } from '@svgdotjs/svg.js';
 import '@svgdotjs/svg.draggable.js'
-import {GetComponent, GetComponentGlobalProperties, GroupedComponents} from "../components";
-import {CreateComponentObject, GetPropertiesDefault, HmiComponent, HmiEntity, HmiPropertyItem} from "../hmi";
+import {GetComponentAllProperties, GetComponent, GetComponentGlobalProperties, GroupedComponents} from "../components";
+import {
+  CreateComponentObject,
+  GetPropertiesDefault,
+  HmiComponent,
+  HmiEntity,
+  HmiPropertyItem,
+  SvgElement
+} from "../hmi";
 import {CreateElement} from "../create";
 
 @Component({
@@ -171,28 +178,28 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   }
 
-  getComponentProperties(cmp: HmiComponent) {
-    this.$properties = GetComponentGlobalProperties(cmp);
-    // @ts-ignore
-    this.$properties = this.$properties.concat(cmp.properties)
-  }
-
   draw(cmp: HmiComponent) {
+    //清空编辑区
+    this.editLayer.clear()
     //清空选择
     this.current = undefined;
 
     this.currentComponent = cmp;
-    this.getComponentProperties(cmp);
 
+    this.$properties = GetComponentAllProperties(cmp);
     this.properties = GetPropertiesDefault(cmp)
-    if (cmp.color)
+
+    let element = CreateElement(this.mainLayer, cmp)
+    //使用默认填充色 线框
+    if (cmp.color) {
       this.properties.fill = this.fill
+      element.fill(this.fill)
+    }
     if (cmp.stroke) {
       this.properties.color = this.color
       this.properties.stroke = this.stroke
+      element.stroke({color: this.color, width: this.stroke})
     }
-
-    let element = CreateElement(this.mainLayer, cmp)
 
     let entity: HmiEntity = {
       name: "",
@@ -673,7 +680,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   editEntity(entity: HmiEntity) {
     this.editLayer.clear()
-    this.getComponentProperties(entity.$component);
+    this.$properties = GetComponentAllProperties(entity.$component);
     this.properties = entity.properties
     const type = entity.$component.type || "svg"
     switch (type) {
@@ -695,7 +702,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       case "polyline" :
       case "polygon" :
         // @ts-ignore
-        this.editLine(entity.$element)
+        this.editLine(entity)
         break
       case "path" :
       default:
@@ -741,8 +748,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
           break;
       }
     }
-
     //entity.$component.setup?.call(entity.$object, {width: obj.width, height: obj.height})
-
   }
+
 }

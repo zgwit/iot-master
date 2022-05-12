@@ -58,6 +58,11 @@ export function GetComponentGlobalProperties(obj: HmiComponent) {
   return properties
 }
 
+export function GetComponentAllProperties(obj: HmiComponent) {
+  //@ts-ignore
+  return GetComponentGlobalProperties(obj).concat(obj.properties)
+}
+
 export function LoadComponent(obj: HmiComponent) {
   let base = {
     color: false,
