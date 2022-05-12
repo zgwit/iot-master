@@ -127,6 +127,7 @@ export function CreateComponentObject(component: HmiComponent, element: HmiEleme
   obj.__proto__ = {
     //$name: entity.name,
     $element: element
+    //TODO event emitter
   }
   return obj
 }
