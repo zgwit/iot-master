@@ -9,22 +9,22 @@ export let CanComponent: HmiComponent = {
 
   properties: [
     {
-      label: '颜色',
+      label: '液体颜色',
       name: 'color',
       type: 'color',
-      default: '#ccc'
+      default: '#8BBB11'
     },
     {
-      label: '背景',
+      label: '内壁背景',
       name: 'back',
       type: 'color',
       default: '#666'
     },
     {
-      label: '背景',
+      label: '罐体背景',
       name: 'fill',
       type: 'color',
-      default: '#8BBB11'
+      default: '#ccc'
     },
   ],
 
@@ -61,7 +61,7 @@ export let CanComponent: HmiComponent = {
 
     // @ts-ignore
     this.rect.radius(radius)
-    
+
     // @ts-ignore
     this.back.size(box.width - stroke * 2, box.height - stroke * 2).radius(radius).cx(box.cx).cy(box.cy)
 
@@ -76,13 +76,13 @@ export let CanComponent: HmiComponent = {
   //配置
   setup(props: any) {
     if (props.color) { // @ts-ignore
-      this.cell.fill(props.fill)
+      this.cell.fill(props.color)
     }
     if (props.back) { // @ts-ignore
       this.back.fill(props.back)
     }
     if (props.fill) { // @ts-ignore
-      this.rect.fill(props.color)
+      this.rect.fill(props.fill)
     }
   },
 }
