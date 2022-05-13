@@ -11,13 +11,13 @@ export let SliderComponent: HmiComponent = {
       label: '颜色',
       name: 'color',
       type: 'color',
-      default: '#000'
+      default: '#8BBB11'
     },
     {
       label: '背景',
       name: 'fill',
       type: 'color',
-      default: '#8BBB11'
+      default: '#fff'
     },
   ],
 

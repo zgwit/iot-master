@@ -70,15 +70,19 @@ export function LoadComponent(obj: HmiComponent) {
 //export function loadIntervalComponents() {
 let internalComponents = [
   //基础
-  LineComponent, CircleComponent, EllipseComponent, PolylineComponent, PolygonComponent, RectComponent, TextComponent, ImageComponent,
+  LineComponent, CircleComponent, EllipseComponent, RectComponent,
+  PolylineComponent, PolygonComponent, TextComponent, ImageComponent,
   //控件
   ButtonComponent, InputComponent, SwitchComponent, SliderComponent, ValueComponent,
   //ClockComponent, CameraComponent, WeatherComponent,
   //工业
   //AlarmComponent,
-  CanComponent, FanComponent, LightComponent, PipeComponent, PoolComponent, PumpComponent, ValveComponent, MotorComponent,
+  PipeComponent, ValveComponent, CanComponent, PoolComponent,
+  PumpComponent, MotorComponent, FanComponent, LightComponent,
   //图表
-  GaugeChartComponent, BarChartComponent, LineChartComponent, PieChartComponent, RadarChartComponent
+  GaugeChartComponent, BarChartComponent, LineChartComponent, PieChartComponent
+  //, RadarChartComponent
+
 ]
 internalComponents.forEach(c => LoadComponent(c))
 //}

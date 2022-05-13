@@ -9,8 +9,7 @@ import {
   Svg,
   Text, TextPath
 } from "@svgdotjs/svg.js";
-import "@svgdotjs/svg.filter.js";
-
+//import "@svgdotjs/svg.filter.js";
 import {borderProperties, colorProperties, positionProperties, rotateProperties} from "./properties";
 
 export type HmiElement =

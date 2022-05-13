@@ -223,7 +223,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
 
 
-    this.entities.push(entity)
+    //this.entities.push(entity)
 
     //画
     this.drawEntity(entity);
@@ -303,6 +303,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         startX = e.offsetX
         startY = e.offsetY
         line.addTo(this.mainLayer)
+        this.entities.push(entity)
 
         // @ts-ignore
         this.canvas.on('mousemove.draw', (e: MouseEvent) => {
@@ -335,6 +336,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         startX = e.offsetX
         startY = e.offsetY
         rect.addTo(this.mainLayer).move(startX, startY)
+        this.entities.push(entity)
 
         outline.addTo(this.editLayer).move(startX, startY).stroke({
           width: 1,
@@ -381,6 +383,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         startX = e.offsetX
         startY = e.offsetY
         circle.addTo(this.mainLayer).center(startX, startY)
+        this.entities.push(entity)
 
         // @ts-ignore
         this.canvas.on('mousemove.draw', (e: MouseEvent) => {
@@ -415,6 +418,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         startX = e.offsetX
         startY = e.offsetY
         ellipse.addTo(this.mainLayer).move(startX, startY)
+        this.entities.push(entity)
 
         outline.addTo(this.editLayer).move(startX, startY).stroke({
           width: 1,
@@ -454,6 +458,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       if (firstClick) {
         firstClick = false
         poly.addTo(this.mainLayer).plot([e.offsetX, e.offsetY, e.offsetX, e.offsetY])
+        this.entities.push(entity)
 
         // @ts-ignore
         this.canvas.on('mousemove.draw', (e: MouseEvent) => {

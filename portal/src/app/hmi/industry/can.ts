@@ -28,6 +28,7 @@ export let CanComponent: HmiComponent = {
     },
   ],
 
+
   //配置
   create(props: any) {
     // @ts-ignore
@@ -39,19 +40,16 @@ export let CanComponent: HmiComponent = {
     this.rect = this.$element.rect().size("100%", "100%").radius(radius)
 
     // @ts-ignore
-    this.back = this.$element.rect().size(box.width - stroke * 2, box.height - stroke * stroke).radius(radius).cx(box.cx).cy(box.cy)
+    this.back = this.$element.rect().size(box.width - stroke * 2, box.height - stroke * 2).radius(radius).cx(box.cx).cy(box.cy)
 
     // @ts-ignore
-    this.cell = this.$element.rect().size(box.width - stroke * 2, box.height - stroke * stroke).radius(radius).cx(box.cx).cy(box.cy)
+    this.clipCell = this.$element.rect().size("100%", "100%").move(0, box.cy)
 
     // @ts-ignore
-    this.clipRect = this.$element.rect().size("100%", "100%").move(0, box.cy)
+    let clipCell = this.$element.clip().add(this.clipCell)
+
     // @ts-ignore
-    this.clip = this.$element.clip()
-    // @ts-ignore
-    this.clip.add(this.clipRect)
-    // @ts-ignore
-    this.cell.clipWith(this.clip)
+    this.cell = this.$element.rect().size(box.width - stroke * 2, box.height - stroke * 2).radius(radius).cx(box.cx).cy(box.cy).clipWith(clipCell)
 
   },
 
@@ -62,16 +60,17 @@ export let CanComponent: HmiComponent = {
     let stroke = radius * 0.2
 
     // @ts-ignore
+    this.rect.radius(radius)
+    
+    // @ts-ignore
     this.back.size(box.width - stroke * 2, box.height - stroke * 2).radius(radius).cx(box.cx).cy(box.cy)
 
     // @ts-ignore
     this.cell.size(box.width - stroke * 2, box.height - stroke * 2).radius(radius).cx(box.cx).cy(box.cy)
 
-    // @ts-ignore
-    this.rect.radius(radius)
 
     // @ts-ignore
-    this.clipRect.move(0, box.cy)
+    this.clipCell.move(0, box.cy)
   },
 
   //配置
