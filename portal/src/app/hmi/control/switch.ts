@@ -15,10 +15,28 @@ export let SwitchComponent: HmiComponent = {
       default: '#8BBB11'
     },
     {
+      label: '阴影',
+      name: 'back',
+      type: 'color',
+      default: '#666'
+    },
+    {
       label: '背景',
       name: 'fill',
       type: 'color',
-      default: '#fff'
+      default: '#ccc'
+    },
+    {
+      label: '圆角',
+      name: 'radius',
+      type: 'number',
+      default: 20
+    },
+    {
+      label: '边框',
+      name: 'stroke',
+      type: 'number',
+      default: 10
     },
   ],
 

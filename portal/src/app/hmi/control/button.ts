@@ -1,16 +1,11 @@
 import {HmiComponent, HmiPropertyItem} from "../hmi";
 import {fontProperties} from "../properties";
 
-const template = `
-    <rect height="100%" width="100%"></rect>
-  `;
-
 export let ButtonComponent: HmiComponent = {
   uuid: "button",
   name: '按钮',
   group: '控件',
   icon: "/assets/hmi/button.svg",
-  //template,
 
   properties: [
     {
@@ -21,9 +16,27 @@ export let ButtonComponent: HmiComponent = {
     },
     {
       label: '背景',
-      name: 'fill',
+      name: 'back',
       type: 'color',
       default: '#8BBB11'
+    },
+    {
+      label: '边框色',
+      name: 'fill',
+      type: 'color',
+      default: '#ccc'
+    },
+    {
+      label: '圆角',
+      name: 'radius',
+      type: 'number',
+      default: 20
+    },
+    {
+      label: '边框',
+      name: 'stroke',
+      type: 'number',
+      default: 10
     },
     ...fontProperties
   ],
@@ -31,21 +44,31 @@ export let ButtonComponent: HmiComponent = {
   //配置
   create(props: any) {
     // @ts-ignore
-    //this.$element.svg(template)
-    this.rect = this.$element.rect().size("100%", "100%").radius(10)
-
+    this.rect = this.$element.rect().size("100%", "100%")
+    // @ts-ignore
+    this.back = this.$element.rect()
     // @ts-ignore
     this.text = this.$element.text("按钮")
-
     // @ts-ignore
-    let box = this.rect.bbox()
-    // @ts-ignore
-    this.text.center(box.cx, box.cy)
+    this.$component.resize.call(this)
   },
 
   resize() {
     // @ts-ignore
-    let box = this.rect.bbox()
+    let box = this.$element.bbox()
+    // @ts-ignore
+    let radius = this.$properties.radius
+
+    // @ts-ignore
+    let stroke = this.$properties.stroke
+
+
+    // @ts-ignore
+    this.rect.radius(radius)
+    
+    // @ts-ignore
+    this.back.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
+    
     // @ts-ignore
     this.text.center(box.cx, box.cy)
   },
@@ -55,8 +78,15 @@ export let ButtonComponent: HmiComponent = {
     if (props.color) { // @ts-ignore
       this.text.fill(props.color)
     }
+    if (props.back) { // @ts-ignore
+      this.back.fill(props.back)
+    }
     if (props.fill) { // @ts-ignore
       this.rect.fill(props.fill)
+    }
+    if (props.hasOwnProperty("radius") || props.hasOwnProperty("stroke")) {
+      // @ts-ignore
+      this.$component.resize.call(this)
     }
     if (props.hasOwnProperty("font")) {// @ts-ignore
       this.text.font({family: props.font})

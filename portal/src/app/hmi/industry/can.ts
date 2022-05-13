@@ -9,68 +9,82 @@ export let CanComponent: HmiComponent = {
 
   properties: [
     {
-      label: '液体颜色',
+      label: '颜色',
       name: 'color',
       type: 'color',
       default: '#8BBB11'
     },
     {
-      label: '内壁背景',
+      label: '背景',
       name: 'back',
       type: 'color',
       default: '#666'
     },
     {
-      label: '罐体背景',
+      label: '边框色',
       name: 'fill',
       type: 'color',
       default: '#ccc'
+    },
+    {
+      label: '圆角',
+      name: 'radius',
+      type: 'number',
+      default: 20
+    },
+    {
+      label: '边框',
+      name: 'stroke',
+      type: 'number',
+      default: 10
     },
   ],
 
 
   //配置
   create(props: any) {
-    // @ts-ignore
-    let box = this.$element.bbox();
-    let radius = Math.min(50, box.height * 0.5, box.width * 0.5)
-    let stroke = radius * 0.2
 
     // @ts-ignore
-    this.rect = this.$element.rect().size("100%", "100%").radius(radius)
+    this.rect = this.$element.rect().size("100%", "100%")
 
     // @ts-ignore
-    this.back = this.$element.rect().size(box.width - stroke * 2, box.height - stroke * 2).radius(radius).cx(box.cx).cy(box.cy)
-
+    this.back = this.$element.rect()
+    
     // @ts-ignore
-    this.clipCell = this.$element.rect().size("100%", "100%").move(0, box.cy)
+    this.clipCell = this.$element.rect().size("100%", "100%")
 
     // @ts-ignore
     let clipCell = this.$element.clip().add(this.clipCell)
 
     // @ts-ignore
-    this.cell = this.$element.rect().size(box.width - stroke * 2, box.height - stroke * 2).radius(radius).cx(box.cx).cy(box.cy).clipWith(clipCell)
-
+    this.cell = this.$element.rect().clipWith(clipCell)
+    
+    // @ts-ignore
+    this.$component.resize.call(this)
   },
 
   resize() {
     // @ts-ignore
-    let box = this.$element.bbox();
-    let radius = Math.min(50, box.height * 0.5, box.width * 0.5)
-    let stroke = radius * 0.2
+    let box = this.$element.bbox()
+    // @ts-ignore
+    let radius = this.$properties.radius
+
+    // @ts-ignore
+    let stroke = this.$properties.stroke
+
 
     // @ts-ignore
     this.rect.radius(radius)
 
     // @ts-ignore
-    this.back.size(box.width - stroke * 2, box.height - stroke * 2).radius(radius).cx(box.cx).cy(box.cy)
+    this.back.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
 
     // @ts-ignore
-    this.cell.size(box.width - stroke * 2, box.height - stroke * 2).radius(radius).cx(box.cx).cy(box.cy)
+    this.cell.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
 
 
     // @ts-ignore
-    this.clipCell.move(0, box.cy)
+    this.clipCell.move(0, box.cy) //TODO value
   },
 
   //配置
@@ -84,5 +98,15 @@ export let CanComponent: HmiComponent = {
     if (props.fill) { // @ts-ignore
       this.rect.fill(props.fill)
     }
+    if (props.hasOwnProperty("radius") || props.hasOwnProperty("stroke")) {
+      // @ts-ignore
+      this.$component.resize.call(this)
+    }
   },
-}
+
+  //更新数据
+  update(values: any) {
+
+  },
+
+};

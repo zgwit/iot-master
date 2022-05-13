@@ -145,7 +145,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
       let cmp = GetComponent(entity.component)
       if (!cmp) return
       entity.$element = CreateElement(this.canvas, cmp)
-      entity.$object = CreateComponentObject(cmp, entity.$element)
+      entity.$object = cmp.data ? cmp.data() : {}
+      entity.$object.__proto__ = {
+        $element: entity.$element,
+        $component: cmp,
+        $properties: entity.properties,
+      }
       cmp.create?.call(entity.$object, entity.properties)
       cmp.setup.call(entity.$object, entity.properties)
 
@@ -213,8 +218,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
       $element: element,
       $component: cmp,
-      $object: CreateComponentObject(cmp, element),
-
+      $object: cmp.data ? cmp.data() : {},
+    }
+    entity.$object.__proto__ = {
+      $element: element,
+      $component: cmp,
+      $properties: this.properties,
     }
 
     // @ts-ignore
