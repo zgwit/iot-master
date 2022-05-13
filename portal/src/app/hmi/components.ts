@@ -75,7 +75,8 @@ let internalComponents = [
   ButtonComponent, InputComponent, SwitchComponent, SliderComponent, ValueComponent,
   //ClockComponent, CameraComponent, WeatherComponent,
   //工业
-  AlarmComponent, CanComponent, FanComponent, LightComponent, PipeComponent, PoolComponent, PumpComponent, ValveComponent, MotorComponent,
+  //AlarmComponent,
+  CanComponent, FanComponent, LightComponent, PipeComponent, PoolComponent, PumpComponent, ValveComponent, MotorComponent,
   //图表
   GaugeChartComponent, BarChartComponent, LineChartComponent, PieChartComponent, RadarChartComponent
 ]
