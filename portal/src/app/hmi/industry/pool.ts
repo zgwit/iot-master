@@ -46,10 +46,10 @@ export let PoolComponent: HmiComponent = {
 
     // @ts-ignore
     this.clipRect = this.$element.rect().size("100%", "100%")
-    
+
     // @ts-ignore
     let clipRect = this.$element.clip().add(this.clipRect);
-        
+
     // @ts-ignore
     this.rect = this.$element.rect().size("100%", "100%").clipWith(clipRect)
 
@@ -64,7 +64,7 @@ export let PoolComponent: HmiComponent = {
 
     // @ts-ignore
     this.cell = this.$element.rect().clipWith(clipCell)
-    
+
     // @ts-ignore
     this.$component.resize.call(this)
   },
@@ -83,16 +83,16 @@ export let PoolComponent: HmiComponent = {
     this.rect.radius(radius)
 
     // @ts-ignore
-    this.back.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
+    this.back.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
 
     // @ts-ignore
-    this.cell.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
+    this.cell.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
 
     // @ts-ignore
     this.clipRect.move(0, radius + stroke)
-    
+
     // @ts-ignore
-    this.clipCell.move(0, box.cy)
+    this.clipCell.move(0, radius + stroke + (box.height - radius - stroke) * 0.6) //TODO 深度变化
   },
 
   //配置

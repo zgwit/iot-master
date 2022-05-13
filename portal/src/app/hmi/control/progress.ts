@@ -66,7 +66,7 @@ export let ProgressComponent: HmiComponent = {
     this.rect.radius(radius)
     
     // @ts-ignore
-    this.back.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
+    this.back.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
     
     // @ts-ignore
     this.cell.radius(radius).size(box.width * 0.6 - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)

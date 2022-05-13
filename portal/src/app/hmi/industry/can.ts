@@ -49,7 +49,7 @@ export let CanComponent: HmiComponent = {
 
     // @ts-ignore
     this.back = this.$element.rect()
-    
+
     // @ts-ignore
     this.clipCell = this.$element.rect().size("100%", "100%")
 
@@ -58,7 +58,7 @@ export let CanComponent: HmiComponent = {
 
     // @ts-ignore
     this.cell = this.$element.rect().clipWith(clipCell)
-    
+
     // @ts-ignore
     this.$component.resize.call(this)
   },
@@ -77,10 +77,10 @@ export let CanComponent: HmiComponent = {
     this.rect.radius(radius)
 
     // @ts-ignore
-    this.back.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
+    this.back.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
 
     // @ts-ignore
-    this.cell.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
+    this.cell.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
 
 
     // @ts-ignore
