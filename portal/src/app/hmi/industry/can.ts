@@ -27,12 +27,6 @@ export let CanComponent: HmiComponent = {
       default: '#ccc'
     },
     {
-      label: '圆角',
-      name: 'radius',
-      type: 'number',
-      default: 20
-    },
-    {
       label: '边框',
       name: 'stroke',
       type: 'number',
@@ -67,7 +61,7 @@ export let CanComponent: HmiComponent = {
     // @ts-ignore
     let box = this.$element.bbox()
     // @ts-ignore
-    let radius = this.$properties.radius
+    let radius = box.width / 2 // this.$properties.radius
 
     // @ts-ignore
     let stroke = this.$properties.stroke
@@ -84,7 +78,7 @@ export let CanComponent: HmiComponent = {
 
 
     // @ts-ignore
-    this.clipCell.move(0, box.cy) //TODO value
+    this.clipCell.move(0, stroke + (box.height - stroke * 2) * 0.6) //TODO value
   },
 
   //配置
@@ -98,7 +92,7 @@ export let CanComponent: HmiComponent = {
     if (props.fill) { // @ts-ignore
       this.rect.fill(props.fill)
     }
-    if (props.hasOwnProperty("radius") || props.hasOwnProperty("stroke")) {
+    if (props.hasOwnProperty("stroke")) {
       // @ts-ignore
       this.$component.resize.call(this)
     }
