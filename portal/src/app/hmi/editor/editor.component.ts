@@ -68,7 +68,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
     console.log("onKeyup", event)
     switch (event.key) {
       case "Delete": //删除
+        this.current?.$element.remove();
+        this.editLayer.clear();
         let index = this.entities.findIndex(v => v == this.current)
+        this.current = undefined
         if (index > -1)
           this.entities.splice(index, 1)
         break;
@@ -213,7 +216,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       $object: CreateComponentObject(cmp, element),
 
     }
-    
+
     // @ts-ignore
     entity.__proto__ = {
       //$emit: ()=>{}

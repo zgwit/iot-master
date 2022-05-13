@@ -77,7 +77,7 @@ let internalComponents = [
   //工业
   AlarmComponent, CanComponent, FanComponent, LightComponent, PipeComponent, PoolComponent, PumpComponent, ValveComponent, MotorComponent,
   //图表
-  BarChartComponent, GaugeChartComponent, LineChartComponent, PieChartComponent, RadarChartComponent
+  GaugeChartComponent, BarChartComponent, LineChartComponent, PieChartComponent, RadarChartComponent
 ]
 internalComponents.forEach(c => LoadComponent(c))
 //}
