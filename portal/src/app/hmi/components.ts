@@ -26,6 +26,7 @@ import {GaugeChartComponent} from "./chart/gauge";
 import {LineChartComponent} from "./chart/line";
 import {PieChartComponent} from "./chart/pie";
 import {RadarChartComponent} from "./chart/radar";
+import {ProgressComponent} from "./control/progress";
 
 export let GroupedComponents: Array<Group> = [];
 
@@ -73,7 +74,8 @@ let internalComponents = [
   LineComponent, CircleComponent, EllipseComponent, RectComponent,
   PolylineComponent, PolygonComponent, TextComponent, ImageComponent,
   //控件
-  ButtonComponent, InputComponent, SwitchComponent, SliderComponent, ValueComponent,
+  ButtonComponent, InputComponent, SwitchComponent, SliderComponent,
+  ValueComponent, ProgressComponent,
   //ClockComponent, CameraComponent, WeatherComponent,
   //工业
   //AlarmComponent,
