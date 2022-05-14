@@ -25,17 +25,19 @@ export let InputComponent: HmiComponent = {
   ],
 
   create() {
+    //@ts-ignore
+    this.element = this.$container.foreignObject();
     let input = document.createElement("input");
-    input.setAttribute("type","text");
-    input.setAttribute("placeholder","输入框");
-    input.setAttribute("style","width:100%; height:100%;background-color:black;");
+    input.setAttribute("type", "text");
+    input.setAttribute("placeholder", "输入框");
+    input.setAttribute("style", "width:100%; height:100%;background-color:black;");
     input.onchange = (event) => {
       console.log("input change", event)
     }
     //@ts-ignore
     this.input = input
     //@ts-ignore
-    this.$element.node.appendChild(input)
+    this.element.node.appendChild(input)
   },
 
   resize() {
@@ -43,12 +45,22 @@ export let InputComponent: HmiComponent = {
   },
 
   setup(props: any): void {
-    if (props.color) { // @ts-ignore
-      this.input.setAttribute("style","width:100%; height:100%;color:"+props.color+";");
-    }
-    if (props.fill) { // @ts-ignore
-      this.input.setAttribute("style","width:100%; height:100%;background-color:"+props.fill+";");
-    }
+    //@ts-ignore
+    let p = this.$properties
 
-  }
+    if (props.hasOwnProperty("color"))  // @ts-ignore
+      this.input.setAttribute("style", "width:100%; height:100%;color:" + props.color + ";");
+    if (props.hasOwnProperty("fill"))  // @ts-ignore
+      this.input.setAttribute("style", "width:100%; height:100%;background-color:" + props.fill + ";");
+
+    if (props.hasOwnProperty("width") || props.hasOwnProperty("height")   ) // @ts-ignore
+      this.element.size(p.width, p.height)
+    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) // @ts-ignore
+      this.element.move(p.x, p.y)
+  },
+
+  //更新数据
+  update(values: any) {
+
+  },
 }

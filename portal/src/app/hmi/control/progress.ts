@@ -43,13 +43,11 @@ export let ProgressComponent: HmiComponent = {
   //配置
   create() {
     // @ts-ignore
-    this.rect = this.$element.rect().size("100%", "100%")
+    this.rect = this.$container.rect()
     // @ts-ignore
-    this.back = this.$element.rect()
+    this.back = this.$container.rect()
     // @ts-ignore
-    this.cell = this.$element.rect()
-    // @ts-ignore
-    this.$component.resize.call(this)
+    this.cell = this.$container.rect()
   },
 
   resize() {
@@ -69,23 +67,41 @@ export let ProgressComponent: HmiComponent = {
     this.back.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
 
     // @ts-ignore
-    this.cell.radius(radius).size(box.width * 0.6 - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
+    this.cell.radius(radius - stroke).size(box.width * 0.6 - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
   },
 
   //配置
   setup(props: any) {
-    if (props.color) { // @ts-ignore
-      this.cell.fill(props.color)
-    }
-    if (props.back) { // @ts-ignore
-      this.back.fill(props.back)
-    }
-    if (props.fill) { // @ts-ignore
-      this.rect.fill(props.fill)
-    }
-    if (props.hasOwnProperty("radius") || props.hasOwnProperty("stroke")) {
+    //@ts-ignore
+    let p = this.$properties
+    if (props.hasOwnProperty("color"))  // @ts-ignore
+      this.cell.fill(p.color)
+    if (props.hasOwnProperty("back"))  // @ts-ignore
+      this.back.fill(p.back)
+    if (props.hasOwnProperty("fill"))  // @ts-ignore
+      this.rect.fill(p.fill)
+    if (props.hasOwnProperty("radius")
+      || props.hasOwnProperty("stroke")
+      || props.hasOwnProperty("width")
+      || props.hasOwnProperty("height")
+    ) {
       // @ts-ignore
-      this.$component.resize.call(this)
+      this.rect.radius(p.radius).size(p.width, p.height)
+      // @ts-ignore
+      this.back.radius(p.radius - p.stroke)
+        .size(p.width - p.stroke * 2, p.height - p.stroke * 2)
+        .x(p.x + p.stroke).cy(p.y + p.height / 2)
+      // @ts-ignore
+      this.cell.radius(p.radius - p.stroke).size(p.width * 0.6 - p.stroke * 2, p.height - p.stroke * 2)
+        .x(p.x + p.stroke).cy(p.y + p.height / 2)
+    }
+    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) {
+      // @ts-ignore
+      this.rect.move(p.x, p.y)
+      // @ts-ignore
+      this.back.x(p.x + p.stroke).cy(p.y + p.height / 2)
+      // @ts-ignore
+      this.cell.x(p.x + p.stroke).cy(p.y + p.height / 2)
     }
   },
 

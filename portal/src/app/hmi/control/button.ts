@@ -10,6 +10,12 @@ export let ButtonComponent: HmiComponent = {
 
   properties: [
     {
+      label: '文字',
+      name: 'text',
+      type: 'text',
+      default: '按钮'
+    },
+    {
       label: '颜色',
       name: 'color',
       type: 'color',
@@ -45,60 +51,52 @@ export let ButtonComponent: HmiComponent = {
   //配置
   create() {
     // @ts-ignore
-    this.rect = this.$element.rect().size("100%", "100%")
+    this.rect = this.$container.rect()
     // @ts-ignore
-    this.back = this.$element.rect()
+    this.back = this.$container.rect()
     // @ts-ignore
-    this.text = this.$element.text("按钮")
-    // @ts-ignore
-    this.$component.resize.call(this)
-  },
-
-  resize() {
-    // @ts-ignore
-    let box = this.$element.bbox()
-    // @ts-ignore
-    let radius = this.$properties.radius
-
-    // @ts-ignore
-    let stroke = this.$properties.stroke
-
-
-    // @ts-ignore
-    this.rect.radius(radius)
-
-    // @ts-ignore
-    this.back.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
-
-    // @ts-ignore
-    this.text.center(box.cx, box.cy)
+    this.text = this.$container.text(this.$properties.text)
   },
 
   //配置
   setup(props: any) {
-    if (props.color) { // @ts-ignore
-      this.text.fill(props.color)
-    }
-    if (props.back) { // @ts-ignore
-      this.back.fill(props.back)
-    }
-    if (props.fill) { // @ts-ignore
-      this.rect.fill(props.fill)
-    }
-    if (props.hasOwnProperty("radius") || props.hasOwnProperty("stroke")) {
+    //@ts-ignore
+    let p = this.$properties
+    if (props.hasOwnProperty("text"))// @ts-ignore
+      this.text.text(p.text)
+    if (props.hasOwnProperty("color"))  // @ts-ignore
+      this.text.fill(p.color)
+    if (props.hasOwnProperty("back"))  // @ts-ignore
+      this.back.fill(p.back)
+    if (props.hasOwnProperty("fill"))  // @ts-ignore
+      this.rect.fill(p.fill)
+    if (props.hasOwnProperty("radius")
+      || props.hasOwnProperty("stroke")
+      || props.hasOwnProperty("width")
+      || props.hasOwnProperty("height")
+    ) {
       // @ts-ignore
-      this.$component.resize.call(this)
+      this.rect.radius(p.radius).size(p.width, p.height)
+      // @ts-ignore
+      this.back.radius(p.radius).size(p.width - p.stroke * 2, p.height - p.stroke * 2)
+        .cx(p.x + p.width / 2).cy(p.y + p.height / 2)
+      // @ts-ignore
+      this.text.center(p.x + p.width / 2, p.y + p.height / 2)
     }
-    if (props.hasOwnProperty("font")) {// @ts-ignore
-      this.text.font({family: props.font})
+    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) {
+      // @ts-ignore
+      this.rect.move(p.x, p.y)
+      // @ts-ignore
+      this.back.cx(p.x + p.width / 2).cy(p.y + p.height / 2)
+      // @ts-ignore
+      this.text.center(p.x + p.width / 2, p.y + p.height / 2)
     }
-    if (props.hasOwnProperty("fontsize")) {// @ts-ignore
-      this.text.font({size: props.fontsize})
-    }
-    if (props.hasOwnProperty("bold")) {// @ts-ignore
-      this.text.font({weight: props.bold ? "bold" : "normal"})
-    }
-
+    if (props.hasOwnProperty("font"))// @ts-ignore
+      this.text.font({family: p.font})
+    if (props.hasOwnProperty("fontsize")) // @ts-ignore
+      this.text.font({size: p.fontsize})
+    if (props.hasOwnProperty("bold")) // @ts-ignore
+      this.text.font({weight: p.bold ? "bold" : "normal"})
   },
 
   //更新数据

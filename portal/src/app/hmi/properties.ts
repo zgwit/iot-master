@@ -5,21 +5,25 @@ export let positionProperties: Array<HmiPropertyItem> = [
     label: 'x',
     name: 'x',
     type: 'number',
+    default: 0
   },
   {
     label: 'y',
     name: 'y',
     type: 'number',
+    default: 0
   },
   {
     label: '宽度',
     name: 'width',
     type: 'number',
+    default: 0
   },
   {
     label: '高度',
     name: 'height',
     type: 'number',
+    default: 0
   },
 ];
 
