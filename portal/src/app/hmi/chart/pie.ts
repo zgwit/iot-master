@@ -31,7 +31,7 @@ export let PieChartComponent: HmiComponent = {
     //@ts-ignore
     this.element = this.$container.foreignObject()
     //@ts-ignore
-    this.chart = echarts.init(this.foreignObject.node)
+    this.chart = echarts.init(this.element.node)
     //@ts-ignore
     this.chart.setOption(this.options)
   },

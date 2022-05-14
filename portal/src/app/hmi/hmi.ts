@@ -10,7 +10,7 @@ import {
   Text, TextPath
 } from "@svgdotjs/svg.js";
 //import "@svgdotjs/svg.filter.js";
-import {borderProperties, colorProperties, positionProperties, rotateProperties} from "./properties";
+import {strokeProperties, fillProperties, positionProperties, rotateProperties} from "./properties";
 import {GetComponent} from "./components";
 
 export type HmiElement =
@@ -94,9 +94,9 @@ export interface HmiComponent {
 export function GetComponentGlobalProperties(obj: HmiComponent) {
   let properties = [];
   if (obj.color)
-    properties?.unshift(...colorProperties)
+    properties?.unshift(...fillProperties)
   if (obj.stroke)
-    properties?.unshift(...borderProperties)
+    properties?.unshift(...strokeProperties)
   if (obj.rotation)
     properties?.unshift(...rotateProperties)
   if (obj.position)

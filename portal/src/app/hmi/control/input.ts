@@ -1,5 +1,5 @@
 import {HmiComponent} from "../hmi";
-import {borderProperties, colorProperties, fontProperties} from "../properties";
+import {fontProperties} from "../properties";
 
 export let InputComponent: HmiComponent = {
   uuid: "input",

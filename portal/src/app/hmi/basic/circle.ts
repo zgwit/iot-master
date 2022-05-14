@@ -44,5 +44,9 @@ export let CircleComponent: HmiComponent = {
       this.element.stroke({color:p.color, width:p.stroke})
     if (props.hasOwnProperty("radius")) //@ts-ignore
       this.element.radius(p.radius)
+    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) {
+      // @ts-ignore
+      this.element.center(p.x, p.y)
+    }
   }
 }

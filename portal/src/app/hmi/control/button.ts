@@ -1,4 +1,4 @@
-import {HmiComponent, HmiPropertyItem} from "../hmi";
+import {HmiComponent} from "../hmi";
 import {fontProperties} from "../properties";
 
 export let ButtonComponent: HmiComponent = {

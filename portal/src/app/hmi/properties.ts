@@ -35,7 +35,7 @@ export let rotateProperties: Array<HmiPropertyItem> = [
   },
 ];
 
-export let borderProperties: Array<HmiPropertyItem> = [
+export let strokeProperties: Array<HmiPropertyItem> = [
   {
     label: '边框色',
     name: 'color',
@@ -50,7 +50,7 @@ export let borderProperties: Array<HmiPropertyItem> = [
   },
 ];
 
-export let colorProperties: Array<HmiPropertyItem> = [
+export let fillProperties: Array<HmiPropertyItem> = [
   {
     label: '填充色',
     name: 'fill',
