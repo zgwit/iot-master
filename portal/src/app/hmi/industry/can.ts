@@ -47,9 +47,6 @@ export let CanComponent: HmiComponent = {
     this.clipCell = this.$container.rect().size("100%", "100%")
 
     // @ts-ignore
-    //let clipCell = this.$container.clip().add(this.clipCell)
-
-    // @ts-ignore
     this.cell = this.$container.rect()
   },
 

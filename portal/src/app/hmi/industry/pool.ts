@@ -44,70 +44,73 @@ export let PoolComponent: HmiComponent = {
   create() {
 
     // @ts-ignore
-    this.clipRect = this.$element.rect().size("100%", "100%")
+    this.clipRect = this.$container.rect().size("100%", "100%")
 
     // @ts-ignore
-    let clipRect = this.$element.clip().add(this.clipRect);
+    this.rect = this.$container.rect()
 
     // @ts-ignore
-    this.rect = this.$element.rect().size("100%", "100%").clipWith(clipRect)
+    this.back = this.$container.rect()
 
     // @ts-ignore
-    this.back = this.$element.rect().clipWith(clipRect)
+    this.clipCell = this.$container.rect().size("100%", "100%")
 
     // @ts-ignore
-    this.clipCell = this.$element.rect().size("100%", "100%")
-
-    // @ts-ignore
-    let clipCell = this.$element.clip().add(this.clipCell)
-
-    // @ts-ignore
-    this.cell = this.$element.rect().clipWith(clipCell)
-
-    // @ts-ignore
-    this.$component.resize.call(this)
-  },
-
-  resize() {
-    // @ts-ignore
-    let box = this.$element.bbox()
-    // @ts-ignore
-    let radius = this.$properties.radius
-
-    // @ts-ignore
-    let stroke = this.$properties.stroke
-
-
-    // @ts-ignore
-    this.rect.radius(radius)
-
-    // @ts-ignore
-    this.back.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
-
-    // @ts-ignore
-    this.cell.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).cx(box.cx).cy(box.cy)
-
-    // @ts-ignore
-    this.clipRect.move(0, radius + stroke)
-
-    // @ts-ignore
-    this.clipCell.move(0, radius + stroke + (box.height - radius - stroke) * 0.6) //TODO 深度变化
+    this.cell = this.$container.rect()
   },
 
   //配置
   setup(props: any) {
-    if (props.color) { // @ts-ignore
-      this.cell.fill(props.color)
-    }
-    if (props.back) { // @ts-ignore
-      this.back.fill(props.back)
-    }
-    if (props.fill) { // @ts-ignore
-      this.rect.fill(props.fill)
-    }
-    if (props.hasOwnProperty("radius") || props.hasOwnProperty("stroke")) {
+    //@ts-ignore
+    let p = this.$properties
+
+    if (props.hasOwnProperty("color"))  // @ts-ignore
+      this.cell.fill(p.color)
+    if (props.hasOwnProperty("back"))  // @ts-ignore
+      this.back.fill(p.back)
+    if (props.hasOwnProperty("fill"))  // @ts-ignore
+      this.rect.fill(p.fill)
+    if (props.hasOwnProperty("stroke")
+      || props.hasOwnProperty("radius")
+      || props.hasOwnProperty("width")
+      || props.hasOwnProperty("height")
+    ) {
       // @ts-ignore
-      this.$component.resize.call(this)
+      this.rect.radius(p.radius).size(p.width, p.height).move(p.x, p.y)
+      // @ts-ignore
+      this.back.radius(p.radius - p.stroke).size(p.width - p.stroke * 2, p.height - p.stroke * 2)
+        .cx(p.x + p.width / 2).cy(p.y + p.height / 2)
+      // @ts-ignore
+      this.cell.radius(p.radius - p.stroke).size(p.width - p.stroke * 2, p.height - p.stroke * 2)
+        .cx(p.x + p.width / 2).cy(p.y + p.height / 2)
+
+      // @ts-ignore
+      this.clipRect.move(0, p.y + p.radius + p.stroke)
+      // @ts-ignore
+      let clipRect = this.$container.clip().add(this.clipRect)
+      // @ts-ignore
+      this.rect.unclip().clipWith(clipRect)
+      // @ts-ignore
+      this.back.unclip().clipWith(clipRect)
+
+      // @ts-ignore
+      this.clipCell.y(p.y + p.radius + p.stroke + (p.height - p.stroke * 2) * 0.6) //TODO value
+      // @ts-ignore
+      this.cell.unclip().clipWith(this.$container.clip().add(this.clipCell))
+    }
+    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) {
+      // @ts-ignore
+      this.clipRect.move(0, p.y + p.radius + p.stroke)
+      // @ts-ignore
+      let clipRect = this.$container.clip().add(this.clipRect)
+      // @ts-ignore
+      this.rect.unclip().clipWith(clipRect)
+      // @ts-ignore
+      this.back.unclip().clipWith(clipRect)
+      // @ts-ignore
+      this.clipCell.y(p.y + p.stroke + (p.height - p.stroke * 2) * 0.6) //TODO value
+      // @ts-ignore
+      this.cell.unclip().clipWith(this.$container.clip().add(this.clipCell))
     }
   },
 
