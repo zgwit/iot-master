@@ -36,18 +36,18 @@ export let LineComponent: HmiComponent = {
 
   create() {
     //@ts-ignore
-    this.line = this.$container.line()
+    this.element = this.$container.line()
   },
 
   setup(props: any): void {
     //@ts-ignore
     let p = this.$properties
     if (props.hasOwnProperty("color") || props.hasOwnProperty("stroke"))//@ts-ignore
-      this.line.stroke({color:p.color, width:p.stroke})
+      this.element.stroke({color:p.color, width:p.stroke})
     if (props.hasOwnProperty("x1") || props.hasOwnProperty("y1")
       || props.hasOwnProperty("x2") || props.hasOwnProperty("y2")) {
       //@ts-ignore
-      this.line.plot(p.x1, p.y1, p.x2, p.y2)
+      this.element.plot(p.x1, p.y1, p.x2, p.y2)
     }
   }
 }

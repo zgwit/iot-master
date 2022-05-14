@@ -7,14 +7,24 @@ export let PolylineComponent: HmiComponent = {
   group: "基础组件",
   drawer: "poly",
 
-  //color: true,
+  color: false,
   stroke: true,
+  rotation: false,
+  position: false,
 
-  create(): void {
-
+  create() {
+    //@ts-ignore
+    this.element = this.$container.polyline().fill('none')
   },
 
-  setup(properties: any): void {
-
+  setup(props: any): void {
+    //@ts-ignore
+    let p = this.$properties
+    if (props.hasOwnProperty("color") || props.hasOwnProperty("stroke"))//@ts-ignore
+      this.element.stroke({color:p.color, width:p.stroke})
+    if (props.hasOwnProperty("points")) {
+      //@ts-ignore
+      this.element.plot(p.points)
+    }
   }
 }

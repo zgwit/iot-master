@@ -627,14 +627,17 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   onPropertyChange(name: string) {
-    console.log("onPropertyChange", name)
+    //console.log("onPropertyChange", name)
     if (this.current) {
       let val = this.properties[name];
       console.log("onPropertyChange", name, val)
-      let cmp = this.current.$component;
-
       let props = {[name]: val}
+      let cmp = this.current.$component;
       cmp.setup.call(this.current.$object, props)
+      //旋转
+      if (name == "rotate") {
+        this.current.$container.transform({rotate: val})
+      }
     }
   }
 

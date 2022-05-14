@@ -9,14 +9,22 @@ export let TextComponent: HmiComponent = {
   drawer: "rect",
 
   color: true,
-  stroke: true,
 
   properties: [...fontProperties],
 
   create() {
+    //@ts-ignore
+    this.element = this.$container.text(this.$properties.text || "文本")
   },
 
-  setup(properties: any): void {
-
+  setup(props: any): void {
+    //@ts-ignore
+    let p = this.$properties
+    if (props.hasOwnProperty("fill"))//@ts-ignore
+      this.element.fill(p.fill)
+    if (props.hasOwnProperty("x") || props.hasOwnProperty("y"))//@ts-ignore
+      this.element.move(p.x, p.y)
+    if (props.hasOwnProperty("width") || props.hasOwnProperty("height"))//@ts-ignore
+      this.element.size(p.width, p.height)
   }
 }

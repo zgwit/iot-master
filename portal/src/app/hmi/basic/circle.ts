@@ -32,19 +32,19 @@ export let CircleComponent: HmiComponent = {
 
   create() {
     //@ts-ignore
-    this.circle = this.$container.circle(100)
+    this.element = this.$container.circle(this.$properties.radius)
   },
 
   setup(props: any): void {
     //@ts-ignore
     let p = this.$properties
     if (props.hasOwnProperty("fill"))//@ts-ignore
-      this.circle.fill(p.fill)
+      this.element.fill(p.fill)
     if (props.hasOwnProperty("color") || props.hasOwnProperty("stroke"))//@ts-ignore
-      this.circle.stroke({color:p.color, width:p.stroke})
+      this.element.stroke({color:p.color, width:p.stroke})
     if (props.hasOwnProperty("radius")) //@ts-ignore
-      this.circle.radius(p.radius)
+      this.element.radius(p.radius)
     if (props.hasOwnProperty("x") || props.hasOwnProperty("y"))//@ts-ignore
-      this.circle.center(p.x, p.y)
+      this.element.center(p.x, p.y)
   }
 }
