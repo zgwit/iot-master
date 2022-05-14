@@ -5,14 +5,13 @@ export let PolylineComponent: HmiComponent = {
   name: "折线",
   icon: "/assets/hmi/polyline.svg",
   group: "基础组件",
-  type: "polyline",
+  drawer: "poly",
 
   //color: true,
   stroke: true,
 
-  create(props: any): void {
-    // @ts-ignore
-    this.$element.fill("none")
+  create(): void {
+
   },
 
   setup(properties: any): void {

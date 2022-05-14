@@ -1,7 +1,6 @@
 import {
   Circle,
   Container,
-  ElementAlias,
   Ellipse,
   ForeignObject, Image,
   Line, Path,

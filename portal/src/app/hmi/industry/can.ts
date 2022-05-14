@@ -5,7 +5,6 @@ export let CanComponent: HmiComponent = {
   name: "水罐",
   icon: "/assets/hmi/can.svg",
   group: "工业",
-  type: "svg",
 
   properties: [
     {
@@ -36,7 +35,7 @@ export let CanComponent: HmiComponent = {
 
 
   //配置
-  create(props: any) {
+  create() {
 
     // @ts-ignore
     this.rect = this.$element.rect().size("100%", "100%")

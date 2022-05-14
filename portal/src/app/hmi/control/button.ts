@@ -6,6 +6,7 @@ export let ButtonComponent: HmiComponent = {
   name: '按钮',
   group: '控件',
   icon: "/assets/hmi/button.svg",
+  drawer: "rect",
 
   properties: [
     {
@@ -42,7 +43,7 @@ export let ButtonComponent: HmiComponent = {
   ],
 
   //配置
-  create(props: any) {
+  create() {
     // @ts-ignore
     this.rect = this.$element.rect().size("100%", "100%")
     // @ts-ignore
@@ -65,10 +66,10 @@ export let ButtonComponent: HmiComponent = {
 
     // @ts-ignore
     this.rect.radius(radius)
-    
+
     // @ts-ignore
     this.back.radius(radius).size(box.width - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
-    
+
     // @ts-ignore
     this.text.center(box.cx, box.cy)
   },

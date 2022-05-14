@@ -5,7 +5,10 @@ export let CameraComponent: HmiComponent = {
   name: "摄像头",
   icon: "/assets/hmi/camera.svg",
   group: "控件",
-  type: "object",
+  drawer: "rect",
+
+  create() {
+  },
 
   setup(props: any): void {
 

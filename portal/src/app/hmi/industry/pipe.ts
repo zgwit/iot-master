@@ -5,9 +5,12 @@ export let PipeComponent: HmiComponent = {
   name: "管道",
   icon: "/assets/hmi/pipe.svg",
   group: "工业",
-  type: "polyline",
+  drawer: "poly",
 
   color: true,
+
+  create() {
+  },
 
   setup(props: any): void {
 

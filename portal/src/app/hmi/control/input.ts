@@ -6,7 +6,7 @@ export let InputComponent: HmiComponent = {
   name: "输入框",
   icon: "/assets/hmi/input.svg",
   group: "控件",
-  type: "object",
+  drawer: "rect",
 
   properties: [
     {
@@ -24,7 +24,7 @@ export let InputComponent: HmiComponent = {
     ...fontProperties
   ],
 
-  create(props: any) {
+  create() {
     let input = document.createElement("input");
     input.setAttribute("type","text");
     input.setAttribute("placeholder","输入框");

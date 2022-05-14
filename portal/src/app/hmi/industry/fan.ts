@@ -8,6 +8,9 @@ export let FanComponent: HmiComponent = {
 
   color: true,
 
+  create() {
+  },
+
   setup(props: any): void {
 
   }

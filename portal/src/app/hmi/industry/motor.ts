@@ -8,6 +8,9 @@ export let MotorComponent: HmiComponent = {
 
   color: true,
 
+  create() {
+  },
+
   setup(props: any): void {
 
   }

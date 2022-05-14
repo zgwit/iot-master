@@ -8,6 +8,9 @@ export let LightComponent: HmiComponent = {
 
   color: true,
 
+  create() {
+  },
+
   setup(props: any): void {
 
   }

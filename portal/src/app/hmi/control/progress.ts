@@ -5,7 +5,7 @@ export let ProgressComponent: HmiComponent = {
   name: "开关",
   icon: "/assets/hmi/progress.svg",
   group: "控件",
-  type: "svg",
+  drawer: "rect",
 
   properties: [
     {
@@ -41,7 +41,7 @@ export let ProgressComponent: HmiComponent = {
   ],
 
   //配置
-  create(props: any) {
+  create() {
     // @ts-ignore
     this.rect = this.$element.rect().size("100%", "100%")
     // @ts-ignore
@@ -64,10 +64,10 @@ export let ProgressComponent: HmiComponent = {
 
     // @ts-ignore
     this.rect.radius(radius)
-    
+
     // @ts-ignore
     this.back.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
-    
+
     // @ts-ignore
     this.cell.radius(radius).size(box.width * 0.6 - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
   },

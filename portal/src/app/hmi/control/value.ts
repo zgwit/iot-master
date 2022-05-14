@@ -5,10 +5,12 @@ export let ValueComponent: HmiComponent = {
   name: "值",
   icon: "/assets/hmi/value.svg",
   group: "控件",
-  type: "text",
 
   color: true,
   stroke: true,
+
+  create() {
+  },
 
   setup(props: any): void {
     //elem.text(props.text || '0')

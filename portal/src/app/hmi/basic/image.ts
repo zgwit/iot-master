@@ -5,7 +5,10 @@ export let ImageComponent: HmiComponent = {
   name: "图像",
   icon: "/assets/hmi/image.svg",
   group: "基础组件",
-  type: "image",
+  drawer: "rect",
+
+  create() {
+  },
 
   setup(properties: any): void {
 

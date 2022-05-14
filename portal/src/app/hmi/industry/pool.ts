@@ -5,7 +5,6 @@ export let PoolComponent: HmiComponent = {
   name: "水池",
   icon: "/assets/hmi/pool.svg",
   group: "工业",
-  type: "svg",
 
   properties: [
     {
@@ -42,7 +41,7 @@ export let PoolComponent: HmiComponent = {
 
 
   //配置
-  create(props: any) {
+  create() {
 
     // @ts-ignore
     this.clipRect = this.$element.rect().size("100%", "100%")

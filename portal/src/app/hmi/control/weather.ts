@@ -5,10 +5,13 @@ export let WeatherComponent: HmiComponent = {
   name: "天气",
   icon: "/assets/hmi/weather.svg",
   group: "控件",
-  type: "object",
 
   color: true,
   stroke: true,
+
+  create() {
+
+  },
 
   setup(props: any): void {
 

@@ -8,6 +8,9 @@ export let PumpComponent: HmiComponent = {
 
   color: true,
 
+  create() {
+  },
+
   setup(props: any): void {
 
   }

@@ -6,11 +6,15 @@ export let TextComponent: HmiComponent = {
   name: "文本",
   icon: "/assets/hmi/text.svg",
   group: "基础组件",
-  type: "text",
+  drawer: "rect",
+
   color: true,
   stroke: true,
 
   properties: [...fontProperties],
+
+  create() {
+  },
 
   setup(properties: any): void {
 

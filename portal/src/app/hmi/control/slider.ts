@@ -22,7 +22,7 @@ export let SliderComponent: HmiComponent = {
   ],
 
   //配置
-  create(props: any) {
+  create() {
     // @ts-ignore
     this.rect = this.$element.rect().size("100%", "10%")
     // @ts-ignore

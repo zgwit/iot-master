@@ -6,8 +6,13 @@ export let ClockComponent: HmiComponent = {
   icon: "/assets/hmi/clock.svg",
   group: "控件",
 
+  drawer:"rect",
+
   color: true,
   stroke: true,
+
+  create() {
+  },
 
   setup(props: any): void {
 

@@ -6,7 +6,7 @@ export let GaugeChartComponent: HmiComponent = {
   name: "仪表盘",
   icon: "/assets/hmi/chart-gauge.svg",
   group: "图表",
-  type: "object",
+  drawer: "rect",
 
   data() {
     return {
@@ -23,9 +23,11 @@ export let GaugeChartComponent: HmiComponent = {
     }
   },
 
-  create(props: any) {
+  create() {
     //@ts-ignore
-    this.chart = echarts.init(this.$element.node)
+    this.foreignObject = this.$container.foreignObject()
+    //@ts-ignore
+    this.chart = echarts.init(this.foreignObject.node)
     //@ts-ignore
     this.chart.setOption(this.options)
   },

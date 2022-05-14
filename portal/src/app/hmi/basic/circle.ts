@@ -5,13 +5,46 @@ export let CircleComponent: HmiComponent = {
   name: "圆形",
   icon: "/assets/hmi/circle.svg",
   group: "基础组件",
-  type: "circle",
+  drawer: "circle",
 
   color: true,
   stroke: true,
   rotation: false,
+  position: false,
 
-  setup(properties: any): void {
+  properties: [
+    {
+      label: 'X',
+      name: 'x',
+      type: 'number',
+    },
+    {
+      label: 'Y',
+      name: 'y',
+      type: 'number',
+    },
+    {
+      label: '半径',
+      name: 'radius',
+      type: 'number',
+    },
+  ],
 
+  create() {
+    //@ts-ignore
+    this.circle = this.$container.circle(100)
+  },
+
+  setup(props: any): void {
+    //@ts-ignore
+    let p = this.$properties
+    if (props.hasOwnProperty("fill"))//@ts-ignore
+      this.circle.fill(p.fill)
+    if (props.hasOwnProperty("color") || props.hasOwnProperty("stroke"))//@ts-ignore
+      this.circle.stroke({color:p.color, width:p.stroke})
+    if (props.hasOwnProperty("radius")) //@ts-ignore
+      this.circle.radius(p.radius)
+    if (props.hasOwnProperty("x") || props.hasOwnProperty("y"))//@ts-ignore
+      this.circle.center(p.x, p.y)
   }
 }

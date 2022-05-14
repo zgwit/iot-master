@@ -1,5 +1,5 @@
 import {
-  Circle,
+  Circle, Container,
   Ellipse, ForeignObject, Image,
   Line,
   Path,
@@ -11,6 +11,7 @@ import {
 } from "@svgdotjs/svg.js";
 //import "@svgdotjs/svg.filter.js";
 import {borderProperties, colorProperties, positionProperties, rotateProperties} from "./properties";
+import {GetComponent} from "./components";
 
 export type HmiElement =
   Svg
@@ -54,13 +55,11 @@ export interface HmiComponent {
   name: string
 
   //类型（默认 svg）
-  type?: "rect" | "circle" | "ellipse" | "line" | "polyline" | "polygon" | "image" | "path" | "text" | "svg" | "object"
+  //type?: "rect" | "circle" | "ellipse" | "line" | "polyline" | "polygon" | "image" | "path" | "text" | "svg" | "object"
+  drawer?: "rect" | "circle" | "line" | "poly"
 
   //分组（默认 扩展）
   group?: string
-
-  //模板 svg
-  svg?: string
 
   //基础配置
   color?: boolean //填充色
@@ -83,7 +82,7 @@ export interface HmiComponent {
   resize?(): void
 
   //初始化
-  create?(props: any): void
+  create(): void
 
   //写入配置
   setup(props: any): void
@@ -123,16 +122,6 @@ export function GetPropertiesDefault(component: HmiComponent): any {
   return obj;
 }
 
-export function CreateComponentObject(component: HmiComponent, element: HmiElement): any {
-  let obj = component.data ? component.data() : {}
-  obj.__proto__ = {
-    //$name: entity.name,
-    $element: element
-    //TODO event emitter
-  }
-  return obj
-}
-
 export interface HmiEntity {
   name: string
   component: string //uuid
@@ -144,9 +133,19 @@ export interface HmiEntity {
   //绑定
   bindings: any //{ [name: string]: any }
 
-  $element: HmiElement
+  //$element: HmiElement
+  $container: Container
   $component: HmiComponent
   $object: any;
+}
+
+export function CreateEntityObject(entity: HmiEntity) {
+  entity.$object = entity.$component.data?.call(entity) ||  {}
+  entity.$object.__proto__ = {
+    $container: entity.$container,
+    $component: entity.$component,
+    $properties: entity.properties,
+  }
 }
 
 export interface HmiEntities {
