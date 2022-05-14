@@ -50,26 +50,6 @@ export let ProgressComponent: HmiComponent = {
     this.cell = this.$container.rect()
   },
 
-  resize() {
-    // @ts-ignore
-    let box = this.$element.bbox()
-    // @ts-ignore
-    let radius = this.$properties.radius
-
-    // @ts-ignore
-    let stroke = this.$properties.stroke
-
-
-    // @ts-ignore
-    this.rect.radius(radius)
-
-    // @ts-ignore
-    this.back.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
-
-    // @ts-ignore
-    this.cell.radius(radius - stroke).size(box.width * 0.6 - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
-  },
-
   //配置
   setup(props: any) {
     //@ts-ignore
@@ -86,7 +66,7 @@ export let ProgressComponent: HmiComponent = {
       || props.hasOwnProperty("height")
     ) {
       // @ts-ignore
-      this.rect.radius(p.radius).size(p.width, p.height)
+      this.rect.radius(p.radius).size(p.width, p.height).move(p.x, p.y)
       // @ts-ignore
       this.back.radius(p.radius - p.stroke)
         .size(p.width - p.stroke * 2, p.height - p.stroke * 2)
@@ -94,14 +74,6 @@ export let ProgressComponent: HmiComponent = {
       // @ts-ignore
       this.cell.radius(p.radius - p.stroke).size(p.width * 0.6 - p.stroke * 2, p.height - p.stroke * 2)
         .x(p.x + p.stroke).cy(p.y + p.height / 2)
-    }
-    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) {
-      // @ts-ignore
-      this.rect.move(p.x, p.y)
-      // @ts-ignore
-      this.back.x(p.x + p.stroke).cy(p.y + p.height / 2)
-      // @ts-ignore
-      this.cell.x(p.x + p.stroke).cy(p.y + p.height / 2)
     }
   },
 

@@ -22,9 +22,6 @@ export let EllipseComponent: HmiComponent = {
       this.element.fill(p.fill)
     if (props.hasOwnProperty("color") || props.hasOwnProperty("stroke"))//@ts-ignore
       this.element.stroke({color:p.color, width:p.stroke})
-    if (props.hasOwnProperty("x") || props.hasOwnProperty("y"))//@ts-ignore
-      this.element.move(p.x, p.y)
-      //this.element.center(p.x + p.width/2, p.y + p.height/2)
     if (props.hasOwnProperty("width") || props.hasOwnProperty("height"))//@ts-ignore
       this.element.size(p.width, p.height)
   }

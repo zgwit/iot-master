@@ -24,8 +24,6 @@ export let ImageComponent: HmiComponent = {
   setup(props: any): void {
     //@ts-ignore
     let p = this.$properties
-    if (props.hasOwnProperty("x") || props.hasOwnProperty("y"))//@ts-ignore
-      this.element.move(p.x, p.y)
     if (props.hasOwnProperty("width") || props.hasOwnProperty("height"))//@ts-ignore
       this.element.size(p.width, p.height)
     if (props.hasOwnProperty("url"))//@ts-ignore

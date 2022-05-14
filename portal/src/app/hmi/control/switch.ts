@@ -80,21 +80,13 @@ export let SwitchComponent: HmiComponent = {
       || props.hasOwnProperty("height")
     ) {
       // @ts-ignore
-      this.rect.radius(radius).size(p.width, p.height)
+      this.rect.radius(radius).size(p.width, p.height).move(p.x, p.y)
       // @ts-ignore
       this.back.radius(radius - p.stroke).size(p.width - p.stroke * 2, p.height - p.stroke * 2)
         .cx(p.x + p.width / 2).cy(p.y + p.height / 2)
       // @ts-ignore
       this.cell.radius(radius - p.stroke * 1.5)
         .cx(p.x + radius).cy(p.y + p.height / 2)
-    }
-    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) {
-      // @ts-ignore
-      this.rect.move(p.x, p.y)
-      // @ts-ignore
-      this.back.cx(p.x + p.width / 2).cy(p.y + p.height / 2)
-      // @ts-ignore
-      this.cell.cx(p.x + radius).cy(p.y + p.height / 2)
     }
   },
 

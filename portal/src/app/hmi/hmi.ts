@@ -146,6 +146,7 @@ export function CreateEntityObject(entity: HmiEntity) {
     $component: entity.$component,
     $properties: entity.properties,
   }
+  entity.$component.create.call(entity.$object)
 }
 
 export interface HmiEntities {

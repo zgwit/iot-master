@@ -26,7 +26,7 @@ export let InputComponent: HmiComponent = {
 
   create() {
     //@ts-ignore
-    this.element = this.$container.foreignObject();
+    this.element = this.$container.foreignObject().move(p.x, p.y);
     let input = document.createElement("input");
     input.setAttribute("type", "text");
     input.setAttribute("placeholder", "输入框");
@@ -55,8 +55,6 @@ export let InputComponent: HmiComponent = {
 
     if (props.hasOwnProperty("width") || props.hasOwnProperty("height")   ) // @ts-ignore
       this.element.size(p.width, p.height)
-    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) // @ts-ignore
-      this.element.move(p.x, p.y)
   },
 
   //更新数据

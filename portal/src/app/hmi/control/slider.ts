@@ -29,15 +29,6 @@ export let SliderComponent: HmiComponent = {
     this.cell = this.$container.circle(0)
   },
 
-  resize() {
-    // @ts-ignore
-    let box = this.rect.bbox()
-    // @ts-ignore
-    this.rect.radius(box.height * 0.5).move(0, box.height * 4.5)
-    // @ts-ignore
-    this.cell.rx(box.height * 2).cx(box.height * 3).cy(box.cy)
-  },
-
   //配置
   setup(props: any) {
     //@ts-ignore
@@ -58,12 +49,6 @@ export let SliderComponent: HmiComponent = {
       this.rect.radius(radius).size(p.width, p.height / 2).x(p.x).cy(p.y + p.height / 2)
       // @ts-ignore
       this.cell.radius(radius2).cx(p.x + radius + radius2).cy(p.y + p.height / 2)
-    }
-    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) {
-      // @ts-ignore
-      this.rect.x(p.x).cy(p.y + p.height / 2)
-      // @ts-ignore
-      this.cell.cx(p.x + radius + radius2).cy(p.y + p.height / 2)
     }
   },
 }

@@ -169,16 +169,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
       switch (drawer) {
         case "rect" :
         case "circle" :
-          entity.properties.x += b2.x - b.x
-          entity.properties.y += b2.y - b.y
-          //this.setupEntity(entity, {x, y})
+          let x = entity.properties.x + b2.x - b.x
+          let y = entity.properties.y + b2.y - b.y
+          this.setupEntity(entity, {x, y})
           break
         case "line" :
-          entity.properties.x1 += b2.x - b.x
-          entity.properties.y1 += b2.y - b.y
-          entity.properties.x2 += b2.x - b.x
-          entity.properties.y2 += b2.y - b.y
-          //this.setupEntity(entity, {x1, y1, x2, y2})
+          let x1 = entity.properties.x1 + b2.x - b.x
+          let y1 = entity.properties.y1 + b2.y - b.y
+          let x2 = entity.properties.x2 + b2.x - b.x
+          let y2 = entity.properties.y2 + b2.y - b.y
+          this.setupEntity(entity, {x1, y1, x2, y2})
           break;
         case "poly" :
           let points: Array<any> = entity.properties.points
@@ -186,7 +186,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
             pt[0] += b2.x - b.x
             pt[1] += b2.y - b.y
           })
-          //this.setupEntity(entity, {points})
+          this.setupEntity(entity, {points})
           break
         default:
           throw new Error("不支持的控件类型：" + drawer)
@@ -210,6 +210,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   appendEntity(entity: HmiEntity) {
     // @ts-ignore
     this.mainLayer.add(entity.$container)
+    //传入全局配置
+    this.setupEntity(entity, entity.properties)
+
     this.entities.push(entity)
   }
 
@@ -245,17 +248,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
       $object: cmp.data ? cmp.data() : {},
     }
 
+    //TODO 改为返回值
     CreateEntityObject(entity)
-    //this.entities.push(entity)
 
     //画
     this.drawEntity(entity);
 
     this.makeEntityEditable(entity);
-
-    //组件初始化
-    cmp.create.call(entity.$object)
-    cmp.setup.call(entity.$object, entity.properties)
   }
 
 
@@ -267,6 +266,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   setupEntity(entity: HmiEntity, props: any) {
     Object.assign(entity.properties, props)
+
+    //旋转
+    if (props.hasOwnProperty("rotate"))
+      entity.$container.transform({rotate: props.rotate})
+    if (props.hasOwnProperty("x"))
+      entity.$container.x(props.x)
+    if (props.hasOwnProperty("y"))
+      entity.$container.y(props.y)
+
     entity.$component.setup.call(entity.$object, props)
   }
 
@@ -632,12 +640,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       let val = this.properties[name];
       console.log("onPropertyChange", name, val)
       let props = {[name]: val}
-      let cmp = this.current.$component;
-      cmp.setup.call(this.current.$object, props)
-      //旋转
-      if (name == "rotate") {
-        this.current.$container.transform({rotate: val})
-      }
+      this.setupEntity(this.current, props)
     }
   }
 

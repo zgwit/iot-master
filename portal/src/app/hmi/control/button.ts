@@ -76,18 +76,10 @@ export let ButtonComponent: HmiComponent = {
       || props.hasOwnProperty("height")
     ) {
       // @ts-ignore
-      this.rect.radius(p.radius).size(p.width, p.height)
+      this.rect.radius(p.radius).size(p.width, p.height).move(p.x, p.y)
       // @ts-ignore
       this.back.radius(p.radius).size(p.width - p.stroke * 2, p.height - p.stroke * 2)
         .cx(p.x + p.width / 2).cy(p.y + p.height / 2)
-      // @ts-ignore
-      this.text.center(p.x + p.width / 2, p.y + p.height / 2)
-    }
-    if (props.hasOwnProperty("x") || props.hasOwnProperty("y")) {
-      // @ts-ignore
-      this.rect.move(p.x, p.y)
-      // @ts-ignore
-      this.back.cx(p.x + p.width / 2).cy(p.y + p.height / 2)
       // @ts-ignore
       this.text.center(p.x + p.width / 2, p.y + p.height / 2)
     }

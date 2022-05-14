@@ -22,8 +22,6 @@ export let TextComponent: HmiComponent = {
     let p = this.$properties
     if (props.hasOwnProperty("fill"))//@ts-ignore
       this.element.fill(p.fill)
-    if (props.hasOwnProperty("x") || props.hasOwnProperty("y"))//@ts-ignore
-      this.element.move(p.x, p.y)
     if (props.hasOwnProperty("width") || props.hasOwnProperty("height"))//@ts-ignore
       this.element.size(p.width, p.height)
   }
