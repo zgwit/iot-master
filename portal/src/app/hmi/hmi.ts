@@ -78,9 +78,6 @@ export interface HmiComponent {
 
   //[prop: string]: any
 
-  //缩放 svg foreignObject
-  resize?(): void
-
   //初始化
   create(): void
 

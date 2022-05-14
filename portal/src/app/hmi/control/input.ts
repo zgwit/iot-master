@@ -40,10 +40,6 @@ export let InputComponent: HmiComponent = {
     this.element.node.appendChild(input)
   },
 
-  resize() {
-    //this.input.sets
-  },
-
   setup(props: any): void {
     //@ts-ignore
     let p = this.$properties

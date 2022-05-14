@@ -43,25 +43,6 @@ export let SwitchComponent: HmiComponent = {
     this.cell = this.$container.circle(0)
   },
 
-  resize() {
-    // @ts-ignore
-    let box = this.$element.bbox()
-    // @ts-ignore
-    let radius = box.height / 2 // this.$properties.radius
-
-    // @ts-ignore
-    let stroke = this.$properties.stroke
-
-
-    // @ts-ignore.size()
-
-    // @ts-ignore
-    this.back.radius(radius - stroke).size(box.width - stroke * 2, box.height - stroke * 2).x(stroke).cy(box.cy)
-
-    // @ts-ignore
-    this.cell.radius(box.height / 2 - stroke * 1.5).cx(stroke * 0.5 + radius).cy(box.cy)
-  },
-
   //配置
   setup(props: any) {
     //@ts-ignore

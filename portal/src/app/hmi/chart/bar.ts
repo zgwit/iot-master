@@ -27,20 +27,22 @@ export let BarChartComponent: HmiComponent = {
 
   create() {
     //@ts-ignore
-    this.foreignObject = this.$container.foreignObject()
+    this.element = this.$container.foreignObject()
     //@ts-ignore
     this.chart = echarts.init(this.foreignObject.node)
     //@ts-ignore
     this.chart.setOption(this.options)
   },
 
-  resize() {
-    //@ts-ignore
-    this.chart.resize()
-  },
-
   setup(props: any): void {
-
+    //@ts-ignore
+    let p = this.$properties
+    if (props.hasOwnProperty("width") || props.hasOwnProperty("height")) {
+      //@ts-ignore
+      this.element.size(p.width, p.height)
+      //@ts-ignore
+      this.chart.resize()
+    }
   },
 
   update(values: any) {
