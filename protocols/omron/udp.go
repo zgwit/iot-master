@@ -44,16 +44,12 @@ type UdpFrame struct {
 type FinsUdp struct {
 	frame UdpFrame
 	link  connect.Link
-	queue chan *request //in
 }
 
 func NewFinsUDP(link connect.Link, opts protocol.Options) protocol.Adapter {
-	fins :=  &FinsUdp{
-		link: link,
-		queue: make(chan *request, 1),
-	}
+	fins := &FinsUdp{link: link}
 	link.On("data", func(data []byte) {
-		fins.OnData(data)
+		//fins.OnData(data)
 	})
 	link.On("close", func() {
 		//close(fins.queue)
@@ -61,47 +57,17 @@ func NewFinsUDP(link connect.Link, opts protocol.Options) protocol.Adapter {
 	return fins
 }
 
-
 func (f *FinsUdp) execute(cmd []byte) ([]byte, error) {
-	req := &request{
-		cmd:  cmd,
-		resp: make(chan response, 1),
-	}
-	//排队等待
-	f.queue <- req
-
 	//下发指令
-	err := f.link.Write(cmd)
+	buf, err := f.link.Poll(cmd, time.Second*5)
 	if err != nil {
-		//释放队列
-		<-f.queue
 		return nil, err
 	}
-
-	//等待结果
-	select {
-	case <-time.After(5 * time.Second):
-		<-f.queue //清空
-		return nil, errors.New("timeout")
-	case resp := <-req.resp:
-		return resp.buf, resp.err
-	}
-}
-
-
-func (f *FinsUdp) OnData(buf []byte)  {
-	if len(f.queue) == 0 {
-		//无效数据
-		return
-	}
-
-	//取出请求，并让出队列，可以开始下一个请示了
-	req := <-f.queue
 
 	//解析数据
 	l := len(buf)
 	if l < 10 {
-		return
+		return nil, errors.New("长度不够")
 	}
 
 	//[UDP 10字节]
@@ -109,7 +75,7 @@ func (f *FinsUdp) OnData(buf []byte)  {
 	//记录响应的SID
 	f.frame.SID = buf[9]
 
-	req.resp <- response{buf: buf[10:]}
+	return buf[10:], nil
 }
 
 func (f *FinsUdp) Address(addr string) (protocol.Addr, error) {

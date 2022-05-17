@@ -22,13 +22,11 @@ type request struct {
 //RTU Modbus-RTU协议
 type RTU struct {
 	link  connect.Link
-	queue chan *request //in
 }
 
 func NewRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
 	rtu := &RTU{
 		link:  link,
-		queue: make(chan *request, 1),
 		//slave: opts["slave"].(uint8),
 	}
 	link.On("data", func(data []byte) {
@@ -41,119 +39,13 @@ func NewRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
 	return rtu
 }
 
+
 func (m *RTU) execute(cmd []byte) ([]byte, error) {
-	req := &request{
-		cmd:  cmd,
-		resp: make(chan response, 1),
-	}
-	//排队等待
-	m.queue <- req
 
-	//下发指令
-	err := m.link.Write(cmd)
-	if err != nil {
-		//释放队列
-		<-m.queue
-		return nil, err
-	}
-
-	//等待结果
-	select {
-	case <-time.After(5 * time.Second):
-		<-m.queue //清空
-		return nil, errors.New("timeout")
-	case resp := <-req.resp:
-		return resp.buf, resp.err
-	}
-}
-
-func (m *RTU) OnData(buf []byte) {
-	if len(m.queue) == 0 {
-		//无效数据
-		return
-	}
-
-	//取出请求，并让出队列，可以开始下一个请示了
-	req := <-m.queue
-
-	//解析数据
-	l := len(buf)
-	if l < 6 {
-		return
-	}
-
-	crc := helper.ParseUint16LittleEndian(buf[l-2:])
-
-	if crc != CRC16(buf[:l-2]) {
-		//检验错误
-		req.resp <- response{err: errors.New("校验错误")}
-		return
-	}
-
-	//slave := buf[0]
-	fc := buf[1]
-
-	//解析错误码
-	if fc&0x80 > 0 {
-		req.resp <- response{err: fmt.Errorf("错误码：%d", buf[2])}
-		return
-	}
-
-	//解析数据
-	length := 4
-	count := int(buf[2])
-	switch buf[1] {
-	case FuncCodeReadDiscreteInputs,
-		FuncCodeReadCoils:
-		length += 1 + count/8
-		if count%8 != 0 {
-			length++
-		}
-
-		if l < length {
-			//长度不够
-			req.resp <- response{err: errors.New("长度不够")}
-			return
-		}
-		b := buf[3 : l-2]
-		//数组解压
-		bb := helper.ExpandBool(b, count)
-		req.resp <- response{buf: bb}
-	case FuncCodeReadInputRegisters,
-		FuncCodeReadHoldingRegisters,
-		FuncCodeReadWriteMultipleRegisters:
-		length += 1 + count
-		if l < length {
-			//长度不够
-			req.resp <- response{err: errors.New("长度不够")}
-			return
-		}
-		b := buf[3 : l-2]
-		req.resp <- response{buf: helper.Dup(b)}
-	default:
-		req.resp <- response{}
-	}
-}
-
-
-func (m *RTU) Address(addr string) (protocol.Addr, error) {
-	return ParseAddress(addr)
-}
-
-func (m *RTU) Read(station int, address protocol.Addr, size int) ([]byte, error) {
-	addr := address.(*Address)
-	b := make([]byte, 8)
-	b[0] = uint8(station)
-	b[1] = addr.Code
-	helper.WriteUint16(b[2:], addr.Offset)
-	helper.WriteUint16(b[4:], uint16(size))
-	helper.WriteUint16LittleEndian(b[6:], CRC16(b[:6]))
-
-	buf, err := m.link.Poll(b, 5*time.Second)
+	buf, err := m.link.Poll(cmd, 5*time.Second)
 	if err != nil {
 		return nil, err
 	}
-
 
 	//解析数据
 	l := len(buf)
@@ -210,6 +102,22 @@ func (m *RTU) Read(station int, address protocol.Addr, size int) ([]byte, error)
 	}
 }
 
+func (m *RTU) Address(addr string) (protocol.Addr, error) {
+	return ParseAddress(addr)
+}
+
+func (m *RTU) Read(station int, address protocol.Addr, size int) ([]byte, error) {
+	addr := address.(*Address)
+	b := make([]byte, 8)
+	b[0] = uint8(station)
+	b[1] = addr.Code
+	helper.WriteUint16(b[2:], addr.Offset)
+	helper.WriteUint16(b[4:], uint16(size))
+	helper.WriteUint16LittleEndian(b[6:], CRC16(b[:6]))
+
+	return m.execute(b)
+}
+
 func (m *RTU) Immediate(station int, addr protocol.Addr, size int) ([]byte, error) {
 	return m.Read(station, addr, size)
 }
@@ -262,32 +170,6 @@ func (m *RTU) Write(station int, address protocol.Addr, buf []byte) error {
 	copy(b[4:], buf)
 	helper.WriteUint16LittleEndian(b[l-2:], CRC16(b[:l-2]))
 
-
-	buf, err := m.link.Poll(b, 5*time.Second)
-	if err != nil {
-		return  err
-	}
-
-	//解析数据
-	ll := len(buf)
-	if ll < 6 {
-		return errors.New("长度不足")
-	}
-
-	crc := helper.ParseUint16LittleEndian(buf[ll-2:])
-
-	if crc != CRC16(buf[:ll-2]) {
-		//检验错误
-		return errors.New("校验错误")
-	}
-
-	//slave := buf[0]
-	fc := buf[1]
-
-	//解析错误码
-	if fc&0x80 > 0 {
-		return fmt.Errorf("错误码：%d", buf[2])
-	}
-
-	return nil
+	_, err := m.execute(b)
+	return err
 }

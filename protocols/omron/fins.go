@@ -9,29 +9,15 @@ import (
 	"time"
 )
 
-type response struct {
-	buf []byte
-	err error
-}
-
-type request struct {
-	cmd  []byte
-	resp chan response //out
-}
-
 type Fins struct {
 	frame UdpFrame
 	link  connect.Link
-	queue chan *request //in
 }
 
 func NewFinsTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
-	fins := &Fins{
-		link:  link,
-		queue: make(chan *request, 1),
-	}
+	fins := &Fins{link: link}
 	link.On("data", func(data []byte) {
-		fins.OnData(data)
+		//fins.OnData(data)
 	})
 	link.On("close", func() {
 		//close(fins.queue)
@@ -40,61 +26,31 @@ func NewFinsTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
 }
 
 func (f *Fins) execute(cmd []byte) ([]byte, error) {
-	req := &request{
-		cmd:  cmd,
-		resp: make(chan response, 1),
-	}
-	//排队等待
-	f.queue <- req
-
-	//下发指令
-	err := f.link.Write(cmd)
+	//发送请求
+	buf, err := f.link.Poll(cmd, time.Second*5)
 	if err != nil {
-		//释放队列
-		<-f.queue
 		return nil, err
 	}
-
-	//等待结果
-	select {
-	case <-time.After(5 * time.Second):
-		<-f.queue //清空
-		return nil, errors.New("timeout")
-	case resp := <-req.resp:
-		return resp.buf, resp.err
-	}
-}
-
-func (f *Fins) OnData(buf []byte) {
-	if len(f.queue) == 0 {
-		//无效数据
-		return
-	}
-
-	//取出请求，并让出队列，可以开始下一个请示了
-	req := <-f.queue
 
 	//解析数据
 	l := len(buf)
 	if l < 16 {
-		return
+		return nil, errors.New("长度不够")
 	}
 
 	//头16字节：FINS + 长度 + 命令 + 错误码
 	status := helper.ParseUint32(buf[12:])
 	if status != 0 {
-		req.resp <- response{err: fmt.Errorf("TCP状态错误: %d", status)}
-		return
+		return nil, fmt.Errorf("TCP状态错误: %d", status)
 	}
 
 	length := helper.ParseUint32(buf[4:])
 	//判断剩余长度
 	if int(length)+8 < len(buf) {
-		req.resp <- response{err: fmt.Errorf("长度错误: %d", length)}
-		return
+		return nil, fmt.Errorf("长度错误: %d", length)
 	}
 
-	req.resp <- response{buf: buf[16:]}
+	return buf[16:], nil
 }
 
 func (f *Fins) Handshake() error {
