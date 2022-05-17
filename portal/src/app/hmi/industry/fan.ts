@@ -20,5 +20,14 @@ export let FanComponent: HmiComponent = {
       this.element.size(p.width, p.height)
     if (props.hasOwnProperty("color"))//@ts-ignore
       this.element.fill(p.color)
+
+  },
+
+  update(values: any) {
+    if (values.speed > 0) {
+      //@ts-ignore
+      //this.element.animate().ease('-').transform({rotate:90, origin: 'center'}).loop()
+      this.element.animate().ease('-').transform({rotate:120}).loop()
+    }
   }
 }

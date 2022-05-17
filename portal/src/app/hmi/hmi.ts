@@ -30,22 +30,23 @@ export type HmiElement =
 export interface HmiPropertyItem {
   label: string
   name: string
-  type: string | 'boolean' | 'number' | 'text' | 'color' | 'date' | 'time' | 'datetime' | 'font' | 'fontsize'
+  type: string | 'boolean' | 'number' | 'text' | 'color' | 'date' | 'time' | 'datetime' | 'font' | 'fontsize' | 'select'
   unit?: string
   min?: number
   max?: number
   default?: boolean | number | string
+  options?:Array<{label:string, value:any}>
 
   [prop: string]: any
 }
 
 export interface HmiEvent {
-  event: string
+  name: string
   label: string
 }
 
 export interface HmiValue {
-  value: string
+  name: string
   label: string
 }
 
@@ -74,7 +75,7 @@ export interface HmiComponent {
   events?: Array<HmiEvent>
 
   //监听
-  watches?: Array<HmiValue>
+  values?: Array<HmiValue>
 
   //[prop: string]: any
 

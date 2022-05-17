@@ -45,45 +45,42 @@
     </nz-content>
 
     <nz-sider class="properties" nzWidth="300px">
-      <nz-tabset nzType="card" nzSize="small">
-        <nz-tab nzTitle="属性">
+
+
+      <nz-collapse>
+        <nz-collapse-panel nzHeader="参数配置" nzActive>
 
           <nz-table nzSize="small" nzNoResult=" " [nzBordered]="false" [nzFrontPagination]="false">
-            <thead>
-            <tr>
-              <th>属性</th>
-              <th>值</th>
-            </tr>
-            </thead>
             <tbody>
-            <tr *ngFor="let data of $properties">
-              <td>{{data.label}}</td>
-              <td [ngSwitch]="data.type">
+            <tr *ngFor="let prop of $properties">
+              <td>{{prop.label}}</td>
+              <td [ngSwitch]="prop.type">
                 <nz-switch *ngSwitchCase="'boolean'" nzSize="small"
-                           [(ngModel)]="properties[data.name]"
-                           (ngModelChange)="onPropertyChange(data.name)"></nz-switch>
+                           [(ngModel)]="properties[prop.name]"
+                           (ngModelChange)="onPropertyChange(prop.name)"></nz-switch>
                 <input nz-input *ngSwitchCase="'number'" nzSize="small" type="number"
-                       [(ngModel)]="properties[data.name]"
-                       (change)="onPropertyChange(data.name)">
+                       [(ngModel)]="properties[prop.name]"
+                       (change)="onPropertyChange(prop.name)">
                 <input nz-input *ngSwitchCase="'text'" nzSize="small"
-                       [(ngModel)]="properties[data.name]"
-                       (change)="onPropertyChange(data.name)">
+                       [(ngModel)]="properties[prop.name]"
+                       (change)="onPropertyChange(prop.name)">
                 <ng-container *ngSwitchCase="'color'">
-                  <input nz-input nzSize="small" [value]="properties[data.name]" [(colorPicker)]="properties[data.name]"
-                         [style.background]="properties[data.name]"
-                         (colorPickerChange)="onPropertyChange(data.name)">
-                  <a (click)="properties[data.name]='none'; onPropertyChange(data.name)" *ngIf="properties[data.name]!='none'">无</a>
+                  <input nz-input nzSize="small" [value]="properties[prop.name]" [(colorPicker)]="properties[prop.name]"
+                         [style.background]="properties[prop.name]"
+                         (colorPickerChange)="onPropertyChange(prop.name)">
+                  <a (click)="properties[prop.name]='none'; onPropertyChange(prop.name)"
+                     *ngIf="properties[prop.name]!='none'">无</a>
                 </ng-container>
                 <nz-select *ngSwitchCase="'font'" nzSize="small"
-                           [(ngModel)]="properties[data.name]"
-                           (ngModelChange)="onPropertyChange(data.name)">
+                           [(ngModel)]="properties[prop.name]"
+                           (ngModelChange)="onPropertyChange(prop.name)">
                   <nz-option nzLabel="默认" nzValue=""></nz-option>
                   <nz-option nzLabel="黑体" nzValue="黑体"></nz-option>
                   <nz-option nzLabel="宋体" nzValue="宋体"></nz-option>
                 </nz-select>
                 <nz-select *ngSwitchCase="'fontsize'" nzSize="small"
-                           [(ngModel)]="properties[data.name]"
-                           (ngModelChange)="onPropertyChange(data.name)">
+                           [(ngModel)]="properties[prop.name]"
+                           (ngModelChange)="onPropertyChange(prop.name)">
                   <nz-option nzLabel="最小" nzValue="xx-small"></nz-option>
                   <nz-option nzLabel="较小" nzValue="x-small"></nz-option>
                   <nz-option nzLabel="小号" nzValue="small"></nz-option>
@@ -93,23 +90,29 @@
                   <nz-option nzLabel="超大" nzValue="xx-large"></nz-option>
                   <nz-option nzLabel="最大" nzValue="xxx-large"></nz-option>
                 </nz-select>
+                <nz-select *ngSwitchCase="'select'" nzSize="small"
+                           [(ngModel)]="properties[prop.name]"
+                           (ngModelChange)="onPropertyChange(prop.name)">
+                  <nz-option *ngFor="let opt of prop?.options" [nzLabel]="opt.label" [nzValue]="opt.value"></nz-option>
+                </nz-select>
                 <input nz-input *ngSwitchDefault nzSize="small"
-                       [(ngModel)]="properties[data.name]"
-                       (change)="onPropertyChange(data.name)">
+                       [(ngModel)]="properties[prop.name]"
+                       (change)="onPropertyChange(prop.name)">
                 <!--            {{data.name}}-->
               </td>
             </tr>
             </tbody>
           </nz-table>
 
-        </nz-tab>
-        <nz-tab nzTitle="事件">
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="事件响应" nzActive>
 
-        </nz-tab>
-        <nz-tab nzTitle="图层">
+        </nz-collapse-panel>
+        <nz-collapse-panel nzHeader="数据绑定" nzActive>
 
-        </nz-tab>
-      </nz-tabset>
+        </nz-collapse-panel>
+      </nz-collapse>
+
 
     </nz-sider>
   </nz-layout>
