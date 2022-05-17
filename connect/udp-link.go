@@ -3,6 +3,7 @@ package connect
 import (
 	"io"
 	"net"
+	"time"
 )
 
 //UdpLink UDP链接
@@ -31,6 +32,18 @@ func (l *UdpLink) Write(data []byte) error {
 		l.onClose()
 	}
 	return err
+}
+
+func (l *UdpLink) Poll(cmd []byte, timeout time.Duration) ([]byte, error)  {
+	//堵塞
+	l.lock.Lock()
+	defer l.lock.Unlock() //自动解锁
+
+	err := l.Write(cmd)
+	if err != nil {
+		return nil, err
+	}
+	return l.wait(timeout)
 }
 
 func (l *UdpLink) Pipe(pipe io.ReadWriteCloser) {

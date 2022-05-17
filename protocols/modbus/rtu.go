@@ -32,7 +32,7 @@ func NewRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
 		//slave: opts["slave"].(uint8),
 	}
 	link.On("data", func(data []byte) {
-		rtu.OnData(data)
+		//rtu.OnData(data)
 	})
 	link.On("close", func() {
 		//close(rtu.queue)
@@ -149,7 +149,65 @@ func (m *RTU) Read(station int, address protocol.Addr, size int) ([]byte, error)
 	helper.WriteUint16(b[4:], uint16(size))
 	helper.WriteUint16LittleEndian(b[6:], CRC16(b[:6]))
 
-	return m.execute(b)
+	buf, err := m.link.Poll(b, 5*time.Second)
+	if err != nil {
+		return nil, err
+	}
+
+
+	//解析数据
+	l := len(buf)
+	if l < 6 {
+		return nil, errors.New("长度不足")
+	}
+
+	crc := helper.ParseUint16LittleEndian(buf[l-2:])
+
+	if crc != CRC16(buf[:l-2]) {
+		//检验错误
+		return nil, errors.New("校验错误")
+	}
+
+	//slave := buf[0]
+	fc := buf[1]
+
+	//解析错误码
+	if fc&0x80 > 0 {
+		return nil, fmt.Errorf("错误码：%d", buf[2])
+	}
+
+	//解析数据
+	length := 4
+	count := int(buf[2])
+	switch buf[1] {
+	case FuncCodeReadDiscreteInputs,
+		FuncCodeReadCoils:
+		length += 1 + count/8
+		if count%8 != 0 {
+			length++
+		}
+
+		if l < length {
+			//长度不够
+			return nil, errors.New("长度不足")
+		}
+		b := buf[3 : l-2]
+		//数组解压
+		bb := helper.ExpandBool(b, count)
+		return bb, nil
+	case FuncCodeReadInputRegisters,
+		FuncCodeReadHoldingRegisters,
+		FuncCodeReadWriteMultipleRegisters:
+		length += 1 + count
+		if l < length {
+			//长度不够
+			return nil, errors.New("长度不足")
+		}
+		b := buf[3 : l-2]
+		return helper.Dup(b), nil
+	default:
+		return nil, errors.New("不支持的指令")
+	}
 }
 
 func (m *RTU) Immediate(station int, addr protocol.Addr, size int) ([]byte, error) {
@@ -204,6 +262,32 @@ func (m *RTU) Write(station int, address protocol.Addr, buf []byte) error {
 	copy(b[4:], buf)
 	helper.WriteUint16LittleEndian(b[l-2:], CRC16(b[:l-2]))
 
-	_, err := m.execute(b)
-	return err
+
+	buf, err := m.link.Poll(b, 5*time.Second)
+	if err != nil {
+		return  err
+	}
+
+	//解析数据
+	ll := len(buf)
+	if ll < 6 {
+		return errors.New("长度不足")
+	}
+
+	crc := helper.ParseUint16LittleEndian(buf[ll-2:])
+
+	if crc != CRC16(buf[:ll-2]) {
+		//检验错误
+		return errors.New("校验错误")
+	}
+
+	//slave := buf[0]
+	fc := buf[1]
+
+	//解析错误码
+	if fc&0x80 > 0 {
+		return fmt.Errorf("错误码：%d", buf[2])
+	}
+
+	return nil
 }
