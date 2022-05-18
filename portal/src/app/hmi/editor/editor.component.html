@@ -19,10 +19,10 @@
     <!--    <i nz-icon class="btn" nzType="vertical-align-middle" title="居中对齐"></i>-->
     <!--    <i nz-icon class="btn" nzType="vertical-align-bottom" title="下对齐"></i>-->
     <nz-divider nzType="vertical"></nz-divider>
-    <i nz-icon class="btn" nzType="vertical-right" title="置顶" [nzRotate]="90"></i>
-    <i nz-icon class="btn" nzType="up" title="上移一层"></i>
-    <i nz-icon class="btn" nzType="down" title="下移一层"></i>
-    <i nz-icon class="btn" nzType="vertical-left" title="置底" [nzRotate]="90"></i>
+    <i nz-icon class="btn" nzType="vertical-right" title="置顶" [nzRotate]="90" (click)="moveTop()"></i>
+    <i nz-icon class="btn" nzType="up" title="上移一层" (click)="moveUp()"></i>
+    <i nz-icon class="btn" nzType="down" title="下移一层" (click)="moveDown()"></i>
+    <i nz-icon class="btn" nzType="vertical-left" title="置底" [nzRotate]="90" (click)="moveBottom()"></i>
     <!--    <nz-divider nzType="vertical"></nz-divider>-->
     <!--    <i nz-icon class="btn" nzType="group" title="组合"></i>-->
     <!--    <i nz-icon class="btn" nzType="ungroup" title="解除组合"></i>-->

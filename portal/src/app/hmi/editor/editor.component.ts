@@ -644,4 +644,39 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
+  moveTop() {
+    let index = this.entities.findIndex(e => e == this.current)
+    if (index < this.entities.length - 1) {
+      let es = this.entities.splice(index, 1)
+      this.entities.push(...es)
+      this.current?.$container.front()
+    }
+  }
+
+  moveBottom() {
+    let index = this.entities.findIndex(e => e == this.current)
+    if (index > 0) {
+      let es = this.entities.splice(index, 1)
+      this.entities.splice(0, 0, ...es)
+      this.current?.$container.back()
+    }
+  }
+
+  moveUp() {
+    let index = this.entities.findIndex(e => e == this.current)
+    if (index < this.entities.length - 1) {
+      let es = this.entities.splice(index, 1)
+      this.entities.splice(index + 1, 0, ...es)
+      this.current?.$container.forward()
+    }
+  }
+
+  moveDown() {
+    let index = this.entities.findIndex(e => e == this.current)
+    if (index > 0) {
+      let es = this.entities.splice(index, 1)
+      this.entities.splice(index - 1, 0, ...es)
+      this.current?.$container.backward()
+    }
+  }
 }
