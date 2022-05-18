@@ -42,7 +42,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   groupedComponents = GroupedComponents
 
   entities: Array<HmiEntity> = []
-  current: HmiEntity | undefined;
+  current?: HmiEntity;
+
+  plate?: HmiEntity;
 
   properties: any = {}
   $properties: Array<HmiPropertyItem> = []
@@ -138,7 +140,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       entity.$component.create.call(entity.$object)
       entity.$component.setup.call(entity.$object, entity.properties)
 
-      this.makeEntityEditable(entity);
+      this.appendEntity(entity);
     })
   }
 
@@ -213,6 +215,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
     //传入全局配置
     this.setupEntity(entity, entity.properties)
 
+    this.makeEntityEditable(entity);
+
     this.entities.push(entity)
   }
 
@@ -245,7 +249,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
       $container: new G(),
       $component: cmp,
-      $object: cmp.data ? cmp.data() : {},
+      $object: undefined,
     }
 
     //TODO 改为返回值
@@ -253,8 +257,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     //画
     this.drawEntity(entity);
-
-    this.makeEntityEditable(entity);
   }
 
 
@@ -678,5 +680,54 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.entities.splice(index - 1, 0, ...es)
       this.current?.$container.backward()
     }
+  }
+
+  cut() {
+    this.copy()
+    this.current?.$container.remove()
+    this.current = undefined
+  }
+
+  copy() {
+    let index = this.entities.findIndex(e => e == this.current)
+    if (index > 0) {
+      let es = this.entities.splice(index, 1)
+      this.plate = this.current
+      //this.current?.$container.remove()
+      //this.current = undefined
+      this.editLayer.clear();
+    }
+  }
+
+  paste() {
+    if (this.plate) {
+      let entity: HmiEntity = {
+        name: this.plate.name,
+        component: this.plate.component,
+        properties: JSON.parse(JSON.stringify(this.plate.properties)),
+        handlers: JSON.parse(JSON.stringify(this.plate.handlers)),
+        bindings: JSON.parse(JSON.stringify(this.plate.bindings)),
+        $container: new G(),
+        $component: this.plate.$component,
+        $object: undefined,
+      }
+      //向右下移动一下
+      entity.properties.x += 10
+      entity.properties.y += 10
+      CreateEntityObject(entity)
+      this.appendEntity(entity)
+      this.plate = entity //切换成新的
+    }
+
+  }
+
+  delete() {
+    let index = this.entities.findIndex(e => e == this.current)
+    if (index > 0) {
+      let es = this.entities.splice(index, 1)
+    }
+    this.current?.$container.remove()
+    this.current = undefined
+    this.editLayer.clear();
   }
 }
