@@ -38,6 +38,8 @@ import {ComponentComponent} from "./component/component.component";
 import {HmiComponent} from "./hmi/hmi.component";
 import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
 import {DeviceValueComponent} from "./device-value/device-value.component";
+import {UserDetailComponent} from "./user-detail/user-detail.component";
+import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
 
 const routes: Routes = [
   {
@@ -120,8 +122,8 @@ const routes: Routes = [
         path: 'hmi', component: ContainerComponent, data: {breadcrumb: "组态"}, children: [
           {path: '', component: HmiComponent, data: {breadcrumb: "组态"}},
           {path: 'detail/:id', component: HmiDetailComponent, data: {breadcrumb: "详情"}},
-          //{path: 'edit/:id', component: HmiEditComponent, data: {breadcrumb: "编辑"}},
-          //{path: 'create', component: HmiEditComponent, data: {breadcrumb: "创建"}},
+          {path: 'edit/:id', component: HmiEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: HmiEditComponent, data: {breadcrumb: "创建"}},
         ]
       },
 
@@ -143,6 +145,13 @@ const routes: Routes = [
           {path: '', component: SettingComponent, data: {breadcrumb: "系统"}},
           {path: 'user', component: UserComponent, data: {breadcrumb: "用户"}},
           {path: 'password', component: PasswordComponent, data: {breadcrumb: "修改密码"}},
+        ]
+      },
+
+      {
+        path: 'user', component: ContainerComponent, data: {breadcrumb: "用户"}, children: [
+          {path: '', component: UserComponent, data: {breadcrumb: "用户"}},
+          {path: 'detail/:id', component: UserDetailComponent, data: {breadcrumb: "详情"}},
         ]
       },
 

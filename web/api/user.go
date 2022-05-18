@@ -7,6 +7,10 @@ import (
 )
 
 func userRoutes(app *gin.RouterGroup) {
+
+	app.GET("me", userMe)
+
+
 	app.POST("list", userList)
 	app.POST("create", userCreate)
 
@@ -22,6 +26,10 @@ func userRoutes(app *gin.RouterGroup) {
 	app.GET(":id/enable", userEnable)
 	app.GET(":id/disable", userDisable)
 
+}
+
+func userMe(ctx *gin.Context) {
+	replyOk(ctx, ctx.MustGet("user"))
 }
 
 func userList(ctx *gin.Context) {
