@@ -30,7 +30,6 @@ export class LinkEditComponent implements OnInit {
   buildForm(): void {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
-      company_id: [this.data.company_id, []],
       timeout: [this.data.timeout, [Validators.required]],
       disabled: [this.data.disabled, [Validators.required]],
     });

@@ -43,8 +43,8 @@ export class ElementEditComponent implements OnInit {
       points: [this.data.points || []],
       context: [this.data.context || {}],
       commands: [this.data.commands || []],
-      pollers: [this.data.collectors || []],
-      calculators: [this.data.collectors || []],
+      pollers: [this.data.pollers || []],
+      calculators: [this.data.calculators || []],
       alarms: [this.data.alarms || []],
     });
   }
