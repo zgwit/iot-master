@@ -48,6 +48,10 @@ export let ButtonComponent: HmiComponent = {
     ...fontProperties
   ],
 
+  events: [
+    {label: '点击', name: 'click'}
+  ],
+
   //配置
   create() {
     // @ts-ignore
