@@ -623,6 +623,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.editLayer.clear()
     this.$properties = GetComponentAllProperties(entity.$component);
     this.properties = entity.properties
+
+
     const type = entity.$component.drawer || "rect"
     switch (type) {
       case "rect" :

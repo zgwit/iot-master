@@ -110,6 +110,15 @@
         </nz-collapse-panel>
         <nz-collapse-panel nzHeader="数据绑定" nzActive>
 
+          <nz-table nzSize="small" nzNoResult=" " [nzBordered]="false" [nzFrontPagination]="false">
+            <tbody>
+            <tr *ngFor="let value of currentComponent?.values">
+              <td>{{value.label}}</td>
+              <td><input nz-input nzSize="small" [(ngModel)]="current?.bindings[value.name]"></td>
+            </tr>
+            </tbody>
+          </nz-table>
+
         </nz-collapse-panel>
       </nz-collapse>
 
