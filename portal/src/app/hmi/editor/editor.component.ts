@@ -73,12 +73,18 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
         }
         break;
-      case "c": //复制
-        if (event.ctrlKey) {
-
-        }
+      case "x": //剪切
+        if (event.ctrlKey)
+          this.cut()
         break;
-      //case "v": break;
+      case "c": //复制
+        if (event.ctrlKey)
+          this.copy()
+        break;
+      case "v":
+        if (event.ctrlKey)
+          this.paste()
+        break;
       case "ArrowUp":
         if (this.current) {
           this.current.$container.dmove(0, -5)
