@@ -53,6 +53,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
   fill = "#FFFFFF"
   stroke = 2
 
+  width = 800
+  height = 600
+
   constructor() {
   }
 
@@ -133,7 +136,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // @ts-ignore
-    this.canvas = SVG().addTo('#hmi-editor-canvas').size(800, 600);
+    this.canvas = SVG().addTo('#hmi-editor-canvas').size(this.width, this.height);
     this.baseLayer = this.canvas.group();
     this.initGrid();
 
@@ -735,5 +738,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.current?.$container.remove()
     this.current = undefined
     this.editLayer.clear();
+  }
+
+  onSizeChange() {
+    this.canvas.size(this.width, this.height)
   }
 }

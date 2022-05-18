@@ -8,7 +8,7 @@
     <nz-divider nzType="vertical"></nz-divider>
     <i nz-icon class="btn" nzType="scissor" title="剪切" (click)="cut()"></i>
     <i nz-icon class="btn" nzType="copy" title="复制" (click)="copy()"></i>
-        <i nz-icon class="btn" nzType="snippets" title="粘贴" (click)="paste()"></i>
+    <i nz-icon class="btn" nzType="snippets" title="粘贴" (click)="paste()"></i>
     <i nz-icon class="btn" nzType="delete" title="删除" (click)="delete()"></i>
     <!--    <nz-divider nzType="vertical"></nz-divider>-->
     <!--    <i nz-icon class="btn" nzType="align-left" title="左对齐"></i>-->
@@ -117,6 +117,12 @@
     </nz-sider>
   </nz-layout>
   <nz-footer>
+
+    <input class="size" nz-input nzSize="small" [(ngModel)]="width" (change)="onSizeChange()">
+    x
+    <input class="size" nz-input nzSize="small" [(ngModel)]="height" (change)="onSizeChange()">
+
+    <nz-divider nzType="vertical"></nz-divider>
 
     填充
     <input class="color" [(colorPicker)]="fill" [style.background]="fill"/>
