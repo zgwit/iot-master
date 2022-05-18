@@ -15,6 +15,7 @@ import {NzInputModule} from "ng-zorro-antd/input";
 import {NzSwitchModule} from "ng-zorro-antd/switch";
 import {HmiRoutingModule} from "./hmi-routing.module";
 import {NzTabsModule} from "ng-zorro-antd/tabs";
+import {NzDropDownModule} from "ng-zorro-antd/dropdown";
 
 
 @NgModule({
@@ -26,22 +27,23 @@ import {NzTabsModule} from "ng-zorro-antd/tabs";
     EditorComponent,
     ViewerComponent,
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    HmiRoutingModule,
-    NzLayoutModule,
-    NzCollapseModule,
-    NzIconModule,
-    NzDividerModule,
-    NzTableModule,
-    NzSelectModule,
-    NzInputModule,
-    NzSwitchModule,
-    IconsProviderModule,
-    ColorPickerModule,
-    NzTabsModule,
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        HmiRoutingModule,
+        NzLayoutModule,
+        NzCollapseModule,
+        NzIconModule,
+        NzDividerModule,
+        NzTableModule,
+        NzSelectModule,
+        NzInputModule,
+        NzSwitchModule,
+        IconsProviderModule,
+        ColorPickerModule,
+        NzTabsModule,
+        NzDropDownModule,
+    ]
 })
 export class HmiModule {
 }

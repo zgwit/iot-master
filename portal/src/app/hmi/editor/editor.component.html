@@ -122,6 +122,31 @@
     x
     <input class="size" nz-input nzSize="small" [(ngModel)]="height" (change)="onSizeChange()">
 
+    <a nz-dropdown [nzDropdownMenu]="sizeMenu">
+      常用
+      <i nz-icon nzType="down"></i>
+    </a>
+    <nz-dropdown-menu #sizeMenu="nzDropdownMenu">
+      <ul nz-menu nzSelectable>
+        <li nz-menu-item (click)="changeSize(400,300)">400x300</li>
+        <li nz-menu-item (click)="changeSize(600,400)">600x400</li>
+        <li nz-menu-item (click)="changeSize(800,600)">800x600</li>
+        <li nz-menu-item (click)="changeSize(1000,800)">1000x800</li>
+        <li nz-menu-item (click)="changeSize(1200,900)">1200x900</li>
+        <li nz-menu-item (click)="changeSize(1600,1200)">1600x1200</li>
+        <li nz-menu-item (click)="changeSize(2000,1600)">2000x1600</li>
+      </ul>
+    </nz-dropdown-menu>
+
+    <nz-divider nzType="vertical"></nz-divider>
+
+    <nz-select [(ngModel)]="scale" (ngModelChange)="onScaleChange()">
+      <nz-option nzLabel="10%" [nzValue]="0.1"></nz-option>
+      <nz-option nzLabel="50%" [nzValue]="0.5"></nz-option>
+      <nz-option nzLabel="100%" [nzValue]="1"></nz-option>
+      <nz-option nzLabel="200%" [nzValue]="2"></nz-option>
+    </nz-select>
+
     <nz-divider nzType="vertical"></nz-divider>
 
     填充

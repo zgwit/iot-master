@@ -50,11 +50,12 @@ export class EditorComponent implements OnInit, AfterViewInit {
   $properties: Array<HmiPropertyItem> = []
 
   color = "#FFFFFF"
-  fill = "#FFFFFF"
+  fill = "#cccccc"
   stroke = 2
 
   width = 800
   height = 600
+  scale = 1.0
 
   constructor() {
   }
@@ -742,5 +743,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   onSizeChange() {
     this.canvas.size(this.width, this.height)
+  }
+
+  changeSize(width: number, heigth: number) {
+    this.width = width
+    this.height = heigth
+    this.canvas.size(this.width, this.height)
+  }
+
+  onScaleChange() {
+    this.canvas.transform({scale: this.scale})
   }
 }
