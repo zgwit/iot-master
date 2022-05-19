@@ -120,6 +120,7 @@ import {ComponentComponent} from "./component/component.component";
 import {DashModule} from "../dash/dash.module";
 import {DeviceValueComponent} from "./device-value/device-value.component";
 import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
+import {HmiModule} from "../hmi/hmi.module";
 
 @NgModule({
   declarations: [
@@ -201,6 +202,7 @@ import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
     DashModule,
     NzBreadCrumbModule,
     NzListModule,
+    HmiModule,
   ],
   bootstrap: [AdminComponent],
   providers: [ChooseService]

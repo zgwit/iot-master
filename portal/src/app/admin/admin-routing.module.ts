@@ -43,6 +43,14 @@ import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
 
 const routes: Routes = [
   {
+    path: 'hmi-edit/:id',
+    component: HmiEditComponent,
+  },
+  {
+    path: 'hmi-create',
+    component: HmiEditComponent,
+  },
+  {
     path: '',
     component: AdminComponent,
     data: {breadcrumb: "后台"},

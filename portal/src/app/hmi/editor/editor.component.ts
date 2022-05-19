@@ -13,7 +13,7 @@ import {
   HmiComponent,
   HmiEntity,
   HmiPropertyItem,
-  GetComponentAllProperties, CreateEntityObject
+  GetComponentAllProperties, CreateEntityObject, HmiEvent
 } from "../hmi";
 
 @Component({
@@ -755,5 +755,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   onScaleChange() {
     this.canvas.transform({scale: this.scale})
+  }
+
+  bindEvent(event: HmiEvent) {
+    console.log('bind', event)
+    if (this.current)
+      this.current.handlers[event.name] = [];
   }
 }

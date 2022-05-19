@@ -1,32 +1,32 @@
 import {HmiComponent} from "./hmi";
-import {LineComponent} from "./basic/line";
-import {CircleComponent} from "./basic/circle";
-import {PolylineComponent} from "./basic/polyline";
-import {PolygonComponent} from "./basic/polygon";
-import {RectComponent} from "./basic/rect";
-import {EllipseComponent} from "./basic/ellipse";
-import {TextComponent} from "./basic/text";
-import {ImageComponent} from "./basic/image";
-import {ButtonComponent} from "./control/button";
-import {InputComponent} from "./control/input";
-import {SwitchComponent} from "./control/switch";
-import {SliderComponent} from "./control/slider";
-import {ValueComponent} from "./control/value";
-import {AlarmComponent} from "./industry/alarm";
-import {CanComponent} from "./industry/can";
-import {FanComponent} from "./industry/fan";
-import {LightComponent} from "./industry/light";
-import {PipeComponent} from "./industry/pipe";
-import {PoolComponent} from "./industry/pool";
-import {PumpComponent} from "./industry/pump";
-import {ValveComponent} from "./industry/valve";
-import {MotorComponent} from "./industry/motor";
-import {BarChartComponent} from "./chart/bar";
-import {GaugeChartComponent} from "./chart/gauge";
-import {LineChartComponent} from "./chart/line";
-import {PieChartComponent} from "./chart/pie";
-import {RadarChartComponent} from "./chart/radar";
-import {ProgressComponent} from "./control/progress";
+import {LineComponent} from "./components/basic/line";
+import {CircleComponent} from "./components/basic/circle";
+import {PolylineComponent} from "./components/basic/polyline";
+import {PolygonComponent} from "./components/basic/polygon";
+import {RectComponent} from "./components/basic/rect";
+import {EllipseComponent} from "./components/basic/ellipse";
+import {TextComponent} from "./components/basic/text";
+import {ImageComponent} from "./components/basic/image";
+import {ButtonComponent} from "./components/control/button";
+import {InputComponent} from "./components/control/input";
+import {SwitchComponent} from "./components/control/switch";
+import {SliderComponent} from "./components/control/slider";
+import {ValueComponent} from "./components/control/value";
+import {AlarmComponent} from "./components/industry/alarm";
+import {CanComponent} from "./components/industry/can";
+import {FanComponent} from "./components/industry/fan";
+import {LightComponent} from "./components/industry/light";
+import {PipeComponent} from "./components/industry/pipe";
+import {PoolComponent} from "./components/industry/pool";
+import {PumpComponent} from "./components/industry/pump";
+import {ValveComponent} from "./components/industry/valve";
+import {MotorComponent} from "./components/industry/motor";
+import {BarChartComponent} from "./components/chart/bar";
+import {GaugeChartComponent} from "./components/chart/gauge";
+import {LineChartComponent} from "./components/chart/line";
+import {PieChartComponent} from "./components/chart/pie";
+import {RadarChartComponent} from "./components/chart/radar";
+import {ProgressComponent} from "./components/control/progress";
 
 export let GroupedComponents: Array<Group> = [];
 
@@ -84,7 +84,6 @@ let internalComponents = [
   //图表
   GaugeChartComponent, BarChartComponent, LineChartComponent, PieChartComponent
   //, RadarChartComponent
-
 ]
 internalComponents.forEach(c => LoadComponent(c))
 //}

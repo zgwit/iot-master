@@ -107,9 +107,32 @@
         </nz-collapse-panel>
         <nz-collapse-panel nzHeader="事件响应" nzActive>
 
-          <div *ngFor="let event of currentComponent?.events">
-            {{event.label}} {{event.name}}
-          </div>
+          <a nz-dropdown [nzDropdownMenu]="eventMenu">
+            绑定事件
+            <i nz-icon nzType="down"></i>
+          </a>
+          <nz-dropdown-menu #eventMenu="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item *ngFor="let event of currentComponent?.events"
+                  (click)="bindEvent(event)" [nzDisabled]="current?.handlers[event.name]">{{event.label}}</li>
+            </ul>
+          </nz-dropdown-menu>
+
+
+          <ng-container *ngFor="let event of currentComponent?.events">
+            <div *ngIf="current?.handlers[event.name]">
+              {{event.label}}
+
+              <table>
+                <tr>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </table>
+
+            </div>
+          </ng-container>
+
 
         </nz-collapse-panel>
         <nz-collapse-panel nzHeader="数据绑定" nzActive>
