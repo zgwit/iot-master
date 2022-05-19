@@ -24,6 +24,8 @@ import {
   VerticalRightOutline,
   GroupOutline,
   UngroupOutline,
+  CloseOutline,
+  PlusCircleOutline,
 } from '@ant-design/icons-angular/icons';
 import {CommonModule} from '@angular/common';
 
@@ -34,7 +36,7 @@ const icons = [
   VerticalAlignTopOutline,VerticalAlignMiddleOutline,VerticalAlignBottomOutline,
   UpOutline,DownOutline,LeftOutline,RightOutline,
   VerticalLeftOutline,VerticalRightOutline,
-  GroupOutline,UngroupOutline
+  GroupOutline,UngroupOutline,CloseOutline,PlusCircleOutline
 ];
 
 @NgModule({

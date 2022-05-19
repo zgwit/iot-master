@@ -33,6 +33,10 @@ export let PipeComponent: HmiComponent = {
     },
   ],
 
+  values: [
+    {name: "speed", label: "速度"},
+  ],
+
   create() {
     //@ts-ignore
     this.element = this.$container.polyline().fill('none')

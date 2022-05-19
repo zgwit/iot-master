@@ -39,6 +39,10 @@ export let PoolComponent: HmiComponent = {
     },
   ],
 
+  values: [
+    {name: "value", label: "内容"},
+  ],
+
 
   //配置
   create() {

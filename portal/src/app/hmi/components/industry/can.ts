@@ -33,6 +33,9 @@ export let CanComponent: HmiComponent = {
     },
   ],
 
+  values: [
+    {name: "value", label: "内容"},
+  ],
 
   //配置
   create() {

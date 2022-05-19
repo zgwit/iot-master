@@ -52,6 +52,10 @@ export let LightComponent: HmiComponent = {
     },
   ],
 
+  values: [
+    {name: "open", label: "运行"},
+  ],
+
   create() {
     //@ts-ignore
     this.element = this.$container.circle(this.$properties.radius)

@@ -47,7 +47,7 @@
     <nz-sider class="properties" nzWidth="300px">
 
 
-      <nz-collapse >
+      <nz-collapse>
         <nz-collapse-panel nzHeader="参数配置" nzActive>
 
           <table>
@@ -107,32 +107,39 @@
         </nz-collapse-panel>
         <nz-collapse-panel nzHeader="事件响应" nzActive>
 
-          <a nz-dropdown [nzDropdownMenu]="eventMenu">
-            绑定事件
-            <i nz-icon nzType="down"></i>
-          </a>
-          <nz-dropdown-menu #eventMenu="nzDropdownMenu">
-            <ul nz-menu nzSelectable>
-              <li nz-menu-item *ngFor="let event of currentComponent?.events"
-                  (click)="bindEvent(event)" [nzDisabled]="current?.handlers[event.name]">{{event.label}}</li>
-            </ul>
-          </nz-dropdown-menu>
-
-
           <ng-container *ngFor="let event of currentComponent?.events">
-            <div *ngIf="current?.handlers[event.name]">
-              {{event.label}}
-
-              <table>
-                <tr>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </table>
-
+            <div class="handler">
+              <div>
+                {{event.label}}
+                <i nz-icon nzType="plus-circle" (click)="bindEvent(event)"></i>
+              </div>
+              <div class="invoke" *ngFor="let handler of current?.handlers[event.name]; let i=index">
+                <i nz-icon class="remove" nzType="close" (click)="current?.handlers[event.name].splice(i,1)"></i>
+                <table>
+                  <tr>
+                    <td>目标</td>
+                    <td>
+                      <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',', '，', ';', ' ']"
+                                 nzSize="small" [(ngModel)]="handler.targets"></nz-select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>命令</td>
+                    <td>
+                      <input nz-input nzSize="small" [(ngModel)]="handler.command"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>参数</td>
+                    <td>
+                      <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',']"
+                                 nzSize="small" [(ngModel)]="handler.arguments"></nz-select>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </ng-container>
-
 
         </nz-collapse-panel>
         <nz-collapse-panel nzHeader="数据绑定" nzActive>

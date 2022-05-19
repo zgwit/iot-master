@@ -33,3 +33,20 @@
   padding: 30px;
   overflow: auto;
 }
+
+
+.handler {
+
+  .invoke {
+    border: 1px solid grey;
+    padding: 5px;
+    margin: 2px;
+    position: relative;
+
+    .remove {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}

@@ -40,6 +40,14 @@ export let ProgressComponent: HmiComponent = {
     },
   ],
 
+  events: [
+    {label: '点击', name: 'click'},
+  ],
+
+  values: [
+    {label: '值', name: 'value'}
+  ],
+
   //配置
   create() {
     // @ts-ignore

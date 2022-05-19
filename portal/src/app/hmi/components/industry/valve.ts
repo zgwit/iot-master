@@ -8,6 +8,14 @@ export let ValveComponent: HmiComponent = {
   drawer: "rect",
 
   //color: true,
+  values: [
+    {name: "open", label: "打开"},
+  ],
+
+  events: [
+    {name: "click", label: "点击"},
+    {name: "change", label: "变化"},
+  ],
 
   create() {
     //@ts-ignore

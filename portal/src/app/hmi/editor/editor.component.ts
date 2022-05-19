@@ -759,7 +759,9 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   bindEvent(event: HmiEvent) {
     console.log('bind', event)
-    if (this.current)
-      this.current.handlers[event.name] = [];
+    if (this.current) {
+      this.current.handlers[event.name] = this.current.handlers[event.name] || []
+      this.current.handlers[event.name].push({})
+    }
   }
 }

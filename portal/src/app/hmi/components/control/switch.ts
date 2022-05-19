@@ -33,6 +33,15 @@ export let SwitchComponent: HmiComponent = {
     },
   ],
 
+  events: [
+    {label: '点击', name: 'click'},
+    {label: '变化', name: 'change'},
+  ],
+
+  values: [
+    {label: '值', name: 'value'}
+  ],
+
   //配置
   create() {
     // @ts-ignore

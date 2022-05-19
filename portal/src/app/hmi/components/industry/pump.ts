@@ -8,6 +8,10 @@ export let PumpComponent: HmiComponent = {
 
 
   //color: true,
+  values: [
+    {name: "open", label: "运行"},
+    {name: "speed", label: "速度"},
+  ],
 
   create() {
     //@ts-ignore
