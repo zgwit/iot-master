@@ -13,7 +13,6 @@ import {NzSelectModule} from "ng-zorro-antd/select";
 import {FormsModule} from "@angular/forms";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzSwitchModule} from "ng-zorro-antd/switch";
-import {HmiRoutingModule} from "./hmi-routing.module";
 import {NzTabsModule} from "ng-zorro-antd/tabs";
 import {NzDropDownModule} from "ng-zorro-antd/dropdown";
 
@@ -30,7 +29,6 @@ import {NzDropDownModule} from "ng-zorro-antd/dropdown";
     imports: [
         CommonModule,
         FormsModule,
-        HmiRoutingModule,
         NzLayoutModule,
         NzCollapseModule,
         NzIconModule,
