@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 )
@@ -35,6 +36,11 @@ func hmiCreate(ctx *gin.Context) {
 		return
 	}
 
+	//使用UUId作为Id
+	if hmi.Id == "" {
+		hmi.Id = uuid.NewString()
+	}
+	//保存
 	err = database.Master.Save(&hmi)
 	if err != nil {
 		replyError(ctx, err)

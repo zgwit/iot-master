@@ -6,6 +6,7 @@ import {ElementBrowserComponent} from "./element-browser/element-browser.compone
 import {DeviceBrowserComponent} from "./device-browser/device-browser.component";
 import {LinkBrowserComponent} from "./link-browser/link-browser.component";
 import {PromptComponent} from "./prompt/prompt.component";
+import {HmiBrowserComponent} from "./hmi-browser/hmi-browser.component";
 
 @Injectable({
   providedIn: "root"
@@ -59,6 +60,15 @@ export class ChooseService {
     const modal = this.ms.create({
       nzTitle: '选择模板',
       nzContent: TemplateBrowserComponent,
+      nzWidth: '80%',
+    });
+    return modal.afterClose
+  }
+
+  chooseHMI() {
+    const modal = this.ms.create({
+      nzTitle: '选择可视化',
+      nzContent: HmiBrowserComponent,
       nzWidth: '80%',
     });
     return modal.afterClose

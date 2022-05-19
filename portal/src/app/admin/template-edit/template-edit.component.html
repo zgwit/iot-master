@@ -8,6 +8,14 @@
           <input nz-input formControlName="name" required/>
         </nz-form-control>
       </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">可视化</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <app-choose-hmi formControlName="hmi" [showClear]="true"></app-choose-hmi>
+        </nz-form-control>
+      </nz-form-item>
+
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="初始设备" nzActive>

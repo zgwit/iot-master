@@ -52,11 +52,11 @@ export let SideMenu = [
     ]
   },
   {
-    title: '组态',
+    title: '可视化',
     icon: 'build', //project
     children: [
       {
-        title: '组态',
+        title: '可视化',
         router: 'hmi'
       },
       {

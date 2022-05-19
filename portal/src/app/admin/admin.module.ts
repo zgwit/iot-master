@@ -121,6 +121,8 @@ import {DashModule} from "../dash/dash.module";
 import {DeviceValueComponent} from "./device-value/device-value.component";
 import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
 import {HmiModule} from "../hmi/hmi.module";
+import {ChooseHmiComponent} from "./choose-hmi/choose-hmi.component";
+import {HmiBrowserComponent} from "./hmi-browser/hmi-browser.component";
 
 @NgModule({
   declarations: [
@@ -143,7 +145,7 @@ import {HmiModule} from "../hmi/hmi.module";
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
-    HmiComponent, HmiDetailComponent, HmiEditComponent,
+    HmiComponent, HmiDetailComponent, HmiEditComponent, HmiBrowserComponent,
     ComponentComponent,
     EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
     EditDevicesComponent, EditElementsComponent, EditAlarmsComponent,
@@ -155,7 +157,9 @@ import {HmiModule} from "../hmi/hmi.module";
     SettingComponent,
     UserComponent, UserBrowserComponent, UserDetailComponent,
     PasswordComponent,
-    PromptComponent, ChooseTemplateComponent, ChooseElementComponent, ChooseDeviceComponent, ChooseLinkComponent,
+    PromptComponent,
+    ChooseTemplateComponent, ChooseElementComponent, ChooseHmiComponent,
+    ChooseDeviceComponent, ChooseLinkComponent,
   ],
   imports: [
     CommonModule,

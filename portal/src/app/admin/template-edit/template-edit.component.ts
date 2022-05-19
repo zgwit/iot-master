@@ -18,6 +18,7 @@ export class TemplateEditComponent implements OnInit {
   data: any = {
     "name": "新建模板",
 
+    "hmi":"",
     "context": {},
     "elements": [],
     "alarms": [],
@@ -35,6 +36,7 @@ export class TemplateEditComponent implements OnInit {
   buildForm(): void {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
+      hmi: [this.data.hmi, []],
 
       context: [this.data.context || {}],
       elements: [this.data.elements || []],
