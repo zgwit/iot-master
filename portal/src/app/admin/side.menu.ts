@@ -6,7 +6,7 @@ export let SideMenu = [
     router: 'dash',
   },
   {
-    title: '连接',
+    title: '连接管理',
     icon: 'block',
     children: [
       {
@@ -24,7 +24,7 @@ export let SideMenu = [
     ]
   },
   {
-    title: '设备',
+    title: '设备管理',
     icon: 'appstore',
     children: [
       {
@@ -38,7 +38,7 @@ export let SideMenu = [
     ]
   },
   {
-    title: '项目',
+    title: '项目管理',
     icon: 'cluster', //project
     children: [
       {
@@ -52,11 +52,11 @@ export let SideMenu = [
     ]
   },
   {
-    title: '可视化',
+    title: '组态管理',
     icon: 'build', //project
     children: [
       {
-        title: '可视化',
+        title: '组态',
         router: 'hmi'
       },
       {
@@ -66,7 +66,7 @@ export let SideMenu = [
     ]
   },
   {
-    title: '扩展',
+    title: '扩展管理',
     icon: 'appstore-add',
     open: false,
     children: [
@@ -85,7 +85,7 @@ export let SideMenu = [
     ]
   },
   {
-    title: '设置',
+    title: '系统设置',
     icon: 'setting',
     open: false,
     children: [

@@ -127,8 +127,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'hmi', component: ContainerComponent, data: {breadcrumb: "可视化"}, children: [
-          {path: '', component: HmiComponent, data: {breadcrumb: "可视化"}},
+        path: 'hmi', component: ContainerComponent, data: {breadcrumb: "组态"}, children: [
+          {path: '', component: HmiComponent, data: {breadcrumb: "组态"}},
           {path: 'detail/:id', component: HmiDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: HmiEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: HmiEditComponent, data: {breadcrumb: "创建"}},

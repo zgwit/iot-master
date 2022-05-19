@@ -67,7 +67,7 @@ export class ChooseService {
 
   chooseHMI() {
     const modal = this.ms.create({
-      nzTitle: '选择可视化',
+      nzTitle: '选择组态',
       nzContent: HmiBrowserComponent,
       nzWidth: '80%',
     });
