@@ -34,6 +34,10 @@
 4. 远程控制，查看历史曲线
 5. 通过开放接口实现远程操控（需要另行开发APP或小程序）
 
+## 组态编辑器（可视化）
+
+![云组态](https://github.com/zgwit/iot-master/raw/main/docs/hmi-editor.png)
+
 ## 项目架构图
 
 ![结构图](https://github.com/zgwit/iot-master/raw/main/docs/frame.svg)
