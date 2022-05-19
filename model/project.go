@@ -18,12 +18,11 @@ type Template struct {
 }
 
 type ProjectContent struct {
-	Icon        string        `json:"icon"`
+	HMI         string        `json:"hmi"`
 	Aggregators []*Aggregator `json:"aggregators"`
 	Jobs        []*Job        `json:"jobs"`
 	Alarms      []*Alarm      `json:"alarms"`
 	Strategies  []*Strategy   `json:"strategies"`
-	//Commands    []*Command    `json:"commands"`
 }
 
 //Project 项目
@@ -59,7 +58,6 @@ type TemplateElement struct {
 	Id   string `json:"id"`
 	Name string `json:"name"` //编程名
 }
-
 
 type ProjectHistory struct {
 	Project   `storm:"inline"`
