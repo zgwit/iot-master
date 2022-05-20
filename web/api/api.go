@@ -79,6 +79,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	elementRoutes(app.Group("/element"))
 	templateRoutes(app.Group("/template"))
 	hmiRoutes(app.Group("/hmi"))
+	componentRoutes(app.Group("/component"))
 	tunnelRoutes(app.Group("/tunnel"))
 	linkRoutes(app.Group("/link"))
 	eventRoutes(app.Group("/event"))

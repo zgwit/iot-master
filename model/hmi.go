@@ -2,7 +2,6 @@ package model
 
 import "time"
 
-type Any interface{}
 
 type Entity struct {
 	Name       string              `json:"name"`
