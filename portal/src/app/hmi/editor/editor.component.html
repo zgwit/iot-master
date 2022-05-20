@@ -1,15 +1,15 @@
 <nz-layout class="editor-layout">
   <nz-header class="header">
-    <i nz-icon class="btn" nzType="save" title="保存"></i>
+    <i nz-icon class="btn" nzType="save" title="保存" (click)="onSave()"></i>
     <!--    <i nz-icon class="btn" nzType="export" title="导出"></i>-->
+<!--    <nz-divider nzType="vertical"></nz-divider>-->
+<!--    <i nz-icon class="btn" nzType="undo" title="撤销"></i>-->
+<!--    <i nz-icon class="btn" nzType="redo" title="重做"></i>-->
     <nz-divider nzType="vertical"></nz-divider>
-    <i nz-icon class="btn" nzType="undo" title="撤销"></i>
-    <i nz-icon class="btn" nzType="redo" title="重做"></i>
-    <nz-divider nzType="vertical"></nz-divider>
-    <i nz-icon class="btn" nzType="scissor" title="剪切" (click)="cut()"></i>
-    <i nz-icon class="btn" nzType="copy" title="复制" (click)="copy()"></i>
-    <i nz-icon class="btn" nzType="snippets" title="粘贴" (click)="paste()"></i>
-    <i nz-icon class="btn" nzType="delete" title="删除" (click)="delete()"></i>
+    <i nz-icon class="btn" nzType="scissor" title="剪切" (click)="onCut()"></i>
+    <i nz-icon class="btn" nzType="copy" title="复制" (click)="onCopy()"></i>
+    <i nz-icon class="btn" nzType="snippets" title="粘贴" (click)="onPaste()"></i>
+    <i nz-icon class="btn" nzType="delete" title="删除" (click)="onDelete()"></i>
     <!--    <nz-divider nzType="vertical"></nz-divider>-->
     <!--    <i nz-icon class="btn" nzType="align-left" title="左对齐"></i>-->
     <!--    <i nz-icon class="btn" nzType="align-center" title="居中对齐"></i>-->

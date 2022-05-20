@@ -1,1 +1,42 @@
-<p>hmi-detail works!</p>
+<nz-tabset [nzTabBarExtraContent]="extraTemplate">
+  <nz-tab nzTitle="组态详情">
+
+
+        <nz-list nzBordered>
+          <nz-list-item><span>ID</span>{{data.id}}</nz-list-item>
+          <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
+          <nz-list-item><span>宽度</span>{{data.width}}</nz-list-item>
+          <nz-list-item><span>高度</span>{{data.height}}</nz-list-item>
+          <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
+        </nz-list>
+
+
+    <div [app-html]="data.snap"></div>
+
+  </nz-tab>
+  <nz-tab nzTitle="项目实例">
+    <ng-template nz-tab>
+
+    </ng-template>
+  </nz-tab>
+  <nz-tab nzTitle="模板实例">
+    <ng-template nz-tab>
+
+    </ng-template>
+  </nz-tab>
+
+</nz-tabset>
+
+<ng-template #extraTemplate>
+  <a (click)="load()" title="刷新">
+    <i nz-icon nzType="reload" [nzSpin]="loading"></i>
+  </a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a title="原始数据" appViewConfig [config]="data">
+    <i nz-icon nzType="profile"></i>
+  </a>
+  <nz-divider nzType="vertical"></nz-divider>
+  <a title="编辑" [routerLink]="'/admin/hmi/edit/'+id">
+    <i nz-icon nzType="form"></i>
+  </a>
+</ng-template>

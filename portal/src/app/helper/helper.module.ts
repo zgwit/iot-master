@@ -31,6 +31,8 @@ import {InputGpsComponent} from './input-gps/input-gps.component';
 import {NgxAmapModule} from "ngx-amap";
 import { FromNowPipe } from './from-now.pipe';
 import { MinuteFormatPipe } from './minute-format.pipe';
+import { SvgViewerComponent } from './svg-viewer/svg-viewer.component';
+import { HtmlDirective } from './html.directive';
 
 
 @NgModule({
@@ -54,27 +56,31 @@ import { MinuteFormatPipe } from './minute-format.pipe';
     InputGpsComponent,
     FromNowPipe,
     MinuteFormatPipe,
+    SvgViewerComponent,
+    HtmlDirective,
   ],
-    exports: [
-        PageEditorComponent,
-        JsEditorComponent,
-        YamlEditorComponent,
-        JsonEditorComponent,
-        ConfigEditorComponent,
-        PageListComponent,
-        ToolbarComponent,
-        DateStringPipe,
-        MinuteToDatePipe,
-        MinuteTimePickerComponent,
-        InputScriptComponent,
-        ViewConfigDirective,
-        InputYamlComponent,
-        YamlPipe,
-        GpsPickerComponent,
-        InputGpsComponent,
-        FromNowPipe,
-        MinuteFormatPipe,
-    ],
+  exports: [
+    PageEditorComponent,
+    JsEditorComponent,
+    YamlEditorComponent,
+    JsonEditorComponent,
+    ConfigEditorComponent,
+    PageListComponent,
+    ToolbarComponent,
+    DateStringPipe,
+    MinuteToDatePipe,
+    MinuteTimePickerComponent,
+    InputScriptComponent,
+    ViewConfigDirective,
+    InputYamlComponent,
+    YamlPipe,
+    GpsPickerComponent,
+    InputGpsComponent,
+    FromNowPipe,
+    MinuteFormatPipe,
+    SvgViewerComponent,
+    HtmlDirective,
+  ],
   imports: [
     CommonModule,
     FormsModule,

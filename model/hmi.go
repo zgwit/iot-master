@@ -17,6 +17,7 @@ type HMI struct {
 	Name     string    `json:"name"`
 	Width    int       `json:"width"`
 	Height   int       `json:"height"`
+	Snap     string    `json:"snap"`
 	Entities []Entity  `json:"entities"`
 	Created  time.Time `json:"created" storm:"created"`
 }

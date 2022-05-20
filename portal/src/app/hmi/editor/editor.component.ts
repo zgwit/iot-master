@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, HostListener, OnInit} from '@angular/core';
+import {AfterViewInit, Component, HostListener, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {
   Container,
   Rect,
@@ -41,7 +41,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   groupedComponents = GroupedComponents
 
-  entities: Array<HmiEntity> = []
+  @Input() entities: Array<HmiEntity> = []
   current?: HmiEntity;
 
   plate?: HmiEntity;
@@ -53,9 +53,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
   fill = "#cccccc"
   stroke = 2
 
-  width = 800
-  height = 600
-  scale = 1.0
+  @Input() width = 800
+  @Input() height = 600
+  @Input() scale = 1.0
+
+  @Output() save = new EventEmitter<any>();
 
   constructor() {
   }
@@ -79,15 +81,15 @@ export class EditorComponent implements OnInit, AfterViewInit {
         break;
       case "x": //剪切
         if (event.ctrlKey)
-          this.cut()
+          this.onCut()
         break;
       case "c": //复制
         if (event.ctrlKey)
-          this.copy()
+          this.onCopy()
         break;
       case "v":
         if (event.ctrlKey)
-          this.paste()
+          this.onPaste()
         break;
       case "ArrowUp":
         if (this.current) {
@@ -694,13 +696,13 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
-  cut() {
-    this.copy()
+  onCut() {
+    this.onCopy()
     this.current?.$container.remove()
     this.current = undefined
   }
 
-  copy() {
+  onCopy() {
     let index = this.entities.findIndex(e => e == this.current)
     if (index > 0) {
       let es = this.entities.splice(index, 1)
@@ -711,7 +713,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     }
   }
 
-  paste() {
+  onPaste() {
     if (this.plate) {
       let entity: HmiEntity = {
         name: this.plate.name,
@@ -733,7 +735,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   }
 
-  delete() {
+  onDelete() {
     let index = this.entities.findIndex(e => e == this.current)
     if (index > 0) {
       let es = this.entities.splice(index, 1)
@@ -763,5 +765,22 @@ export class EditorComponent implements OnInit, AfterViewInit {
       this.current.handlers[event.name] = this.current.handlers[event.name] || []
       this.current.handlers[event.name].push({})
     }
+  }
+
+  onSave() {
+    this.save.emit({
+      width: this.width,
+      height: this.height,
+      snap: this.canvas.svg(),
+      entities: this.entities.map(e => {
+        return {
+          name: e.name,
+          component: e.component,
+          properties: e.properties,
+          handlers: e.handlers,
+          bindings: e.bindings,
+        }
+      })
+    })
   }
 }
