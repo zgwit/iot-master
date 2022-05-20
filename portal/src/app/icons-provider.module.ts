@@ -22,6 +22,8 @@ import {
   BarChartOutline,
   BuildOutline,
   FormOutline, DragOutline, DeleteOutline, LineChartOutline, SyncOutline, ProfileOutline, BookOutline,
+
+  GithubOutline,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -45,6 +47,7 @@ const icons = [
   ProfileOutline,
 
   BookOutline,
+  GithubOutline,
 ];
 
 @NgModule({
