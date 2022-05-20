@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let CircleComponent: HmiComponent = {
-  uuid: "circle",
+  id: "circle",
   name: "圆形",
   icon: "/assets/hmi/circle.svg",
   group: "基础组件",

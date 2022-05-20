@@ -2,7 +2,7 @@ import {HmiComponent} from "../../hmi";
 import * as echarts from "echarts";
 
 export let LineChartComponent: HmiComponent = {
-  uuid: "line-chart",
+  id: "line-chart",
   name: "折线图",
   icon: "/assets/hmi/chart-line.svg",
   group: "图表",

@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let AlarmComponent: HmiComponent = {
-  uuid: "alarm",
+  id: "alarm",
   name: "报警器",
   icon: "/assets/hmi/alarm.svg",
   group: "工业",

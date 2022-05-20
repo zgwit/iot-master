@@ -2,7 +2,7 @@ import {HmiComponent} from "../../hmi";
 import {fontProperties} from "../../properties";
 
 export let ValueComponent: HmiComponent = {
-  uuid: "value",
+  id: "value",
   name: "数值",
   group: '控件',
   icon: "/assets/hmi/value.svg",

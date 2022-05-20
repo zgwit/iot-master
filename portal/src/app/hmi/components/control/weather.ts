@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let WeatherComponent: HmiComponent = {
-  uuid: "weather",
+  id: "weather",
   name: "天气",
   icon: "/assets/hmi/weather.svg",
   group: "控件",

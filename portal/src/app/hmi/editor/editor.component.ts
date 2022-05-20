@@ -268,7 +268,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     let entity: HmiEntity = {
       name: "",
-      component: cmp.uuid,
+      component: cmp.id,
       properties: this.properties,
       handlers: {},
       bindings: {},

@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let ImageComponent: HmiComponent = {
-  uuid: "image",
+  id: "image",
   name: "图像",
   icon: "/assets/hmi/image.svg",
   group: "基础组件",

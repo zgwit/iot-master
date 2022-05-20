@@ -51,7 +51,7 @@ export interface HmiValue {
 }
 
 export interface HmiComponent {
-  uuid: string
+  id: string
   icon: string //url: svg png jpg ...
   name: string
 

@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let PipeComponent: HmiComponent = {
-  uuid: "pipe",
+  id: "pipe",
   name: "管道",
   icon: "/assets/hmi/pipe.svg",
   group: "工业",

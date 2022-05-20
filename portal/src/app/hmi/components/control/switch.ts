@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let SwitchComponent: HmiComponent = {
-  uuid: "switch",
+  id: "switch",
   name: "开关",
   icon: "/assets/hmi/switch.svg",
   group: "控件",

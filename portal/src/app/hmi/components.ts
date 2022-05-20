@@ -55,7 +55,7 @@ export function LoadComponent(obj: HmiComponent) {
   obj = Object.assign(base, obj)
 
   //if (indexedComponents.hasOwnProperty(obj.uuid))
-  indexedComponents[obj.uuid] = obj;
+  indexedComponents[obj.id] = obj;
 
   // @ts-ignore
   let group = indexedGroupComponents[obj.group]

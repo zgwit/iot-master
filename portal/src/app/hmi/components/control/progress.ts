@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let ProgressComponent: HmiComponent = {
-  uuid: "progress",
+  id: "progress",
   name: "开关",
   icon: "/assets/hmi/progress.svg",
   group: "控件",

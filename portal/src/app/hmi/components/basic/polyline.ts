@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let PolylineComponent: HmiComponent = {
-  uuid: "polyline",
+  id: "polyline",
   name: "折线",
   icon: "/assets/hmi/polyline.svg",
   group: "基础组件",

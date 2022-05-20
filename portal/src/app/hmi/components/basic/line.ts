@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let LineComponent: HmiComponent = {
-  uuid: "line",
+  id: "line",
   name: "直线",
   icon: "/assets/hmi/line.svg",
   group: "基础组件",

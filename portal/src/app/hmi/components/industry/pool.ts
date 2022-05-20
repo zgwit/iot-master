@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let PoolComponent: HmiComponent = {
-  uuid: "pool",
+  id: "pool",
   name: "水池",
   icon: "/assets/hmi/pool.svg",
   group: "工业",

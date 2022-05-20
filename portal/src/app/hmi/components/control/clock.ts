@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let ClockComponent: HmiComponent = {
-  uuid: "clock",
+  id: "clock",
   name: "时钟",
   icon: "/assets/hmi/clock.svg",
   group: "控件",

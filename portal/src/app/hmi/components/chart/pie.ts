@@ -2,7 +2,7 @@ import {HmiComponent} from "../../hmi";
 import * as echarts from "echarts";
 
 export let PieChartComponent: HmiComponent = {
-  uuid: "pie-chart",
+  id: "pie-chart",
   name: "饼状图",
   icon: "/assets/hmi/chart-pie.svg",
   group: "图表",

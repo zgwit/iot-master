@@ -2,7 +2,7 @@ import {HmiComponent} from "../../hmi";
 import * as echarts from "echarts";
 
 export let RadarChartComponent: HmiComponent = {
-  uuid: "radar-chart",
+  id: "radar-chart",
   name: "雷达图",
   icon: "/assets/hmi/chart-radar.svg",
   group: "图表",

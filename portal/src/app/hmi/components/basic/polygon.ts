@@ -1,7 +1,7 @@
 import {HmiComponent} from "../../hmi";
 
 export let PolygonComponent: HmiComponent = {
-  uuid: "polygon",
+  id: "polygon",
   name: "折线",
   icon: "/assets/hmi/polygon.svg",
   group: "基础组件",

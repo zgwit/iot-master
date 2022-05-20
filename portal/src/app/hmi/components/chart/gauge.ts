@@ -2,7 +2,7 @@ import {HmiComponent} from "../../hmi";
 import * as echarts from "echarts";
 
 export let GaugeChartComponent: HmiComponent = {
-  uuid: "gauge-chart",
+  id: "gauge-chart",
   name: "仪表盘",
   icon: "/assets/hmi/chart-gauge.svg",
   group: "图表",
