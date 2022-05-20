@@ -42,7 +42,7 @@ func NewRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
 
 func (m *RTU) execute(cmd []byte) ([]byte, error) {
 
-	buf, err := m.link.Poll(cmd, 5*time.Second)
+	buf, err := m.link.Ask(cmd, 5*time.Second)
 	if err != nil {
 		return nil, err
 	}

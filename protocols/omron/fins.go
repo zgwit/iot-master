@@ -27,7 +27,7 @@ func NewFinsTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
 
 func (f *Fins) execute(cmd []byte) ([]byte, error) {
 	//发送请求
-	buf, err := f.link.Poll(cmd, time.Second*5)
+	buf, err := f.link.Ask(cmd, time.Second*5)
 	if err != nil {
 		return nil, err
 	}

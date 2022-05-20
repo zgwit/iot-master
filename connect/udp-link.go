@@ -34,7 +34,7 @@ func (l *UdpLink) Write(data []byte) error {
 	return err
 }
 
-func (l *UdpLink) Poll(cmd []byte, timeout time.Duration) ([]byte, error)  {
+func (l *UdpLink) Ask(cmd []byte, timeout time.Duration) ([]byte, error)  {
 	//堵塞
 	l.lock.Lock()
 	defer l.lock.Unlock() //自动解锁

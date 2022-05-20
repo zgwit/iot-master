@@ -59,7 +59,7 @@ func NewFinsUDP(link connect.Link, opts protocol.Options) protocol.Adapter {
 
 func (f *FinsUdp) execute(cmd []byte) ([]byte, error) {
 	//下发指令
-	buf, err := f.link.Poll(cmd, time.Second*5)
+	buf, err := f.link.Ask(cmd, time.Second*5)
 	if err != nil {
 		return nil, err
 	}

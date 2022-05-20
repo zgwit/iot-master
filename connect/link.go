@@ -25,8 +25,8 @@ type Link interface {
 	//Pipe 透传
 	Pipe(pipe io.ReadWriteCloser)
 
-	//Poll 发送指令，接收数据
-	Poll(cmd []byte, timeout time.Duration) ([]byte, error)
+	//Ask 发送指令，接收数据
+	Ask(cmd []byte, timeout time.Duration) ([]byte, error)
 }
 
 type baseLink struct {
@@ -82,7 +82,7 @@ func (l *baseLink) wait(duration time.Duration) ([]byte, error) {
 	}
 }
 
-func (l *baseLink) Poll(cmd []byte, timeout time.Duration) ([]byte, error) {
+func (l *baseLink) Ask(cmd []byte, timeout time.Duration) ([]byte, error) {
 	//堵塞
 	l.lock.Lock()
 	defer l.lock.Unlock() //自动解锁
