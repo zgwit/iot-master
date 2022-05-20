@@ -8,6 +8,20 @@ import {
   ReloadOutline,
   PlusOutline,
   CloseOutline,
+  MenuFoldOutline,
+  MenuUnfoldOutline,
+  HomeOutline,
+  DashboardOutline,
+  BlockOutline,
+  SettingOutline,
+  AppstoreAddOutline,
+  ClusterOutline,
+  LogoutOutline,
+  BellOutline,
+  AppstoreOutline,
+  BarChartOutline,
+  BuildOutline,
+  FormOutline, DragOutline, DeleteOutline, LineChartOutline, SyncOutline, ProfileOutline, BookOutline,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -17,6 +31,20 @@ const icons = [
   ReloadOutline,
   PlusOutline,
   CloseOutline,
+
+
+  // 菜单相关
+  MenuFoldOutline, MenuUnfoldOutline, HomeOutline, DashboardOutline, BlockOutline,
+  SettingOutline, AppstoreAddOutline, ClusterOutline, LogoutOutline, UserOutline,
+  BellOutline,AppstoreOutline, BarChartOutline,BuildOutline,
+  // 表格操作
+  FormOutline,
+  DragOutline,DeleteOutline,
+  LineChartOutline,SyncOutline,
+
+  ProfileOutline,
+
+  BookOutline,
 ];
 
 @NgModule({

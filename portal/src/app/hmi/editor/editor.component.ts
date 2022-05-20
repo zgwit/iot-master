@@ -53,11 +53,33 @@ export class EditorComponent implements OnInit, AfterViewInit {
   fill = "#cccccc"
   stroke = 2
 
-  @Input() width = 800
-  @Input() height = 600
-  @Input() scale = 1.0
+  width = 800
+  height = 600
+  scale = 1.0
 
   @Output() save = new EventEmitter<any>();
+
+  _hmi: any = {}
+  @Input() set hmi(hmi: any) {
+    this._hmi = hmi;
+    this.changeSize(hmi.width, hmi.height)
+    this.entities = hmi.entities
+    //绘制
+    this.renderEntities()
+  }
+
+  renderEntities() {
+    if (!this.canvas) return;
+    this.entities.forEach(entity => {
+      entity.$container = new G()
+      entity.$component = GetComponent(entity.component)
+      CreateEntityObject(entity)
+      entity.$component.create.call(entity.$object)
+      entity.$component.setup.call(entity.$object, entity.properties)
+
+      this.appendEntity(entity);
+    })
+  }
 
   constructor() {
   }
@@ -145,15 +167,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     this.mainLayer = this.canvas.group();
     this.editLayer = this.canvas.group();
-
-    this.entities.forEach(entity => {
-      entity.$component = GetComponent(entity.component)
-      CreateEntityObject(entity)
-      entity.$component.create.call(entity.$object)
-      entity.$component.setup.call(entity.$object, entity.properties)
-
-      this.appendEntity(entity);
-    })
+    //绘制
+    this.renderEntities()
   }
 
   makeEntityEditable(entity: HmiEntity) {
@@ -749,10 +764,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.canvas.size(this.width, this.height)
   }
 
-  changeSize(width: number, heigth: number) {
+  changeSize(width: number, height: number) {
     this.width = width
-    this.height = heigth
-    this.canvas.size(this.width, this.height)
+    this.height = height
+    this.canvas?.size(this.width, this.height)
   }
 
   onScaleChange() {
@@ -768,19 +783,16 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   onSave() {
-    this.save.emit({
-      width: this.width,
-      height: this.height,
-      snap: this.canvas.svg(),
-      entities: this.entities.map(e => {
-        return {
-          name: e.name,
-          component: e.component,
-          properties: e.properties,
-          handlers: e.handlers,
-          bindings: e.bindings,
-        }
-      })
+    this._hmi.snap = this.canvas.svg()
+    this._hmi.entities = this.entities.map(e => {
+      return {
+        name: e.name,
+        component: e.component,
+        properties: e.properties,
+        handlers: e.handlers,
+        bindings: e.bindings,
+      }
     })
+    this.save.emit(this._hmi)
   }
 }
