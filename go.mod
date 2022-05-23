@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/antonmedv/expr v1.9.0
+	github.com/gin-contrib/gzip v0.0.5
 	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-co-op/gocron v1.12.0

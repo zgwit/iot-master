@@ -3,6 +3,7 @@ package web
 import (
 	"context"
 	"embed"
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-gonic/gin"
@@ -32,6 +33,11 @@ func Serve(cfg *Options) {
 
 	//启用session
 	app.Use(sessions.Sessions("iot-master", memstore.NewStore([]byte("iot-master"))))
+
+	//开启压缩
+	if cfg.Compress {
+		app.Use(gzip.Gzip(gzip.DefaultCompression)) //gzip.WithExcludedPathsRegexs([]string{".*"})
+	}
 
 	//注册前端接口
 	api.RegisterRoutes(app.Group("/api"))
