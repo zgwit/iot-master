@@ -2,16 +2,18 @@
   <nz-tab nzTitle="组态详情">
 
 
-        <nz-list nzBordered>
-          <nz-list-item><span>ID</span>{{data.id}}</nz-list-item>
-          <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
-          <nz-list-item><span>宽度</span>{{data.width}}</nz-list-item>
-          <nz-list-item><span>高度</span>{{data.height}}</nz-list-item>
-          <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
-        </nz-list>
+    <nz-list nzBordered>
+      <nz-list-item><span>ID</span>{{data.id}}</nz-list-item>
+      <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
+      <nz-list-item><span>宽度</span>{{data.width}}</nz-list-item>
+      <nz-list-item><span>高度</span>{{data.height}}</nz-list-item>
+      <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
+    </nz-list>
 
 
-    <div [app-html]="data.snap"></div>
+    <!--    <div [app-html]="data.snap"></div>-->
+
+    <hmi-viewer [hmi]="data"></hmi-viewer>
 
   </nz-tab>
   <nz-tab nzTitle="项目实例">
