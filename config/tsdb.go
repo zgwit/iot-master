@@ -1,9 +1,9 @@
-package tsdb
+package config
 
 import "time"
 
-//Options 参数
-type Options struct {
+//History 参数
+type History struct {
 	Enable             bool          `yaml:"enable"`
 	DataPath           string        `yaml:"data_path"`
 	TimestampPrecision string        `yaml:"timestamp_precision"` //ns us ms s
@@ -12,10 +12,9 @@ type Options struct {
 	WriteTimeout       time.Duration `yaml:"write_timeout"`       //s
 }
 
-func DefaultOptions() *Options {
-	return &Options{
-		Enable:             true,
-		DataPath:           "history",
-		TimestampPrecision: "ms",
-	}
+var HistoryDefault = History{
+	Enable:             true,
+	DataPath:           "history",
+	TimestampPrecision: "ms",
 }
+

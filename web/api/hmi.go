@@ -1,10 +1,13 @@
 package api
 
 import (
+	"archive/zip"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
+	"io"
+	"os"
 )
 
 func hmiRoutes(app *gin.RouterGroup) {
@@ -16,8 +19,9 @@ func hmiRoutes(app *gin.RouterGroup) {
 	app.GET(":id", hmiDetail)
 	app.POST(":id", hmiUpdate)
 	app.GET(":id/delete", hmiDelete)
-}
 
+	app.POST(":id/upload", hmiUpload)
+}
 
 func hmiList(ctx *gin.Context) {
 	hs, cnt, err := normalSearch(ctx, database.Master, &model.HMI{})
@@ -87,4 +91,43 @@ func hmiDelete(ctx *gin.Context) {
 	}
 
 	replyOk(ctx, hmi)
+}
+
+func hmiUpload(ctx *gin.Context) {
+	id := ctx.GetString("id")
+
+	zf, err := os.OpenFile(id+".zip", os.O_CREATE, os.ModePerm)
+	if err != nil {
+		replyError(ctx, err)
+	}
+	defer zf.Close()
+
+	zfw := zip.NewWriter(zf)
+	defer zfw.Close()
+
+	file, header, err := ctx.Request.FormFile("file")
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	defer file.Close()
+	writer, err := zfw.Create(header.Filename)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	_, err = io.Copy(writer, file)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	err = zfw.Flush()
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
 }

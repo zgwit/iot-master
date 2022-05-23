@@ -1,7 +1,7 @@
-package influx
+package config
 
-//Options 参数
-type Options struct {
+//Influxdb 参数
+type Influxdb struct {
 	Enable      bool   `yaml:"enable"`
 	Bucket      string `yaml:"bucket"`
 	ORG         string `yaml:"org"`
@@ -10,6 +10,6 @@ type Options struct {
 	Measurement string `yaml:"measurement"`
 }
 
-func DefaultOptions() *Options {
-	return &Options{}
+var InfluxdbDefault = Influxdb{
+	Enable: false,
 }

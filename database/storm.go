@@ -1,6 +1,7 @@
 package database
 
 import (
+	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/storm/v3"
 	"os"
 	"path/filepath"
@@ -16,11 +17,7 @@ var History *storm.DB
 var Error *storm.DB
 
 //Open 打开数据库
-func Open(opts *Options) error {
-	if opts == nil {
-		opts = DefaultOptions()
-	}
-
+func Open(opts *config.Database) error {
 	err := os.MkdirAll(opts.Path, os.ModePerm)
 	if err != nil {
 		return err

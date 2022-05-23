@@ -2,6 +2,7 @@ package tsdb
 
 import (
 	"github.com/nakabonne/tstorage"
+	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/model"
 	"strconv"
 	"time"
@@ -15,11 +16,7 @@ func Opened() bool  {
 }
 
 //Open 打开
-func Open(opts *Options) error {
-	if opts == nil {
-		opts = DefaultOptions()
-	}
-
+func Open(opts *config.History) error {
 	options := make([]tstorage.Option, 0)
 
 	if opts.DataPath != "" {

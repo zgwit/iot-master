@@ -2,35 +2,35 @@ package config
 
 import (
 	"github.com/zgwit/iot-master/args"
-	"github.com/zgwit/iot-master/database"
-	"github.com/zgwit/iot-master/influx"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/tsdb"
-	"github.com/zgwit/iot-master/web"
 	"gopkg.in/yaml.v3"
+	"log"
 	"os"
 )
 
 //Configure 配置
 type Configure struct {
-	Node     string           `yaml:"node"`
-	Web      web.Options      `yaml:"web"`
-	Database database.Options `yaml:"database"`
-	Influxdb influx.Options   `yaml:"influxdb"`
-	History  tsdb.Options     `yaml:"history"`
-	Log      log.Options      `yaml:"log"`
+	Node     string   `yaml:"node"`
+	Data     string   `yaml:"data"`
+	Web      Web      `yaml:"web"`
+	Database Database `yaml:"database"`
+	Influxdb Influxdb `yaml:"influxdb"`
+	History  History  `yaml:"history"`
+	Log      Log      `yaml:"log"`
 }
 
 //Config 全局配置
-var Config Configure
+var Config = Configure{
+	Node:     "root",
+	Data:     "data",
+	Web:      WebDefault,
+	Database: DatabaseDefault,
+	History:  HistoryDefault,
+	Influxdb: InfluxdbDefault,
+	Log:      LogDefault,
+}
 
 func init() {
 	Config.Node, _ = os.Hostname()
-	Config.Web = *web.DefaultOptions()
-	Config.Database = *database.DefaultOptions()
-	Config.Influxdb = *influx.DefaultOptions()
-	Config.History = *tsdb.DefaultOptions()
-	Config.Log = *log.DefaultOptions()
 }
 
 //Load 加载

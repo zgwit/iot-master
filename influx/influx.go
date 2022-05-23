@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
+	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/model"
 	"time"
 )
@@ -11,10 +12,10 @@ import (
 var writeAPI api.WriteAPIBlocking
 var queryAPI api.QueryAPI
 
-var _opts *Options
+var _opts *config.Influxdb
 var client influxdb2.Client
 
-func Open(opts *Options) {
+func Open(opts *config.Influxdb) {
 	_opts = opts
 	client = influxdb2.NewClient(opts.URL, opts.Token)
 	writeAPI = client.WriteAPIBlocking(opts.ORG, opts.Bucket)
