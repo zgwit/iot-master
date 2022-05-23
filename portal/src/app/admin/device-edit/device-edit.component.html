@@ -24,6 +24,14 @@
       </nz-form-item>
 
       <nz-form-item>
+        <nz-form-label [nzSpan]="5">组态</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <app-choose-hmi formControlName="hmi" [showClear]="true"></app-choose-hmi>
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item>
         <nz-form-label [nzSpan]="5">标签</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',', '，', ';', ' ']" formControlName="tags"

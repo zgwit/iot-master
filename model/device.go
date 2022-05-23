@@ -18,11 +18,8 @@ type Element struct {
 }
 
 type DeviceContent struct {
-	Icon string   `json:"icon"`
-	Tags []string `json:"tags,omitempty"`
-
-	//从机号
-	//Mapper *Mapping `json:"mapper"` //内存映射
+	HMI         string        `json:"hmi"`
+	Tags        []string      `json:"tags,omitempty"`
 	Points      []*Point      `json:"points"`
 	Pollers     []*Poller     `json:"pollers"`
 	Calculators []*Calculator `json:"calculators"`
@@ -53,7 +50,6 @@ type DeviceEx struct {
 	Link    string `json:"link"`
 	Element string `json:"element"`
 }
-
 
 type DeviceHistory struct {
 	Device   `storm:"inline"`

@@ -19,6 +19,7 @@ export class DeviceEditComponent implements OnInit {
     "name": "新建设备",
     "element_id": "",
     "link_id": 0,
+    "hmi":"",
     "tags": [],
     "station": 1,
     "disabled": false,
@@ -40,6 +41,7 @@ export class DeviceEditComponent implements OnInit {
   buildForm(): void {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
+      hmi: [this.data.hmi, []],
       tags: [this.data.tags, []],
       element_id: [this.data.element_id, [Validators.required]],
       link_id: [this.data.link_id, [Validators.required]],

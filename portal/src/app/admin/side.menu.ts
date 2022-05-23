@@ -35,6 +35,11 @@ export let SideMenu = [
         title: '元件库',
         router: 'element'
       },
+      {
+        title: '在线元件库',
+        router: 'online-element',
+        disabled: true,
+      },
     ]
   },
   {
@@ -49,6 +54,11 @@ export let SideMenu = [
         title: '模板库',
         router: 'template'
       },
+      {
+        title: '在线模板库',
+        router: 'online-template',
+        disabled: true,
+      },
     ]
   },
   {
@@ -61,7 +71,13 @@ export let SideMenu = [
       },
       {
         title: '组件库',
-        router: 'component'
+        router: 'component',
+        disabled: true,
+      },
+      {
+        title: '在线组件库',
+        router: 'online-component',
+        disabled: true,
       },
     ]
   },
