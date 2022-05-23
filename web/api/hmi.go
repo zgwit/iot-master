@@ -1,13 +1,16 @@
 package api
 
 import (
-	"archive/zip"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
 	"io"
+	"io/ioutil"
+	"net/http"
 	"os"
+	"path/filepath"
 )
 
 func hmiRoutes(app *gin.RouterGroup) {
@@ -20,7 +23,14 @@ func hmiRoutes(app *gin.RouterGroup) {
 	app.POST(":id", hmiUpdate)
 	app.GET(":id/delete", hmiDelete)
 
-	app.POST(":id/upload", hmiUpload)
+	app.GET(":id/export")
+
+	//组态的附件
+	app.GET(":id/attachment/list", hmiAttachments)
+	app.POST(":id/attachment/upload", hmiAttachmentUpload)
+	app.POST(":id/attachment/rename", hmiAttachmentRename)
+	app.GET(":id/attachment/:name", hmiAttachment)
+	app.GET(":id/attachment/:name/delete", hmiAttachmentDelete)
 }
 
 func hmiList(ctx *gin.Context) {
@@ -93,29 +103,48 @@ func hmiDelete(ctx *gin.Context) {
 	replyOk(ctx, hmi)
 }
 
-func hmiUpload(ctx *gin.Context) {
+func hmiAttachments(ctx *gin.Context) {
 	id := ctx.GetString("id")
-
-	zf, err := os.OpenFile(id+".zip", os.O_CREATE, os.ModePerm)
+	dir := filepath.Join(config.Config.Data, "hmi", id)
+	files, err := ioutil.ReadDir(dir)
 	if err != nil {
 		replyError(ctx, err)
+		return
 	}
-	defer zf.Close()
 
-	zfw := zip.NewWriter(zf)
-	defer zfw.Close()
+	items := make([]map[string]interface{}, 0)
+	item := make(map[string]interface{})
+	for _, f := range files {
+		item["name"] = f.Name()
+		item["time"] = f.ModTime()
+		item["size"] = f.Size()
+	}
+	replyOk(ctx, items)
+}
 
+func hmiAttachmentUpload(ctx *gin.Context) {
+	id := ctx.GetString("id")
+
+	//创建目录
+	dir := filepath.Join(config.Config.Data, "hmi", id)
+	_ = os.MkdirAll(dir, os.ModePerm)
+
+	//zf, err := os.OpenFile(id+".zip", os.O_CREATE, os.ModePerm)
 	file, header, err := ctx.Request.FormFile("file")
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
 	defer file.Close()
-	writer, err := zfw.Create(header.Filename)
+
+
+	filename := filepath.Join(dir, header.Filename)
+	writer, err := os.OpenFile(filename, os.O_CREATE, os.ModePerm)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
+	defer writer.Close()
 
 	_, err = io.Copy(writer, file)
 	if err != nil {
@@ -123,11 +152,54 @@ func hmiUpload(ctx *gin.Context) {
 		return
 	}
 
-	err = zfw.Flush()
+	replyOk(ctx, nil)
+}
+
+type RenameBody struct {
+	Old string `json:"old"`
+	New string `json:"new"`
+}
+
+func hmiAttachmentRename(ctx *gin.Context) {
+	var rename RenameBody
+	err := ctx.ShouldBindJSON(&rename)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
 
+	id := ctx.GetString("id")
+	dir := filepath.Join(config.Config.Data, "hmi", id)
+
+	oldPath := filepath.Join(dir, rename.Old)
+	newPath := filepath.Join(dir, rename.New)
+
+	err = os.Rename(oldPath, newPath)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+func hmiAttachment(ctx *gin.Context) {
+	id := ctx.GetString("id")
+	dir := filepath.Join(config.Config.Data, "hmi", id)
+	name := ctx.Param("name")
+	filename := filepath.Join(dir, name)
+	http.ServeFile(ctx.Writer, ctx.Request, filename)
+}
+
+func hmiAttachmentDelete(ctx *gin.Context) {
+	id := ctx.GetString("id")
+	dir := filepath.Join(config.Config.Data, "hmi", id)
+	name := ctx.Param("name")
+	filename := filepath.Join(dir, name)
+	err := os.Remove(filename)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
 	replyOk(ctx, nil)
 }
