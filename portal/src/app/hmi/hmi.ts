@@ -82,6 +82,9 @@ export interface HmiComponent {
   //初始化
   create(): void
 
+  //启动
+  start?(): void
+
   //写入配置
   setup(props: any): void
 

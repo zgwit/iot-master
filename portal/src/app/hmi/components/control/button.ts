@@ -62,6 +62,11 @@ export let ButtonComponent: HmiComponent = {
     this.text = this.$container.text(this.$properties.text)
   },
 
+  start() {
+    // @ts-ignore
+    this.rect.on("click", event=>this.$emit("click", event))
+  },
+
   //配置
   setup(props: any) {
     //@ts-ignore
