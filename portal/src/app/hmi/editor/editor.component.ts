@@ -15,6 +15,8 @@ import {
   HmiPropertyItem,
   GetComponentAllProperties, CreateEntityObject, HmiEvent
 } from "../hmi";
+import {AttachmentComponent} from "../attachment/attachment.component";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'hmi-editor',
@@ -68,7 +70,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.renderEntities()
   }
 
-  constructor() {
+  constructor(private ms: NzModalService) {
   }
 
   @HostListener("document:keyup", ['$event'])
@@ -178,7 +180,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
     this.makeEntityEditable(entity);
 
-    this.entities.push(entity)
+    //this.entities.push(entity)
   }
 
   setupEntity(entity: HmiEntity, props: any) {
@@ -312,6 +314,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.canvas.on('click.draw', (e: MouseEvent) => {
       if (firstClick) {
         firstClick = false
+        this.entities.push(entity)
         this.appendEntity(entity)
         this.setupEntity(entity, {x1: e.offsetX, y1: e.offsetY, x2: e.offsetX, y2: e.offsetY})
 
@@ -340,6 +343,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         startY = e.offsetY
 
         this.appendEntity(entity)
+        this.entities.push(entity)
         this.setupEntity(entity, {x: e.offsetX, y: e.offsetY})
 
         outline.addTo(this.editLayer).move(startX, startY).stroke({
@@ -379,6 +383,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         startX = e.offsetX
         startY = e.offsetY
         this.appendEntity(entity)
+        this.entities.push(entity)
         this.setupEntity(entity, {x: e.offsetX, y: e.offsetY})
 
         // @ts-ignore
@@ -405,6 +410,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
         points.push([e.offsetX, e.offsetY], [e.offsetX, e.offsetY])
 
         this.appendEntity(entity)
+        this.entities.push(entity)
         this.setupEntity(entity, {points})
 
         // @ts-ignore
@@ -796,5 +802,23 @@ export class EditorComponent implements OnInit, AfterViewInit {
       }
     })
     this.save.emit(this._hmi)
+  }
+
+  browserAttachment(prop: string) {
+    const modal = this.ms.create({
+      nzTitle: '选择附件',
+      nzContent: AttachmentComponent,
+      nzWidth: '80%',
+      nzComponentParams: {
+        url: "/api/hmi/1/attachment/"
+      },
+    });
+    modal.afterClose.subscribe(res=>{
+      console.log('attach', res)
+      if (res) {
+        this.properties[prop] = res
+        this.onPropertyChange(prop)
+      }
+    })
   }
 }

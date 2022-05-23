@@ -2,9 +2,9 @@
   <nz-header class="header">
     <i nz-icon class="btn" nzType="save" title="保存" (click)="onSave()"></i>
     <!--    <i nz-icon class="btn" nzType="export" title="导出"></i>-->
-<!--    <nz-divider nzType="vertical"></nz-divider>-->
-<!--    <i nz-icon class="btn" nzType="undo" title="撤销"></i>-->
-<!--    <i nz-icon class="btn" nzType="redo" title="重做"></i>-->
+    <!--    <nz-divider nzType="vertical"></nz-divider>-->
+    <!--    <i nz-icon class="btn" nzType="undo" title="撤销"></i>-->
+    <!--    <i nz-icon class="btn" nzType="redo" title="重做"></i>-->
     <nz-divider nzType="vertical"></nz-divider>
     <i nz-icon class="btn" nzType="scissor" title="剪切" (click)="onCut()"></i>
     <i nz-icon class="btn" nzType="copy" title="复制" (click)="onCopy()"></i>
@@ -95,10 +95,16 @@
                            (ngModelChange)="onPropertyChange(prop.name)">
                   <nz-option *ngFor="let opt of prop?.options" [nzLabel]="opt.label" [nzValue]="opt.value"></nz-option>
                 </nz-select>
+                <ng-container *ngSwitchCase="'attachment'">
+                  <input nz-input nzSize="small" [(ngModel)]="properties[prop.name]"
+                         (change)="onPropertyChange(prop.name)">
+                  <a (click)="browserAttachment(prop.name)">附件</a>
+                </ng-container>
                 <input nz-input *ngSwitchDefault nzSize="small"
                        [(ngModel)]="properties[prop.name]"
                        (change)="onPropertyChange(prop.name)">
                 <!--            {{data.name}}-->
+
               </td>
             </tr>
             </tbody>

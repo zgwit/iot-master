@@ -11,7 +11,7 @@ func elementRoutes(app *gin.RouterGroup) {
 	app.POST("list", elementList)
 	app.POST("create", elementCreate)
 
-	app.Use(parseParamStringId)
+	
 	app.GET(":id", elementDetail)
 	app.POST(":id", elementUpdate)
 	app.GET(":id/delete", elementDelete)
@@ -51,7 +51,7 @@ func elementCreate(ctx *gin.Context) {
 
 func elementDetail(ctx *gin.Context) {
 	var element model.Element
-	err := database.Master.One("Id", ctx.GetString("id"), &element)
+	err := database.Master.One("Id", ctx.Param("id"), &element)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -66,7 +66,7 @@ func elementUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	element.Id = ctx.GetString("id")
+	element.Id = ctx.Param("id")
 
 	err = database.Master.Update(&element)
 	if err != nil {
@@ -78,7 +78,7 @@ func elementUpdate(ctx *gin.Context) {
 }
 
 func elementDelete(ctx *gin.Context) {
-	element := model.Element{Id: ctx.GetString("id")}
+	element := model.Element{Id: ctx.Param("id")}
 	err := database.Master.DeleteStruct(&element)
 	if err != nil {
 		replyError(ctx, err)

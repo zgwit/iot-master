@@ -12,7 +12,7 @@ export let ImageComponent: HmiComponent = {
     {
       label: 'URL',
       name: 'url',
-      type: 'text',
+      type: 'attachment',
     },
   ],
 

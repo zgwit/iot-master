@@ -17,8 +17,6 @@ func hmiRoutes(app *gin.RouterGroup) {
 	app.POST("list", hmiList)
 	app.POST("create", hmiCreate)
 
-	app.Use(parseParamStringId)
-
 	app.GET(":id", hmiDetail)
 	app.POST(":id", hmiUpdate)
 	app.GET(":id/delete", hmiDelete)
@@ -26,11 +24,13 @@ func hmiRoutes(app *gin.RouterGroup) {
 	app.GET(":id/export")
 
 	//组态的附件
-	app.GET(":id/attachment/list", hmiAttachments)
-	app.POST(":id/attachment/upload", hmiAttachmentUpload)
-	app.POST(":id/attachment/rename", hmiAttachmentRename)
-	app.GET(":id/attachment/:name", hmiAttachment)
-	app.GET(":id/attachment/:name/delete", hmiAttachmentDelete)
+
+	//attachment := app.Group(":id/attachment/")
+	app.GET(":id/attachment/*name", hmiAttachmentRead)
+	app.POST(":id/attachment/*name", hmiAttachmentUpload)
+	app.PATCH(":id/attachment/*name", hmiAttachmentRename)
+	app.DELETE(":id/attachment/*name", hmiAttachmentDelete)
+
 }
 
 func hmiList(ctx *gin.Context) {
@@ -66,7 +66,7 @@ func hmiCreate(ctx *gin.Context) {
 
 func hmiDetail(ctx *gin.Context) {
 	var hmi model.HMI
-	err := database.Master.One("Id", ctx.GetString("id"), &hmi)
+	err := database.Master.One("Id", ctx.Param("id"), &hmi)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -81,7 +81,7 @@ func hmiUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	hmi.Id = ctx.GetString("id")
+	hmi.Id = ctx.Param("id")
 
 	err = database.Master.Update(&hmi)
 	if err != nil {
@@ -93,7 +93,7 @@ func hmiUpdate(ctx *gin.Context) {
 }
 
 func hmiDelete(ctx *gin.Context) {
-	hmi := model.HMI{Id: ctx.GetString("id")}
+	hmi := model.HMI{Id: ctx.Param("id")}
 	err := database.Master.DeleteStruct(&hmi)
 	if err != nil {
 		replyError(ctx, err)
@@ -103,33 +103,43 @@ func hmiDelete(ctx *gin.Context) {
 	replyOk(ctx, hmi)
 }
 
-func hmiAttachments(ctx *gin.Context) {
-	id := ctx.GetString("id")
-	dir := filepath.Join(config.Config.Data, "hmi", id)
-	files, err := ioutil.ReadDir(dir)
+func hmiAttachmentRead(ctx *gin.Context) {
+	filename := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), ctx.Param("name"))
+	stat, err := os.Stat(filename)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
 
-	items := make([]map[string]interface{}, 0)
-	item := make(map[string]interface{})
-	for _, f := range files {
-		item["name"] = f.Name()
-		item["time"] = f.ModTime()
-		item["size"] = f.Size()
+	//列出目录
+	if stat.IsDir() {
+		files, err := ioutil.ReadDir(filename)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+
+		items := make([]map[string]interface{}, 0)
+		for _, f := range files {
+			item := make(map[string]interface{})
+			item["name"] = f.Name()
+			item["time"] = f.ModTime()
+			item["size"] = f.Size()
+			item["folder"] = f.IsDir()
+			items = append(items, item)
+		}
+		replyOk(ctx, items)
+	} else {
+		http.ServeFile(ctx.Writer, ctx.Request, filename)
 	}
-	replyOk(ctx, items)
 }
 
 func hmiAttachmentUpload(ctx *gin.Context) {
-	id := ctx.GetString("id")
+	//dir := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"))
+	dir := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), ctx.Param("name"))
+	_ = os.MkdirAll(dir, os.ModePerm) //创建目录
 
-	//创建目录
-	dir := filepath.Join(config.Config.Data, "hmi", id)
-	_ = os.MkdirAll(dir, os.ModePerm)
-
-	//zf, err := os.OpenFile(id+".zip", os.O_CREATE, os.ModePerm)
+	//解析Body
 	file, header, err := ctx.Request.FormFile("file")
 	if err != nil {
 		replyError(ctx, err)
@@ -137,7 +147,7 @@ func hmiAttachmentUpload(ctx *gin.Context) {
 	}
 	defer file.Close()
 
-
+	//创建写入文件
 	filename := filepath.Join(dir, header.Filename)
 	writer, err := os.OpenFile(filename, os.O_CREATE, os.ModePerm)
 	if err != nil {
@@ -156,8 +166,7 @@ func hmiAttachmentUpload(ctx *gin.Context) {
 }
 
 type RenameBody struct {
-	Old string `json:"old"`
-	New string `json:"new"`
+	Filename string `json:"filename"`
 }
 
 func hmiAttachmentRename(ctx *gin.Context) {
@@ -168,13 +177,10 @@ func hmiAttachmentRename(ctx *gin.Context) {
 		return
 	}
 
-	id := ctx.GetString("id")
-	dir := filepath.Join(config.Config.Data, "hmi", id)
+	filename := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), ctx.Param("name"))
+	newPath := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), rename.Filename)
 
-	oldPath := filepath.Join(dir, rename.Old)
-	newPath := filepath.Join(dir, rename.New)
-
-	err = os.Rename(oldPath, newPath)
+	err = os.Rename(filename, newPath)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -183,19 +189,8 @@ func hmiAttachmentRename(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func hmiAttachment(ctx *gin.Context) {
-	id := ctx.GetString("id")
-	dir := filepath.Join(config.Config.Data, "hmi", id)
-	name := ctx.Param("name")
-	filename := filepath.Join(dir, name)
-	http.ServeFile(ctx.Writer, ctx.Request, filename)
-}
-
 func hmiAttachmentDelete(ctx *gin.Context) {
-	id := ctx.GetString("id")
-	dir := filepath.Join(config.Config.Data, "hmi", id)
-	name := ctx.Param("name")
-	filename := filepath.Join(dir, name)
+	filename := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), ctx.Param("name"))
 	err := os.Remove(filename)
 	if err != nil {
 		replyError(ctx, err)

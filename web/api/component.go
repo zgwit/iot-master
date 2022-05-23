@@ -11,7 +11,7 @@ func  componentRoutes(app *gin.RouterGroup) {
 	app.POST("list",  componentList)
 	app.POST("create",  componentCreate)
 
-	app.Use(parseParamStringId)
+	
 
 	app.GET(":id",  componentDetail)
 	app.POST(":id",  componentUpdate)
@@ -52,7 +52,7 @@ func  componentCreate(ctx *gin.Context) {
 
 func  componentDetail(ctx *gin.Context) {
 	var  component model.Component
-	err := database.Master.One("Id", ctx.GetString("id"), & component)
+	err := database.Master.One("Id", ctx.Param("id"), & component)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -67,7 +67,7 @@ func  componentUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	 component.Id = ctx.GetString("id")
+	 component.Id = ctx.Param("id")
 
 	err = database.Master.Update(& component)
 	if err != nil {
@@ -79,7 +79,7 @@ func  componentUpdate(ctx *gin.Context) {
 }
 
 func  componentDelete(ctx *gin.Context) {
-	 component := model.Component{Id: ctx.GetString("id")}
+	 component := model.Component{Id: ctx.Param("id")}
 	err := database.Master.DeleteStruct(& component)
 	if err != nil {
 		replyError(ctx, err)
