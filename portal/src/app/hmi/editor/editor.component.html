@@ -33,7 +33,7 @@
       <nz-collapse>
         <nz-collapse-panel *ngFor="let group of groupedComponents"
                            [nzHeader]="group.name" nzActive>
-          <img class="component" *ngFor="let c of group.components" (click)="draw(c)"
+          <img class="component" *ngFor="let c of group.components" (click)="drawBegin(c)"
                [title]="c.name"
                [src]="c.icon">
         </nz-collapse-panel>

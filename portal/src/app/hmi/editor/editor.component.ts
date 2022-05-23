@@ -68,18 +68,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.renderEntities()
   }
 
-  renderEntities() {
-    if (!this.canvas) return;
-    this.entities.forEach(entity => {
-      entity.$container = new G()
-      entity.$component = GetComponent(entity.component)
-      CreateEntityObject(entity)
-      entity.$component.setup.call(entity.$object, entity.properties)
-
-      this.appendEntity(entity);
-    })
-  }
-
   constructor() {
   }
 
@@ -147,7 +135,31 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   }
 
-  initGrid(): void {
+  ngAfterViewInit(): void {
+    // @ts-ignore
+    this.canvas = SVG().addTo('#hmi-editor-canvas').size(this.width, this.height);
+    this.baseLayer = this.canvas.group();
+    this.createGrid();
+
+    this.mainLayer = this.canvas.group();
+    this.editLayer = this.canvas.group();
+    //绘制
+    this.renderEntities()
+  }
+
+  renderEntities() {
+    if (!this.canvas) return;
+    this.entities.forEach(entity => {
+      entity.$container = new G()
+      entity.$component = GetComponent(entity.component)
+      CreateEntityObject(entity)
+      entity.$component.setup.call(entity.$object, entity.properties)
+
+      this.appendEntity(entity);
+    })
+  }
+
+  createGrid(): void {
     //网格线
     let gridSize = 10
     let gridColor = "#202020"
@@ -158,16 +170,29 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.grid = this.baseLayer.rect().size("100%", "100%").fill(pattern).stroke(gridColor);
   }
 
-  ngAfterViewInit(): void {
+  appendEntity(entity: HmiEntity) {
     // @ts-ignore
-    this.canvas = SVG().addTo('#hmi-editor-canvas').size(this.width, this.height);
-    this.baseLayer = this.canvas.group();
-    this.initGrid();
+    this.mainLayer.add(entity.$container)
+    //传入全局配置
+    this.setupEntity(entity, entity.properties)
 
-    this.mainLayer = this.canvas.group();
-    this.editLayer = this.canvas.group();
-    //绘制
-    this.renderEntities()
+    this.makeEntityEditable(entity);
+
+    this.entities.push(entity)
+  }
+
+  setupEntity(entity: HmiEntity, props: any) {
+    Object.assign(entity.properties, props)
+
+    //旋转
+    if (props.hasOwnProperty("rotate"))
+      entity.$container.transform({rotate: props.rotate})
+    if (props.hasOwnProperty("x"))
+      entity.$container.x(props.x)
+    if (props.hasOwnProperty("y"))
+      entity.$container.y(props.y)
+
+    entity.$component.setup.call(entity.$object, props)
   }
 
   makeEntityEditable(entity: HmiEntity) {
@@ -235,18 +260,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
 
   }
 
-  appendEntity(entity: HmiEntity) {
-    // @ts-ignore
-    this.mainLayer.add(entity.$container)
-    //传入全局配置
-    this.setupEntity(entity, entity.properties)
-
-    this.makeEntityEditable(entity);
-
-    this.entities.push(entity)
-  }
-
-  draw(cmp: HmiComponent) {
+  drawBegin(cmp: HmiComponent) {
     //清空编辑区
     this.editLayer.clear()
     //清空选择
@@ -285,25 +299,10 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.drawEntity(entity);
   }
 
-
-  StopDraw() {
+  drawEnd() {
     this.editLayer.clear()
     this.canvas.off('click.draw')
     this.canvas.off('mousemove.draw')
-  }
-
-  setupEntity(entity: HmiEntity, props: any) {
-    Object.assign(entity.properties, props)
-
-    //旋转
-    if (props.hasOwnProperty("rotate"))
-      entity.$container.transform({rotate: props.rotate})
-    if (props.hasOwnProperty("x"))
-      entity.$container.x(props.x)
-    if (props.hasOwnProperty("y"))
-      entity.$container.y(props.y)
-
-    entity.$component.setup.call(entity.$object, props)
   }
 
   drawLine(entity: HmiEntity) {
@@ -321,7 +320,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
           this.setupEntity(entity, {x2: e.offsetX, y2: e.offsetY})
         })
       } else {
-        this.StopDraw()
+        this.drawEnd()
       }
     });
   }
@@ -362,7 +361,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
           }
         })
       } else {
-        this.StopDraw()
+        this.drawEnd()
       }
     });
   }
@@ -390,7 +389,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
           this.setupEntity(entity, {radius})
         })
       } else {
-        this.StopDraw()
+        this.drawEnd()
       }
     });
   }
@@ -423,7 +422,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
             points.pop() //删除最后一个
             that.setupEntity(entity, {points})
 
-            that.StopDraw()
+            that.drawEnd()
             //off listener
             document.removeEventListener('keydown', onKeydown)
           }
@@ -437,7 +436,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   drawEntity(entity: HmiEntity): void {
-    this.StopDraw()
+    this.drawEnd()
 
     // let elem = CreateElement(container, component)
     const type = entity.$component.drawer || "rect"
@@ -763,14 +762,14 @@ export class EditorComponent implements OnInit, AfterViewInit {
     this.canvas.size(this.width, this.height)
   }
 
+  onScaleChange() {
+    this.canvas.transform({scale: this.scale})
+  }
+
   changeSize(width: number, height: number) {
     this.width = width
     this.height = height
     this.canvas?.size(this.width, this.height)
-  }
-
-  onScaleChange() {
-    this.canvas.transform({scale: this.scale})
   }
 
   bindEvent(event: HmiEvent) {
@@ -782,7 +781,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
   }
 
   onSave() {
-    this._hmi.snap = this.canvas.svg()
+    let svg = this.canvas.clone();
+    svg.children()[0].remove()
+    svg.children()[2].remove()
+    //@ts-ignore
+    this._hmi.snap = svg.svg() //.flatten()
     this._hmi.entities = this.entities.map(e => {
       return {
         name: e.name,
