@@ -113,7 +113,7 @@
         </nz-collapse-panel>
         <nz-collapse-panel nzHeader="事件响应" nzActive>
 
-          <ng-container *ngFor="let event of currentComponent?.events">
+          <ng-container *ngFor="let event of current?.$component?.events">
             <div class="handler">
               <div>
                 {{event.label}}
@@ -152,7 +152,7 @@
 
           <table>
             <tbody>
-            <tr *ngFor="let value of currentComponent?.values">
+            <tr *ngFor="let value of current?.$component?.values">
               <td>{{value.label}}</td>
               <td><input nz-input nzSize="small" [(ngModel)]="current?.bindings[value.name]"></td>
             </tr>

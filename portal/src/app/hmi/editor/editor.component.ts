@@ -59,6 +59,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
   height = 600
   scale = 1.0
 
+  @Input() attachment = "/api/attachment/"
+
   @Output() save = new EventEmitter<any>();
 
   _hmi: any = {}
@@ -810,10 +812,11 @@ export class EditorComponent implements OnInit, AfterViewInit {
       nzContent: AttachmentComponent,
       nzWidth: '80%',
       nzComponentParams: {
-        url: "/api/hmi/1/attachment/"
+        url: "/api/hmi/" + this._hmi.id + "/attachment/"
+        //TODO 此处应该判断，新建组态时，没有目录（可以先创建UUID）
       },
     });
-    modal.afterClose.subscribe(res=>{
+    modal.afterClose.subscribe(res => {
       console.log('attach', res)
       if (res) {
         this.properties[prop] = res
