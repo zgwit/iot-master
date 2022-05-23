@@ -16,7 +16,7 @@
         </nz-form-control>
       </nz-form-item>
 
-      <nz-form-item>
+      <nz-form-item *ngIf="!basicForm.value.template_id">
         <nz-form-label [nzSpan]="5">组态</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <app-choose-hmi formControlName="hmi" [showClear]="true"></app-choose-hmi>
@@ -35,25 +35,28 @@
       <app-edit-devices formControlName="devices"></app-edit-devices>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="上下文" nzActive>
-      <app-yaml-editor formControlName="context"></app-yaml-editor>
-    </nz-collapse-panel>
+    <ng-container *ngIf="!basicForm.value.template_id">
+      <nz-collapse-panel nzHeader="上下文" nzActive>
+        <app-yaml-editor formControlName="context"></app-yaml-editor>
+      </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="数据检查" nzActive>
-      <app-edit-alarms formControlName="alarms"></app-edit-alarms>
-    </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="数据检查" nzActive>
+        <app-edit-alarms formControlName="alarms"></app-edit-alarms>
+      </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="定时任务" nzActive>
-      <app-edit-jobs formControlName="jobs"></app-edit-jobs>
-    </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="定时任务" nzActive>
+        <app-edit-jobs formControlName="jobs"></app-edit-jobs>
+      </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="控制策略" nzActive>
-      <app-edit-strategies formControlName="strategies"></app-edit-strategies>
-    </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="控制策略" nzActive>
+        <app-edit-strategies formControlName="strategies"></app-edit-strategies>
+      </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="聚合计算" nzActive>
-      <app-edit-aggregators formControlName="aggregators"></app-edit-aggregators>
-    </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="聚合计算" nzActive>
+        <app-edit-aggregators formControlName="aggregators"></app-edit-aggregators>
+      </nz-collapse-panel>
+    </ng-container>
+
 
   </nz-collapse>
 

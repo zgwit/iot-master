@@ -12,7 +12,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">元件</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <app-choose-element formControlName="element_id"></app-choose-element>
+          <app-choose-element formControlName="element_id" [showClear]="true"></app-choose-element>
         </nz-form-control>
       </nz-form-item>
 
@@ -23,7 +23,7 @@
         </nz-form-control>
       </nz-form-item>
 
-      <nz-form-item>
+      <nz-form-item *ngIf="!basicForm.value.element_id">
         <nz-form-label [nzSpan]="5">组态</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <app-choose-hmi formControlName="hmi" [showClear]="true"></app-choose-hmi>
@@ -31,7 +31,7 @@
       </nz-form-item>
 
 
-      <nz-form-item>
+      <nz-form-item *ngIf="!basicForm.value.element_id">
         <nz-form-label [nzSpan]="5">标签</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',', '，', ';', ' ']" formControlName="tags"
@@ -55,29 +55,33 @@
 
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="变量" nzActive>
-      <app-yaml-editor formControlName="context"></app-yaml-editor>
-    </nz-collapse-panel>
+    <ng-container *ngIf="!basicForm.value.element_id">
 
-    <nz-collapse-panel nzHeader="数据点" nzActive>
-      <app-edit-points formControlName="points"></app-edit-points>
-    </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="变量" nzActive>
+        <app-yaml-editor formControlName="context"></app-yaml-editor>
+      </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="定时采集" nzActive>
-      <app-edit-pollers formControlName="pollers"></app-edit-pollers>
-    </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="数据点" nzActive>
+        <app-edit-points formControlName="points"></app-edit-points>
+      </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="公式计算" nzActive>
-      <app-edit-calculators formControlName="calculators"></app-edit-calculators>
-    </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="定时采集" nzActive>
+        <app-edit-pollers formControlName="pollers"></app-edit-pollers>
+      </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="控制命令" nzActive>
-      <app-edit-commands formControlName="commands"></app-edit-commands>
-    </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="公式计算" nzActive>
+        <app-edit-calculators formControlName="calculators"></app-edit-calculators>
+      </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="数据检查" nzActive>
-      <app-edit-alarms formControlName="alarms"></app-edit-alarms>
-    </nz-collapse-panel>
+      <nz-collapse-panel nzHeader="控制命令" nzActive>
+        <app-edit-commands formControlName="commands"></app-edit-commands>
+      </nz-collapse-panel>
+
+      <nz-collapse-panel nzHeader="数据检查" nzActive>
+        <app-edit-alarms formControlName="alarms"></app-edit-alarms>
+      </nz-collapse-panel>
+
+    </ng-container>
 
   </nz-collapse>
 
