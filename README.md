@@ -70,44 +70,32 @@
 
 [ECharts](https://github.com/apache/echarts) 图表框架，用于显示历史曲线
 
-## 开发目标
+## 协议支持
 
-- [x] 数据通道
-    - [x] TCP通道，以及注册包和心跳包支持
-    - [x] UDP通道，以及注册包和心跳包支持
-    - [x] 串口通道
-- [x] 协议支持
-    - [x] Modbus RTU、TCP（ASCII不常用，暂无必要）（**推荐**RTU转TCP的网关，可以加速远程控制）
-    - [x] Omron PLC（hostlink, fins）
-    - [x] Mitsubishi PLC (melsec)
-    - [x] Siemens PLC (S7)
-    - [x] MQTT
-- [x] 设备 & 采集 & 控制
-    - [x] 定时轮询
-    - [x] 滤波（均值，中值，最大，最小等）
-    - [x] 变量映射
-    - [x] 控制指令
-    - [x] 定时任务
-    - [x] 自动控制
-    - [x] 存入历史数据库
-    - [x] 报警器
-- [ ] Web组态
-  - [x] 控件库
-  - [ ] 在线控件库
-  - [x] 组件绘制
-  - [x] 组件编辑
-  - [ ] 保存模板
-- [ ] 远程控制中心（定制版功能）
-    - [ ] 统一管理
-    - [x] 短信报警，电话报警
-    - [x] 远程调试，数据透传，虚拟串口
-    - [x] API服务，对接APP和小程序
+| 名称 | 支持 | 说明 |
+|----|----|----|
+| Modbus RTU | ✔ |  |
+| Modbus TCP | ✔ |  |
+| Modbus ASCII | ❌ | 使用场景较少，暂不支持 |
+| Omron Fins | ✔ |  |
+| Omron Hostlink | ✔ |  |
+| Siemens PPI  | ❌ |  |
+| Siemens FetchWrite  | ❌ |  |
+| Siemens S7  | ❌ |  |
+| Mitsubishi Program  | ❌ |  |
+| Mitsubishi A1C  | ❌ |  |
+| Mitsubishi A1E  | ❌ |  |
+| Mitsubishi Q2C  | ❌ |  |
+| Mitsubishi Q3E  | ❌ |  |
+| Mitsubishi Q4C  | ❌ |  |
+| Mitsubishi Q4E  | ❌ |  |
 
-## 版本对比
+
+
+## 版本功能对比
 
 | 功能 | 开源版 | 企业版 | 定制版 |
 |----|----|----|----|
-| 价格 | 免费 | 2w | 面议 |
 | TCP通道（注册包、心跳包） | ✔ | ✔ | ✔ |
 | UDP通道（注册包、心跳包） | ✔ | ✔ | ✔ |
 | 串口通道（RS485） | ✔ | ✔ | ✔ |
@@ -127,8 +115,8 @@
 | 短信报警 | ❌ | ✔ | ✔（自主签名） |
 | 电话报警 | ❌ | ✔ | ✔ |
 | 商业支持 | ❌ | ✔ | ✔ |
-| MQTT协议 | ❌ | ✔ | ✔ |
-| OPC-UA | ❌ | ✔ | ✔ |
+| MQTT协议 | ❌ | ❌ | ✔ |
+| OPC-UA | ❌ | ❌ | ✔ |
 | 自定义协议 | ❌ | ❌ | ✔ |
 | 集中管理 | ❌ | ❌ | ✔ |
 | 地图视图 | ❌ | ❌ | ✔ |
