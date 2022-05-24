@@ -1,6 +1,9 @@
 # 物联大师
 
-[查看文档](https://docs.iot-master.com/)
+[说明文档](https://docs.iot-master.com/)
+
+[在线演示](http://demo.iot-master.com:8080/)
+
 
 [![真格智能实验室](https://labs.zgwit.com/logo.png)](https://labs.zgwit.com)
 
