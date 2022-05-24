@@ -63,11 +63,11 @@ export class ViewerComponent implements OnInit, AfterViewInit {
       entity.$container = new G()
       entity.$component = GetComponent(entity.component)
       CreateEntityObject(entity)
+      this.appendEntity(entity);
       entity.$component.setup.call(entity.$object, entity.properties)
       entity.$object.__proto__.$emit = function (event: string, data: any) {
         entity.handlers[event]?.forEach((handler: Function) => handler(data))
       }
-      this.appendEntity(entity);
     })
   }
 

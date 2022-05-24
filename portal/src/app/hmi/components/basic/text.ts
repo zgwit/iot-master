@@ -10,7 +10,15 @@ export let TextComponent: HmiComponent = {
 
   color: true,
 
-  properties: [...fontProperties],
+  properties: [
+    {
+      label: '文字',
+      name: 'text',
+      type: 'text',
+      default: '文字'
+    },
+    ...fontProperties
+    ],
 
   create() {
     //@ts-ignore
@@ -20,6 +28,8 @@ export let TextComponent: HmiComponent = {
   setup(props: any): void {
     //@ts-ignore
     let p = this.$properties
+    if (props.hasOwnProperty("text"))// @ts-ignore
+      this.element.text(p.text)
     if (props.hasOwnProperty("fill"))//@ts-ignore
       this.element.fill(p.fill)
     if (props.hasOwnProperty("width") || props.hasOwnProperty("height"))//@ts-ignore

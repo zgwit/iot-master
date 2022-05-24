@@ -19,6 +19,7 @@ import {NzDropDownModule} from "ng-zorro-antd/dropdown";
 import {NzUploadModule} from "ng-zorro-antd/upload";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzPopconfirmModule} from "ng-zorro-antd/popconfirm";
+import {NzModalModule} from "ng-zorro-antd/modal";
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import {NzPopconfirmModule} from "ng-zorro-antd/popconfirm";
     NzUploadModule,
     NzButtonModule,
     NzPopconfirmModule,
+    NzModalModule,
   ],
   providers: []
 })

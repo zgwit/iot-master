@@ -157,9 +157,8 @@ export class EditorComponent implements OnInit, AfterViewInit {
       entity.$container = new G()
       entity.$component = GetComponent(entity.component)
       CreateEntityObject(entity)
-      entity.$component.setup.call(entity.$object, entity.properties)
-
       this.appendEntity(entity);
+      entity.$component.setup.call(entity.$object, entity.properties)
     })
   }
 
