@@ -44,7 +44,14 @@ export class AttachmentComponent implements OnInit {
         this.path += "/"
       this.path += data.name
       this.load()
+      return
     }
+
+    this.select = data.name
+  }
+
+  onItemDoubleClick(data: any) {
+    this.mr.close(this.url + this.path + '/' + data.name);
   }
 
   onItemChecked(name: string, $event: boolean) {

@@ -14,7 +14,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let data of files; let i=index" (click)="onItemClick(data)">
+    <tr *ngFor="let data of files; let i=index" (click)="onItemClick(data)" (dblclick)="onItemDoubleClick(data)">
       <td [nzChecked]="select == data.name"
           (nzCheckedChange)="onItemChecked(data.name, $event)"
       ></td>
