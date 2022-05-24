@@ -31,13 +31,16 @@ export class ViewerComponent implements OnInit, AfterViewInit {
   }
 
   @Input() set values(values: any) {
-    this.entities.forEach(e => {
+    this.entities?.forEach(e => {
       let obj: any = {}
       let has = false
       //找到数据绑定的组件，并传入数据
       Object.keys(e.bindings).forEach((k: string) => {
         let val = GetFieldDeeply(values, e.bindings[k])
-        if (val !== undefined) obj[k] = val
+        if (val !== undefined) {
+          obj[k] = val
+          has = true
+        }
       })
       if (has) e.$component.update?.call(e.$object, obj)
     })
@@ -59,14 +62,16 @@ export class ViewerComponent implements OnInit, AfterViewInit {
 
   renderEntities() {
     if (!this.canvas) return;
+    let that = this;
     this.entities?.forEach(entity => {
       entity.$container = new G()
       entity.$component = GetComponent(entity.component)
       CreateEntityObject(entity)
       this.appendEntity(entity);
-      entity.$component.setup.call(entity.$object, entity.properties)
+      //entity.$component.setup.call(entity.$object, entity.properties)
+      entity.$component.start?.call(entity.$object)
       entity.$object.__proto__.$emit = function (event: string, data: any) {
-        entity.handlers[event]?.forEach((handler: Function) => handler(data))
+        entity.handlers[event]?.forEach((invoke: any) => that.invoke.emit(invoke))
       }
     })
   }

@@ -108,6 +108,8 @@ export let ValueComponent: HmiComponent = {
 
   //更新数据
   update(values: any) {
+    //@ts-ignore
+    let p = this.$properties
     if (values.hasOwnProperty("value"))// @ts-ignore
       this.text.text(p.prefix + values.value + p.suffix)
 

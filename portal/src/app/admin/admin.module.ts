@@ -122,6 +122,8 @@ import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
 import {HmiModule} from "../hmi/hmi.module";
 import {ChooseHmiComponent} from "./choose-hmi/choose-hmi.component";
 import {HmiBrowserComponent} from "./hmi-browser/hmi-browser.component";
+import {DeviceHmiComponent} from "./device-hmi/device-hmi.component";
+import {ProjectHmiComponent} from "./project-hmi/project-hmi.component";
 
 @NgModule({
   declarations: [
@@ -138,10 +140,10 @@ import {HmiBrowserComponent} from "./hmi-browser/hmi-browser.component";
     LinkBrowserComponent,
     PipeComponent, PipeDetailComponent, PipeEditComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
-    DeviceBrowserComponent, DeviceValueComponent,
+    DeviceBrowserComponent, DeviceValueComponent, DeviceHmiComponent,
     ElementComponent, ElementDetailComponent, ElementEditComponent,
     ElementDeviceComponent, ElementBrowserComponent,
-    ProjectComponent, ProjectDetailComponent, ProjectEditComponent,
+    ProjectComponent, ProjectDetailComponent, ProjectEditComponent, ProjectHmiComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
     HmiComponent, HmiDetailComponent, HmiEditComponent, HmiBrowserComponent,

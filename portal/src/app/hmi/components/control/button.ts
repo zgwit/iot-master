@@ -64,7 +64,10 @@ export let ButtonComponent: HmiComponent = {
 
   start() {
     // @ts-ignore
-    this.rect.on("click", event=>this.$emit("click", event))
+    this.rect.on("click", ()=> {
+      // @ts-ignore
+      this.$emit("click")
+    })
   },
 
   //配置
