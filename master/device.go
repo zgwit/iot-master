@@ -82,6 +82,10 @@ func (dev *Device) BindAdapter(adapter protocol.Adapter) error {
 	}
 
 	dev.mapper, err = newMapper(dev.Station, dev.Points, adapter)
+	if err != nil {
+		return err
+	}
+
 	metric := strconv.Itoa(dev.Id)
 
 	//处理数据变化结果
