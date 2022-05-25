@@ -127,7 +127,7 @@ func (m *TCP) OnData(buf []byte) {
 		FuncCodeReadWriteMultipleRegisters:
 		req.resp <- response{buf: helper.Dup(buf[9:])}
 	default:
-		req.resp <- response{}
+		req.resp <- response{err: fmt.Errorf("错误功能码：%d", fc)}
 	}
 }
 
