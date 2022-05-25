@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/args"
 	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/mqtt"
@@ -114,6 +115,12 @@ func originMain() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	err = db.Open()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 
 	err = database.Open(&config.Config.Database)
 	if err != nil {

@@ -6,15 +6,17 @@ import (
 )
 
 type Template struct {
-	Id      string `json:"id" storm:"id"`
+	Id      string `json:"id" xorm:"pk"`
 	Name    string `json:"name"`
 	Version string `json:"version"` //SEMVER
 
 	Elements []*TemplateElement `json:"elements"`
 
-	ProjectContent `storm:"inline"`
+	ProjectContent `xorm:"extends"`
 
-	Created time.Time `json:"created" storm:"created"`
+	Updated time.Time `json:"updated" xorm:"updated"`
+	Created time.Time `json:"created" xorm:"created"`
+	Deleted time.Time `json:"-" xorm:"deleted"`
 }
 
 type ProjectContent struct {
@@ -27,19 +29,21 @@ type ProjectContent struct {
 
 //Project 项目
 type Project struct {
-	Id   int    `json:"id" storm:"id,increment"`
+	Id   int64  `json:"id" xorm:"autoincr"`
 	Name string `json:"name"`
 
 	Devices []*ProjectDevice `json:"devices"`
 	//Devices []int `json:"devices"`
 
 	TemplateId     string `json:"template_id,omitempty"`
-	ProjectContent `storm:"inline"`
+	ProjectContent `xorm:"extends"`
 
 	Context calc.Context `json:"context"`
 
 	Disabled bool      `json:"disabled"`
-	Created  time.Time `json:"created" storm:"created"`
+	Updated  time.Time `json:"updated" xorm:"updated"`
+	Created  time.Time `json:"created" xorm:"created"`
+	Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
 type ProjectEx struct {
@@ -50,7 +54,7 @@ type ProjectEx struct {
 
 //ProjectDevice 项目的设备
 type ProjectDevice struct {
-	Id   int    `json:"id"`
+	Id   int64  `json:"id"`
 	Name string `json:"name"` //编程名
 }
 
@@ -60,11 +64,11 @@ type TemplateElement struct {
 }
 
 type ProjectHistory struct {
-	Project   `storm:"inline"`
-	ProjectId int `json:"project_id" storm:"index"`
+	Project   `xorm:"extends"`
+	ProjectId int64 `json:"project_id" xorm:"index"`
 }
 
 type TemplateHistory struct {
-	Template   `storm:"inline"`
-	TemplateId string `json:"template_id" storm:"index"`
+	Template   `xorm:"extends"`
+	TemplateId string `json:"template_id" xorm:"index"`
 }

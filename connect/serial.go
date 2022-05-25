@@ -108,7 +108,7 @@ func (s *Serial) Close() error {
 	return errors.New("link is closed")
 }
 
-func (s *Serial) GetLink(id int) Link {
+func (s *Serial) GetLink(id int64) Link {
 	return s.link
 }
 

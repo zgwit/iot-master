@@ -12,7 +12,7 @@ import (
 type Link interface {
 	events.EventInterface
 
-	Id() int
+	Id() int64
 
 	Write(data []byte) error
 
@@ -36,14 +36,14 @@ type baseLink struct {
 
 	link  io.ReadWriteCloser
 
-	id      int
+	id      int64
 	running bool
 	first   bool
 
 	pipe io.ReadWriteCloser
 }
 
-func (l *baseLink) Id() int {
+func (l *baseLink) Id() int64 {
 	return l.id
 }
 

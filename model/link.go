@@ -4,14 +4,16 @@ import "time"
 
 //Link 链接模型
 type Link struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	TunnelId int       `json:"tunnel_id" storm:"index"`
-	SN       string    `json:"sn" storm:"index"`
+	Id       int64     `json:"id" xorm:"autoincr"`
+	TunnelId int64     `json:"tunnel_id" xorm:"index"`
+	SN       string    `json:"sn" xorm:"index"`
 	Name     string    `json:"name"`
 	Remote   string    `json:"remote"`
 	Disabled bool      `json:"disabled"`
 	Last     time.Time `json:"last"`
-	Created  time.Time `json:"created" storm:"created"`
+	Updated  time.Time `json:"updated" xorm:"updated"`
+	Created  time.Time `json:"created" xorm:"created"`
+	Deleted  time.Time `json:"-" xorm:"deleted"`
 	//Protocol *Protocol `json:"protocol"`
 }
 

@@ -14,9 +14,6 @@ func userRoutes(app *gin.RouterGroup) {
 	app.POST("list", userList)
 	app.POST("create", userCreate)
 
-	app.POST("history", visitList)
-	app.POST("visit", visitCreate)
-
 	app.Use(parseParamId)
 
 	app.GET(":id", userDetail)
@@ -62,7 +59,7 @@ func userCreate(ctx *gin.Context) {
 
 func userDetail(ctx *gin.Context) {
 	var user model.User
-	err := database.Master.One("Id", ctx.GetInt("id"), &user)
+	err := database.Master.One("Id", ctx.GetInt64("id"), &user)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -77,7 +74,7 @@ func userUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	user.Id = ctx.GetInt("id")
+	user.Id = ctx.GetInt64("id")
 
 	err = database.Master.Update(&user)
 	if err != nil {
@@ -89,7 +86,7 @@ func userUpdate(ctx *gin.Context) {
 }
 
 func userDelete(ctx *gin.Context) {
-	user := model.User{Id: ctx.GetInt("id")}
+	user := model.User{Id: ctx.GetInt64("id")}
 	err := database.Master.DeleteStruct(&user)
 	if err != nil {
 		replyError(ctx, err)
@@ -107,7 +104,7 @@ func userPassword(ctx *gin.Context) {
 }
 
 func userEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(model.User{Id: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(model.User{Id: ctx.GetInt64("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -116,7 +113,7 @@ func userEnable(ctx *gin.Context) {
 }
 
 func userDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(model.User{Id: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(model.User{Id: ctx.GetInt64("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return

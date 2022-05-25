@@ -83,7 +83,7 @@ func projectCreate(ctx *gin.Context) {
 
 func projectDetail(ctx *gin.Context) {
 	var project model.Project
-	err := database.Master.One("Id", ctx.GetInt("id"), &project)
+	err := database.Master.One("Id", ctx.GetInt64("id"), &project)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -114,7 +114,7 @@ func projectUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	project.Id = ctx.GetInt("id")
+	project.Id = ctx.GetInt64("id")
 
 	err = database.Master.Update(&project)
 	if err != nil {
@@ -137,7 +137,7 @@ func projectUpdate(ctx *gin.Context) {
 }
 
 func projectDelete(ctx *gin.Context) {
-	project := model.Project{Id: ctx.GetInt("id")}
+	project := model.Project{Id: ctx.GetInt64("id")}
 	err := database.Master.DeleteStruct(&project)
 	if err != nil {
 		replyError(ctx, err)
@@ -156,7 +156,7 @@ func projectDelete(ctx *gin.Context) {
 }
 
 func projectStart(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetInt("id"))
+	project := master.GetProject(ctx.GetInt64("id"))
 	if project == nil {
 		replyFail(ctx, "not found")
 		return
@@ -171,7 +171,7 @@ func projectStart(ctx *gin.Context) {
 }
 
 func projectStop(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetInt("id"))
+	project := master.GetProject(ctx.GetInt64("id"))
 	if project == nil {
 		replyFail(ctx, "not found")
 		return
@@ -186,7 +186,7 @@ func projectStop(ctx *gin.Context) {
 }
 
 func projectEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Project{Id: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(&model.Project{Id: ctx.GetInt64("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -195,7 +195,7 @@ func projectEnable(ctx *gin.Context) {
 
 	//启动
 	go func() {
-		_, err := master.LoadProject(ctx.GetInt("id"))
+		_, err := master.LoadProject(ctx.GetInt64("id"))
 		if err != nil {
 			log.Error(err)
 			return
@@ -204,7 +204,7 @@ func projectEnable(ctx *gin.Context) {
 }
 
 func projectDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Project{Id: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(&model.Project{Id: ctx.GetInt64("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -213,7 +213,7 @@ func projectDisable(ctx *gin.Context) {
 
 	//关闭
 	go func() {
-		project := master.GetProject(ctx.GetInt("id"))
+		project := master.GetProject(ctx.GetInt64("id"))
 		if project == nil {
 			return
 		}
@@ -226,7 +226,7 @@ func projectDisable(ctx *gin.Context) {
 }
 
 func projectContext(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetInt("id"))
+	project := master.GetProject(ctx.GetInt64("id"))
 	if project == nil {
 		replyFail(ctx, "找不到项目")
 		return
@@ -235,7 +235,7 @@ func projectContext(ctx *gin.Context) {
 }
 
 func projectWatch(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetInt("id"))
+	project := master.GetProject(ctx.GetInt64("id"))
 	if project == nil {
 		replyFail(ctx, "找不到项目")
 		return
@@ -246,7 +246,7 @@ func projectWatch(ctx *gin.Context) {
 }
 
 func projectAlarm(ctx *gin.Context) {
-	alarms, cnt, err := normalSearchById(ctx, database.History, "ProjectId", ctx.GetInt("id"), &model.ProjectAlarm{})
+	alarms, cnt, err := normalSearchById(ctx, database.History, "ProjectId", ctx.GetInt64("id"), &model.ProjectAlarm{})
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -255,7 +255,7 @@ func projectAlarm(ctx *gin.Context) {
 }
 
 func projectAlarmClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("ProjectId", ctx.GetInt("id"))).Delete(&model.ProjectAlarm{})
+	err := database.History.Select(q.Eq("ProjectId", ctx.GetInt64("id"))).Delete(&model.ProjectAlarm{})
 	if err != nil {
 		replyError(ctx, err)
 		return

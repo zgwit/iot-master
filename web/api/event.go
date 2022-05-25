@@ -29,7 +29,7 @@ func eventList(ctx *gin.Context) {
 
 
 func eventDelete(ctx *gin.Context) {
-	event := model.Event{Id: ctx.GetInt("id")}
+	event := model.Event{Id: ctx.GetInt64("id")}
 	err := database.History.DeleteStruct(&event)
 	if err != nil {
 		replyError(ctx, err)

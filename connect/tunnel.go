@@ -10,6 +10,6 @@ type Tunnel interface {
 
 	Open() error
 	Close() error
-	GetLink(id int) Link
+	GetLink(id int64) Link
 	Running() bool
 }

@@ -19,7 +19,7 @@ type paramSearchEx struct {
 }
 
 type paramId struct {
-	Id int `uri:"id"`
+	Id int64 `uri:"id"`
 }
 type paramStringId struct {
 	Id string `uri:"id"`

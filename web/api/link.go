@@ -55,7 +55,7 @@ func linkList(ctx *gin.Context) {
 
 func linkDetail(ctx *gin.Context) {
 	var link model.Link
-	err := database.Master.One("Id", ctx.GetInt("id"), &link)
+	err := database.Master.One("Id", ctx.GetInt64("id"), &link)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -83,7 +83,7 @@ func linkUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	link.Id = ctx.GetInt("id")
+	link.Id = ctx.GetInt64("id")
 
 	err = database.Master.Update(&link)
 	if err != nil {
@@ -95,7 +95,7 @@ func linkUpdate(ctx *gin.Context) {
 }
 
 func linkDelete(ctx *gin.Context) {
-	link := model.Link{Id: ctx.GetInt("id")}
+	link := model.Link{Id: ctx.GetInt64("id")}
 	err := database.Master.DeleteStruct(&link)
 	if err != nil {
 		replyError(ctx, err)
@@ -113,7 +113,7 @@ func linkDelete(ctx *gin.Context) {
 }
 
 func linkClose(ctx *gin.Context) {
-	link := master.GetLink(ctx.GetInt("id"))
+	link := master.GetLink(ctx.GetInt64("id"))
 	if link == nil {
 		replyFail(ctx, "link not found")
 		return
@@ -128,7 +128,7 @@ func linkClose(ctx *gin.Context) {
 }
 
 func linkEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Link{Id: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(&model.Link{Id: ctx.GetInt64("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -137,7 +137,7 @@ func linkEnable(ctx *gin.Context) {
 }
 
 func linkDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Link{Id: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(&model.Link{Id: ctx.GetInt64("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -146,7 +146,7 @@ func linkDisable(ctx *gin.Context) {
 
 	//关闭
 	go func() {
-		link := master.GetLink(ctx.GetInt("id"))
+		link := master.GetLink(ctx.GetInt64("id"))
 		if link == nil {
 			return
 		}
@@ -159,7 +159,7 @@ func linkDisable(ctx *gin.Context) {
 }
 
 func linkWatch(ctx *gin.Context) {
-	link := master.GetLink(ctx.GetInt("id"))
+	link := master.GetLink(ctx.GetInt64("id"))
 	if link == nil {
 		replyFail(ctx, "找不到链接")
 		return

@@ -3,12 +3,14 @@ package model
 import "time"
 
 type Pipe struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	LinkId   int       `json:"link_id"`
+	Id       int64     `json:"id" xorm:"autoincr"`
+	LinkId   int64     `json:"link_id"`
 	Name     string    `json:"name"`
 	Addr     string    `json:"addr"`
 	Disabled bool      `json:"disabled"`
-	Created  time.Time `json:"created" storm:"created"`
+	Updated  time.Time `json:"updated" xorm:"updated"`
+	Created  time.Time `json:"created" xorm:"created"`
+	Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
 type PipeEx struct {

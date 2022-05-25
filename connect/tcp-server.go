@@ -17,7 +17,7 @@ type TcpServer struct {
 
 	tunnel *model.Tunnel
 
-	children map[int]*NetLink
+	children map[int64]*NetLink
 
 	listener *net.TCPListener
 
@@ -29,7 +29,7 @@ func newTcpServer(tunnel *model.Tunnel) *TcpServer {
 		tunnel: tunnel,
 	}
 	if tunnel.Register.Enable {
-		svr.children = make(map[int]*NetLink)
+		svr.children = make(map[int64]*NetLink)
 	}
 	return svr
 }
@@ -131,7 +131,7 @@ func (server *TcpServer) Close() (err error) {
 }
 
 //GetLink 获取连接
-func (server *TcpServer) GetLink(id int) Link {
+func (server *TcpServer) GetLink(id int64) Link {
 	return server.children[id]
 }
 

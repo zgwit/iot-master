@@ -27,7 +27,7 @@ const (
 //Parse 解析类型
 func (dt *DataType) Parse(tp string) error {
 	//var *dt DataType
-	tp = tp[1:len(tp)-1]
+	tp = tp[1 : len(tp)-1]
 	//strings.ToLower(tp)
 	switch strings.ToLower(tp) {
 	case "none":

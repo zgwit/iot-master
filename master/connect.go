@@ -136,7 +136,7 @@ func LoadTunnels() error {
 }
 
 //LoadTunnel 加载通道
-func LoadTunnel(id int) error {
+func LoadTunnel(id int64) error {
 	var tunnel model.Tunnel
 	err := database.Master.One("Id", id, &tunnel)
 	if err != nil {
@@ -154,7 +154,7 @@ func LoadTunnel(id int) error {
 }
 
 //GetTunnel 获取通道
-func GetTunnel(id int) *Tunnel {
+func GetTunnel(id int64) *Tunnel {
 	d, ok := allTunnels.Load(id)
 	if ok {
 		return d.(*Tunnel)
@@ -162,7 +162,7 @@ func GetTunnel(id int) *Tunnel {
 	return nil
 }
 
-func RemoveTunnel(id int) error {
+func RemoveTunnel(id int64) error {
 	d, ok := allTunnels.LoadAndDelete(id)
 	if ok {
 		tnl := d.(*Tunnel)
@@ -171,7 +171,7 @@ func RemoveTunnel(id int) error {
 	return nil //error
 }
 
-func GetLink(id int) *Link {
+func GetLink(id int64) *Link {
 	d, ok := allLinks.Load(id)
 	if ok {
 		return d.(*Link)
@@ -179,7 +179,7 @@ func GetLink(id int) *Link {
 	return nil
 }
 
-func RemoveLink(id int) error {
+func RemoveLink(id int64) error {
 	d, ok := allLinks.LoadAndDelete(id)
 	if ok {
 		lnk := d.(*Link)

@@ -42,7 +42,7 @@ func LoadDevices() error {
 }
 
 //LoadDevice 加载设备
-func LoadDevice(id int) (*Device, error) {
+func LoadDevice(id int64) (*Device, error) {
 	device := &model.Device{}
 	err := database.Master.One("Id", id, device)
 	if err != nil {
@@ -60,7 +60,7 @@ func LoadDevice(id int) (*Device, error) {
 }
 
 //GetDevice 获取设备
-func GetDevice(id int) *Device {
+func GetDevice(id int64) *Device {
 	d, ok := allDevices.Load(id)
 	if ok {
 		return d.(*Device)
@@ -69,7 +69,7 @@ func GetDevice(id int) *Device {
 }
 
 //RemoveDevice 删除设备
-func RemoveDevice(id int) error {
+func RemoveDevice(id int64) error {
 	d, ok := allDevices.LoadAndDelete(id)
 	if ok {
 		dev := d.(*Device)
@@ -79,7 +79,7 @@ func RemoveDevice(id int) error {
 }
 
 //GetProject 获取项目
-func GetProject(id int) *Project {
+func GetProject(id int64) *Project {
 	d, ok := allProjects.Load(id)
 	if ok {
 		return d.(*Project)
@@ -88,7 +88,7 @@ func GetProject(id int) *Project {
 }
 
 //RemoveProject 删除项目
-func RemoveProject(id int) error {
+func RemoveProject(id int64) error {
 	d, ok := allProjects.LoadAndDelete(id)
 	if ok {
 		dev := d.(*Project)
@@ -127,7 +127,7 @@ func LoadProjects() error {
 }
 
 //LoadProject 加载项目
-func LoadProject(id int) (*Project, error) {
+func LoadProject(id int64) (*Project, error) {
 	project := &model.Project{}
 	err := database.Master.One("Id", id, project)
 	if err != nil {

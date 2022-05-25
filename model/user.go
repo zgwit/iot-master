@@ -7,12 +7,14 @@ import (
 
 //User 用户
 type User struct {
-	Id       int       `json:"id" storm:"id,increment"`
-	Username string    `json:"username" storm:"unique"`
+	Id       int64     `json:"id" xorm:"autoincr"`
+	Username string    `json:"username" xorm:"unique"`
 	Nickname string    `json:"nickname,omitempty"`
 	Email    string    `json:"email,omitempty"`
 	Disabled bool      `json:"disabled"`
-	Created  time.Time `json:"created" storm:"created"`
+	Updated  time.Time `json:"updated" xorm:"updated"`
+	Created  time.Time `json:"created" xorm:"created"`
+	Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
 func init() {
@@ -21,6 +23,6 @@ func init() {
 
 //Password 密码
 type Password struct {
-	Id       int    `json:"id" storm:"id"`
+	Id       int64  `json:"id" xorm:"pk"`
 	Password string `json:"password"`
 }

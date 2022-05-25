@@ -31,16 +31,16 @@ type AlarmContent struct {
 
 //DeviceAlarm 设备告警
 type DeviceAlarm struct {
-	Id           int `json:"id" storm:"id,increment"`
-	DeviceId     int `json:"device_id" storm:"index"`
-	AlarmContent `storm:"inline"`
-	Created      time.Time `json:"created"`
+	Id           int64 `json:"id" xorm:"autoincr"`
+	DeviceId     int64 `json:"device_id" xorm:"index"`
+	AlarmContent `xorm:"extends"`
+	Created      time.Time `json:"created" xorm:"created"`
 }
 
 //ProjectAlarm 项目告警
 type ProjectAlarm struct {
-	Id           int `json:"id" storm:"id,increment"`
-	ProjectId    int `json:"project_id" storm:"index"`
-	AlarmContent `storm:"inline"`
-	Created      time.Time `json:"created"`
+	Id           int64 `json:"id" xorm:"autoincr"`
+	ProjectId    int64 `json:"project_id" xorm:"index"`
+	AlarmContent `xorm:"extends"`
+	Created      time.Time `json:"created" xorm:"created"`
 }

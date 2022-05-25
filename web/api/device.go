@@ -113,7 +113,7 @@ func deviceCreate(ctx *gin.Context) {
 
 func deviceDetail(ctx *gin.Context) {
 	var device model.Device
-	err := database.Master.One("Id", ctx.GetInt("id"), &device)
+	err := database.Master.One("Id", ctx.GetInt64("id"), &device)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -155,7 +155,7 @@ func deviceUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	device.Id = ctx.GetInt("id")
+	device.Id = ctx.GetInt64("id")
 
 	err = database.Master.Update(&device)
 	if err != nil {
@@ -177,7 +177,7 @@ func deviceUpdate(ctx *gin.Context) {
 }
 
 func deviceDelete(ctx *gin.Context) {
-	device := model.Device{Id: ctx.GetInt("id")}
+	device := model.Device{Id: ctx.GetInt64("id")}
 	err := database.Master.DeleteStruct(&device)
 	if err != nil {
 		replyError(ctx, err)
@@ -196,7 +196,7 @@ func deviceDelete(ctx *gin.Context) {
 }
 
 func deviceStart(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt("id"))
+	device := master.GetDevice(ctx.GetInt64("id"))
 	if device == nil {
 		replyFail(ctx, "not found")
 		return
@@ -211,7 +211,7 @@ func deviceStart(ctx *gin.Context) {
 }
 
 func deviceStop(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt("id"))
+	device := master.GetDevice(ctx.GetInt64("id"))
 	if device == nil {
 		replyFail(ctx, "not found")
 		return
@@ -226,7 +226,7 @@ func deviceStop(ctx *gin.Context) {
 }
 
 func deviceEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Device{Id: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(&model.Device{Id: ctx.GetInt64("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -235,7 +235,7 @@ func deviceEnable(ctx *gin.Context) {
 
 	//启动
 	go func() {
-		_, err := master.LoadDevice(ctx.GetInt("id"))
+		_, err := master.LoadDevice(ctx.GetInt64("id"))
 		if err != nil {
 			log.Error(err)
 			return
@@ -244,7 +244,7 @@ func deviceEnable(ctx *gin.Context) {
 }
 
 func deviceDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Device{Id: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(&model.Device{Id: ctx.GetInt64("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -253,7 +253,7 @@ func deviceDisable(ctx *gin.Context) {
 
 	//关闭
 	go func() {
-		device := master.GetDevice(ctx.GetInt("id"))
+		device := master.GetDevice(ctx.GetInt64("id"))
 		if device == nil {
 			return
 		}
@@ -266,7 +266,7 @@ func deviceDisable(ctx *gin.Context) {
 }
 
 func deviceContext(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt("id"))
+	device := master.GetDevice(ctx.GetInt64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -275,7 +275,7 @@ func deviceContext(ctx *gin.Context) {
 }
 
 func deviceRefresh(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt("id"))
+	device := master.GetDevice(ctx.GetInt64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -289,7 +289,7 @@ func deviceRefresh(ctx *gin.Context) {
 }
 
 func deviceRefreshPoint(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt("id"))
+	device := master.GetDevice(ctx.GetInt64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -315,7 +315,7 @@ func deviceExecute(ctx *gin.Context) {
 		return
 	}
 
-	device := master.GetDevice(ctx.GetInt("id"))
+	device := master.GetDevice(ctx.GetInt64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -329,7 +329,7 @@ func deviceExecute(ctx *gin.Context) {
 }
 
 func deviceWatch(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt("id"))
+	device := master.GetDevice(ctx.GetInt64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -340,7 +340,7 @@ func deviceWatch(ctx *gin.Context) {
 }
 
 func deviceAlarm(ctx *gin.Context) {
-	alarms, cnt, err := normalSearchById(ctx, database.History, "DeviceId", ctx.GetInt("id"), &model.DeviceAlarm{})
+	alarms, cnt, err := normalSearchById(ctx, database.History, "DeviceId", ctx.GetInt64("id"), &model.DeviceAlarm{})
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -349,7 +349,7 @@ func deviceAlarm(ctx *gin.Context) {
 }
 
 func deviceAlarmClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("DeviceId", ctx.GetInt("id"))).Delete(&model.DeviceAlarm{})
+	err := database.History.Select(q.Eq("DeviceId", ctx.GetInt64("id"))).Delete(&model.DeviceAlarm{})
 	if err != nil {
 		replyError(ctx, err)
 		return

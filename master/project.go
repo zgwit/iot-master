@@ -60,7 +60,7 @@ type Project struct {
 	strategies  []*Strategy
 
 	deviceNameIndex map[string]*Device
-	deviceIdIndex   map[int]*Device
+	deviceIdIndex   map[int64]*Device
 
 	deviceDataHandler  func(data calc.Context)
 	deviceAlarmHandler func(alarm *model.DeviceAlarm)
@@ -77,7 +77,7 @@ func NewProject(m *model.Project) (*Project, error) {
 		jobs:            make([]*Job, 0),
 		strategies:      make([]*Strategy, 0),
 		deviceNameIndex: make(map[string]*Device),
-		deviceIdIndex:   make(map[int]*Device),
+		deviceIdIndex:   make(map[int64]*Device),
 	}
 
 	//加载模板

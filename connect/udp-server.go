@@ -17,7 +17,7 @@ type UdpServer struct {
 
 	tunnel *model.Tunnel
 
-	children map[int]*UdpLink
+	children map[int64]*UdpLink
 	links    map[string]*UdpLink
 
 	listener *net.UDPConn
@@ -29,7 +29,7 @@ func newUdpServer(tunnel *model.Tunnel) *UdpServer {
 		tunnel: tunnel,
 	}
 	if tunnel.Register.Enable {
-		svr.children = make(map[int]*UdpLink)
+		svr.children = make(map[int64]*UdpLink)
 		svr.links = make(map[string]*UdpLink)
 	}
 	return svr
@@ -136,7 +136,7 @@ func (server *UdpServer) Close() (err error) {
 }
 
 //GetLink 获取链接
-func (server *UdpServer) GetLink(id int) Link {
+func (server *UdpServer) GetLink(id int64) Link {
 	return server.children[id]
 }
 

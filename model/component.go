@@ -13,7 +13,7 @@ type HmiValue struct {
 }
 
 type Component struct {
-	Id   string `json:"id" storm:"id"`
+	Id   string `json:"id" xorm:"pk"`
 	Icon string `json:"icon"` //url svg png jpg ...
 	Name string `json:"name"`
 
@@ -49,5 +49,7 @@ type Component struct {
 	//产生变量 data(){return {a:1, b2}}
 	Data string `json:"data"`
 
-	Created time.Time `json:"created" storm:"created"`
+	Updated time.Time `json:"updated" xorm:"updated"`
+	Created time.Time `json:"created" xorm:"created"`
+	Deleted time.Time `json:"-" xorm:"deleted"`
 }

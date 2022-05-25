@@ -86,7 +86,8 @@ func (dev *Device) BindAdapter(adapter protocol.Adapter) error {
 		return err
 	}
 
-	metric := strconv.Itoa(dev.Id)
+	//metric := strconv.Itoa(dev.Id)
+	metric := strconv.FormatInt(dev.Id, 10)
 
 	//处理数据变化结果
 	dev.mapper.On("data", func(data calc.Context) {

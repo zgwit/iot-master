@@ -96,7 +96,7 @@ func (client *NetClient) Close() error {
 }
 
 //GetLink 获取链接
-func (client *NetClient) GetLink(id int) Link {
+func (client *NetClient) GetLink(id int64) Link {
 	return client.link
 }
 

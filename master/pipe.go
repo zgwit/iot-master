@@ -89,7 +89,7 @@ func LoadPipes() error {
 	return nil
 }
 
-func LoadPipe(id int) error {
+func LoadPipe(id int64) error {
 	var pipe model.Pipe
 	err := database.Master.One("Id", id, &pipe)
 	if err != nil {
@@ -109,7 +109,7 @@ func LoadPipe(id int) error {
 	return nil
 }
 
-func GetPipe(id int) *Pipe {
+func GetPipe(id int64) *Pipe {
 	d, ok := allPipes.Load(id)
 	if ok {
 		return d.(*Pipe)
@@ -117,7 +117,7 @@ func GetPipe(id int) *Pipe {
 	return nil
 }
 
-func RemovePipe(id int) error {
+func RemovePipe(id int64) error {
 	d, ok := allPipes.LoadAndDelete(id)
 	if ok {
 		dev := d.(*Pipe)

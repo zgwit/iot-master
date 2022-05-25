@@ -7,14 +7,16 @@ import (
 
 //Element 元件
 type Element struct {
-	Id           string `json:"id" storm:"id"`
+	Id           string `json:"id" xorm:"pk"`
 	Name         string `json:"name"`
 	Manufacturer string `json:"manufacturer"` //厂家
 	Version      string `json:"version"`      //SEMVER
 
-	DeviceContent `storm:"inline"`
+	DeviceContent `xorm:"extends"`
 
-	Created time.Time `json:"created" storm:"created"`
+	Updated time.Time `json:"updated" xorm:"updated"`
+	Created time.Time `json:"created" xorm:"created"`
+	Deleted time.Time `json:"-" xorm:"deleted"`
 }
 
 type DeviceContent struct {
@@ -29,19 +31,21 @@ type DeviceContent struct {
 
 //Device 设备
 type Device struct {
-	Id        int    `json:"id" storm:"id,increment"`
-	LinkId    int    `json:"link_id" storm:"index"`
+	Id        int64  `json:"id" xorm:"autoincr"`
+	LinkId    int64  `json:"link_id" xorm:"index"`
 	ElementId string `json:"element_id"`
 
 	Name          string `json:"name"`
 	Station       int    `json:"station"`
-	DeviceContent `storm:"inline"`
+	DeviceContent `xorm:"extends"`
 
 	//上下文
 	Context calc.Context `json:"context"`
 
 	Disabled bool      `json:"disabled"`
-	Created  time.Time `json:"created" storm:"created"`
+	Updated  time.Time `json:"updated" xorm:"updated"`
+	Created  time.Time `json:"created" xorm:"created"`
+	Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
 type DeviceEx struct {
@@ -52,11 +56,11 @@ type DeviceEx struct {
 }
 
 type DeviceHistory struct {
-	Device   `storm:"inline"`
-	DeviceId int `json:"device_id" storm:"index"`
+	Device   `xorm:"extends"`
+	DeviceId int64 `json:"device_id" xorm:"index"`
 }
 
 type ElementHistory struct {
-	Element   `storm:"inline"`
-	ElementId string `json:"element_id" storm:"index"`
+	Element   `xorm:"extends"`
+	ElementId string `json:"element_id" xorm:"index"`
 }

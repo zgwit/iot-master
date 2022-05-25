@@ -78,7 +78,7 @@ func tunnelCreate(ctx *gin.Context) {
 
 func tunnelDetail(ctx *gin.Context) {
 	var tunnel model.Tunnel
-	err := database.Master.One("Id", ctx.GetInt("id"), &tunnel)
+	err := database.Master.One("Id", ctx.GetInt64("id"), &tunnel)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -98,7 +98,7 @@ func tunnelUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	tunnel.Id = ctx.GetInt("id")
+	tunnel.Id = ctx.GetInt64("id")
 
 	err = database.Master.Update(&tunnel)
 	if err != nil {
@@ -120,7 +120,7 @@ func tunnelUpdate(ctx *gin.Context) {
 }
 
 func tunnelDelete(ctx *gin.Context) {
-	tunnel := model.Tunnel{Id: ctx.GetInt("id")}
+	tunnel := model.Tunnel{Id: ctx.GetInt64("id")}
 	err := database.Master.DeleteStruct(&tunnel)
 	if err != nil {
 		replyError(ctx, err)
@@ -139,7 +139,7 @@ func tunnelDelete(ctx *gin.Context) {
 }
 
 func tunnelStart(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetInt("id"))
+	tunnel := master.GetTunnel(ctx.GetInt64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "not found")
 		return
@@ -154,7 +154,7 @@ func tunnelStart(ctx *gin.Context) {
 }
 
 func tunnelStop(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetInt("id"))
+	tunnel := master.GetTunnel(ctx.GetInt64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "not found")
 		return
@@ -169,7 +169,7 @@ func tunnelStop(ctx *gin.Context) {
 }
 
 func tunnelEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Tunnel{Id: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(&model.Tunnel{Id: ctx.GetInt64("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -178,7 +178,7 @@ func tunnelEnable(ctx *gin.Context) {
 
 	//启动
 	go func() {
-		err := master.LoadTunnel(ctx.GetInt("id"))
+		err := master.LoadTunnel(ctx.GetInt64("id"))
 		if err != nil {
 			log.Error(err)
 			return
@@ -187,7 +187,7 @@ func tunnelEnable(ctx *gin.Context) {
 }
 
 func tunnelDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Tunnel{Id: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(&model.Tunnel{Id: ctx.GetInt64("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -196,7 +196,7 @@ func tunnelDisable(ctx *gin.Context) {
 
 	//关闭
 	go func() {
-		tunnel := master.GetTunnel(ctx.GetInt("id"))
+		tunnel := master.GetTunnel(ctx.GetInt64("id"))
 		if tunnel == nil {
 			return
 		}
@@ -209,7 +209,7 @@ func tunnelDisable(ctx *gin.Context) {
 }
 
 func tunnelWatch(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetInt("id"))
+	tunnel := master.GetTunnel(ctx.GetInt64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "找不到通道")
 		return

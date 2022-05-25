@@ -87,7 +87,7 @@ func pipeCreate(ctx *gin.Context) {
 
 func pipeDetail(ctx *gin.Context) {
 	var pipe model.Pipe
-	err := database.Master.One("Id", ctx.GetInt("id"), &pipe)
+	err := database.Master.One("Id", ctx.GetInt64("id"), &pipe)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -118,7 +118,7 @@ func pipeUpdate(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	pipe.Id = ctx.GetInt("id")
+	pipe.Id = ctx.GetInt64("id")
 
 	err = database.Master.Update(&pipe)
 	if err != nil {
@@ -140,7 +140,7 @@ func pipeUpdate(ctx *gin.Context) {
 }
 
 func pipeDelete(ctx *gin.Context) {
-	pipe := model.Pipe{Id: ctx.GetInt("id")}
+	pipe := model.Pipe{Id: ctx.GetInt64("id")}
 	err := database.Master.DeleteStruct(&pipe)
 	if err != nil {
 		replyError(ctx, err)
@@ -159,7 +159,7 @@ func pipeDelete(ctx *gin.Context) {
 }
 
 func pipeStart(ctx *gin.Context) {
-	pipe := master.GetPipe(ctx.GetInt("id"))
+	pipe := master.GetPipe(ctx.GetInt64("id"))
 	if pipe == nil {
 		replyFail(ctx, "not found")
 		return
@@ -174,7 +174,7 @@ func pipeStart(ctx *gin.Context) {
 }
 
 func pipeStop(ctx *gin.Context) {
-	pipe := master.GetPipe(ctx.GetInt("id"))
+	pipe := master.GetPipe(ctx.GetInt64("id"))
 	if pipe == nil {
 		replyFail(ctx, "not found")
 		return
@@ -189,7 +189,7 @@ func pipeStop(ctx *gin.Context) {
 }
 
 func pipeEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Pipe{Id: ctx.GetInt("id")}, "Disabled", false)
+	err := database.Master.UpdateField(&model.Pipe{Id: ctx.GetInt64("id")}, "Disabled", false)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -198,7 +198,7 @@ func pipeEnable(ctx *gin.Context) {
 
 	//启动
 	go func() {
-		err := master.LoadPipe(ctx.GetInt("id"))
+		err := master.LoadPipe(ctx.GetInt64("id"))
 		if err != nil {
 			log.Error(err)
 			return
@@ -207,7 +207,7 @@ func pipeEnable(ctx *gin.Context) {
 }
 
 func pipeDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Pipe{Id: ctx.GetInt("id")}, "Disabled", true)
+	err := database.Master.UpdateField(&model.Pipe{Id: ctx.GetInt64("id")}, "Disabled", true)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -216,7 +216,7 @@ func pipeDisable(ctx *gin.Context) {
 
 	//关闭
 	go func() {
-		pipe := master.GetPipe(ctx.GetInt("id"))
+		pipe := master.GetPipe(ctx.GetInt64("id"))
 		if pipe == nil {
 			return
 		}
