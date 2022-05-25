@@ -48,7 +48,7 @@ func startTunnel(tunnel *model.Tunnel) error {
 		adapter, err = protocols.Create(link, tunnel.Protocol.Name, tunnel.Protocol.Options)
 		if err != nil {
 			log.Error(err)
-			return
+			//return 无协议，也应该保存起来，只是设备无法正常工作
 		}
 
 		allLinks.Store(link.Id(), &Link{Link: lnk, Instance: link, adapter: adapter})

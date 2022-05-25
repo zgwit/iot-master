@@ -41,7 +41,7 @@ func (server *TcpServer) Open() error {
 	}
 	server.Emit("open")
 
-	addr, err := net.ResolveTCPAddr("tcp", server.tunnel.Addr)
+	addr, err := net.ResolveTCPAddr("tcp", resolvePort(server.tunnel.Addr))
 	if err != nil {
 		return err
 	}
@@ -69,12 +69,13 @@ func (server *TcpServer) Open() error {
 				err = database.Master.One("TunnelId", server.tunnel.Id, &lnk)
 			} else {
 				buf := make([]byte, 128)
-				n, err := conn.Read(buf)
+				n := 0
+				n, err = conn.Read(buf)
 				if err != nil {
 					_ = conn.Close()
 					continue
 				}
-				data := buf[n:]
+				data := buf[:n]
 				if !server.tunnel.Register.Check(data) {
 					_ = conn.Close()
 					continue

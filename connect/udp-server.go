@@ -42,7 +42,7 @@ func (server *UdpServer) Open() error {
 	}
 	server.Emit("open")
 
-	addr, err := net.ResolveUDPAddr("udp", server.tunnel.Addr)
+	addr, err := net.ResolveUDPAddr("udp", resolvePort(server.tunnel.Addr))
 	if err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func (server *UdpServer) Open() error {
 				//continue
 				break
 			}
-			data := buf[n:]
+			data := buf[:n]
 
 			//如果已经保存了链接 TODO 要有超时处理
 			link, ok := server.links[addr.String()]

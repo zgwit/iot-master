@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/model"
+	"strings"
 )
 
 //NewTunnel 创建通道
@@ -61,4 +62,11 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 	})
 
 	return tnl, nil
+}
+
+func resolvePort(addr string) string {
+	if strings.IndexByte(addr, ':') == -1 {
+		return ":" + addr
+	}
+	return addr
 }
