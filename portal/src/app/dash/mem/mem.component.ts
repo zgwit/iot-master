@@ -59,7 +59,7 @@ export class MemComponent implements OnInit {
             labelLine: {show: false},
             data: [
               {value: this.info.used, name: '已用'},
-              {value: this.info.free, name: '闲置'},
+              {value: this.info.available, name: '可用'},
             ],
           }
         ]
