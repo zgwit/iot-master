@@ -81,7 +81,7 @@ func NewProject(m *model.Project) (*Project, error) {
 	//加载模板
 	if prj.TemplateId != "" {
 		var template model.Template
-		has, err := db.Engine.ID(prj.TemplateId).Exist(&template)
+		has, err := db.Engine.ID(prj.TemplateId).Get(&template)
 		if err != nil {
 			return nil, err
 		}

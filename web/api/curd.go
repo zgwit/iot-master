@@ -2,11 +2,20 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/zgwit/iot-master/db"
 	"reflect"
 )
 
 type hook func(value interface{}) error
+
+func generateUUID(data interface{}) error {
+	value := reflect.ValueOf(data).Elem()
+	field := value.FieldByName("Id")
+	//使用UUId作为Id
+	field.SetString(uuid.NewString())
+	return nil
+}
 
 func createSliceFromType(mod reflect.Type) interface{} {
 	//datas := reflect.MakeSlice(reflect.SliceOf(mod), 0, 10).Interface()
@@ -45,7 +54,7 @@ func curdApiList(mod reflect.Type) gin.HandlerFunc {
 func curdApiCreate(mod reflect.Type, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		data := reflect.New(mod).Interface()
-		err := ctx.ShouldBindJSON(&data)
+		err := ctx.ShouldBindJSON(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -58,7 +67,7 @@ func curdApiCreate(mod reflect.Type, before, after hook) gin.HandlerFunc {
 			}
 		}
 
-		_, err = db.Engine.Insert(data)
+		_, err = db.Engine.InsertOne(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -78,28 +87,25 @@ func curdApiCreate(mod reflect.Type, before, after hook) gin.HandlerFunc {
 
 func curdApiModify(mod reflect.Type, updateFields []string, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var pid paramId
-		err := ctx.ShouldBindUri(&pid)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
+		value := reflect.New(mod)
+		data := value.Interface()
+		err := ctx.ShouldBindJSON(data)
+		//写入ID
+		value.Elem().FieldByName("Id").Set(reflect.ValueOf(ctx.MustGet("id")))
 
-		data := reflect.New(mod).Interface()
-		err = ctx.ShouldBindJSON(&data)
 		if err != nil {
 			replyError(ctx, err)
 			return
 		}
 
 		if before != nil {
-			if err := before(pid.Id); err != nil {
+			if err := before(data); err != nil {
 				replyError(ctx, err)
 				return
 			}
 		}
 
-		_, err = db.Engine.ID(pid.Id).Cols(updateFields...).Update(data)
+		_, err = db.Engine.ID(ctx.MustGet("id")).Cols(updateFields...).Update(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -119,22 +125,15 @@ func curdApiModify(mod reflect.Type, updateFields []string, before, after hook) 
 
 func curdApiDelete(mod reflect.Type, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var pid paramId
-		err := ctx.ShouldBindUri(&pid)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
-
 		if before != nil {
-			if err := before(pid.Id); err != nil {
+			if err := before(ctx.MustGet("id")); err != nil {
 				replyError(ctx, err)
 				return
 			}
 		}
 
 		data := reflect.New(mod).Interface()
-		_, err = db.Engine.ID(pid.Id).Delete(data)
+		_, err := db.Engine.ID(ctx.MustGet("id")).Delete(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -152,17 +151,12 @@ func curdApiDelete(mod reflect.Type, before, after hook) gin.HandlerFunc {
 	}
 }
 
+
 func curdApiGet(mod reflect.Type) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var pid paramId
-		err := ctx.ShouldBindUri(&pid)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
 
 		data := reflect.New(mod).Interface()
-		has, err := db.Engine.ID(pid.Id).Get(data)
+		has, err := db.Engine.ID(ctx.MustGet("id")).Get(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -174,19 +168,13 @@ func curdApiGet(mod reflect.Type) gin.HandlerFunc {
 	}
 }
 
+
 func curdApiDisable(mod reflect.Type, disable bool, before, after hook) gin.HandlerFunc  {
 	return func(ctx *gin.Context) {
-		var pid paramId
-		err := ctx.ShouldBindUri(&pid)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
-
 		value := reflect.New(mod)
 		value.FieldByName("disabled").SetBool(disable)
 		data := value.Interface()
-		_, err = db.Engine.ID(pid.Id).Cols("disabled").Update(data)
+		_, err := db.Engine.ID(ctx.MustGet("id")).Cols("disabled").Update(data)
 		if err != nil {
 			replyError(ctx, err)
 			return

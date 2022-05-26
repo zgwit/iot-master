@@ -78,7 +78,7 @@ func (server *UdpServer) Open() error {
 				for _, link := range server.links {
 					_ = link.Close()
 				}
-				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).Exist(&lnk)
+				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).Get(&lnk)
 			} else {
 				if !server.tunnel.Register.Check(data) {
 					_ = conn.Close()
@@ -86,7 +86,7 @@ func (server *UdpServer) Open() error {
 				}
 				sn := string(data)
 				lnk.SN = sn
-				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).And("sn", sn).Exist(&lnk)
+				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).And("sn", sn).Get(&lnk)
 			}
 
 			if err != nil {

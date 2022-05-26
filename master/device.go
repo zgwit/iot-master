@@ -43,7 +43,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 	//加载模板
 	if dev.ElementId != "" {
 		var element model.Element
-		has, err := db.Engine.ID(dev.ElementId).Exist(&element)
+		has, err := db.Engine.ID(dev.ElementId).Get(&element)
 		if err != nil {
 			return nil, err
 		}

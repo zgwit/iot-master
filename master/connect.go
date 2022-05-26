@@ -39,7 +39,7 @@ func startTunnel(tunnel *model.Tunnel) error {
 
 	tnl.On("link", func(link connect.Link) {
 		var lnk model.Link
-		has, err := db.Engine.ID(link.Id()).Exist(&lnk)
+		has, err := db.Engine.ID(link.Id()).Get(&lnk)
 		if err != nil {
 			log.Error(err)
 			return
@@ -143,7 +143,7 @@ func LoadTunnels() error {
 //LoadTunnel 加载通道
 func LoadTunnel(id int64) error {
 	var tunnel model.Tunnel
-	has, err := db.Engine.ID(id).Exist(&tunnel)
+	has, err := db.Engine.ID(id).Get(&tunnel)
 	if err != nil {
 		return err
 	}

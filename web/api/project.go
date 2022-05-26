@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 	"golang.org/x/net/websocket"
@@ -9,7 +10,7 @@ import (
 
 func projectList(ctx *gin.Context) {
 	//补充信息
-	projects := make([]*model.ProjectEx, 0)
+	var projects []model.ProjectEx
 
 	var body paramSearchEx
 	err := ctx.ShouldBindJSON(&body)
@@ -19,17 +20,25 @@ func projectList(ctx *gin.Context) {
 	}
 
 	query := body.toQuery()
+
+	query.Table("project")
+	query.Select("project.*, " + //TODO 只返回需要的字段
+		" 0 as running, template.name as template")
 	query.Join("LEFT", "template", "project.template_id=template.id")
 
-	cnt, err := query.FindAndCount(projects)
+	cnt, err := query.FindAndCount(&projects)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
 
-	//prj.Running = d.Running()
-	//prj.Template = template.Name
-	//prj.ProjectContent = template.ProjectContent
+	//补充running状态
+	for _, dev := range projects {
+		d := master.GetProject(dev.Id)
+		if d != nil {
+			dev.Running = d.Running()
+		}
+	}
 
 	replyList(ctx, projects, cnt)
 }
@@ -41,12 +50,32 @@ func afterProjectCreate(data interface{}) error {
 }
 
 func projectDetail(ctx *gin.Context) {
-	prj := model.ProjectEx{}
-	var template model.Template
-	prj.Template = template.Name
-	prj.ProjectContent = template.ProjectContent
+	var project model.ProjectEx
 
-	replyOk(ctx, prj)
+	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&project.Project)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	if !has {
+		replyFail(ctx, "项目不存在")
+		return
+	}
+
+	if project.TemplateId != "" {
+		var template model.Template
+		has, err := db.Engine.ID(project.Template).Get(&template)
+		if has && err != nil {
+			project.ProjectContent = template.ProjectContent
+		}
+	}
+
+	d := master.GetProject(project.Id)
+	if d != nil {
+		project.Running = d.Running()
+	}
+
+	replyOk(ctx, project)
 }
 
 func afterProjectUpdate(data interface{}) error {

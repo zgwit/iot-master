@@ -43,7 +43,7 @@ func LoadDevices() error {
 //LoadDevice 加载设备
 func LoadDevice(id int64) (*Device, error) {
 	device := &model.Device{}
-	has, err := db.Engine.ID(id).Exist(device)
+	has, err := db.Engine.ID(id).Get(device)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func LoadProjects() error {
 //LoadProject 加载项目
 func LoadProject(id int64) (*Project, error) {
 	project := &model.Project{}
-	has, err := db.Engine.ID(id).Exist(project)
+	has, err := db.Engine.ID(id).Get(project)
 	if err != nil {
 		return nil, err
 	}

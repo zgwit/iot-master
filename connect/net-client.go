@@ -47,7 +47,7 @@ func (client *NetClient) Open() error {
 	//Store link
 	lnk := model.Link{TunnelId: client.tunnel.Id, Last: time.Now(), Remote: client.tunnel.Addr}
 	//err = database.Master.One("TunnelId", client.tunnel.Id, &lnk)
-	has, err := db.Engine.Where("tunnel_id=?", client.tunnel.Id).Exist(&lnk)
+	has, err := db.Engine.Where("tunnel_id=?", client.tunnel.Id).Get(&lnk)
 	if err != nil {
 		return err
 	}

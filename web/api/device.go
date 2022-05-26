@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/influx"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
@@ -14,7 +15,7 @@ import (
 )
 
 func deviceList(ctx *gin.Context) {
-	devs := make([]*model.DeviceEx, 0) //len(devices)
+	var devs []*model.DeviceEx
 
 	var body paramSearchEx
 	err := ctx.ShouldBindJSON(&body)
@@ -25,21 +26,28 @@ func deviceList(ctx *gin.Context) {
 
 	query := body.toQuery()
 
+	query.Table("device")
+	query.Select("device.*, " + //TODO 只返回需要的字段
+		" 0 as running, element.name as element, link.sn as link")
 	query.Join("LEFT", "element", "device.element_id=element.id")
 	query.Join("LEFT", "link", "device.link_id=link.id")
 
-	cnt, err := query.FindAndCount(devs)
+	//err = query.Find(devs)
+	cnt, err := query.FindAndCount(&devs)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	replyList(ctx, devs, cnt)
 
-	//dev.Element = element.Name
-	//dev.DeviceContent = element.DeviceContent
-	//dev.Link = link.Name
-	//dev.Link = link.SN
-	//dev.Link = link.Remote
+	//补充running状态
+	for _, dev := range devs {
+		d := master.GetDevice(dev.Id)
+		if d != nil {
+			dev.Running = d.Running()
+		}
+	}
+
+	replyList(ctx, devs, cnt)
 }
 
 func afterDeviceCreate(data interface{}) error {
@@ -50,16 +58,31 @@ func afterDeviceCreate(data interface{}) error {
 }
 
 func deviceDetail(ctx *gin.Context) {
-	var device model.Device
-
-	//补充信息
-	dev := model.DeviceEx{Device: device}
-	d := master.GetDevice(dev.Id)
-	if d != nil {
-		dev.Running = d.Running()
+	var device model.DeviceEx
+	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&device.Device)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	if !has {
+		replyFail(ctx, "设备不存在")
+		return
 	}
 
-	replyOk(ctx, dev)
+	if device.ElementId != "" {
+		var template model.Element
+		has, err := db.Engine.ID(device.ElementId).Get(&template)
+		if has && err != nil {
+			device.DeviceContent = template.DeviceContent
+		}
+	}
+
+	d := master.GetDevice(device.Id)
+	if d != nil {
+		device.Running = d.Running()
+	}
+
+	replyOk(ctx, device)
 }
 
 func afterDeviceUpdate(data interface{}) error {

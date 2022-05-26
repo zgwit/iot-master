@@ -21,6 +21,8 @@ func Open(cfg *config.Database) error {
 		Engine.ShowSQL(true)
 	}
 
+	//Engine.SetLogLevel()
+
 	//同步表
 	err = Engine.Sync2(
 		new(model.User), new(model.Password),

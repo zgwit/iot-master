@@ -19,7 +19,7 @@ func afterTunnelCreate(data interface{}) error {
 
 func tunnelDetail(ctx *gin.Context) {
 	var tunnel model.TunnelEx
-	has, err := db.Engine.ID(ctx.GetInt64("id")).Exist(&tunnel)
+	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&tunnel)
 	if err != nil {
 		replyError(ctx, err)
 		return

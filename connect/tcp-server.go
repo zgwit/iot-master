@@ -65,7 +65,7 @@ func (server *TcpServer) Open() error {
 				for _, link := range server.children {
 					_ = link.Close()
 				}
-				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).Exist(&lnk)
+				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).Get(&lnk)
 			} else {
 				buf := make([]byte, 128)
 				n := 0
@@ -81,7 +81,7 @@ func (server *TcpServer) Open() error {
 				}
 				sn := string(data)
 				lnk.SN = sn
-				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).And("sn", sn).Exist(&lnk)
+				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).And("sn", sn).Get(&lnk)
 			}
 
 			if err != nil {

@@ -59,7 +59,7 @@ func (s *Serial) Open() error {
 
 	//Store link
 	lnk := model.Link{TunnelId: s.tunnel.Id, Last: time.Now(), Remote: s.tunnel.Addr}
-	has, err := db.Engine.Where("tunnel_id=?", s.tunnel.Id).Exist(&lnk)
+	has, err := db.Engine.Where("tunnel_id=?", s.tunnel.Id).Get(&lnk)
 	if err != nil {
 		return err
 	}

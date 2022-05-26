@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 )
 
+
 func hmiAttachmentRead(ctx *gin.Context) {
 	filename := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), ctx.Param("name"))
 	stat, err := os.Stat(filename)

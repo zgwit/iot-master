@@ -89,7 +89,7 @@ func LoadPipes() error {
 
 func LoadPipe(id int64) error {
 	var pipe model.Pipe
-	has, err := db.Engine.ID(id).Exist(&pipe)
+	has, err := db.Engine.ID(id).Get(&pipe)
 	if err != nil {
 		return err
 	}

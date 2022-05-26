@@ -20,7 +20,7 @@ type Template struct {
 }
 
 type ProjectContent struct {
-	HMI         string        `json:"hmi"`
+	HMI         string        `json:"hmi" xorm:"'hmi'"`
 	Aggregators []*Aggregator `json:"aggregators"`
 	Jobs        []*Job        `json:"jobs"`
 	Alarms      []*Alarm      `json:"alarms"`
@@ -47,7 +47,7 @@ type Project struct {
 }
 
 type ProjectEx struct {
-	Project
+	Project  `xorm:"extends"`
 	Running  bool   `json:"running"`
 	Template string `json:"template"`
 }

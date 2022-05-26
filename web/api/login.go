@@ -32,7 +32,7 @@ func login(ctx *gin.Context) {
 	}
 
 	var user model.User
-	has, err := db.Engine.Where("username=?", obj.Username).Exist(&user)
+	has, err := db.Engine.Where("username=?", obj.Username).Get(&user)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -61,7 +61,7 @@ func login(ctx *gin.Context) {
 	}
 
 	var password model.Password
-	has, err = db.Engine.ID(user.Id).Exist(&password)
+	has, err = db.Engine.ID(user.Id).Get(&password)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -78,7 +78,7 @@ func login(ctx *gin.Context) {
 	}
 
 	if password.Password != obj.Password {
-		replyFail(ctx, "密钥错误")
+		replyFail(ctx, "密码错误")
 		return
 	}
 

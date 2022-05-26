@@ -6,7 +6,7 @@ import "time"
 type Link struct {
 	Id       int64     `json:"id"`
 	TunnelId int64     `json:"tunnel_id" xorm:"index"`
-	SN       string    `json:"sn" xorm:"index"`
+	SN       string    `json:"sn" xorm:"index 'sn'"`
 	Name     string    `json:"name"`
 	Remote   string    `json:"remote"`
 	Disabled bool      `json:"disabled"`
@@ -18,7 +18,11 @@ type Link struct {
 }
 
 type LinkEx struct {
-	Link
+	Link `xorm:"extends"`
 	Running bool   `json:"running"`
 	Tunnel  string `json:"tunnel"`
+}
+
+func (link *LinkEx) TableName() string {
+	return "link"
 }
