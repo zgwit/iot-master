@@ -5,11 +5,8 @@ import (
 	"github.com/antonmedv/expr/vm"
 )
 
-//Context 上下文
-type Context map[string]interface{}
-
 //Evaluate 计算
-func Evaluate(ctx Context, input string) (float64, error) {
+func Evaluate(ctx map[string]interface{}, input string) (float64, error) {
 	eval, err := expr.Eval(input, ctx)
 	if err != nil {
 		return 0, err
@@ -18,7 +15,7 @@ func Evaluate(ctx Context, input string) (float64, error) {
 }
 
 //Eval 计算
-func Eval(ctx Context, input string) (interface{}, error) {
+func Eval(ctx map[string]interface{}, input string) (interface{}, error) {
 	return expr.Eval(input, ctx)
 }
 
@@ -37,7 +34,7 @@ func NewExpression(input string) (*Expression, error) {
 }
 
 //Evaluate 计算
-func (c *Expression) Evaluate(ctx Context) (float64, error) {
+func (c *Expression) Evaluate(ctx map[string]interface{}) (float64, error) {
 	eval, err := expr.Run(c.program, ctx)
 	if err != nil {
 		return 0, err
@@ -46,7 +43,7 @@ func (c *Expression) Evaluate(ctx Context) (float64, error) {
 }
 
 //Eval 计算
-func (c *Expression) Eval(ctx Context) (interface{}, error) {
+func (c *Expression) Eval(ctx map[string]interface{}) (interface{}, error) {
 	//TODO 引入数学计算函数
 	return expr.Run(c.program, ctx)
 }

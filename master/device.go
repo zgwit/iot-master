@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/antonmedv/expr"
-	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/influx"
@@ -90,7 +89,7 @@ func (dev *Device) BindAdapter(adapter protocol.Adapter) error {
 	metric := strconv.FormatInt(dev.Id, 10)
 
 	//处理数据变化结果
-	dev.mapper.On("data", func(data calc.Context) {
+	dev.mapper.On("data", func(data map[string]interface{}) {
 		//更新上下文
 		for k, v := range data {
 			dev.Context[k] = v

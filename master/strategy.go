@@ -16,7 +16,7 @@ type Strategy struct {
 }
 
 //Execute 执行
-func (s *Strategy) Execute(ctx calc.Context) error {
+func (s *Strategy) Execute(ctx map[string]interface{}) error {
 
 	//条件检查
 	val, err := s.condition.Eval(ctx)

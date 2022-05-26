@@ -53,7 +53,7 @@ func tarFunc2(fun func(x, y float64) float64) func(x, y interface{}) float64 {
 	}
 }
 
-func CreateContext() Context {
+func CreateContext() map[string]interface{} {
 	 return map[string]interface{}{
 		"E": math.E,
 		"PI": math.Pi,

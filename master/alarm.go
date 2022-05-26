@@ -16,7 +16,7 @@ type Alarm struct {
 }
 
 //Execute 执行
-func (a *Alarm) Execute(ctx calc.Context) error {
+func (a *Alarm) Execute(ctx map[string]interface{}) error {
 
 	//条件检查
 	val, err := a.condition.Eval(ctx)

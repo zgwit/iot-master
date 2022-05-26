@@ -1,7 +1,6 @@
 package model
 
 import (
-	"github.com/zgwit/iot-master/calc"
 	"time"
 )
 
@@ -40,7 +39,7 @@ type Device struct {
 	DeviceContent `xorm:"extends"`
 
 	//上下文
-	Context calc.Context `json:"context"`
+	Context map[string]interface{} `json:"context"`
 
 	Disabled bool      `json:"disabled"`
 	Updated  time.Time `json:"updated" xorm:"updated"`

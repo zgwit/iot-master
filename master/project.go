@@ -60,7 +60,7 @@ type Project struct {
 	deviceNameIndex map[string]*Device
 	deviceIdIndex   map[int64]*Device
 
-	deviceDataHandler  func(data calc.Context)
+	deviceDataHandler  func(data map[string]interface{})
 	deviceAlarmHandler func(alarm *model.DeviceAlarm)
 
 	running bool
@@ -238,7 +238,7 @@ func (prj *Project) initStrategies() error {
 //initHandler 项目初始化
 func (prj *Project) initHandler() error {
 	//设备数据变化的处理函数
-	prj.deviceDataHandler = func(data calc.Context) {
+	prj.deviceDataHandler = func(data map[string]interface{}) {
 		//数据变化后，更新计算
 		for _, agg := range prj.aggregators {
 			val, err := agg.Evaluate()

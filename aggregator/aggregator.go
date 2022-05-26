@@ -9,7 +9,7 @@ import (
 type Aggregator interface {
 	Model() *model.Aggregator
 	Init() error
-	Push(ctx calc.Context)
+	Push(ctx map[string]interface{})
 	Clear()
 	Evaluate() (val float64, err error)
 }
@@ -19,7 +19,7 @@ type baseAggregator struct {
 	model.Aggregator
 
 	expression *calc.Expression
-	targets    []calc.Context
+	targets    []map[string]interface{}
 }
 
 func (a *baseAggregator) Model() *model.Aggregator {
@@ -28,19 +28,19 @@ func (a *baseAggregator) Model() *model.Aggregator {
 
 //Init 初始化
 func (a *baseAggregator) Init() (err error) {
-	a.targets = make([]calc.Context, 0)
+	a.targets = make([]map[string]interface{}, 0)
 	a.expression, err = calc.NewExpression(a.Expression)
 	return
 }
 
 //Push 加入
-func (a *baseAggregator) Push(ctx calc.Context) {
+func (a *baseAggregator) Push(ctx map[string]interface{}) {
 	a.targets = append(a.targets, ctx)
 }
 
 //Clear 清空
 func (a *baseAggregator) Clear() {
-	a.targets = make([]calc.Context, 0)
+	a.targets = make([]map[string]interface{}, 0)
 }
 
 // New 新建

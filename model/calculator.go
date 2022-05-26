@@ -20,6 +20,6 @@ func (c *Calculator) Init() (err error) {
 }
 
 //Evaluate 计算
-func (c *Calculator) Evaluate(ctx calc.Context) (float64, error) {
+func (c *Calculator) Evaluate(ctx map[string]interface{}) (float64, error) {
 	return c.expr.Evaluate(ctx)
 }

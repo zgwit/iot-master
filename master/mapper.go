@@ -3,7 +3,6 @@ package master
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
@@ -72,7 +71,7 @@ func (m *Mapper) Get(key string) (float64, error) {
 				v /= math.Pow10(p.Precision)
 			}
 			//go func
-			m.Emit("data", calc.Context{key: v})
+			m.Emit("data", map[string]interface{}{key: v})
 			return v, nil
 		}
 	}
@@ -81,7 +80,7 @@ func (m *Mapper) Get(key string) (float64, error) {
 }
 
 //Read 读多数据
-func (m *Mapper) Read(addr protocol.Addr, length int) (calc.Context, error) {
+func (m *Mapper) Read(addr protocol.Addr, length int) (map[string]interface{}, error) {
 	//读取数据
 	buf, err := m.adapter.Read(m.station, addr, length)
 	if err != nil {
@@ -93,7 +92,7 @@ func (m *Mapper) Read(addr protocol.Addr, length int) (calc.Context, error) {
 	}
 
 	//解析数据
-	ctx := make(calc.Context)
+	ctx := make(map[string]interface{})
 	for _, p := range m.points {
 		offset := p.Addr.Diff(addr)
 		if offset >= 0 && offset < length && offset*2 < len(buf) {
