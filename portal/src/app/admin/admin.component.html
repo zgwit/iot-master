@@ -56,6 +56,14 @@
             帮助文档
           </a>
           <nz-divider nzType="vertical"></nz-divider>
+          <a nz-popover [nzPopoverContent]="support" nzPopoverPlacement="bottomRight">
+            <i nz-icon nzType="customer-service" nzTheme="outline"></i>
+            联系客服
+          </a>
+          <ng-template #support>
+            <img src="/assets/wx.png">
+          </ng-template>
+          <nz-divider nzType="vertical"></nz-divider>
           <span>
             <i nz-icon nzType="user" nzTheme="outline"></i>
             {{us.user?.nickname || us.user?.username}}

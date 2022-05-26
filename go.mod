@@ -13,6 +13,7 @@ require (
 	github.com/influxdata/influxdb-client-go/v2 v2.8.2
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
 	github.com/kardianos/service v1.2.1
+	github.com/lib/pq v1.10.3
 	github.com/mattn/go-sqlite3 v1.14.13
 	github.com/nakabonne/tstorage v0.3.5
 	github.com/shirou/gopsutil v3.21.11+incompatible
