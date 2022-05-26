@@ -24,7 +24,6 @@ export class DeviceEditComponent implements OnInit {
     "station": 1,
     "disabled": false,
     "points": [],
-    "context": {},
     "commands": [],
     "pollers": [],
     "calculators": [],
@@ -51,9 +50,8 @@ export class DeviceEditComponent implements OnInit {
 
 
       points: [this.data.points || []],
-      context: [this.data.context || {}],
-      commands: [this.data.commands || []],
       pollers: [this.data.pollers || []],
+      commands: [this.data.commands || []],
       calculators: [this.data.calculators || []],
       alarms: [this.data.alarms || []],
     });

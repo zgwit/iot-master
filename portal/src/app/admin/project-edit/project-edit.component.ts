@@ -20,7 +20,6 @@ export class ProjectEditComponent implements OnInit {
     "disabled": false,
     "template_id":"",
     "hmi":"",
-    "context": {},
     "devices": [],
     "alarms": [],
     "strategies": [],
@@ -46,7 +45,6 @@ export class ProjectEditComponent implements OnInit {
       hmi: [this.data.hmi, []],
       disabled: [this.data.disabled, []],
 
-      context: [this.data.context || {}],
       devices: [this.data.devices || []],
       alarms: [this.data.alarms || []],
       jobs: [this.data.jobs || []],

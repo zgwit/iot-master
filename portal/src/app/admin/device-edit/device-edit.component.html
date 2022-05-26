@@ -57,10 +57,6 @@
 
     <ng-container *ngIf="!basicForm.value.element_id">
 
-      <nz-collapse-panel nzHeader="变量" nzActive>
-        <app-yaml-editor formControlName="context"></app-yaml-editor>
-      </nz-collapse-panel>
-
       <nz-collapse-panel nzHeader="数据点" nzActive>
         <app-edit-points formControlName="points"></app-edit-points>
       </nz-collapse-panel>
