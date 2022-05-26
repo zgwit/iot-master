@@ -124,12 +124,12 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	//通道接口
 	modelTunnel := reflect.TypeOf(model.Tunnel{})
-	app.POST("/tunnel/list", curdApiList(modelTunnel))
+	app.POST("/tunnel/list", tunnelList)
 	app.POST("/tunnel/create", curdApiCreate(modelTunnel, nil, afterTunnelCreate))
-	app.GET("/tunnel/:id", tunnelDetail)
-	app.POST("/tunnel/:id", curdApiModify(modelTunnel,
-		[]string{"name", "devices", "template_id",
-			"hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"},
+	app.GET("/tunnel/:id", parseParamId, tunnelDetail)
+	app.POST("/tunnel/:id", parseParamId, curdApiModify(modelTunnel,
+		[]string{"name", "type", "addr",
+			"retry", "register", "heartbeat", "serial", "protocol", "devices", "disabled"},
 		nil, afterTunnelUpdate))
 	app.GET("/tunnel/:id/delete", curdApiDelete(modelTunnel, nil, afterTunnelDelete))
 
@@ -141,11 +141,10 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	//连接接口
 	modelLink := reflect.TypeOf(model.Link{})
-	app.POST("/link/list", curdApiList(modelLink))
-	app.GET("/link/:id", parseParamId, curdApiGet(modelLink))
+	app.POST("/link/list", linkList)
+	app.GET("/link/:id", parseParamId, linkDetail)
 	app.POST("/link/:id", parseParamId, curdApiModify(modelLink,
-		[]string{"name", "devices", "template_id",
-			"hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"},
+		[]string{"name", "sn", "tunnel_id", "disabled"},
 		nil, nil))
 	app.GET("/link/:id/delete", parseParamId, curdApiDelete(modelLink, nil, afterLinkDelete))
 	app.GET("/link/:id/stop", parseParamId, linkClose)
@@ -161,9 +160,9 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	//连接接口
 	modelPipe := reflect.TypeOf(model.Pipe{})
-	app.POST("/pipe/list", curdApiList(modelPipe))
+	app.POST("/pipe/list", pipeList)
 	app.POST("/pipe/create", curdApiCreate(modelPipe, nil, afterPipeCreate))
-	app.GET("/pipe/:id", parseParamId, curdApiGet(modelPipe))
+	app.GET("/pipe/:id", parseParamId, pipeDetail)
 	app.POST("/pipe/:id", parseParamId, curdApiModify(modelPipe,
 		[]string{"name", "devices", "template_id",
 			"hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"},

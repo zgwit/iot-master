@@ -45,7 +45,7 @@ func (client *NetClient) Open() error {
 	go client.link.receive()
 
 	//Store link
-	lnk := model.Link{TunnelId: client.tunnel.Id, Last: time.Now(), Remote: client.tunnel.Addr}
+	var lnk model.Link
 	//err = database.Master.One("TunnelId", client.tunnel.Id, &lnk)
 	has, err := db.Engine.Where("tunnel_id=?", client.tunnel.Id).Get(&lnk)
 	if err != nil {
@@ -54,6 +54,7 @@ func (client *NetClient) Open() error {
 
 	if !has {
 		//保存一条新记录
+		lnk = model.Link{TunnelId: client.tunnel.Id, Last: time.Now(), Remote: client.tunnel.Addr}
 		_, _ = db.Engine.InsertOne(&lnk)
 		client.link.first = true
 	} else {

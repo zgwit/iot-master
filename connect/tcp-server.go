@@ -57,7 +57,8 @@ func (server *TcpServer) Open() error {
 				break
 			}
 
-			lnk := model.Link{TunnelId: server.tunnel.Id, Last: time.Now(), Remote: conn.RemoteAddr().String()}
+			//lnk := model.Link{TunnelId: server.tunnel.Id, Last: time.Now(), Remote: conn.RemoteAddr().String()}
+			var lnk model.Link
 
 			has := false
 			if !server.tunnel.Register.Enable {
@@ -92,6 +93,7 @@ func (server *TcpServer) Open() error {
 
 			if !has {
 				//保存一条新记录
+				lnk = model.Link{TunnelId: server.tunnel.Id, Last: time.Now(), Remote: conn.RemoteAddr().String()}
 				_, _ = db.Engine.InsertOne(&lnk)
 			} else {
 				//上线

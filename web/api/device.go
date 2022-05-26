@@ -72,7 +72,7 @@ func deviceDetail(ctx *gin.Context) {
 	if device.ElementId != "" {
 		var template model.Element
 		has, err := db.Engine.ID(device.ElementId).Get(&template)
-		if has && err != nil {
+		if has && err == nil {
 			device.DeviceContent = template.DeviceContent
 		}
 	}

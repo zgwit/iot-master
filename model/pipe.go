@@ -14,7 +14,10 @@ type Pipe struct {
 }
 
 type PipeEx struct {
-	Pipe
+	Pipe `xorm:"extends"`
 	Running bool   `json:"running"`
 	Link    string `json:"link"`
+}
+func (p *PipeEx) TableName() string {
+	return "pipe"
 }

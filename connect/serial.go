@@ -58,7 +58,7 @@ func (s *Serial) Open() error {
 	go s.link.receive()
 
 	//Store link
-	lnk := model.Link{TunnelId: s.tunnel.Id, Last: time.Now(), Remote: s.tunnel.Addr}
+	var lnk model.Link
 	has, err := db.Engine.Where("tunnel_id=?", s.tunnel.Id).Get(&lnk)
 	if err != nil {
 		return err
@@ -66,6 +66,7 @@ func (s *Serial) Open() error {
 
 	if !has {
 		//保存一条新记录
+		lnk = model.Link{TunnelId: s.tunnel.Id, Last: time.Now(), Remote: s.tunnel.Addr}
 		_, _ = db.Engine.InsertOne(&lnk)
 		s.link.first = true
 	} else {

@@ -51,6 +51,9 @@ type ProjectEx struct {
 	Running  bool   `json:"running"`
 	Template string `json:"template"`
 }
+func (p *ProjectEx) TableName() string {
+	return "project"
+}
 
 //ProjectDevice 项目的设备
 type ProjectDevice struct {

@@ -18,11 +18,11 @@ type Tunnel struct {
 	Name      string          `json:"name"`
 	Type      string          `json:"type"` //serial tcp-client tcp-server udp-client udp-server
 	Addr      string          `json:"addr"`
-	Retry     Retry           `json:"retry"` //重试
-	Register  RegisterPacket  `json:"register"`
-	Heartbeat HeartBeatPacket `json:"heartbeat"`
-	Serial    SerialOptions   `json:"serial"`
-	Protocol  Protocol        `json:"protocol"`
+	Retry     Retry           `json:"retry" xorm:"JSON"` //重试
+	Register  RegisterPacket  `json:"register" xorm:"JSON"`
+	Heartbeat HeartBeatPacket `json:"heartbeat" xorm:"JSON"`
+	Serial    SerialOptions   `json:"serial" xorm:"JSON"`
+	Protocol  Protocol        `json:"protocol" xorm:"JSON"`
 	Devices   []TunnelDevice  `json:"devices"` //默认设备
 	Disabled  bool            `json:"disabled"`
 
@@ -37,8 +37,12 @@ type TunnelDevice struct {
 }
 
 type TunnelEx struct {
-	Tunnel
+	Tunnel `xorm:"extends"`
 	Running bool `json:"running"`
+}
+
+func (tunnel *TunnelEx) TableName() string {
+	return "tunnel"
 }
 
 type Retry struct {

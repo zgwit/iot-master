@@ -8,6 +8,33 @@ import (
 	"golang.org/x/net/websocket"
 )
 
+func tunnelList(ctx *gin.Context) {
+	var tunnels []*model.TunnelEx
+
+	var body paramSearchEx
+	err := ctx.ShouldBindJSON(&body)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	query := body.toQuery()
+	query.Select("tunnel.*, " + //TODO 只返回需要的字段
+		" 0 as running")
+	cnt, err := query.FindAndCount(&tunnels)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	for _, tnl := range tunnels {
+		d := master.GetTunnel(tnl.Id)
+		if d != nil {
+			tnl.Running = d.Instance.Running()
+		}
+	}
+
+	replyList(ctx, tunnels, cnt)
+}
 
 func afterTunnelCreate(data interface{}) error {
 	tunnel := data.(*model.Tunnel)
@@ -19,13 +46,13 @@ func afterTunnelCreate(data interface{}) error {
 
 func tunnelDetail(ctx *gin.Context) {
 	var tunnel model.TunnelEx
-	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&tunnel)
+	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&tunnel.Tunnel)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
 	if !has {
-		replyFail(ctx, "记录存在")
+		replyFail(ctx, "记录不存在")
 		return
 	}
 	d := master.GetTunnel(tunnel.Id)
