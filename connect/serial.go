@@ -87,7 +87,7 @@ func (s *Serial) Open() error {
 		}
 		s.running = false
 
-		retry := s.tunnel.Retry
+		retry := &s.tunnel.Retry
 		if retry.Enable && (retry.Maximum == 0 || s.retry < retry.Maximum) {
 			s.retry++
 			time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {

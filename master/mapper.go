@@ -1,6 +1,7 @@
 package master
 
 import (
+	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/events"
@@ -86,12 +87,16 @@ func (m *Mapper) Read(addr protocol.Addr, length int) (calc.Context, error) {
 	if err != nil {
 		return nil, err
 	}
+	//TODO 偶发情况，原因待查
+	if buf == nil {
+		return nil, errors.New("buf 为空")
+	}
 
 	//解析数据
 	ctx := make(calc.Context)
 	for _, p := range m.points {
 		offset := p.Addr.Diff(addr)
-		if offset >= 0 && offset < length {
+		if offset >= 0 && offset < length && offset*2 < len(buf) {
 			v, err := p.Type.Decode(buf[offset*2:], p.LittleEndian)
 			if err != nil {
 				return nil, err

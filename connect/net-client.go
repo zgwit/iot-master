@@ -73,7 +73,7 @@ func (client *NetClient) Open() error {
 		}
 		client.running = false
 
-		retry := client.tunnel.Retry
+		retry := &client.tunnel.Retry
 		if retry.Enable && (retry.Maximum == 0 || client.retry < retry.Maximum) {
 			client.retry++
 			time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {
