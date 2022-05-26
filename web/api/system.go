@@ -5,17 +5,20 @@ import (
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"
+	"github.com/zgwit/iot-master/args"
 	"github.com/zgwit/iot-master/protocols"
+	"runtime"
 )
 
-func systemRoutes(app *gin.RouterGroup) {
-	app.GET("version")
-	app.GET("cpu-info", cpuInfo)
-	app.GET("cpu", cpuStats)
-	app.GET("memory", memStats)
-	app.GET("disk", diskStats)
-	app.GET("cron")
-	app.GET("protocols", protocolList)
+
+func version(ctx *gin.Context)  {
+	replyOk(ctx, gin.H{
+		"build": args.BuildTime,
+		"gin": gin.Version,
+		"git": args.GitHash,
+		"runtime": runtime.Version(),
+		"version": args.Version,
+	})
 
 }
 

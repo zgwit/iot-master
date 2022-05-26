@@ -18,12 +18,18 @@ export class AdminComponent implements OnInit {
 
   tabs: Array<any> = [{url: 'welcome'}]
 
+  version: any = {
+    version: "1.0.0"
+  }
+
   constructor(private rs: RequestService, public us: UserService, private route: Router) {
     this.initMenu();
   }
 
   ngOnInit(): void {
-
+    this.rs.get("system/version").subscribe(res=>{
+      this.version = res.data
+    })
   }
 
   noop(): void {

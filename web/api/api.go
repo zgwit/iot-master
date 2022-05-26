@@ -175,7 +175,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/pipe/:id/stop", parseParamId, pipeStop)
 
 	//系统接口
-	app.GET("/system/version")
+	app.GET("/system/version", version)
 	app.GET("/system/cpu-info", cpuInfo)
 	app.GET("/system/cpu", cpuStats)
 	app.GET("/system/memory", memStats)

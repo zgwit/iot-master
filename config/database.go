@@ -9,6 +9,6 @@ type Database struct {
 
 var DatabaseDefault = Database{
 	Type:  "sqlite3",
-	URL:   "data/sqlite3.db",
+	URL:   "sqlite3.db",
 	Debug: false,
 }

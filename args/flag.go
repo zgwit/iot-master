@@ -20,7 +20,6 @@ var (
 	Version   string
 	GitHash   string
 	BuildTime string
-	GoVersion string
 )
 
 func init() {
@@ -47,7 +46,6 @@ func Parse() {
 		fmt.Printf("Version: %s \n", Version)
 		fmt.Printf("Git Hash: %s \n", GitHash)
 		fmt.Printf("Build Time: %s \n", BuildTime)
-		fmt.Printf("GoLang Version: %s \n", GoVersion)
 		os.Exit(0)
 	}
 }

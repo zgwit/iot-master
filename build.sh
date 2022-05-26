@@ -14,12 +14,10 @@ if [ -n "${ver}" ];then
 fi
 
 
-goVersion=$(go version | awk '{print $3}')
 gitHash=$(git show -s --format=%H)
 buildTime=$(date -d today +"%Y-%m-%d %H:%M:%S")
 
 ldflags="-X 'github.com/zgwit/iot-master/args.Version=$version' \
--X 'github.com/zgwit/iot-master/args.goVersion=$goVersion' \
 -X 'github.com/zgwit/iot-master/args.gitHash=$gitHash' \
 -X 'github.com/zgwit/iot-master/args.buildTime=$buildTime'"
 
