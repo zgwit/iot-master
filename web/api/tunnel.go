@@ -68,9 +68,8 @@ func afterTunnelUpdate(data interface{}) error {
 	return master.LoadTunnel(tunnel.Id)
 }
 
-func afterTunnelDelete(data interface{}) error {
-	tunnel := data.(*model.Tunnel)
-	return master.RemoveTunnel(tunnel.Id)
+func afterTunnelDelete(id int64) error {
+	return master.RemoveTunnel(id)
 }
 
 func tunnelStart(ctx *gin.Context) {
@@ -103,15 +102,13 @@ func tunnelStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func afterTunnelEnable(data interface{}) error {
-	tunnel := data.(*model.Tunnel)
-	_ = master.RemoveTunnel(tunnel.Id)
-	return master.LoadTunnel(tunnel.Id)
+func afterTunnelEnable(id int64) error {
+	_ = master.RemoveTunnel(id)
+	return master.LoadTunnel(id)
 }
 
-func afterTunnelDisable(data interface{}) error {
-	tunnel := data.(*model.Tunnel)
-	return master.RemoveTunnel(tunnel.Id)
+func afterTunnelDisable(id int64) error {
+	return master.RemoveTunnel(id)
 }
 
 func tunnelWatch(ctx *gin.Context) {

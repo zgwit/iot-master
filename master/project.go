@@ -50,6 +50,7 @@ type Project struct {
 	model.Project
 	events.EventEmitter
 
+	Context map[string]interface{}
 	Devices []*ProjectDevice
 
 	aggregators []aggregator.Aggregator
@@ -69,6 +70,7 @@ type Project struct {
 func NewProject(m *model.Project) (*Project, error) {
 	prj := &Project{
 		Project:         *m,
+		Context:         make(map[string]interface{}),
 		Devices:         make([]*ProjectDevice, 0),
 		aggregators:     make([]aggregator.Aggregator, 0),
 		alarms:          make([]*Alarm, 0),
@@ -285,7 +287,7 @@ func (prj *Project) initHandler() error {
 }
 
 func (prj *Project) createEvent(event string) {
-	_, _ = db.Engine.InsertOne(model.Event{Target:"project", TargetId: prj.Id, Event: event})
+	_, _ = db.Engine.InsertOne(model.Event{Target: "project", TargetId: prj.Id, Event: event})
 }
 
 //Start 项目启动

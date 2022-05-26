@@ -19,6 +19,8 @@ type Device struct {
 	model.Device
 	events.EventEmitter
 
+	Context map[string]interface{}
+
 	pollers []*Poller
 	alarms  []*Alarm
 
@@ -33,6 +35,7 @@ type Device struct {
 func NewDevice(m *model.Device) (*Device, error) {
 	dev := &Device{
 		Device:       *m,
+		Context:      make(map[string]interface{}),
 		commandIndex: make(map[string]*model.Command, 0),
 		pollers:      make([]*Poller, 0),
 		alarms:       make([]*Alarm, 0),

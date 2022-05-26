@@ -57,14 +57,12 @@ func linkDetail(ctx *gin.Context) {
 	replyOk(ctx, link)
 }
 
-func afterLinkDelete(data interface{}) error {
-	link := data.(*model.Link)
-	return master.RemoveLink(link.Id)
+func afterLinkDelete(id int64) error {
+	return master.RemoveLink(id)
 }
 
-func afterLinkDisable(data interface{}) error {
-	link := data.(*model.Link)
-	return master.RemoveLink(link.Id)
+func afterLinkDisable(id int64) error {
+	return master.RemoveLink(id)
 }
 
 func linkClose(ctx *gin.Context) {

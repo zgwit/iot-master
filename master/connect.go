@@ -66,7 +66,6 @@ func startTunnel(tunnel *model.Tunnel) error {
 					LinkId: link.Id(),
 					Station: d.Station,
 					ElementId: d.ElementId,
-					Context: make(map[string]interface{}),
 				}
 				_, err = db.Engine.InsertOne(&dev)
 				if err != nil {

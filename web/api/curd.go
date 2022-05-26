@@ -8,6 +8,7 @@ import (
 )
 
 type hook func(value interface{}) error
+type hook2 func(id int64) error
 
 func generateUUID(data interface{}) error {
 	value := reflect.ValueOf(data).Elem()
@@ -123,10 +124,10 @@ func curdApiModify(mod reflect.Type, updateFields []string, before, after hook) 
 	}
 }
 
-func curdApiDelete(mod reflect.Type, before, after hook) gin.HandlerFunc {
+func curdApiDelete(mod reflect.Type, before, after hook2) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		if before != nil {
-			if err := before(ctx.MustGet("id")); err != nil {
+			if err := before(ctx.GetInt64("id")); err != nil {
 				replyError(ctx, err)
 				return
 			}
@@ -140,7 +141,7 @@ func curdApiDelete(mod reflect.Type, before, after hook) gin.HandlerFunc {
 		}
 
 		if after != nil {
-			err = after(data)
+			err = after(ctx.GetInt64("id"))
 			if err != nil {
 				replyError(ctx, err)
 				return
@@ -169,10 +170,17 @@ func curdApiGet(mod reflect.Type) gin.HandlerFunc {
 }
 
 
-func curdApiDisable(mod reflect.Type, disable bool, before, after hook) gin.HandlerFunc  {
+func curdApiDisable(mod reflect.Type, disable bool, before, after hook2) gin.HandlerFunc  {
 	return func(ctx *gin.Context) {
+		if before != nil {
+			if err := before(ctx.GetInt64("id")); err != nil {
+				replyError(ctx, err)
+				return
+			}
+		}
+
 		value := reflect.New(mod)
-		value.FieldByName("disabled").SetBool(disable)
+		value.Elem().FieldByName("Disabled").SetBool(disable)
 		data := value.Interface()
 		_, err := db.Engine.ID(ctx.MustGet("id")).Cols("disabled").Update(data)
 		if err != nil {
@@ -181,7 +189,7 @@ func curdApiDisable(mod reflect.Type, disable bool, before, after hook) gin.Hand
 		}
 
 		if after != nil {
-			err = after(data)
+			err = after(ctx.GetInt64("id"))
 			if err != nil {
 				replyError(ctx, err)
 				return

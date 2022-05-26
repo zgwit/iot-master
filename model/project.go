@@ -37,7 +37,7 @@ type Project struct {
 	TemplateId     string `json:"template_id,omitempty"`
 	ProjectContent `xorm:"extends"`
 
-	Context map[string]interface{} `json:"context"`
+	//Context map[string]interface{} `json:"context"`
 
 	Disabled bool      `json:"disabled"`
 	Updated  time.Time `json:"updated" xorm:"updated"`

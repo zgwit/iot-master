@@ -53,9 +53,8 @@ func afterPipeUpdate(data interface{}) error {
 	return master.LoadPipe(pipe.Id)
 }
 
-func afterPipeDelete(data interface{}) error{
-	pipe := data.(*model.Pipe)
-	return master.RemovePipe(pipe.Id)
+func afterPipeDelete(id int64) error{
+	return master.RemovePipe(id)
 }
 
 func pipeStart(ctx *gin.Context) {
@@ -88,13 +87,11 @@ func pipeStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func afterPipeEnable(data interface{}) error{
-	pipe := data.(*model.Pipe)
-	_ = master.RemovePipe(pipe.Id)
-	return master.LoadPipe(pipe.Id)
+func afterPipeEnable(id int64) error{
+	_ = master.RemovePipe(id)
+	return master.LoadPipe(id)
 }
 
-func afterPipeDisable(data interface{}) error{
-	pipe := data.(*model.Pipe)
-	return master.RemovePipe(pipe.Id)
+func afterPipeDisable(id int64) error{
+	return master.RemovePipe(id)
 }
