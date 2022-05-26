@@ -6,7 +6,7 @@ type Pipe struct {
 	Id       int64     `json:"id"`
 	LinkId   int64     `json:"link_id"`
 	Name     string    `json:"name"`
-	Addr     string    `json:"addr"`
+	Port     int       `json:"port"`
 	Disabled bool      `json:"disabled"`
 	Updated  time.Time `json:"updated" xorm:"updated"`
 	Created  time.Time `json:"created" xorm:"created"`
@@ -14,10 +14,11 @@ type Pipe struct {
 }
 
 type PipeEx struct {
-	Pipe `xorm:"extends"`
+	Pipe    `xorm:"extends"`
 	Running bool   `json:"running"`
 	Link    string `json:"link"`
 }
+
 func (p *PipeEx) TableName() string {
 	return "pipe"
 }

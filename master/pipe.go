@@ -26,7 +26,7 @@ func (p *Pipe) Open() error {
 		return errors.New("服务已经运行")
 	}
 
-	addr, err := net.ResolveTCPAddr("tcp", p.Addr)
+	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", p.Port))
 	if err != nil {
 		return err
 	}

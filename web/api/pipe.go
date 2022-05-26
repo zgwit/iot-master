@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 )
@@ -17,13 +18,20 @@ func pipeList(ctx *gin.Context) {
 	}
 
 	query := body.toQuery()
-
+	query.Select("pipe.*, " + //TODO 只返回需要的字段
+		" 0 as running, link.sn as link")
 	query.Join("LEFT", "link", "pipe.link_id=link.id")
 
-	cnt, err := query.FindAndCount(pipes)
+	cnt, err := query.FindAndCount(&pipes)
 	if err != nil {
 		replyError(ctx, err)
 		return
+	}
+	for _, pe := range pipes {
+		d := master.GetPipe(pe.Id)
+		if d != nil {
+			pe.Running = d.Running()
+		}
 	}
 	replyList(ctx, pipes, cnt)
 }
@@ -39,12 +47,21 @@ func afterPipeCreate(data interface{}) error {
 
 func pipeDetail(ctx *gin.Context) {
 	var pe model.PipeEx
-	var link model.Link
-	pe.Link = link.Name
-	pe.Link = link.SN
-	pe.Link = link.Remote
-
+	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&pe.Pipe)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	if !has {
+		replyFail(ctx, "记录不存在")
+		return
+	}
+	d := master.GetPipe(pe.Id)
+	if d != nil {
+		pe.Running = d.Running()
+	}
 	replyOk(ctx, pe)
+
 }
 
 func afterPipeUpdate(data interface{}) error {
