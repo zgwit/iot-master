@@ -11,7 +11,7 @@
           </nz-list-item>
           <nz-list-item><span>状态</span>{{data.running ? '启动' : '离线'}}</nz-list-item>
           <nz-list-item><span>禁用</span>
-            <nz-switch [ngModel]="data.disabled" (ngModelChange)="disabled($event)"></nz-switch>
+            <nz-switch [ngModel]="data.disabled" (ngModelChange)="onEnableChange($event)"></nz-switch>
           </nz-list-item>
           <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
         </nz-list>

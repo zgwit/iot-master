@@ -5,7 +5,7 @@
     <p>
       名称：{{data.name}}
       {{data.disabled ? '禁用' : '禁用'}}
-      <nz-switch [ngModel]="data.disabled" (ngModelChange)="disabled($event)"></nz-switch>
+      <nz-switch [ngModel]="data.disabled" (ngModelChange)="onEnableChange($event)"></nz-switch>
     </p>
     <p>
       手机：{{data.cellphone}}

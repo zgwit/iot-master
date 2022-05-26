@@ -18,9 +18,9 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="5">地址</nz-form-label>
+        <nz-form-label [nzSpan]="5">端口</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="addr" required/>
+          <nz-input-number formControlName="port" [nzMin]="100" [nzMax]="65535"></nz-input-number>
         </nz-form-control>
       </nz-form-item>
 

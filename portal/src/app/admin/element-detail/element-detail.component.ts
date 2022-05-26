@@ -28,7 +28,4 @@ export class ElementDetailComponent implements OnInit {
     });
   }
 
-  disabled($event: any) {
-
-  }
 }
