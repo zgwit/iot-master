@@ -1,14 +1,12 @@
 package master
 
 import (
-	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/aggregator"
 	"github.com/zgwit/iot-master/calc"
-	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3"
 	"strings"
 )
 
@@ -83,11 +81,12 @@ func NewProject(m *model.Project) (*Project, error) {
 	//加载模板
 	if prj.TemplateId != "" {
 		var template model.Template
-		err := database.Master.One("Id", prj.TemplateId, &template)
-		if err == storm.ErrNotFound {
-			return nil, errors.New("找不到模板")
-		} else if err != nil {
+		has, err := db.Engine.ID(prj.TemplateId).Exist(&template)
+		if err != nil {
 			return nil, err
+		}
+		if !has {
+			return nil, fmt.Errorf("找不到模板 %s", prj.TemplateId)
 		}
 		prj.ProjectContent = template.ProjectContent
 	}
@@ -201,7 +200,7 @@ func (prj *Project) initValidators() error {
 			pa := &model.ProjectAlarm{ProjectId: prj.Id, AlarmContent: *alarm}
 
 			//入库
-			_ = database.History.Save(pa)
+			_, _ = db.Engine.InsertOne(pa)
 
 			//事件
 			prj.createEvent("告警：" + alarm.Message)
@@ -264,7 +263,7 @@ func (prj *Project) initHandler() error {
 		pa := &model.ProjectAlarm{ProjectId: prj.Id, AlarmContent: alarm.AlarmContent}
 
 		//历史入库
-		_ = database.History.Save(pa)
+		_, _ = db.Engine.InsertOne(pa)
 
 		//上报
 		prj.Emit("alarm", pa)
@@ -286,7 +285,7 @@ func (prj *Project) initHandler() error {
 }
 
 func (prj *Project) createEvent(event string) {
-	_ = database.History.Save(model.Event{Target:"project", TargetId: prj.Id, Event: event})
+	_, _ = db.Engine.InsertOne(model.Event{Target:"project", TargetId: prj.Id, Event: event})
 }
 
 //Start 项目启动

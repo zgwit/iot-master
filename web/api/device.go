@@ -3,121 +3,54 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/influx"
-	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/tsdb"
-	"github.com/zgwit/storm/v3/q"
 	"golang.org/x/net/websocket"
 	"regexp"
 	"strconv"
 	"time"
 )
 
-func deviceRoutes(app *gin.RouterGroup) {
-	app.POST("list", deviceList)
-	app.POST("create", deviceCreate)
-
-	app.GET("alarm/clear", deviceAlarmClearAll)
-
-	app.Use(parseParamId)
-	app.GET(":id", deviceDetail)
-	app.POST(":id", deviceUpdate)
-	app.GET(":id/delete", deviceDelete)
-	app.GET(":id/start", deviceStart)
-	app.GET(":id/stop", deviceStop)
-	app.GET(":id/enable", deviceEnable)
-	app.GET(":id/disable", deviceDisable)
-	app.GET(":id/context", deviceContext)
-	app.GET(":id/refresh", deviceRefresh)
-	app.GET(":id/refresh/:name", deviceRefreshPoint)
-	app.POST(":id/execute", deviceExecute)
-	app.GET(":id/watch", deviceWatch)
-	app.POST(":id/alarm/list", deviceAlarm)
-	app.GET(":id/alarm/clear", deviceAlarmClear)
-
-	app.GET(":id/value/:name/history", deviceValueHistory)
-}
-
 func deviceList(ctx *gin.Context) {
-	records, cnt, err := normalSearch(ctx, database.Master, &model.Device{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	//补充信息
-	devices := records.(*[]*model.Device)
 	devs := make([]*model.DeviceEx, 0) //len(devices)
 
-	for _, d := range *devices {
-		dev := &model.DeviceEx{Device: *d}
-		devs = append(devs, dev)
-		d := master.GetDevice(dev.Id)
-		if d != nil {
-			dev.Running = d.Running()
-		}
-		if dev.ElementId != "" {
-			var element model.Element
-			err := database.Master.One("Id", dev.ElementId, &element)
-			if err == nil {
-				dev.Element = element.Name
-				dev.DeviceContent = element.DeviceContent
-			}
-		}
-		var link model.Link
-		err := database.Master.One("Id", dev.LinkId, &link)
-		if err == nil {
-			if link.Name != "" {
-				dev.Link = link.Name
-			} else if link.SN != "" {
-				dev.Link = link.SN
-			} else if link.Remote != "" {
-				dev.Link = link.Remote
-			}
-		}
+	var body paramSearchEx
+	err := ctx.ShouldBindJSON(&body)
+	if err != nil {
+		replyError(ctx, err)
+		return
 	}
 
+	query := body.toQuery()
+
+	query.Join("LEFT", "element", "device.element_id=element.id")
+	query.Join("LEFT", "link", "device.link_id=link.id")
+
+	cnt, err := query.FindAndCount(devs)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
 	replyList(ctx, devs, cnt)
+
+	//dev.Element = element.Name
+	//dev.DeviceContent = element.DeviceContent
+	//dev.Link = link.Name
+	//dev.Link = link.SN
+	//dev.Link = link.Remote
 }
 
-func deviceCreate(ctx *gin.Context) {
-	var device model.Device
-	err := ctx.ShouldBindJSON(&device)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	err = database.Master.Save(&device)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, device)
-
+func afterDeviceCreate(data interface{}) error {
+	device := data.(*model.Device)
 	//启动
-	if !device.Disabled {
-		go func() {
-			_, err := master.LoadDevice(device.Id)
-			if err != nil {
-				log.Error(err)
-				return
-			}
-		}()
-	}
+	_, err := master.LoadDevice(device.Id)
+	return err
 }
 
 func deviceDetail(ctx *gin.Context) {
 	var device model.Device
-	err := database.Master.One("Id", ctx.GetInt64("id"), &device)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
 
 	//补充信息
 	dev := model.DeviceEx{Device: device}
@@ -125,74 +58,22 @@ func deviceDetail(ctx *gin.Context) {
 	if d != nil {
 		dev.Running = d.Running()
 	}
-	if dev.ElementId != "" {
-		var element model.Element
-		err := database.Master.One("Id", dev.ElementId, &element)
-		if err == nil {
-			dev.Element = element.Name
-			dev.DeviceContent = element.DeviceContent
-		}
-		var link model.Link
-		err = database.Master.One("Id", dev.LinkId, &link)
-		if err == nil {
-			if link.Name != "" {
-				dev.Link = link.Name
-			} else if link.SN != "" {
-				dev.Link = link.SN
-			} else if link.Remote != "" {
-				dev.Link = link.Remote
-			}
-		}
-	}
 
 	replyOk(ctx, dev)
 }
 
-func deviceUpdate(ctx *gin.Context) {
-	var device model.Device
-	err := ctx.ShouldBindJSON(&device)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	device.Id = ctx.GetInt64("id")
-
-	err = database.Master.Update(&device)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, device)
-
+func afterDeviceUpdate(data interface{}) error {
+	device := data.(*model.Device)
 	//重新启动
-	go func() {
-		_ = master.RemoveDevice(device.Id)
-		_, err = master.LoadDevice(device.Id)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+	_ = master.RemoveDevice(device.Id)
+	_, err := master.LoadDevice(device.Id)
+	return err
 }
 
-func deviceDelete(ctx *gin.Context) {
-	device := model.Device{Id: ctx.GetInt64("id")}
-	err := database.Master.DeleteStruct(&device)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, device)
-
+func afterDeviceDelete(data interface{}) error {
+	device := data.(*model.Device)
 	//关闭
-	go func() {
-		err := master.RemoveDevice(device.Id)
-		if err != nil {
-			log.Error(err)
-		}
-	}()
+	return master.RemoveDevice(device.Id)
 }
 
 func deviceStart(ctx *gin.Context) {
@@ -225,44 +106,19 @@ func deviceStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func deviceEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Device{Id: ctx.GetInt64("id")}, "Disabled", false)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyOk(ctx, nil)
-
-	//启动
-	go func() {
-		_, err := master.LoadDevice(ctx.GetInt64("id"))
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+func afterDeviceEnable(data interface{}) error {
+	device := data.(*model.Device)
+	_, err := master.LoadDevice(device.Id)
+	return err
 }
 
-func deviceDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Device{Id: ctx.GetInt64("id")}, "Disabled", true)
-	if err != nil {
-		replyError(ctx, err)
-		return
+func afterDeviceDisable(data interface{}) error {
+	device := data.(*model.Device)
+	dev := master.GetDevice(device.Id)
+	if dev == nil {
+		return nil
 	}
-	replyOk(ctx, nil)
-
-	//关闭
-	go func() {
-		device := master.GetDevice(ctx.GetInt64("id"))
-		if device == nil {
-			return
-		}
-		err := device.Stop()
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+	return dev.Stop()
 }
 
 func deviceContext(ctx *gin.Context) {
@@ -337,35 +193,6 @@ func deviceWatch(ctx *gin.Context) {
 	websocket.Handler(func(ws *websocket.Conn) {
 		watchAllEvents(ws, device)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
-}
-
-func deviceAlarm(ctx *gin.Context) {
-	alarms, cnt, err := normalSearchById(ctx, database.History, "DeviceId", ctx.GetInt64("id"), &model.DeviceAlarm{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyList(ctx, alarms, cnt)
-}
-
-func deviceAlarmClear(ctx *gin.Context) {
-	err := database.History.Select(q.Eq("DeviceId", ctx.GetInt64("id"))).Delete(&model.DeviceAlarm{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
-}
-
-func deviceAlarmClearAll(ctx *gin.Context) {
-	err := database.History.Drop(&model.DeviceAlarm{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
 }
 
 var timeReg *regexp.Regexp

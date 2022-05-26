@@ -3,10 +3,9 @@ package connect
 import (
 	"errors"
 	"github.com/jacobsa/go-serial/serial"
-	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3"
 	"time"
 )
 
@@ -60,17 +59,20 @@ func (s *Serial) Open() error {
 
 	//Store link
 	lnk := model.Link{TunnelId: s.tunnel.Id, Last: time.Now(), Remote: s.tunnel.Addr}
-	err = database.Master.One("TunnelId", s.tunnel.Id, &lnk)
-	if err == storm.ErrNotFound {
-		//保存一条新记录
-		_ = database.Master.Save(&lnk)
-		s.link.first = true
-	} else if err != nil {
+	has, err := db.Engine.Where("tunnel_id=?", s.tunnel.Id).Exist(&lnk)
+	if err != nil {
 		return err
+	}
+
+	if !has {
+		//保存一条新记录
+		_, _ = db.Engine.InsertOne(&lnk)
+		s.link.first = true
 	} else {
 		//上线
-		_= database.Master.UpdateField(&lnk, "Last", time.Now())
-		_= database.Master.UpdateField(&lnk, "Remote", s.tunnel.Addr)
+		lnk.Last = time.Now()
+		lnk.Remote = s.tunnel.Addr
+		_, _ = db.Engine.ID(lnk.Id).Cols("last", "remote").Update(lnk)
 	}
 	s.link.id = lnk.Id
 

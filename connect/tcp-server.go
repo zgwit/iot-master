@@ -2,11 +2,9 @@ package connect
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3"
-	"github.com/zgwit/storm/v3/q"
 	"net"
 	"time"
 )
@@ -61,12 +59,13 @@ func (server *TcpServer) Open() error {
 
 			lnk := model.Link{TunnelId: server.tunnel.Id, Last: time.Now(), Remote: conn.RemoteAddr().String()}
 
+			has := false
 			if !server.tunnel.Register.Enable {
 				//先结束历史链接
 				for _, link := range server.children {
 					_ = link.Close()
 				}
-				err = database.Master.One("TunnelId", server.tunnel.Id, &lnk)
+				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).Exist(&lnk)
 			} else {
 				buf := make([]byte, 128)
 				n := 0
@@ -82,19 +81,23 @@ func (server *TcpServer) Open() error {
 				}
 				sn := string(data)
 				lnk.SN = sn
-				err = database.Master.Select(q.Eq("TunnelId", server.tunnel.Id), q.Eq("SN", sn)).First(&lnk)
+				has, err = db.Engine.Where("tunnel_id=?", server.tunnel.Id).And("sn", sn).Exist(&lnk)
 			}
 
-			if err == storm.ErrNotFound {
-				//保存一条新记录
-				_ = database.Master.Save(&lnk)
-			} else if err != nil {
+			if err != nil {
 				//return err
+				//TODO 日志，关闭连接
 				continue
+			}
+
+			if !has {
+				//保存一条新记录
+				_, _ = db.Engine.InsertOne(&lnk)
 			} else {
 				//上线
-				_ = database.Master.UpdateField(&lnk, "Last", time.Now())
-				_ = database.Master.UpdateField(&lnk, "Remote", conn.RemoteAddr().String())
+				lnk.Last = time.Now()
+				lnk.Remote = conn.RemoteAddr().String()
+				_, _ = db.Engine.ID(lnk.Id).Cols("last", "remote").Update(lnk)
 			}
 
 			link := newNetLink(conn)

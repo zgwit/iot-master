@@ -2,160 +2,60 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/database"
-	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 )
 
-func pipeRoutes(app *gin.RouterGroup) {
-	app.POST("list", pipeList)
-	app.POST("create", pipeCreate)
-
-	app.Use(parseParamId)
-	app.GET(":id", pipeDetail)
-	app.POST(":id", pipeUpdate)
-	app.GET(":id/delete", pipeDelete)
-	app.GET(":id/start", pipeStart)
-	app.GET(":id/stop", pipeStop)
-	app.GET(":id/enable", pipeEnable)
-	app.GET(":id/disable", pipeDisable)
-}
-
 func pipeList(ctx *gin.Context) {
-	records, cnt, err := normalSearch(ctx, database.Master, &model.Pipe{})
+	pipes := make([]*model.PipeEx, 0)
+
+	var body paramSearchEx
+	err := ctx.ShouldBindJSON(&body)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
 
-	//补充信息
-	pipes := records.(*[]*model.Pipe)
-	ps := make([]*model.PipeEx, 0) //len(pipes)
+	query := body.toQuery()
 
-	for _, d := range *pipes {
-		pe := &model.PipeEx{Pipe: *d}
-		ps = append(ps, pe)
-		p := master.GetPipe(pe.Id)
-		if p != nil {
-			pe.Running = p.Running()
-		}
-		var link model.Link
-		err = database.Master.One("Id", d.LinkId, &link)
-		if err == nil {
-			if link.Name != "" {
-				pe.Link = link.Name
-			} else if link.SN != "" {
-				pe.Link = link.SN
-			} else if link.Remote != "" {
-				pe.Link = link.Remote
-			}
-		}
+	query.Join("LEFT", "link", "pipe.link_id=link.id")
+
+	cnt, err := query.FindAndCount(pipes)
+	if err != nil {
+		replyError(ctx, err)
+		return
 	}
-
-	replyList(ctx, ps, cnt)
+	replyList(ctx, pipes, cnt)
 }
 
-func pipeCreate(ctx *gin.Context) {
-	var pipe model.Pipe
-	err := ctx.ShouldBindJSON(&pipe)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	err = database.Master.Save(&pipe)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, pipe)
-
+func afterPipeCreate(data interface{}) error {
+	pipe := data.(*model.Pipe)
 	//启动
-	//pipeStart(ctx)
 	if !pipe.Disabled {
-		go func() {
-			err := master.LoadPipe(pipe.Id)
-			if err != nil {
-				log.Error(err)
-				return
-			}
-		}()
+		return master.LoadPipe(pipe.Id)
 	}
+	return nil
 }
 
 func pipeDetail(ctx *gin.Context) {
-	var pipe model.Pipe
-	err := database.Master.One("Id", ctx.GetInt64("id"), &pipe)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	pe := &model.PipeEx{Pipe: pipe}
-	d := master.GetPipe(pe.Id)
-	if d != nil {
-		pe.Running = d.Running()
-	}
+	var pe model.PipeEx
 	var link model.Link
-	err = database.Master.One("Id", pipe.LinkId, &link)
-	if err == nil {
-		if link.Name != "" {
-			pe.Link = link.Name
-		} else if link.SN != "" {
-			pe.Link = link.SN
-		} else if link.Remote != "" {
-			pe.Link = link.Remote
-		}
-	}
+	pe.Link = link.Name
+	pe.Link = link.SN
+	pe.Link = link.Remote
+
 	replyOk(ctx, pe)
 }
 
-func pipeUpdate(ctx *gin.Context) {
-	var pipe model.Pipe
-	err := ctx.ShouldBindJSON(&pipe)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	pipe.Id = ctx.GetInt64("id")
-
-	err = database.Master.Update(&pipe)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, pipe)
-
-	//重新启动
-	go func() {
-		_ = master.RemovePipe(pipe.Id)
-		err := master.LoadPipe(pipe.Id)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+func afterPipeUpdate(data interface{}) error {
+	pipe := data.(*model.Pipe)
+	_ = master.RemovePipe(pipe.Id)
+	return master.LoadPipe(pipe.Id)
 }
 
-func pipeDelete(ctx *gin.Context) {
-	pipe := model.Pipe{Id: ctx.GetInt64("id")}
-	err := database.Master.DeleteStruct(&pipe)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, pipe)
-
-	//关闭
-	go func() {
-		err := master.RemovePipe(pipe.Id)
-		if err != nil {
-			log.Error(err)
-		}
-	}()
+func afterPipeDelete(data interface{}) error{
+	pipe := data.(*model.Pipe)
+	return master.RemovePipe(pipe.Id)
 }
 
 func pipeStart(ctx *gin.Context) {
@@ -188,43 +88,13 @@ func pipeStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func pipeEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Pipe{Id: ctx.GetInt64("id")}, "Disabled", false)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyOk(ctx, nil)
-
-	//启动
-	go func() {
-		err := master.LoadPipe(ctx.GetInt64("id"))
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+func afterPipeEnable(data interface{}) error{
+	pipe := data.(*model.Pipe)
+	_ = master.RemovePipe(pipe.Id)
+	return master.LoadPipe(pipe.Id)
 }
 
-func pipeDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Pipe{Id: ctx.GetInt64("id")}, "Disabled", true)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyOk(ctx, nil)
-
-	//关闭
-	go func() {
-		pipe := master.GetPipe(ctx.GetInt64("id"))
-		if pipe == nil {
-			return
-		}
-		err := pipe.Close()
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+func afterPipeDisable(data interface{}) error{
+	pipe := data.(*model.Pipe)
+	return master.RemovePipe(pipe.Id)
 }
-

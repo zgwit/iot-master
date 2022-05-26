@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"github.com/antonmedv/expr"
 	"github.com/zgwit/iot-master/calc"
-	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/influx"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/tsdb"
-	"github.com/zgwit/storm/v3"
 	"strconv"
 	"time"
 )
@@ -43,14 +42,15 @@ func NewDevice(m *model.Device) (*Device, error) {
 
 	//加载模板
 	if dev.ElementId != "" {
-		var template model.Element
-		err := database.Master.One("Id", dev.ElementId, &template)
-		if err == storm.ErrNotFound {
-			return nil, errors.New("找不到模板")
-		} else if err != nil {
+		var element model.Element
+		has, err := db.Engine.ID(dev.ElementId).Exist(&element)
+		if err != nil {
 			return nil, err
 		}
-		dev.DeviceContent = template.DeviceContent
+		if !has {
+			return nil, fmt.Errorf("找不到模板 %s", dev.ElementId)
+		}
+		dev.DeviceContent = element.DeviceContent
 	}
 
 	//索引命令
@@ -155,7 +155,7 @@ func (dev *Device) initAlarms() error {
 			da := &model.DeviceAlarm{DeviceId: dev.Id, AlarmContent: *alarm}
 
 			//入库
-			_ = database.History.Save(da)
+			_, _ = db.Engine.InsertOne(da)
 			dev.createEvent("告警：" + alarm.Message)
 
 			//上报
@@ -178,7 +178,7 @@ func (dev *Device) initCalculators() error {
 }
 
 func (dev *Device) createEvent(event string) {
-	_ = database.History.Save(model.Event{Target: "device", TargetId: dev.Id, Event: event})
+	_, _ = db.Engine.InsertOne(model.Event{Target: "device", TargetId: dev.Id, Event: event})
 }
 
 //Start 设备启动

@@ -49,10 +49,14 @@ type Device struct {
 }
 
 type DeviceEx struct {
-	Device
+	Device  `xorm:"extends"`
 	Running bool   `json:"running"`
 	Link    string `json:"link"`
 	Element string `json:"element"`
+}
+
+func (d *DeviceEx) TableName() string {
+	return "device"
 }
 
 type DeviceHistory struct {

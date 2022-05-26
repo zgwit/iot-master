@@ -1,10 +1,11 @@
 package master
 
 import (
-	"github.com/zgwit/iot-master/database"
+	"fmt"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3"
+	"math"
 	"sync"
 )
 
@@ -15,10 +16,8 @@ var allProjects sync.Map
 //LoadDevices 加载设备
 func LoadDevices() error {
 	var devices []*model.Device
-	err := database.Master.All(&devices)
-	if err == storm.ErrNotFound {
-		return nil
-	} else if err != nil {
+	err := db.Engine.Limit(math.MaxInt).Find(&devices)
+	if err != nil {
 		return err
 	}
 	for _, d := range devices {
@@ -44,9 +43,12 @@ func LoadDevices() error {
 //LoadDevice 加载设备
 func LoadDevice(id int64) (*Device, error) {
 	device := &model.Device{}
-	err := database.Master.One("Id", id, device)
+	has, err := db.Engine.ID(id).Exist(device)
 	if err != nil {
 		return nil, err
+	}
+	if !has {
+		return nil, fmt.Errorf("找不到设备 %d", id)
 	}
 
 	dev, err := NewDevice(device)
@@ -100,10 +102,8 @@ func RemoveProject(id int64) error {
 //LoadProjects 加载项目
 func LoadProjects() error {
 	var projects []*model.Project
-	err := database.Master.All(&projects)
-	if err == storm.ErrNotFound {
-		return nil
-	} else if err != nil {
+	err := db.Engine.Limit(math.MaxInt).Find(&projects)
+	if err != nil {
 		return err
 	}
 	for _, p := range projects {
@@ -129,9 +129,12 @@ func LoadProjects() error {
 //LoadProject 加载项目
 func LoadProject(id int64) (*Project, error) {
 	project := &model.Project{}
-	err := database.Master.One("Id", id, project)
+	has, err := db.Engine.ID(id).Exist(project)
 	if err != nil {
 		return nil, err
+	}
+	if !has {
+		return nil, fmt.Errorf("找不到项目 %d", id)
 	}
 
 	prj, err := NewProject(project)

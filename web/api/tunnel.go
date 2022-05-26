@@ -2,140 +2,48 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/database"
-	"github.com/zgwit/iot-master/log"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 	"golang.org/x/net/websocket"
 )
 
-func tunnelRoutes(app *gin.RouterGroup) {
-	app.POST("list", tunnelList)
-	app.POST("create", tunnelCreate)
 
-	app.Use(parseParamId)
-	app.GET(":id", tunnelDetail)
-	app.POST(":id", tunnelUpdate)
-	app.GET(":id/delete", tunnelDelete)
-	app.GET(":id/start", tunnelStart)
-	app.GET(":id/stop", tunnelStop)
-	app.GET(":id/enable", tunnelEnable)
-	app.GET(":id/disable", tunnelDisable)
-	app.GET(":id/watch", tunnelWatch)
-}
-
-func tunnelList(ctx *gin.Context) {
-	records, cnt, err := normalSearch(ctx, database.Master, &model.Tunnel{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	//补充信息
-	tunnels := records.(*[]*model.Tunnel)
-	ts := make([]*model.TunnelEx, 0) //len(tunnels)
-
-	for _, d := range *tunnels {
-		l := &model.TunnelEx{Tunnel: *d}
-		ts = append(ts, l)
-		d := master.GetTunnel(l.Id)
-		if d != nil {
-			l.Running = d.Instance.Running()
-		}
-	}
-
-	replyList(ctx, ts, cnt)
-}
-
-func tunnelCreate(ctx *gin.Context) {
-	var tunnel model.Tunnel
-	err := ctx.ShouldBindJSON(&tunnel)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	err = database.Master.Save(&tunnel)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, tunnel)
-
-	//启动
-	//tunnelStart(ctx)
+func afterTunnelCreate(data interface{}) error {
+	tunnel := data.(*model.Tunnel)
 	if !tunnel.Disabled {
-		go func() {
-			err := master.LoadTunnel(tunnel.Id)
-			if err != nil {
-				log.Error(err)
-				return
-			}
-		}()
+		return master.LoadTunnel(tunnel.Id)
 	}
+	return nil
 }
 
 func tunnelDetail(ctx *gin.Context) {
-	var tunnel model.Tunnel
-	err := database.Master.One("Id", ctx.GetInt64("id"), &tunnel)
+	var tunnel model.TunnelEx
+	has, err := db.Engine.ID(ctx.GetInt64("id")).Exist(&tunnel)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	tnl := &model.TunnelEx{Tunnel: tunnel}
-	d := master.GetTunnel(tnl.Id)
+	if !has {
+		replyFail(ctx, "记录存在")
+		return
+	}
+	d := master.GetTunnel(tunnel.Id)
 	if d != nil {
-		tnl.Running = d.Instance.Running()
+		tunnel.Running = d.Instance.Running()
 	}
-	replyOk(ctx, tnl)
+	replyOk(ctx, tunnel)
 }
 
-func tunnelUpdate(ctx *gin.Context) {
-	var tunnel model.Tunnel
-	err := ctx.ShouldBindJSON(&tunnel)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	tunnel.Id = ctx.GetInt64("id")
-
-	err = database.Master.Update(&tunnel)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, tunnel)
-
-	//重新启动
-	go func() {
-		_ = master.RemoveTunnel(tunnel.Id)
-		err := master.LoadTunnel(tunnel.Id)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+func afterTunnelUpdate(data interface{}) error {
+	tunnel := data.(*model.Tunnel)
+	_ = master.RemoveTunnel(tunnel.Id)
+	return master.LoadTunnel(tunnel.Id)
 }
 
-func tunnelDelete(ctx *gin.Context) {
-	tunnel := model.Tunnel{Id: ctx.GetInt64("id")}
-	err := database.Master.DeleteStruct(&tunnel)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, tunnel)
-
-	//关闭
-	go func() {
-		err := master.RemoveTunnel(tunnel.Id)
-		if err != nil {
-			log.Error(err)
-		}
-	}()
+func afterTunnelDelete(data interface{}) error {
+	tunnel := data.(*model.Tunnel)
+	return master.RemoveTunnel(tunnel.Id)
 }
 
 func tunnelStart(ctx *gin.Context) {
@@ -168,44 +76,15 @@ func tunnelStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func tunnelEnable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Tunnel{Id: ctx.GetInt64("id")}, "Disabled", false)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyOk(ctx, nil)
-
-	//启动
-	go func() {
-		err := master.LoadTunnel(ctx.GetInt64("id"))
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+func afterTunnelEnable(data interface{}) error {
+	tunnel := data.(*model.Tunnel)
+	_ = master.RemoveTunnel(tunnel.Id)
+	return master.LoadTunnel(tunnel.Id)
 }
 
-func tunnelDisable(ctx *gin.Context) {
-	err := database.Master.UpdateField(&model.Tunnel{Id: ctx.GetInt64("id")}, "Disabled", true)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyOk(ctx, nil)
-
-	//关闭
-	go func() {
-		tunnel := master.GetTunnel(ctx.GetInt64("id"))
-		if tunnel == nil {
-			return
-		}
-		err := tunnel.Instance.Close()
-		if err != nil {
-			log.Error(err)
-			return
-		}
-	}()
+func afterTunnelDisable(data interface{}) error {
+	tunnel := data.(*model.Tunnel)
+	return master.RemoveTunnel(tunnel.Id)
 }
 
 func tunnelWatch(ctx *gin.Context) {

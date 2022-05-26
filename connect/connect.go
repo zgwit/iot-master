@@ -2,7 +2,7 @@ package connect
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/model"
 	"strings"
 )
@@ -31,15 +31,15 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 	}
 
 	tnl.On("open", func() {
-		_ = database.History.Save(model.Event{
-			Target: "tunnel",
+		_, _ = db.Engine.InsertOne(model.Event{
+			Target:   "tunnel",
 			TargetId: tunnel.Id,
 			Event:    "打开",
 		})
 	})
 
 	tnl.On("close", func() {
-		_ = database.History.Save(model.Event{
+		_, _ = db.Engine.InsertOne(model.Event{
 			Target: "tunnel",
 			TargetId: tunnel.Id,
 			Event:    "关闭",
@@ -47,13 +47,13 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 	})
 
 	tnl.On("link", func(conn Link) {
-		_ = database.History.Save(model.Event{
+		_, _ = db.Engine.InsertOne(model.Event{
 			Target: "link",
 			TargetId: conn.Id(),
 			Event:  "上线",
 		})
 		conn.Once("close", func() {
-			_ = database.History.Save(model.Event{
+			_, _ = db.Engine.InsertOne(model.Event{
 				Target: "link",
 				TargetId: conn.Id(),
 				Event:  "离线",

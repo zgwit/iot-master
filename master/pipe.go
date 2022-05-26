@@ -3,10 +3,10 @@ package master
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3"
+	"math"
 	"net"
 	"sync"
 )
@@ -70,10 +70,8 @@ func (p *Pipe) Running() bool {
 
 func LoadPipes() error {
 	var pipes []*model.Pipe
-	err := database.Master.All(&pipes)
-	if err == storm.ErrNotFound {
-		return nil
-	} else if err != nil {
+	err := db.Engine.Limit(math.MaxInt).Find(&pipes)
+	if err != nil {
 		return err
 	}
 	for _, pipe := range pipes {
@@ -91,9 +89,12 @@ func LoadPipes() error {
 
 func LoadPipe(id int64) error {
 	var pipe model.Pipe
-	err := database.Master.One("Id", id, &pipe)
+	has, err := db.Engine.ID(id).Exist(&pipe)
 	if err != nil {
 		return err
+	}
+	if !has {
+		return fmt.Errorf("找不到透传 %d", id)
 	}
 
 	if pipe.Disabled {

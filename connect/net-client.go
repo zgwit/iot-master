@@ -2,10 +2,9 @@ package connect
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3"
 	"net"
 	"time"
 )
@@ -47,17 +46,21 @@ func (client *NetClient) Open() error {
 
 	//Store link
 	lnk := model.Link{TunnelId: client.tunnel.Id, Last: time.Now(), Remote: client.tunnel.Addr}
-	err = database.Master.One("TunnelId", client.tunnel.Id, &lnk)
-	if err == storm.ErrNotFound {
-		//保存一条新记录
-		_ = database.Master.Save(&lnk)
-		client.link.first = true
-	} else if err != nil {
+	//err = database.Master.One("TunnelId", client.tunnel.Id, &lnk)
+	has, err := db.Engine.Where("tunnel_id=?", client.tunnel.Id).Exist(&lnk)
+	if err != nil {
 		return err
+	}
+
+	if !has {
+		//保存一条新记录
+		_, _ = db.Engine.InsertOne(&lnk)
+		client.link.first = true
 	} else {
 		//上线
-		_ = database.Master.UpdateField(&lnk, "Last", time.Now())
-		_ = database.Master.UpdateField(&lnk, "Remote", client.tunnel.Addr)
+		lnk.Last = time.Now()
+		lnk.Remote = client.tunnel.Addr
+		_, _ = db.Engine.ID(lnk.Id).Cols("last", "remote").Update(lnk)
 	}
 	client.link.id = lnk.Id
 

@@ -2,106 +2,13 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/database"
-	"github.com/zgwit/iot-master/model"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
 )
-
-func hmiRoutes(app *gin.RouterGroup) {
-	app.POST("list", hmiList)
-	app.POST("create", hmiCreate)
-
-	app.GET(":id", hmiDetail)
-	app.POST(":id", hmiUpdate)
-	app.GET(":id/delete", hmiDelete)
-
-	app.GET(":id/export")
-
-	//组态的附件
-
-	//attachment := app.Group(":id/attachment/")
-	app.GET(":id/attachment/*name", hmiAttachmentRead)
-	app.POST(":id/attachment/*name", hmiAttachmentUpload)
-	app.PATCH(":id/attachment/*name", hmiAttachmentRename)
-	app.DELETE(":id/attachment/*name", hmiAttachmentDelete)
-
-}
-
-func hmiList(ctx *gin.Context) {
-	hs, cnt, err := normalSearch(ctx, database.Master, &model.HMI{})
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyList(ctx, hs, cnt)
-}
-
-func hmiCreate(ctx *gin.Context) {
-	var hmi model.HMI
-	err := ctx.ShouldBindJSON(&hmi)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	//使用UUId作为Id
-	if hmi.Id == "" {
-		hmi.Id = uuid.NewString()
-	}
-	//保存
-	err = database.Master.Save(&hmi)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, hmi)
-}
-
-func hmiDetail(ctx *gin.Context) {
-	var hmi model.HMI
-	err := database.Master.One("Id", ctx.Param("id"), &hmi)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyOk(ctx, hmi)
-}
-
-func hmiUpdate(ctx *gin.Context) {
-	var hmi model.HMI
-	err := ctx.ShouldBindJSON(&hmi)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	hmi.Id = ctx.Param("id")
-
-	err = database.Master.Update(&hmi)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, hmi)
-}
-
-func hmiDelete(ctx *gin.Context) {
-	hmi := model.HMI{Id: ctx.Param("id")}
-	err := database.Master.DeleteStruct(&hmi)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, hmi)
-}
 
 func hmiAttachmentRead(ctx *gin.Context) {
 	filename := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), ctx.Param("name"))

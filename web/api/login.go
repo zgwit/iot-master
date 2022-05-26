@@ -5,9 +5,8 @@ import (
 	"encoding/hex"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/storm/v3"
 )
 
 type loginObj struct {
@@ -33,22 +32,27 @@ func login(ctx *gin.Context) {
 	}
 
 	var user model.User
-	err := database.Master.One("Username", obj.Username, &user)
-	if err == storm.ErrNotFound {
+	has, err := db.Engine.Where("username=?", obj.Username).Exist(&user)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	if !has {
 		//管理员自动创建
 		if obj.Username == "admin" {
 			user.Username = obj.Username
 			user.Nickname = "管理员"
-			err = database.Master.Save(&user)
+			_, err = db.Engine.InsertOne(&user)
+			if err != nil {
+				replyError(ctx, err)
+				return
+			}
 		} else {
 			replyFail(ctx, "找不到用户")
 			return
 		}
 
-	}
-	if err != nil {
-		replyError(ctx, err)
-		return
 	}
 
 	if user.Disabled {
@@ -57,16 +61,20 @@ func login(ctx *gin.Context) {
 	}
 
 	var password model.Password
-	err = database.Master.One("Id", user.Id, &password)
-	//初始化密码
-	if err == storm.ErrNotFound {
-		password.Id = user.Id
-		password.Password = md5hash("123456")
-		err = database.Master.Save(&password)
-	}
+	has, err = db.Engine.ID(user.Id).Exist(&password)
 	if err != nil {
 		replyError(ctx, err)
 		return
+	}
+	//初始化密码
+	if !has {
+		password.Id = user.Id
+		password.Password = md5hash("123456")
+		_, err = db.Engine.InsertOne(&password)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
 	}
 
 	if password.Password != obj.Password {
@@ -74,7 +82,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	_ = database.History.Save(model.Event{UserId: user.Id, Event: "登录"})
+	_, _ = db.Engine.InsertOne(model.Event{UserId: user.Id, Event: "登录"})
 
 	//存入session
 	session.Set("user", &user)
@@ -92,7 +100,7 @@ func logout(ctx *gin.Context) {
 	}
 
 	user := u.(*model.User)
-	_ = database.History.Save(model.Event{UserId: user.Id, Event: "登录"})
+	_, _ = db.Engine.InsertOne(model.Event{UserId: user.Id, Event: "退出"})
 
 	session.Clear()
 	_ = session.Save()

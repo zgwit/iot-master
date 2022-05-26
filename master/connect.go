@@ -1,13 +1,14 @@
 package master
 
 import (
+	"fmt"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/database"
+	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/protocols"
-	"github.com/zgwit/storm/v3"
+	"golang.org/x/tools/container/intsets"
 	"sync"
 )
 
@@ -38,8 +39,13 @@ func startTunnel(tunnel *model.Tunnel) error {
 
 	tnl.On("link", func(link connect.Link) {
 		var lnk model.Link
-		err := database.Master.One("Id", link.Id(), &lnk)
+		has, err := db.Engine.ID(link.Id()).Exist(&lnk)
 		if err != nil {
+			log.Error(err)
+			return
+		}
+		if !has {
+			log.Errorf("连接找不到 %d", link.Id())
 			return
 		}
 
@@ -61,7 +67,7 @@ func startTunnel(tunnel *model.Tunnel) error {
 					Station: d.Station,
 					ElementId: d.ElementId,
 				}
-				err = database.Master.Save(&dev)
+				_, err = db.Engine.InsertOne(&dev)
 				if err != nil {
 					log.Error(err)
 				}
@@ -74,8 +80,9 @@ func startTunnel(tunnel *model.Tunnel) error {
 
 		//找到相关Device，导入Mapper
 		var devices []model.Device
-		err = database.Master.Find("LinkId", link.Id(), &devices)
-		if err != nil && err != storm.ErrNotFound {
+		err = db.Engine.Where("link_id", lnk.Id).Find(&devices)
+		if err != nil {
+			log.Error(err)
 			return
 		}
 		for _, d := range devices {
@@ -117,10 +124,8 @@ func startTunnel(tunnel *model.Tunnel) error {
 //LoadTunnels 加载通道
 func LoadTunnels() error {
 	var tunnels []*model.Tunnel
-	err := database.Master.All(&tunnels)
-	if err == storm.ErrNotFound {
-		return nil
-	} else if err != nil {
+	err := db.Engine.Limit(intsets.MaxInt).Find(&tunnels)
+	if err != nil {
 		return err
 	}
 	for _, tunnel := range tunnels {
@@ -138,9 +143,12 @@ func LoadTunnels() error {
 //LoadTunnel 加载通道
 func LoadTunnel(id int64) error {
 	var tunnel model.Tunnel
-	err := database.Master.One("Id", id, &tunnel)
+	has, err := db.Engine.ID(id).Exist(&tunnel)
 	if err != nil {
 		return err
+	}
+	if !has {
+		return fmt.Errorf("连接不存在 %d", id)
 	}
 
 	if tunnel.Disabled {

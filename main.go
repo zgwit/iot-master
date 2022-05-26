@@ -4,7 +4,6 @@ import (
 	"github.com/kardianos/service"
 	"github.com/zgwit/iot-master/args"
 	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/database"
 	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
@@ -121,13 +120,6 @@ func originMain() {
 		log.Fatal(err)
 	}
 	defer db.Close()
-
-	err = database.Open(&config.Config.Database)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer database.Close()
-
 
 
 	err = tsdb.Open(&config.Config.History)

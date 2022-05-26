@@ -1,6 +1,7 @@
 package db
 
 import (
+	//_ "github.com/lib/pq"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/zgwit/iot-master/model"
