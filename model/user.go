@@ -7,7 +7,7 @@ import (
 
 //User 用户
 type User struct {
-	Id       int64     `json:"id" xorm:"autoincr"`
+	Id       int64     `json:"id"`
 	Username string    `json:"username" xorm:"unique"`
 	Nickname string    `json:"nickname,omitempty"`
 	Email    string    `json:"email,omitempty"`

@@ -31,7 +31,7 @@ type DeviceContent struct {
 
 //Device 设备
 type Device struct {
-	Id        int64  `json:"id" xorm:"autoincr"`
+	Id        int64  `json:"id"`
 	LinkId    int64  `json:"link_id" xorm:"index"`
 	ElementId string `json:"element_id"`
 

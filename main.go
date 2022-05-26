@@ -115,7 +115,7 @@ func originMain() {
 		log.Fatal(err)
 	}
 
-	err = db.Open()
+	err = db.Open(&config.Config.Database)
 	if err != nil {
 		log.Fatal(err)
 	}

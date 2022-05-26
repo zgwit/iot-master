@@ -6,6 +6,11 @@ import (
 	"golang.org/x/net/websocket"
 )
 
+type WatchMessage struct {
+	Event string      `json:"event"`
+	Data  interface{} `json:"data"`
+}
+
 func watchAllEvents(ws *websocket.Conn, emitter events.EventInterface) {
 	ws.PayloadType = websocket.TextFrame
 

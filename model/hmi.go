@@ -21,3 +21,7 @@ type HMI struct {
 	Created  time.Time `json:"created" xorm:"created"`
 	Deleted  time.Time `json:"-" xorm:"deleted"`
 }
+
+func (h *HMI) TableName() string {
+	return "hmi"
+}

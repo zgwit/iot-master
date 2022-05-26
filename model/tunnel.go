@@ -14,7 +14,7 @@ type Protocol struct {
 
 //Tunnel 通道模型
 type Tunnel struct {
-	Id        int64           `json:"id" xorm:"autoincr"`
+	Id        int64           `json:"id"`
 	Name      string          `json:"name"`
 	Type      string          `json:"type"` //serial tcp-client tcp-server udp-client udp-server
 	Addr      string          `json:"addr"`

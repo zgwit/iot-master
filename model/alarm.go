@@ -31,7 +31,7 @@ type AlarmContent struct {
 
 //DeviceAlarm 设备告警
 type DeviceAlarm struct {
-	Id           int64 `json:"id" xorm:"autoincr"`
+	Id           int64 `json:"id"`
 	DeviceId     int64 `json:"device_id" xorm:"index"`
 	AlarmContent `xorm:"extends"`
 	Created      time.Time `json:"created" xorm:"created"`
@@ -39,7 +39,7 @@ type DeviceAlarm struct {
 
 //ProjectAlarm 项目告警
 type ProjectAlarm struct {
-	Id           int64 `json:"id" xorm:"autoincr"`
+	Id           int64 `json:"id"`
 	ProjectId    int64 `json:"project_id" xorm:"index"`
 	AlarmContent `xorm:"extends"`
 	Created      time.Time `json:"created" xorm:"created"`

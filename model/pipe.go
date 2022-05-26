@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Pipe struct {
-	Id       int64     `json:"id" xorm:"autoincr"`
+	Id       int64     `json:"id"`
 	LinkId   int64     `json:"link_id"`
 	Name     string    `json:"name"`
 	Addr     string    `json:"addr"`

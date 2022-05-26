@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Event struct {
-	Id       int64     `json:"id" xorm:"autoincr"`
+	Id       int64     `json:"id"`
 	UserId   int64     `json:"user_id"`
 	Event    string    `json:"event"`
 	Target   string    `json:"target"`

@@ -4,7 +4,7 @@ import "time"
 
 //Link 链接模型
 type Link struct {
-	Id       int64     `json:"id" xorm:"autoincr"`
+	Id       int64     `json:"id"`
 	TunnelId int64     `json:"tunnel_id" xorm:"index"`
 	SN       string    `json:"sn" xorm:"index"`
 	Name     string    `json:"name"`

@@ -2,9 +2,13 @@ package config
 
 //Database 参数
 type Database struct {
-	Path string `yaml:"path"`
+	Type  string `yaml:"type"`
+	URL   string `yaml:"url"`
+	Debug bool   `yaml:"debug"`
 }
 
 var DatabaseDefault = Database{
-	Path: "data",
+	Type:  "sqlite3",
+	URL:   "data/sqlite3.db",
+	Debug: false,
 }

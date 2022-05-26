@@ -29,7 +29,7 @@ type ProjectContent struct {
 
 //Project 项目
 type Project struct {
-	Id   int64  `json:"id" xorm:"autoincr"`
+	Id   int64  `json:"id"`
 	Name string `json:"name"`
 
 	Devices []*ProjectDevice `json:"devices"`
