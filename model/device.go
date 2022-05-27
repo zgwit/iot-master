@@ -50,7 +50,7 @@ type Device struct {
 type DeviceEx struct {
 	Device  `xorm:"extends"`
 	Running bool   `json:"running"`
-	Link    string `json:"link"`
+	Tunnel  string `json:"tunnel"`
 	Element string `json:"element"`
 }
 

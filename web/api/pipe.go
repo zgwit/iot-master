@@ -19,8 +19,8 @@ func pipeList(ctx *gin.Context) {
 
 	query := body.toQuery()
 	query.Select("pipe.*, " + //TODO 只返回需要的字段
-		" 0 as running, link.sn as link")
-	query.Join("LEFT", "link", "pipe.link_id=link.id")
+		" 0 as running, tunnel.sn as tunnel")
+	query.Join("LEFT", "tunnel", "pipe.tunnel_id=tunnel.id")
 
 	cnt, err := query.FindAndCount(&pipes)
 	if err != nil {
@@ -70,7 +70,7 @@ func afterPipeUpdate(data interface{}) error {
 	return master.LoadPipe(pipe.Id)
 }
 
-func afterPipeDelete(id int64) error{
+func afterPipeDelete(id int64) error {
 	return master.RemovePipe(id)
 }
 
@@ -104,11 +104,11 @@ func pipeStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func afterPipeEnable(id int64) error{
+func afterPipeEnable(id int64) error {
 	_ = master.RemovePipe(id)
 	return master.LoadPipe(id)
 }
 
-func afterPipeDisable(id int64) error{
+func afterPipeDisable(id int64) error {
 	return master.RemovePipe(id)
 }

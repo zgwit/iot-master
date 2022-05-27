@@ -25,6 +25,10 @@ type ServerEx struct {
 	Running bool `json:"running"`
 }
 
+func (s *ServerEx) TableName() string {
+	return "server"
+}
+
 //RegisterPacket 注册包
 type RegisterPacket struct {
 	Regex  string `json:"regex,omitempty"`

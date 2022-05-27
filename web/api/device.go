@@ -28,9 +28,9 @@ func deviceList(ctx *gin.Context) {
 
 	query.Table("device")
 	query.Select("device.*, " + //TODO 只返回需要的字段
-		" 0 as running, element.name as element, link.sn as link")
+		" 0 as running, element.name as element, tunnel.sn as tunnel")
 	query.Join("LEFT", "element", "device.element_id=element.id")
-	query.Join("LEFT", "link", "device.link_id=link.id")
+	query.Join("LEFT", "tunnel", "device.tunnel_id=tunnel.id")
 
 	//err = query.Find(devs)
 	cnt, err := query.FindAndCount(&devs)

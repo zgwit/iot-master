@@ -94,5 +94,5 @@ func (client *TunnelClient) Close() error {
 		client.link = nil
 		return link.Close()
 	}
-	return errors.New("link is closed")
+	return errors.New("tunnel is closed")
 }

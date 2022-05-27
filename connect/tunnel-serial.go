@@ -115,5 +115,5 @@ func (s *TunnelSerial) Close() error {
 		return link.Close()
 	}
 	s.running = false
-	return errors.New("link is closed")
+	return errors.New("tunnel is closed")
 }
