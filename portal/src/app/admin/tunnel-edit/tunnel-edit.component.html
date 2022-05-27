@@ -13,11 +13,11 @@
         <nz-form-label [nzSpan]="5">类型</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <nz-select formControlName="type" (ngModelChange)="change()" (change)="change()">
-            <nz-option nzValue="tcp-server" nzLabel="TCP服务端"></nz-option>
-            <nz-option nzValue="tcp-client" nzLabel="TCP客户端"></nz-option>
-            <nz-option nzValue="udp-server" nzLabel="UDP服务端"></nz-option>
-            <nz-option nzValue="udp-client" nzLabel="UDP客户端"></nz-option>
             <nz-option nzValue="serial" nzLabel="串口"></nz-option>
+            <nz-option nzValue="tcp-client" nzLabel="TCP客户端"></nz-option>
+            <nz-option nzValue="tcp-server" nzLabel="TCP服务端"></nz-option>
+            <nz-option nzValue="udp-client" nzLabel="UDP客户端"></nz-option>
+            <nz-option nzValue="udp-server" nzLabel="UDP服务端"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>

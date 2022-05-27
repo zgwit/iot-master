@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'app-tunnel-edit',
@@ -45,7 +46,7 @@ export class TunnelEditComponent implements OnInit {
     },
   }
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService, private ms: NzModalService) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
     this.buildForm();
@@ -81,6 +82,16 @@ export class TunnelEditComponent implements OnInit {
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
       this.router.navigate(['/admin/tunnel/detail/' + res.data.id]);
+
+      if (!this.id) {
+        this.ms.confirm({
+          nzTitle: "提示",
+          nzContent: "是否要在此通道上创建设备?", //TODO 更丰富、人性 的 提醒
+          nzOnOk: () => {
+            this.router.navigate(["admin/device/create"], {queryParams: {tunnel_id: res.data.id}});
+          },
+        })
+      }
     }).add(() => {
       this.submitting = false;
     })
