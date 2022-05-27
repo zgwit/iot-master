@@ -10,7 +10,7 @@ type Entity struct {
 	Bindings   map[string]string   `json:"bindings"`
 }
 
-type HMI struct {
+type Hmi struct {
 	Id       string    `json:"id" xorm:"pk"`
 	Name     string    `json:"name"`
 	Width    int       `json:"width"`
@@ -20,8 +20,4 @@ type HMI struct {
 	Updated  time.Time `json:"updated" xorm:"updated"`
 	Created  time.Time `json:"created" xorm:"created"`
 	Deleted  time.Time `json:"-" xorm:"deleted"`
-}
-
-func (h *HMI) TableName() string {
-	return "hmi"
 }

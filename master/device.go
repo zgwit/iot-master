@@ -158,7 +158,7 @@ func (dev *Device) initAlarms() error {
 
 			//入库
 			_, _ = db.Engine.InsertOne(da)
-			dev.createEvent("告警：" + alarm.Message)
+			CreateDeviceEvent(dev.Id, "告警："+alarm.Message)
 
 			//上报
 			dev.Emit("alarm", da)
@@ -179,13 +179,9 @@ func (dev *Device) initCalculators() error {
 	return nil
 }
 
-func (dev *Device) createEvent(event string) {
-	_, _ = db.Engine.InsertOne(model.Event{Target: "device", TargetId: dev.Id, Event: event})
-}
-
 //Start 设备启动
 func (dev *Device) Start() error {
-	dev.createEvent("启动")
+	CreateDeviceEvent(dev.Id, "启动")
 
 	//找到链接，导入协议
 	tunnel := GetTunnel(dev.TunnelId)
@@ -219,7 +215,7 @@ func (dev *Device) Start() error {
 func (dev *Device) Stop() error {
 	dev.running = false
 
-	dev.createEvent("关闭")
+	CreateDeviceEvent(dev.Id, "关闭")
 
 	for _, poller := range dev.pollers {
 		poller.Stop()
@@ -244,7 +240,7 @@ func (dev *Device) RefreshPoint(name string) (float64, error) {
 
 //Execute 执行命令
 func (dev *Device) Execute(command string, argv []float64) error {
-	dev.createEvent("执行：" + command)
+	CreateDeviceEvent(dev.Id, "执行："+command)
 
 	cmd, ok := dev.commandIndex[command]
 	if !ok {

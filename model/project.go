@@ -19,7 +19,7 @@ type Template struct {
 }
 
 type ProjectContent struct {
-	HMI         string        `json:"hmi" xorm:"'hmi'"`
+	Hmi         string        `json:"hmi"`
 	Aggregators []*Aggregator `json:"aggregators"`
 	Jobs        []*Job        `json:"jobs"`
 	Alarms      []*Alarm      `json:"alarms"`
@@ -50,6 +50,7 @@ type ProjectEx struct {
 	Running  bool   `json:"running"`
 	Template string `json:"template"`
 }
+
 func (p *ProjectEx) TableName() string {
 	return "project"
 }

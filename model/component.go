@@ -2,12 +2,12 @@ package model
 
 import "time"
 
-type HmiEvent struct {
+type ComponentEvent struct {
 	Name  string `json:"name"`
 	Label string `json:"label"`
 }
 
-type HmiValue struct {
+type ComponentValue struct {
 	Name  string `json:"name"`
 	Label string `json:"label"`
 }
@@ -32,10 +32,10 @@ type Component struct {
 	Properties []Hash `json:"properties"`
 
 	//事件
-	Events []HmiEvent `json:"events"`
+	Events []ComponentEvent `json:"events"`
 
 	//监听
-	Values []HmiValue `json:"values"`
+	Values []ComponentValue `json:"values"`
 
 	//初始化
 	Create string `json:"create"`

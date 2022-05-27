@@ -105,7 +105,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/element/:id/delete", parseParamStringId, curdApiDelete(modelElement, nil, nil))
 
 	//组态
-	modelHMI := reflect.TypeOf(model.HMI{})
+	modelHMI := reflect.TypeOf(model.Hmi{})
 	app.POST("/hmi/list", curdApiList(modelHMI))
 	app.POST("/hmi/create", curdApiCreate(modelHMI, generateUUID, nil))
 	app.GET("/hmi/:id", parseParamStringId, curdApiGet(modelHMI))

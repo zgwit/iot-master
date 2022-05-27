@@ -19,7 +19,7 @@ type Element struct {
 }
 
 type DeviceContent struct {
-	HMI         string        `json:"hmi" xorm:"'hmi'"`
+	Hmi         string        `json:"hmi"`
 	Tags        []string      `json:"tags,omitempty"`
 	Points      []*Point      `json:"points"`
 	Pollers     []*Poller     `json:"pollers"`

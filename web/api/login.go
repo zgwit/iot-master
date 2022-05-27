@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/db"
+	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
 )
 
@@ -82,7 +83,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	_, _ = db.Engine.InsertOne(model.Event{UserId: user.Id, Event: "登录"})
+	master.CreateUserEvent(user.Id, "登录")
 
 	//存入session
 	session.Set("user", &user)
@@ -100,7 +101,7 @@ func logout(ctx *gin.Context) {
 	}
 
 	user := u.(*model.User)
-	_, _ = db.Engine.InsertOne(model.Event{UserId: user.Id, Event: "退出"})
+	master.CreateUserEvent(user.Id, "退出")
 
 	session.Clear()
 	_ = session.Save()

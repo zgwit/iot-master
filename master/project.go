@@ -185,7 +185,7 @@ func (prj *Project) initJobs() error {
 			}
 
 			//日志
-			prj.createEvent("执行定时任务：" + job.String())
+			CreateProjectEvent(prj.Id, "执行定时任务："+job.String())
 		})
 		prj.jobs = append(prj.jobs, job)
 	}
@@ -205,7 +205,7 @@ func (prj *Project) initValidators() error {
 			_, _ = db.Engine.InsertOne(pa)
 
 			//事件
-			prj.createEvent("告警：" + alarm.Message)
+			CreateProjectEvent(prj.Id, "告警："+alarm.Message)
 
 			//上报
 			prj.Emit("alarm", pa)
@@ -230,7 +230,7 @@ func (prj *Project) initStrategies() error {
 			}
 
 			//保存历史
-			prj.createEvent("执行控制策略：" + strategy.Name)
+			CreateProjectEvent(prj.Id, "执行控制策略："+strategy.Name)
 		})
 		prj.strategies = append(prj.strategies, strategy)
 	}
@@ -286,13 +286,9 @@ func (prj *Project) initHandler() error {
 	return nil
 }
 
-func (prj *Project) createEvent(event string) {
-	_, _ = db.Engine.InsertOne(model.Event{Target: "project", TargetId: prj.Id, Event: event})
-}
-
 //Start 项目启动
 func (prj *Project) Start() error {
-	prj.createEvent("启动")
+	CreateProjectEvent(prj.Id, "启动")
 
 	//订阅设备的数据变化和报警
 	for _, dev := range prj.Devices {
@@ -317,7 +313,7 @@ func (prj *Project) Start() error {
 
 //Stop 项目结束
 func (prj *Project) Stop() error {
-	prj.createEvent("关闭")
+	CreateProjectEvent(prj.Id, "关闭")
 
 	for _, dev := range prj.Devices {
 		dev.device.Off("data", prj.deviceDataHandler)

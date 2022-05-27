@@ -29,7 +29,7 @@ func Open(cfg *config.Database) error {
 		new(model.Tunnel), new(model.Server), new(model.Pipe),
 		new(model.Device), new(model.Element),
 		new(model.Project), new(model.Template),
-		new(model.HMI), new(model.Component),
+		new(model.Hmi), new(model.Component),
 		new(model.Event),
 		new(model.DeviceAlarm), new(model.ProjectAlarm),
 	)
