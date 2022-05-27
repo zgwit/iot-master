@@ -4,7 +4,6 @@
 
 [在线演示](http://demo.iot-master.com:8080/)
 
-
 [![真格智能实验室](https://labs.zgwit.com/logo.png)](https://labs.zgwit.com)
 
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
@@ -53,11 +52,14 @@
 
 ### 数据库
 
-嵌入式数据库[Storm(boltdb)](https://github.com/asdine/storm)
+| 类型    | 嵌入式      | 第三方数据库                  |
+|-------|----------|-------------------------|
+| 关系数据库 | SQLite3  | MySQL、PostgreSQL、Oracle |
+| 时序数据库 | tstorage | InfluxDB 2.0            |
 
-嵌入式时序数据库[tstorage](https://github.com/nakabonne/tstorage)
-
-> 原项目使用MySQL和InfluxDB，安装麻烦，CPU和内存占用高，而实际又不需要那么多功能，故采用嵌入式数据库
+> 支持嵌入式数据库的原因有二：
+> 1. 简化安装，让用户直接体验，
+> 2. 支持智能网关和工控机
 
 ### Web框架
 
@@ -69,61 +71,31 @@
 
 [NG-ZORRO](https://github.com/NG-ZORRO/ng-zorro-antd) UI框架，AntDesign的Angular版本
 
-[SVG.js](https://github.com/svgdotjs/svg.js) SVG框架，基于SVG实现 SCADA HMI
+[SVG.js](https://github.com/svgdotjs/svg.js) SVG框架，基于SVG实现Web组态
 
 [ECharts](https://github.com/apache/echarts) 图表框架，用于显示历史曲线
 
 ## 协议支持
 
-| 名称 | 支持 | 测试 |说明 |
-|----|----|----|----|
-| Modbus RTU | ✔ | ✔ |   |
-| Modbus TCP | ✔ | ✔ |    |
-| Modbus ASCII | ❌ |  |   使用场景较少，暂不支持 |
-| Omron Fins | ✔ | 待测试 |    |
-| Omron Hostlink | ✔ | 待测试 |    |
-| Siemens PPI  | ❌ | | |
-| Siemens FetchWrite  | ❌ |  | |
-| Siemens S7  | ❌ |  | |
-| Mitsubishi FxProgram  | ❌ |  | |
-| Mitsubishi FxSpecial  | ❌ |  | |
-| Mitsubishi A1C  | ❌ |  | |
-| Mitsubishi A1E  | ❌ |  | |
-| Mitsubishi Q2C  | ❌ |  | |
-| Mitsubishi Q3E  | ❌ |  | |
-| Mitsubishi Q4C  | ❌ |  | |
-| Mitsubishi Q4E  | ❌ |  | |
+| 名称                   | 支持  | 测试  | 说明          |
+|----------------------|-----|-----|-------------|
+| Modbus RTU           | ✔   | ✔   |             |
+| Modbus TCP           | ✔   | ✔   |             |
+| Modbus ASCII         | ❌   |     | 使用场景较少，暂不支持 |
+| Omron Fins           | ✔   | 待测试 |             |
+| Omron Hostlink       | ✔   | 待测试 |             |
+| Siemens PPI          | ❌   |     |             |
+| Siemens FetchWrite   | ❌   |     |             |
+| Siemens S7           | ❌   |     |             |
+| Mitsubishi FxProgram | ❌   |     |             |
+| Mitsubishi FxSpecial | ❌   |     |             |
+| Mitsubishi A1C       | ❌   |     |             |
+| Mitsubishi A1E       | ❌   |     |             |
+| Mitsubishi Q2C       | ❌   |     |             |
+| Mitsubishi Q3E       | ❌   |     |             |
+| Mitsubishi Q4C       | ❌   |     |             |
+| Mitsubishi Q4E       | ❌   |     |             |
 
-## 版本功能对比
-
-| 功能 | 开源版 | 企业版 | 定制版 |
-|----|----|----|----|
-| TCP通道（注册包、心跳包） | ✔ | ✔ | ✔ |
-| UDP通道（注册包、心跳包） | ✔ | ✔ | ✔ |
-| 串口通道（RS485） | ✔ | ✔ | ✔ |
-| Modbus协议（RTU、TCP） | ✔ | ✔ | ✔ |
-| 主流PLC协议（西门子、三菱、欧姆龙） | ✔ | ✔ | ✔ |
-| 数据轮询 | ✔ | ✔ | ✔ |
-| 公式计算 | ✔ | ✔ | ✔ |
-| 聚合计算 | ✔ | ✔ | ✔ |
-| 保存历史 | ✔ | ✔ | ✔ |
-| InfluxDB | ✔ | ✔ | ✔ |
-| 定时控制 | ✔ | ✔ | ✔ |
-| 自动策略 | ✔ | ✔ | ✔ |
-| Web组态 | ✔ | ✔ | ✔ |
-| 数据透传 | ✔ | ✔ | ✔ |
-| 滤波算法 | ❌ | ✔ | ✔ |
-| 虚拟串口 | ❌ | ✔ | ✔ |
-| 短信报警 | ❌ | ✔ | ✔（自主签名） |
-| 电话报警 | ❌ | ✔ | ✔ |
-| 商业支持 | ❌ | ✔ | ✔ |
-| MQTT协议 | ❌ | ❌ | ✔ |
-| OPC-UA | ❌ | ❌ | ✔ |
-| 自定义协议 | ❌ | ❌ | ✔ |
-| 集中管理 | ❌ | ❌ | ✔ |
-| 地图视图 | ❌ | ❌ | ✔ |
-| OEM定制 | ❌ | ❌ | ✔ |
-| 7x24支持 | ❌ | ❌ | ✔ |
 
 ## 其他
 
