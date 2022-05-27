@@ -2,7 +2,6 @@ package connect
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 )
@@ -19,33 +18,17 @@ type Server interface {
 
 //NewServer 创建通道
 func NewServer(server *model.Server) (Server, error) {
-	var tnl Server
+	var svr Server
 	switch server.Type {
 	case "tcp":
-		tnl = newServerTCP(server)
+		svr = newServerTCP(server)
 		break
 	case "udp":
-		tnl = newServerUDP(server)
+		svr = newServerUDP(server)
 		break
 	default:
 		return nil, fmt.Errorf("Unsupport type %s ", server.Type)
 	}
 
-	tnl.On("open", func() {
-		_, _ = db.Engine.InsertOne(model.Event{
-			Target:   "server",
-			TargetId: server.Id,
-			Event:    "打开",
-		})
-	})
-
-	tnl.On("close", func() {
-		_, _ = db.Engine.InsertOne(model.Event{
-			Target:   "server",
-			TargetId: server.Id,
-			Event:    "关闭",
-		})
-	})
-
-	return tnl, nil
+	return svr, nil
 }

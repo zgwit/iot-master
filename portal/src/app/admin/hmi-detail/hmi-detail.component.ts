@@ -8,7 +8,7 @@ import {RequestService} from "../../request.service";
   styleUrls: ['./hmi-detail.component.scss']
 })
 export class HmiDetailComponent implements OnInit {
-  id: any = '';
+  id = '';
   data: any = {};
   loading = false;
 

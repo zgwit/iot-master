@@ -8,7 +8,7 @@ import {RequestService} from "../../request.service";
   styleUrls: ['./template-detail.component.scss']
 })
 export class TemplateDetailComponent implements OnInit {
-  id: any = '';
+  id = '';
   data: any = {};
   loading = false;
 

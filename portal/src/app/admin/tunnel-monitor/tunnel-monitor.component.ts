@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
   styleUrls: ['./tunnel-monitor.component.scss']
 })
 export class TunnelMonitorComponent implements OnInit, OnDestroy {
-  id = '';
+  id = 0;
 
   @ViewChild('read') read: ElementRef | undefined;
 
@@ -22,7 +22,7 @@ export class TunnelMonitorComponent implements OnInit, OnDestroy {
   transfer: SafeUrl | undefined;
 
   constructor(private router: ActivatedRoute, private rs: RequestService, private san: DomSanitizer) {
-    this.id = router.snapshot.params['id'];
+    this.id = parseInt(router.snapshot.params['id']);
   }
 
   watch() {

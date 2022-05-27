@@ -62,50 +62,51 @@ func (server *ServerUDP) Open() error {
 			data := buf[:n]
 
 			//如果已经保存了链接 TODO 要有超时处理
-			tunnel, ok := server.tunnels[addr.String()]
+			tnl, ok := server.tunnels[addr.String()]
 			if ok {
-				tunnel.onData(data)
+				tnl.onData(data)
 				continue
 			}
-
-			var tnl model.Tunnel
 
 			if !server.server.Register.Check(data) {
 				_ = conn.Close()
 				continue
 			}
 			sn := string(data)
-			tnl.SN = sn
-			has, err := db.Engine.Where("server_id=?", server.server.Id).And("sn", sn).Get(&tnl)
+			tunnel := model.Tunnel{
+				ServerId: server.server.Id,
+				Addr:     sn,
+			}
+			has, err := db.Engine.Where("server_id=?", server.server.Id).And("addr", sn).Get(&tunnel)
 			if err != nil {
 				//return err
 				//TODO 日志，关闭连接
 				continue
 			}
 
+			tunnel.Last = time.Now()
+			tunnel.Remote = conn.RemoteAddr().String()
 			if !has {
 				//保存一条新记录
-				tnl = model.Tunnel{ServerId: server.server.Id, Last: time.Now(), Remote: conn.RemoteAddr().String()}
-				_, _ = db.Engine.InsertOne(&tnl)
+				tunnel.Type = "server-udp"
+				_, _ = db.Engine.InsertOne(&tunnel)
 			} else {
 				//上线
-				tnl.Last = time.Now()
-				tnl.Remote = conn.RemoteAddr().String()
-				_, _ = db.Engine.ID(tnl.Id).Cols("last", "remote").Update(tnl)
+				_, _ = db.Engine.ID(tunnel.Id).Cols("last", "remote").Update(tunnel)
 			}
 
-			tunnel = newUdpLink(&tnl, conn, addr)
-			tunnel.first = !has
-			server.children[tnl.Id] = tunnel
+			tnl = newServerUdpTunnel(&tunnel, conn, addr)
+			tnl.first = !has
+			server.children[tunnel.Id] = tnl
 
 			//启动对应的设备 发消息
-			server.Emit("tunnel", tunnel)
+			server.Emit("tunnel", tnl)
 
-			tunnel.Emit("online")
+			tnl.Emit("online")
 
-			tunnel.Once("close", func() {
-				delete(server.children, tnl.Id)
-				delete(server.tunnels, tunnel.addr.String())
+			tnl.Once("close", func() {
+				delete(server.children, tunnel.Id)
+				delete(server.tunnels, tnl.addr.String())
 			})
 		}
 

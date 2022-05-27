@@ -55,8 +55,6 @@ func (server *ServerTCP) Open() error {
 				break
 			}
 
-			var tunnel model.Tunnel
-
 			buf := make([]byte, 128)
 			n := 0
 			n, err = conn.Read(buf)
@@ -71,22 +69,25 @@ func (server *ServerTCP) Open() error {
 			}
 
 			sn := string(data)
-			tunnel.SN = sn
-			has, err := db.Engine.Where("server_id=?", server.server.Id).And("sn", sn).Get(&tunnel)
+			tunnel := model.Tunnel{
+				ServerId: server.server.Id,
+				Addr:     sn,
+			}
+			has, err := db.Engine.Where("server_id=?", server.server.Id).And("addr", sn).Get(&tunnel)
 			if err != nil {
 				//return err
 				//TODO 日志，关闭连接
 				continue
 			}
 
+			tunnel.Last = time.Now()
+			tunnel.Remote = conn.RemoteAddr().String()
 			if !has {
 				//保存一条新记录
-				tunnel = model.Tunnel{ServerId: server.server.Id, Last: time.Now(), Remote: conn.RemoteAddr().String()}
+				tunnel.Type = "server-tcp"
 				_, _ = db.Engine.InsertOne(&tunnel)
 			} else {
 				//上线
-				tunnel.Last = time.Now()
-				tunnel.Remote = conn.RemoteAddr().String()
 				_, _ = db.Engine.ID(tunnel.Id).Cols("last", "remote").Update(tunnel)
 			}
 
@@ -112,7 +113,6 @@ func (server *ServerTCP) Open() error {
 //Close 关闭
 func (server *ServerTCP) Close() (err error) {
 	server.Emit("close")
-
 	//close tunnels
 	if server.children != nil {
 		for _, l := range server.children {

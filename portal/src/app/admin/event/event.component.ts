@@ -11,7 +11,7 @@ import {parseTableQuery} from "../table";
 })
 export class EventComponent implements OnInit {
   @Input() type = '';
-  @Input() id = '';
+  @Input() id = 0;
 
   datum: any[] = [];
 

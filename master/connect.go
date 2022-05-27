@@ -58,21 +58,17 @@ func bindTunnel(instance connect.Tunnel) error {
 		}
 	}
 
-	//连接关闭时，关闭设备
+	instance.On("open", func() {
+		_, _ = db.Engine.InsertOne(model.Event{Target: "tunnel", TargetId: tunnel.Id, Event: "打开"})
+		//TODO 加载设备？？？
+	})
+
 	instance.On("close", func() {
-		for _, d := range devices {
-			dev := GetDevice(d.Id)
-			if dev != nil {
-				err := dev.Stop()
-				if err != nil {
-					log.Error(err)
-					//return
-				}
-			}
-		}
+		_, _ = db.Engine.InsertOne(model.Event{Target: "tunnel", TargetId: tunnel.Id, Event: "关闭"})
 	})
 
 	instance.On("online", func() {
+		_, _ = db.Engine.InsertOne(model.Event{Target: "tunnel", TargetId: tunnel.Id, Event: "上线"})
 		for _, d := range devices {
 			dev := GetDevice(d.Id)
 			if dev != nil {
@@ -84,7 +80,9 @@ func bindTunnel(instance connect.Tunnel) error {
 			}
 		}
 	})
+
 	instance.On("offline", func() {
+		_, _ = db.Engine.InsertOne(model.Event{Target: "tunnel", TargetId: tunnel.Id, Event: "下线"})
 		for _, d := range devices {
 			dev := GetDevice(d.Id)
 			if dev != nil {
@@ -185,6 +183,15 @@ func startServer(server *model.Server) error {
 	allServers.Store(server.Id, &Server{
 		Server:   *server,
 		Instance: svr,
+	})
+
+	svr.On("open", func() {
+		_, _ = db.Engine.InsertOne(model.Event{Target: "server", TargetId: server.Id, Event: "打开"})
+		//TODO 加载设备？？？
+	})
+
+	svr.On("close", func() {
+		_, _ = db.Engine.InsertOne(model.Event{Target: "server", TargetId: server.Id, Event: "关闭"})
 	})
 
 	svr.On("tunnel", func(tunnel connect.Tunnel) {

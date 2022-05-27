@@ -9,13 +9,13 @@ import {NzModalService} from "ng-zorro-antd/modal";
   styleUrls: ['./device-detail.component.scss']
 })
 export class DeviceDetailComponent implements OnInit {
-  id: any = '';
+  id = 0;
   data: any = {};
   context: any = {};
   loading = false;
 
   constructor(private router: ActivatedRoute, private rs: RequestService, private ms: NzModalService) {
-    this.id = router.snapshot.params['id'];
+    this.id = parseInt(router.snapshot.params['id']);
     this.load();
   }
 

@@ -11,7 +11,7 @@ import {parseTableQuery} from "../table";
   styleUrls: ['./server-tunnel.component.scss']
 })
 export class ServerTunnelComponent implements OnInit {
-  @Input() id = '';
+  @Input() id = 0;
 
   datum: any[] = [];
 

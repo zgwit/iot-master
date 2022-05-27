@@ -2,7 +2,6 @@ package connect
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"io"
@@ -55,23 +54,6 @@ func NewTunnel(tunnel *model.Tunnel) (Tunnel, error) {
 	default:
 		return nil, fmt.Errorf("Unsupport type %s ", tunnel.Type)
 	}
-
-	tnl.On("open", func() {
-		_, _ = db.Engine.InsertOne(model.Event{
-			Target:   "server",
-			TargetId: tunnel.Id,
-			Event:    "打开",
-		})
-	})
-
-	tnl.On("close", func() {
-		_, _ = db.Engine.InsertOne(model.Event{
-			Target:   "server",
-			TargetId: tunnel.Id,
-			Event:    "关闭",
-		})
-	})
-
 	return tnl, nil
 }
 

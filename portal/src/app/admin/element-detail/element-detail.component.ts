@@ -8,7 +8,7 @@ import {RequestService} from "../../request.service";
   styleUrls: ['./element-detail.component.scss']
 })
 export class ElementDetailComponent implements OnInit {
-  id: any = '';
+  id = '';
   data: any = {};
   loading = false;
 

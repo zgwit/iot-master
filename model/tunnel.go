@@ -17,9 +17,8 @@ type Tunnel struct {
 	Id        int64           `json:"id"`
 	ServerId  int64           `json:"server_id" xorm:"index"`
 	Name      string          `json:"name"`
-	Type      string          `json:"type"` //serial tcp-client tcp-server udp-client udp-server
-	Addr      string          `json:"addr"`
-	SN        string          `json:"sn" xorm:"index 'sn'"`
+	Type      string          `json:"type"` //serial tcp-client tcp-server udp-client udp-server server-tcp server-udp
+	Addr      string          `json:"addr" xorm:"index"`
 	Remote    string          `json:"remote"`
 	Retry     Retry           `json:"retry" xorm:"JSON"` //重试
 	Heartbeat HeartBeatPacket `json:"heartbeat" xorm:"JSON"`

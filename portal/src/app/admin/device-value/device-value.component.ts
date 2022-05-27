@@ -9,7 +9,7 @@ import * as dayjs from "dayjs";
   styleUrls: ['./device-value.component.scss']
 })
 export class DeviceValueComponent implements OnInit {
-  id: any = '';
+  id = 0;
   name: any = '';
   data: any = {};
   loading = false;
@@ -19,7 +19,7 @@ export class DeviceValueComponent implements OnInit {
   date: Date[] = [dayjs().subtract(1, 'day').toDate(), dayjs().toDate()];
 
   constructor(private router: ActivatedRoute, private rs: RequestService) {
-    this.id = router.snapshot.params['id'];
+    this.id = parseInt(router.snapshot.params['id']);
     this.name = router.snapshot.params['name'];
     this.load();
   }

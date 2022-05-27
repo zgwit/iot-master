@@ -16,7 +16,7 @@ type ServerUdpTunnel struct {
 	addr *net.UDPAddr
 }
 
-func newUdpLink(tunnel *model.Tunnel, conn *net.UDPConn, addr *net.UDPAddr) *ServerUdpTunnel {
+func newServerUdpTunnel(tunnel *model.Tunnel, conn *net.UDPConn, addr *net.UDPAddr) *ServerUdpTunnel {
 	return &ServerUdpTunnel{
 		tunnelBase: tunnelBase{
 			tunnel: tunnel,
