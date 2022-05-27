@@ -8,8 +8,8 @@ import (
 	"golang.org/x/net/websocket"
 )
 
-func linkList(ctx *gin.Context) {
-	var links []*model.LinkEx
+func tunnelList(ctx *gin.Context) {
+	var tunnels []*model.TunnelEx
 
 	var body paramSearchEx
 	err := ctx.ShouldBindJSON(&body)
@@ -19,29 +19,28 @@ func linkList(ctx *gin.Context) {
 	}
 
 	query := body.toQuery()
-	query.Select("link.*, " + //TODO 只返回需要的字段
+	query.Select("tunnel.*, " + //TODO 只返回需要的字段
 		" 0 as running, tunnel.name as tunnel")
-	query.Join("LEFT", "tunnel", "link.tunnel_id=tunnel.id")
+	query.Join("LEFT", "tunnel", "tunnel.tunnel_id=tunnel.id")
 
-	cnt, err := query.FindAndCount(&links)
+	cnt, err := query.FindAndCount(&tunnels)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	for _, lnk := range links {
-		d := master.GetLink(lnk.Id)
+	for _, lnk := range tunnels {
+		d := master.GetTunnel(lnk.Id)
 		if d != nil {
 			lnk.Running = d.Instance.Running()
 		}
 	}
 
-	replyList(ctx, links, cnt)
+	replyList(ctx, tunnels, cnt)
 }
 
-
-func linkDetail(ctx *gin.Context) {
-	var link model.LinkEx
-	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&link.Link)
+func tunnelDetail(ctx *gin.Context) {
+	var tunnel model.TunnelEx
+	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&tunnel.Tunnel)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -50,28 +49,28 @@ func linkDetail(ctx *gin.Context) {
 		replyFail(ctx, "记录不存在")
 		return
 	}
-	d := master.GetLink(link.Id)
+	d := master.GetTunnel(tunnel.Id)
 	if d != nil {
-		link.Running = d.Instance.Running()
+		tunnel.Running = d.Instance.Running()
 	}
-	replyOk(ctx, link)
+	replyOk(ctx, tunnel)
 }
 
-func afterLinkDelete(id int64) error {
-	return master.RemoveLink(id)
+func afterTunnelDelete(id int64) error {
+	return master.RemoveTunnel(id)
 }
 
-func afterLinkDisable(id int64) error {
-	return master.RemoveLink(id)
+func afterTunnelDisable(id int64) error {
+	return master.RemoveTunnel(id)
 }
 
-func linkClose(ctx *gin.Context) {
-	link := master.GetLink(ctx.GetInt64("id"))
-	if link == nil {
-		replyFail(ctx, "link not found")
+func tunnelStart(ctx *gin.Context) {
+	tunnel := master.GetTunnel(ctx.GetInt64("id"))
+	if tunnel == nil {
+		replyFail(ctx, "tunnel not found")
 		return
 	}
-	err := link.Instance.Close()
+	err := tunnel.Instance.Open()
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -80,13 +79,28 @@ func linkClose(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func linkWatch(ctx *gin.Context) {
-	link := master.GetLink(ctx.GetInt64("id"))
-	if link == nil {
+func tunnelClose(ctx *gin.Context) {
+	tunnel := master.GetTunnel(ctx.GetInt64("id"))
+	if tunnel == nil {
+		replyFail(ctx, "tunnel not found")
+		return
+	}
+	err := tunnel.Instance.Close()
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, nil)
+}
+
+func tunnelWatch(ctx *gin.Context) {
+	tunnel := master.GetTunnel(ctx.GetInt64("id"))
+	if tunnel == nil {
 		replyFail(ctx, "找不到链接")
 		return
 	}
 	websocket.Handler(func(ws *websocket.Conn) {
-		watchAllEvents(ws, link.Instance)
+		watchAllEvents(ws, tunnel.Instance)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
 }

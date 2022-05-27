@@ -15,20 +15,22 @@ type Protocol struct {
 //Tunnel 通道模型
 type Tunnel struct {
 	Id        int64           `json:"id"`
+	ServerId  int64           `json:"server_id" xorm:"index"`
 	Name      string          `json:"name"`
 	Type      string          `json:"type"` //serial tcp-client tcp-server udp-client udp-server
 	Addr      string          `json:"addr"`
+	SN        string          `json:"sn" xorm:"index 'sn'"`
+	Remote    string          `json:"remote"`
 	Retry     Retry           `json:"retry" xorm:"JSON"` //重试
-	Register  RegisterPacket  `json:"register" xorm:"JSON"`
 	Heartbeat HeartBeatPacket `json:"heartbeat" xorm:"JSON"`
 	Serial    SerialOptions   `json:"serial" xorm:"JSON"`
 	Protocol  Protocol        `json:"protocol" xorm:"JSON"`
-	Devices   []TunnelDevice  `json:"devices"` //默认设备
-	Disabled  bool            `json:"disabled"`
-
-	Updated time.Time `json:"updated" xorm:"updated"`
-	Created time.Time `json:"created" xorm:"created"`
-	Deleted time.Time `json:"-" xorm:"deleted"`
+	//Devices   []TunnelDevice  `json:"devices"` //默认设备
+	Disabled bool      `json:"disabled"`
+	Last     time.Time `json:"last"`
+	Updated  time.Time `json:"updated" xorm:"updated"`
+	Created  time.Time `json:"created" xorm:"created"`
+	Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
 type TunnelDevice struct {
@@ -37,8 +39,9 @@ type TunnelDevice struct {
 }
 
 type TunnelEx struct {
-	Tunnel `xorm:"extends"`
-	Running bool `json:"running"`
+	Tunnel  `xorm:"extends"`
+	Running bool   `json:"running"`
+	Server  string `json:"server"`
 }
 
 func (tunnel *TunnelEx) TableName() string {
@@ -59,15 +62,6 @@ type SerialOptions struct {
 	StopBits   uint `json:"stop_bits"`   //1 2
 	ParityMode uint `json:"parity_mode"` // 0:NONE 1:ODD 2:EVEN
 	RS485      bool `json:"rs485"`
-}
-
-//RegisterPacket 注册包
-type RegisterPacket struct {
-	Enable bool   `json:"enable"`
-	Regex  string `json:"regex,omitempty"`
-	Length int    `json:"length,omitempty"`
-
-	regex *regexp.Regexp
 }
 
 //Check 检查

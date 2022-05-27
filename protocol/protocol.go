@@ -27,7 +27,7 @@ func (opts Options) GetInt(name string, value int) int {
 	return value
 }
 
-type Factory func(link connect.Link, opts Options) Adapter
+type Factory func(tunnel connect.Tunnel, opts Options) Adapter
 
 type Code struct {
 	Name  string `json:"name"`

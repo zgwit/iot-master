@@ -15,6 +15,11 @@ func Start() error {
 		return err
 	}
 
+	err = LoadServers()
+	if err != nil {
+		return err
+	}
+
 	err = LoadTunnels()
 	if err != nil {
 		return err

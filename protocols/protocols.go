@@ -14,14 +14,13 @@ var protocols = []protocol.Protocol{
 	omron.DescHostlink,
 	omron.DescUDP,
 	omron.DescTCP,
-
 }
 
 func Protocols() []protocol.Protocol {
 	return protocols
 }
 
-func Create(link connect.Link, name string, options protocol.Options) (protocol.Adapter, error) {
+func Create(link connect.Tunnel, name string, options protocol.Options) (protocol.Adapter, error) {
 	for _, d := range protocols {
 		if d.Name == name {
 			return d.Factory(link, options), nil

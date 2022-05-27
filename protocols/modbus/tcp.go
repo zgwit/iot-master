@@ -12,14 +12,14 @@ import (
 
 //TCP Modbus-TCP协议
 type TCP struct {
-	link  connect.Link
+	link  connect.Tunnel
 	queue chan interface{} //in
 
 	requests  sync.Map
 	increment uint16
 }
 
-func NewTCP(link connect.Link, opts protocol.Options) protocol.Adapter {
+func NewTCP(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
 	concurrency := opts.GetInt("concurrency", 10)
 
 	tcp := &TCP{

@@ -107,7 +107,7 @@ var handshake2_200 = [25]byte{
 }
 
 type S7 struct {
-	link connect.Link
+	link connect.Tunnel
 }
 
 //PackCommand 打包命令

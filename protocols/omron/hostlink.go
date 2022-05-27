@@ -11,10 +11,10 @@ import (
 
 type FinsHostLink struct {
 	frame UdpFrame
-	link  connect.Link
+	link  connect.Tunnel
 }
 
-func NewHostLink(link connect.Link, opts protocol.Options) protocol.Adapter {
+func NewHostLink(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
 	fins := &FinsHostLink{link: link}
 	link.On("data", func(data []byte) {
 		//fins.OnData(data)

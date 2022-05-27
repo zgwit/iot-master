@@ -14,7 +14,7 @@ type A3C1 struct {
 	PlcNumber     byte //PLC编号
 	UpperNumber   byte //上位机编号
 
-	link connect.Link
+	link connect.Tunnel
 }
 
 func NewA3C1() *A3C1 {

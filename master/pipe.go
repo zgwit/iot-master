@@ -35,9 +35,9 @@ func (p *Pipe) Open() error {
 		return err
 	}
 
-	link := GetLink(p.LinkId)
-	if link == nil {
-		return fmt.Errorf("连接 %d 找不到", p.LinkId)
+	tunnel := GetTunnel(p.TunnelId)
+	if tunnel == nil {
+		return fmt.Errorf("连接 %d 找不到", p.TunnelId)
 	}
 
 	go func() {
@@ -47,7 +47,7 @@ func (p *Pipe) Open() error {
 			if err != nil {
 				break
 			}
-			link.Instance.Pipe(p.conn)
+			tunnel.Instance.Pipe(p.conn)
 		}
 		p.running = false
 	}()

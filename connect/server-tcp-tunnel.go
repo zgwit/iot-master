@@ -1,20 +1,29 @@
 package connect
 
 import (
+	"errors"
+	"github.com/zgwit/iot-master/model"
 	"net"
 )
 
-//NetLink 网络连接
-type NetLink struct {
-	baseLink
+//ServerTcpTunnel 网络连接
+type ServerTcpTunnel struct {
+	tunnelBase
 }
 
-func newNetLink(conn net.Conn) *NetLink {
-	return &NetLink{baseLink: baseLink{link: conn}}
+func newServerTcpTunnel(tunnel *model.Tunnel, conn net.Conn) *ServerTcpTunnel {
+	return &ServerTcpTunnel{tunnelBase: tunnelBase{
+		tunnel: tunnel,
+		link:   conn,
+	}}
+}
+
+func (l *ServerTcpTunnel) Open() error {
+	return errors.New("ServerTcpTunnel cannot open")
 }
 
 //Write 写
-func (l *NetLink) Write(data []byte) error {
+func (l *ServerTcpTunnel) Write(data []byte) error {
 	if l.pipe != nil {
 		return nil //透传模式下，直接抛弃
 	}
@@ -26,7 +35,7 @@ func (l *NetLink) Write(data []byte) error {
 }
 
 //Read 读
-func (l *NetLink) Read(data []byte) (int, error) {
+func (l *ServerTcpTunnel) Read(data []byte) (int, error) {
 	n, err := l.link.Read(data)
 	if err != nil {
 		l.onClose()
@@ -34,7 +43,7 @@ func (l *NetLink) Read(data []byte) (int, error) {
 	return n, err
 }
 
-func (l *NetLink) receive() {
+func (l *ServerTcpTunnel) receive() {
 	l.running = true
 	buf := make([]byte, 1024)
 	for {

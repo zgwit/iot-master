@@ -7,7 +7,6 @@ import (
 	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
-	"github.com/zgwit/iot-master/mqtt"
 	"github.com/zgwit/iot-master/tsdb"
 	"github.com/zgwit/iot-master/web"
 	"os"
@@ -19,7 +18,7 @@ var serviceConfig = &service.Config{
 	Name:        "iot-master",
 	DisplayName: "物联大师",
 	Description: "物联网设备自动控制系统",
-	Arguments: nil,
+	Arguments:   nil,
 }
 
 func main() {
@@ -64,7 +63,6 @@ func main() {
 		_ = logger.Error(err)
 	}
 }
-
 
 type Program struct{}
 
@@ -121,13 +119,11 @@ func originMain() {
 	}
 	defer db.Close()
 
-
 	err = tsdb.Open(&config.Config.History)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer tsdb.Close()
-
 
 	err = master.Start()
 	if err != nil {
@@ -136,7 +132,7 @@ func originMain() {
 	defer master.Stop()
 
 	//TODO 正确创建 MQTT Broker
-	mqtt.NewBroker()
+	//mqtt.NewBroker()
 
 	//判断是否开启Web
 	web.Serve(&config.Config.Web)

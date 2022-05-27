@@ -43,10 +43,10 @@ type UdpFrame struct {
 
 type FinsUdp struct {
 	frame UdpFrame
-	link  connect.Link
+	link  connect.Tunnel
 }
 
-func NewFinsUDP(link connect.Link, opts protocol.Options) protocol.Adapter {
+func NewFinsUDP(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
 	fins := &FinsUdp{link: link}
 	link.On("data", func(data []byte) {
 		//fins.OnData(data)

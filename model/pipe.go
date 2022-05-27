@@ -4,7 +4,7 @@ import "time"
 
 type Pipe struct {
 	Id       int64     `json:"id"`
-	LinkId   int64     `json:"link_id"`
+	TunnelId int64     `json:"tunnel_id"`
 	Name     string    `json:"name"`
 	Port     int       `json:"port"`
 	Disabled bool      `json:"disabled"`
@@ -16,7 +16,7 @@ type Pipe struct {
 type PipeEx struct {
 	Pipe    `xorm:"extends"`
 	Running bool   `json:"running"`
-	Link    string `json:"link"`
+	Tunnel  string `json:"tunnel"`
 }
 
 func (p *PipeEx) TableName() string {

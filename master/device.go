@@ -188,21 +188,21 @@ func (dev *Device) Start() error {
 	dev.createEvent("启动")
 
 	//找到链接，导入协议
-	link := GetLink(dev.LinkId)
-	if link == nil {
+	tunnel := GetTunnel(dev.TunnelId)
+	if tunnel == nil {
 		return errors.New("找不到链接")
 	}
-	if link.adapter == nil {
+	if tunnel.adapter == nil {
 		return errors.New("未加载协议")
 	}
 
 	//链接关闭，则关闭实例
-	link.Instance.On("close", func() {
+	tunnel.Instance.On("close", func() {
 		_ = dev.Stop()
 	})
 
 	//绑定链接
-	err := dev.BindAdapter(link.adapter)
+	err := dev.BindAdapter(tunnel.adapter)
 	if err != nil {
 		return err
 	}

@@ -21,12 +21,12 @@ type request struct {
 
 //RTU Modbus-RTU协议
 type RTU struct {
-	link  connect.Link
+	link connect.Tunnel
 }
 
-func NewRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
+func NewRTU(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
 	rtu := &RTU{
-		link:  link,
+		link: link,
 		//slave: opts["slave"].(uint8),
 	}
 	link.On("data", func(data []byte) {
@@ -38,7 +38,6 @@ func NewRTU(link connect.Link, opts protocol.Options) protocol.Adapter {
 
 	return rtu
 }
-
 
 func (m *RTU) execute(cmd []byte) ([]byte, error) {
 

@@ -3,65 +3,47 @@ package connect
 import (
 	"errors"
 	"github.com/zgwit/iot-master/events"
+	"github.com/zgwit/iot-master/model"
 	"io"
 	"sync"
 	"time"
 )
 
-//Link 链接
-type Link interface {
-	events.EventInterface
-
-	Id() int64
-
-	Write(data []byte) error
-
-	Close() error
-
-	Running() bool
-
-	First() bool
-
-	//Pipe 透传
-	Pipe(pipe io.ReadWriteCloser)
-
-	//Ask 发送指令，接收数据
-	Ask(cmd []byte, timeout time.Duration) ([]byte, error)
-}
-
-type baseLink struct {
+type tunnelBase struct {
 	events.EventEmitter
+
+	tunnel *model.Tunnel
 
 	lock sync.Mutex
 
-	link  io.ReadWriteCloser
+	link io.ReadWriteCloser
 
-	id      int64
 	running bool
 	first   bool
+	retry   int
 
 	pipe io.ReadWriteCloser
 }
 
-func (l *baseLink) Id() int64 {
-	return l.id
+func (l *tunnelBase) Model() *model.Tunnel {
+	return l.tunnel
 }
 
-func (l *baseLink) Running() bool {
+func (l *tunnelBase) Running() bool {
 	return l.running
 }
 
-func (l *baseLink) First() bool {
+func (l *tunnelBase) First() bool {
 	return l.first
 }
 
 //Close 关闭
-func (l *baseLink) Close() error {
+func (l *tunnelBase) Close() error {
 	l.onClose()
 	return l.link.Close()
 }
 
-func (l *baseLink) onClose() {
+func (l *tunnelBase) onClose() {
 	l.running = false
 	if l.pipe != nil {
 		_ = l.pipe.Close()
@@ -69,7 +51,19 @@ func (l *baseLink) onClose() {
 	l.Emit("close")
 }
 
-func (l *baseLink) wait(duration time.Duration) ([]byte, error) {
+//Write 写
+func (l *tunnelBase) Write(data []byte) error {
+	if l.pipe != nil {
+		return nil //透传模式下，直接抛弃
+	}
+	_, err := l.link.Write(data)
+	if err != nil {
+		l.onClose()
+	}
+	return err
+}
+
+func (l *tunnelBase) wait(duration time.Duration) ([]byte, error) {
 	resp := make(chan []byte, 1)
 	l.Once("data", func(data []byte) {
 		resp <- data
@@ -82,7 +76,7 @@ func (l *baseLink) wait(duration time.Duration) ([]byte, error) {
 	}
 }
 
-func (l *baseLink) Ask(cmd []byte, timeout time.Duration) ([]byte, error) {
+func (l *tunnelBase) Ask(cmd []byte, timeout time.Duration) ([]byte, error) {
 	//堵塞
 	l.lock.Lock()
 	defer l.lock.Unlock() //自动解锁
@@ -94,7 +88,7 @@ func (l *baseLink) Ask(cmd []byte, timeout time.Duration) ([]byte, error) {
 	return l.wait(timeout)
 }
 
-func (l *baseLink) Pipe(pipe io.ReadWriteCloser) {
+func (l *tunnelBase) Pipe(pipe io.ReadWriteCloser) {
 	//关闭之前的透传
 	if l.pipe != nil {
 		_ = l.pipe.Close()

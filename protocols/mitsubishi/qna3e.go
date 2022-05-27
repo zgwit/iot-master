@@ -15,7 +15,7 @@ type A3EAdapter struct {
 	PlcNumber     byte //PLC编号
 	IoNumber      byte //IO编号
 
-	link connect.Link
+	link connect.Tunnel
 }
 
 func NewA3EAdapter() *A3EAdapter {

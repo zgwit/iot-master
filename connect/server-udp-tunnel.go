@@ -1,29 +1,38 @@
 package connect
 
 import (
+	"errors"
+	"github.com/zgwit/iot-master/model"
 	"io"
 	"net"
 	"time"
 )
 
-//UdpLink UDP链接
-type UdpLink struct {
-	baseLink
+//ServerUdpTunnel UDP链接
+type ServerUdpTunnel struct {
+	tunnelBase
 
 	conn *net.UDPConn
 	addr *net.UDPAddr
 }
 
-func newUdpLink(conn *net.UDPConn, addr *net.UDPAddr) *UdpLink {
-	return &UdpLink{
-		baseLink: baseLink{link: conn},
-		conn:     conn,
-		addr:     addr,
+func newUdpLink(tunnel *model.Tunnel, conn *net.UDPConn, addr *net.UDPAddr) *ServerUdpTunnel {
+	return &ServerUdpTunnel{
+		tunnelBase: tunnelBase{
+			tunnel: tunnel,
+			link:   conn,
+		},
+		conn: conn,
+		addr: addr,
 	}
 }
 
+func (l *ServerUdpTunnel) Open() error {
+	return errors.New("ServerUdpTunnel cannot open")
+}
+
 //Write 写
-func (l *UdpLink) Write(data []byte) error {
+func (l *ServerUdpTunnel) Write(data []byte) error {
 	if l.pipe != nil {
 		return nil //透传模式下，直接抛弃
 	}
@@ -34,7 +43,7 @@ func (l *UdpLink) Write(data []byte) error {
 	return err
 }
 
-func (l *UdpLink) Ask(cmd []byte, timeout time.Duration) ([]byte, error)  {
+func (l *ServerUdpTunnel) Ask(cmd []byte, timeout time.Duration) ([]byte, error) {
 	//堵塞
 	l.lock.Lock()
 	defer l.lock.Unlock() //自动解锁
@@ -46,7 +55,7 @@ func (l *UdpLink) Ask(cmd []byte, timeout time.Duration) ([]byte, error)  {
 	return l.wait(timeout)
 }
 
-func (l *UdpLink) Pipe(pipe io.ReadWriteCloser) {
+func (l *ServerUdpTunnel) Pipe(pipe io.ReadWriteCloser) {
 	//关闭之前的透传
 	if l.pipe != nil {
 		_ = l.pipe.Close()
@@ -61,7 +70,7 @@ func (l *UdpLink) Pipe(pipe io.ReadWriteCloser) {
 	go func() {
 		buf := make([]byte, 1024)
 		for {
-			n ,err := pipe.Read(buf)
+			n, err := pipe.Read(buf)
 			if err != nil {
 				//pipe关闭，则不再透传
 				break
@@ -79,7 +88,7 @@ func (l *UdpLink) Pipe(pipe io.ReadWriteCloser) {
 	}()
 }
 
-func (l *UdpLink) onData(data []byte) {
+func (l *ServerUdpTunnel) onData(data []byte) {
 	l.running = true
 
 	//透传
@@ -93,4 +102,3 @@ func (l *UdpLink) onData(data []byte) {
 
 	l.Emit("data", data)
 }
-

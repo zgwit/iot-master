@@ -21,7 +21,6 @@ func mustLogin(ctx *gin.Context) {
 	}
 }
 
-
 func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/login", login)
 	app.GET("/logout", logout)
@@ -76,7 +75,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/device/create", curdApiCreate(modelDevice, nil, afterDeviceCreate))
 	app.GET("/device/:id", parseParamId, deviceDetail)
 	app.POST("/device/:id", parseParamId, curdApiModify(modelDevice,
-		[]string{"name", "link_id", "element_id", "station",
+		[]string{"name", "tunnel_id", "element_id", "station",
 			"hmi", "tags", "points", "pollers", "calculators", "alarms", "commands",
 			"context", "disabled"},
 		nil, afterDeviceUpdate))
@@ -122,43 +121,44 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.PATCH("/hmi/:id/attachment/*name", hmiAttachmentRename)
 	app.DELETE("/hmi/:id/attachment/*name", hmiAttachmentDelete)
 
+	//服务器接口
+	modelServer := reflect.TypeOf(model.Server{})
+	app.POST("/server/list", serverList)
+	app.POST("/server/create", curdApiCreate(modelServer, nil, afterServerCreate))
+	app.GET("/server/:id", parseParamId, serverDetail)
+	app.POST("/server/:id", parseParamId, curdApiModify(modelServer,
+		[]string{"name", "type", "addr",
+			"retry", "register", "heartbeat", "serial", "protocol", "devices", "disabled"},
+		nil, afterServerUpdate))
+	app.GET("/server/:id/delete", parseParamId, curdApiDelete(modelServer, nil, afterServerDelete))
+
+	app.GET("/server/:id/start", parseParamId, serverStart)
+	app.GET("/server/:id/stop", parseParamId, serverStop)
+	app.GET("/server/:id/enable", parseParamId, curdApiDisable(modelServer, false, nil, afterServerEnable))
+	app.GET("/server/:id/disable", parseParamId, curdApiDisable(modelServer, true, nil, afterServerDisable))
+	app.GET("/server/:id/watch", parseParamId, serverWatch)
+
 	//通道接口
 	modelTunnel := reflect.TypeOf(model.Tunnel{})
 	app.POST("/tunnel/list", tunnelList)
-	app.POST("/tunnel/create", curdApiCreate(modelTunnel, nil, afterTunnelCreate))
 	app.GET("/tunnel/:id", parseParamId, tunnelDetail)
 	app.POST("/tunnel/:id", parseParamId, curdApiModify(modelTunnel,
-		[]string{"name", "type", "addr",
-			"retry", "register", "heartbeat", "serial", "protocol", "devices", "disabled"},
-		nil, afterTunnelUpdate))
+		[]string{"name", "sn", "server_id", "disabled"},
+		nil, nil))
 	app.GET("/tunnel/:id/delete", parseParamId, curdApiDelete(modelTunnel, nil, afterTunnelDelete))
-
 	app.GET("/tunnel/:id/start", parseParamId, tunnelStart)
-	app.GET("/tunnel/:id/stop", parseParamId, tunnelStop)
-	app.GET("/tunnel/:id/enable", parseParamId, curdApiDisable(modelTunnel, false, nil, afterTunnelEnable))
+	app.GET("/tunnel/:id/stop", parseParamId, tunnelClose)
+	app.GET("/tunnel/:id/enable", parseParamId, curdApiDisable(modelTunnel, false, nil, nil))
 	app.GET("/tunnel/:id/disable", parseParamId, curdApiDisable(modelTunnel, true, nil, afterTunnelDisable))
 	app.GET("/tunnel/:id/watch", parseParamId, tunnelWatch)
 
-	//连接接口
-	modelLink := reflect.TypeOf(model.Link{})
-	app.POST("/link/list", linkList)
-	app.GET("/link/:id", parseParamId, linkDetail)
-	app.POST("/link/:id", parseParamId, curdApiModify(modelLink,
-		[]string{"name", "sn", "tunnel_id", "disabled"},
-		nil, nil))
-	app.GET("/link/:id/delete", parseParamId, curdApiDelete(modelLink, nil, afterLinkDelete))
-	app.GET("/link/:id/stop", parseParamId, linkClose)
-	app.GET("/link/:id/enable", parseParamId, curdApiDisable(modelLink, false, nil, nil))
-	app.GET("/link/:id/disable", parseParamId, curdApiDisable(modelLink, true, nil, afterLinkDisable))
-	app.GET("/link/:id/watch", parseParamId, linkWatch)
-
-	//连接接口
+	//事件接口
 	modelEvent := reflect.TypeOf(model.Event{})
 	app.POST("/event/list", curdApiList(modelEvent))
 	app.POST("/event/clear", eventClear)
 	app.GET("/event/:id/delete", parseParamId, curdApiDelete(modelEvent, nil, nil))
 
-	//连接接口
+	//透传接口
 	modelPipe := reflect.TypeOf(model.Pipe{})
 	app.POST("/pipe/list", pipeList)
 	app.POST("/pipe/create", curdApiCreate(modelPipe, nil, afterPipeCreate))
