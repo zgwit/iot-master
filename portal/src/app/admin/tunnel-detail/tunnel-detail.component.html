@@ -5,18 +5,26 @@
       <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
       <nz-list-item><span>类型</span>{{data.type}}</nz-list-item>
       <nz-list-item><span>地址</span>{{data.addr}}</nz-list-item>
+      <nz-list-item><span>SN</span>{{data.sn}}</nz-list-item>
+      <nz-list-item>
+        <span>服务器</span>
+        <a [routerLink]="'/admin/server/detail/'+data.server_id">{{data.server}}</a>
+      </nz-list-item>
       <nz-list-item><span>状态</span>{{data.running ? '启动' : '停止'}}</nz-list-item>
       <nz-list-item>
         <span>禁用</span>
         <nz-switch [ngModel]="data.disabled" (ngModelChange)="onEnableChange($event)"></nz-switch>
       </nz-list-item>
+      <nz-list-item><span>上线时间</span>{{data.last|dateString}}</nz-list-item>
       <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
     </nz-list>
 
+    <a [routerLink]="'/admin/tunnel/monitor/'+data.id">监控</a>
+
   </nz-tab>
-  <nz-tab nzTitle="相关连接">
+  <nz-tab nzTitle="相关设备">
     <ng-template nz-tab>
-      <app-tunnel-link [id]="id"></app-tunnel-link>
+      <app-tunnel-device [id]="id"></app-tunnel-device>
     </ng-template>
   </nz-tab>
   <nz-tab nzTitle="日志">

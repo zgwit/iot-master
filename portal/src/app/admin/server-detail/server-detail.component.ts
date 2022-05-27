@@ -4,11 +4,11 @@ import {RequestService} from "../../request.service";
 import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
-  selector: 'app-link-detail',
-  templateUrl: './link-detail.component.html',
-  styleUrls: ['./link-detail.component.scss']
+  selector: 'app-server-detail',
+  templateUrl: './server-detail.component.html',
+  styleUrls: ['./server-detail.component.scss']
 })
-export class LinkDetailComponent implements OnInit {
+export class ServerDetailComponent implements OnInit {
   id: any = '';
   data: any = {};
   loading = false;
@@ -23,7 +23,7 @@ export class LinkDetailComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.get(`link/${this.id}`).subscribe(res=>{
+    this.rs.get(`server/${this.id}`).subscribe(res=>{
       this.data = res.data;
       this.loading = false;
     });
@@ -32,7 +32,7 @@ export class LinkDetailComponent implements OnInit {
 
   onEnableChange(disabled: boolean) {
     if (!disabled) {
-      this.rs.get(`link/${this.id}/enable`).subscribe(res => {
+      this.rs.get(`server/${this.id}/enable`).subscribe(res => {
       });
       return;
     }
@@ -40,7 +40,7 @@ export class LinkDetailComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk: () => {
-        this.rs.get(`link/${this.id}/disable`).subscribe(res => {
+        this.rs.get(`server/${this.id}/disable`).subscribe(res => {
         });
       },
       nzOnCancel: () => {

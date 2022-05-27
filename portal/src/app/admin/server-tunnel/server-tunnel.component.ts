@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {Router} from "@angular/router";
 import {RequestService} from "../../request.service";
@@ -6,11 +6,13 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import {parseTableQuery} from "../table";
 
 @Component({
-  selector: 'app-link',
-  templateUrl: './link.component.html',
-  styleUrls: ['./link.component.scss']
+  selector: 'app-server-tunnel',
+  templateUrl: './server-tunnel.component.html',
+  styleUrls: ['./server-tunnel.component.scss']
 })
-export class LinkComponent implements OnInit {
+export class ServerTunnelComponent implements OnInit {
+  @Input() id = '';
+
   datum: any[] = [];
 
   loading = false;
@@ -21,7 +23,6 @@ export class LinkComponent implements OnInit {
   params: any = {filter: {}};
 
   constructor(private router: Router, private rs: RequestService, private ms: NzModalService) {
-
   }
 
   ngOnInit(): void {
@@ -45,7 +46,8 @@ export class LinkComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.post('link/list', this.params).subscribe(res => {
+    this.params.filter.server_id = this.id;
+    this.rs.post('tunnel/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
       this.total = res.total;
@@ -54,28 +56,25 @@ export class LinkComponent implements OnInit {
     });
   }
 
-  create(): void {
-    this.router.navigate(["admin/link/create"]);
-  }
 
   open(data: any): void {
-    this.router.navigate(['/admin/link/detail/' + data.id]);
+    this.router.navigate(['/admin/tunnel/detail/' + data.id]);
   }
 
   remove(data: any, i: number) {
-    this.rs.get(`link/${data.id}/delete`).subscribe(res => {
+    this.rs.get(`tunnel/${data.id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
 
   enable(data: any) {
-    this.rs.get(`link/${data.id}/enable`).subscribe(res => {
+    this.rs.get(`tunnel/${data.id}/enable`).subscribe(res => {
       data.disabled = false
     });
   }
 
   disable(data: any) {
-    this.rs.get(`link/${data.id}/disable`).subscribe(res => {
+    this.rs.get(`tunnel/${data.id}/disable`).subscribe(res => {
       data.disabled = true
     });
   }

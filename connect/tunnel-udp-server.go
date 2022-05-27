@@ -2,7 +2,6 @@ package connect
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"io"
 	"net"
@@ -11,11 +10,9 @@ import (
 
 //TunnelUdpServer UDP服务器
 type TunnelUdpServer struct {
-	events.EventEmitter
 	tunnelBase
-	addr    *net.UDPAddr
-	conn    *net.UDPConn
-	running bool
+	addr *net.UDPAddr
+	conn *net.UDPConn
 }
 
 func newTunnelUdpServer(tunnel *model.Tunnel) *TunnelUdpServer {

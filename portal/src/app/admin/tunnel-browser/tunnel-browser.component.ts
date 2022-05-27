@@ -5,11 +5,11 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 import {parseTableQuery} from "../table";
 
 @Component({
-  selector: 'app-link-browser',
-  templateUrl: './link-browser.component.html',
-  styleUrls: ['./link-browser.component.scss']
+  selector: 'app-tunnel-browser',
+  templateUrl: './tunnel-browser.component.html',
+  styleUrls: ['./tunnel-browser.component.scss']
 })
-export class LinkBrowserComponent implements OnInit {
+export class TunnelBrowserComponent implements OnInit {
   datum: any[] = [];
 
   loading = false;
@@ -87,7 +87,7 @@ export class LinkBrowserComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.post('link/list', this.params).subscribe(res => {
+    this.rs.post('tunnel/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
       this.total = res.total;

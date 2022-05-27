@@ -17,7 +17,7 @@ export class PipeEditComponent implements OnInit {
 
   data: any = {
     "name": "新建透传",
-    "link_id": 0,
+    "tunnel_id": 0,
     "port": 1843,
     "disabled": false,
   }
@@ -31,7 +31,7 @@ export class PipeEditComponent implements OnInit {
   buildForm(): void {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
-      link_id: [this.data.link_id, [Validators.required]],
+      tunnel_id: [this.data.tunnel_id, [Validators.required]],
       port: [this.data.port, [Validators.required]],
       disabled: [this.data.disabled, []],
     });

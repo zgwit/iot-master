@@ -18,8 +18,8 @@
           (nzCheckedChange)="onAllChecked($event)"></th>
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
-      <th nzColumnKey="element_id">元件</th>
-      <th nzColumnKey="link_id">连接</th>
+      <th nzColumnKey="element_id">设备模板</th>
+      <th nzColumnKey="tunnel_id">通道</th>
       <th nzColumnKey="station">从站号</th>
       <th>状态</th>
       <th nzColumnKey="id" [nzSortFn]="true">创建时间</th>
@@ -33,7 +33,7 @@
       <td>{{ data.id }}</td>
       <td>{{data.disabled ? '❌' : ''}}{{ data.name }}</td>
       <td>{{data.element}}</td>
-      <td>{{data.link || data.link_id}}</td>
+      <td>{{data.tunnel || data.tunnel_id}}</td>
       <td>{{ data.station }}</td>
       <td>{{data.running ? '启动' : '关闭'}}</td>
       <td [title]="data.created|dateString">{{data.created | fromNow}}</td>

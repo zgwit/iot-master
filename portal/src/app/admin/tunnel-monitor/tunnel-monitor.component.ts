@@ -5,11 +5,11 @@ import {DomSanitizer, SafeUrl} from "@angular/platform-browser";
 import {environment} from "../../../environments/environment";
 
 @Component({
-  selector: 'app-link-monitor',
-  templateUrl: './link-monitor.component.html',
-  styleUrls: ['./link-monitor.component.scss']
+  selector: 'app-tunnel-monitor',
+  templateUrl: './tunnel-monitor.component.html',
+  styleUrls: ['./tunnel-monitor.component.scss']
 })
-export class LinkMonitorComponent implements OnInit, OnDestroy {
+export class TunnelMonitorComponent implements OnInit, OnDestroy {
   id = '';
 
   @ViewChild('read') read: ElementRef | undefined;
@@ -37,8 +37,8 @@ export class LinkMonitorComponent implements OnInit, OnDestroy {
     //此处Angular框架的proxy.conf.json开发模式下不能正常使用，需要替换成原始地址
     const host = environment.production ? location.origin.replace(/^http/, 'ws') : 'ws://localhost:8080';
 
-    this.ws = new WebSocket(`${host}/api/link/${this.id}/watch`);
-    //this.transfer = this.san.bypassSecurityTrustUrl(`open-vcom://${host}/api/link/${this._id}/transfer`);
+    this.ws = new WebSocket(`${host}/api/tunnel/${this.id}/watch`);
+    //this.transfer = this.san.bypassSecurityTrustUrl(`open-vcom://${host}/api/tunnel/${this._id}/transfer`);
 
     this.ws.onmessage = (e: any) => {
       console.log('websocket onmessage', e.data)

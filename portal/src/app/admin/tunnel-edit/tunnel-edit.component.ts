@@ -17,13 +17,9 @@ export class TunnelEditComponent implements OnInit {
 
   data: any = {
     "name": "新建通道",
-    "type": "tcp-server",
+    "type": "serial",
     "addr": "",
     "disabled": false,
-    "register": {
-      "enable": true,
-      "regex": '^\\w+$'
-    },
     "heartbeat": {
       "enable": false,
       "timeout": 30,
@@ -32,7 +28,7 @@ export class TunnelEditComponent implements OnInit {
       "regex": '^\\w+$'
     },
     retry: {
-      "enable": false,
+      "enable": true,
       "timeout": 30,
       "maximum": 0,
     },
@@ -44,10 +40,9 @@ export class TunnelEditComponent implements OnInit {
       rs485: false,
     },
     "protocol": {
-      "name": "",
+      "name": "ModbusRTU",
       "options": {}
     },
-    "devices": []
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
@@ -62,12 +57,10 @@ export class TunnelEditComponent implements OnInit {
       type: [this.data.type, [Validators.required]],
       addr: [this.data.addr, [Validators.required]],
       disabled: [this.data.disabled, []],
-      register: [this.data.register, []],
       heartbeat: [this.data.heartbeat, []],
       retry: [this.data.retry, []],
       serial: [this.data.serial, []],
       protocol: [this.data.protocol, []],
-      devices: [this.data.devices, []],
     });
   }
 

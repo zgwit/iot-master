@@ -38,6 +38,14 @@ func tunnelList(ctx *gin.Context) {
 	replyList(ctx, tunnels, cnt)
 }
 
+func afterTunnelCreate(data interface{}) error {
+	tunnel := data.(*model.Tunnel)
+	if !tunnel.Disabled {
+		return master.LoadTunnel(tunnel.Id)
+	}
+	return nil
+}
+
 func tunnelDetail(ctx *gin.Context) {
 	var tunnel model.TunnelEx
 	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&tunnel.Tunnel)

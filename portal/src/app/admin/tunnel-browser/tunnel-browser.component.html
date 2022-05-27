@@ -17,7 +17,7 @@
       <th [nzShowCheckbox]="multiple" [nzChecked]="checked" [nzIndeterminate]="indeterminate"
           (nzCheckedChange)="onAllChecked($event)"></th>
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
-      <th nzColumnKey="tunnel_id" [nzSortFn]="true">通道</th>
+      <th nzColumnKey="server_id" [nzSortFn]="true">服务器</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="sn" [nzSortFn]="true">SN</th>
       <th nzColumnKey="remote">地址</th>
@@ -32,7 +32,7 @@
           (nzCheckedChange)="onItemChecked(data.id, $event)"
       ></td>
       <td>{{ data.id }}</td>
-      <td>{{ data.tunnel }}</td>
+      <td>{{ data.server }}</td>
       <td>{{data.disabled ? '❌' : ''}}{{ data.name }}</td>
       <td>{{ data.sn }}</td>
       <td>{{ data.remote }}</td>

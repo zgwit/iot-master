@@ -2,18 +2,18 @@ import {Component, forwardRef, OnInit} from '@angular/core';
 import {ControlValueAccessor, FormArray, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-tunnel-edit-devices',
-  templateUrl: './tunnel-edit-devices.component.html',
-  styleUrls: ['./tunnel-edit-devices.component.scss'],
+  selector: 'app-server-edit-devices',
+  templateUrl: './server-edit-devices.component.html',
+  styleUrls: ['./server-edit-devices.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => TunnelEditDevicesComponent),
+      useExisting: forwardRef(() => ServerEditDevicesComponent),
       multi: true
     }
   ]
 })
-export class TunnelEditDevicesComponent implements OnInit, ControlValueAccessor {
+export class ServerEditDevicesComponent implements OnInit, ControlValueAccessor {
   onChanged: any = () => {
   }
   onTouched: any = () => {

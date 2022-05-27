@@ -14,7 +14,7 @@
     <thead>
     <tr>
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
-      <th nzColumnKey="link_id" [nzSortFn]="true">连接</th>
+      <th nzColumnKey="tunnel_id" [nzSortFn]="true">通道</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="port" [nzSortFn]="true">端口</th>
       <th nzColumnKey="created" [nzSortFn]="true">创建时间</th>
@@ -25,7 +25,7 @@
     <tbody>
     <tr *ngFor="let data of datum; let i=index" (dblclick)="open(data)">
       <td>{{ data.id }}</td>
-      <td><a [routerLink]="'/admin/link/detail/'+data.link_id">{{data.link || data.link_id}}</a></td>
+      <td><a [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel || data.tunnel_id}}</a></td>
       <td>{{data.disabled ? '❌' : ''}}{{ data.name }}</td>
       <td>{{ data.port }}</td>
       <td [title]="data.created|dateString">{{data.created | fromNow }}</td>

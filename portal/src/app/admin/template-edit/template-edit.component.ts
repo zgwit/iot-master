@@ -16,7 +16,7 @@ export class TemplateEditComponent implements OnInit {
   basicForm: FormGroup = new FormGroup({});
 
   data: any = {
-    "name": "新建模板",
+    "name": "新建工程模板",
 
     "hmi":"",
     "context": {},

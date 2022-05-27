@@ -238,7 +238,7 @@ func startTunnel(tunnel *model.Tunnel) error {
 //LoadTunnels 加载通道
 func LoadTunnels() error {
 	var tunnels []*model.Tunnel
-	err := db.Engine.Limit(intsets.MaxInt).Where("server_id IS NULL").Find(&tunnels)
+	err := db.Engine.Limit(intsets.MaxInt).Where("server_id=0").Find(&tunnels)
 	if err != nil {
 		return err
 	}

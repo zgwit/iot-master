@@ -4,7 +4,7 @@ import {UserBrowserComponent} from "./user-browser/user-browser.component";
 import {TemplateBrowserComponent} from "./template-browser/template-browser.component";
 import {ElementBrowserComponent} from "./element-browser/element-browser.component";
 import {DeviceBrowserComponent} from "./device-browser/device-browser.component";
-import {LinkBrowserComponent} from "./link-browser/link-browser.component";
+import {TunnelBrowserComponent} from "./tunnel-browser/tunnel-browser.component";
 import {PromptComponent} from "./prompt/prompt.component";
 import {HmiBrowserComponent} from "./hmi-browser/hmi-browser.component";
 
@@ -36,10 +36,10 @@ export class ChooseService {
     return modal.afterClose
   }
 
-  chooseLink(params?: any) {
+  chooseTunnel(params?: any) {
     const modal = this.ms.create({
       nzTitle: '选择链接',
-      nzContent: LinkBrowserComponent,
+      nzContent: TunnelBrowserComponent,
       nzWidth: '80%',
       nzComponentParams: params,
     });
@@ -48,7 +48,7 @@ export class ChooseService {
 
   chooseElement(params?: any) {
     const modal = this.ms.create({
-      nzTitle: '选择元件',
+      nzTitle: '选择设备模板',
       nzContent: ElementBrowserComponent,
       nzWidth: '80%',
       nzComponentParams: params,
@@ -58,7 +58,7 @@ export class ChooseService {
 
   chooseTemplate() {
     const modal = this.ms.create({
-      nzTitle: '选择模板',
+      nzTitle: '选择工程模板',
       nzContent: TemplateBrowserComponent,
       nzWidth: '80%',
     });

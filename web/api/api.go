@@ -128,7 +128,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/server/:id", parseParamId, serverDetail)
 	app.POST("/server/:id", parseParamId, curdApiModify(modelServer,
 		[]string{"name", "type", "addr",
-			"retry", "register", "heartbeat", "serial", "protocol", "devices", "disabled"},
+			"retry", "register", "heartbeat", "protocol", "devices", "disabled"},
 		nil, afterServerUpdate))
 	app.GET("/server/:id/delete", parseParamId, curdApiDelete(modelServer, nil, afterServerDelete))
 
@@ -141,9 +141,10 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	//通道接口
 	modelTunnel := reflect.TypeOf(model.Tunnel{})
 	app.POST("/tunnel/list", tunnelList)
+	app.POST("/tunnel/create", curdApiCreate(modelTunnel, nil, afterTunnelCreate))
 	app.GET("/tunnel/:id", parseParamId, tunnelDetail)
 	app.POST("/tunnel/:id", parseParamId, curdApiModify(modelTunnel,
-		[]string{"name", "sn", "server_id", "disabled"},
+		[]string{"name", "type", "addr", "sn", "retry", "heartbeat", "serial", "protocol", "disabled"},
 		nil, nil))
 	app.GET("/tunnel/:id/delete", parseParamId, curdApiDelete(modelTunnel, nil, afterTunnelDelete))
 	app.GET("/tunnel/:id/start", parseParamId, tunnelStart)

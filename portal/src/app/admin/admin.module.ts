@@ -46,8 +46,8 @@ import {WelcomeComponent} from "./welcome/welcome.component";
 import {UnknownComponent} from "./unknown/unknown.component";
 import {DashComponent} from "./dash/dash.component";
 import {HomeComponent} from "./home/home.component";
+import {ServerComponent} from "./server/server.component";
 import {TunnelComponent} from "./tunnel/tunnel.component";
-import {LinkComponent} from "./link/link.component";
 import {DeviceComponent} from "./device/device.component";
 import {ElementComponent} from "./element/element.component";
 import {ProjectComponent} from "./project/project.component";
@@ -57,10 +57,10 @@ import {ProtocolComponent} from "./protocol/protocol.component";
 import {SettingComponent} from "./setting/setting.component";
 import {UserComponent} from "./user/user.component";
 import {PasswordComponent} from "./password/password.component";
+import {ServerDetailComponent} from "./server-detail/server-detail.component";
+import {ServerEditComponent} from "./server-edit/server-edit.component";
 import {TunnelDetailComponent} from "./tunnel-detail/tunnel-detail.component";
 import {TunnelEditComponent} from "./tunnel-edit/tunnel-edit.component";
-import {LinkDetailComponent} from "./link-detail/link-detail.component";
-import {LinkEditComponent} from "./link-edit/link-edit.component";
 import {DeviceDetailComponent} from "./device-detail/device-detail.component";
 import {DeviceEditComponent} from "./device-edit/device-edit.component";
 import {ElementDetailComponent} from "./element-detail/element-detail.component";
@@ -82,14 +82,14 @@ import {ContainerComponent} from "./container/container.component";
 import {EditRegisterComponent} from "./edit-register/edit-register.component";
 import {EditHeartbeatComponent} from "./edit-heartbeat/edit-heartbeat.component";
 import {EditProtocolComponent} from "./edit-protocol/edit-protocol.component";
-import {TunnelEditDevicesComponent} from "./tunnel-edit-devices/tunnel-edit-devices.component";
+import {ServerEditDevicesComponent} from "./server-edit-devices/server-edit-devices.component";
 import {EventComponent} from "./event/event.component";
-import {LinkDeviceComponent} from "./link-device/link-device.component";
+import {TunnelDeviceComponent} from "./tunnel-device/tunnel-device.component";
 import {TemplateProjectComponent} from "./template-project/template-project.component";
 import {ElementDeviceComponent} from "./element-device/element-device.component";
 import {ElementBrowserComponent} from "./element-browser/element-browser.component";
 import {DeviceBrowserComponent} from "./device-browser/device-browser.component";
-import {LinkBrowserComponent} from "./link-browser/link-browser.component";
+import {TunnelBrowserComponent} from "./tunnel-browser/tunnel-browser.component";
 import {ChooseService} from "./choose.service";
 import {PromptComponent} from "./prompt/prompt.component";
 import {UserBrowserComponent} from "./user-browser/user-browser.component";
@@ -100,16 +100,16 @@ import {ChooseTemplateComponent} from "./choose-template/choose-template.compone
 import {EditDevicesComponent} from "./edit-devices/edit-devices.component";
 import {ChooseElementComponent} from "./choose-element/choose-element.component";
 import {ChooseDeviceComponent} from "./choose-device/choose-device.component";
-import {ChooseLinkComponent} from "./choose-link/choose-link.component.component";
+import {ChooseTunnelComponent} from "./choose-tunnel/choose-tunnel.component.component";
 import {EditElementsComponent} from "./edit-elements/edit-elements.component";
 import {EditAlarmsComponent} from "./edit-alarms/edit-alarms.component";
 import {EditDirectivesComponent} from "./edit-directives/edit-directives.component";
 import {EditInvokesComponent} from "./edit-invokes/edit-invokes.component";
-import {TunnelLinkComponent} from "./tunnel-link/tunnel-link.component";
+import {ServerTunnelComponent} from "./server-tunnel/server-tunnel.component";
 import {EditSerialComponent} from "./edit-serial/edit-serial.component";
 import {EditRetryComponent} from "./edit-retry/edit-retry.component";
 import {NzListModule} from "ng-zorro-antd/list";
-import {LinkMonitorComponent} from "./link-monitor/link-monitor.component";
+import {TunnelMonitorComponent} from "./tunnel-monitor/tunnel-monitor.component";
 import {PipeComponent} from "./pipe/pipe.component";
 import {PipeDetailComponent} from "./pipe-detail/pipe-detail.component";
 import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
@@ -134,11 +134,11 @@ import {NzPopoverModule} from "ng-zorro-antd/popover";
     UnknownComponent,
     DashComponent,
     HomeComponent,
-    TunnelComponent, TunnelDetailComponent, TunnelEditComponent,
+    ServerComponent, ServerDetailComponent, ServerEditComponent,
     EditRegisterComponent, EditHeartbeatComponent, EditProtocolComponent, EditSerialComponent, EditRetryComponent,
-    TunnelEditDevicesComponent, TunnelLinkComponent,
-    LinkComponent, LinkDetailComponent, LinkEditComponent, LinkDeviceComponent, LinkMonitorComponent,
-    LinkBrowserComponent,
+    ServerEditDevicesComponent, ServerTunnelComponent,
+    TunnelComponent, TunnelDetailComponent, TunnelEditComponent, TunnelDeviceComponent, TunnelMonitorComponent,
+    TunnelBrowserComponent,
     PipeComponent, PipeDetailComponent, PipeEditComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
     DeviceBrowserComponent, DeviceValueComponent, DeviceHmiComponent,
@@ -161,7 +161,7 @@ import {NzPopoverModule} from "ng-zorro-antd/popover";
     PasswordComponent,
     PromptComponent,
     ChooseTemplateComponent, ChooseElementComponent, ChooseHmiComponent,
-    ChooseDeviceComponent, ChooseLinkComponent,
+    ChooseDeviceComponent, ChooseTunnelComponent,
   ],
     imports: [
         CommonModule,

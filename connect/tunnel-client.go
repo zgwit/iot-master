@@ -11,8 +11,7 @@ import (
 //TunnelClient 网络链接
 type TunnelClient struct {
 	tunnelBase
-	net   string
-	retry int
+	net string
 }
 
 func newTunnelClient(tunnel *model.Tunnel, net string) *TunnelClient {

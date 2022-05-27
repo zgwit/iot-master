@@ -18,7 +18,7 @@ export class DeviceEditComponent implements OnInit {
   data: any = {
     "name": "新建设备",
     "element_id": "",
-    "link_id": 0,
+    "tunnel_id": 0,
     "hmi":"",
     "tags": [],
     "station": 1,
@@ -43,7 +43,7 @@ export class DeviceEditComponent implements OnInit {
       hmi: [this.data.hmi, []],
       tags: [this.data.tags, []],
       element_id: [this.data.element_id, [Validators.required]],
-      link_id: [this.data.link_id, [Validators.required]],
+      tunnel_id: [this.data.tunnel_id, [Validators.required]],
       station: [this.data.station, [Validators.required]],
 
       disabled: [this.data.disabled, [Validators.required]],

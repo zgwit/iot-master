@@ -33,9 +33,9 @@
       <td>{{data.last | fromNow}}</td>
       <td>{{data.running ? '在线' : '离线'}}</td>
       <td>
-        <a [routerLink]="'/admin/link/detail/'+data.id">详情</a>
+        <a [routerLink]="'/admin/tunnel/detail/'+data.id">详情</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <a [routerLink]="'/admin/link/edit/'+data.id">编辑</a>
+        <a [routerLink]="'/admin/tunnel/edit/'+data.id">编辑</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
           更多

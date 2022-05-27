@@ -14,11 +14,11 @@ export let SideMenu = [
         router: 'tunnel'
       },
       {
-        title: '连接',
-        router: 'link'
+        title: '服务器',
+        router: 'server'
       },
       {
-        title: '透传',
+        title: '远程调试',
         router: 'pipe'
       },
     ]
@@ -32,30 +32,30 @@ export let SideMenu = [
         router: 'device'
       },
       {
-        title: '元件库',
+        title: '设备模板',
         router: 'element'
       },
       {
-        title: '在线元件库',
+        title: '在线设备模板',
         router: 'online-element',
         disabled: true,
       },
     ]
   },
   {
-    title: '项目管理',
+    title: '工程管理',
     icon: 'cluster', //project
     children: [
       {
-        title: '项目',
+        title: '工程',
         router: 'project'
       },
       {
-        title: '模板库',
+        title: '工程模板',
         router: 'template'
       },
       {
-        title: '在线模板库',
+        title: '在线工程模板',
         router: 'online-template',
         disabled: true,
       },

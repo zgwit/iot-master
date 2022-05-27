@@ -6,8 +6,8 @@ import {UnknownComponent} from "./unknown/unknown.component";
 import {LogoutGuard} from "./logout.guard";
 import {DashComponent} from "./dash/dash.component";
 import {HomeComponent} from "./home/home.component";
+import {ServerComponent} from "./server/server.component";
 import {TunnelComponent} from "./tunnel/tunnel.component";
-import {LinkComponent} from "./link/link.component";
 import {DeviceComponent} from "./device/device.component";
 import {ElementComponent} from "./element/element.component";
 import {ProjectComponent} from "./project/project.component";
@@ -17,8 +17,8 @@ import {ProtocolComponent} from "./protocol/protocol.component";
 import {SettingComponent} from "./setting/setting.component";
 import {UserComponent} from "./user/user.component";
 import {PasswordComponent} from "./password/password.component";
+import {ServerDetailComponent} from "./server-detail/server-detail.component";
 import {TunnelDetailComponent} from "./tunnel-detail/tunnel-detail.component";
-import {LinkDetailComponent} from "./link-detail/link-detail.component";
 import {DeviceDetailComponent} from "./device-detail/device-detail.component";
 import {DeviceEditComponent} from "./device-edit/device-edit.component";
 import {ElementEditComponent} from "./element-edit/element-edit.component";
@@ -26,11 +26,11 @@ import {ProjectDetailComponent} from "./project-detail/project-detail.component"
 import {ProjectEditComponent} from "./project-edit/project-edit.component";
 import {TemplateEditComponent} from "./template-edit/template-edit.component";
 import {ContainerComponent} from "./container/container.component";
+import {ServerEditComponent} from "./server-edit/server-edit.component";
 import {TunnelEditComponent} from "./tunnel-edit/tunnel-edit.component";
-import {LinkEditComponent} from "./link-edit/link-edit.component";
 import {TemplateDetailComponent} from "./template-detail/template-detail.component";
 import {ElementDetailComponent} from "./element-detail/element-detail.component";
-import {LinkMonitorComponent} from "./link-monitor/link-monitor.component";
+import {TunnelMonitorComponent} from "./tunnel-monitor/tunnel-monitor.component";
 import {PipeComponent} from "./pipe/pipe.component";
 import {PipeDetailComponent} from "./pipe-detail/pipe-detail.component";
 import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
@@ -61,22 +61,22 @@ const routes: Routes = [
       {path: 'home', component: HomeComponent, data: {breadcrumb: "首页"}},
 
       {
-        path: 'tunnel', component: ContainerComponent, data: {breadcrumb: "通道"}, children: [
-          {path: '', component: TunnelComponent, data: {breadcrumb: "列表"}},
+        path: 'server', component: ContainerComponent, data: {breadcrumb: "服务器"}, children: [
+          {path: '', component: ServerComponent, data: {breadcrumb: "列表"}},
           //{path: ':id', component: TunnelDetailComponent, data: {breadcrumb: "详情"}},
-          {path: 'detail/:id', component: TunnelDetailComponent, data: {breadcrumb: "详情"}},
-          {path: 'edit/:id', component: TunnelEditComponent, data: {breadcrumb: "编辑"}},
-          {path: 'create', component: TunnelEditComponent, data: {breadcrumb: "创建"}},
+          {path: 'detail/:id', component: ServerDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: ServerEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: ServerEditComponent, data: {breadcrumb: "创建"}},
         ]
       },
 
       {
-        path: 'link', component: ContainerComponent, data: {breadcrumb: "连接"}, children: [
-          {path: '', component: LinkComponent, data: {breadcrumb: "连接"}},
-          {path: 'detail/:id', component: LinkDetailComponent, data: {breadcrumb: "详情"}},
-          {path: 'edit/:id', component: LinkEditComponent, data: {breadcrumb: "编辑"}},
-          {path: 'create', component: LinkEditComponent, data: {breadcrumb: "创建"}},
-          {path: 'monitor/:id', component: LinkMonitorComponent, data: {breadcrumb: "监控"}},
+        path: 'tunnel', component: ContainerComponent, data: {breadcrumb: "通道"}, children: [
+          {path: '', component: TunnelComponent, data: {breadcrumb: "通道"}},
+          {path: 'detail/:id', component: TunnelDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: TunnelEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: TunnelEditComponent, data: {breadcrumb: "创建"}},
+          {path: 'monitor/:id', component: TunnelMonitorComponent, data: {breadcrumb: "监控"}},
         ]
       },
 
@@ -100,8 +100,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'element', component: ContainerComponent, data: {breadcrumb: "元件"}, children: [
-          {path: '', component: ElementComponent, data: {breadcrumb: "元件"}},
+        path: 'element', component: ContainerComponent, data: {breadcrumb: "设备模板"}, children: [
+          {path: '', component: ElementComponent, data: {breadcrumb: "设备模板"}},
           {path: 'detail/:id', component: ElementDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: ElementEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: ElementEditComponent, data: {breadcrumb: "创建"}},
@@ -109,8 +109,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'project', component: ContainerComponent, data: {breadcrumb: "项目"}, children: [
-          {path: '', component: ProjectComponent, data: {breadcrumb: "项目"}},
+        path: 'project', component: ContainerComponent, data: {breadcrumb: "工程"}, children: [
+          {path: '', component: ProjectComponent, data: {breadcrumb: "工程"}},
           {path: 'detail/:id', component: ProjectDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: ProjectEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: ProjectEditComponent, data: {breadcrumb: "创建"}},
@@ -118,8 +118,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'template', component: ContainerComponent, data: {breadcrumb: "模板"}, children: [
-          {path: '', component: TemplateComponent, data: {breadcrumb: "模板"}},
+        path: 'template', component: ContainerComponent, data: {breadcrumb: "工程模板"}, children: [
+          {path: '', component: TemplateComponent, data: {breadcrumb: "工程模板"}},
           {path: 'detail/:id', component: TemplateDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: TemplateEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: TemplateEditComponent, data: {breadcrumb: "创建"}},

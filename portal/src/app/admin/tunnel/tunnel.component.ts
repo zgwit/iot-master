@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {Router} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {parseTableQuery} from "../table";
 
 @Component({
@@ -17,13 +17,6 @@ export class TunnelComponent implements OnInit {
   total = 1;
   pageSize = 20;
   pageIndex = 1;
-  filterType = [
-    {text: 'TCP服务器', value: 'tcp-server'},
-    {text: 'TCP客户端', value: 'tcp-client'},
-    {text: 'UDP服务器', value: 'udp-server'},
-    {text: 'UDP客户端', value: 'udp-client'},
-    {text: '串口', value: 'serial'},
-  ];
 
   params: any = {filter: {}};
 
@@ -39,7 +32,7 @@ export class TunnelComponent implements OnInit {
     this.pageIndex = 1;
     this.params.skip = 0;
     if (keyword)
-      this.params.keyword = {name: keyword, type: keyword, address: keyword};
+      this.params.keyword = {name: keyword, sn: keyword};
     else
       delete this.params.keyword;
     this.load();

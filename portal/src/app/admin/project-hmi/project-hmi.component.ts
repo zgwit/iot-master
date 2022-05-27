@@ -39,7 +39,7 @@ export class ProjectHmiComponent implements OnInit, OnDestroy {
     const host = environment.production ? location.origin.replace(/^http/, 'ws') : 'ws://localhost:8080';
 
     this.ws = new WebSocket(`${host}/api/device/${this.id}/watch`);
-    //this.transfer = this.san.bypassSecurityTrustUrl(`open-vcom://${host}/api/link/${this._id}/transfer`);
+    //this.transfer = this.san.bypassSecurityTrustUrl(`open-vcom://${host}/api/tunnel/${this._id}/transfer`);
 
     this.ws.onmessage = (e: any) => {
       console.log('websocket onmessage', e.data)

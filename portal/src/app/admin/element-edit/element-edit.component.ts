@@ -15,7 +15,7 @@ export class ElementEditComponent implements OnInit {
 
   basicForm: FormGroup = new FormGroup({});
   data: any = {
-    "name": "新建元件",
+    "name": "新建设备模板",
     "hmi":"",
     "tags": [],
     "manufacturer": "",

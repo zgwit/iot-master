@@ -6,11 +6,11 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import {parseTableQuery} from "../table";
 
 @Component({
-  selector: 'app-link-device',
-  templateUrl: './link-device.component.html',
-  styleUrls: ['./link-device.component.scss']
+  selector: 'app-tunnel-device',
+  templateUrl: './tunnel-device.component.html',
+  styleUrls: ['./tunnel-device.component.scss']
 })
-export class LinkDeviceComponent implements OnInit {
+export class TunnelDeviceComponent implements OnInit {
   @Input() id = '';
 
   datum: any[] = [];
@@ -46,7 +46,7 @@ export class LinkDeviceComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.params.filter.link_id = this.id;
+    this.params.filter.tunnel_id = this.id;
     this.rs.post('device/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
@@ -57,7 +57,7 @@ export class LinkDeviceComponent implements OnInit {
   }
 
   create(): void {
-    this.router.navigate(["admin/device/create"], {queryParams: {link_id: this.id}});
+    this.router.navigate(["admin/device/create"], {queryParams: {tunnel_id: this.id}});
   }
 
   open(data: any): void {

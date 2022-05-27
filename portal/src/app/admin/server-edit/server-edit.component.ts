@@ -5,20 +5,41 @@ import {RequestService} from "../../request.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
-  selector: 'app-link-edit',
-  templateUrl: './link-edit.component.html',
-  styleUrls: ['./link-edit.component.scss']
+  selector: 'app-server-edit',
+  templateUrl: './server-edit.component.html',
+  styleUrls: ['./server-edit.component.scss']
 })
-export class LinkEditComponent implements OnInit {
+export class ServerEditComponent implements OnInit {
   id: any;
   submitting = false;
 
   basicForm: FormGroup = new FormGroup({});
 
   data: any = {
-    "name": "",
-    "timeout": 60,
-    "disabled": true,
+    "name": "新建服务器",
+    "type": "tcp",
+    "addr": "",
+    "disabled": false,
+    "register": {
+      "regex": '^\\w+$'
+    },
+    "heartbeat": {
+      "enable": false,
+      "timeout": 30,
+      "text": "",
+      "hex": "",
+      "regex": '^\\w+$'
+    },
+    retry: {
+      "enable": true,
+      "timeout": 30,
+      "maximum": 0,
+    },
+    "protocol": {
+      "name": "ModbusTCP",
+      "options": {}
+    },
+    "devices": []
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
@@ -30,8 +51,14 @@ export class LinkEditComponent implements OnInit {
   buildForm(): void {
     this.basicForm = this.fb.group({
       name: [this.data.name, [Validators.required]],
-      timeout: [this.data.timeout, [Validators.required]],
-      disabled: [this.data.disabled, [Validators.required]],
+      type: [this.data.type, [Validators.required]],
+      addr: [this.data.addr, [Validators.required]],
+      disabled: [this.data.disabled, []],
+      register: [this.data.register, []],
+      heartbeat: [this.data.heartbeat, []],
+      retry: [this.data.retry, []],
+      protocol: [this.data.protocol, []],
+      devices: [this.data.devices, []],
     });
   }
 
@@ -40,7 +67,7 @@ export class LinkEditComponent implements OnInit {
 
 
   load(): void {
-    this.rs.get('link/' + this.id).subscribe(res => {
+    this.rs.get('server/' + this.id).subscribe(res => {
       this.data = res.data;
       this.buildForm();
     })
@@ -48,10 +75,10 @@ export class LinkEditComponent implements OnInit {
 
   submit(): void {
     this.submitting = true
-    const uri = 'link/' + this.id;
+    const uri = this.id ? 'server/' + this.id : 'server/create';
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
-      this.router.navigate(['/admin/link/detail/' + res.data.id]);
+      this.router.navigate(['/admin/server/detail/' + res.data.id]);
     }).add(() => {
       this.submitting = false;
     })

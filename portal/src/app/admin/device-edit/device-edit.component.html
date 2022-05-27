@@ -10,16 +10,16 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="5">元件</nz-form-label>
+        <nz-form-label [nzSpan]="5">设备模板</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <app-choose-element formControlName="element_id" [showClear]="true"></app-choose-element>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="5">连接</nz-form-label>
+        <nz-form-label [nzSpan]="5">通道</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <app-choose-link formControlName="link_id"></app-choose-link>
+          <app-choose-tunnel formControlName="tunnel_id"></app-choose-tunnel>
         </nz-form-control>
       </nz-form-item>
 

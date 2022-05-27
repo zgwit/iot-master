@@ -1,35 +1,27 @@
-
-
 <nz-tabset [nzTabBarExtraContent]="extraTemplate">
-  <nz-tab nzTitle="连接详情">
+  <nz-tab nzTitle="服务器详情">
 
     <nz-list nzBordered>
       <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
-      <nz-list-item><span>SN</span>{{data.sn}}</nz-list-item>
-      <nz-list-item>
-        <span>通道</span>
-        <a [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel}}</a>
-      </nz-list-item>
+      <nz-list-item><span>类型</span>{{data.type}}</nz-list-item>
+      <nz-list-item><span>地址</span>{{data.addr}}</nz-list-item>
       <nz-list-item><span>状态</span>{{data.running ? '启动' : '停止'}}</nz-list-item>
       <nz-list-item>
         <span>禁用</span>
         <nz-switch [ngModel]="data.disabled" (ngModelChange)="onEnableChange($event)"></nz-switch>
       </nz-list-item>
-      <nz-list-item><span>上线时间</span>{{data.last|dateString}}</nz-list-item>
       <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
     </nz-list>
 
-    <a [routerLink]="'/admin/link/monitor/'+data.id">监控</a>
-
   </nz-tab>
-  <nz-tab nzTitle="相关设备">
+  <nz-tab nzTitle="相关通道">
     <ng-template nz-tab>
-      <app-link-device [id]="id"></app-link-device>
+      <app-server-tunnel [id]="id"></app-server-tunnel>
     </ng-template>
   </nz-tab>
   <nz-tab nzTitle="日志">
     <ng-template nz-tab>
-      <app-event type="link" [id]="id"></app-event>
+      <app-event type="tunnel" [id]="id"></app-event>
     </ng-template>
   </nz-tab>
 
@@ -44,7 +36,7 @@
     <i nz-icon nzType="profile"></i>
   </a>
   <nz-divider nzType="vertical"></nz-divider>
-  <a title="编辑" [routerLink]="'/admin/link/edit/'+id">
+  <a title="编辑" [routerLink]="'/admin/server/edit/'+id">
     <i nz-icon nzType="form"></i>
   </a>
 </ng-template>

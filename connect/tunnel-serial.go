@@ -4,18 +4,13 @@ import (
 	"errors"
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"time"
 )
 
 //TunnelSerial 串口
 type TunnelSerial struct {
-	events.EventEmitter
 	tunnelBase
-
-	retry   int
-	running bool
 }
 
 func newTunnelSerial(tunnel *model.Tunnel) *TunnelSerial {

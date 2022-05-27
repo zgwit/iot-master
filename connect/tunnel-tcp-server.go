@@ -3,7 +3,6 @@ package connect
 import (
 	"errors"
 	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"net"
 	"time"
@@ -11,12 +10,9 @@ import (
 
 //TunnelTcpServer TCP服务器
 type TunnelTcpServer struct {
-	events.EventEmitter
 	tunnelBase
 
 	listener *net.TCPListener
-
-	running bool
 }
 
 func newTunnelTcpServer(tunnel *model.Tunnel) *TunnelTcpServer {
