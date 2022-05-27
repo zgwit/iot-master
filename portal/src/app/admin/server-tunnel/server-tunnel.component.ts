@@ -33,7 +33,7 @@ export class ServerTunnelComponent implements OnInit {
     this.pageIndex = 1;
     this.params.skip = 0;
     if (keyword)
-      this.params.keyword = {name: keyword, sn: keyword};
+      this.params.keyword = {name: keyword, addr: keyword};
     else
       delete this.params.keyword;
     this.load();

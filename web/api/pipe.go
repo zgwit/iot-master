@@ -19,7 +19,7 @@ func pipeList(ctx *gin.Context) {
 
 	query := body.toQuery()
 	query.Select("pipe.*, " + //TODO 只返回需要的字段
-		" 0 as running, tunnel.sn as tunnel")
+		" 0 as running, tunnel.name as tunnel")
 	query.Join("LEFT", "tunnel", "pipe.tunnel_id=tunnel.id")
 
 	cnt, err := query.FindAndCount(&pipes)

@@ -144,7 +144,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/tunnel/create", curdApiCreate(modelTunnel, nil, afterTunnelCreate))
 	app.GET("/tunnel/:id", parseParamId, tunnelDetail)
 	app.POST("/tunnel/:id", parseParamId, curdApiModify(modelTunnel,
-		[]string{"name", "type", "addr", "sn", "retry", "heartbeat", "serial", "protocol", "disabled"},
+		[]string{"name", "type", "addr", "retry", "heartbeat", "serial", "protocol", "disabled"},
 		nil, nil))
 	app.GET("/tunnel/:id/delete", parseParamId, curdApiDelete(modelTunnel, nil, afterTunnelDelete))
 	app.GET("/tunnel/:id/start", parseParamId, tunnelStart)

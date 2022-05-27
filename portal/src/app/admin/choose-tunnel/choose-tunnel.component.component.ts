@@ -49,7 +49,7 @@ export class ChooseTunnelComponent implements OnInit, ControlValueAccessor {
     if (!this.id) return;
     this.name = "加载中...";
     this.rs.get(`tunnel/${this.id}`).subscribe(res=>{
-      this.name = res.data.name || res.data.sn || res.data.remote;
+      this.name = res.data.name || res.data.addr || res.data.remote;
     })
   }
 

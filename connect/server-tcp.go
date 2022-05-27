@@ -85,6 +85,7 @@ func (server *ServerTCP) Open() error {
 			if !has {
 				//保存一条新记录
 				tunnel.Type = "server-tcp"
+				tunnel.Name = sn
 				_, _ = db.Engine.InsertOne(&tunnel)
 			} else {
 				//上线
