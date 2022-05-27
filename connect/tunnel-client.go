@@ -48,6 +48,8 @@ func (client *TunnelClient) Open() error {
 
 func (client *TunnelClient) receive() {
 	client.running = true
+	client.Emit("online")
+
 	buf := make([]byte, 1024)
 	for {
 		n, err := client.link.Read(buf)
@@ -70,6 +72,7 @@ func (client *TunnelClient) receive() {
 		client.Emit("data", buf[:n])
 	}
 	client.running = false
+	client.Emit("offline")
 
 	//重连
 	retry := &client.tunnel.Retry

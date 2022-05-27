@@ -26,6 +26,156 @@ type Tunnel struct {
 	adapter  protocol.Adapter
 }
 
+func bindTunnel(instance connect.Tunnel) error {
+	tunnel := &Tunnel{
+		Tunnel:   *instance.Model(),
+		Instance: instance,
+		adapter:  nil,
+	}
+	allTunnels.Store(tunnel.Id, tunnel)
+
+	//加载协议
+	adapter, err := protocols.Create(instance, tunnel.Protocol.Name, tunnel.Protocol.Options)
+	if err != nil {
+		return err
+	}
+	tunnel.adapter = adapter
+
+	//找到相关Device，导入Mapper
+	var devices []model.Device
+	err = db.Engine.Where("tunnel_id", tunnel.Id).Find(&devices)
+	if err != nil {
+		return err
+	}
+	for _, d := range devices {
+		dev := GetDevice(d.Id)
+		if dev != nil {
+			err := dev.Start()
+			if err != nil {
+				log.Error(err)
+				//return
+			}
+		}
+	}
+
+	//连接关闭时，关闭设备
+	instance.On("close", func() {
+		for _, d := range devices {
+			dev := GetDevice(d.Id)
+			if dev != nil {
+				err := dev.Stop()
+				if err != nil {
+					log.Error(err)
+					//return
+				}
+			}
+		}
+	})
+
+	instance.On("online", func() {
+		for _, d := range devices {
+			dev := GetDevice(d.Id)
+			if dev != nil {
+				err := dev.Start()
+				if err != nil {
+					log.Error(err)
+					//return
+				}
+			}
+		}
+	})
+	instance.On("offline", func() {
+		for _, d := range devices {
+			dev := GetDevice(d.Id)
+			if dev != nil {
+				err := dev.Stop()
+				if err != nil {
+					log.Error(err)
+					//return
+				}
+			}
+		}
+	})
+
+	return nil
+}
+
+func startTunnel(tunnel *model.Tunnel) error {
+	tnl, err := connect.NewTunnel(tunnel)
+	if err != nil {
+		//log.Error(err)
+		return err
+	}
+
+	err = tnl.Open()
+	if err != nil {
+		return err
+	}
+
+	return bindTunnel(tnl)
+}
+
+//LoadTunnels 加载通道
+func LoadTunnels() error {
+	var tunnels []*model.Tunnel
+	err := db.Engine.Limit(intsets.MaxInt).Where("server_id=0").Find(&tunnels)
+	if err != nil {
+		return err
+	}
+	for _, tunnel := range tunnels {
+		if tunnel.Disabled {
+			continue
+		}
+
+		tunnel := tunnel //避免range闭包问题
+		go func() {
+			err := startTunnel(tunnel)
+			if err != nil {
+				log.Error(err)
+			}
+		}()
+	}
+	return nil
+}
+
+//LoadTunnel 加载通道
+func LoadTunnel(id int64) error {
+	var tunnel model.Tunnel
+	has, err := db.Engine.ID(id).Get(&tunnel)
+	if err != nil {
+		return err
+	}
+	if !has {
+		return fmt.Errorf("连接不存在 %d", id)
+	}
+
+	if tunnel.Disabled {
+		return nil //TODO error ??
+	}
+	err = startTunnel(&tunnel)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func GetTunnel(id int64) *Tunnel {
+	d, ok := allTunnels.Load(id)
+	if ok {
+		return d.(*Tunnel)
+	}
+	return nil
+}
+
+func RemoveTunnel(id int64) error {
+	d, ok := allTunnels.LoadAndDelete(id)
+	if ok {
+		lnk := d.(*Tunnel)
+		return lnk.Instance.Close()
+	}
+	return nil //error
+}
+
 func startServer(server *model.Server) error {
 	svr, err := connect.NewServer(server)
 	if err != nil {
@@ -38,23 +188,11 @@ func startServer(server *model.Server) error {
 	})
 
 	svr.On("tunnel", func(tunnel connect.Tunnel) {
-		mod := tunnel.Model()
-
-		//加载协议
-		var adapter protocol.Adapter
-		adapter, err = protocols.Create(tunnel, mod.Protocol.Name, mod.Protocol.Options)
-		if err != nil {
-			log.Error(err)
-			//return 无协议，也应该保存起来，只是设备无法正常工作
-		}
-
-		allTunnels.Store(mod, &Tunnel{Tunnel: *mod, Instance: tunnel, adapter: adapter})
-
 		//第一次连接，初始化默认设备
 		if tunnel.First() && server.Devices != nil {
 			for _, d := range server.Devices {
 				dev := model.Device{
-					TunnelId:  mod.Id,
+					TunnelId:  tunnel.Model().Id,
 					Station:   d.Station,
 					ElementId: d.ElementId,
 				}
@@ -69,38 +207,11 @@ func startServer(server *model.Server) error {
 			}
 		}
 
-		//找到相关Device，导入Mapper
-		var devices []model.Device
-		err = db.Engine.Where("tunnel_id", mod.Id).Find(&devices)
+		err := bindTunnel(tunnel)
 		if err != nil {
 			log.Error(err)
-			return
+			//return 无协议，也应该保存起来，只是设备无法正常工作
 		}
-		for _, d := range devices {
-			dev := GetDevice(d.Id)
-			if dev != nil {
-				err := dev.Start()
-				if err != nil {
-					log.Error(err)
-					//return
-				}
-			}
-		}
-
-		//连接关闭时，关闭设备
-		tunnel.On("close", func() {
-			for _, d := range devices {
-				dev := GetDevice(d.Id)
-				if dev != nil {
-					err := dev.Stop()
-					if err != nil {
-						log.Error(err)
-						//return
-					}
-				}
-			}
-		})
-
 	})
 
 	err = svr.Open()
@@ -170,128 +281,6 @@ func RemoveServer(id int64) error {
 	if ok {
 		tnl := d.(*Server)
 		return tnl.Instance.Close()
-	}
-	return nil //error
-}
-
-func startTunnel(tunnel *model.Tunnel) error {
-	tnl, err := connect.NewTunnel(tunnel)
-	if err != nil {
-		//log.Error(err)
-		return err
-	}
-
-	instance := &Tunnel{
-		Tunnel:   *tunnel,
-		Instance: tnl,
-	}
-	allTunnels.Store(tunnel.Id, instance)
-
-	//加载协议
-	var adapter protocol.Adapter
-	adapter, err = protocols.Create(tnl, tunnel.Protocol.Name, tunnel.Protocol.Options)
-	if err != nil {
-		log.Error(err)
-		//return 无协议，也应该保存起来，只是设备无法正常工作
-	}
-
-	instance.adapter = adapter
-
-	//找到相关Device，导入Mapper
-	var devices []model.Device
-	err = db.Engine.Where("tunnel_id", tunnel.Id).Find(&devices)
-	if err != nil {
-		return err
-	}
-	for _, d := range devices {
-		dev := GetDevice(d.Id)
-		if dev != nil {
-			err := dev.Start()
-			if err != nil {
-				log.Error(err)
-				//return
-			}
-		}
-	}
-
-	//连接关闭时，关闭设备
-	tnl.On("close", func() {
-		for _, d := range devices {
-			dev := GetDevice(d.Id)
-			if dev != nil {
-				err := dev.Stop()
-				if err != nil {
-					log.Error(err)
-					//return
-				}
-			}
-		}
-	})
-
-	err = tnl.Open()
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-//LoadTunnels 加载通道
-func LoadTunnels() error {
-	var tunnels []*model.Tunnel
-	err := db.Engine.Limit(intsets.MaxInt).Where("server_id=0").Find(&tunnels)
-	if err != nil {
-		return err
-	}
-	for _, tunnel := range tunnels {
-		if tunnel.Disabled {
-			continue
-		}
-
-		tunnel := tunnel //避免range闭包问题
-		go func() {
-			err := startTunnel(tunnel)
-			if err != nil {
-				log.Error(err)
-			}
-		}()
-	}
-	return nil
-}
-
-//LoadTunnel 加载通道
-func LoadTunnel(id int64) error {
-	var tunnel model.Tunnel
-	has, err := db.Engine.ID(id).Get(&tunnel)
-	if err != nil {
-		return err
-	}
-	if !has {
-		return fmt.Errorf("连接不存在 %d", id)
-	}
-
-	if tunnel.Disabled {
-		return nil //TODO error ??
-	}
-	err = startTunnel(&tunnel)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetTunnel(id int64) *Tunnel {
-	d, ok := allTunnels.Load(id)
-	if ok {
-		return d.(*Tunnel)
-	}
-	return nil
-}
-
-func RemoveTunnel(id int64) error {
-	d, ok := allTunnels.LoadAndDelete(id)
-	if ok {
-		lnk := d.(*Tunnel)
-		return lnk.Instance.Close()
 	}
 	return nil //error
 }

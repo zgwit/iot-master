@@ -45,6 +45,8 @@ func (l *ServerTcpTunnel) Read(data []byte) (int, error) {
 
 func (l *ServerTcpTunnel) receive() {
 	l.running = true
+	l.Emit("online")
+
 	buf := make([]byte, 1024)
 	for {
 		n, err := l.link.Read(buf)
@@ -67,4 +69,5 @@ func (l *ServerTcpTunnel) receive() {
 		l.Emit("data", buf[:n])
 	}
 	l.running = false
+	l.Emit("offline")
 }

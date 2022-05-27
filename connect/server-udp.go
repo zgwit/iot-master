@@ -101,6 +101,8 @@ func (server *ServerUDP) Open() error {
 			//启动对应的设备 发消息
 			server.Emit("tunnel", tunnel)
 
+			tunnel.Emit("online")
+
 			tunnel.Once("close", func() {
 				delete(server.children, tnl.Id)
 				delete(server.tunnels, tunnel.addr.String())

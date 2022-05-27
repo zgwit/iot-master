@@ -41,6 +41,7 @@ func (server *TunnelUdpServer) Open() error {
 	server.conn = conn //共用连接
 
 	server.running = true
+	server.Emit("online")
 	go func() {
 		for {
 			buf := make([]byte, 1024)
@@ -55,6 +56,7 @@ func (server *TunnelUdpServer) Open() error {
 			server.Emit("data", data)
 		}
 		server.running = false
+		server.Emit("offline")
 	}()
 
 	return nil

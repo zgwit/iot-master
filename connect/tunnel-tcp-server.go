@@ -38,7 +38,7 @@ func (server *TunnelTcpServer) Open() error {
 		return err
 	}
 
-	server.running = true
+	//server.running = true
 	go func() {
 		for {
 			conn, err := server.listener.AcceptTCP()
@@ -56,7 +56,7 @@ func (server *TunnelTcpServer) Open() error {
 			server.receive()
 		}
 
-		server.running = false
+		//server.running = false
 	}()
 
 	return nil
@@ -64,6 +64,8 @@ func (server *TunnelTcpServer) Open() error {
 
 func (server *TunnelTcpServer) receive() {
 	server.running = true
+	server.Emit("online")
+
 	buf := make([]byte, 1024)
 	for {
 		n, err := server.link.Read(buf)
@@ -86,6 +88,7 @@ func (server *TunnelTcpServer) receive() {
 		server.Emit("data", buf[:n])
 	}
 	server.running = false
+	server.Emit("offline")
 }
 
 //Close 关闭

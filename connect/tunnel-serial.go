@@ -69,6 +69,8 @@ func (s *TunnelSerial) Write(data []byte) error {
 
 func (s *TunnelSerial) receive() {
 	s.running = true
+	s.Emit("online")
+
 	buf := make([]byte, 1024)
 	for {
 		n, err := s.link.Read(buf)
@@ -91,6 +93,7 @@ func (s *TunnelSerial) receive() {
 		s.Emit("data", buf[:n])
 	}
 	s.running = false
+	s.Emit("offline")
 
 	retry := &s.tunnel.Retry
 	if retry.Enable && (retry.Maximum == 0 || s.retry < retry.Maximum) {

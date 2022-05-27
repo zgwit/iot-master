@@ -196,11 +196,6 @@ func (dev *Device) Start() error {
 		return errors.New("未加载协议")
 	}
 
-	//链接关闭，则关闭实例
-	tunnel.Instance.On("close", func() {
-		_ = dev.Stop()
-	})
-
 	//绑定链接
 	err := dev.BindAdapter(tunnel.adapter)
 	if err != nil {
