@@ -43,7 +43,7 @@ func bindTunnel(instance connect.Tunnel) error {
 
 	//找到相关Device，导入Mapper
 	var devices []model.Device
-	err = db.Engine.Where("tunnel_id", tunnel.Id).Find(&devices)
+	err = db.Engine.Where("tunnel_id=?", tunnel.Id).Find(&devices)
 	if err != nil {
 		return err
 	}
