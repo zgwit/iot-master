@@ -76,16 +76,23 @@ func (server *TunnelTcpServer) receive() {
 		if n == 0 {
 			continue
 		}
+
+		data := buf[:n]
+		//过滤心跳包
+		if server.tunnel.Heartbeat.Enable && server.tunnel.Heartbeat.Check(data) {
+			continue
+		}
+
 		//透传转发
 		if server.pipe != nil {
-			_, err = server.pipe.Write(buf[:n])
+			_, err = server.pipe.Write(data)
 			if err != nil {
 				server.pipe = nil
 			} else {
 				continue
 			}
 		}
-		server.Emit("data", buf[:n])
+		server.Emit("data", data)
 	}
 	server.running = false
 	server.Emit("offline")

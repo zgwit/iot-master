@@ -52,7 +52,13 @@ func (server *TunnelUdpServer) Open() error {
 				break
 			}
 			server.addr = addr
+
 			data := buf[:n]
+			//过滤心跳包
+			if server.tunnel.Heartbeat.Enable && server.tunnel.Heartbeat.Check(data) {
+				continue
+			}
+
 			server.Emit("data", data)
 		}
 		server.running = false

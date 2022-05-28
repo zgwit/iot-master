@@ -40,7 +40,7 @@ func (client *TunnelClient) Open() error {
 
 	//上线
 	client.tunnel.Last = time.Now()
-	client.tunnel.Remote = conn.RemoteAddr().String()
+	client.tunnel.Remote = conn.LocalAddr().String()
 	_, _ = db.Engine.ID(client.tunnel.Id).Cols("last", "remote").Update(client.tunnel)
 
 	return nil
@@ -60,16 +60,23 @@ func (client *TunnelClient) receive() {
 		if n == 0 {
 			continue
 		}
+
+		data := buf[:n]
+		//过滤心跳包
+		if client.tunnel.Heartbeat.Enable && client.tunnel.Heartbeat.Check(data) {
+			continue
+		}
+
 		//透传转发
 		if client.pipe != nil {
-			_, err = client.pipe.Write(buf[:n])
+			_, err = client.pipe.Write(data)
 			if err != nil {
 				client.pipe = nil
 			} else {
 				continue
 			}
 		}
-		client.Emit("data", buf[:n])
+		client.Emit("data", data)
 	}
 	client.running = false
 	client.Emit("offline")

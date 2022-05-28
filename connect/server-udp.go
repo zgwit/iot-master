@@ -90,6 +90,8 @@ func (server *ServerUDP) Open() error {
 				//保存一条新记录
 				tunnel.Type = "server-udp"
 				tunnel.Name = sn
+				tunnel.Heartbeat = server.server.Heartbeat
+				tunnel.Protocol = server.server.Protocol
 				_, _ = db.Engine.InsertOne(&tunnel)
 			} else {
 				//上线
