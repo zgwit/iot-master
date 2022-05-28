@@ -18,8 +18,12 @@ type Job struct {
 
 //Start 启动任务
 func (j *Job) Start() error {
-	var err error
+	if j.job != nil {
+		j.job.Cancel()
+		//return errors.New("任务已经启动")
+	}
 
+	var err error
 	switch j.Type {
 	case "clock":
 		hours := j.Clock / 60
@@ -48,7 +52,9 @@ func (j *Job) Execute() {
 
 //Stop 取消任务
 func (j *Job) Stop() {
-	j.job.Cancel()
+	if j.job != nil {
+		j.job.Cancel()
+	}
 }
 
 //String 任务描述

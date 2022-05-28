@@ -18,6 +18,10 @@ type Poller struct {
 
 //Start 启动
 func (p *Poller) Start() (err error) {
+	if p.job != nil {
+		p.job.Cancel()
+		//return errors.New("已经启动")
+	}
 	switch p.Type {
 	case "interval":
 		p.job, err = cron.Interval(p.Interval, func() {
@@ -36,7 +40,6 @@ func (p *Poller) Start() (err error) {
 	}
 	return
 }
-
 
 //Execute 执行
 func (p *Poller) Execute() {
@@ -59,5 +62,7 @@ func (p *Poller) read() {
 
 //Stop 结束
 func (p *Poller) Stop() {
-	p.job.Cancel()
+	if p.job != nil {
+		p.job.Cancel()
+	}
 }
