@@ -12,7 +12,6 @@ import (
 var allDevices sync.Map
 var allProjects sync.Map
 
-
 //LoadDevices 加载设备
 func LoadDevices() error {
 	var devices []*model.Device
@@ -57,7 +56,7 @@ func LoadDevice(id int64) (*Device, error) {
 	}
 	//allDevices.Store(device.Id, dev)
 	allDevices.Store(id, dev)
-	err = dev.Start()
+	err = dev.Start() //此处应该交给tunnel online启动
 	return dev, nil
 }
 

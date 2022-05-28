@@ -188,6 +188,9 @@ func (dev *Device) Start() error {
 	if tunnel == nil {
 		return errors.New("找不到链接")
 	}
+	if !tunnel.Instance.Running() {
+		return errors.New("通道关闭")
+	}
 	if tunnel.adapter == nil {
 		return errors.New("未加载协议")
 	}

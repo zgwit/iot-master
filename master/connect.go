@@ -105,12 +105,12 @@ func startTunnel(tunnel *model.Tunnel) error {
 		return err
 	}
 
-	err = tnl.Open()
+	err = bindTunnel(tnl)
 	if err != nil {
 		return err
 	}
 
-	return bindTunnel(tnl)
+	return tnl.Open()
 }
 
 //LoadTunnels 加载通道
