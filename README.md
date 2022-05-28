@@ -97,10 +97,11 @@
 | Mitsubishi Q4E       | ❌   |     |             |
 
 
-## 其他
+## 案例
 
-- 项目支线版本已经在实际的养猪物联网和养鱼物联网项目中使用，效果良好
-- 项目主线还在持续开发中，有兴趣的小伙伴可以加入进来
+![案例](https://github.com/zgwit/iot-master/raw/main/docs/08.jpg)
+
+![案例](https://github.com/zgwit/iot-master/raw/main/docs/09.jpg)
 
 ## 联系方式
 

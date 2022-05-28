@@ -37,6 +37,8 @@ func RegisterRoutes(app *gin.RouterGroup) {
 			}
 		}()
 		ctx.Next()
+
+		//TODO 内容如果为空，返回404
 	})
 
 	app.POST("/login", login)
