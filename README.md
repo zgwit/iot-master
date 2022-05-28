@@ -39,27 +39,17 @@
 
 ## 组态编辑器（可视化）
 
-![云组态](https://github.com/zgwit/iot-master/raw/main/docs/hmi-editor.png)
+![云组态](https://iot-master.com/hmi-editor.png)
 
 ## 项目架构图
 
-![结构图](https://github.com/zgwit/iot-master/raw/main/docs/frame.svg)
+![结构图](https://iot-master.com/frame.svg)
 
 ## 前后端技术栈
 
 项目使用Golang进行开发，普通PC实测5w并发无压力，云端未实测，主要看带宽。
 > 该项目曾经使用Nodejs开发后端，但是Nodejs的是单线程模型，并不太适合物联网程序开发，有兴趣可以查看js分支。
 
-### 数据库
-
-| 类型    | 嵌入式      | 第三方数据库                  |
-|-------|----------|-------------------------|
-| 关系数据库 | SQLite3  | MySQL、PostgreSQL、Oracle |
-| 时序数据库 | tstorage | InfluxDB 2.0            |
-
-> 支持嵌入式数据库的原因有二：
-> 1. 简化安装，让用户直接体验，
-> 2. 支持智能网关和工控机
 
 ### Web框架
 
@@ -74,6 +64,18 @@
 [SVG.js](https://github.com/svgdotjs/svg.js) SVG框架，基于SVG实现Web组态
 
 [ECharts](https://github.com/apache/echarts) 图表框架，用于显示历史曲线
+
+### 数据库
+
+| 类型    | 嵌入式      | 第三方数据库                  |
+|-------|----------|-------------------------|
+| 关系数据库 | SQLite3  | MySQL、PostgreSQL、Oracle |
+| 时序数据库 | tstorage | InfluxDB 2.0            |
+
+> 支持嵌入式数据库的原因有二：
+> 1. 简化安装，开箱即用
+> 2. 应用灵活，支持智能网关和工控机
+
 
 ## 协议支持
 
@@ -99,9 +101,9 @@
 
 ## 案例
 
-![案例](https://github.com/zgwit/iot-master/raw/main/docs/08.jpg)
+![案例](https://iot-master.com/ppt/08.jpg)
 
-![案例](https://github.com/zgwit/iot-master/raw/main/docs/09.jpg)
+![案例](https://iot-master.com/ppt/09.jpg)
 
 ## 联系方式
 
