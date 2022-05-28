@@ -30,11 +30,6 @@ export class ServerEditComponent implements OnInit {
       "hex": "",
       "regex": '^\\w+$'
     },
-    retry: {
-      "enable": true,
-      "timeout": 30,
-      "maximum": 0,
-    },
     "protocol": {
       "name": "ModbusTCP",
       "options": {}
@@ -56,7 +51,6 @@ export class ServerEditComponent implements OnInit {
       disabled: [this.data.disabled, []],
       register: [this.data.register, []],
       heartbeat: [this.data.heartbeat, []],
-      retry: [this.data.retry, []],
       protocol: [this.data.protocol, []],
       devices: [this.data.devices, []],
     });

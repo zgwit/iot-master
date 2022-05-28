@@ -5,7 +5,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">名称</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="name" required/>
+          <input nz-input formControlName="name" max="40" required/>
         </nz-form-control>
       </nz-form-item>
 
@@ -20,7 +20,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">端口</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <nz-input-number formControlName="port" [nzMin]="100" [nzMax]="65535"></nz-input-number>
+          <nz-input-number formControlName="port" [nzMin]="100" [nzMax]="65535" nzPlaceHolder="TCP监听端口，请注意避免端口冲突"></nz-input-number>
         </nz-form-control>
       </nz-form-item>
 

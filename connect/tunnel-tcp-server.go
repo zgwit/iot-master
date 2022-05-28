@@ -99,8 +99,12 @@ func (server *TunnelTcpServer) receive() {
 }
 
 //Close 关闭
-func (server *TunnelTcpServer) Close() (err error) {
-	server.Emit("close")
-	_ = server.link.Close()
-	return server.listener.Close()
+func (server *TunnelTcpServer) Close() error {
+	if server.listener != nil {
+		err := server.listener.Close()
+		if err != nil {
+			return err
+		}
+	}
+	return server.tunnelBase.Close()
 }

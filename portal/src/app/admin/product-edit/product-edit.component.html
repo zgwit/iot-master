@@ -21,7 +21,7 @@
         <nz-form-label [nzSpan]="5">标签</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',', '，', ';', ' ']" formControlName="tags"
-                     nzSize="small" (ngModelChange)="change()"></nz-select>
+                     nzSize="small" (ngModelChange)="change()" nzPlaceHolder="以逗号间隔"></nz-select>
         </nz-form-control>
       </nz-form-item>
 
@@ -39,10 +39,6 @@
         </nz-form-control>
       </nz-form-item>
 
-    </nz-collapse-panel>
-
-    <nz-collapse-panel nzHeader="变量" nzActive>
-      <app-yaml-editor formControlName="context"></app-yaml-editor>
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="数据点" nzActive>

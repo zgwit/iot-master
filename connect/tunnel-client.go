@@ -3,6 +3,7 @@ package connect
 import (
 	"errors"
 	"github.com/zgwit/iot-master/db"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
 	"net"
 	"time"
@@ -31,8 +32,10 @@ func (client *TunnelClient) Open() error {
 	//发起连接
 	conn, err := net.Dial(client.net, client.tunnel.Addr)
 	if err != nil {
+		client.Retry()
 		return err
 	}
+	client.retry = 0
 	client.link = conn
 
 	//开始接收数据
@@ -44,6 +47,21 @@ func (client *TunnelClient) Open() error {
 	_, _ = db.Engine.ID(client.tunnel.Id).Cols("last", "remote").Update(client.tunnel)
 
 	return nil
+}
+
+func (client *TunnelClient) Retry() {
+	//重连
+	retry := &client.tunnel.Retry
+	if retry.Enable && (retry.Maximum == 0 || client.retry < retry.Maximum) {
+		client.retry++
+		client.retryTimer = time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {
+			client.retryTimer = nil
+			err := client.Open()
+			if err != nil {
+				log.Error(err)
+			}
+		})
+	}
 }
 
 func (client *TunnelClient) receive() {
@@ -81,14 +99,7 @@ func (client *TunnelClient) receive() {
 	client.running = false
 	client.Emit("offline")
 
-	//重连
-	retry := &client.tunnel.Retry
-	if retry.Enable && (retry.Maximum == 0 || client.retry < retry.Maximum) {
-		client.retry++
-		time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {
-			_ = client.Open()
-		})
-	}
+	client.Retry()
 }
 
 //Close 关闭

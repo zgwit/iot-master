@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/jacobsa/go-serial/serial"
 	"github.com/zgwit/iot-master/db"
+	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
 	"time"
 )
@@ -38,10 +39,12 @@ func (s *TunnelSerial) Open() error {
 	port, err := serial.Open(options)
 	if err != nil {
 		//TODO 串口重试
+		s.Retry()
 		return err
 	}
 	s.running = true
 	s.link = port
+	s.retry = 0
 
 	//清空重连计数
 	s.retry = 0
@@ -54,17 +57,18 @@ func (s *TunnelSerial) Open() error {
 
 	return nil
 }
-
-//Write 写
-func (s *TunnelSerial) Write(data []byte) error {
-	if s.pipe != nil {
-		return nil //透传模式下，直接抛弃
+func (s *TunnelSerial) Retry() {
+	retry := &s.tunnel.Retry
+	if retry.Enable && (retry.Maximum == 0 || s.retry < retry.Maximum) {
+		s.retry++
+		s.retryTimer = time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {
+			s.retryTimer = nil
+			err := s.Open()
+			if err != nil {
+				log.Error(err)
+			}
+		})
 	}
-	_, err := s.link.Write(data)
-	if err != nil {
-		s.onClose()
-	}
-	return err
 }
 
 func (s *TunnelSerial) receive() {
@@ -95,23 +99,5 @@ func (s *TunnelSerial) receive() {
 	s.running = false
 	s.Emit("offline")
 
-	retry := &s.tunnel.Retry
-	if retry.Enable && (retry.Maximum == 0 || s.retry < retry.Maximum) {
-		s.retry++
-		time.AfterFunc(time.Second*time.Duration(retry.Timeout), func() {
-			_ = s.Open()
-		})
-	}
-}
-
-//Close 关闭
-func (s *TunnelSerial) Close() error {
-	s.Emit("close")
-	if s.link != nil {
-		link := s.link
-		s.link = nil
-		return link.Close()
-	}
-	s.running = false
-	return errors.New("tunnel is closed")
+	s.Retry()
 }

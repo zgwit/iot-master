@@ -21,7 +21,6 @@ export class ProductEditComponent implements OnInit {
     "manufacturer": "",
     "version": "",
     "points": [],
-    "context": {},
     "commands": [],
     "pollers": [],
     "calculators": [],
@@ -43,7 +42,6 @@ export class ProductEditComponent implements OnInit {
       version: [this.data.version, []],
 
       points: [this.data.points || []],
-      context: [this.data.context || {}],
       commands: [this.data.commands || []],
       pollers: [this.data.pollers || []],
       calculators: [this.data.calculators || []],

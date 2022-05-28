@@ -19,7 +19,6 @@ export class TemplateEditComponent implements OnInit {
     "name": "新建模板",
 
     "hmi":"",
-    "context": {},
     "products": [],
     "alarms": [],
     "strategies": [],
@@ -38,7 +37,6 @@ export class TemplateEditComponent implements OnInit {
       name: [this.data.name, [Validators.required]],
       hmi: [this.data.hmi, []],
 
-      context: [this.data.context || {}],
       products: [this.data.products || []],
       alarms: [this.data.alarms || []],
       jobs: [this.data.jobs || []],

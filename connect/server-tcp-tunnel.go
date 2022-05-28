@@ -22,27 +22,6 @@ func (l *ServerTcpTunnel) Open() error {
 	return errors.New("ServerTcpTunnel cannot open")
 }
 
-//Write 写
-func (l *ServerTcpTunnel) Write(data []byte) error {
-	if l.pipe != nil {
-		return nil //透传模式下，直接抛弃
-	}
-	_, err := l.link.Write(data)
-	if err != nil {
-		l.onClose()
-	}
-	return err
-}
-
-//Read 读
-func (l *ServerTcpTunnel) Read(data []byte) (int, error) {
-	n, err := l.link.Read(data)
-	if err != nil {
-		l.onClose()
-	}
-	return n, err
-}
-
 func (l *ServerTcpTunnel) receive() {
 	l.running = true
 	l.Emit("online")

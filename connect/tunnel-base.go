@@ -20,7 +20,9 @@ type tunnelBase struct {
 
 	running bool
 	first   bool
-	retry   int
+
+	retry      int
+	retryTimer *time.Timer
 
 	pipe io.ReadWriteCloser
 }
@@ -39,6 +41,13 @@ func (l *tunnelBase) First() bool {
 
 //Close 关闭
 func (l *tunnelBase) Close() error {
+	if l.retryTimer != nil {
+		l.retryTimer.Stop()
+	}
+	if !l.running {
+		return errors.New("tunnel closed")
+	}
+	l.Emit("close")
 	l.onClose()
 	return l.link.Close()
 }
@@ -53,13 +62,13 @@ func (l *tunnelBase) onClose() {
 
 //Write 写
 func (l *tunnelBase) Write(data []byte) error {
+	if !l.running {
+		return errors.New("tunnel closed")
+	}
 	if l.pipe != nil {
 		return nil //透传模式下，直接抛弃
 	}
 	_, err := l.link.Write(data)
-	if err != nil {
-		l.onClose()
-	}
 	return err
 }
 
@@ -77,6 +86,10 @@ func (l *tunnelBase) wait(duration time.Duration) ([]byte, error) {
 }
 
 func (l *tunnelBase) Ask(cmd []byte, timeout time.Duration) ([]byte, error) {
+	if !l.running {
+		return nil, errors.New("tunnel closed")
+	}
+
 	//堵塞
 	l.lock.Lock()
 	defer l.lock.Unlock() //自动解锁

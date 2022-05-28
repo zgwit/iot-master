@@ -127,6 +127,10 @@ func (server *TunnelUdpServer) Pipe(pipe io.ReadWriteCloser) {
 
 //Close 关闭
 func (server *TunnelUdpServer) Close() (err error) {
+	if !server.running {
+		return errors.New("tunnel closed")
+	}
 	server.Emit("close")
+	server.onClose()
 	return server.conn.Close()
 }

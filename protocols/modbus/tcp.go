@@ -32,10 +32,10 @@ func NewTCP(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
 	})
 	link.On("close", func() {
 		//close(tcp.queue)
-		tcp.requests.Range(func(key, value interface{}) bool {
-			close(value.(*request).resp)
-			return true
-		})
+		//tcp.requests.Range(func(key, value interface{}) bool {
+		//	close(value.(*request).resp)
+		//	return true
+		//})
 	})
 	return tcp
 }

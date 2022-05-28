@@ -31,19 +31,26 @@ func (l *ServerUdpTunnel) Open() error {
 	return errors.New("ServerUdpTunnel cannot open")
 }
 
+func (l *ServerUdpTunnel) Close() error {
+	return errors.New("ServerUdpTunnel cannot close")
+}
+
 //Write 写
 func (l *ServerUdpTunnel) Write(data []byte) error {
+	if !l.running {
+		return errors.New("tunnel closed")
+	}
 	if l.pipe != nil {
 		return nil //透传模式下，直接抛弃
 	}
 	_, err := l.conn.WriteToUDP(data, l.addr)
-	if err != nil {
-		l.onClose()
-	}
 	return err
 }
 
 func (l *ServerUdpTunnel) Ask(cmd []byte, timeout time.Duration) ([]byte, error) {
+	if !l.running {
+		return nil, errors.New("tunnel closed")
+	}
 	//堵塞
 	l.lock.Lock()
 	defer l.lock.Unlock() //自动解锁

@@ -22,7 +22,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">地址</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="addr" required/>
+          <input nz-input formControlName="addr" placeholder="端口号" required/>
         </nz-form-control>
       </nz-form-item>
 
@@ -38,15 +38,6 @@
 
     <nz-collapse-panel nzHeader="注册包" nzActive>
       <app-edit-register formControlName="register"></app-edit-register>
-    </nz-collapse-panel>
-
-    <nz-collapse-panel nzHeader="心跳包" nzActive *ngIf="basicForm.value.type!='serial'">
-      <app-edit-heartbeat formControlName="heartbeat"></app-edit-heartbeat>
-    </nz-collapse-panel>
-
-
-    <nz-collapse-panel nzHeader="断线重连" nzActive *ngIf="basicForm.value.type=='serial' || basicForm.value.type=='tcp-client' ||basicForm.value.type=='udp-client'">
-      <app-edit-retry formControlName="retry"></app-edit-retry>
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="协议适配" nzActive>
