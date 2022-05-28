@@ -83,7 +83,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/template/create", curdApiCreate(modelTemplate, generateUUID, nil))
 	app.GET("/template/:id", parseParamStringId, curdApiGet(modelTemplate))
 	app.POST("/template/:id", parseParamStringId, curdApiModify(modelTemplate,
-		[]string{"name", "version", "elements",
+		[]string{"name", "version", "products",
 			"hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"},
 		nil, nil))
 	app.GET("/template/:id/delete", parseParamStringId, curdApiDelete(modelTemplate, nil, nil))
@@ -94,7 +94,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/device/create", curdApiCreate(modelDevice, nil, afterDeviceCreate))
 	app.GET("/device/:id", parseParamId, deviceDetail)
 	app.POST("/device/:id", parseParamId, curdApiModify(modelDevice,
-		[]string{"name", "tunnel_id", "element_id", "station",
+		[]string{"name", "tunnel_id", "product_id", "station",
 			"hmi", "tags", "points", "pollers", "calculators", "alarms", "commands",
 			"context", "disabled"},
 		nil, afterDeviceUpdate))
@@ -112,16 +112,16 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/device/:id/value/:name/history", parseParamId, deviceValueHistory)
 
 	//元件接口
-	modelElement := reflect.TypeOf(model.Element{})
-	app.POST("/element/list", curdApiList(modelElement))
-	app.POST("/element/create", curdApiCreate(modelElement, generateUUID, nil))
-	app.GET("/element/:id", parseParamStringId, curdApiGet(modelElement))
-	app.POST("/element/:id", parseParamStringId, curdApiModify(modelElement,
+	modelProduct := reflect.TypeOf(model.Product{})
+	app.POST("/product/list", curdApiList(modelProduct))
+	app.POST("/product/create", curdApiCreate(modelProduct, generateUUID, nil))
+	app.GET("/product/:id", parseParamStringId, curdApiGet(modelProduct))
+	app.POST("/product/:id", parseParamStringId, curdApiModify(modelProduct,
 		[]string{"name", "manufacturer", "version",
 			"hmi", "tags", "points", "pollers", "calculators", "alarms", "commands",
 			"context", "disabled"},
 		nil, nil))
-	app.GET("/element/:id/delete", parseParamStringId, curdApiDelete(modelElement, nil, nil))
+	app.GET("/product/:id/delete", parseParamStringId, curdApiDelete(modelProduct, nil, nil))
 
 	//组态
 	modelHMI := reflect.TypeOf(model.Hmi{})

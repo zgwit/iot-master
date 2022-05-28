@@ -15,7 +15,7 @@
     <tr>
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
-      <th nzColumnKey="element_id" [nzSortFn]="true">产品</th>
+      <th nzColumnKey="product_id" [nzSortFn]="true">产品</th>
       <th nzColumnKey="tunnel_id" [nzSortFn]="true">通道</th>
       <th nzColumnKey="station" [nzSortFn]="true">从站号</th>
       <th nzColumnKey="id" [nzSortFn]="true">创建时间</th>
@@ -28,7 +28,7 @@
       <td>{{ data.id }}</td>
       <td>{{data.disabled ? '❌' : ''}}{{ data.name }}</td>
       <td>
-        <a [routerLink]="'/admin/element/detail/'+data.element_id">{{data.element}}</a>
+        <a [routerLink]="'/admin/product/detail/'+data.product_id">{{data.product}}</a>
       </td>
       <td>
         <a [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel || data.tunnel_id}}</a>

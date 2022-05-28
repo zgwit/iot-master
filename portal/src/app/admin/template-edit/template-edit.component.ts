@@ -20,7 +20,7 @@ export class TemplateEditComponent implements OnInit {
 
     "hmi":"",
     "context": {},
-    "elements": [],
+    "products": [],
     "alarms": [],
     "strategies": [],
     "jobs": [],
@@ -39,7 +39,7 @@ export class TemplateEditComponent implements OnInit {
       hmi: [this.data.hmi, []],
 
       context: [this.data.context || {}],
-      elements: [this.data.elements || []],
+      products: [this.data.products || []],
       alarms: [this.data.alarms || []],
       jobs: [this.data.jobs || []],
       strategies: [this.data.strategies || []],

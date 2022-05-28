@@ -43,16 +43,16 @@ func NewDevice(m *model.Device) (*Device, error) {
 	var err error
 
 	//加载模板
-	if dev.ElementId != "" {
-		var element model.Element
-		has, err := db.Engine.ID(dev.ElementId).Get(&element)
+	if dev.ProductId != "" {
+		var product model.Product
+		has, err := db.Engine.ID(dev.ProductId).Get(&product)
 		if err != nil {
 			return nil, err
 		}
 		if !has {
-			return nil, fmt.Errorf("找不到模板 %s", dev.ElementId)
+			return nil, fmt.Errorf("找不到模板 %s", dev.ProductId)
 		}
-		dev.DeviceContent = element.DeviceContent
+		dev.DeviceContent = product.DeviceContent
 	}
 
 	//索引命令

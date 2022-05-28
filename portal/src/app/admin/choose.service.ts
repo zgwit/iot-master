@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {UserBrowserComponent} from "./user-browser/user-browser.component";
 import {TemplateBrowserComponent} from "./template-browser/template-browser.component";
-import {ElementBrowserComponent} from "./element-browser/element-browser.component";
+import {ProductBrowserComponent} from "./product-browser/product-browser.component";
 import {DeviceBrowserComponent} from "./device-browser/device-browser.component";
 import {TunnelBrowserComponent} from "./tunnel-browser/tunnel-browser.component";
 import {PromptComponent} from "./prompt/prompt.component";
@@ -46,10 +46,10 @@ export class ChooseService {
     return modal.afterClose
   }
 
-  chooseElement(params?: any) {
+  chooseProduct(params?: any) {
     const modal = this.ms.create({
       nzTitle: '选择产品',
-      nzContent: ElementBrowserComponent,
+      nzContent: ProductBrowserComponent,
       nzWidth: '80%',
       nzComponentParams: params,
     });

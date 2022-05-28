@@ -49,7 +49,7 @@ import {HomeComponent} from "./home/home.component";
 import {ServerComponent} from "./server/server.component";
 import {TunnelComponent} from "./tunnel/tunnel.component";
 import {DeviceComponent} from "./device/device.component";
-import {ElementComponent} from "./element/element.component";
+import {ProductComponent} from "./product/product.component";
 import {ProjectComponent} from "./project/project.component";
 import {TemplateComponent} from "./template/template.component";
 import {PluginComponent} from "./plugin/plugin.component";
@@ -63,8 +63,8 @@ import {TunnelDetailComponent} from "./tunnel-detail/tunnel-detail.component";
 import {TunnelEditComponent} from "./tunnel-edit/tunnel-edit.component";
 import {DeviceDetailComponent} from "./device-detail/device-detail.component";
 import {DeviceEditComponent} from "./device-edit/device-edit.component";
-import {ElementDetailComponent} from "./element-detail/element-detail.component";
-import {ElementEditComponent} from "./element-edit/element-edit.component";
+import {ProductDetailComponent} from "./product-detail/product-detail.component";
+import {ProductEditComponent} from "./product-edit/product-edit.component";
 import {ProjectDetailComponent} from "./project-detail/project-detail.component";
 import {ProjectEditComponent} from "./project-edit/project-edit.component";
 import {TemplateDetailComponent} from "./template-detail/template-detail.component";
@@ -86,8 +86,8 @@ import {ServerEditDevicesComponent} from "./server-edit-devices/server-edit-devi
 import {EventComponent} from "./event/event.component";
 import {TunnelDeviceComponent} from "./tunnel-device/tunnel-device.component";
 import {TemplateProjectComponent} from "./template-project/template-project.component";
-import {ElementDeviceComponent} from "./element-device/element-device.component";
-import {ElementBrowserComponent} from "./element-browser/element-browser.component";
+import {ProductDeviceComponent} from "./product-device/product-device.component";
+import {ProductBrowserComponent} from "./product-browser/product-browser.component";
 import {DeviceBrowserComponent} from "./device-browser/device-browser.component";
 import {TunnelBrowserComponent} from "./tunnel-browser/tunnel-browser.component";
 import {ChooseService} from "./choose.service";
@@ -98,10 +98,10 @@ import {UserDetailComponent} from "./user-detail/user-detail.component";
 import {TemplateBrowserComponent} from "./template-browser/template-browser.component";
 import {ChooseTemplateComponent} from "./choose-template/choose-template.component";
 import {EditDevicesComponent} from "./edit-devices/edit-devices.component";
-import {ChooseElementComponent} from "./choose-element/choose-element.component";
+import {ChooseProductComponent} from "./choose-product/choose-product.component";
 import {ChooseDeviceComponent} from "./choose-device/choose-device.component";
 import {ChooseTunnelComponent} from "./choose-tunnel/choose-tunnel.component.component";
-import {EditElementsComponent} from "./edit-elements/edit-elements.component";
+import {EditProductsComponent} from "./edit-products/edit-products.component";
 import {EditAlarmsComponent} from "./edit-alarms/edit-alarms.component";
 import {EditDirectivesComponent} from "./edit-directives/edit-directives.component";
 import {EditInvokesComponent} from "./edit-invokes/edit-invokes.component";
@@ -142,15 +142,15 @@ import {NzPopoverModule} from "ng-zorro-antd/popover";
     PipeComponent, PipeDetailComponent, PipeEditComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
     DeviceBrowserComponent, DeviceValueComponent, DeviceHmiComponent,
-    ElementComponent, ElementDetailComponent, ElementEditComponent,
-    ElementDeviceComponent, ElementBrowserComponent,
+    ProductComponent, ProductDetailComponent, ProductEditComponent,
+    ProductDeviceComponent, ProductBrowserComponent,
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent, ProjectHmiComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
     HmiComponent, HmiDetailComponent, HmiEditComponent, HmiBrowserComponent,
     ComponentComponent,
     EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
-    EditDevicesComponent, EditElementsComponent, EditAlarmsComponent,
+    EditDevicesComponent, EditProductsComponent, EditAlarmsComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
     EditDirectivesComponent, EditInvokesComponent,
     EventComponent, AlarmComponent,
@@ -160,7 +160,7 @@ import {NzPopoverModule} from "ng-zorro-antd/popover";
     UserComponent, UserBrowserComponent, UserDetailComponent,
     PasswordComponent,
     PromptComponent,
-    ChooseTemplateComponent, ChooseElementComponent, ChooseHmiComponent,
+    ChooseTemplateComponent, ChooseProductComponent, ChooseHmiComponent,
     ChooseDeviceComponent, ChooseTunnelComponent,
   ],
     imports: [

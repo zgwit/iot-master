@@ -27,7 +27,7 @@ func Open(cfg *config.Database) error {
 	err = Engine.Sync2(
 		new(model.User), new(model.Password),
 		new(model.Tunnel), new(model.Server), new(model.Pipe),
-		new(model.Device), new(model.Element),
+		new(model.Device), new(model.Product),
 		new(model.Project), new(model.Template),
 		new(model.Hmi), new(model.Component),
 		new(model.Event),

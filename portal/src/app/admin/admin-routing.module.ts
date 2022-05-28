@@ -9,7 +9,7 @@ import {HomeComponent} from "./home/home.component";
 import {ServerComponent} from "./server/server.component";
 import {TunnelComponent} from "./tunnel/tunnel.component";
 import {DeviceComponent} from "./device/device.component";
-import {ElementComponent} from "./element/element.component";
+import {ProductComponent} from "./product/product.component";
 import {ProjectComponent} from "./project/project.component";
 import {TemplateComponent} from "./template/template.component";
 import {PluginComponent} from "./plugin/plugin.component";
@@ -21,7 +21,7 @@ import {ServerDetailComponent} from "./server-detail/server-detail.component";
 import {TunnelDetailComponent} from "./tunnel-detail/tunnel-detail.component";
 import {DeviceDetailComponent} from "./device-detail/device-detail.component";
 import {DeviceEditComponent} from "./device-edit/device-edit.component";
-import {ElementEditComponent} from "./element-edit/element-edit.component";
+import {ProductEditComponent} from "./product-edit/product-edit.component";
 import {ProjectDetailComponent} from "./project-detail/project-detail.component";
 import {ProjectEditComponent} from "./project-edit/project-edit.component";
 import {TemplateEditComponent} from "./template-edit/template-edit.component";
@@ -29,7 +29,7 @@ import {ContainerComponent} from "./container/container.component";
 import {ServerEditComponent} from "./server-edit/server-edit.component";
 import {TunnelEditComponent} from "./tunnel-edit/tunnel-edit.component";
 import {TemplateDetailComponent} from "./template-detail/template-detail.component";
-import {ElementDetailComponent} from "./element-detail/element-detail.component";
+import {ProductDetailComponent} from "./product-detail/product-detail.component";
 import {TunnelMonitorComponent} from "./tunnel-monitor/tunnel-monitor.component";
 import {PipeComponent} from "./pipe/pipe.component";
 import {PipeDetailComponent} from "./pipe-detail/pipe-detail.component";
@@ -62,7 +62,7 @@ const routes: Routes = [
 
       {
         path: 'server', component: ContainerComponent, data: {breadcrumb: "服务器"}, children: [
-          {path: '', component: ServerComponent, data: {breadcrumb: "列表"}},
+          {path: '', component: ServerComponent, data: {breadcrumb: "服务器"}},
           //{path: ':id', component: TunnelDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'detail/:id', component: ServerDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: ServerEditComponent, data: {breadcrumb: "编辑"}},
@@ -81,8 +81,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'pipe', component: ContainerComponent, data: {breadcrumb: "透传"}, children: [
-          {path: '', component: PipeComponent, data: {breadcrumb: "透传"}},
+        path: 'pipe', component: ContainerComponent, data: {breadcrumb: "远程调试"}, children: [
+          {path: '', component: PipeComponent, data: {breadcrumb: "远程调试"}},
           {path: 'detail/:id', component: PipeDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: PipeEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: PipeEditComponent, data: {breadcrumb: "创建"}},
@@ -100,11 +100,11 @@ const routes: Routes = [
       },
 
       {
-        path: 'element', component: ContainerComponent, data: {breadcrumb: "产品"}, children: [
-          {path: '', component: ElementComponent, data: {breadcrumb: "产品"}},
-          {path: 'detail/:id', component: ElementDetailComponent, data: {breadcrumb: "详情"}},
-          {path: 'edit/:id', component: ElementEditComponent, data: {breadcrumb: "编辑"}},
-          {path: 'create', component: ElementEditComponent, data: {breadcrumb: "创建"}},
+        path: 'product', component: ContainerComponent, data: {breadcrumb: "产品库"}, children: [
+          {path: '', component: ProductComponent, data: {breadcrumb: "产品库"}},
+          {path: 'detail/:id', component: ProductDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: ProductEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: ProductEditComponent, data: {breadcrumb: "创建"}},
         ]
       },
 
@@ -118,8 +118,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'template', component: ContainerComponent, data: {breadcrumb: "模板"}, children: [
-          {path: '', component: TemplateComponent, data: {breadcrumb: "模板"}},
+        path: 'template', component: ContainerComponent, data: {breadcrumb: "模板库"}, children: [
+          {path: '', component: TemplateComponent, data: {breadcrumb: "模板库"}},
           {path: 'detail/:id', component: TemplateDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: TemplateEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: TemplateEditComponent, data: {breadcrumb: "创建"}},

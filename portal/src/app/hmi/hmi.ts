@@ -134,7 +134,7 @@ export interface HmiEntity {
   //绑定
   bindings: any //{ [name: string]: any }
 
-  //$element: HmiElement
+  //$product: HmiElement
   $container: Container
   $component: HmiComponent
   $object: any;

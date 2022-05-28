@@ -12,7 +12,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">产品</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <app-choose-element formControlName="element_id" [showClear]="true"></app-choose-element>
+          <app-choose-product formControlName="product_id" [showClear]="true"></app-choose-product>
         </nz-form-control>
       </nz-form-item>
 
@@ -23,7 +23,7 @@
         </nz-form-control>
       </nz-form-item>
 
-      <nz-form-item *ngIf="!basicForm.value.element_id">
+      <nz-form-item *ngIf="!basicForm.value.product_id">
         <nz-form-label [nzSpan]="5">组态</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <app-choose-hmi formControlName="hmi" [showClear]="true"></app-choose-hmi>
@@ -31,7 +31,7 @@
       </nz-form-item>
 
 
-      <nz-form-item *ngIf="!basicForm.value.element_id">
+      <nz-form-item *ngIf="!basicForm.value.product_id">
         <nz-form-label [nzSpan]="5">标签</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <nz-select nzAllowClear nzMode="tags" [nzTokenSeparators]="[',', '，', ';', ' ']" formControlName="tags"
@@ -55,7 +55,7 @@
 
     </nz-collapse-panel>
 
-    <ng-container *ngIf="!basicForm.value.element_id">
+    <ng-container *ngIf="!basicForm.value.product_id">
 
       <nz-collapse-panel nzHeader="数据点" nzActive>
         <app-edit-points formControlName="points"></app-edit-points>

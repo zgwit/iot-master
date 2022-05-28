@@ -33,7 +33,7 @@ export let SideMenu = [
       },
       {
         title: '产品库',
-        router: 'element'
+        router: 'product'
       },
     ]
   },

@@ -5,11 +5,11 @@ import {RequestService} from "../../request.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
-  selector: 'app-element-edit',
-  templateUrl: './element-edit.component.html',
-  styleUrls: ['./element-edit.component.scss']
+  selector: 'app-product-edit',
+  templateUrl: './product-edit.component.html',
+  styleUrls: ['./product-edit.component.scss']
 })
-export class ElementEditComponent implements OnInit {
+export class ProductEditComponent implements OnInit {
   id: any;
   submitting = false;
 
@@ -56,7 +56,7 @@ export class ElementEditComponent implements OnInit {
 
 
   load(): void {
-    this.rs.get('element/' + this.id).subscribe(res => {
+    this.rs.get('product/' + this.id).subscribe(res => {
       this.data = res.data;
       this.buildForm();
     })
@@ -64,10 +64,10 @@ export class ElementEditComponent implements OnInit {
 
   submit(): void {
     this.submitting = true
-    const uri = this.id ? 'element/' + this.id : 'element/create';
+    const uri = this.id ? 'product/' + this.id : 'product/create';
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
-      this.router.navigate(['/admin/element/detail/' + res.data.id]);
+      this.router.navigate(['/admin/product/detail/' + res.data.id]);
     }).add(() => {
       this.submitting = false;
     })

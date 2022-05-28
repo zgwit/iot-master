@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-//Element 元件
-type Element struct {
+//Product 产品
+type Product struct {
 	Id           string `json:"id" xorm:"pk"`
 	Name         string `json:"name"`
 	Manufacturer string `json:"manufacturer"` //厂家
@@ -32,7 +32,7 @@ type DeviceContent struct {
 type Device struct {
 	Id        int64  `json:"id"`
 	TunnelId  int64  `json:"tunnel_id" xorm:"index"`
-	ElementId string `json:"element_id"`
+	ProductId string `json:"product_id"`
 
 	Name          string `json:"name"`
 	Station       int    `json:"station"`
@@ -51,7 +51,7 @@ type DeviceEx struct {
 	Device  `xorm:"extends"`
 	Running bool   `json:"running"`
 	Tunnel  string `json:"tunnel"`
-	Element string `json:"element"`
+	Product string `json:"product"`
 }
 
 func (d *DeviceEx) TableName() string {
@@ -63,7 +63,7 @@ type DeviceHistory struct {
 	DeviceId int64 `json:"device_id" xorm:"index"`
 }
 
-type ElementHistory struct {
-	Element   `xorm:"extends"`
-	ElementId string `json:"element_id" xorm:"index"`
+type ProductHistory struct {
+	Product   `xorm:"extends"`
+	ProductId string `json:"product_id" xorm:"index"`
 }

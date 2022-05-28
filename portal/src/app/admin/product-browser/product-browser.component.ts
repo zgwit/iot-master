@@ -5,11 +5,11 @@ import {NzModalRef} from "ng-zorro-antd/modal";
 import {parseTableQuery} from "../table";
 
 @Component({
-  selector: 'app-element-browser',
-  templateUrl: './element-browser.component.html',
-  styleUrls: ['./element-browser.component.scss']
+  selector: 'app-product-browser',
+  templateUrl: './product-browser.component.html',
+  styleUrls: ['./product-browser.component.scss']
 })
-export class ElementBrowserComponent implements OnInit {
+export class ProductBrowserComponent implements OnInit {
   datum: any[] = [];
 
   loading = false;
@@ -87,7 +87,7 @@ export class ElementBrowserComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.post('element/list', this.params).subscribe(res => {
+    this.rs.post('product/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
       this.total = res.total;

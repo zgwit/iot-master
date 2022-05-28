@@ -14,7 +14,7 @@
       </nz-collapse-panel>
 
       <nz-collapse-panel nzHeader="初始设备" nzActive>
-        <nz-table #elementsTable nzSize="small" [nzData]="data.elements" [nzFrontPagination]="false">
+        <nz-table #productsTable nzSize="small" [nzData]="data.products" [nzFrontPagination]="false">
           <thead>
           <tr>
             <th>ID</th>
@@ -22,7 +22,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let data of elementsTable.data; let i=index">
+          <tr *ngFor="let data of productsTable.data; let i=index">
             <td>{{ data.id }}</td>
             <td>{{ data.name }}</td>
           </tr>

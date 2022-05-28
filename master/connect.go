@@ -201,7 +201,7 @@ func startServer(server *model.Server) error {
 				dev := model.Device{
 					TunnelId:  tunnel.Model().Id,
 					Station:   d.Station,
-					ElementId: d.ElementId,
+					ProductId: d.ProductId,
 				}
 				_, err = db.Engine.InsertOne(&dev)
 				if err != nil {

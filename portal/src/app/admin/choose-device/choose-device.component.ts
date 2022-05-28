@@ -51,12 +51,12 @@ export class ChooseDeviceComponent implements OnInit, ControlValueAccessor {
     this.rs.get(`device/${this.id}`).subscribe(res=>{
       this.name = res.data.name;
       if (!this.name)
-        this.loadElement(res.data.element_id)
+        this.loadProduct(res.data.product_id)
     })
   }
 
-  loadElement(id: string) {
-    this.rs.get(`element/${id}/detail`).subscribe(res=>{
+  loadProduct(id: string) {
+    this.rs.get(`product/${id}/detail`).subscribe(res=>{
       this.name = res.data.name;
     })
   }

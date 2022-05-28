@@ -35,7 +35,7 @@ export class ServerEditDevicesComponent implements OnInit, ControlValueAccessor 
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
           station: [d.station, [Validators.required]], //应该是最大值+1
-          element_id: [d.element_id, [Validators.required]],
+          product_id: [d.product_id, [Validators.required]],
         })
       }))
     })
@@ -44,7 +44,7 @@ export class ServerEditDevicesComponent implements OnInit, ControlValueAccessor 
   add() {
     this.formArray.push(this.fb.group({
       station: [this.formArray.controls.length + 1, [Validators.required]], //应该是最大值+1
-      element_id: ['', [Validators.required]],
+      product_id: ['', [Validators.required]],
     }))
     //复制controls，让表格可以刷新
     this.formArray.controls = [...this.formArray.controls];
@@ -56,7 +56,7 @@ export class ServerEditDevicesComponent implements OnInit, ControlValueAccessor 
 
     this.formArray.controls.splice(i, 0, this.fb.group({
       station: [group.get('station')?.value, [Validators.required]],
-      element_id: [group.get('element_id')?.value, [Validators.required]],
+      product_id: [group.get('product_id')?.value, [Validators.required]],
     }))
   }
 

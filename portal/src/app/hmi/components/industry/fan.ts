@@ -31,7 +31,7 @@ export let FanComponent: HmiComponent = {
   update(values: any) {
     if (values.speed > 0) {
       //@ts-ignore
-      //this.element.animate().ease('-').transform({rotate:90, origin: 'center'}).loop()
+      //this.product.animate().ease('-').transform({rotate:90, origin: 'center'}).loop()
       this.element.animate().ease('-').transform({rotate:120}).loop()
     }
   }

@@ -28,8 +28,8 @@ func deviceList(ctx *gin.Context) {
 
 	query.Table("device")
 	query.Select("device.*, " + //TODO 只返回需要的字段
-		" 0 as running, element.name as element, tunnel.name as tunnel")
-	query.Join("LEFT", "element", "device.element_id=element.id")
+		" 0 as running, product.name as product, tunnel.name as tunnel")
+	query.Join("LEFT", "product", "device.product_id=product.id")
 	query.Join("LEFT", "tunnel", "device.tunnel_id=tunnel.id")
 
 	//err = query.Find(devs)
@@ -69,9 +69,9 @@ func deviceDetail(ctx *gin.Context) {
 		return
 	}
 
-	if device.ElementId != "" {
-		var template model.Element
-		has, err := db.Engine.ID(device.ElementId).Get(&template)
+	if device.ProductId != "" {
+		var template model.Product
+		has, err := db.Engine.ID(device.ProductId).Get(&template)
 		if has && err == nil {
 			device.DeviceContent = template.DeviceContent
 		}

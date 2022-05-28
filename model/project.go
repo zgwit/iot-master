@@ -9,7 +9,7 @@ type Template struct {
 	Name    string `json:"name"`
 	Version string `json:"version"` //SEMVER
 
-	Elements []*TemplateElement `json:"elements"`
+	Products []*TemplateProduct `json:"products"`
 
 	ProjectContent `xorm:"extends"`
 
@@ -61,7 +61,7 @@ type ProjectDevice struct {
 	Name string `json:"name"` //编程名
 }
 
-type TemplateElement struct {
+type TemplateProduct struct {
 	Id   string `json:"id"`
 	Name string `json:"name"` //编程名
 }

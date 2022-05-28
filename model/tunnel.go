@@ -34,7 +34,7 @@ type Tunnel struct {
 
 type TunnelDevice struct {
 	Station   int    `json:"station"`
-	ElementId string `json:"element_id"`
+	ProductId string `json:"product_id"`
 }
 
 type TunnelEx struct {

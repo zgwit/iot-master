@@ -3,18 +3,18 @@ import {ControlValueAccessor, FormArray, FormBuilder, FormGroup, NG_VALUE_ACCESS
 import {ChooseService} from "../choose.service";
 
 @Component({
-  selector: 'app-edit-elements',
-  templateUrl: './edit-elements.component.html',
-  styleUrls: ['./edit-elements.component.scss'],
+  selector: 'app-edit-products',
+  templateUrl: './edit-products.component.html',
+  styleUrls: ['./edit-products.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => EditElementsComponent),
+      useExisting: forwardRef(() => EditProductsComponent),
       multi: true
     }
   ]
 })
-export class EditElementsComponent implements OnInit, ControlValueAccessor {
+export class EditProductsComponent implements OnInit, ControlValueAccessor {
   onChanged: any = () => {
   }
   onTouched: any = () => {
@@ -52,7 +52,7 @@ export class EditElementsComponent implements OnInit, ControlValueAccessor {
   }
 
   addMore() {
-    this.cs.chooseElement({multiple: true}).subscribe(devices=>{
+    this.cs.chooseProduct({multiple: true}).subscribe(devices=>{
       if (devices.length) {
         devices.forEach((d: string)=>{
           this.formArray.push(this.fb.group({

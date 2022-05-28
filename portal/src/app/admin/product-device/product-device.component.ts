@@ -1,15 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {Router} from "@angular/router";
 import {RequestService} from "../../request.service";
+import {NzModalService} from "ng-zorro-antd/modal";
 import {parseTableQuery} from "../table";
 
 @Component({
-  selector: 'app-element',
-  templateUrl: './element.component.html',
-  styleUrls: ['./element.component.scss']
+  selector: 'app-product-device',
+  templateUrl: './product-device.component.html',
+  styleUrls: ['./product-device.component.scss']
 })
-export class ElementComponent implements OnInit {
+export class ProductDeviceComponent implements OnInit {
+  @Input() id = '';
+
   datum: any[] = [];
 
   loading = false;
@@ -19,7 +22,7 @@ export class ElementComponent implements OnInit {
 
   params: any = {filter: {}};
 
-  constructor(private router: Router, private rs: RequestService) {
+  constructor(private router: Router, private rs: RequestService, private ms: NzModalService) {
   }
 
   ngOnInit(): void {
@@ -43,7 +46,8 @@ export class ElementComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.post('element/list', this.params).subscribe(res => {
+    this.params.filter.product_id = this.id;
+    this.rs.post('device/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
       this.total = res.total;
@@ -53,16 +57,29 @@ export class ElementComponent implements OnInit {
   }
 
   create(): void {
-    this.router.navigate(["admin/element/create"]);
+    this.router.navigate(["admin/device/create"], {queryParams: {product_id: this.id}});
   }
 
   open(data: any): void {
-    this.router.navigate(['/admin/element/detail/' + data.id]);
+    this.router.navigate(['/admin/device/detail/' + data.id]);
   }
 
   remove(data: any, i: number) {
-    this.rs.get(`element/${data.id}/delete`).subscribe(res=>{
+    this.rs.get(`device/${data.id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
+
+  enable(data: any) {
+    this.rs.get(`device/${data.id}/enable`).subscribe(res => {
+      data.disabled = false
+    });
+  }
+
+  disable(data: any) {
+    this.rs.get(`device/${data.id}/disable`).subscribe(res => {
+      data.disabled = true
+    });
+  }
+
 }
