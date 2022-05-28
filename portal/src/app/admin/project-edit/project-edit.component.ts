@@ -16,7 +16,7 @@ export class ProjectEditComponent implements OnInit {
   basicForm: FormGroup = new FormGroup({});
 
   data: any = {
-    "name": "新建工程",
+    "name": "新建项目",
     "disabled": false,
     "template_id":"",
     "hmi":"",

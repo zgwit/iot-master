@@ -100,8 +100,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'element', component: ContainerComponent, data: {breadcrumb: "设备模板"}, children: [
-          {path: '', component: ElementComponent, data: {breadcrumb: "设备模板"}},
+        path: 'element', component: ContainerComponent, data: {breadcrumb: "产品"}, children: [
+          {path: '', component: ElementComponent, data: {breadcrumb: "产品"}},
           {path: 'detail/:id', component: ElementDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: ElementEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: ElementEditComponent, data: {breadcrumb: "创建"}},
@@ -109,8 +109,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'project', component: ContainerComponent, data: {breadcrumb: "工程"}, children: [
-          {path: '', component: ProjectComponent, data: {breadcrumb: "工程"}},
+        path: 'project', component: ContainerComponent, data: {breadcrumb: "项目"}, children: [
+          {path: '', component: ProjectComponent, data: {breadcrumb: "项目"}},
           {path: 'detail/:id', component: ProjectDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: ProjectEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: ProjectEditComponent, data: {breadcrumb: "创建"}},
@@ -118,8 +118,8 @@ const routes: Routes = [
       },
 
       {
-        path: 'template', component: ContainerComponent, data: {breadcrumb: "工程模板"}, children: [
-          {path: '', component: TemplateComponent, data: {breadcrumb: "工程模板"}},
+        path: 'template', component: ContainerComponent, data: {breadcrumb: "模板"}, children: [
+          {path: '', component: TemplateComponent, data: {breadcrumb: "模板"}},
           {path: 'detail/:id', component: TemplateDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: TemplateEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: TemplateEditComponent, data: {breadcrumb: "创建"}},

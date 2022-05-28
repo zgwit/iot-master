@@ -32,32 +32,22 @@ export let SideMenu = [
         router: 'device'
       },
       {
-        title: '设备模板',
+        title: '产品库',
         router: 'element'
-      },
-      {
-        title: '在线设备模板',
-        router: 'online-element',
-        disabled: true,
       },
     ]
   },
   {
-    title: '工程管理',
+    title: '项目管理',
     icon: 'cluster', //project
     children: [
       {
-        title: '工程',
+        title: '项目',
         router: 'project'
       },
       {
-        title: '工程模板',
+        title: '模板库',
         router: 'template'
-      },
-      {
-        title: '在线工程模板',
-        router: 'online-template',
-        disabled: true,
       },
     ]
   },
@@ -72,11 +62,6 @@ export let SideMenu = [
       {
         title: '组件库',
         router: 'component',
-        disabled: true,
-      },
-      {
-        title: '在线组件库',
-        router: 'online-component',
         disabled: true,
       },
     ]

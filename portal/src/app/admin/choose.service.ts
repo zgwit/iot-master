@@ -48,7 +48,7 @@ export class ChooseService {
 
   chooseElement(params?: any) {
     const modal = this.ms.create({
-      nzTitle: '选择设备模板',
+      nzTitle: '选择产品',
       nzContent: ElementBrowserComponent,
       nzWidth: '80%',
       nzComponentParams: params,
@@ -58,7 +58,7 @@ export class ChooseService {
 
   chooseTemplate() {
     const modal = this.ms.create({
-      nzTitle: '选择工程模板',
+      nzTitle: '选择模板',
       nzContent: TemplateBrowserComponent,
       nzWidth: '80%',
     });
