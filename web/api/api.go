@@ -22,6 +22,23 @@ func mustLogin(ctx *gin.Context) {
 }
 
 func RegisterRoutes(app *gin.RouterGroup) {
+	//错误恢复，并返回至前端
+	app.Use(func(ctx *gin.Context) {
+		defer func() {
+			if err := recover(); err != nil {
+				//runtime.Stack()
+				//debug.Stack()
+				switch err.(type) {
+				case error:
+					replyError(ctx, err.(error))
+				default:
+					ctx.JSON(http.StatusOK, gin.H{"error": err})
+				}
+			}
+		}()
+		ctx.Next()
+	})
+
 	app.POST("/login", login)
 	app.GET("/logout", logout)
 
