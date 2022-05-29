@@ -93,12 +93,27 @@ func (m *TCP) OnData(buf []byte) {
 		return //长度不够
 	}
 
-	id := helper.ParseUint16(buf)
 	length := helper.ParseUint16(buf[4:])
-	if l < int(length)+6 {
+	packLen := int(length) + 6
+
+	if l < packLen {
+		//TODO 缓存包，下次再处理？？？
 		return //长度不够
 	}
 
+	//处理数据包
+	m.handlePack(buf[:packLen])
+
+	//粘包处理
+	//如果有剩余内容，可能是下一个响应包，需要继续处理
+	//此代码会导致后包比前包先处理
+	if l > packLen {
+		m.OnData(buf[packLen:])
+	}
+}
+
+func (m *TCP) handlePack(buf []byte) {
+	id := helper.ParseUint16(buf)
 	r, ok := m.requests.LoadAndDelete(id)
 	if !ok {
 		return
@@ -114,7 +129,7 @@ func (m *TCP) OnData(buf []byte) {
 	}
 
 	//解析数据
-	length = 4
+	//length := 4
 	count := int(buf[8])
 	switch fc {
 	case FuncCodeReadDiscreteInputs,
