@@ -30,11 +30,11 @@ export class ProjectEditComponent implements OnInit {
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
-    Object.assign(this.data, this.route.snapshot.queryParams);
-    if (this.data.id) {
-      this.data.devices.push({id: this.data.id, station: 1});
-      delete this.data.id;
-    }
+    else Object.assign(this.data, this.router.getCurrentNavigation()?.extras.state);
+    // if (this.data.device_id) {
+    //   this.data.devices.push({id: this.data.device_id, station: 1});
+    //   delete this.data.device_id;
+    // }
     this.buildForm();
   }
 

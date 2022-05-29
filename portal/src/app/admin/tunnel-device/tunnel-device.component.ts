@@ -57,7 +57,7 @@ export class TunnelDeviceComponent implements OnInit {
   }
 
   create(): void {
-    this.router.navigate(["admin/device/create"], {queryParams: {tunnel_id: this.id}});
+    this.router.navigate(["admin/device/create"], {state: {tunnel_id: this.id}});
   }
 
   open(data: any): void {

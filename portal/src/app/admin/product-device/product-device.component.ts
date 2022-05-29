@@ -57,7 +57,7 @@ export class ProductDeviceComponent implements OnInit {
   }
 
   create(): void {
-    this.router.navigate(["admin/device/create"], {queryParams: {product_id: this.id}});
+    this.router.navigate(["admin/device/create"], {state: {product_id: this.id}});
   }
 
   open(data: any): void {

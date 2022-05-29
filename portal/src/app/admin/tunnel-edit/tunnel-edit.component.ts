@@ -88,7 +88,7 @@ export class TunnelEditComponent implements OnInit {
           nzTitle: "提示",
           nzContent: "是否要在此通道上创建设备?", //TODO 更丰富、人性 的 提醒
           nzOnOk: () => {
-            this.router.navigate(["admin/device/create"], {queryParams: {tunnel_id: res.data.id}});
+            this.router.navigate(["admin/device/create"], {state: {tunnel_id: res.data.id}});
           },
         })
       }

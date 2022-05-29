@@ -33,7 +33,7 @@ export class DeviceEditComponent implements OnInit {
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
-    Object.assign(this.data, this.route.snapshot.queryParams);
+    Object.assign(this.data, this.router.getCurrentNavigation()?.extras.state);
     this.buildForm();
   }
 
