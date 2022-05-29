@@ -89,7 +89,10 @@ func afterDeviceUpdate(data interface{}) error {
 	device := data.(*model.Device)
 	//重新启动
 	_ = master.RemoveDevice(device.Id)
-	_, err := master.LoadDevice(device.Id)
+	dev, err := master.LoadDevice(device.Id)
+	if err != nil {
+		err = dev.Start()
+	}
 	return err
 }
 
@@ -129,7 +132,10 @@ func deviceStop(ctx *gin.Context) {
 
 func afterDeviceEnable(id interface{}) error {
 	_ = master.RemoveDevice(id.(int64))
-	_, err := master.LoadDevice(id.(int64))
+	dev, err := master.LoadDevice(id.(int64))
+	if err != nil {
+		err = dev.Start()
+	}
 	return err
 }
 

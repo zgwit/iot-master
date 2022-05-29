@@ -30,11 +30,10 @@ func LoadDevices() error {
 			continue
 		}
 		allDevices.Store(d.Id, dev)
-
-		err = dev.Start()
-		if err != nil {
-			log.Error(err)
-		}
+		//err = dev.Start()
+		//if err != nil {
+		//	log.Error(err)
+		//}
 	}
 	return nil
 }
@@ -56,7 +55,7 @@ func LoadDevice(id int64) (*Device, error) {
 	}
 	//allDevices.Store(device.Id, dev)
 	allDevices.Store(id, dev)
-	err = dev.Start() //此处应该交给tunnel online启动
+	//err = dev.Start() //此处应该交给tunnel online启动
 	return dev, nil
 }
 

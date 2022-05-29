@@ -47,20 +47,20 @@ func bindTunnel(instance connect.Tunnel) error {
 	if err != nil {
 		return err
 	}
-	for _, d := range devices {
-		dev := GetDevice(d.Id)
-		if dev != nil {
-			err := dev.Start()
-			if err != nil {
-				log.Error(err)
-				//return
-			}
-		}
-	}
+	//for _, d := range devices {
+	//	dev := GetDevice(d.Id)
+	//	if dev != nil {
+	//		err := dev.Start()
+	//		if err != nil {
+	//			log.Error(err)
+	//			//return
+	//		}
+	//	}
+	//}
 
 	instance.On("open", func() {
 		CreateTunnelEvent(tunnel.Id, "打开")
-		//TODO 加载设备？？？
+		//TODO 动态加载设备？？？
 	})
 
 	instance.On("close", func() {

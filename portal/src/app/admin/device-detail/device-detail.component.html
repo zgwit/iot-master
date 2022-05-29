@@ -56,7 +56,7 @@
     </nz-collapse>
 
   </nz-tab>
-  <nz-tab nzTitle="组态">
+  <nz-tab nzTitle="组态" [nzDisabled]="!data.hmi">
     <ng-template nz-tab>
       <app-device-hmi [hmi]="data.hmi" [id]="id"></app-device-hmi>
     </ng-template>
