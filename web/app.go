@@ -26,7 +26,13 @@ func Serve(cfg *config.Web) {
 	}
 
 	//GIN初始化
-	app := gin.Default()
+	//app := gin.Default()
+	app := gin.New()
+	app.Use(gin.Recovery())
+
+	if cfg.Debug {
+		app.Use(gin.Logger())
+	}
 
 	//启用session
 	app.Use(sessions.Sessions("iot-master", memstore.NewStore([]byte("iot-master"))))

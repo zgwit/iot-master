@@ -181,6 +181,10 @@ func (dev *Device) initCalculators() error {
 
 //Start 设备启动
 func (dev *Device) Start() error {
+	//if dev.running {
+	//	return errors.New("已经启动")
+	//}
+
 	CreateDeviceEvent(dev.Id, "启动")
 
 	//找到链接，导入协议

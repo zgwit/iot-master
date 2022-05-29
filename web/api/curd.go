@@ -8,8 +8,7 @@ import (
 	"reflect"
 )
 
-type hookWithModel func(value interface{}) error
-type hookWithId func(id int64) error
+type hook func(value interface{}) error
 
 func generateUUID(data interface{}) error {
 	value := reflect.ValueOf(data).Elem()
@@ -53,7 +52,7 @@ func curdApiList(mod reflect.Type) gin.HandlerFunc {
 	}
 }
 
-func curdApiCreate(mod reflect.Type, before, after hookWithModel) gin.HandlerFunc {
+func curdApiCreate(mod reflect.Type, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		data := reflect.New(mod).Interface()
 		err := ctx.ShouldBindJSON(data)
@@ -88,13 +87,14 @@ func curdApiCreate(mod reflect.Type, before, after hookWithModel) gin.HandlerFun
 	}
 }
 
-func curdApiModify(mod reflect.Type, updateFields []string, before, after hookWithModel) gin.HandlerFunc {
+func curdApiModify(mod reflect.Type, updateFields []string, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		value := reflect.New(mod)
 		data := value.Interface()
 		err := ctx.ShouldBindJSON(data)
 		//写入ID
-		value.Elem().FieldByName("Id").Set(reflect.ValueOf(ctx.MustGet("id")))
+		id := ctx.MustGet("id")
+		value.Elem().FieldByName("Id").Set(reflect.ValueOf(id))
 
 		if err != nil {
 			replyError(ctx, err)
@@ -108,7 +108,7 @@ func curdApiModify(mod reflect.Type, updateFields []string, before, after hookWi
 			}
 		}
 
-		_, err = db.Engine.ID(ctx.MustGet("id")).Cols(updateFields...).Update(data)
+		_, err = db.Engine.ID(id).Cols(updateFields...).Update(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -127,9 +127,9 @@ func curdApiModify(mod reflect.Type, updateFields []string, before, after hookWi
 	}
 }
 
-func curdApiDelete(mod reflect.Type, before, after hookWithId) gin.HandlerFunc {
+func curdApiDelete(mod reflect.Type, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		id := ctx.GetInt64("id")
+		id := ctx.MustGet("id")
 		if before != nil {
 			if err := before(id); err != nil {
 				replyError(ctx, err)
@@ -159,9 +159,9 @@ func curdApiDelete(mod reflect.Type, before, after hookWithId) gin.HandlerFunc {
 
 func curdApiGet(mod reflect.Type) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-
+		id := ctx.MustGet("id")
 		data := reflect.New(mod).Interface()
-		has, err := db.Engine.ID(ctx.MustGet("id")).Get(data)
+		has, err := db.Engine.ID(id).Get(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -173,9 +173,10 @@ func curdApiGet(mod reflect.Type) gin.HandlerFunc {
 	}
 }
 
-func curdApiDisable(mod reflect.Type, disable bool, before, after hookWithId) gin.HandlerFunc {
+func curdApiDisable(mod reflect.Type, disable bool, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		id := ctx.GetInt64("id")
+		//id := ctx.GetInt64("id")
+		id := ctx.MustGet("id")
 		if before != nil {
 			if err := before(id); err != nil {
 				replyError(ctx, err)

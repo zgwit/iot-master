@@ -64,12 +64,12 @@ func tunnelDetail(ctx *gin.Context) {
 	replyOk(ctx, tunnel)
 }
 
-func afterTunnelDelete(id int64) error {
-	return master.RemoveTunnel(id)
+func afterTunnelDelete(id interface{}) error {
+	return master.RemoveTunnel(id.(int64))
 }
 
-func afterTunnelDisable(id int64) error {
-	return master.RemoveTunnel(id)
+func afterTunnelDisable(id interface{}) error {
+	return master.RemoveTunnel(id.(int64))
 }
 
 func tunnelStart(ctx *gin.Context) {

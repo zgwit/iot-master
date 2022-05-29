@@ -68,8 +68,8 @@ func afterServerUpdate(data interface{}) error {
 	return master.LoadServer(server.Id)
 }
 
-func afterServerDelete(id int64) error {
-	return master.RemoveServer(id)
+func afterServerDelete(id interface{}) error {
+	return master.RemoveServer(id.(int64))
 }
 
 func serverStart(ctx *gin.Context) {
@@ -102,13 +102,13 @@ func serverStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func afterServerEnable(id int64) error {
-	_ = master.RemoveServer(id)
-	return master.LoadServer(id)
+func afterServerEnable(id interface{}) error {
+	_ = master.RemoveServer(id.(int64))
+	return master.LoadServer(id.(int64))
 }
 
-func afterServerDisable(id int64) error {
-	return master.RemoveServer(id)
+func afterServerDisable(id interface{}) error {
+	return master.RemoveServer(id.(int64))
 }
 
 func serverWatch(ctx *gin.Context) {

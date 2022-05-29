@@ -85,8 +85,8 @@ func afterProjectUpdate(data interface{}) error {
 	return err
 }
 
-func afterProjectDelete(id int64) error {
-	return master.RemoveProject(id)
+func afterProjectDelete(id interface{}) error {
+	return master.RemoveProject(id.(int64))
 }
 
 func projectStart(ctx *gin.Context) {
@@ -119,14 +119,14 @@ func projectStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func afterProjectEnable(id int64) error {
-	_ = master.RemoveProject(id)
-	_, err := master.LoadProject(id)
+func afterProjectEnable(id interface{}) error {
+	_ = master.RemoveProject(id.(int64))
+	_, err := master.LoadProject(id.(int64))
 	return err
 }
 
-func afterProjectDisable(id int64) error {
-	return master.RemoveProject(id)
+func afterProjectDisable(id interface{}) error {
+	return master.RemoveProject(id.(int64))
 }
 
 func projectContext(ctx *gin.Context) {

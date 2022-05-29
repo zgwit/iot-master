@@ -93,8 +93,8 @@ func afterDeviceUpdate(data interface{}) error {
 	return err
 }
 
-func afterDeviceDelete(id int64) error {
-	return master.RemoveDevice(id)
+func afterDeviceDelete(id interface{}) error {
+	return master.RemoveDevice(id.(int64))
 }
 
 func deviceStart(ctx *gin.Context) {
@@ -127,14 +127,14 @@ func deviceStop(ctx *gin.Context) {
 	replyOk(ctx, nil)
 }
 
-func afterDeviceEnable(id int64) error {
-	_ = master.RemoveDevice(id)
-	_, err := master.LoadDevice(id)
+func afterDeviceEnable(id interface{}) error {
+	_ = master.RemoveDevice(id.(int64))
+	_, err := master.LoadDevice(id.(int64))
 	return err
 }
 
-func afterDeviceDisable(id int64) error {
-	return master.RemoveDevice(id)
+func afterDeviceDisable(id interface{}) error {
+	return master.RemoveDevice(id.(int64))
 }
 
 func deviceContext(ctx *gin.Context) {
