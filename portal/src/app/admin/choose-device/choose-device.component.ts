@@ -1,4 +1,4 @@
-import {Component, forwardRef, HostBinding, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, forwardRef, HostBinding, Input, OnInit, Output} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {ChooseService} from "../choose.service";
 import {RequestService} from "../../request.service";
@@ -27,6 +27,9 @@ export class ChooseDeviceComponent implements OnInit, ControlValueAccessor {
   @Input()
   showClear: any = false;
 
+  @Output()
+  device: EventEmitter<any> = new EventEmitter<any>()
+
   constructor(private cs: ChooseService, private rs: RequestService) { }
 
   ngOnInit(): void {
@@ -50,6 +53,7 @@ export class ChooseDeviceComponent implements OnInit, ControlValueAccessor {
     this.name = "加载中...";
     this.rs.get(`device/${this.id}`).subscribe(res=>{
       this.name = res.data.name;
+      this.device.emit(res.data)
       if (!this.name)
         this.loadProduct(res.data.product_id)
     })

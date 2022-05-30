@@ -12,6 +12,7 @@
     <th>变量</th>
     <th>名称</th>
     <th>单位</th>
+    <th>代码</th>
     <th>地址</th>
     <th>类型</th>
     <th>小端模式</th>
@@ -32,6 +33,12 @@
       <input nz-input formControlName="unit" nzSize="small" (change)="change()"/>
     </td>
     <td>
+<!--      <input nz-input formControlName="code" nzSize="small" (change)="change()"/>-->
+      <nz-select formControlName="code" nzSize="small" (ngModelChange)="change()" (change)="change()" required>
+        <nz-option [nzValue]="code.name" [nzLabel]="code.label" *ngFor="let code of codes"></nz-option>
+      </nz-select>
+    </td>
+    <td>
       <input nz-input formControlName="address" nzSize="small" (change)="change()"/>
     </td>
     <td>
@@ -49,7 +56,7 @@
       </nz-select>
     </td>
     <td>
-      <label nz-checkbox formControlName="little_endian" (change)="change()" (ngModelChange)="change()"></label>
+      <label nz-checkbox formControlName="le" (change)="change()" (ngModelChange)="change()"></label>
     </td>
     <td>
       <nz-select formControlName="precision" nzSize="small" (ngModelChange)="change()" (change)="change()" required>
@@ -61,8 +68,7 @@
       </nz-select>
     </td>
     <td>
-<!--      <input nz-input type="number" formControlName="default" nzSize="small" (change)="change()"/>-->
-      <nz-input-number formControlName="default" nzSize="small" (change)="change()"></nz-input-number>
+      <label nz-checkbox formControlName="store" (change)="change()" (ngModelChange)="change()"></label>
     </td>
     <td>
       <a cdkDragHandle title="移动">

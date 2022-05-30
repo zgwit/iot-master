@@ -1,8 +1,9 @@
 package omron
 
 import (
-	"errors"
-	"github.com/zgwit/iot-master/protocol"
+	"fmt"
+	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/protocols/protocol"
 	"regexp"
 	"strconv"
 )
@@ -49,12 +50,29 @@ func (a *Address) String() string {
 	return code + strconv.Itoa(int(a.Offset))
 }
 
-func (a *Address) Diff(base protocol.Addr) int {
-	start := base.(*Address)
-	if start.Code != a.Code {
-		return -1
+func (a *Address) Resolve(data []byte, from protocol.Addr, tp model.DataType, le bool, precision int) (interface{}, bool) {
+	base := from.(*Address)
+	if base.Code != a.Code {
+		return nil, false
 	}
-	return int(a.Offset - start.Offset)
+	if base.IsBit {
+		cursor := int(a.Offset)*16 + int(a.Bits) - int(base.Offset)*16 - int(base.Bits)
+		if cursor < 0 || cursor > len(data) {
+			return nil, false
+		}
+		//TODO 此处应该明确数据格式
+		return data[cursor] > 0, true
+	} else {
+		cursor := int(a.Offset - base.Offset)
+		if cursor < 0 || cursor > len(data) {
+			return nil, false
+		}
+		val, err := tp.Decode(data[cursor:], le, precision)
+		if err != nil {
+			return nil, false
+		}
+		return val, true
+	}
 }
 
 var addrRegexp *regexp.Regexp
@@ -63,10 +81,10 @@ func init() {
 	addrRegexp = regexp.MustCompile(`^(D|C|W|H|A)(\d+)(.\d+)?$`)
 }
 
-func ParseAddress(addr string) (protocol.Addr, error) {
+func ParseAddress(name string, addr string) (protocol.Addr, error) {
 	ss := addrRegexp.FindStringSubmatch(addr)
 	if ss == nil || len(ss) < 3 {
-		return nil, errors.New("unknown address")
+		return nil, fmt.Errorf("欧姆龙地址格式错误: %s", addr)
 	}
 	var code uint8 = 1
 	switch ss[1] {
@@ -89,7 +107,7 @@ func ParseAddress(addr string) (protocol.Addr, error) {
 	}
 	if len(ss) == 4 {
 		//TODO 判断bit，只能在 0~15之间
-		bits, _ :=  strconv.ParseUint(ss[3][1:], 10, 8)
+		bits, _ := strconv.ParseUint(ss[3][1:], 10, 8)
 		address.Bits = uint8(bits)
 		address.IsBit = true
 		address.Code -= 0x80

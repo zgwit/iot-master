@@ -11,6 +11,7 @@
   <tr>
     <th>类型</th>
     <th>定时</th>
+    <th>代码</th>
     <th>地址</th>
     <th>长度</th>
     <th>禁用</th>
@@ -30,6 +31,12 @@
       <nz-input-number *ngIf="data.value.type=='interval'" formControlName="interval" [nzStep]="1" nzSize="small" (change)="change()"></nz-input-number>
       <app-minute-time-picker *ngIf="data.value.type=='clock'"  formControlName="clock" nzSize="small" (change)="change()"></app-minute-time-picker>
       <input *ngIf="data.value.type=='crontab'"  nz-input formControlName="crontab" nzSize="small" (change)="change()"/>
+    </td>
+    <td>
+<!--      <input nz-input formControlName="code" nzSize="small" (change)="change()"/>-->
+      <nz-select formControlName="code" nzSize="small" (ngModelChange)="change()" (change)="change()" required>
+        <nz-option [nzValue]="code.name" [nzLabel]="code.label" *ngFor="let code of codes"></nz-option>
+      </nz-select>
     </td>
     <td>
       <input nz-input formControlName="address" nzSize="small" (change)="change()"/>

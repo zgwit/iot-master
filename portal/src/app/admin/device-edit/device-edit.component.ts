@@ -15,6 +15,8 @@ export class DeviceEditComponent implements OnInit {
 
   basicForm: FormGroup = new FormGroup({});
 
+  codes: any = [];
+
   data: any = {
     "name": "新建设备",
     "product_id": "",
@@ -82,5 +84,12 @@ export class DeviceEditComponent implements OnInit {
   change() {
     //console.log('change', e)
     this.data = this.basicForm.value;
+  }
+
+  onTunnel($event: any) {
+    //$event.protocol.name
+    this.rs.get("system/protocol/" + $event.protocol.name).subscribe(res=>{
+      this.codes = res.data.codes;
+    })
   }
 }

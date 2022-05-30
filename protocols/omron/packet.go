@@ -1,8 +1,8 @@
 package omron
 
 import (
-	"github.com/zgwit/iot-master/protocol"
-	"github.com/zgwit/iot-master/protocol/helper"
+	"github.com/zgwit/iot-master/protocols/helper"
+	"github.com/zgwit/iot-master/protocols/protocol"
 )
 
 func buildReadCommand(address protocol.Addr, length int) ([]byte, error) {
@@ -30,7 +30,6 @@ func buildWriteCommand(address protocol.Addr, values []byte) ([]byte, error) {
 	addr := address.(*Address)
 
 	length := len(values)
-
 
 	buf := make([]byte, 8+length)
 

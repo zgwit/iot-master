@@ -10,6 +10,8 @@ type Product struct {
 	Name         string `json:"name"`
 	Manufacturer string `json:"manufacturer"` //厂家
 	Version      string `json:"version"`      //SEMVER
+	Protocol     string `json:"protocol"`
+	//Tunnel       string `json:"tunnel"` // serial tcp udp ???
 
 	DeviceContent `xorm:"extends"`
 

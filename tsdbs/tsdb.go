@@ -1,4 +1,4 @@
-package tsdb
+package tsdbs
 
 import (
 	"github.com/nakabonne/tstorage"
@@ -11,7 +11,7 @@ import (
 //Storage 引擎
 var Storage tstorage.Storage
 
-func Opened() bool  {
+func Opened() bool {
 	return Storage != nil
 }
 

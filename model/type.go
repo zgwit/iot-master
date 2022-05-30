@@ -1,8 +1,10 @@
 package model
 
 import (
+	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/protocol/helper"
+	"github.com/zgwit/iot-master/protocols/helper"
+	"math"
 	"strings"
 )
 
@@ -135,60 +137,98 @@ func (dt *DataType) Size() int {
 }
 
 //Encode 编码
-func (dt *DataType) Encode(val float64, le bool) []byte {
+func (dt *DataType) Encode(value interface{}, le bool, precision int) []byte {
 	buf := make([]byte, 8)
 	switch *dt {
 	case TypeBIT:
-		if val > 0 {
+		if helper.ToBool(value) {
 			buf[0] = 1 //?????
 		} else {
 			buf[0] = 0
 		}
 	case TypeBYTE:
-		buf[0] = uint8(val)
+		buf[0] = helper.ToUint8(value)
 	case TypeWORD:
+		var val uint16
+		if precision > 0 {
+			val = uint16(helper.ToFloat64(value) * math.Pow10(precision))
+		} else {
+			val = helper.ToUint16(value)
+		}
+		if le {
+			helper.WriteUint16LittleEndian(buf, val)
+		} else {
+			helper.WriteUint16(buf, val)
+		}
+	case TypeDWORD:
+		var val uint32
+		if precision > 0 {
+			val = uint32(helper.ToFloat64(value) * math.Pow10(precision))
+		} else {
+			val = helper.ToUint32(value)
+		}
+		if le {
+			helper.WriteUint32LittleEndian(buf, val)
+		} else {
+			helper.WriteUint32(buf, val)
+		}
+	case TypeQWORD:
+		var val uint64
+		if precision > 0 {
+			val = uint64(value.(float64) * math.Pow10(precision))
+		} else {
+			val = helper.ToUint64(value)
+		}
+		if le {
+			helper.WriteUint64LittleEndian(buf, val)
+		} else {
+			helper.WriteUint64(buf, val)
+		}
+	case TypeSHORT:
+		var val int16
+		if precision > 0 {
+			val = int16(helper.ToFloat64(value) * math.Pow10(precision))
+		} else {
+			val = helper.ToInt16(value)
+		}
 		if le {
 			helper.WriteUint16LittleEndian(buf, uint16(val))
 		} else {
 			helper.WriteUint16(buf, uint16(val))
 		}
-	case TypeDWORD:
+	case TypeINTEGER:
+		var val int32
+		if precision > 0 {
+			val = int32(helper.ToFloat64(value) * math.Pow10(precision))
+		} else {
+			val = helper.ToInt32(value)
+		}
 		if le {
 			helper.WriteUint32LittleEndian(buf, uint32(val))
 		} else {
 			helper.WriteUint32(buf, uint32(val))
 		}
-	case TypeQWORD:
+	case TypeLONG:
+		var val int64
+		if precision > 0 {
+			val = int64(helper.ToFloat64(value) * math.Pow10(precision))
+		} else {
+			val = helper.ToInt64(value)
+		}
 		if le {
 			helper.WriteUint64LittleEndian(buf, uint64(val))
 		} else {
 			helper.WriteUint64(buf, uint64(val))
 		}
-	case TypeSHORT:
-		if le {
-			helper.WriteUint16LittleEndian(buf, uint16(int16(val)))
-		} else {
-			helper.WriteUint16(buf, uint16(int16(val)))
-		}
-	case TypeINTEGER:
-		if le {
-			helper.WriteUint32LittleEndian(buf, uint32(int32(val)))
-		} else {
-			helper.WriteUint32(buf, uint32(int32(val)))
-		}
-	case TypeLONG:
-		if le {
-			helper.WriteUint64LittleEndian(buf, uint64(int64(val)))
-		} else {
-			helper.WriteUint64(buf, uint64(int64(val)))
-		}
 	case TypeFLOAT:
+		val := helper.ToFloat32(value)
 		if le {
-			helper.WriteFloat32LittleEndian(buf, float32(val))
+			helper.WriteFloat32LittleEndian(buf, val)
 		} else {
-			helper.WriteFloat32(buf, float32(val))
+			helper.WriteFloat32(buf, val)
 		}
 	case TypeDOUBLE:
+		val := helper.ToFloat64(value)
 		if le {
 			helper.WriteFloat64LittleEndian(buf, val)
 		} else {
@@ -197,62 +237,85 @@ func (dt *DataType) Encode(val float64, le bool) []byte {
 	default:
 		//TODO error
 	}
-	return nil
+	return buf[:dt.Size()]
 }
 
 //Decode 解码
-func (dt *DataType) Decode(buf []byte, le bool) (float64, error) {
-	var val float64
+func (dt *DataType) Decode(buf []byte, le bool, precision int) (val interface{}, err error) {
 	switch *dt {
 	case TypeBIT:
 		if buf[0] > 0 {
-			val = 1
+			val = true
 		} else {
-			val = 0
+			val = false
 		}
 	case TypeBYTE:
-		val = float64(buf[0])
+		val = buf[0]
 	case TypeWORD:
+		var value uint16
 		if le {
-			val = float64(helper.ParseUint16LittleEndian(buf))
+			value = helper.ParseUint16LittleEndian(buf)
 		} else {
-			val = float64(helper.ParseUint16(buf))
+			value = helper.ParseUint16(buf)
+		}
+		if precision > 0 {
+			val = float64(value) / math.Pow10(precision)
 		}
 	case TypeDWORD:
+		var value uint32
 		if le {
-			val = float64(helper.ParseUint32LittleEndian(buf))
+			value = helper.ParseUint32LittleEndian(buf)
 		} else {
-			val = float64(helper.ParseUint32(buf))
+			value = helper.ParseUint32(buf)
+		}
+		if precision > 0 {
+			val = float64(value) / math.Pow10(precision)
 		}
 	case TypeQWORD:
+		var value uint64
 		if le {
-			val = float64(helper.ParseUint64LittleEndian(buf))
+			value = helper.ParseUint64LittleEndian(buf)
 		} else {
-			val = float64(helper.ParseUint64(buf))
+			value = helper.ParseUint64(buf)
+		}
+		if precision > 0 {
+			val = float64(value) / math.Pow10(precision)
 		}
 	case TypeSHORT:
+		var value int16
 		if le {
-			val = float64(int16(helper.ParseUint16LittleEndian(buf)))
+			value = int16(helper.ParseUint16LittleEndian(buf))
 		} else {
-			val = float64(int16(helper.ParseUint16(buf)))
+			value = int16(helper.ParseUint16(buf))
+		}
+		if precision > 0 {
+			val = float64(value) / math.Pow10(precision)
 		}
 	case TypeINTEGER:
+		var value int32
 		if le {
-			val = float64(int32(helper.ParseUint32LittleEndian(buf)))
+			value = int32(helper.ParseUint32LittleEndian(buf))
 		} else {
-			val = float64(int32(helper.ParseUint32(buf)))
+			value = int32(helper.ParseUint32(buf))
+		}
+		if precision > 0 {
+			val = float64(value) / math.Pow10(precision)
 		}
 	case TypeLONG:
+		var value int64
 		if le {
-			val = float64(int64(helper.ParseUint64LittleEndian(buf)))
+			value = int64(helper.ParseUint64LittleEndian(buf))
 		} else {
-			val = float64(int64(helper.ParseUint64(buf)))
+			value = int64(helper.ParseUint64(buf))
+		}
+		if precision > 0 {
+			val = float64(value) / math.Pow10(precision)
 		}
 	case TypeFLOAT:
 		if le {
-			val = float64(helper.ParseFloat32LittleEndian(buf))
+			val = helper.ParseFloat32LittleEndian(buf)
 		} else {
-			val = float64(helper.ParseFloat32(buf))
+			val = helper.ParseFloat32(buf)
 		}
 	case TypeDOUBLE:
 		if le {
@@ -261,9 +324,9 @@ func (dt *DataType) Decode(buf []byte, le bool) (float64, error) {
 			val = helper.ParseFloat64(buf)
 		}
 	default:
-		//TODO error
+		err = errors.New("未知的数据类型")
 	}
-	return val, nil
+	return
 }
 
 //MarshalJSON 序列化

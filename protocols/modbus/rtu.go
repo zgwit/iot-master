@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocol"
-	"github.com/zgwit/iot-master/protocol/helper"
+	"github.com/zgwit/iot-master/protocols/helper"
+	"github.com/zgwit/iot-master/protocols/protocol"
 	"time"
 )
 
@@ -24,7 +24,7 @@ type RTU struct {
 	link connect.Tunnel
 }
 
-func NewRTU(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
+func NewRTU(link connect.Tunnel, opts protocol.Options) protocol.Protocol {
 	rtu := &RTU{
 		link: link,
 		//slave: opts["slave"].(uint8),
@@ -37,6 +37,10 @@ func NewRTU(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
 	})
 
 	return rtu
+}
+
+func (m *RTU) Desc() *protocol.Desc {
+	return &DescRTU
 }
 
 func (m *RTU) execute(cmd []byte) ([]byte, error) {
@@ -101,10 +105,6 @@ func (m *RTU) execute(cmd []byte) ([]byte, error) {
 	}
 }
 
-func (m *RTU) Address(addr string) (protocol.Addr, error) {
-	return ParseAddress(addr)
-}
-
 func (m *RTU) Read(station int, address protocol.Addr, size int) ([]byte, error) {
 	addr := address.(*Address)
 	b := make([]byte, 8)
@@ -117,7 +117,7 @@ func (m *RTU) Read(station int, address protocol.Addr, size int) ([]byte, error)
 	return m.execute(b)
 }
 
-func (m *RTU) Immediate(station int, addr protocol.Addr, size int) ([]byte, error) {
+func (m *RTU) Poll(station int, addr protocol.Addr, size int) ([]byte, error) {
 	return m.Read(station, addr, size)
 }
 

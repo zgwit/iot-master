@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocol"
-	"github.com/zgwit/iot-master/protocol/helper"
+	"github.com/zgwit/iot-master/protocols/helper"
+	"github.com/zgwit/iot-master/protocols/protocol"
 	"time"
 )
 
@@ -46,7 +46,7 @@ type FinsUdp struct {
 	link  connect.Tunnel
 }
 
-func NewFinsUDP(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
+func NewFinsUDP(link connect.Tunnel, opts protocol.Options) protocol.Protocol {
 	fins := &FinsUdp{link: link}
 	link.On("data", func(data []byte) {
 		//fins.OnData(data)
@@ -78,8 +78,8 @@ func (f *FinsUdp) execute(cmd []byte) ([]byte, error) {
 	return buf[10:], nil
 }
 
-func (f *FinsUdp) Address(addr string) (protocol.Addr, error) {
-	return ParseAddress(addr)
+func (f *FinsUdp) Desc() *protocol.Desc {
+	return &DescUDP
 }
 
 func (f *FinsUdp) Read(station int, address protocol.Addr, size int) ([]byte, error) {
@@ -108,7 +108,7 @@ func (f *FinsUdp) Read(station int, address protocol.Addr, size int) ([]byte, er
 	return recv[4:], nil
 }
 
-func (f *FinsUdp) Immediate(station int, addr protocol.Addr, size int) ([]byte, error) {
+func (f *FinsUdp) Poll(station int, addr protocol.Addr, size int) ([]byte, error) {
 	return f.Read(station, addr, size)
 }
 

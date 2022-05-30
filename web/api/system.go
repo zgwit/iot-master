@@ -10,19 +10,17 @@ import (
 	"runtime"
 )
 
-
-func version(ctx *gin.Context)  {
+func version(ctx *gin.Context) {
 	replyOk(ctx, gin.H{
-		"build": args.BuildTime,
-		"gin": gin.Version,
-		"git": args.GitHash,
+		"build":   args.BuildTime,
+		"gin":     gin.Version,
+		"git":     args.GitHash,
 		"runtime": runtime.Version(),
 		"version": args.Version,
 	})
-
 }
 
-func memStats(ctx *gin.Context)  {
+func memStats(ctx *gin.Context) {
 	stat, err := mem.VirtualMemory()
 	if err != nil {
 		replyError(ctx, err)
@@ -31,7 +29,7 @@ func memStats(ctx *gin.Context)  {
 	replyOk(ctx, stat)
 }
 
-func cpuInfo(ctx *gin.Context)  {
+func cpuInfo(ctx *gin.Context) {
 	info, err := cpu.Info()
 	if err != nil {
 		replyError(ctx, err)
@@ -44,7 +42,7 @@ func cpuInfo(ctx *gin.Context)  {
 	replyOk(ctx, info[0])
 }
 
-func cpuStats(ctx *gin.Context)  {
+func cpuStats(ctx *gin.Context) {
 	times, err := cpu.Times(false)
 	if err != nil {
 		replyError(ctx, err)
@@ -57,7 +55,7 @@ func cpuStats(ctx *gin.Context)  {
 	replyOk(ctx, times[0])
 }
 
-func diskStats(ctx *gin.Context)  {
+func diskStats(ctx *gin.Context) {
 	partitions, err := disk.Partitions(false)
 	if err != nil {
 		replyError(ctx, err)
@@ -76,8 +74,18 @@ func diskStats(ctx *gin.Context)  {
 	replyOk(ctx, usages)
 }
 
-
 func protocolList(ctx *gin.Context) {
 	ps := protocols.Protocols()
 	replyOk(ctx, ps)
+}
+
+func protocolDetail(ctx *gin.Context) {
+	name := ctx.Param("name")
+	for _, p := range protocols.Protocols() {
+		if p.Name == name {
+			replyOk(ctx, p)
+			return
+		}
+	}
+	replyFail(ctx, "找不到协议")
 }

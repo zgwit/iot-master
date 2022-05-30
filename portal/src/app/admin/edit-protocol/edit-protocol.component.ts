@@ -1,4 +1,4 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, EventEmitter, forwardRef, OnInit, Output} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
 import {RequestService} from "../../request.service";
 
@@ -24,12 +24,23 @@ export class EditProtocolComponent implements OnInit, ControlValueAccessor {
   formGroup = new FormGroup({});
   protocols: any = [];
 
+  @Output() codes: EventEmitter<any> = new EventEmitter<any>()
+
   constructor(private fb: FormBuilder, private rs: RequestService) {
+  }
+
+  findCodes() {
+    this.protocols.forEach((p: any) => {
+      if (p.name == this.formGroup.value.name) {
+        this.codes.emit(p.codes)
+      }
+    })
   }
 
   ngOnInit(): void {
     this.rs.get('system/protocols').subscribe(res => {
       this.protocols = res.data;
+      this.findCodes()
     })
     this.buildForm();
   }
@@ -47,6 +58,7 @@ export class EditProtocolComponent implements OnInit, ControlValueAccessor {
     this.formGroup.updateValueAndValidity();
     this.onChanged(this.formGroup.value);
     this.onTouched();
+    this.findCodes()
   }
 
   registerOnChange(fn: any): void {
@@ -60,6 +72,7 @@ export class EditProtocolComponent implements OnInit, ControlValueAccessor {
   writeValue(obj: any): void {
     this.data = obj || {};
     this.buildForm();
+    this.findCodes()
   }
 
 }

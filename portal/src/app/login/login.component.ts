@@ -31,10 +31,9 @@ export class LoginComponent implements OnInit {
 
     this.rs.post('login', {username: this.validateForm.value.username, password}).subscribe(res => {
       console.log('res:', res);
-      //this.us.setUser(res.data);
-      localStorage.setItem('token', res.data.token);
       //更新用户
-      this.us.setUser(res.data.user);
+      this.us.setUser(res.data);
+      //localStorage.setItem('token', res.data.token);
 
       this.router.navigate(['/admin']);
     }, err => {

@@ -6,8 +6,8 @@ import (
 	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/iot-master/protocol"
 	"github.com/zgwit/iot-master/protocols"
+	"github.com/zgwit/iot-master/protocols/protocol"
 	"golang.org/x/tools/container/intsets"
 	"sync"
 )
@@ -23,14 +23,14 @@ type Server struct {
 type Tunnel struct {
 	model.Tunnel
 	Instance connect.Tunnel
-	adapter  protocol.Adapter
+	protocol protocol.Protocol
 }
 
 func bindTunnel(instance connect.Tunnel) error {
 	tunnel := &Tunnel{
 		Tunnel:   *instance.Model(),
 		Instance: instance,
-		adapter:  nil,
+		protocol: nil,
 	}
 	allTunnels.Store(tunnel.Id, tunnel)
 
@@ -39,7 +39,7 @@ func bindTunnel(instance connect.Tunnel) error {
 	if err != nil {
 		return err
 	}
-	tunnel.adapter = adapter
+	tunnel.protocol = adapter
 
 	//找到相关Device，导入Mapper
 	var devices []model.Device

@@ -13,6 +13,8 @@ export class ProductEditComponent implements OnInit {
   id: any;
   submitting = false;
 
+  codes: Array<any> = [];
+
   basicForm: FormGroup = new FormGroup({});
   data: any = {
     "name": "新建产品",
@@ -20,6 +22,11 @@ export class ProductEditComponent implements OnInit {
     "tags": [],
     "manufacturer": "",
     "version": "",
+
+    "protocol": {
+      "name": "ModbusRTU",
+      "options": {}
+    },
     "points": [],
     "commands": [],
     "pollers": [],
@@ -41,6 +48,7 @@ export class ProductEditComponent implements OnInit {
       manufacturer: [this.data.manufacturer, []],
       version: [this.data.version, []],
 
+      protocol: [this.data.protocol, []],
       points: [this.data.points || []],
       commands: [this.data.commands || []],
       pollers: [this.data.pollers || []],
@@ -74,5 +82,10 @@ export class ProductEditComponent implements OnInit {
   change() {
     //console.log('change', e)
     this.data = this.basicForm.value;
+  }
+
+  onCodes($event: any) {
+    console.log("onCodes", $event)
+    this.codes = $event;
   }
 }

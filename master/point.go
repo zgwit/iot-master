@@ -2,7 +2,7 @@ package master
 
 import (
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/iot-master/protocol"
+	"github.com/zgwit/iot-master/protocols/protocol"
 )
 
 type Point struct {

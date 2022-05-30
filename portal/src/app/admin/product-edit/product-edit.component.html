@@ -1,4 +1,5 @@
-<app-editor [(ngModel)]="data" (ngModelChange)="basicForm.patchValue($event)" [submitting]="submitting" (submit)="submit()">
+<app-editor [(ngModel)]="data" (ngModelChange)="basicForm.patchValue($event)" [submitting]="submitting"
+            (submit)="submit()">
 
   <nz-collapse [formGroup]="basicForm">
     <nz-collapse-panel nzHeader="基本信息" nzActive>
@@ -15,7 +16,6 @@
           <app-choose-hmi formControlName="hmi" [showClear]="true"></app-choose-hmi>
         </nz-form-control>
       </nz-form-item>
-
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">标签</nz-form-label>
@@ -41,12 +41,16 @@
 
     </nz-collapse-panel>
 
+    <nz-collapse-panel nzHeader="协议适配" nzActive>
+      <app-edit-protocol formControlName="protocol" (codes)="onCodes($event)"></app-edit-protocol>
+    </nz-collapse-panel>
+
     <nz-collapse-panel nzHeader="数据点" nzActive>
-      <app-edit-points formControlName="points"></app-edit-points>
+      <app-edit-points formControlName="points" [codes]="codes"></app-edit-points>
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="定时采集" nzActive>
-      <app-edit-pollers formControlName="pollers"></app-edit-pollers>
+      <app-edit-pollers formControlName="pollers" [codes]="codes"></app-edit-pollers>
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="公式计算" nzActive>

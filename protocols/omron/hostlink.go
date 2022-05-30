@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocol"
-	"github.com/zgwit/iot-master/protocol/helper"
+	"github.com/zgwit/iot-master/protocols/helper"
+	"github.com/zgwit/iot-master/protocols/protocol"
 	"time"
 )
 
@@ -14,7 +14,7 @@ type FinsHostLink struct {
 	link  connect.Tunnel
 }
 
-func NewHostLink(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
+func NewHostLink(link connect.Tunnel, opts protocol.Options) protocol.Protocol {
 	fins := &FinsHostLink{link: link}
 	link.On("data", func(data []byte) {
 		//fins.OnData(data)
@@ -49,8 +49,8 @@ func (f *FinsHostLink) execute(cmd []byte) ([]byte, error) {
 	return recv, nil
 }
 
-func (f *FinsHostLink) Address(addr string) (protocol.Addr, error) {
-	return ParseAddress(addr)
+func (f *FinsHostLink) Desc() *protocol.Desc {
+	return &DescHostlink
 }
 
 func (f *FinsHostLink) Read(station int, address protocol.Addr, size int) ([]byte, error) {
@@ -79,7 +79,7 @@ func (f *FinsHostLink) Read(station int, address protocol.Addr, size int) ([]byt
 	return recv[4:], nil
 }
 
-func (f *FinsHostLink) Immediate(station int, addr protocol.Addr, size int) ([]byte, error) {
+func (f *FinsHostLink) Poll(station int, addr protocol.Addr, size int) ([]byte, error) {
 	return f.Read(station, addr, size)
 }
 

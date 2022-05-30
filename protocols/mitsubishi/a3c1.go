@@ -3,7 +3,7 @@ package mitsubishi
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocol/helper"
+	"github.com/zgwit/iot-master/protocols/helper"
 	"strconv"
 )
 

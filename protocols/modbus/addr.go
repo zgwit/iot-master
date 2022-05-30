@@ -1,13 +1,14 @@
 package modbus
 
 import (
-	"errors"
-	"github.com/zgwit/iot-master/protocol"
+	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/protocols/protocol"
 	"regexp"
 	"strconv"
 )
 
 type Address struct {
+	Slave  uint8  `json:"slave"`
 	Code   uint8  `json:"code"`
 	Offset uint16 `json:"offset"`
 }
@@ -27,12 +28,20 @@ func (a *Address) String() string {
 	return code + strconv.Itoa(int(a.Offset))
 }
 
-func (a *Address) Diff(base protocol.Addr) int {
-	start := base.(*Address)
-	if start.Code != a.Code {
-		return -1
+func (a *Address) Resolve(data []byte, from protocol.Addr, tp model.DataType, le bool, precision int) (interface{}, bool) {
+	base := from.(*Address)
+	if base.Code != a.Code {
+		return nil, false
 	}
-	return int(a.Offset - start.Offset)
+	cursor := int(a.Offset - base.Offset)
+	if cursor < 0 || cursor > len(data) {
+		return nil, false
+	}
+	val, err := tp.Decode(data[cursor:], le, precision)
+	if err != nil {
+		return nil, false
+	}
+	return val, true
 }
 
 var addrRegexp *regexp.Regexp
@@ -41,13 +50,9 @@ func init() {
 	addrRegexp = regexp.MustCompile(`^(C|D|DI|H|I)(\d+)$`)
 }
 
-func ParseAddress(addr string) (protocol.Addr, error) {
-	ss := addrRegexp.FindStringSubmatch(addr)
-	if ss == nil || len(ss) != 3 {
-		return nil, errors.New("unknown address")
-	}
+func ParseAddress(name string, addr string) (protocol.Addr, error) {
 	var code uint8 = 1
-	switch ss[1] {
+	switch name {
 	case "C":
 		code = 1
 	case "D":
@@ -59,8 +64,12 @@ func ParseAddress(addr string) (protocol.Addr, error) {
 	case "I":
 		code = 4
 	}
-	offset, _ := strconv.ParseUint(ss[2], 10, 16)
+	offset, err := strconv.ParseUint(addr, 10, 16)
+	if err != nil {
+		return nil, err
+	}
 	//offset, _ := strconv.Atoi(ss[2])
+
 	return &Address{
 		Code:   code,
 		Offset: uint16(offset),

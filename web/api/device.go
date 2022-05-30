@@ -7,7 +7,7 @@ import (
 	"github.com/zgwit/iot-master/influx"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/iot-master/tsdb"
+	"github.com/zgwit/iot-master/tsdbs"
 	"golang.org/x/net/websocket"
 	"regexp"
 	"strconv"
@@ -163,7 +163,7 @@ func deviceRefresh(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	replyOk(ctx, nil)
+	replyOk(ctx, device.Context)
 }
 
 func deviceRefreshPoint(ctx *gin.Context) {
@@ -261,7 +261,7 @@ func deviceValueHistory(ctx *gin.Context) {
 	}
 
 	//查询内部数据库
-	if tsdb.Opened() {
+	if tsdbs.Opened() {
 		//相对时间转化为时间戳
 		s, err := parseTime(start)
 		if err != nil {
@@ -282,7 +282,7 @@ func deviceValueHistory(ctx *gin.Context) {
 			replyError(ctx, err)
 			return
 		}
-		values, err := tsdb.Query(id, key, s, e, w)
+		values, err := tsdbs.Query(id, key, s, e, w)
 		if err != nil {
 			replyError(ctx, err)
 			return

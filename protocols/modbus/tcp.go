@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocol"
-	"github.com/zgwit/iot-master/protocol/helper"
+	"github.com/zgwit/iot-master/protocols/helper"
+	"github.com/zgwit/iot-master/protocols/protocol"
 	"sync"
 	"time"
 )
@@ -19,7 +19,7 @@ type TCP struct {
 	increment uint16
 }
 
-func NewTCP(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
+func NewTCP(link connect.Tunnel, opts protocol.Options) protocol.Protocol {
 	concurrency := opts.GetInt("concurrency", 10)
 
 	tcp := &TCP{
@@ -38,6 +38,10 @@ func NewTCP(link connect.Tunnel, opts protocol.Options) protocol.Adapter {
 		//})
 	})
 	return tcp
+}
+
+func (m *TCP) Desc() *protocol.Desc {
+	return &DescTCP
 }
 
 func (m *TCP) execute(cmd []byte, immediate bool) ([]byte, error) {
@@ -146,10 +150,6 @@ func (m *TCP) handlePack(buf []byte) {
 	}
 }
 
-func (m *TCP) Address(addr string) (protocol.Addr, error) {
-	return ParseAddress(addr)
-}
-
 func (m *TCP) Read(station int, address protocol.Addr, size int) ([]byte, error) {
 	addr := address.(*Address)
 	b := make([]byte, 12)
@@ -161,10 +161,10 @@ func (m *TCP) Read(station int, address protocol.Addr, size int) ([]byte, error)
 	helper.WriteUint16(b[8:], addr.Offset)
 	helper.WriteUint16(b[10:], uint16(size))
 
-	return m.execute(b, false)
+	return m.execute(b, true)
 }
 
-func (m *TCP) Immediate(station int, address protocol.Addr, size int) ([]byte, error) {
+func (m *TCP) Poll(station int, address protocol.Addr, size int) ([]byte, error) {
 	addr := address.(*Address)
 	b := make([]byte, 12)
 	//helper.WriteUint16(b, id)
@@ -175,7 +175,7 @@ func (m *TCP) Immediate(station int, address protocol.Addr, size int) ([]byte, e
 	helper.WriteUint16(b[8:], addr.Offset)
 	helper.WriteUint16(b[10:], uint16(size))
 
-	return m.execute(b, true)
+	return m.execute(b, false)
 }
 
 func (m *TCP) Write(station int, address protocol.Addr, buf []byte) error {

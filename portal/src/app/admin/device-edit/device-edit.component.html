@@ -19,7 +19,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">通道</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <app-choose-tunnel formControlName="tunnel_id"></app-choose-tunnel>
+          <app-choose-tunnel formControlName="tunnel_id" (tunnel)="onTunnel($event)"></app-choose-tunnel>
         </nz-form-control>
       </nz-form-item>
 
@@ -58,11 +58,11 @@
     <ng-container *ngIf="!basicForm.value.product_id">
 
       <nz-collapse-panel nzHeader="数据点" nzActive>
-        <app-edit-points formControlName="points"></app-edit-points>
+        <app-edit-points formControlName="points" [codes]="codes"></app-edit-points>
       </nz-collapse-panel>
 
       <nz-collapse-panel nzHeader="定时采集" nzActive>
-        <app-edit-pollers formControlName="pollers"></app-edit-pollers>
+        <app-edit-pollers formControlName="pollers" [codes]="codes"></app-edit-pollers>
       </nz-collapse-panel>
 
       <nz-collapse-panel nzHeader="公式计算" nzActive>

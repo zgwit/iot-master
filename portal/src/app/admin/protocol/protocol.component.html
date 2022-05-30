@@ -9,7 +9,6 @@
     <th nzColumnKey="name" [nzSortFn]="true">名称</th>
     <th nzColumnKey="label" [nzSortFn]="true">显示名称</th>
     <th nzColumnKey="version">版本</th>
-    <th nzColumnKey="codes">地址前缀</th>
   </tr>
   </thead>
   <tbody>
@@ -17,11 +16,6 @@
     <td>{{ data.name }}</td>
     <td>{{ data.label }}</td>
     <td>{{ data.version }}</td>
-    <td>
-      <span *ngFor="let code of data.codes">
-        {{code.name}}: {{code.label}}
-      </span>
-    </td>
   </tr>
   </tbody>
 </nz-table>

@@ -38,11 +38,12 @@ export class EditPointsComponent implements OnInit, ControlValueAccessor {
         return this.fb.group({
           name: [d.name, [Validators.required]],
           label: [d.label, []],
+          code: [d.code, [Validators.required]],
           address: [d.address, [Validators.required]],
           type: [d.type, [Validators.required]],
-          little_endian: [d.le, [Validators.required]],
+          le: [d.le, [Validators.required]],
           precision: [d.precision, [Validators.required]],
-          default: [d.default, [Validators.required]],
+          store: [d.store, [Validators.required]],
           unit: [d.unit, []],
         })
       }))
@@ -53,11 +54,12 @@ export class EditPointsComponent implements OnInit, ControlValueAccessor {
     this.formArray.push(this.fb.group({
       name: ['', [Validators.required]],
       label: ['', []],
+      code: ['', [Validators.required]],
       address: ['', [Validators.required]],
       type: ['', [Validators.required]],
-      little_endian: [false, [Validators.required]],
+      le: [false, [Validators.required]],
       precision: [0, [Validators.required]],
-      default: [0, [Validators.required]],
+      store: [true, [Validators.required]],
       unit: ["", []],
     }))
     //复制controls，让表格可以刷新
@@ -71,11 +73,12 @@ export class EditPointsComponent implements OnInit, ControlValueAccessor {
     this.formArray.controls.splice(i, 0, this.fb.group({
       name: [group.get('name')?.value, [Validators.required]],
       label: [group.get('label')?.value, []],
+      code: [group.get('code')?.value, []],
       address: [group.get('address')?.value, [Validators.required]],
       type: [group.get('type')?.value, [Validators.required]],
-      little_endian: [group.get('le')?.value, [Validators.required]],
+      le: [group.get('le')?.value, [Validators.required]],
       precision: [group.get('precision')?.value, [Validators.required]],
-      default: [group.get('default')?.value, [Validators.required]],
+      store: [group.get('store')?.value, [Validators.required]],
       unit: [group.get('unit')?.value, [Validators.required]],
     }))
   }
