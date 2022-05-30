@@ -33,7 +33,7 @@ func (a *Address) Resolve(data []byte, from protocol.Addr, tp model.DataType, le
 	if base.Code != a.Code {
 		return nil, false
 	}
-	cursor := int(a.Offset - base.Offset)
+	cursor := int(a.Offset-base.Offset) * 2
 	if cursor < 0 || cursor > len(data) {
 		return nil, false
 	}
