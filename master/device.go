@@ -6,6 +6,7 @@ import (
 	"github.com/antonmedv/expr"
 	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/events"
+	"github.com/zgwit/iot-master/history"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocols/protocol"
 	"strconv"
@@ -142,16 +143,13 @@ func (dev *Device) onData(data map[string]interface{}) {
 	dev.Emit("data", data)
 
 	//保存到时序数据库
-	//是否有必要起协程 或者 使用单一进程进行写入
-	//go func() {
-	//	if tsdbs.Opened() {
-	//		_ = tsdbs.Write(metric, data)
-	//	}
-	//
-	//	if influx.Opened() {
-	//		_ = influx.Write(map[string]string{"id": metric}, data)
-	//	}
-	//}()
+	if history.Storage != nil {
+		//是否有必要起协程 或者 使用单一进程进行写入
+		go func() {
+			_ = history.Storage.Write(dev.Id, data)
+			//log
+		}()
+	}
 }
 
 func (dev *Device) initAlarms() error {

@@ -5,9 +5,9 @@ import (
 	"github.com/zgwit/iot-master/args"
 	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/db"
+	"github.com/zgwit/iot-master/history"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/master"
-	"github.com/zgwit/iot-master/tsdbs"
 	"github.com/zgwit/iot-master/web"
 	"os"
 	"os/signal"
@@ -119,11 +119,11 @@ func originMain() {
 	}
 	defer db.Close()
 
-	err = tsdbs.Open(&config.Config.History)
+	err = history.Open(&config.Config.History)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer tsdbs.Close()
+	defer history.Close()
 
 	err = master.Start()
 	if err != nil {

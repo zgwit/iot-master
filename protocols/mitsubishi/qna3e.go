@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocols/helper"
+	helper2 "github.com/zgwit/iot-master/helper"
 	"strconv"
 )
 
@@ -40,12 +40,12 @@ func (t *A3EAdapter) request(cmd []byte) ([]byte, error) {
 	//	return nil, e
 	//}
 
-	status := helper.ParseUint32(buf[12:])
+	status := helper2.ParseUint32(buf[12:])
 	if status != 0 {
 		return nil, errors.New(fmt.Sprintf("TCP状态错误: %d", status))
 	}
 
-	length := helper.ParseUint32(buf[4:]) - 8
+	length := helper2.ParseUint32(buf[4:]) - 8
 
 	payload := make([]byte, length)
 	//t.link.Read(payload)
@@ -60,13 +60,13 @@ func (t *A3EAdapter) BuildCommand(cmd []byte) []byte {
 
 	copy(buf[:3], []byte("5000")) //副标题 读取
 
-	helper.WriteByteHex(buf[4:], t.NetworkNumber) //网络编号
-	helper.WriteByteHex(buf[6:], t.PlcNumber)     //PLC编号
-	helper.WriteByteHex(buf[8:], t.IoNumber)      //目标模块IO编号
-	helper.WriteByteHex(buf[10:], 0xFF)
-	helper.WriteByteHex(buf[12:], t.StationNumber)    //站编号
-	helper.WriteUint16Hex(buf[14:], uint16(length+4)) // 请求数据长度
-	copy(buf[18:], []byte("0010"))                    // CPU监视定时器
+	helper2.WriteByteHex(buf[4:], t.NetworkNumber) //网络编号
+	helper2.WriteByteHex(buf[6:], t.PlcNumber)     //PLC编号
+	helper2.WriteByteHex(buf[8:], t.IoNumber)      //目标模块IO编号
+	helper2.WriteByteHex(buf[10:], 0xFF)
+	helper2.WriteByteHex(buf[12:], t.StationNumber)    //站编号
+	helper2.WriteUint16Hex(buf[14:], uint16(length+4)) // 请求数据长度
+	copy(buf[18:], []byte("0010"))                     // CPU监视定时器
 
 	//命令
 	copy(buf[22:], cmd)
@@ -163,7 +163,7 @@ func (t *A3EAdapter) Write(address string, values []byte) error {
 
 	//数据预处理，位数据要转成0和1，字数据
 	if addr.IsBit {
-		value = helper.BoolToAscii(values)
+		value = helper2.BoolToAscii(values)
 	} else {
 		//uint16 数组转字符串
 		value := make([]byte, length*2)

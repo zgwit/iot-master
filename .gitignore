@@ -15,10 +15,10 @@
 # vendor/
 /.idea
 /data
-/history
 /test
 /log.txt
 /iot-master.yaml
 /iot-master-linux-amd64
 /iot-master-windows-amd64.zip
 /sqlite3.db
+/tstorage

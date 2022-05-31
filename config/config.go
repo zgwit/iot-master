@@ -13,7 +13,6 @@ type Configure struct {
 	Data     string   `yaml:"data"`
 	Web      Web      `yaml:"web"`
 	Database Database `yaml:"database"`
-	Influxdb Influxdb `yaml:"influxdb"`
 	History  History  `yaml:"history"`
 	Log      Log      `yaml:"log"`
 }
@@ -25,7 +24,6 @@ var Config = Configure{
 	Web:      WebDefault,
 	Database: DatabaseDefault,
 	History:  HistoryDefault,
-	Influxdb: InfluxdbDefault,
 	Log:      LogDefault,
 }
 

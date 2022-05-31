@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocols/helper"
+	"github.com/zgwit/iot-master/helper"
 	"github.com/zgwit/iot-master/protocols/protocol"
 	"sync"
 	"time"

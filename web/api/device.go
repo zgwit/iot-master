@@ -1,17 +1,12 @@
 package api
 
 import (
-	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/influx"
+	"github.com/zgwit/iot-master/history"
 	"github.com/zgwit/iot-master/master"
 	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/iot-master/tsdbs"
 	"golang.org/x/net/websocket"
-	"regexp"
-	"strconv"
-	"time"
 )
 
 func deviceList(ctx *gin.Context) {
@@ -217,79 +212,22 @@ func deviceWatch(ctx *gin.Context) {
 	}).ServeHTTP(ctx.Writer, ctx.Request)
 }
 
-var timeReg *regexp.Regexp
-
-func init() {
-	timeReg = regexp.MustCompile(`^(-?\d+)(h|m|s)$`)
-}
-
-func parseTime(tm string) (int64, error) {
-	ss := timeReg.FindStringSubmatch(tm)
-	if ss == nil || len(ss) != 3 {
-		return 0, errors.New("错误时间")
-	}
-	val, _ := strconv.ParseInt(ss[1], 10, 64)
-	switch ss[2] {
-	case "d":
-		val *= 24 * 60 * 60 * 1000
-	case "h":
-		val *= 60 * 60 * 1000
-	case "m":
-		val *= 60 * 1000
-	case "s":
-		val *= 1000
-	}
-	return val, nil
-}
-
 func deviceValueHistory(ctx *gin.Context) {
-	id := ctx.Param("id")
 	key := ctx.Param("name")
 	start := ctx.DefaultQuery("start", "-5h")
 	end := ctx.DefaultQuery("end", "0h")
 	window := ctx.DefaultQuery("window", "10m")
 
-	//优先查询InfluxDB
-	if influx.Opened() {
-		values, err := influx.Query(map[string]string{"id": id}, key, start, end, window)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
-		replyOk(ctx, values)
+	if history.Storage == nil {
+		replyFail(ctx, "未开启历史存储")
 		return
 	}
 
-	//查询内部数据库
-	if tsdbs.Opened() {
-		//相对时间转化为时间戳
-		s, err := parseTime(start)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
-		s += time.Now().UnixMilli()
-
-		e, err := parseTime(end)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
-		e += time.Now().UnixMilli()
-
-		w, err := parseTime(window)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
-		values, err := tsdbs.Query(id, key, s, e, w)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
-		replyOk(ctx, values)
+	values, err := history.Storage.Query(ctx.GetInt64("id"), key, start, end, window)
+	if err != nil {
+		replyError(ctx, err)
 		return
 	}
-
-	replyFail(ctx, "没有开启历史数据库")
+	replyOk(ctx, values)
+	return
 }
