@@ -19,9 +19,9 @@ func (t *TStorage) Open(opts helper.Options) error {
 	options := make([]tstorage.Option, 0)
 	options = append(options, tstorage.WithDataPath(opts.GetDefaultString("path", "tstorage")))
 
-	if precision, ok := opts.GetString("precision"); ok {
-		tstorage.WithTimestampPrecision(tstorage.TimestampPrecision(precision))
-	}
+	precision := opts.GetDefaultString("precision", "ms")
+	tstorage.WithTimestampPrecision(tstorage.TimestampPrecision(precision))
+
 	if retention, ok := opts.GetInt("retention"); ok && retention > 0 {
 		options = append(options, tstorage.WithRetention(time.Duration(retention)*time.Second))
 	}
@@ -45,8 +45,8 @@ func (t *TStorage) Write(id int64, values map[string]interface{}) error {
 	for k, v := range values {
 		rows = append(rows, tstorage.Row{
 			Metric:    metric,
-			Labels:    []tstorage.Label{{Name: "id", Value: k}},
-			DataPoint: tstorage.DataPoint{Value: helper.ToFloat64(v), Timestamp: time.Now().Unix()},
+			Labels:    []tstorage.Label{{Name: "key", Value: k}},
+			DataPoint: tstorage.DataPoint{Value: helper.ToFloat64(v), Timestamp: time.Now().UnixMilli()},
 		})
 	}
 	return t.storage.InsertRows(rows)
@@ -89,7 +89,7 @@ func (t *TStorage) Query(id int64, field string, start, end, window string) ([]s
 	for _, p := range points {
 		//按窗口划分
 		for p.Timestamp > s+w {
-			start += window
+			s += w
 			if count > 0 {
 				results = append(results, storage.Point{
 					Value: total / count,
