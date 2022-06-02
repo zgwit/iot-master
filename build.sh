@@ -17,6 +17,7 @@ fi
 gitHash=$(git show -s --format=%H)
 buildTime=$(date -d today +"%Y-%m-%d %H:%M:%S")
 
+# -w -s
 ldflags="-X 'github.com/zgwit/iot-master/args.Version=$version' \
 -X 'github.com/zgwit/iot-master/args.gitHash=$gitHash' \
 -X 'github.com/zgwit/iot-master/args.buildTime=$buildTime'"
