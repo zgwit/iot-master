@@ -26,7 +26,7 @@ func Open(cfg *config.Database) error {
 	//同步表
 	err = Engine.Sync2(
 		new(model.User), new(model.Password),
-		new(model.Tunnel), new(model.Server), new(model.Pipe),
+		new(model.Tunnel), new(model.Server), new(model.Transfer),
 		new(model.Device), new(model.Product),
 		new(model.Project), new(model.Template),
 		new(model.Hmi), new(model.Component),

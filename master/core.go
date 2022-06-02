@@ -25,7 +25,7 @@ func Start() error {
 		return err
 	}
 
-	err = LoadPipes()
+	err = LoadTransfers()
 	if err != nil {
 		return err
 	}
@@ -44,8 +44,8 @@ func Stop() {
 		_ = dev.Stop()
 		return true
 	})
-	allPipes.Range(func(key, value interface{}) bool {
-		dev := value.(*Pipe)
+	allTransfers.Range(func(key, value interface{}) bool {
+		dev := value.(*Transfer)
 		_ = dev.Close()
 		return true
 	})

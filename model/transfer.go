@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type Pipe struct {
+type Transfer struct {
 	Id       int64     `json:"id"`
 	TunnelId int64     `json:"tunnel_id"`
 	Name     string    `json:"name"`
@@ -13,12 +13,12 @@ type Pipe struct {
 	Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
-type PipeEx struct {
-	Pipe    `xorm:"extends"`
-	Running bool   `json:"running"`
-	Tunnel  string `json:"tunnel"`
+type TransferEx struct {
+	Transfer `xorm:"extends"`
+	Running  bool   `json:"running"`
+	Tunnel   string `json:"tunnel"`
 }
 
-func (p *PipeEx) TableName() string {
-	return "pipe"
+func (p *TransferEx) TableName() string {
+	return "transfer"
 }

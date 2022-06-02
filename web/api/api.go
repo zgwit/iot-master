@@ -179,20 +179,19 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/event/:id/delete", parseParamId, curdApiDelete(modelEvent, nil, nil))
 
 	//透传接口
-	modelPipe := reflect.TypeOf(model.Pipe{})
-	app.POST("/pipe/list", pipeList)
-	app.POST("/pipe/create", curdApiCreate(modelPipe, nil, afterPipeCreate))
-	app.GET("/pipe/:id", parseParamId, pipeDetail)
-	app.POST("/pipe/:id", parseParamId, curdApiModify(modelPipe,
-		[]string{"name", "devices", "template_id",
-			"hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"},
+	modelTransfer := reflect.TypeOf(model.Transfer{})
+	app.POST("/transfer/list", transferList)
+	app.POST("/transfer/create", curdApiCreate(modelTransfer, nil, afterTransferCreate))
+	app.GET("/transfer/:id", parseParamId, transferDetail)
+	app.POST("/transfer/:id", parseParamId, curdApiModify(modelTransfer,
+		[]string{"name", "port", "tunnel_id", "disabled"},
 		nil, afterPipeUpdate))
-	app.GET("/pipe/:id/delete", parseParamId, curdApiDelete(modelPipe, nil, afterPipeDelete))
+	app.GET("/transfer/:id/delete", parseParamId, curdApiDelete(modelTransfer, nil, afterTransferDelete))
 
-	app.GET("/pipe/:id/enable", parseParamId, curdApiDisable(modelPipe, false, nil, afterPipeEnable))
-	app.GET("/pipe/:id/disable", parseParamId, curdApiDisable(modelPipe, true, nil, afterPipeDisable))
-	app.GET("/pipe/:id/start", parseParamId, pipeStart)
-	app.GET("/pipe/:id/stop", parseParamId, pipeStop)
+	app.GET("/transfer/:id/enable", parseParamId, curdApiDisable(modelTransfer, false, nil, afterTransferEnable))
+	app.GET("/transfer/:id/disable", parseParamId, curdApiDisable(modelTransfer, true, nil, afterTransferDisable))
+	app.GET("/transfer/:id/start", parseParamId, transferStart)
+	app.GET("/transfer/:id/stop", parseParamId, transferStop)
 
 	//系统接口
 	app.GET("/system/version", version)

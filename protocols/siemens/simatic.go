@@ -14,6 +14,13 @@ type Simatic struct {
 	desc *protocol.Desc
 }
 
+func (s *Simatic) Init() {
+	s.link.On("online", func() {
+		_ = s.HandShake()
+	})
+	return
+}
+
 func (s *Simatic) Desc() *protocol.Desc {
 	return s.desc
 }
@@ -116,7 +123,7 @@ func packCommand(cmd []byte) []byte {
 	buf[8] = 0x01 //Message Type(ROSCTR) 1 请求 2 ACK 3 ACK-Data 7 Userdata
 	buf[9] = 0x0  //Reserved
 	buf[10] = 0x0
-	helper.WriteUint16(buf[9:], 0)               // PDU ref 标识序列号
+	helper.WriteUint16LittleEndian(buf[9:], 0)   // PDU ref 标识序列号(可以像Modbus TCP一样使用)
 	helper.WriteUint16(buf[13:], uint16(length)) // Param length
 	helper.WriteUint16(buf[15:], 0)              // Data length
 
