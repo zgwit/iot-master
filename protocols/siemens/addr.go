@@ -10,7 +10,7 @@ import (
 
 type Address struct {
 	Code   byte
-	Block  uint16
+	DB     uint16
 	Offset uint32
 }
 
@@ -38,7 +38,7 @@ func (a *Address) Resolve(data []byte, from protocol.Addr, tp model.DataType, le
 	if base.Code != a.Code {
 		return nil, false
 	}
-	if base.Block != a.Block {
+	if base.DB != a.DB {
 		return nil, false
 	}
 	cursor := int(a.Offset - base.Offset)
@@ -89,7 +89,7 @@ func ParseAddress(addr string) (protocol.Addr, error) {
 		Offset: uint32(offset),
 	}
 	if len(ss) == 4 {
-		address.Block = uint16(address.Offset)
+		address.DB = uint16(address.Offset)
 		offset, _ = strconv.ParseUint(ss[3][1:], 10, 16)
 		address.Offset = uint32(offset)
 	}

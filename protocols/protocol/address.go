@@ -6,7 +6,7 @@ import "github.com/zgwit/iot-master/model"
 //type Addr struct {
 //	Station  uint8  `json:"slave,omitempty"`
 //	Code   uint8  `json:"code"`
-//	Block  uint16 `json:"block,omitempty"`
+//	DB  uint16 `json:"block,omitempty"`
 //	Offset uint16 `json:"offset"`
 //}
 
