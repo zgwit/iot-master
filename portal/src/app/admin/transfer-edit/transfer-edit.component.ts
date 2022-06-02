@@ -5,11 +5,11 @@ import {RequestService} from "../../request.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
-  selector: 'app-pipe-edit',
-  templateUrl: './pipe-edit.component.html',
-  styleUrls: ['./pipe-edit.component.scss']
+  selector: 'app-transfer-edit',
+  templateUrl: './transfer-edit.component.html',
+  styleUrls: ['./transfer-edit.component.scss']
 })
-export class PipeEditComponent implements OnInit {
+export class TransferEditComponent implements OnInit {
   id: any;
   submitting = false;
 
@@ -42,7 +42,7 @@ export class PipeEditComponent implements OnInit {
 
 
   load(): void {
-    this.rs.get('pipe/' + this.id).subscribe(res => {
+    this.rs.get('transfer/' + this.id).subscribe(res => {
       this.data = res.data;
       this.buildForm();
     })
@@ -50,10 +50,10 @@ export class PipeEditComponent implements OnInit {
 
   submit(): void {
     this.submitting = true
-    const uri = this.id ? 'pipe/' + this.id : 'pipe/create';
+    const uri = this.id ? 'transfer/' + this.id : 'transfer/create';
     this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
-      this.router.navigate(['/admin/pipe/detail/' + res.data.id]);
+      this.router.navigate(['/admin/transfer/detail/' + res.data.id]);
     }).add(() => {
       this.submitting = false;
     })

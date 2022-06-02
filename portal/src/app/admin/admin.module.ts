@@ -110,9 +110,9 @@ import {EditSerialComponent} from "./edit-serial/edit-serial.component";
 import {EditRetryComponent} from "./edit-retry/edit-retry.component";
 import {NzListModule} from "ng-zorro-antd/list";
 import {TunnelMonitorComponent} from "./tunnel-monitor/tunnel-monitor.component";
-import {PipeComponent} from "./pipe/pipe.component";
-import {PipeDetailComponent} from "./pipe-detail/pipe-detail.component";
-import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
+import {TransferComponent} from "./transfer/transfer.component";
+import {TransferDetailComponent} from "./transfer-detail/transfer-detail.component";
+import {TransferEditComponent} from "./transfer-edit/transfer-edit.component";
 import {HmiComponent} from "./hmi/hmi.component";
 import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
 import {ComponentComponent} from "./component/component.component";
@@ -139,7 +139,7 @@ import {NzPopoverModule} from "ng-zorro-antd/popover";
     ServerEditDevicesComponent, ServerTunnelComponent,
     TunnelComponent, TunnelDetailComponent, TunnelEditComponent, TunnelDeviceComponent, TunnelMonitorComponent,
     TunnelBrowserComponent,
-    PipeComponent, PipeDetailComponent, PipeEditComponent,
+    TransferComponent, TransferDetailComponent, TransferEditComponent,
     DeviceComponent, DeviceDetailComponent, DeviceEditComponent,
     DeviceBrowserComponent, DeviceValueComponent, DeviceHmiComponent,
     ProductComponent, ProductDetailComponent, ProductEditComponent,

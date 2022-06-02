@@ -31,9 +31,9 @@ import {TunnelEditComponent} from "./tunnel-edit/tunnel-edit.component";
 import {TemplateDetailComponent} from "./template-detail/template-detail.component";
 import {ProductDetailComponent} from "./product-detail/product-detail.component";
 import {TunnelMonitorComponent} from "./tunnel-monitor/tunnel-monitor.component";
-import {PipeComponent} from "./pipe/pipe.component";
-import {PipeDetailComponent} from "./pipe-detail/pipe-detail.component";
-import {PipeEditComponent} from "./pipe-edit/pipe-edit.component";
+import {TransferComponent} from "./transfer/transfer.component";
+import {TransferDetailComponent} from "./transfer-detail/transfer-detail.component";
+import {TransferEditComponent} from "./transfer-edit/transfer-edit.component";
 import {ComponentComponent} from "./component/component.component";
 import {HmiComponent} from "./hmi/hmi.component";
 import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
@@ -81,11 +81,11 @@ const routes: Routes = [
       },
 
       {
-        path: 'pipe', component: ContainerComponent, data: {breadcrumb: "远程调试"}, children: [
-          {path: '', component: PipeComponent, data: {breadcrumb: "远程调试"}},
-          {path: 'detail/:id', component: PipeDetailComponent, data: {breadcrumb: "详情"}},
-          {path: 'edit/:id', component: PipeEditComponent, data: {breadcrumb: "编辑"}},
-          {path: 'create', component: PipeEditComponent, data: {breadcrumb: "创建"}},
+        path: 'transfer', component: ContainerComponent, data: {breadcrumb: "远程调试"}, children: [
+          {path: '', component: TransferComponent, data: {breadcrumb: "远程调试"}},
+          {path: 'detail/:id', component: TransferDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: TransferEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: TransferEditComponent, data: {breadcrumb: "创建"}},
         ]
       },
 

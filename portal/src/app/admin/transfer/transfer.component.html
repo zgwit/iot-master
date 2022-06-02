@@ -31,9 +31,9 @@
       <td [title]="data.created|dateString">{{data.created | fromNow }}</td>
       <td>{{data.running ? '在线' : '离线'}}</td>
       <td>
-        <a [routerLink]="'/admin/pipe/detail/'+data.id">详情</a>
+        <a [routerLink]="'/admin/transfer/detail/'+data.id">详情</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <a [routerLink]="'/admin/pipe/edit/'+data.id">编辑</a>
+        <a [routerLink]="'/admin/transfer/edit/'+data.id">编辑</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
           更多

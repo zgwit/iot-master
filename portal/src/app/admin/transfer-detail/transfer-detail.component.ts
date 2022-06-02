@@ -4,11 +4,11 @@ import {RequestService} from "../../request.service";
 import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
-  selector: 'app-pipe-detail',
-  templateUrl: './pipe-detail.component.html',
-  styleUrls: ['./pipe-detail.component.scss']
+  selector: 'app-transfer-detail',
+  templateUrl: './transfer-detail.component.html',
+  styleUrls: ['./transfer-detail.component.scss']
 })
-export class PipeDetailComponent implements OnInit {
+export class TransferDetailComponent implements OnInit {
   id = 0;
   data: any = {};
   loading = false;
@@ -23,7 +23,7 @@ export class PipeDetailComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.get(`pipe/${this.id}`).subscribe(res=>{
+    this.rs.get(`transfer/${this.id}`).subscribe(res=>{
       this.data = res.data;
       this.loading = false;
     });
@@ -32,7 +32,7 @@ export class PipeDetailComponent implements OnInit {
 
   onEnableChange(disabled: boolean) {
     if (!disabled) {
-      this.rs.get(`pipe/${this.id}/enable`).subscribe(res => {
+      this.rs.get(`transfer/${this.id}/enable`).subscribe(res => {
       });
       return;
     }
@@ -40,7 +40,7 @@ export class PipeDetailComponent implements OnInit {
       nzTitle: "提示",
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk: () => {
-        this.rs.get(`pipe/${this.id}/disable`).subscribe(res => {
+        this.rs.get(`transfer/${this.id}/disable`).subscribe(res => {
         });
       },
       nzOnCancel: () => {

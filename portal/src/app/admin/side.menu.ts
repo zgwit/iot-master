@@ -19,7 +19,7 @@ export let SideMenu = [
       },
       {
         title: '远程调试',
-        router: 'pipe'
+        router: 'transfer'
       },
     ]
   },

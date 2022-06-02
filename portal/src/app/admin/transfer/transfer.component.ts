@@ -6,11 +6,11 @@ import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {parseTableQuery} from "../table";
 
 @Component({
-  selector: 'app-pipe',
-  templateUrl: './pipe.component.html',
-  styleUrls: ['./pipe.component.scss']
+  selector: 'app-transfer',
+  templateUrl: './transfer.component.html',
+  styleUrls: ['./transfer.component.scss']
 })
-export class PipeComponent implements OnInit {
+export class TransferComponent implements OnInit {
   datum: any[] = [];
 
   loading = false;
@@ -45,7 +45,7 @@ export class PipeComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    this.rs.post('pipe/list', this.params).subscribe(res => {
+    this.rs.post('transfer/list', this.params).subscribe(res => {
       console.log('res', res);
       this.datum = res.data;
       this.total = res.total;
@@ -55,27 +55,27 @@ export class PipeComponent implements OnInit {
   }
 
   create(): void {
-    this.router.navigate(["admin/pipe/create"]);
+    this.router.navigate(["admin/transfer/create"]);
   }
 
   open(data: any): void {
-    this.router.navigate(['/admin/pipe/detail/' + data.id]);
+    this.router.navigate(['/admin/transfer/detail/' + data.id]);
   }
 
   remove(data: any, i: number) {
-    this.rs.get(`pipe/${data.id}/delete`).subscribe(res => {
+    this.rs.get(`transfer/${data.id}/delete`).subscribe(res => {
       this.datum.splice(i, 1);
     });
   }
 
   enable(data: any) {
-    this.rs.get(`pipe/${data.id}/enable`).subscribe(res => {
+    this.rs.get(`transfer/${data.id}/enable`).subscribe(res => {
       data.disabled = false
     });
   }
 
   disable(data: any) {
-    this.rs.get(`pipe/${data.id}/disable`).subscribe(res => {
+    this.rs.get(`transfer/${data.id}/disable`).subscribe(res => {
       data.disabled = true
     });
   }
