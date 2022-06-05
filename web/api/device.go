@@ -48,7 +48,10 @@ func deviceList(ctx *gin.Context) {
 func afterDeviceCreate(data interface{}) error {
 	device := data.(*model.Device)
 	//启动
-	_, err := master.LoadDevice(device.Id)
+	dev, err := master.LoadDevice(device.Id)
+	if err == nil {
+		err = dev.Start()
+	}
 	return err
 }
 
@@ -85,7 +88,7 @@ func afterDeviceUpdate(data interface{}) error {
 	//重新启动
 	_ = master.RemoveDevice(device.Id)
 	dev, err := master.LoadDevice(device.Id)
-	if err != nil {
+	if err == nil {
 		err = dev.Start()
 	}
 	return err

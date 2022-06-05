@@ -44,15 +44,32 @@ func (a *Address) Lookup(data []byte, from protocol.Addr, tp model.DataType, le 
 	if base.DB != a.DB {
 		return nil, false
 	}
-	cursor := int(a.Offset - base.Offset)
-	if cursor < 0 || cursor > len(data) {
-		return nil, false
+	if base.HasBit {
+		if a.HasBit {
+			cursor := int(a.Offset-base.Offset)*8 + int(a.Bits) - int(base.Bits)
+			if cursor < 0 || cursor > len(data) {
+				return nil, false
+			}
+			return data[cursor] > 0, true
+		} else {
+			return nil, false
+		}
+	} else {
+		cursor := int(a.Offset - base.Offset)
+		if cursor < 0 || cursor > len(data) {
+			return nil, false
+		}
+		if a.HasBit {
+			return data[cursor]&(0x01<<a.Bits) > 0, true
+		} else {
+			val, err := tp.Decode(data[cursor:], le, precision)
+			if err != nil {
+				return nil, false
+			}
+			return val, true
+		}
+
 	}
-	val, err := tp.Decode(data[cursor:], le, precision)
-	if err != nil {
-		return nil, false
-	}
-	return val, true
 }
 
 var addrRegexp1 *regexp.Regexp

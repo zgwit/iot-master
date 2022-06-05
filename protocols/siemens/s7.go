@@ -41,19 +41,26 @@ func (s *S7) HandShake() error {
 func (s *S7) Read(station int, addr protocol.Addr, size int) ([]byte, error) {
 	address := addr.(*Address)
 
+	var vt uint8 = VariableTypeWord
+	offset := address.Offset
+	if address.HasBit {
+		vt = VariableTypeBit
+		offset = offset*8 + uint32(address.Bits)
+	}
+
 	pack := S7Package{
 		Type:      MessageTypeJobRequest,
 		Reference: 0,
 		param: S7Parameter{
 			Code:  ParameterTypeRead,
 			Count: 1,
-			Type:  VariableTypeWord,
+			Type:  vt,
 			Areas: []S7ParameterArea{
 				{
 					Code:   address.Code,
 					DB:     address.DB,
 					Size:   uint16(size),
-					Offset: address.Offset,
+					Offset: offset,
 				},
 			},
 		},
@@ -77,6 +84,7 @@ func (s *S7) Read(station int, addr protocol.Addr, size int) ([]byte, error) {
 }
 
 func (s *S7) Poll(station int, addr protocol.Addr, size int) ([]byte, error) {
+	//TODO 使用Reference
 	return s.Read(station, addr, size)
 }
 
@@ -84,24 +92,31 @@ func (s *S7) Write(station int, addr protocol.Addr, data []byte) error {
 	address := addr.(*Address)
 	length := len(data)
 
+	var vt uint8 = VariableTypeWord
+	offset := address.Offset
+	if address.HasBit {
+		vt = VariableTypeBit
+		offset = offset*8 + uint32(address.Bits)
+	}
+
 	pack := S7Package{
 		Type:      MessageTypeJobRequest,
 		Reference: 0,
 		param: S7Parameter{
 			Code:  ParameterTypeWrite,
 			Count: 1,
-			Type:  VariableTypeWord,
+			Type:  vt,
 			Areas: []S7ParameterArea{
 				{
 					Code:   address.Code,
 					DB:     address.DB,
 					Size:   uint16(length),
-					Offset: address.Offset,
+					Offset: offset,
 				},
 			},
 		},
 		data: []S7Data{{
-			Type:  VariableTypeWord,
+			Type:  vt,
 			Count: uint16(length),
 			Data:  data,
 		}},

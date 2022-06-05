@@ -75,13 +75,19 @@ type S7Data struct {
 }
 
 func (p *S7Data) encode() []byte {
-	l := uint8(len(p.Data))
+	data := p.Data
+	if p.Type == VariableTypeBit {
+		data = helper.ShrinkBool(data)
+		p.Count = uint16(len(data))
+	}
+
+	l := uint8(len(data))
 	buf := make([]byte, l+4)
 
 	buf[0] = p.Code
 	buf[1] = p.Type
 	helper.WriteUint16(buf[2:], p.Count)
-	copy(buf[4:], p.Data)
+	copy(buf[4:], data)
 	return buf
 }
 
@@ -89,8 +95,12 @@ func (p *S7Data) decode(buf []byte) (int, error) {
 	p.Code = buf[0]
 	p.Type = buf[1]
 	p.Count = helper.ParseUint16(buf[2:])
-	p.Data = buf[4:]
-	return int(p.Count) + 4, nil
+	length := int(p.Count)
+	p.Data = buf[4 : length+4]
+	if p.Type == VariableTypeBit {
+		p.Data = helper.ExpandBool(buf, length*8)
+	}
+	return length + 4, nil
 }
 
 type S7Package struct {
