@@ -93,6 +93,11 @@ func (p *S7Data) encode() []byte {
 
 func (p *S7Data) decode(buf []byte) (int, error) {
 	p.Code = buf[0]
+	//写入返回
+	if len(buf) < 4 {
+		return 0, nil
+	}
+
 	p.Type = buf[1]
 	p.Count = helper.ParseUint16(buf[2:])
 	length := int(p.Count)
@@ -164,7 +169,7 @@ func (p *S7Package) encode() []byte {
 	return buf
 }
 
-func (p *S7Package) decode(buf []byte) error {
+func (p *S7Package) decode(buf []byte, noBody bool) error {
 	length := helper.ParseUint16(buf[2:])
 	if len(buf) < int(length) {
 		return fmt.Errorf("长度不够 %d %d", length, len(buf))
@@ -180,6 +185,10 @@ func (p *S7Package) decode(buf []byte) error {
 	ErrorCode := buf[18]
 	if ErrorClass != 0 || ErrorCode != 0 {
 		return fmt.Errorf("错误码：%d %d", ErrorClass, ErrorCode)
+	}
+
+	if noBody {
+		return nil
 	}
 
 	err := p.param.decode(buf[19:])

@@ -75,7 +75,7 @@ func (s *S7) Read(station int, addr protocol.Addr, size int) ([]byte, error) {
 
 	//解析数据
 	var resp S7Package
-	err = resp.decode(buf)
+	err = resp.decode(buf, false)
 	if err != nil {
 		return nil, err
 	}
@@ -131,7 +131,7 @@ func (s *S7) Write(station int, addr protocol.Addr, data []byte) error {
 
 	//解析结果
 	var resp S7Package
-	err = resp.decode(buf)
+	err = resp.decode(buf, true)
 	if err != nil {
 		return err
 	}
