@@ -95,7 +95,7 @@ func (p *S7Data) decode(buf []byte) (int, error) {
 	p.Code = buf[0]
 	//写入返回
 	if len(buf) < 4 {
-		return 0, nil
+		return 0, fmt.Errorf("长度太短")
 	}
 
 	p.Type = buf[1]
@@ -169,7 +169,7 @@ func (p *S7Package) encode() []byte {
 	return buf
 }
 
-func (p *S7Package) decode(buf []byte, noBody bool) error {
+func (p *S7Package) decode(buf []byte) error {
 	length := helper.ParseUint16(buf[2:])
 	if len(buf) < int(length) {
 		return fmt.Errorf("长度不够 %d %d", length, len(buf))
@@ -187,19 +187,28 @@ func (p *S7Package) decode(buf []byte, noBody bool) error {
 		return fmt.Errorf("错误码：%d %d", ErrorClass, ErrorCode)
 	}
 
-	if noBody {
-		return nil
-	}
-
 	err := p.param.decode(buf[19:])
 	if err != nil {
 		return err
 	}
 
-	if dataLength > 0 {
-		p.data = make([]S7Data, 0)
-		cursor := int(paramLength) + 19
-		remain := int(length) - cursor
+	if dataLength == 0 {
+		return nil
+	}
+
+	p.data = make([]S7Data, 0)
+
+	cursor := int(paramLength) + 19
+	remain := int(length) - cursor
+	if p.Type == MessageTypeAckData && p.param.Code == ParameterTypeWrite {
+		for remain > 0 {
+			var d S7Data
+			d.Code = buf[cursor]
+			p.data = append(p.data, d)
+			cursor++
+			remain--
+		}
+	} else {
 		for remain > 0 {
 			var d S7Data
 			cnt, err := d.decode(buf[cursor:])

@@ -1,8 +1,10 @@
 package siemens
 
 import (
+	"fmt"
 	"github.com/zgwit/iot-master/connect"
 	"github.com/zgwit/iot-master/protocols/protocol"
+	"time"
 )
 
 type S7 struct {
@@ -68,14 +70,14 @@ func (s *S7) Read(station int, addr protocol.Addr, size int) ([]byte, error) {
 
 	cmd := pack.encode()
 
-	buf, err := s.link.Ask(cmd, 5)
+	buf, err := s.link.Ask(cmd, 5*time.Second)
 	if err != nil {
 		return nil, err
 	}
 
 	//解析数据
 	var resp S7Package
-	err = resp.decode(buf, false)
+	err = resp.decode(buf)
 	if err != nil {
 		return nil, err
 	}
@@ -124,16 +126,20 @@ func (s *S7) Write(station int, addr protocol.Addr, data []byte) error {
 
 	cmd := pack.encode()
 
-	buf, err := s.link.Ask(cmd, 5)
+	buf, err := s.link.Ask(cmd, 5*time.Second)
 	if err != nil {
 		return err
 	}
 
 	//解析结果
 	var resp S7Package
-	err = resp.decode(buf, true)
+	err = resp.decode(buf)
 	if err != nil {
 		return err
+	}
+	code := resp.data[0].Code
+	if code != 0 {
+		return fmt.Errorf("错误码 %d", code)
 	}
 
 	return nil
