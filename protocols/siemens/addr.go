@@ -6,12 +6,15 @@ import (
 	"github.com/zgwit/iot-master/protocols/protocol"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type Address struct {
 	Code   byte
 	DB     uint16
 	Offset uint32
+	HasBit bool
+	Bits   uint8
 }
 
 func (a *Address) String() string {
@@ -24,7 +27,7 @@ func (a *Address) String() string {
 	case 0x83:
 		code = "M"
 	case 0x84:
-		code = "D" //DB V
+		code = "V"
 	case 0x1D:
 		code = "T"
 	case 0x1C:
@@ -33,7 +36,7 @@ func (a *Address) String() string {
 	return code + strconv.Itoa(int(a.Offset))
 }
 
-func (a *Address) Resolve(data []byte, from protocol.Addr, tp model.DataType, le bool, precision int) (interface{}, bool) {
+func (a *Address) Lookup(data []byte, from protocol.Addr, tp model.DataType, le bool, precision int) (interface{}, bool) {
 	base := from.(*Address)
 	if base.Code != a.Code {
 		return nil, false
@@ -52,46 +55,71 @@ func (a *Address) Resolve(data []byte, from protocol.Addr, tp model.DataType, le
 	return val, true
 }
 
-var addrRegexp *regexp.Regexp
+var addrRegexp1 *regexp.Regexp
+var addrRegexp2 *regexp.Regexp
+var addrRegexp3 *regexp.Regexp
 
 func init() {
-	addrRegexp = regexp.MustCompile(`^(I|Q|M|D|DB|V|T|C)(\d+)(.\d+)?$`)
+	addrRegexp1 = regexp.MustCompile(`^\d+$`)
+	addrRegexp2 = regexp.MustCompile(`^\d+.\d+$`)
+	addrRegexp3 = regexp.MustCompile(`^\d+(.\d+)?$`)
 }
 
-func ParseAddress(addr string) (protocol.Addr, error) {
-	ss := addrRegexp.FindStringSubmatch(addr)
-	if ss == nil || len(ss) < 3 {
-		return nil, fmt.Errorf("西门子地址格式错误: %s", addr)
-	}
+func ParseAddress(name, addr string) (protocol.Addr, error) {
 	var code uint8 = 1
-	switch ss[1] {
+	switch name {
 	case "I":
 		code = 0x81
 	case "Q":
 		code = 0x82
 	case "M":
 		code = 0x83
-	case "D":
-		code = 0x84
-	case "DB":
+	case "V", "DB":
 		code = 0x84
 	case "T":
 		code = 0x1D
 	case "C":
 		code = 0x1C
-	case "V":
-		code = 0x84
 	}
-	offset, _ := strconv.ParseUint(ss[2], 10, 16)
-	//offset, _ := strconv.Atoi(ss[2])
-	address := &Address{
-		Code:   code,
-		Offset: uint32(offset),
+	//addrRegexp.MatchString(addr)
+
+	if name == "DB" {
+		if !addrRegexp2.MatchString(addr) {
+			return nil, fmt.Errorf("%s 不是有效的DB格式", addr)
+		}
+		ss := strings.Split(addr, ".")
+		db, _ := strconv.ParseUint(ss[0], 10, 16)
+		offset, _ := strconv.ParseUint(ss[1], 10, 24)
+		return &Address{
+			Code:   0x84,
+			DB:     uint16(db),
+			Offset: uint32(offset),
+		}, nil
 	}
-	if len(ss) == 4 {
-		address.DB = uint16(address.Offset)
-		offset, _ = strconv.ParseUint(ss[3][1:], 10, 16)
-		address.Offset = uint32(offset)
+	if name == "T" || name == "C" {
+		if !addrRegexp1.MatchString(addr) {
+			return nil, fmt.Errorf("%s 不是有效的整数格式", addr)
+		}
+		offset, _ := strconv.ParseUint(addr, 10, 24)
+		return &Address{
+			Code:   code,
+			Offset: uint32(offset),
+		}, nil
+	}
+
+	if !addrRegexp3.MatchString(addr) {
+		return nil, fmt.Errorf("%s 不是有效的地址格式", addr)
+	}
+
+	//i q m v
+	address := &Address{Code: code}
+	ss := strings.Split(addr, ".")
+	offset, _ := strconv.ParseUint(ss[0], 10, 24)
+	address.Offset = uint32(offset)
+	if len(ss) > 1 {
+		address.HasBit = true
+		bits, _ := strconv.ParseUint(ss[1], 10, 16)
+		address.Bits = uint8(bits)
 	}
 	return address, nil
 }

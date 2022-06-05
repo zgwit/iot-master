@@ -3,7 +3,6 @@ package modbus
 import (
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/protocols/protocol"
-	"regexp"
 	"strconv"
 )
 
@@ -28,12 +27,17 @@ func (a *Address) String() string {
 	return code + strconv.Itoa(int(a.Offset))
 }
 
-func (a *Address) Resolve(data []byte, from protocol.Addr, tp model.DataType, le bool, precision int) (interface{}, bool) {
+func (a *Address) Lookup(data []byte, from protocol.Addr, tp model.DataType, le bool, precision int) (interface{}, bool) {
 	base := from.(*Address)
 	if base.Code != a.Code {
 		return nil, false
 	}
-	cursor := int(a.Offset-base.Offset) * 2
+	cursor := int(a.Offset - base.Offset)
+	//Modbus是以双字
+	if a.Code == FuncCodeReadHoldingRegisters || a.Code == FuncCodeReadInputRegisters {
+		cursor *= 2
+	}
+
 	if cursor < 0 || cursor > len(data) {
 		return nil, false
 	}
@@ -44,20 +48,12 @@ func (a *Address) Resolve(data []byte, from protocol.Addr, tp model.DataType, le
 	return val, true
 }
 
-var addrRegexp *regexp.Regexp
-
-func init() {
-	addrRegexp = regexp.MustCompile(`^(C|D|DI|H|I)(\d+)$`)
-}
-
 func ParseAddress(name string, addr string) (protocol.Addr, error) {
 	var code uint8 = 1
 	switch name {
 	case "C":
 		code = 1
-	case "D":
-		fallthrough
-	case "DI":
+	case "D", "DI":
 		code = 2
 	case "H":
 		code = 3

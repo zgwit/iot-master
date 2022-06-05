@@ -6,12 +6,13 @@ import (
 )
 
 var Codes = []protocol.Code{
-	{"I", "DM Area"},
-	{"Q", "CIO Area"},
-	{"M", "Work Area"},
-	{"DB", "Holding Bit Area"},
-	{"T", "Auxiliary Bit Area"},
-	{"C", "Auxiliary Bit Area"},
+	{"I", "I 输入"},
+	{"Q", "Q 输出"},
+	{"M", "M 标志"},
+	{"V", "V 变量"},
+	{"DB", "DB 数据块"},
+	{"T", "T 定时器"},
+	{"C", "C 计数器"},
 }
 
 var DescS7_200 = protocol.Desc{
@@ -33,13 +34,8 @@ var DescS7_200_Smart = protocol.Desc{
 	Version: "1.0",
 	Label:   "Simatic S7-200 Smart",
 	Codes:   Codes,
-	Factory: func(tunnel connect.Tunnel, opts protocol.Options) protocol.Protocol {
-		return &Simatic{
-			handshake1: parseHex(handshake1_200_smart),
-			handshake2: parseHex(handshake2_200_smart),
-			link:       tunnel,
-		}
-	},
+	Parser:  ParseAddress,
+	Factory: new200Smart,
 }
 
 var DescS7_300 = protocol.Desc{
@@ -98,4 +94,14 @@ var DescS7_1500 = protocol.Desc{
 			link:       tunnel,
 		}
 	},
+}
+
+func new200Smart(tunnel connect.Tunnel, opts protocol.Options) protocol.Protocol {
+	s7 := &S7{
+		handshake1: parseHex(handshake1_200_smart),
+		handshake2: parseHex(handshake2_200_smart),
+		link:       tunnel,
+	}
+	s7.Init()
+	return s7
 }

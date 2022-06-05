@@ -1,167 +1,125 @@
 package siemens
 
 import (
-	"errors"
 	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/helper"
-	"strconv"
-	"strings"
+	"github.com/zgwit/iot-master/protocols/protocol"
 )
 
-type s7command struct {
-	Code byte
+type S7 struct {
+	handshake1 []byte
+	handshake2 []byte
+
+	link connect.Tunnel
+	desc *protocol.Desc
 }
 
-type s7address struct {
-	s7command
-	Block   int
-	Address int
-}
-
-var commands = map[string]s7command{
-	"I":  {0x81},
-	"Q":  {0x82},
-	"M":  {0x83},
-	"D":  {0x84},
-	"DB": {0x84},
-	"T":  {0x1D},
-	"C":  {0x1C},
-	"V":  {0x84},
-}
-
-func parseSiemensAddress(address string) int {
-	if strings.IndexByte(address, '.') < 0 {
-		v, _ := strconv.Atoi(address)
-		return v
-	} else {
-		strs := strings.Split(address, ".")
-		v1, _ := strconv.Atoi(strs[0])
-		v2, _ := strconv.Atoi(strs[1])
-		return v1*8 + v2
-	}
-}
-
-func parseAddress(address string) (addr s7address, err error) {
-	//先检查两字节
-	k := strings.ToUpper(address[:2])
-	if cmd, ok := commands[k]; ok {
-		addr.s7command = cmd
-		if k == "DB" {
-			i := strings.IndexByte(address, '.')
-			addr.Block, _ = strconv.Atoi(address[2:i])
-			addr.Address = parseSiemensAddress(address[i+1:])
-			//addr.Address, _ = strconv.Atoi(address[i+1:])
-		} else {
-			addr.Address = parseSiemensAddress(address[2:])
-		}
-		return
-	}
-
-	//检测单字节
-	k = strings.ToUpper(address[:1])
-	if cmd, ok := commands[k]; ok {
-		addr.s7command = cmd
-		if k == "D" {
-			i := strings.IndexByte(address, '.')
-			addr.Block, _ = strconv.Atoi(address[1:i])
-			addr.Address = parseSiemensAddress(address[i+1:])
-			//addr.Address, _ = strconv.Atoi(address[i+1:])
-		} else {
-			addr.Address = parseSiemensAddress(address[1:])
-		}
-		return
-	}
-
-	err = errors.New("未知消息")
+func (s *S7) Init() {
+	s.link.On("online", func() {
+		_ = s.HandShake()
+	})
 	return
 }
 
-type S7 struct {
-	link connect.Tunnel
+func (s *S7) Desc() *protocol.Desc {
+	return &DescS7_200_Smart
 }
 
-//PackCommand 打包命令
-func (t *S7) PackCommand(cmd []byte) []byte {
-	length := len(cmd)
-
-	buf := make([]byte, length+17)
-	//TPKT
-	buf[0] = 0x03
-	buf[1] = 0x00
-	helper.WriteUint16(buf[2:], uint16(length+17)) // 长度
-	//ISO-COTP
-	buf[4] = 0x02 // 固定
-	buf[5] = 0xF0
-	buf[6] = 0x80
-
-	buf[7] = 0x32 //Protocol ID 协议ID，固定为32
-	buf[8] = 0x01 //Message Type(ROSCTR) 1 请求 2 ACK 3 ACK-Data 7 Userdata
-	buf[9] = 0x0  //Reserved
-	buf[10] = 0x0
-	helper.WriteUint16(buf[9:], 0)               // PDU ref 标识序列号
-	helper.WriteUint16(buf[13:], uint16(length)) // Param length
-	helper.WriteUint16(buf[15:], 0)              // Data length
-
-	//仅出现在Ack-Data消息中
-	//buf[17] Error class
-	//buf[18] Error Code
-
-	copy(buf[17:], cmd)
-
-	return buf
+func (s *S7) HandShake() error {
+	_, err := s.link.Ask(s.handshake1, 5)
+	if err != nil {
+		return err
+	}
+	//TODO 检查结果
+	_, err = s.link.Ask(s.handshake2, 5)
+	if err != nil {
+		return err
+	}
+	//TODO 检查结果
+	return nil
 }
 
-//BuildReadCommand 构建读命令
-func (t *S7) BuildReadCommand(addr s7address, length uint16) []byte {
-	buf := make([]byte, 14)
-	buf[0] = 0x04 // 4读 5写
-	buf[1] = 1    // 读取块数
-	buf[2] = 0x12 //specification type 指定有效值类型
-	buf[3] = 0x0A //length 接下来本次地址访问长度
-	buf[4] = 0x10 //syntax id 语法标记，ANY
-	buf[5] = 0x02 //variable type 1 bit 2 word 3 dint 4 real 5 counter???
-	// (byte)(address[ii].Content1 == 0x1D ? 0x1D : address[ii].Content1 == 0x1C ? 0x1C : 0x02);
-	helper.WriteUint16(buf[6:], length)                // 访问数据的个数
-	helper.WriteUint16(buf[8:], uint16(addr.Block))    //db number DB块编号，如果访问的是DB块的话
-	buf[10] = addr.Code                                //area 访问数据类型
-	helper.WriteUint24(buf[11:], uint32(addr.Address)) //address 偏移位置
+func (s *S7) Read(station int, addr protocol.Addr, size int) ([]byte, error) {
+	address := addr.(*Address)
 
-	return t.PackCommand(buf)
+	pack := S7Package{
+		Type:      MessageTypeJobRequest,
+		Reference: 0,
+		param: S7Parameter{
+			Code:  ParameterTypeRead,
+			Count: 1,
+			Type:  VariableTypeWord,
+			Areas: []S7ParameterArea{
+				{
+					Code:   address.Code,
+					DB:     address.DB,
+					Size:   uint16(size),
+					Offset: address.Offset,
+				},
+			},
+		},
+	}
+
+	cmd := pack.encode()
+
+	buf, err := s.link.Ask(cmd, 5)
+	if err != nil {
+		return nil, err
+	}
+
+	//解析数据
+	var resp S7Package
+	err = resp.decode(buf)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.data[0].Data, nil
 }
 
-//BuildWriteCommand 构建写命令
-func (t *S7) BuildWriteCommand(addr s7address, values []byte) []byte {
-	length := len(values)
-
-	buf := make([]byte, 14)
-	buf[0] = 0x05 // 4读 5写
-	buf[1] = 1    // 读取块数
-	buf[2] = 0x12 // 指定有效值类型
-	buf[3] = 0x0A // 接下来本次地址访问长度
-	buf[4] = 0x10 // 语法标记，ANY
-	buf[5] = 0x02 // 按字为单位，1位 2字
-	// (byte)(address[ii].Content1 == 0x1D ? 0x1D : address[ii].Content1 == 0x1C ? 0x1C : 0x02);
-	helper.WriteUint16(buf[6:], uint16(length))        // 访问数据的个数
-	helper.WriteUint16(buf[8:], uint16(addr.Block))    // DB块编号，如果访问的是DB块的话
-	buf[10] = addr.Code                                // 访问数据类型
-	helper.WriteUint24(buf[11:], uint32(addr.Address)) // 偏移位置
-	// 按字写入
-	buf[14] = 0x00
-	buf[15] = 0x04
-	helper.WriteUint16(buf[16:], uint16(length*8)) // 按位计算的长度
-
-	//添加数据
-	copy(buf[18:], values)
-
-	return t.PackCommand(buf)
+func (s *S7) Poll(station int, addr protocol.Addr, size int) ([]byte, error) {
+	return s.Read(station, addr, size)
 }
 
-//Read 读到数据
-func (t *S7) Read(address string, length int) ([]byte, error) {
-	return nil, nil
-}
+func (s *S7) Write(station int, addr protocol.Addr, data []byte) error {
+	address := addr.(*Address)
+	length := len(data)
 
-//Write 写入数据
-func (t *S7) Write(address string, values []byte) error {
+	pack := S7Package{
+		Type:      MessageTypeJobRequest,
+		Reference: 0,
+		param: S7Parameter{
+			Code:  ParameterTypeWrite,
+			Count: 1,
+			Type:  VariableTypeWord,
+			Areas: []S7ParameterArea{
+				{
+					Code:   address.Code,
+					DB:     address.DB,
+					Size:   uint16(length),
+					Offset: address.Offset,
+				},
+			},
+		},
+		data: []S7Data{{
+			Type:  VariableTypeWord,
+			Count: uint16(length),
+			Data:  data,
+		}},
+	}
+
+	cmd := pack.encode()
+
+	buf, err := s.link.Ask(cmd, 5)
+	if err != nil {
+		return err
+	}
+
+	//解析结果
+	var resp S7Package
+	err = resp.decode(buf)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

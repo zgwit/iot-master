@@ -2,7 +2,7 @@ package modbus
 
 // Function Code
 const (
-	// Bit access
+	// Bits access
 	FuncCodeReadDiscreteInputs = 2
 	FuncCodeReadCoils          = 1
 	FuncCodeWriteSingleCoil    = 5

@@ -12,7 +12,7 @@ import "github.com/zgwit/iot-master/model"
 
 type Addr interface {
 	String() string
-	Resolve(data []byte, from Addr, tp model.DataType, le bool, precision int) (interface{}, bool)
+	Lookup(data []byte, from Addr, tp model.DataType, le bool, precision int) (interface{}, bool)
 	//Flatten(value interface{}, tp DataType, le bool, precision int) []byte
 }
 

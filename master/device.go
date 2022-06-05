@@ -229,7 +229,7 @@ func (dev *Device) read(addr protocol.Addr, size int) error {
 	}
 	values := make(map[string]interface{})
 	for _, p := range dev.points {
-		val, has := p.Addr.Resolve(buf, addr, p.Type, p.LittleEndian, p.Precision)
+		val, has := p.Addr.Lookup(buf, addr, p.Type, p.LittleEndian, p.Precision)
 		if has {
 			values[p.Name] = val
 			dev.Context[p.Name] = val
@@ -267,7 +267,7 @@ func (dev *Device) RefreshPoint(name string) (interface{}, error) {
 			if err != nil {
 				return 0, err
 			}
-			val, has := p.Addr.Resolve(buf, p.Addr, p.Type, p.LittleEndian, p.Precision)
+			val, has := p.Addr.Lookup(buf, p.Addr, p.Type, p.LittleEndian, p.Precision)
 			if has {
 				dev.Context[p.Name] = val
 			}

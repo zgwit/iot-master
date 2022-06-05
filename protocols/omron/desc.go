@@ -5,11 +5,11 @@ import (
 )
 
 var Codes = []protocol.Code{
-	{"D", "DM Area"},
-	{"C", "CIO Area"},
-	{"W", "Work Area"},
-	{"H", "Holding Bit Area"},
-	{"A", "Auxiliary Bit Area"},
+	{"D", "DM 区"},
+	{"C", "CIO 区"},
+	{"W", "Work 区"},
+	{"H", "Holding Bits Area"},
+	{"A", "Auxiliary Bits Area"},
 }
 
 var DescHostlink = protocol.Desc{

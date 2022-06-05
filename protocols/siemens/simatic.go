@@ -22,7 +22,7 @@ func (s *Simatic) Init() {
 }
 
 func (s *Simatic) Desc() *protocol.Desc {
-	return s.desc
+	return &DescS7_200_Smart
 }
 
 func (s *Simatic) HandShake() error {
@@ -124,7 +124,7 @@ func packCommand(cmd []byte) []byte {
 	buf[8] = 0x01 //Message Type(ROSCTR) 1 Job Request 2 Ack 3 Ack-Data 7 Userdata
 	buf[9] = 0x0  //Reserved
 	buf[10] = 0x0
-	helper.WriteUint16LittleEndian(buf[9:], 0)   // PDU ref 标识序列号(可以像Modbus TCP一样使用)
+	helper.WriteUint16LittleEndian(buf[11:], 0)  // PDU ref 标识序列号(可以像Modbus TCP一样使用)
 	helper.WriteUint16(buf[13:], uint16(length)) // Param length
 	helper.WriteUint16(buf[15:], 0)              // Data length
 
@@ -137,7 +137,7 @@ func packCommand(cmd []byte) []byte {
 	//buf[18] Error Code
 
 	//Parameter区
-	//读取或写入一亲
+	//读取或写入
 	//buf[19]0x12 读写是固定的
 	//buf[20]此项剩余长度
 	//buf[21]常量0x10 语法标记

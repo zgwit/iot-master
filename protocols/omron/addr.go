@@ -20,9 +20,9 @@ var commands = map[string]Command{
 	"C": {0x30, 0xB0},
 	//Work Area
 	"W": {0x31, 0xB1},
-	//Holding Bit Area
+	//Holding Bits Area
 	"H": {0x32, 0xB2},
-	//Auxiliary Bit Area
+	//Auxiliary Bits Area
 	"A": {0x33, 0xB3},
 }
 
@@ -50,7 +50,7 @@ func (a *Address) String() string {
 	return code + strconv.Itoa(int(a.Offset))
 }
 
-func (a *Address) Resolve(data []byte, from protocol.Addr, tp model.DataType, le bool, precision int) (interface{}, bool) {
+func (a *Address) Lookup(data []byte, from protocol.Addr, tp model.DataType, le bool, precision int) (interface{}, bool) {
 	base := from.(*Address)
 	if base.Code != a.Code {
 		return nil, false
