@@ -28,7 +28,14 @@
                *ngFor="let v of data.points">
             <nz-card>
               <div class="label">{{v.label}} <span *ngIf="v.unit">({{v.unit}})</span></div>
-              <div class="value">{{context[v.name] | number: '1.0-' + v.precision}}</div>
+              <div class="value">
+                <ng-container *ngIf="v.type=='bit'">
+                  {{context[v.name]}}
+                </ng-container>
+                <ng-container *ngIf="v.type!='bit'">
+                  {{context[v.name] | number: '1.0-' + v.precision}}
+                </ng-container>
+              </div>
               <div class="refresh" title="刷新" (click)="refresh(v.name)"><i nz-icon nzType="sync" nzTheme="outline"></i>
               </div>
               <div class="history" title="历史" [routerLink]="'/admin/device/value/'+data.id+'/'+v.name">

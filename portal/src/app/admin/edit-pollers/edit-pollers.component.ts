@@ -55,7 +55,7 @@ export class EditPollersComponent implements OnInit, ControlValueAccessor {
           clock: [60, [Validators.required]],
           crontab: ['', [Validators.required]],
           code: ['', [Validators.required]],
-          address: [0, [Validators.required]],
+          address: ['0', [Validators.required]],
           length: [1, [Validators.required]],
           disabled: [false, [Validators.required]],
     }))

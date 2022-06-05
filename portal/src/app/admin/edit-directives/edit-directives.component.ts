@@ -34,7 +34,7 @@ export class EditDirectivesComponent implements OnInit, ControlValueAccessor {
     this.formGroup = this.fb.group({
       items: this.formArray = this.fb.array(this.items.map((d: any) => {
         return this.fb.group({
-          point: [d.address, [Validators.required]],
+          point: [d.point, [Validators.required]],
           value: [d.value, [Validators.required]],
           delay: [d.delay, [Validators.required]],
           expression: [d.expression, [Validators.required]],
@@ -59,7 +59,7 @@ export class EditDirectivesComponent implements OnInit, ControlValueAccessor {
     const group = this.formArray.controls[i];
 
     this.formArray.controls.splice(i, 0, this.fb.group({
-      point: [group.get('address')?.value, [Validators.required]],
+      point: [group.get('point')?.value, [Validators.required]],
       value: [group.get('value')?.value, [Validators.required]],
       delay: [group.get('delay')?.value, [Validators.required]],
       expression: [group.get('expression')?.value, [Validators.required]],
