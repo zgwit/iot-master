@@ -64,6 +64,9 @@
                 <input nz-input *ngSwitchCase="'text'" nzSize="small"
                        [(ngModel)]="properties[prop.name]"
                        (change)="onPropertyChange(prop.name)">
+                <textarea nz-input *ngSwitchCase="'textarea'" nzSize="small"
+                          [(ngModel)]="properties[prop.name]"
+                          (change)="onPropertyChange(prop.name)"></textarea>
                 <ng-container *ngSwitchCase="'color'">
                   <input nz-input nzSize="small" [value]="properties[prop.name]" [(colorPicker)]="properties[prop.name]"
                          [style.background]="properties[prop.name]"

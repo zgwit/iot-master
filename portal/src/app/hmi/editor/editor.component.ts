@@ -106,29 +106,25 @@ export class EditorComponent implements OnInit, AfterViewInit {
         break;
       case "ArrowUp":
         if (this.current) {
-          this.current.$container.dmove(0, -5)
-          this.current.properties.y -= 5
+          this.setupEntity(this.current, {y: this.current.properties.y - 5})
           this.editEntity(this.current)
         }
         break;
       case "ArrowDown":
         if (this.current) {
-          this.current.$container.dmove(0, 5)
-          this.current.properties.y += 5
+          this.setupEntity(this.current, {y: this.current.properties.y + 5})
           this.editEntity(this.current)
         }
         break;
       case "ArrowLeft":
         if (this.current) {
-          this.current.$container.dmove(-5, 0)
-          this.current.properties.x -= 5
+          this.setupEntity(this.current, {x: this.current.properties.x - 5})
           this.editEntity(this.current)
         }
         break;
       case "ArrowRight":
         if (this.current) {
-          this.current.$container.dmove(5, 0)
-          this.current.properties.x += 5
+          this.setupEntity(this.current, {x: this.current.properties.x + 5})
           this.editEntity(this.current)
         }
         break;

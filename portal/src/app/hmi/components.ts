@@ -27,6 +27,7 @@ import {LineChartComponent} from "./components/chart/line";
 import {PieChartComponent} from "./components/chart/pie";
 import {RadarChartComponent} from "./components/chart/radar";
 import {ProgressComponent} from "./components/control/progress";
+import {SvgComponent} from "./components/control/svg";
 
 export let GroupedComponents: Array<Group> = [];
 
@@ -75,7 +76,7 @@ let internalComponents = [
   PolylineComponent, PolygonComponent, TextComponent, ImageComponent,
   //控件
   ButtonComponent, InputComponent, SwitchComponent, SliderComponent,
-  ValueComponent, ProgressComponent,
+  ValueComponent, ProgressComponent, SvgComponent,
   //ClockComponent, CameraComponent, WeatherComponent,
   //工业
   //AlarmComponent,
