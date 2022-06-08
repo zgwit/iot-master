@@ -10,10 +10,18 @@ import (
 	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/web/api"
+	"mime"
 	"net/http"
 	"path"
 	"time"
 )
+
+func init() {
+	err := mime.AddExtensionType(".js", "application/javascript")
+	if err != nil {
+		log.Error(err)
+	}
+}
 
 //go:embed www
 var wwwFiles embed.FS
