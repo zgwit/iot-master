@@ -332,6 +332,21 @@ func (prj *Project) Running() bool {
 	return prj.running
 }
 
+func (prj *Project) Set(name string, value interface{}) error {
+	//prj.Context[name] = value
+	index := strings.Index(name, ".")
+	if index == -1 {
+		prj.Context[name] = value
+	} else {
+		dev := name[:index]
+		key := name[index+1:]
+		if d, ok := prj.deviceNameIndex[dev]; ok {
+			return d.Set(key, value)
+		} //else return error ??
+	}
+	return nil
+}
+
 func (prj *Project) execute(in *model.Invoke) error {
 	args := make([]float64, 0)
 	for _, d := range in.Arguments {

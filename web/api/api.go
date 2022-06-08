@@ -75,6 +75,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/project/:id/enable", parseParamId, curdApiDisable(modelProject, false, nil, afterProjectEnable))
 	app.GET("/project/:id/disable", parseParamId, curdApiDisable(modelProject, true, nil, afterProjectDisable))
 	app.GET("/project/:id/context", parseParamId, projectContext)
+	app.POST("/project/:id/context", parseParamId, projectContextUpdate)
 	app.GET("/project/:id/watch", parseParamId, projectWatch)
 
 	//模板接口
@@ -105,6 +106,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/device/:id/enable", parseParamId, curdApiDisable(modelDevice, false, nil, afterDeviceEnable))
 	app.GET("/device/:id/disable", parseParamId, curdApiDisable(modelDevice, true, nil, afterDeviceDisable))
 	app.GET("/device/:id/context", parseParamId, deviceContext)
+	app.POST("/device/:id/context", parseParamId, deviceContextUpdate)
 	app.GET("/device/:id/watch", parseParamId, deviceWatch)
 	app.GET("/device/:id/refresh", parseParamId, deviceRefresh)
 	app.GET("/device/:id/refresh/:name", parseParamId, deviceRefreshPoint)

@@ -22,6 +22,7 @@ export class ViewerComponent implements OnInit, AfterViewInit {
   width = 800
   height = 600
   @Output() invoke = new EventEmitter<any>();
+  @Output() bind = new EventEmitter<any>();
 
   @Input() set hmi(hmi: any) {
     this.canvas?.size(hmi.width, hmi.height)
@@ -72,6 +73,9 @@ export class ViewerComponent implements OnInit, AfterViewInit {
       entity.$component.start?.call(entity.$object)
       entity.$object.__proto__.$emit = function (event: string, data: any) {
         entity.handlers[event]?.forEach((invoke: any) => that.invoke.emit(invoke))
+      }
+      entity.$object.__proto__.$bind = function (key: string, data: any) {
+        that.bind.emit({[key]: data})
       }
     })
   }

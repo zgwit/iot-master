@@ -150,6 +150,31 @@ func deviceContext(ctx *gin.Context) {
 	replyOk(ctx, device.Context)
 }
 
+func deviceContextUpdate(ctx *gin.Context) {
+	var values map[string]interface{}
+	err := ctx.ShouldBindJSON(values)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	device := master.GetDevice(ctx.GetInt64("id"))
+	if device == nil {
+		replyFail(ctx, "找不到设备")
+		return
+	}
+
+	for k, v := range values {
+		err := device.Set(k, v)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+	}
+
+	replyOk(ctx, nil)
+}
+
 func deviceRefresh(ctx *gin.Context) {
 	device := master.GetDevice(ctx.GetInt64("id"))
 	if device == nil {

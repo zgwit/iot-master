@@ -138,6 +138,31 @@ func projectContext(ctx *gin.Context) {
 	replyOk(ctx, project.Context)
 }
 
+func projectContextUpdate(ctx *gin.Context) {
+	var values map[string]interface{}
+	err := ctx.ShouldBindJSON(values)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	project := master.GetProject(ctx.GetInt64("id"))
+	if project == nil {
+		replyFail(ctx, "找不到项目")
+		return
+	}
+
+	for k, v := range values {
+		err := project.Set(k, v)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+	}
+
+	replyOk(ctx, nil)
+}
+
 func projectWatch(ctx *gin.Context) {
 	project := master.GetProject(ctx.GetInt64("id"))
 	if project == nil {

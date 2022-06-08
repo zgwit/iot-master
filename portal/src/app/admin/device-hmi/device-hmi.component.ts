@@ -69,4 +69,11 @@ export class DeviceHmiComponent implements OnInit, OnDestroy {
       this.data = res.data
     })
   }
+
+  bind(obj: any) {
+    console.log("bind", obj)
+    this.rs.post(`device/${this.id}/context`, obj).subscribe(res=>{
+      this.data = res.data
+    })
+  }
 }
