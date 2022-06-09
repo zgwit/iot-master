@@ -25,17 +25,23 @@ ldflags="-X 'github.com/zgwit/iot-master/args.Version=$version' \
 export CGO_ENABLED=1
 
 export GOARCH=amd64
-export GOOS=windows
-go build -ldflags "$ldflags" -o iot-master-windows-amd64.exe main.go
+#export GOOS=windows
+#go build -ldflags "$ldflags" -o iot-master-windows-amd64.exe main.go
 
 export GOOS=linux
 
 go build -ldflags "$ldflags" -o iot-master-linux-amd64 main.go
 
+export CC=arm-linux-gnueabihf-gcc
+
 export GOARCH=arm64
 go build -ldflags "$ldflags" -o iot-master-linux-arm64 main.go
 
 export GOARCH=arm
+
+export GOARM=5
+go build -ldflags "$ldflags" -o iot-master-linux-armv5 main.go
+
 export GOARM=7
-go build -ldflags "$ldflags" -o iot-master-linux-arm main.go
+go build -ldflags "$ldflags" -o iot-master-linux-armv7 main.go
 
