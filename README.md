@@ -6,6 +6,8 @@
 
 **开源不易，加个星再走！！！**
 
+![公众号](https://iot-master.com/wxofficial.jpg) 
+
 [产品说明文档](https://docs.iot-master.com/)
 |
 [在线演示DEMO](http://demo.iot-master.com:8080/) 用户名 admin 密码 123456
@@ -17,7 +19,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-![公众号](https://iot-master.com/wxofficial.jpg)
 
 物联大师是[真格智能实验室](https://labs.zgwit.com)
 推出的开源且免费的物联网网关系统，集成了Modbus和主流PLC等多种协议，支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控、远程调试等功能，
@@ -49,15 +50,12 @@
 
 ### 数据库支持
 
-| 类型    | 嵌入式      | 其他数据库                   |
-|-------|----------|-------------------------|
-| 关系数据库 | sqlite   | MySQL、PostgreSQL、Oracle |
-| 时序数据库 | tstorage | InfluxDB 2.0            |
+| 类型    | 默认数据库（嵌入式） | 其他数据库                   |
+|-------|------------|-------------------------|
+| 关系数据库 | sqlite     | MySQL、PostgreSQL、Oracle |
+| 时序数据库 | tstorage   | InfluxDB 2.0            |
 
-> 支持嵌入式数据库的原因有二：
-> 1. 简化安装，开箱即用
-> 2. 应用灵活，支持智能网关和工控机
-
+> 因为智能网关的资源比较有限，嵌入式数据库资源消耗少，安装方便，开箱即用。
 
 ## 协议支持
 
