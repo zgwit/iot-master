@@ -86,7 +86,7 @@
 | Omron Hostlink       | ✔   | 待测试 |             |
 | Siemens PPI          | ❌   |     |             |
 | Siemens FetchWrite   | ❌   |     |             |
-| Siemens S7           | ❌   |     |             |
+| Siemens S7           | ✔   | ✔   |             |
 | Mitsubishi FxProgram | ❌   |     |             |
 | Mitsubishi FxSpecial | ❌   |     |             |
 | Mitsubishi A1C       | ❌   |     |             |
@@ -95,7 +95,6 @@
 | Mitsubishi Q3E       | ❌   |     |             |
 | Mitsubishi Q4C       | ❌   |     |             |
 | Mitsubishi Q4E       | ❌   |     |             |
-
 
 ## 案例
 
