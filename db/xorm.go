@@ -3,7 +3,8 @@ package db
 import (
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
-	_ "github.com/mattn/go-sqlite3"
+	//_ "github.com/mattn/go-sqlite3"
+	_ "github.com/glebarez/go-sqlite"
 	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/model"
 	"xorm.io/xorm"
