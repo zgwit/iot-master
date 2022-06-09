@@ -1,4 +1,4 @@
-# 物联大师
+# 物联大师【开源智能网关系统】
 
 **开源不易，加个星再走！！！**
 
@@ -17,12 +17,13 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-
+![公众号](https://iot-master.com/wxofficial.jpg)
 
 物联大师是[真格智能实验室](https://labs.zgwit.com)
-推出的开源且免费的物联网采集和控制系统，集成了Modbus和主流PLC等多种软硬件协议，支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控等功能，
-适用于大部分物联网或工业互联网应用场景。系统兼容大部分数据网关（DTU），支持远程调试（透传），可以安装在现场的电脑或工控机，也可以部署在云端服务器上。
-系统支持可视化显示，内置编辑器和组件库，能够实现Web组态（SCADA），可以投放到大屏上。
+推出的开源且免费的物联网网关系统，集成了Modbus和主流PLC等多种协议，支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控、远程调试等功能，
+适用于大部分物联网或工业互联网应用场景。
+系统采用Golang编程实现，支持多种操作系统和CPU架构，可以运行在智能网关上，也可以安装在现场的电脑或工控机上，还可以部署到云端服务器。
+系统支持可视化显示，内置组态编辑器和组件库，能够实现Web组态（SCADA），支持投放到大屏上。
 
 项目摒弃复杂的软件平台架构，远离微服务，注重真实的用户体验，做到简捷而不简单，真正解决物联网缺乏灵魂的问题。
 我们的宗旨是：让物联网实施变成一件简单的事情
@@ -37,37 +38,20 @@
 - 在线产品库、模板库、组态库，小白也能分分钟搞得有模有样【还在努力建设中】
 
 
-## 组态编辑器（可视化）
-
-![云组态](https://iot-master.com/hmi-editor.png)
-
 ## 项目架构图
 
 ![结构图](https://iot-master.com/frame.svg)
 
-## 前后端技术栈
+## 组态编辑器（可视化）
 
-项目使用Golang进行开发，普通PC实测5w并发无压力，云端未实测，主要看带宽。
+![云组态](https://iot-master.com/hmi-editor.png)
 
-### Web框架
 
-[GIN](https://github.com/gin-gonic/gin) ，因为不需要模板解析，后续可能直接采用httpRouter或gorilla/mux。
+### 数据库支持
 
-### 前端
-
-[Angular](https://github.com/angular/angular) 基础框架，Angular1比较熟，所以沿用了Angular2+
-
-[NG-ZORRO](https://github.com/NG-ZORRO/ng-zorro-antd) UI框架，AntDesign的Angular版本
-
-[SVG.js](https://github.com/svgdotjs/svg.js) SVG框架，基于SVG实现Web组态
-
-[ECharts](https://github.com/apache/echarts) 图表框架，用于显示历史曲线
-
-### 数据库
-
-| 类型    | 嵌入式      | 第三方数据库                  |
+| 类型    | 嵌入式      | 其他数据库                   |
 |-------|----------|-------------------------|
-| 关系数据库 | SQLite3  | MySQL、PostgreSQL、Oracle |
+| 关系数据库 | sqlite   | MySQL、PostgreSQL、Oracle |
 | 时序数据库 | tstorage | InfluxDB 2.0            |
 
 > 支持嵌入式数据库的原因有二：
@@ -109,3 +93,15 @@
 
 ![微信群](https://iot-master.com/iot-master.png)
 
+
+### 开源依赖
+
+[GIN](https://github.com/gin-gonic/gin) ，因为不需要模板解析，后续可能直接采用httpRouter或gorilla/mux。
+
+[Angular](https://github.com/angular/angular) 基础框架，Angular1比较熟，所以沿用了Angular2+
+
+[NG-ZORRO](https://github.com/NG-ZORRO/ng-zorro-antd) UI框架，AntDesign的Angular版本
+
+[SVG.js](https://github.com/svgdotjs/svg.js) SVG框架，基于SVG实现Web组态
+
+[ECharts](https://github.com/apache/echarts) 图表框架，用于显示历史曲线
