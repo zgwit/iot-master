@@ -1,6 +1,3 @@
-# 把前端转化成go
-# go get -u github.com/UnnoTed/fileb0x
-# fileb0x b0x.yaml
 
 # 整体编译
 go env -w GOPROXY=https://goproxy.cn,direct
