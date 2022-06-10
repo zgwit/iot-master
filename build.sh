@@ -41,9 +41,9 @@ go build -ldflags "$ldflags" -o iot-master-linux-arm64 main.go
 
 export GOARCH=arm
 
-export GOARM=5
-go build -ldflags "$ldflags" -o iot-master-linux-armv5 main.go
+export GOARM=6
+go build -ldflags "$ldflags" -o iot-master-linux-armv6l main.go
 
 export GOARM=7
-go build -ldflags "$ldflags" -o iot-master-linux-armv7 main.go
+go build -ldflags "$ldflags" -o iot-master-linux-armv7l main.go
 
