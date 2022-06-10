@@ -6,11 +6,11 @@ import (
 
 //Product 产品
 type Product struct {
-	Id           string `json:"id" xorm:"pk"`
-	Name         string `json:"name"`
-	Manufacturer string `json:"manufacturer"` //厂家
-	Version      string `json:"version"`      //SEMVER
-	Protocol     string `json:"protocol"`
+	Id           string   `json:"id" xorm:"pk"`
+	Name         string   `json:"name"`
+	Manufacturer string   `json:"manufacturer"` //厂家
+	Version      string   `json:"version"`      //SEMVER
+	Protocol     Protocol `json:"protocol" xorm:"JSON"`
 	//Tunnel       string `json:"tunnel"` // serial tcp udp ???
 
 	DeviceContent `xorm:"extends"`
