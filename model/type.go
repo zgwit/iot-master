@@ -3,7 +3,7 @@ package model
 import (
 	"errors"
 	"fmt"
-	helper2 "github.com/zgwit/iot-master/helper"
+	"github.com/zgwit/iot-master/helper"
 	"math"
 	"strings"
 )
@@ -141,98 +141,98 @@ func (dt *DataType) Encode(value interface{}, le bool, precision int) []byte {
 	buf := make([]byte, 8)
 	switch *dt {
 	case TypeBIT:
-		if helper2.ToBool(value) {
+		if helper.ToBool(value) {
 			buf[0] = 1 //?????
 		} else {
 			buf[0] = 0
 		}
 	case TypeBYTE:
-		buf[0] = helper2.ToUint8(value)
+		buf[0] = helper.ToUint8(value)
 	case TypeWORD:
 		var val uint16
 		if precision > 0 {
-			val = uint16(helper2.ToFloat64(value) * math.Pow10(precision))
+			val = uint16(helper.ToFloat64(value) * math.Pow10(precision))
 		} else {
-			val = helper2.ToUint16(value)
+			val = helper.ToUint16(value)
 		}
 		if le {
-			helper2.WriteUint16LittleEndian(buf, val)
+			helper.WriteUint16LittleEndian(buf, val)
 		} else {
-			helper2.WriteUint16(buf, val)
+			helper.WriteUint16(buf, val)
 		}
 	case TypeDWORD:
 		var val uint32
 		if precision > 0 {
-			val = uint32(helper2.ToFloat64(value) * math.Pow10(precision))
+			val = uint32(helper.ToFloat64(value) * math.Pow10(precision))
 		} else {
-			val = helper2.ToUint32(value)
+			val = helper.ToUint32(value)
 		}
 		if le {
-			helper2.WriteUint32LittleEndian(buf, val)
+			helper.WriteUint32LittleEndian(buf, val)
 		} else {
-			helper2.WriteUint32(buf, val)
+			helper.WriteUint32(buf, val)
 		}
 	case TypeQWORD:
 		var val uint64
 		if precision > 0 {
 			val = uint64(value.(float64) * math.Pow10(precision))
 		} else {
-			val = helper2.ToUint64(value)
+			val = helper.ToUint64(value)
 		}
 		if le {
-			helper2.WriteUint64LittleEndian(buf, val)
+			helper.WriteUint64LittleEndian(buf, val)
 		} else {
-			helper2.WriteUint64(buf, val)
+			helper.WriteUint64(buf, val)
 		}
 	case TypeSHORT:
 		var val int16
 		if precision > 0 {
-			val = int16(helper2.ToFloat64(value) * math.Pow10(precision))
+			val = int16(helper.ToFloat64(value) * math.Pow10(precision))
 		} else {
-			val = helper2.ToInt16(value)
+			val = helper.ToInt16(value)
 		}
 		if le {
-			helper2.WriteUint16LittleEndian(buf, uint16(val))
+			helper.WriteUint16LittleEndian(buf, uint16(val))
 		} else {
-			helper2.WriteUint16(buf, uint16(val))
+			helper.WriteUint16(buf, uint16(val))
 		}
 	case TypeINTEGER:
 		var val int32
 		if precision > 0 {
-			val = int32(helper2.ToFloat64(value) * math.Pow10(precision))
+			val = int32(helper.ToFloat64(value) * math.Pow10(precision))
 		} else {
-			val = helper2.ToInt32(value)
+			val = helper.ToInt32(value)
 		}
 		if le {
-			helper2.WriteUint32LittleEndian(buf, uint32(val))
+			helper.WriteUint32LittleEndian(buf, uint32(val))
 		} else {
-			helper2.WriteUint32(buf, uint32(val))
+			helper.WriteUint32(buf, uint32(val))
 		}
 	case TypeLONG:
 		var val int64
 		if precision > 0 {
-			val = int64(helper2.ToFloat64(value) * math.Pow10(precision))
+			val = int64(helper.ToFloat64(value) * math.Pow10(precision))
 		} else {
-			val = helper2.ToInt64(value)
+			val = helper.ToInt64(value)
 		}
 		if le {
-			helper2.WriteUint64LittleEndian(buf, uint64(val))
+			helper.WriteUint64LittleEndian(buf, uint64(val))
 		} else {
-			helper2.WriteUint64(buf, uint64(val))
+			helper.WriteUint64(buf, uint64(val))
 		}
 	case TypeFLOAT:
-		val := helper2.ToFloat32(value)
+		val := helper.ToFloat32(value)
 		if le {
-			helper2.WriteFloat32LittleEndian(buf, val)
+			helper.WriteFloat32LittleEndian(buf, val)
 		} else {
-			helper2.WriteFloat32(buf, val)
+			helper.WriteFloat32(buf, val)
 		}
 	case TypeDOUBLE:
-		val := helper2.ToFloat64(value)
+		val := helper.ToFloat64(value)
 		if le {
-			helper2.WriteFloat64LittleEndian(buf, val)
+			helper.WriteFloat64LittleEndian(buf, val)
 		} else {
-			helper2.WriteFloat64(buf, val)
+			helper.WriteFloat64(buf, val)
 		}
 	default:
 		//TODO error
@@ -254,74 +254,86 @@ func (dt *DataType) Decode(buf []byte, le bool, precision int) (val interface{},
 	case TypeWORD:
 		var value uint16
 		if le {
-			value = helper2.ParseUint16LittleEndian(buf)
+			value = helper.ParseUint16LittleEndian(buf)
 		} else {
-			value = helper2.ParseUint16(buf)
+			value = helper.ParseUint16(buf)
 		}
 		if precision > 0 {
 			val = float64(value) / math.Pow10(precision)
+		} else {
+			val = value
 		}
 	case TypeDWORD:
 		var value uint32
 		if le {
-			value = helper2.ParseUint32LittleEndian(buf)
+			value = helper.ParseUint32LittleEndian(buf)
 		} else {
-			value = helper2.ParseUint32(buf)
+			value = helper.ParseUint32(buf)
 		}
 		if precision > 0 {
 			val = float64(value) / math.Pow10(precision)
+		} else {
+			val = value
 		}
 	case TypeQWORD:
 		var value uint64
 		if le {
-			value = helper2.ParseUint64LittleEndian(buf)
+			value = helper.ParseUint64LittleEndian(buf)
 		} else {
-			value = helper2.ParseUint64(buf)
+			value = helper.ParseUint64(buf)
 		}
 		if precision > 0 {
 			val = float64(value) / math.Pow10(precision)
+		} else {
+			val = value
 		}
 	case TypeSHORT:
 		var value int16
 		if le {
-			value = int16(helper2.ParseUint16LittleEndian(buf))
+			value = int16(helper.ParseUint16LittleEndian(buf))
 		} else {
-			value = int16(helper2.ParseUint16(buf))
+			value = int16(helper.ParseUint16(buf))
 		}
 		if precision > 0 {
 			val = float64(value) / math.Pow10(precision)
+		} else {
+			val = value
 		}
 	case TypeINTEGER:
 		var value int32
 		if le {
-			value = int32(helper2.ParseUint32LittleEndian(buf))
+			value = int32(helper.ParseUint32LittleEndian(buf))
 		} else {
-			value = int32(helper2.ParseUint32(buf))
+			value = int32(helper.ParseUint32(buf))
 		}
 		if precision > 0 {
 			val = float64(value) / math.Pow10(precision)
+		} else {
+			val = value
 		}
 	case TypeLONG:
 		var value int64
 		if le {
-			value = int64(helper2.ParseUint64LittleEndian(buf))
+			value = int64(helper.ParseUint64LittleEndian(buf))
 		} else {
-			value = int64(helper2.ParseUint64(buf))
+			value = int64(helper.ParseUint64(buf))
 		}
 		if precision > 0 {
 			val = float64(value) / math.Pow10(precision)
+		} else {
+			val = value
 		}
 	case TypeFLOAT:
 		if le {
-			val = helper2.ParseFloat32LittleEndian(buf)
+			val = helper.ParseFloat32LittleEndian(buf)
 		} else {
-			val = helper2.ParseFloat32(buf)
+			val = helper.ParseFloat32(buf)
 		}
 	case TypeDOUBLE:
 		if le {
-			val = helper2.ParseFloat64LittleEndian(buf)
+			val = helper.ParseFloat64LittleEndian(buf)
 		} else {
-			val = helper2.ParseFloat64(buf)
+			val = helper.ParseFloat64(buf)
 		}
 	default:
 		err = errors.New("未知的数据类型")
