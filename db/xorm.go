@@ -1,7 +1,6 @@
 package db
 
 import (
-	"github.com/sirupsen/logrus"
 	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/model"
 	"xorm.io/xorm"
@@ -27,7 +26,7 @@ func Open(cfg *config.Database) error {
 	}
 
 	Engine.SetLogLevel(log.LogLevel(cfg.LogLevel))
-	Engine.SetLogger(logrus.StandardLogger())
+	//Engine.SetLogger(logrus.StandardLogger())
 
 	//同步表
 	err = Sync()
