@@ -3,6 +3,7 @@ package master
 import (
 	"context"
 	"github.com/PaesslerAG/gval"
+	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"time"
@@ -14,6 +15,11 @@ type Strategy struct {
 
 	condition gval.Evaluable
 	events.EventEmitter
+}
+
+func (s *Strategy) Init() (err error) {
+	s.condition, err = calc.Language.NewEvaluable(s.Condition)
+	return
 }
 
 //Execute 执行

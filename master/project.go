@@ -108,7 +108,7 @@ func NewProject(m *model.Project) (*Project, error) {
 		return nil, err
 	}
 
-	err = prj.initValidators()
+	err = prj.initAlarms()
 	if err != nil {
 		return nil, err
 	}
@@ -192,13 +192,17 @@ func (prj *Project) initJobs() error {
 	return nil
 }
 
-func (prj *Project) initValidators() error {
+func (prj *Project) initAlarms() error {
 	if prj.Alarms == nil {
 		return nil
 	}
 	for _, v := range prj.Alarms {
-		validator := &Alarm{Alarm: *v}
-		validator.On("alarm", func(alarm *model.AlarmContent) {
+		a := &Alarm{Alarm: *v}
+		err := a.Init()
+		if err != nil {
+			return err
+		}
+		a.On("alarm", func(alarm *model.AlarmContent) {
 			pa := &model.ProjectAlarm{ProjectId: prj.Id, AlarmContent: *alarm}
 
 			//入库
@@ -210,7 +214,7 @@ func (prj *Project) initValidators() error {
 			//上报
 			prj.Emit("alarm", pa)
 		})
-		prj.alarms = append(prj.alarms, validator)
+		prj.alarms = append(prj.alarms, a)
 	}
 	return nil
 }
@@ -221,6 +225,11 @@ func (prj *Project) initStrategies() error {
 	}
 	for _, v := range prj.Strategies {
 		strategy := &Strategy{Strategy: *v}
+		err := strategy.Init()
+		if err != nil {
+			return err
+		}
+
 		strategy.On("invoke", func() {
 			for _, invoke := range strategy.Invokes {
 				err := prj.execute(invoke)

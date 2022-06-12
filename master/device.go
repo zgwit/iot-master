@@ -158,6 +158,11 @@ func (dev *Device) initAlarms() error {
 	}
 	for _, v := range dev.Alarms {
 		a := &Alarm{Alarm: *v}
+		err := a.Init()
+		if err != nil {
+			return err
+		}
+
 		a.On("alarm", func(alarm *model.AlarmContent) {
 			da := &model.DeviceAlarm{DeviceId: dev.Id, AlarmContent: *alarm}
 
