@@ -1,5 +1,7 @@
 package aggregator
 
+import "context"
+
 type sumAggregator struct {
 	baseAggregator
 }
@@ -12,7 +14,7 @@ func (a *sumAggregator) Evaluate() (val float64, err error) {
 	var res interface{}
 	val = 0
 	for _, t := range a.targets {
-		res, err = a.expression.Evaluate(t)
+		res, err = a.expression(context.Background(), t)
 		if err != nil {
 			return
 		}

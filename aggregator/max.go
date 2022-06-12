@@ -1,6 +1,9 @@
 package aggregator
 
-import "math"
+import (
+	"context"
+	"math"
+)
 
 type maxAggregator struct {
 	baseAggregator
@@ -14,7 +17,7 @@ func (a *maxAggregator) Evaluate() (val float64, err error) {
 	var res interface{}
 	val = math.SmallestNonzeroFloat32
 	for _, t := range a.targets {
-		res, err = a.expression.Evaluate(t)
+		res, err = a.expression(context.Background(), t)
 		if err != nil {
 			return
 		}

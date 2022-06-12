@@ -1,7 +1,8 @@
 package master
 
 import (
-	"github.com/zgwit/iot-master/calc"
+	"context"
+	"github.com/PaesslerAG/gval"
 	"github.com/zgwit/iot-master/events"
 	"github.com/zgwit/iot-master/model"
 	"time"
@@ -11,7 +12,7 @@ import (
 type Alarm struct {
 	model.Alarm
 
-	condition *calc.Expression
+	condition gval.Evaluable
 	events.EventEmitter
 }
 
@@ -19,11 +20,11 @@ type Alarm struct {
 func (a *Alarm) Execute(ctx map[string]interface{}) error {
 
 	//条件检查
-	val, err := a.condition.Eval(ctx)
+	val, err := a.condition.EvalBool(context.Background(), ctx)
 	if err != nil {
 		return err
 	}
-	if !val.(bool) {
+	if !val {
 		a.DelayChecker.Reset()
 		a.RepeatChecker.Reset()
 		return nil

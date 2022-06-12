@@ -204,8 +204,8 @@ func deviceRefreshPoint(ctx *gin.Context) {
 }
 
 type executeBody struct {
-	Command   string    `json:"command"`
-	Arguments []float64 `json:"arguments"`
+	Command   string        `json:"command"`
+	Arguments []interface{} `json:"arguments"`
 }
 
 func deviceExecute(ctx *gin.Context) {

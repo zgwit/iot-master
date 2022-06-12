@@ -1,5 +1,7 @@
 package aggregator
 
+import "context"
+
 type firstAggregator struct {
 	baseAggregator
 }
@@ -10,7 +12,7 @@ func (a *firstAggregator) Evaluate() (val float64, err error) {
 		return 0, nil
 	}
 	var res interface{}
-	res, err = a.expression.Evaluate(a.targets[0])
+	res, err = a.expression(context.Background(), a.targets[0])
 	if err != nil {
 		return
 	}

@@ -2,6 +2,7 @@ package aggregator
 
 import (
 	"fmt"
+	"github.com/PaesslerAG/gval"
 	"github.com/zgwit/iot-master/calc"
 	"github.com/zgwit/iot-master/model"
 )
@@ -18,7 +19,7 @@ type Aggregator interface {
 type baseAggregator struct {
 	model.Aggregator
 
-	expression *calc.Expression
+	expression gval.Evaluable
 	targets    []map[string]interface{}
 }
 
@@ -29,7 +30,7 @@ func (a *baseAggregator) Model() *model.Aggregator {
 //Init 初始化
 func (a *baseAggregator) Init() (err error) {
 	a.targets = make([]map[string]interface{}, 0)
-	a.expression, err = calc.NewExpression(a.Expression)
+	a.expression, err = calc.Language.NewEvaluable(a.Expression)
 	return
 }
 

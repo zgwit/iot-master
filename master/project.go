@@ -348,14 +348,14 @@ func (prj *Project) Set(name string, value interface{}) error {
 }
 
 func (prj *Project) execute(in *model.Invoke) error {
-	args := make([]float64, 0)
+	args := make([]interface{}, 0)
 	for _, d := range in.Arguments {
 		//tp := reflect.TypeOf(d).Kind()
 		//if tp == reflect.String {
 		//} else if tp == reflect.Float64 {
 		//	args = append(args, d.(float64))
 		//}
-		val, err := calc.Evaluate(prj.Context, d)
+		val, err := calc.Language.Evaluate(d, prj.Context)
 		if err != nil {
 			return err
 		}

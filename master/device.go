@@ -279,7 +279,7 @@ func (dev *Device) RefreshPoint(name string) (interface{}, error) {
 }
 
 //Execute 执行命令
-func (dev *Device) Execute(command string, argv []float64) error {
+func (dev *Device) Execute(command string, argv []interface{}) error {
 	CreateDeviceEvent(dev.Id, "执行："+command)
 
 	cmd, ok := dev.commandIndex[command]
