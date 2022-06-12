@@ -24,7 +24,7 @@ type Tunnel struct {
 	Heartbeat HeartBeatPacket `json:"heartbeat" xorm:"JSON"`
 	Serial    SerialOptions   `json:"serial" xorm:"JSON"`
 	Protocol  Protocol        `json:"protocol" xorm:"JSON"`
-	//Devices   []TunnelDevice  `json:"devices"` //默认设备
+	//Devices   []DefaultDevice  `json:"devices"` //默认设备
 	Disabled bool      `json:"disabled"`
 	Last     time.Time `json:"last"`
 	Updated  time.Time `json:"updated" xorm:"updated"`
@@ -32,7 +32,7 @@ type Tunnel struct {
 	Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
-type TunnelDevice struct {
+type DefaultDevice struct {
 	Station   int    `json:"station"`
 	ProductId string `json:"product_id"`
 }

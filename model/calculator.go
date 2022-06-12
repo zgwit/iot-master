@@ -10,6 +10,7 @@ import (
 type Calculator struct {
 	Expression string `json:"expression"`
 	As         string `json:"as"`
+	Store      bool   `json:"store"`
 
 	//ctx  *Context
 	expr gval.Evaluable

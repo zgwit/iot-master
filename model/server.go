@@ -13,7 +13,7 @@ type Server struct {
 	Register  RegisterPacket  `json:"register" xorm:"JSON"`
 	Heartbeat HeartBeatPacket `json:"heartbeat" xorm:"JSON"`
 	Protocol  Protocol        `json:"protocol" xorm:"JSON"`
-	Devices   []TunnelDevice  `json:"devices"` //默认设备
+	Devices   []DefaultDevice `json:"devices"` //默认设备
 	Disabled  bool            `json:"disabled"`
 	Updated   time.Time       `json:"updated" xorm:"updated"`
 	Created   time.Time       `json:"created" xorm:"created"`
