@@ -57,7 +57,13 @@ func tarFunc2(fun func(x, y float64) float64) func(x, y interface{}) float64 {
 //Language 添加了数据函数的gval
 var Language = gval.Full(
 	gval.Constant("E", math.E),
+	gval.Constant("LN10", math.Ln10),
+	gval.Constant("LN2", math.Ln2),
+	gval.Constant("LOG10E", math.Log2E),
+	gval.Constant("LOG2E", math.Log10E),
 	gval.Constant("PI", math.Pi),
+	//gval.Constant("PI", math.Sqrt2),
+	//gval.Constant("PI", math.SqrtE),
 	gval.Function("ABS", tarFunc(math.Abs)),
 	gval.Function("CEIL", tarFunc(math.Ceil)),
 	gval.Function("FLOOR", tarFunc(math.Floor)),
@@ -67,6 +73,8 @@ var Language = gval.Full(
 	gval.Function("SQRT", tarFunc(math.Sqrt)),
 	gval.Function("CBRT", tarFunc(math.Cbrt)),
 	gval.Function("EXP", tarFunc(math.Exp)),
+	gval.Function("EXP2", tarFunc(math.Exp2)),
+	gval.Function("EXPM1", tarFunc(math.Expm1)),
 	gval.Function("SIN", tarFunc(math.Sin)),
 	gval.Function("SINH", tarFunc(math.Sinh)),
 	gval.Function("ASIN", tarFunc(math.Asin)),
@@ -79,6 +87,13 @@ var Language = gval.Full(
 	gval.Function("TANH", tarFunc(math.Tanh)),
 	gval.Function("ATAN", tarFunc(math.Atan)),
 	gval.Function("ATANH", tarFunc(math.Atanh)),
-	gval.Function("LN", tarFunc(math.Log)),
-	gval.Function("LOG", tarFunc(math.Log10)),
+	gval.Function("LOG", tarFunc(math.Log)),
+	gval.Function("LOG2", tarFunc(math.Log2)),
+	gval.Function("LOG10", tarFunc(math.Log10)),
+	gval.Function("LOG1p", tarFunc(math.Log1p)),
+	gval.Function("HYPOT", tarFunc2(math.Hypot)),
+	gval.Function("MAX", tarFunc2(math.Max)),
+	gval.Function("MIN", tarFunc2(math.Min)),
+	//gval.Function("RANDOM", func() {}),
+
 )
