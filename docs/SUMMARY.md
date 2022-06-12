@@ -5,6 +5,7 @@
 * [介绍](README.md)
 * [开始](start/README.md)
     * [下载安装](start/install.md)
+    * [快速开始](start/quick.md)
     * [版本对比](start/compare.md)
     * [配置文件](start/config.md)
 * [通道](tunnel/README.md)
@@ -35,3 +36,7 @@
 * [组态](hmi/README.md)
     * [组态编辑器](hmi/editor.md)
     * [组件库](hmi/component.md)
+
+--
+
+[物联大师](https://iot-master.com)
