@@ -22,3 +22,6 @@
 /iot-master-windows-amd64.zip
 /sqlite3.db
 /tstorage
+/iot-master-linux-arm64
+/iot-master-linux-armv6l
+/iot-master-linux-armv7l
