@@ -55,7 +55,7 @@ func main() {
 			log.Fatal(err)
 		}
 		log.Println("安装服务成功")
-		//return
+		return
 	}
 
 	err = s.Run()
