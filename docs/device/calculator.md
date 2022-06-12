@@ -8,8 +8,8 @@ https://github.com/PaesslerAG/gval
 
 | 函数    | golang函数映射 | 说明          |
 |-------|------------|-------------|
-| E     | math.E     | 欧拉常数 2.718  |
-| PI    | math.Pi    | 圆周率 3.14159 |
+| E常量   | math.E     | 欧拉常数 2.718  |
+| PI常量  | math.Pi    | 圆周率 3.14159 |
 | ABS   | math.Abs   | 绝对值         |
 | CEIL  | math.Ceil  | 上限整数        |
 | FLOOR | math.Floor | 下限整数        |
