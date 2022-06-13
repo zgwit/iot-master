@@ -1,4 +1,3 @@
-# 物联大师【开源智能网关系统】
 
 **开源不易，加个星再走！！！**
 
@@ -6,18 +5,30 @@
 
 **开源不易，加个星再走！！！**
 
-![公众号](https://iot-master.com/wxofficial.jpg) 
+# 本司目前提供免费的物联网方案咨询服务，结合我们十多年的行业经验，给您提供最好的建议，请联系 15161515197（微信同号）
+> PS. 提供以上服务的主要目的是让用户少走弯路，为物联网行业的健康发展尽绵薄之力。
+> 总结一下常见的弯路：
+> 1. 前期使用某个物联网云平台，后期没办法继续，二次开发受限
+> 2. 花了几千元买了工业网关，用着一百元DTU的功能
+> 3. 找多个外包公司，低价拿单，结果做出屎一样的东西
+> 4. 盲目使用开源项目，最终被开源项目所累
+> 5. 硬件选型失败，效果差强人意
+> 6. 自身技术人员能力有限，架构设计有问题
+> 7. 不支持高并发量，市场爆发了，平台反而跟不上
+> 8. 等等
 
-[产品说明文档](https://docs.iot-master.com/)
-|
-[在线演示DEMO](http://demo.iot-master.com:8080/) 用户名 admin 密码 123456
+----
+
+# 物联大师
+
+### [产品说明文档](https://docs.iot-master.com/)
+### [在线演示DEMO](http://demo.iot-master.com:8080/) 用户名 admin 密码 123456
 
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
 [![codecov](https://codecov.io/gh/zgwit/iot-master/branch/main/graph/badge.svg?token=AK5TD8KQ5C)](https://codecov.io/gh/zgwit/iot-master)
 [![Go Reference](https://pkg.go.dev/badge/github.com/zgwit/iot-master.svg)](https://pkg.go.dev/github.com/zgwit/iot-master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
-[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
 
 物联大师是[真格智能实验室](https://labs.zgwit.com)
@@ -91,6 +102,7 @@
 
 ![微信群](https://iot-master.com/iot-master.png)
 
+![公众号](https://iot-master.com/wxofficial.jpg)
 
 ### 开源项目依赖
 
