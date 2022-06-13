@@ -9,7 +9,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class AttachmentComponent implements OnInit {
 
-  @Input() url = "/attachment/"
+  @Input() url = "/hmi/"
   @Input() path = ""
 
   files: Array<any> = [];

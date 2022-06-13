@@ -53,6 +53,10 @@ func Serve(cfg *config.Web) {
 	//注册前端接口
 	api.RegisterRoutes(app.Group("/api"))
 
+	//附件
+	registerAttachment("hmi", app.Group("/hmi"))
+	registerAttachment("component", app.Group("/component"))
+
 	//前端静态文件
 	//app.StaticFS("/www", http.FS(wwwFiles))
 

@@ -59,8 +59,6 @@ export class EditorComponent implements OnInit, AfterViewInit {
   height = 600
   scale = 1.0
 
-  @Input() attachment = "/api/attachment/"
-
   @Output() save = new EventEmitter<any>();
 
   _hmi: any = {}
@@ -807,7 +805,7 @@ export class EditorComponent implements OnInit, AfterViewInit {
       nzContent: AttachmentComponent,
       nzWidth: '80%',
       nzComponentParams: {
-        url: "/api/hmi/" + this._hmi.id + "/attachment/"
+        url: "/hmi/" + this._hmi.id + "/"
         //TODO 此处应该判断，新建组态时，没有目录（可以先创建UUID）
       },
     });
