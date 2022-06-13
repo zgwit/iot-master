@@ -9,15 +9,15 @@ type LogOutput struct {
 
 //Log 参数
 type Log struct {
-	Debug  bool      `yaml:"debug"`
+	Text   bool      `yaml:"text"`
 	Format string    `yaml:"format,omitempty"`
 	Level  string    `yaml:"level"`
 	Output LogOutput `yaml:"output"`
 }
 
 var LogDefault = Log{
-	Debug: false,
-	Level: "debug",
+	Text:  false,
+	Level: "error",
 	Output: LogOutput{
 		Filename: "log.txt",
 	},

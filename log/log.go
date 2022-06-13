@@ -7,10 +7,8 @@ import (
 	"os"
 )
 
-
-
 func Open(opts *config.Log) error {
-	if opts.Debug {
+	if opts.Text {
 		logrus.SetFormatter(&logrus.TextFormatter{TimestampFormat: opts.Format})
 	} else {
 		logrus.SetFormatter(&logrus.JSONFormatter{TimestampFormat: opts.Format})
