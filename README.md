@@ -1,28 +1,14 @@
-
-**开源不易，加个星再走！！！**
-
-**开源不易，加个星再走！！！**
-
-**开源不易，加个星再走！！！**
-
-# 本司目前提供免费的物联网方案咨询服务，结合我们十多年的行业经验，给您提供最好的建议，请联系 15161515197（微信同号）
-> PS. 提供以上服务的主要目的是让用户少走弯路，为物联网行业的健康发展尽绵薄之力。
-> 总结一下常见的弯路：
-> 1. 前期使用某个物联网云平台，后期没办法继续，二次开发受限
-> 2. 花了几千元买了工业网关，用着一百元DTU的功能
-> 3. 找多个外包公司，低价拿单，结果做出屎一样的东西
-> 4. 盲目使用开源项目，最终被开源项目所累
-> 5. 硬件选型失败，效果差强人意
-> 6. 自身技术人员能力有限，架构设计有问题
-> 7. 不支持高并发量，市场爆发了，平台反而跟不上
-> 8. 等等
-
-----
-
 # 物联大师
 
-### [产品说明文档](https://docs.iot-master.com/)
-### [在线演示DEMO](http://demo.iot-master.com:8080/) 用户名 admin 密码 123456
+**开源不易，加个星再走！！！**
+
+**开源不易，加个星再走！！！**
+
+**开源不易，加个星再走！！！**
+
+![公众号](https://iot-master.com/wxofficial.jpg)
+
+### [说明文档](https://docs.iot-master.com/)  [在线演示demo](http://demo.iot-master.com:8080/) 用户名 admin 密码 123456
 
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
@@ -89,6 +75,21 @@
 | Mitsubishi Q4C       | ❌   |     |             |
 | Mitsubishi Q4E       | ❌   |     |             |
 
+## 咨询服务
+**本公司目前提供免费的物联网方案咨询服务，结合我们十多年的行业经验，给您提供最好的建议，请联系 15161515197（微信同号）**
+
+> PS. 提供此服务的主要目的是让用户少走弯路，为物联网行业的健康发展尽绵薄之力。
+> 总结一下常见的弯路：
+> 1. 前期使用某个物联网云平台，后期没办法继续，二次开发受限
+> 2. 花了几千元买了工业网关，用着一百元DTU的功能
+> 3. 找多个外包公司，低价拿单，结果做出屎一样的东西
+> 4. 盲目使用开源项目，最终被开源项目所累
+> 5. 硬件选型失败，效果差强人意
+> 6. 自身技术人员能力有限，架构设计有问题
+> 7. 不支持高并发量，市场爆发了，平台反而跟不上
+> 8. 等等
+
+
 ## 案例
 
 ![案例](https://iot-master.com/ppt/08.jpg)
@@ -101,19 +102,3 @@
 - 手机：[15161515197](tel:15161515197)(微信同号)
 
 ![微信群](https://iot-master.com/iot-master.png)
-
-![公众号](https://iot-master.com/wxofficial.jpg)
-
-### 开源项目依赖
-
-[GIN](https://github.com/gin-gonic/gin) ，因为不需要模板解析，后续可能直接采用httpRouter或gorilla/mux。
-
-[XORM](https://xorm.io) ，ORM引擎，比GORM简单好用。
-
-[Angular](https://github.com/angular/angular) 前端基础框架，Angular1比较熟，所以沿用了Angular2+
-
-[NG-ZORRO](https://github.com/NG-ZORRO/ng-zorro-antd) UI框架，AntDesign的Angular版本
-
-[SVG.js](https://github.com/svgdotjs/svg.js) SVG框架，项目是基于SVG实现Web组态
-
-[ECharts](https://github.com/apache/echarts) 图表框架，主要用于显示历史曲线
