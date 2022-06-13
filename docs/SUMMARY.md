@@ -41,6 +41,7 @@
     * [组态编辑器](hmi/editor.md)
     * [组件库](hmi/component.md)
 
-----
+--
 
-[物联大师](https://iot-master.com)
+* [物联大师](https://iot-master.com)
+* [真格智能实验室](https://zgwit.com)
