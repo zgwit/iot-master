@@ -25,22 +25,32 @@ export GOARCH=amd64
 
 export GOOS=windows
 #CC=x86_64-w64-mingw32-gcc
-go build -ldflags "$ldflags" -o iot-master-windows-amd64.exe main.go
+name="iot-master-windows-amd64.exe"
+go build -ldflags "$ldflags" -o "$name" main.go
+tar -zvcf $name.tar.gz $name & rm $name
 
 export GOOS=linux
 #CC=gcc
-go build -ldflags "$ldflags" -o iot-master-linux-amd64 main.go
+name="iot-master-linux-amd64"
+go build -ldflags "$ldflags" -o "$name" main.go
+tar -zvcf $name.tar.gz $name & rm $name
 
 #export CC=arm-linux-gnueabihf-gcc
 
 export GOARCH=arm64
-go build -ldflags "$ldflags" -o iot-master-linux-arm64 main.go
+name="iot-master-linux-arm64"
+go build -ldflags "$ldflags" -o "$name" main.go
+tar -zvcf $name.tar.gz $name & rm $name
 
 export GOARCH=arm
 
 export GOARM=6
-go build -ldflags "$ldflags" -o iot-master-linux-armv6l main.go
+name="iot-master-linux-armv6l"
+go build -ldflags "$ldflags" -o "$name" main.go
+tar -zvcf $name.tar.gz $name & rm $name
 
 export GOARM=7
-go build -ldflags "$ldflags" -o iot-master-linux-armv7l main.go
+name="iot-master-linux-armv7l"
+go build -ldflags "$ldflags" -o "$name" main.go
+tar -zvcf $name.tar.gz $name & rm $name
 
