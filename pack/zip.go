@@ -5,9 +5,10 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
-func Zip(srcFile string, destZip string) error {
+func Zip(srcDir string, destZip string) error {
 	zf, err := os.Create(destZip)
 	if err != nil {
 		return err
@@ -17,9 +18,17 @@ func Zip(srcFile string, destZip string) error {
 	archive := zip.NewWriter(zf)
 	defer archive.Close()
 
-	err = filepath.Walk(srcFile, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
+		}
+
+		if path == srcDir {
+			return nil
+		}
+
+		if info.IsDir() {
+			return nil
 		}
 
 		header, err := zip.FileInfoHeader(info)
@@ -27,27 +36,25 @@ func Zip(srcFile string, destZip string) error {
 			return err
 		}
 
-		header.Name = path
-		if info.IsDir() {
-			header.Name += "/"
-		} else {
-			header.Method = zip.Deflate
-		}
+		header.Name = strings.TrimPrefix(path, srcDir+string(os.PathSeparator))
+		header.Method = zip.Deflate
 
 		writer, err := archive.CreateHeader(header)
 		if err != nil {
 			return err
 		}
 
-		if !info.IsDir() {
-			file, err := os.Open(path)
-			if err != nil {
-				return err
-			}
-			defer file.Close()
-			_, err = io.Copy(writer, file)
+		file, err := os.Open(path)
+		if err != nil {
+			return err
 		}
-		return err
+		defer file.Close()
+
+		_, err = io.Copy(writer, file)
+		if err != nil {
+			return err
+		}
+		return nil
 	})
 	if err != nil {
 		return err
