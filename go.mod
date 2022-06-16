@@ -21,7 +21,8 @@ require (
 	github.com/nakabonne/tstorage v0.3.5
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/sirupsen/logrus v1.8.1
-	golang.org/x/net v0.0.0-20220526153639-5463443f8c37
+	github.com/zgwit/gonvif v0.0.2
+	golang.org/x/net v0.0.0-20220614195744-fb05da6f9022
 	golang.org/x/tools v0.0.0-20201124115921-2c860bdd6e78
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
@@ -31,18 +32,22 @@ require (
 require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
 	github.com/asticode/go-astikit v0.20.0 // indirect
+	github.com/beevik/etree v1.1.0 // indirect
 	github.com/deepmap/oapi-codegen v1.8.2 // indirect
+	github.com/elgs/gostrgen v0.0.0-20220325073726-0c3e00d082f6 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/goccy/go-json v0.8.1 // indirect
+	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.3.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
 	github.com/gorilla/sessions v1.2.0 // indirect
+	github.com/grafov/m3u8 v0.11.1 // indirect
 	github.com/icza/bitio v1.1.0 // indirect
 	github.com/influxdata/line-protocol v0.0.0-20200327222509-2487e7298839 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -67,7 +72,7 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
+	golang.org/x/sys v0.0.0-20220614162138-6c1b26c55098 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 	modernc.org/libc v1.16.8 // indirect
