@@ -52,6 +52,7 @@ func Serve(cfg *config.Web) {
 
 	//注册前端接口
 	api.RegisterRoutes(app.Group("/api"))
+	registerCameraRoutes(app.Group("/camera"))
 
 	//附件
 	registerAttachment("hmi", app.Group("/hmi"))

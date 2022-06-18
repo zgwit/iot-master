@@ -14,5 +14,13 @@ type Camera struct {
 	Disabled bool      `json:"disabled"`
 	Updated  time.Time `json:"updated" xorm:"updated"`
 	Created  time.Time `json:"created" xorm:"created"`
-	Deleted  time.Time `json:"-" xorm:"deleted"`
+}
+
+type CameraEx struct {
+	Camera  `xorm:"extends"`
+	Running bool `json:"running"`
+}
+
+func (s *CameraEx) TableName() string {
+	return "camera"
 }
