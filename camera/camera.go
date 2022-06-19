@@ -47,6 +47,7 @@ func (c *Camera) Open() error {
 	cmd := exec.CommandContext(ctx,
 		"ffmpeg", "-re", "-i", c.Url,
 		"-c", "copy", "-f", "hls",
+		"-hls_allow_cache", "0",
 		//"-hls_flags", "delete_segments", //windows下 路径分隔符错误，导致不能删除，另外可能不支持http删除，需要手动操作
 		fmt.Sprintf("http://localhost:143/%d/index.m3u8", c.Id),
 	)

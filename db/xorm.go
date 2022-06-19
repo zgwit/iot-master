@@ -48,7 +48,7 @@ func Sync() error {
 		new(model.Device), new(model.Product),
 		new(model.Project), new(model.Template),
 		new(model.Hmi), new(model.Component),
-		new(model.Event),
+		new(model.Event), new(model.Camera),
 		new(model.DeviceAlarm), new(model.ProjectAlarm),
 	)
 }
