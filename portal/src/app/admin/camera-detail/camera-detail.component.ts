@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {NzModalService} from "ng-zorro-antd/modal";
+import * as Hls from "hls.js"
 
 @Component({
   selector: 'app-camera-detail',
@@ -12,6 +13,8 @@ export class CameraDetailComponent implements OnInit {
   id = 0;
   data: any = {};
   loading = false;
+
+  @ViewChild("video") video: ElementRef | undefined
 
   constructor(private router: ActivatedRoute, private rs: RequestService, private ms: NzModalService) {
     this.id = parseInt(router.snapshot.params['id']);
@@ -26,6 +29,24 @@ export class CameraDetailComponent implements OnInit {
     this.rs.get(`camera/${this.id}`).subscribe(res=>{
       this.data = res.data;
       this.loading = false;
+
+      if (this.data.running) {
+        let src = `/stream/${this.id}/index.m3u8`; //http://localhost:8080
+        if (this.video?.nativeElement.canPlayType("application/vnd.apple.mpegurl")) {
+          // @ts-ignore
+          this.video?.nativeElement.src = src
+        } else {
+          // @ts-ignore
+          let h = new Hls()
+          h.loadSource(src)
+          h.attachMedia(this.video?.nativeElement)
+          h.on(Hls.Events.MEDIA_ATTACHED, ()=>{
+            h.loadSource(src)
+          })
+          h.on(Hls.Events.MANIFEST_PARSED, console.log);
+          h.on(Hls.Events.ERROR, console.error)
+        }
+      }
     });
     //TODO 监听
   }

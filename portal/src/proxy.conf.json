@@ -1,7 +1,14 @@
 {
-  "/": {
+  "/api": {
     "target": "http://localhost:8080",
-    "target0": "http://localhost:8008",
+    "secure": false
+  },
+  "/attachment": {
+    "target": "http://localhost:8080",
+    "secure": false
+  },
+  "/stream": {
+    "target": "http://localhost:8080",
     "secure": false
   }
 }
