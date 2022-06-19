@@ -41,9 +41,10 @@ export class CameraDetailComponent implements OnInit {
           h.loadSource(src)
           h.attachMedia(this.video?.nativeElement)
           h.on(Hls.Events.MEDIA_ATTACHED, ()=>{
-            h.loadSource(src)
           })
-          h.on(Hls.Events.MANIFEST_PARSED, console.log);
+          h.on(Hls.Events.MANIFEST_PARSED, ()=>{
+            //this.video?.nativeElement.play()
+          });
           h.on(Hls.Events.ERROR, console.error)
         }
       }
