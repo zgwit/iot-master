@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/kardianos/service"
 	"github.com/zgwit/iot-master/args"
+	"github.com/zgwit/iot-master/camera"
 	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/history"
@@ -131,8 +132,11 @@ func originMain() {
 	}
 	defer master.Stop()
 
-	//TODO 正确创建 MQTT Broker
-	//mqtt.NewBroker()
+	err = camera.Start()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer camera.Stop()
 
 	//判断是否开启Web
 	web.Serve(&config.Config.Web)

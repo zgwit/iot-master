@@ -52,7 +52,9 @@ func Serve(cfg *config.Web) {
 
 	//注册前端接口
 	api.RegisterRoutes(app.Group("/api"))
-	registerCameraRoutes(app.Group("/camera"))
+
+	//注册视频流
+	registerStreamRoutes(app.Group("/stream"))
 
 	//附件
 	registerAttachment("hmi", app.Group("/hmi"))

@@ -1,6 +1,6 @@
 module github.com/zgwit/iot-master
 
-go 1.17
+go 1.18
 
 require (
 	github.com/PaesslerAG/gval v1.2.0

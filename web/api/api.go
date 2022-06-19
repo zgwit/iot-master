@@ -195,6 +195,19 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/transfer/:id/start", parseParamId, transferStart)
 	app.GET("/transfer/:id/stop", parseParamId, transferStop)
 
+	//摄像头接口
+	modelCamera := reflect.TypeOf(model.Camera{})
+	app.POST("/camera/list", cameraList)
+	app.POST("/camera/create", curdApiCreate(modelCamera, nil, afterCameraCreate))
+	app.GET("/camera/:id", parseParamId, cameraDetail)
+	app.POST("/camera/:id", parseParamId, curdApiModify(modelCamera, []string{"name", "url", "disabled"}, nil, afterCameraUpdate))
+	app.GET("/camera/:id/delete", parseParamId, curdApiDelete(modelCamera, nil, afterCameraDelete))
+
+	app.GET("/camera/:id/start", parseParamId, cameraStart)
+	app.GET("/camera/:id/stop", parseParamId, cameraStop)
+	app.GET("/camera/:id/enable", parseParamId, curdApiDisable(modelCamera, false, nil, afterCameraEnable))
+	app.GET("/camera/:id/disable", parseParamId, curdApiDisable(modelCamera, true, nil, afterCameraDisable))
+
 	//系统接口
 	app.GET("/system/version", version)
 	app.GET("/system/cpu-info", cpuInfo)

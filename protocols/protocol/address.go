@@ -17,7 +17,7 @@ type Addr interface {
 }
 
 //
-//type Address struct {
+//type Url struct {
 //	Code   uint16 //uint8
 //	Offset uint32
 //	Extra  uint32
