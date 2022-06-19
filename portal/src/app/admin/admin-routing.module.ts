@@ -40,6 +40,9 @@ import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
 import {DeviceValueComponent} from "./device-value/device-value.component";
 import {UserDetailComponent} from "./user-detail/user-detail.component";
 import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
+import {CameraComponent} from "./camera/camera.component";
+import {CameraDetailComponent} from "./camera-detail/camera-detail.component";
+import {CameraEditComponent} from "./camera-edit/camera-edit.component";
 
 const routes: Routes = [
   {
@@ -145,6 +148,15 @@ const routes: Routes = [
         path: 'extension', component: ContainerComponent, data: {breadcrumb: "扩展"}, children: [
           {path: 'plugin', component: PluginComponent, data: {breadcrumb: "插件"}},
           {path: 'protocol', component: ProtocolComponent, data: {breadcrumb: "协议"}},
+        ]
+      },
+
+      {
+        path: 'camera', component: ContainerComponent, data: {breadcrumb: "摄像头"}, children: [
+          {path: '', component: CameraComponent, data: {breadcrumb: "摄像头"}},
+          {path: 'detail/:id', component: CameraDetailComponent, data: {breadcrumb: "详情"}},
+          {path: 'edit/:id', component: CameraEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: CameraEditComponent, data: {breadcrumb: "创建"}},
         ]
       },
 

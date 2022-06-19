@@ -125,6 +125,9 @@ import {HmiBrowserComponent} from "./hmi-browser/hmi-browser.component";
 import {DeviceHmiComponent} from "./device-hmi/device-hmi.component";
 import {ProjectHmiComponent} from "./project-hmi/project-hmi.component";
 import {NzPopoverModule} from "ng-zorro-antd/popover";
+import {CameraComponent} from "./camera/camera.component";
+import {CameraEditComponent} from "./camera-edit/camera-edit.component";
+import {CameraDetailComponent} from "./camera-detail/camera-detail.component";
 
 @NgModule({
   declarations: [
@@ -148,6 +151,7 @@ import {NzPopoverModule} from "ng-zorro-antd/popover";
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
     HmiComponent, HmiDetailComponent, HmiEditComponent, HmiBrowserComponent,
+    CameraComponent, CameraEditComponent, CameraDetailComponent,
     ComponentComponent,
     EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
     EditDevicesComponent, EditProductsComponent, EditAlarmsComponent,

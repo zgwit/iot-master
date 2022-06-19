@@ -79,6 +79,10 @@ export let SideMenu = [
         title: '协议',
         router: 'extension/protocol'
       },
+      {
+        title: '摄像头',
+        router: 'camera'
+      },
       // {
       //   title: '接口',
       //   router: 'api'
