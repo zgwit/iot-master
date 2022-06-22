@@ -7,7 +7,6 @@ import (
 	"github.com/zgwit/iot-master/model"
 	"os"
 	"os/exec"
-	"syscall"
 )
 
 type Segment struct {
@@ -46,13 +45,16 @@ func (c *Camera) Open() error {
 	//TODO 转码，压缩，省流量
 	cmd := exec.CommandContext(ctx,
 		"ffmpeg", "-re", "-i", c.Url,
-		"-c", "copy", "-f", "hls",
+		//"-c:a", "aac",
+		"-c:v", "libx264", //使用H264，因为前端仅支持h264
+		//"-r", "10",
+		"-f", "hls",
 		"-hls_allow_cache", "0",
 		//"-hls_flags", "delete_segments", //windows下 路径分隔符错误，导致不能删除，另外可能不支持http删除，需要手动操作
 		fmt.Sprintf("http://localhost:143/%d/index.m3u8", c.Id),
 	)
 	//cmd = exec.Command("ffmpeg", "-re", "-i", c.MediaUri, "-c", "copy", "-f", "hls", "http://localhost:8080/camera/index.m3u8")
-	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
+	//cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	//cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Start()
