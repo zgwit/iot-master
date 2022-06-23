@@ -20,19 +20,21 @@ export class EditAlarmsComponent implements OnInit, ControlValueAccessor {
   }
 
   items: any[] = [];
+
   formGroup = new FormGroup({});
-  formArray: FormArray = new FormArray([]);
 
-  constructor(private fb: FormBuilder) { }
+  current: any = {};
+  showModal = false;
 
-  ngOnInit(): void {
-    this.buildForm();
+  constructor(private fb: FormBuilder) {
   }
 
-  buildForm(): void{
+  ngOnInit(): void {
+    this.buildForm({});
+  }
+
+  buildForm(d:any): void {
     this.formGroup = this.fb.group({
-      items: this.formArray = this.fb.array(this.items.map((d: any) => {
-        return this.fb.group({
           name: [d.name, [Validators.required]],
           condition: [d.condition, [Validators.required]],
           delay: [d.delay, [Validators.required]],
@@ -42,58 +44,29 @@ export class EditAlarmsComponent implements OnInit, ControlValueAccessor {
           message: [d.message, [Validators.required]],
           level: [d.level, [Validators.required]],
           disabled: [d.disabled, [Validators.required]],
-        })
-      }))
     })
   }
 
-  add() {
-    this.formArray.push(this.fb.group({
-      name: ['', [Validators.required]],
-      condition: ['', [Validators.required]],
-      delay: [0, [Validators.required]],
-      reset_timeout: [0, []],
-      reset_total: [0, []],
-          code: ['', [Validators.required]],
-          message: ['', [Validators.required]],
-          level: [0, [Validators.required]],
-      disabled: [false, [Validators.required]],
-    }))
-    //复制controls，让表格可以刷新
-    this.formArray.controls = [...this.formArray.controls];
-    this.change();
-  }
-
   copy(i: number) {
-    const group = this.formArray.controls[i];
-
-    this.formArray.controls.splice(i, 0, this.fb.group({
-      name: [group.get('name')?.value, [Validators.required]],
-      condition: [group.get('condition')?.value, [Validators.required]],
-      delay: [group.get('delay')?.value, [Validators.required]],
-      reset_timeout: [group.get('reset_timeout')?.value, []],
-      reset_total: [group.get('reset_total')?.value, []],
-      code: [group.get('code')?.value, [Validators.required]],
-      message: [group.get('message')?.value, [Validators.required]],
-      level: [group.get('level')?.value, [Validators.required]],
-      disabled: [group.get('disabled')?.value, [Validators.required]],
-    }))
+    let item = this.items[i]
+    item = JSON.parse(JSON.stringify(item))
+    this.items.splice(i+1, 0, item)
   }
 
   remove(i: number) {
-    this.formArray.removeAt(i)
+    this.items.splice(i, 1)
     this.change();
   }
 
   clear() {
-    this.formArray.clear();
+    this.items = [];
     this.change();
   }
 
   change() {
-    this.formArray.markAsDirty();
-    this.formArray.updateValueAndValidity();
-    this.onChanged(this.formArray.value);
+    //this.formGroup.markAsDirty();
+    //this.formGroup.updateValueAndValidity();
+    this.onChanged(this.items);
     this.onTouched();
   }
 
@@ -107,12 +80,39 @@ export class EditAlarmsComponent implements OnInit, ControlValueAccessor {
 
   writeValue(obj: any): void {
     this.items = obj;
-    this.buildForm();
+    //this.buildForm();
   }
 
   drop($event: any) {
-    const item = this.formArray.controls.splice($event.previousIndex, 1);
-    this.formArray.controls.splice($event.currentIndex, 0, ...item);
+    const item = this.items.splice($event.previousIndex, 1);
+    this.items.splice($event.currentIndex, 0, ...item);
     this.change();
+  }
+
+  edit(data?: any) {
+    if (!data) {
+      data = {
+          name: '',
+          condition: '',
+          delay: 0,
+          reset_timeout: 0,
+          reset_total: 0,
+          code: '',
+          message: '',
+          level: 0,
+          disabled: false,
+        as: '',
+        expression: '',
+      }
+      this.items.push(data)
+    }
+    this.current = data;
+    this.buildForm(data)
+    this.showModal = true;
+  }
+
+  onOk() {
+    this.showModal = false;
+    Object.assign(this.current, this.formGroup.value)
   }
 }
