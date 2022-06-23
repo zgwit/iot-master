@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {NzModalService} from "ng-zorro-antd/modal";
+import {ChooseService} from "../choose.service";
 
 @Component({
   selector: 'app-device-detail',
@@ -14,7 +15,10 @@ export class DeviceDetailComponent implements OnInit {
   context: any = {};
   loading = false;
 
-  constructor(private router: ActivatedRoute, private rs: RequestService, private ms: NzModalService) {
+  constructor(private router: ActivatedRoute,
+              private rs: RequestService,
+              private ms: NzModalService,
+              private cs: ChooseService) {
     this.id = parseInt(router.snapshot.params['id']);
     this.load();
   }
@@ -38,17 +42,17 @@ export class DeviceDetailComponent implements OnInit {
   }
 
   exec(cmd: any) {
-    let params = [];
-    if (cmd.argc > 0) {
-      let param = prompt("请输入值，以逗号间隔", "")
-      if (!param) return;
-      params = eval(`[${param}]`)
-    }
-    this.rs.post(`device/${this.id}/execute`, {
-      command: cmd.name,
-      parameters: params,
-    }).subscribe(res => {
+    this.cs.prompt({
+      message: "输入控制命令的参数",
+      placeholder: "以逗号间隔"
+    }, cmd.name).subscribe(res=>{
+      let params = res ? eval('['+res+']') : []
+      this.rs.post(`device/${this.id}/execute`, {
+        command: cmd.name,
+        parameters: params,
+      }).subscribe(res => {
 
+      })
     })
   }
 

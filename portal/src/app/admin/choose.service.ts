@@ -74,11 +74,11 @@ export class ChooseService {
     return modal.afterClose
   }
 
-  prompt(params: any) {
+  prompt(params: any, title?:string) {
     const modal = this.ms.create({
-      nzTitle: '请输入',
+      nzTitle: title || '输入提示',
       nzContent: PromptComponent,
-      nzWidth: '80%',
+      //nzWidth: '80%',
       nzComponentParams: params,
     });
     return modal.afterClose

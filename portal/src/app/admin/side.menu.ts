@@ -102,10 +102,6 @@ export let SideMenu = [
         title: '用户管理',
         router: 'setting/user'
       },
-      {
-        title: '修改密码',
-        router: 'setting/password'
-      },
     ]
   },
   {

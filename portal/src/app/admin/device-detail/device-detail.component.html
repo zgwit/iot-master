@@ -26,11 +26,11 @@
         <div class="values" nz-row [nzGutter]="10">
           <div class="item" nz-col [nzSpan]="4" [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4" [nzXl]="3" [nzXXl]="2"
                *ngFor="let v of data.points">
-            <nz-card>
+            <nz-card nzHoverable>
               <div class="label">{{v.label}} <span *ngIf="v.unit">({{v.unit}})</span></div>
               <div class="value">
                 <ng-container *ngIf="v.type=='bit'">
-                  {{context[v.name]}}
+                  {{context[v.name] ? '开' : '关'}}
                 </ng-container>
                 <ng-container *ngIf="v.type!='bit'">
                   {{context[v.name] | number: '1.0-' + v.precision}}
@@ -50,9 +50,10 @@
 
       <nz-collapse-panel nzHeader="控制命令" nzActive>
         <div nz-row [nzGutter]="10">
-          <div nz-col *ngFor="let cmd of data.commands" [nzSpan]="4" [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4"
+          <div nz-col *ngFor="let cmd of data.commands"
+               [nzSpan]="4" [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4"
                [nzXl]="3" [nzXXl]="2">
-            <nz-card (click)="exec(cmd)">
+            <nz-card (click)="exec(cmd)" nzHoverable>
               {{cmd.name}}
             </nz-card>
           </div>

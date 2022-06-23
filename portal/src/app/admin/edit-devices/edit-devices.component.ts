@@ -21,67 +21,46 @@ export class EditDevicesComponent implements OnInit, ControlValueAccessor {
   }
 
   items: any[] = [];
-  formGroup = new FormGroup({});
-  formArray: FormArray = new FormArray([]);
 
-  constructor(private fb: FormBuilder, private cs: ChooseService) { }
+  formGroup = new FormGroup({});
+
+  current: any = {};
+  showModal = false;
+
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
-    this.buildForm();
+    this.buildForm({});
   }
 
-  buildForm(): void{
+  buildForm(d:any): void {
     this.formGroup = this.fb.group({
-      items: this.formArray = this.fb.array(this.items.map((d: any) => {
-        return this.fb.group({
           id: [d.id, [Validators.required]],
           name: [d.name, [Validators.required]],
-        })
-      }))
     })
   }
 
-  add() {
-    this.formArray.push(this.fb.group({
-      id: ['', [Validators.required]],
-      name: ['', [Validators.required]],
-    }))
-    //复制controls，让表格可以刷新
-    this.formArray.controls = [...this.formArray.controls];
-    this.change();
-  }
-
-  addMore() {
-    this.cs.chooseDevice({multiple: true}).subscribe(devices=>{
-      if (devices.length) {
-        devices.forEach((d: string)=>{
-          this.formArray.push(this.fb.group({
-            id: [d, [Validators.required]],
-            name: ['', [Validators.required]],
-          }))
-        });
-
-        //复制controls，让表格可以刷新
-        this.formArray.controls = [...this.formArray.controls];
-        this.change();
-      }
-    })
+  copy(i: number) {
+    let item = this.items[i]
+    item = JSON.parse(JSON.stringify(item))
+    this.items.splice(i+1, 0, item)
   }
 
   remove(i: number) {
-    this.formArray.removeAt(i)
+    this.items.splice(i, 1)
     this.change();
   }
 
   clear() {
-    this.formArray.clear();
+    this.items = [];
     this.change();
   }
 
   change() {
-    this.formArray.markAsDirty();
-    this.formArray.updateValueAndValidity();
-    this.onChanged(this.formArray.value);
+    //this.formGroup.markAsDirty();
+    //this.formGroup.updateValueAndValidity();
+    this.onChanged(this.items);
     this.onTouched();
   }
 
@@ -95,12 +74,30 @@ export class EditDevicesComponent implements OnInit, ControlValueAccessor {
 
   writeValue(obj: any): void {
     this.items = obj;
-    this.buildForm();
+    //this.buildForm();
   }
 
   drop($event: any) {
-    const item = this.formArray.controls.splice($event.previousIndex, 1);
-    this.formArray.controls.splice($event.currentIndex, 0, ...item);
+    const item = this.items.splice($event.previousIndex, 1);
+    this.items.splice($event.currentIndex, 0, ...item);
     this.change();
+  }
+
+  edit(data?: any) {
+    if (!data) {
+      data = {
+        id: '',
+        name: '',
+      }
+      this.items.push(data)
+    }
+    this.current = data;
+    this.buildForm(data)
+    this.showModal = true;
+  }
+
+  onOk() {
+    this.showModal = false;
+    Object.assign(this.current, this.formGroup.value)
   }
 }

@@ -61,20 +61,20 @@
         <app-edit-points formControlName="points" [codes]="codes"></app-edit-points>
       </nz-collapse-panel>
 
-      <nz-collapse-panel nzHeader="定时采集" nzActive>
+      <nz-collapse-panel nzHeader="数据轮询" nzActive>
         <app-edit-pollers formControlName="pollers" [codes]="codes"></app-edit-pollers>
-      </nz-collapse-panel>
-
-      <nz-collapse-panel nzHeader="公式计算" nzActive>
-        <app-edit-calculators formControlName="calculators"></app-edit-calculators>
       </nz-collapse-panel>
 
       <nz-collapse-panel nzHeader="控制命令" nzActive>
         <app-edit-commands formControlName="commands"></app-edit-commands>
       </nz-collapse-panel>
 
-      <nz-collapse-panel nzHeader="数据检查" nzActive>
+      <nz-collapse-panel nzHeader="报警器" nzActive>
         <app-edit-alarms formControlName="alarms"></app-edit-alarms>
+      </nz-collapse-panel>
+
+      <nz-collapse-panel nzHeader="计算器" nzActive>
+        <app-edit-calculators formControlName="calculators"></app-edit-calculators>
       </nz-collapse-panel>
 
     </ng-container>
