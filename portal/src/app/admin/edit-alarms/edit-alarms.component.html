@@ -9,12 +9,17 @@
     <nz-card nzSize="small" [nzTitle]="data.name" nzHoverable [nzExtra]="extraTemplate" (click)="edit(data)">
       <p>
         {{data.condition}}
+        <span *ngIf="data.delay">延迟{{data.delay}}ms</span>
         <span *ngIf="data.disabled">禁用</span>
       </p>
       <p>
-        报警 代号：{{data.code}}
+        代号：{{data.code}}
         内容：{{data.message}}
         等级：{{data.level}}
+      </p>
+      <p>
+        重置超时：{{data.reset_timeout}}ms
+        重置次数：{{data.reset_total}}
       </p>
     </nz-card>
     <ng-template #extraTemplate>
@@ -71,17 +76,18 @@
         </nz-form-control>
       </nz-form-item>
 
-      <nz-form-item>
-        <nz-form-label [nzSpan]="5">报警代号</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="code" required/>
-        </nz-form-control>
-      </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">报警内容</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <input nz-input formControlName="message" required/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">报警代号</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="code" required/>
         </nz-form-control>
       </nz-form-item>
 

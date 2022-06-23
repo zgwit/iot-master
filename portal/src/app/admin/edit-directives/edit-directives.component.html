@@ -4,7 +4,7 @@
 </a>
 
 <nz-row [nzGutter]="[8,8]" cdkDropList (cdkDropListDropped)="drop($event)">
-  <div nz-col [nzSpan]="12" [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" [nzXl]="6" [nzXXl]="4"
+  <div nz-col [nzSpan]="24"
        *ngFor="let data of items; let i=index" cdkDrag>
     <nz-card nzSize="small" nzHoverable [nzExtra]="extraTemplate" (click)="edit(data)">
         {{data.point}} = {{data.expression || data.value}}
@@ -49,7 +49,6 @@
           <input nz-input formControlName="delay" required/>
         </nz-form-control>
       </nz-form-item>
-
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">表达式</nz-form-label>
