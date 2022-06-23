@@ -50,7 +50,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.Use(mustLogin)
 
 	app.GET("/logout", logout)
-	app.GET("/password", password)
+	app.POST("/password", password)
 
 	//用户接口
 	modelUser := reflect.TypeOf(model.User{})

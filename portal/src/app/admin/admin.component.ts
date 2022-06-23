@@ -3,6 +3,8 @@ import {SideMenu} from './side.menu';
 import {RequestService} from '../request.service';
 import {UserService} from "../user.service";
 import {Router} from '@angular/router';
+import {NzModalService} from "ng-zorro-antd/modal";
+import {PasswordComponent} from "./password/password.component";
 
 
 @Component({
@@ -22,7 +24,7 @@ export class AdminComponent implements OnInit {
     version: "1.0.0"
   }
 
-  constructor(private rs: RequestService, public us: UserService, private route: Router) {
+  constructor(private rs: RequestService, public us: UserService, private route: Router, private ms: NzModalService) {
     this.initMenu();
   }
 
@@ -42,5 +44,20 @@ export class AdminComponent implements OnInit {
 
   closeTab($event: any) {
     this.tabs.splice($event.index, 1);
+  }
+
+  password() {
+    this.ms.create({
+      nzTitle:"修改密码",
+      nzContent: PasswordComponent,
+      nzFooter: ""
+    })
+  }
+
+  exit() {
+    this.rs.get("logout").subscribe(console.log)
+
+    //localStorage.removeItem("token");
+    return this.route.navigate(["/login"]);
   }
 }

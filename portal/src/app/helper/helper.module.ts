@@ -33,6 +33,7 @@ import { FromNowPipe } from './from-now.pipe';
 import { MinuteFormatPipe } from './minute-format.pipe';
 import { SvgViewerComponent } from './svg-viewer/svg-viewer.component';
 import { HtmlDirective } from './html.directive';
+import { CommonBarComponent } from './common-bar/common-bar.component';
 
 
 @NgModule({
@@ -58,29 +59,31 @@ import { HtmlDirective } from './html.directive';
     MinuteFormatPipe,
     SvgViewerComponent,
     HtmlDirective,
+    CommonBarComponent,
   ],
-  exports: [
-    PageEditorComponent,
-    JsEditorComponent,
-    YamlEditorComponent,
-    JsonEditorComponent,
-    ConfigEditorComponent,
-    PageListComponent,
-    ToolbarComponent,
-    DateStringPipe,
-    MinuteToDatePipe,
-    MinuteTimePickerComponent,
-    InputScriptComponent,
-    ViewConfigDirective,
-    InputYamlComponent,
-    YamlPipe,
-    GpsPickerComponent,
-    InputGpsComponent,
-    FromNowPipe,
-    MinuteFormatPipe,
-    SvgViewerComponent,
-    HtmlDirective,
-  ],
+    exports: [
+        PageEditorComponent,
+        JsEditorComponent,
+        YamlEditorComponent,
+        JsonEditorComponent,
+        ConfigEditorComponent,
+        PageListComponent,
+        ToolbarComponent,
+        DateStringPipe,
+        MinuteToDatePipe,
+        MinuteTimePickerComponent,
+        InputScriptComponent,
+        ViewConfigDirective,
+        InputYamlComponent,
+        YamlPipe,
+        GpsPickerComponent,
+        InputGpsComponent,
+        FromNowPipe,
+        MinuteFormatPipe,
+        SvgViewerComponent,
+        HtmlDirective,
+        CommonBarComponent,
+    ],
   imports: [
     CommonModule,
     FormsModule,

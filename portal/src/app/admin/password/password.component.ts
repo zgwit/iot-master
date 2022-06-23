@@ -4,6 +4,7 @@ import {RequestService} from "../../request.service";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Md5} from "ts-md5/dist/md5";
+import {NzModalRef} from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'app-password',
@@ -22,7 +23,10 @@ export class PasswordComponent implements OnInit {
     }]),
   });
 
-  constructor(private fb: FormBuilder, private router: ActivatedRoute, private rs: RequestService, private ms: NzMessageService) {
+  constructor(private fb: FormBuilder,
+              private rs: RequestService,
+              private ms: NzMessageService,
+              private mr: NzModalRef) {
 
   }
 
@@ -33,12 +37,12 @@ export class PasswordComponent implements OnInit {
     //const val = this.basicForm.value;
     if(!this.basicForm.valid) return;
 
-    this.rs.post('my/password', {
+    this.rs.post('password', {
       old: Md5.hashStr(this.basicForm.value.old),
       new: Md5.hashStr(this.basicForm.value.new),
     }).subscribe(res=>{
       this.ms.success("修改成功");
+      this.mr.close()
     })
   }
-
 }

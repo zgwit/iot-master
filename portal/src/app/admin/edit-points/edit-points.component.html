@@ -23,25 +23,25 @@
   </thead>
   <tbody formGroupName="items" cdkDropList (cdkDropListDropped)="drop($event)">
   <tr *ngFor="let data of formArray.controls; let i=index" [formGroupName]="i" cdkDrag>
-    <td>
+    <td class="p2">
       <input nz-input formControlName="name" nzSize="small" (change)="change()" required/>
     </td>
-    <td>
+    <td class="p2">
       <input nz-input formControlName="label" nzSize="small" (change)="change()"/>
     </td>
-    <td>
+    <td class="p2">
       <input nz-input formControlName="unit" nzSize="small" (change)="change()"/>
     </td>
-    <td>
+    <td class="p2">
 <!--      <input nz-input formControlName="code" nzSize="small" (change)="change()"/>-->
       <nz-select formControlName="code" nzSize="small" (ngModelChange)="change()" (change)="change()" required>
         <nz-option [nzValue]="code.name" [nzLabel]="code.label" *ngFor="let code of codes"></nz-option>
       </nz-select>
     </td>
-    <td>
+    <td class="p2">
       <input nz-input formControlName="address" nzSize="small" (change)="change()"/>
     </td>
-    <td>
+    <td class="p2">
       <nz-select formControlName="type" nzSize="small" (ngModelChange)="change()" (change)="change()" required>
         <nz-option nzValue="bit" nzLabel="BIT"></nz-option>
         <nz-option nzValue="byte" nzLabel="BYTE"></nz-option>
@@ -55,10 +55,10 @@
         <nz-option nzValue="double" nzLabel="DOUBLE"></nz-option>
       </nz-select>
     </td>
-    <td>
+    <td class="p2">
       <label nz-checkbox formControlName="le" (change)="change()" (ngModelChange)="change()"></label>
     </td>
-    <td>
+    <td class="p2">
       <nz-select formControlName="precision" nzSize="small" (ngModelChange)="change()" (change)="change()" required>
         <nz-option [nzValue]="0" nzLabel="0"></nz-option>
         <nz-option [nzValue]="1" nzLabel="1"></nz-option>
@@ -67,10 +67,10 @@
         <nz-option [nzValue]="4" nzLabel="4"></nz-option>
       </nz-select>
     </td>
-    <td>
+    <td class="p2">
       <label nz-checkbox formControlName="store" (change)="change()" (ngModelChange)="change()"></label>
     </td>
-    <td>
+    <td class="p2">
       <a cdkDragHandle title="移动">
         <i nz-icon nzType="drag" nzTheme="outline"></i>
       </a>

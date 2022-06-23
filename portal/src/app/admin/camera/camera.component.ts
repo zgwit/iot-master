@@ -19,13 +19,14 @@ export class CameraComponent implements OnInit {
   pageIndex = 1;
 
   params: any = {filter: {}};
+  view: string = 'card';
 
   constructor(private router: Router, private rs: RequestService, private ms: NzModalService) {
 
   }
 
   ngOnInit(): void {
-    //this.load();
+    this.load();
   }
 
   search(keyword: string) {
@@ -41,6 +42,12 @@ export class CameraComponent implements OnInit {
   onQuery(params: NzTableQueryParams) {
     parseTableQuery(params, this.params);
     this.load();
+  }
+
+  onPageChange(page: number) {
+    this.pageIndex = page;
+    this.params.skip = (this.pageIndex - 1) * this.pageSize;
+    this.load()
   }
 
   load(): void {

@@ -1,6 +1,29 @@
-<app-page-list (create)="create()" (refresh)="load()" (search)="search($event)" [loading]="loading">
+<app-common-bar (create)="create()" (refresh)="load()" (search)="search($event)" [loading]="loading"
+                [(view)]="view"></app-common-bar>
+<!--卡片视图-->
+<div *ngIf="view=='card'">
+  <nz-row [nzGutter]="[8,8]">
+    <div nz-col [nzSpan]="12" [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" [nzXl]="6" [nzXXl]="4"
+         *ngFor="let data of datum" >
+      <nz-card (click)="open(data)" nzSize="small" nzHoverable [nzTitle]="'设备：'+data.id">
+        <p>{{data.name}} {{data.running ? '[在线]' : '[离线]'}}</p>
+        <p>{{data.product}} {{data.tunnel}}</p>
+      </nz-card>
+    </div>
+  </nz-row>
 
-  <nz-table
+  <nz-empty *ngIf="!datum?.length" nzNotFoundImage="simple"></nz-empty>
+
+  <nz-pagination nzSize="small" style="margin-top: 20px"
+                 [nzPageSize]="pageSize"
+                 [nzTotal]="total"
+                 [nzPageIndex]="pageIndex"
+                 (nzPageIndexChange)="onPageChange($event)"
+  ></nz-pagination>
+</div>
+
+<!--列表视图-->
+<nz-table *ngIf="view=='list'"
     nzSize="small"
     [nzData]="datum"
     [nzFrontPagination]="false"
@@ -53,5 +76,3 @@
     </tbody>
   </nz-table>
 
-
-</app-page-list>

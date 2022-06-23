@@ -1,0 +1,41 @@
+<app-toolbar>
+  <form nz-space (submit)="search.emit(keyword)">
+    <button *nzSpaceItem type="button" nz-button nzType="primary" [nzLoading]="loading" (click)="refresh.emit()">
+      <i nz-icon nzType="reload"></i>
+      刷新
+    </button>
+
+    <button *nzSpaceItem type="button" nz-button nzType="primary" (click)="create.emit()" [hidden]="noCreate!==false">
+      <i nz-icon nzType="plus"></i>
+      {{createButtonText}}
+    </button>
+
+    <nz-input-group *nzSpaceItem nzSearch nzPrefixIcon="search" [nzAddOnAfter]="suffixIconButton" [hidden]="noSearch!==false"
+                    [nzSuffix]="suffixIconClear">
+      <input type="text" nz-input placeholder="关键字" [(ngModel)]="keyword" [ngModelOptions]="{standalone: true}"/>
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button type="button" nz-button nzType="primary" nzSearch (click)="search.emit(keyword)">
+        搜索
+      </button>
+    </ng-template>
+    <ng-template #suffixIconClear>
+      <i nz-icon nzType="close" *ngIf="keyword" (click)="keyword=''; search.emit(keyword)"></i>
+    </ng-template>
+
+  </form>
+
+  <nz-radio-group class="view" (change)="onViewChange($event)" [hidden]="noCreate!==false"
+                  [(ngModel)]="view"
+                  [ngModelOptions]="{standalone: true}"
+                  (ngModelChange)="onViewChange($event)"
+                  nzButtonStyle="solid">
+    <label nz-radio-button nzValue="card">
+      <i nz-icon nzType="table"></i>
+    </label>
+    <label nz-radio-button nzValue="list">
+      <i nz-icon nzType="unordered-list"></i>
+    </label>
+  </nz-radio-group>
+</app-toolbar>
+

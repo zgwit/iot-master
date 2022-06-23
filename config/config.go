@@ -11,6 +11,7 @@ import (
 type Configure struct {
 	Node     string   `yaml:"node"`
 	Data     string   `yaml:"data"`
+	Serials  []string `yaml:"serials"`
 	Web      Web      `yaml:"web"`
 	Database Database `yaml:"database"`
 	History  History  `yaml:"history"`
