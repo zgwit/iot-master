@@ -86,7 +86,7 @@ func login(ctx *gin.Context) {
 	master.CreateUserEvent(user.Id, "登录")
 
 	//存入session
-	session.Set("user", &user)
+	session.Set("user", user.Id)
 	_ = session.Save()
 
 	replyOk(ctx, user)
@@ -100,10 +100,48 @@ func logout(ctx *gin.Context) {
 		return
 	}
 
-	user := u.(*model.User)
-	master.CreateUserEvent(user.Id, "退出")
+	user := u.(int64)
+	master.CreateUserEvent(user, "退出")
 
 	session.Clear()
 	_ = session.Save()
+	replyOk(ctx, nil)
+}
+
+type passwordObj struct {
+	Old string `json:"old"`
+	New string `json:"new"`
+}
+
+func password(ctx *gin.Context) {
+
+	var obj passwordObj
+	if err := ctx.ShouldBindJSON(&obj); err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	var pwd model.Password
+	has, err := db.Engine.ID(ctx.GetInt64("user")).Get(&pwd)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	if !has {
+		replyFail(ctx, "用户不存在")
+		return
+	}
+	if obj.Old != pwd.Password {
+		replyFail(ctx, "密码错误")
+		return
+	}
+
+	pwd.Password = obj.New //前端已经加密过
+	_, err = db.Engine.Cols("password").Update(&pwd)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
 	replyOk(ctx, nil)
 }

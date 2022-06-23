@@ -31,6 +31,8 @@ func RegisterRoutes(app *gin.RouterGroup) {
 				switch err.(type) {
 				case error:
 					replyError(ctx, err.(error))
+				case string:
+					replyFail(ctx, err.(string))
 				default:
 					ctx.JSON(http.StatusOK, gin.H{"error": err})
 				}
@@ -39,13 +41,16 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		ctx.Next()
 
 		//TODO 内容如果为空，返回404
+
 	})
 
 	app.POST("/login", login)
-	app.GET("/logout", logout)
 
 	//检查 session，必须登录
 	app.Use(mustLogin)
+
+	app.GET("/logout", logout)
+	app.GET("/password", password)
 
 	//用户接口
 	modelUser := reflect.TypeOf(model.User{})
