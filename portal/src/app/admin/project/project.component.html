@@ -7,7 +7,7 @@
          *ngFor="let data of datum; let i=index" >
       <nz-card (click)="open(data)" nzSize="small" nzHoverable [nzTitle]="'项目：'+data.id" [nzExtra]="extraTemplate">
         <p>{{data.name}} {{data.running ? '[在线]' : '[离线]'}}</p>
-        <p>{{data.product}} {{data.tunnel}}</p>
+        <p>{{data.template}}</p>
       </nz-card>
       <ng-template #extraTemplate>
         <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" (click)="$event.stopPropagation()">

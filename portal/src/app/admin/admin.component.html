@@ -66,12 +66,16 @@
           <nz-divider nzType="vertical"></nz-divider>
           <span nz-dropdown [nzDropdownMenu]="menu" nzTrigger="hover">
             <i nz-icon nzType="user" nzTheme="outline"></i>
-              {{us.user?.nickname || us.user?.username}}
+            {{us.user?.nickname || us.user?.username}}
           </span>
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu>
-                <li nz-menu-item (click)="password()">修改密码</li>
-                <li nz-menu-item (click)="exit()">退出</li>
+                <li nz-menu-item (click)="password()">
+                  <i nz-icon nzType="key"></i> &nbsp; 修改密码
+                </li>
+                <li nz-menu-item (click)="exit()">
+                  <i nz-icon nzType="logout"></i> &nbsp; 退出
+                </li>
               </ul>
             </nz-dropdown-menu>
         </span>

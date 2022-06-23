@@ -25,7 +25,7 @@ import {
 
   GithubOutline, CustomerServiceOutline,
 
-  TableOutline, UnorderedListOutline,
+  TableOutline, UnorderedListOutline, KeyOutline,
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -51,7 +51,7 @@ const icons = [
   BookOutline,
   GithubOutline,CustomerServiceOutline,
 
-  TableOutline, UnorderedListOutline,
+  TableOutline, UnorderedListOutline, KeyOutline,
 ];
 
 @NgModule({
