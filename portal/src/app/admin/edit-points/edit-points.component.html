@@ -7,16 +7,16 @@
   <div nz-col [nzSpan]="12" [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" [nzXl]="6" [nzXXl]="4"
        *ngFor="let data of items; let i=index" cdkDrag>
     <nz-card nzSize="small" nzHoverable
-             [nzTitle]="data.label" [nzExtra]="extraTemplate" (click)="edit(data)">
+             [nzTitle]="data.name" [nzExtra]="extraTemplate" (click)="edit(data)">
       <p>
-        {{data.name}}
-        <span *ngIf="data.le">小端</span>
-        <span *ngIf="data.store">保存</span>
+        地址：{{data.code}}{{data.address}}，名称：{{data.label}}
+        <span *ngIf="data.unit">单位：{{data.unit}}</span>
       </p>
       <p>
-        {{data.code}}{{data.address}}
-        {{data.type}}
-        <span *ngIf="data.precision">精度：{{data.precision}}</span>
+        类型：{{data.type}}，
+        <span *ngIf="data.le">小端模式，</span>
+        <span *ngIf="data.precision">{{data.precision}}个小数位，</span>
+        <span *ngIf="data.store">保存历史</span>
       </p>
     </nz-card>
     <ng-template #extraTemplate>
@@ -37,33 +37,33 @@
 
 <nz-modal [(nzVisible)]="showModal" nzTitle="编辑数据点" (nzOnOk)="onOk()" (nzOnCancel)="showModal=false">
   <ng-container *nzModalContent>
-    <form [formGroup]="formGroup" (change)="change()">
+    <form [formGroup]="formGroup">
       <nz-form-item>
         <nz-form-label [nzSpan]="5">变量</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="name" (ngModelChange)="change()" (change)="change()" required/>
+          <input nz-input formControlName="name" required/>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">名称</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="label" (ngModelChange)="change()" (change)="change()" required/>
+          <input nz-input formControlName="label" required/>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">单位</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="unit" (ngModelChange)="change()" (change)="change()" required/>
+          <input nz-input formControlName="unit" required/>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">代码</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <nz-select formControlName="code" nzSize="small" (ngModelChange)="change()" (change)="change()" required>
-            <nz-option [nzValue]="code.name" [nzLabel]="code.label" *ngFor="let code of codes"></nz-option>
+          <nz-select formControlName="code" nzSize="small" required>
+            <nz-option [nzValue]="code.name" [nzLabel]="code.name + ' ' + code.label" *ngFor="let code of codes"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
@@ -71,14 +71,14 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">地址</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="address" nzSize="small" (ngModelChange)="change()" (change)="change()"/>
+          <input nz-input formControlName="address" nzSize="small"/>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">类型</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <nz-select formControlName="type" nzSize="small" (ngModelChange)="change()" (change)="change()" required>
+          <nz-select formControlName="type" nzSize="small" required>
             <nz-option nzValue="bit" nzLabel="位"></nz-option>
             <nz-option nzValue="byte" nzLabel="字节"></nz-option>
             <nz-option nzValue="word" nzLabel="字"></nz-option>
@@ -96,21 +96,21 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">小端模式</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <nz-switch formControlName="le" nzSize="small" (change)="change()" (ngModelChange)="change()"></nz-switch>
+          <nz-switch formControlName="le" nzSize="small"></nz-switch>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">小数位数</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="precision" nzSize="small" (change)="change()" (ngModelChange)="change()"/>
+          <input nz-input formControlName="precision" nzSize="small"/>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">保存历史</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <nz-switch formControlName="store" nzSize="small" (change)="change()" (ngModelChange)="change()"></nz-switch>
+          <nz-switch formControlName="store" nzSize="small"></nz-switch>
         </nz-form-control>
       </nz-form-item>
 

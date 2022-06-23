@@ -1,65 +1,93 @@
-<app-toolbar>
-  <nz-space>
-    <button nz-button *nzSpaceItem nzType="default" (click)="clear()">清空</button>
-    <button nz-button *nzSpaceItem nzType="primary" (click)="add()">添加</button>
-  </nz-space>
-</app-toolbar>
+<a (click)="edit()">
+  <i nz-icon nzType="plus"></i>
+  添加
+</a>
 
-
-<nz-table [nzData]="formArray.controls" [nzFrontPagination]="false" nzSize="small" [formGroup]="formGroup">
-  <thead>
-  <tr>
-    <th>类型</th>
-    <th>定时</th>
-    <th>代码</th>
-    <th>地址</th>
-    <th>长度</th>
-    <th>禁用</th>
-    <th>操作</th>
-  </tr>
-  </thead>
-  <tbody formGroupName="items" cdkDropList (cdkDropListDropped)="drop($event)" >
-  <tr *ngFor="let data of formArray.controls; let i=index" [formGroupName]="i" cdkDrag>
-    <td>
-      <nz-select formControlName="type" nzSize="small" (ngModelChange)="change()" (change)="change()">
-        <nz-option nzValue="interval" nzLabel="间隔ms"></nz-option>
-        <nz-option nzValue="clock" nzLabel="定时"></nz-option>
-        <nz-option nzValue="crontab" nzLabel="crontab"></nz-option>
-      </nz-select>
-    </td>
-    <td>
-      <nz-input-number *ngIf="data.value.type=='interval'" formControlName="interval" [nzStep]="1" nzSize="small" (change)="change()"></nz-input-number>
-      <app-minute-time-picker *ngIf="data.value.type=='clock'"  formControlName="clock" nzSize="small" (change)="change()"></app-minute-time-picker>
-      <input *ngIf="data.value.type=='crontab'"  nz-input formControlName="crontab" nzSize="small" (change)="change()"/>
-    </td>
-    <td>
-<!--      <input nz-input formControlName="code" nzSize="small" (change)="change()"/>-->
-      <nz-select formControlName="code" nzSize="small" (ngModelChange)="change()" (change)="change()" required>
-        <nz-option [nzValue]="code.name" [nzLabel]="code.label" *ngFor="let code of codes"></nz-option>
-      </nz-select>
-    </td>
-    <td>
-      <input nz-input type="text" formControlName="address" nzSize="small" (change)="change()"/>
-    </td>
-    <td>
-      <nz-input-number formControlName="length" [nzMin]="1" [nzMax]="65535" [nzStep]="1" nzSize="small" (change)="change()" required></nz-input-number>
-    </td>
-    <td>
-      <label nz-checkbox formControlName="disabled" (change)="change()" (ngModelChange)="change()"></label>
-    </td>
-    <td>
-      <a cdkDragHandle title="移动">
+<nz-row [nzGutter]="[8,8]" cdkDropList (cdkDropListDropped)="drop($event)">
+  <div nz-col [nzSpan]="12" [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" [nzXl]="6" [nzXXl]="4"
+       *ngFor="let data of items; let i=index" cdkDrag>
+    <nz-card nzSize="small" nzHoverable
+             [nzTitle]="data.code + data.address" [nzExtra]="extraTemplate" (click)="edit(data)">
+      <p>
+        地址：{{data.code}}{{data.address}}，长度：{{data.length}}
+      </p>
+      <p>
+        类型：{{data.type}}，
+        <span *ngIf="data.type=='interval'">{{data.interval}}ms</span>
+        <span *ngIf="data.type=='clock'">{{data.clock | minuteFormat }}</span>
+        <span *ngIf="data.type=='crontab'">{{data.crontab}}</span>
+        <span *ngIf="data.disabled">禁用</span>
+      </p>
+    </nz-card>
+    <ng-template #extraTemplate>
+      <a title="移动" cdkDragHandle>
         <i nz-icon nzType="drag" nzTheme="outline"></i>
       </a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a cdkDragHandle title="复制" (click)="copy(i)">
+      <a title="复制" (click)="copy(i); $event.stopPropagation()">
         <i nz-icon nzType="copy" nzTheme="outline"></i>
       </a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="remove(i)" title="删除">
+      <a title="删除" nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="remove(i)" (click)="$event.stopPropagation()">
         <i nz-icon nzType="delete" nzTheme="outline"></i>
       </a>
-    </td>
-  </tr>
-  </tbody>
-</nz-table>
+    </ng-template>
+  </div>
+</nz-row>
+
+<nz-modal [(nzVisible)]="showModal" nzTitle="编辑数据点" (nzOnOk)="onOk()" (nzOnCancel)="showModal=false">
+  <ng-container *nzModalContent>
+    <form [formGroup]="formGroup">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">类型</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-select formControlName="type" nzSize="small">
+            <nz-option nzValue="interval" nzLabel="间隔ms"></nz-option>
+            <nz-option nzValue="clock" nzLabel="定时"></nz-option>
+            <nz-option nzValue="crontab" nzLabel="crontab"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">定时</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-input-number *ngIf="formGroup.value.type=='interval'" formControlName="interval" [nzStep]="1" nzSize="small"></nz-input-number>
+          <app-minute-time-picker *ngIf="formGroup.value.type=='clock'"  formControlName="clock" nzSize="small"></app-minute-time-picker>
+          <input *ngIf="formGroup.value.type=='crontab'"  nz-input formControlName="crontab" nzSize="small"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">代码</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-select formControlName="code" nzSize="small" required>
+            <nz-option [nzValue]="code.name" [nzLabel]="code.name + ' ' + code.label" *ngFor="let code of codes"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">地址</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="address" nzSize="small"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">长度</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <input nz-input formControlName="length" nzSize="small"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">禁用</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-switch formControlName="disabled" nzSize="small"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+
+    </form>
+  </ng-container>
+</nz-modal>
