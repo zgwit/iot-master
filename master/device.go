@@ -259,6 +259,9 @@ func (dev *Device) Set(name string, value interface{}) error {
 }
 
 func (dev *Device) Refresh() error {
+	if !dev.running {
+		return errors.New("设备未运行")
+	}
 	for _, poller := range dev.pollers {
 		poller.Execute()
 	}
@@ -266,6 +269,9 @@ func (dev *Device) Refresh() error {
 }
 
 func (dev *Device) RefreshPoint(name string) (interface{}, error) {
+	if !dev.running {
+		return nil, errors.New("设备未运行")
+	}
 	for _, p := range dev.points {
 		if p.Name == name {
 			buf, err := dev.protocol.Read(dev.Station, p.Addr, p.Type.Size())

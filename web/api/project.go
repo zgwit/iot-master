@@ -66,6 +66,7 @@ func projectDetail(ctx *gin.Context) {
 		var template model.Template
 		has, err := db.Engine.ID(project.Template).Get(&template)
 		if has && err == nil {
+			project.Template = template.Name
 			project.ProjectContent = template.ProjectContent
 		}
 	}

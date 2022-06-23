@@ -40,19 +40,22 @@ func (c *Camera) Open() error {
 		_ = c.Close()
 	}
 
+	args := []string{"-i", c.Url}
+
+	if c.H264 {
+		//使用H264，因为前端仅支持h264，但是占用CPU和内存都比较多
+		args = append(args, "-c:v", "libx264")
+	} else {
+		args = append(args, "-c", "copy")
+	}
+	args = append(args, "-f", "hls", "-hls_allow_cache", "0",
+		//"-hls_flags", "delete_segments", //windows下 路径分隔符错误，导致不能删除，另外可能不支持http删除，需要手动操作
+		fmt.Sprintf("http://localhost:143/%d/index.m3u8", c.Id))
+
 	var ctx context.Context
 	ctx, c.cancel = context.WithCancel(context.Background())
 	//TODO 转码，压缩，省流量
-	cmd := exec.CommandContext(ctx,
-		"ffmpeg", "-re", "-i", c.Url,
-		//"-c:a", "aac",
-		"-c:v", "libx264", //使用H264，因为前端仅支持h264
-		//"-r", "10",
-		"-f", "hls",
-		"-hls_allow_cache", "0",
-		//"-hls_flags", "delete_segments", //windows下 路径分隔符错误，导致不能删除，另外可能不支持http删除，需要手动操作
-		fmt.Sprintf("http://localhost:143/%d/index.m3u8", c.Id),
-	)
+	cmd := exec.CommandContext(ctx, "ffmpeg", args...)
 	//cmd = exec.Command("ffmpeg", "-re", "-i", c.MediaUri, "-c", "copy", "-f", "hls", "http://localhost:8080/camera/index.m3u8")
 	//cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	//cmd.Stdout = os.Stdout

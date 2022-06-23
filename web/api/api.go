@@ -205,7 +205,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/camera/list", cameraList)
 	app.POST("/camera/create", curdApiCreate(modelCamera, nil, afterCameraCreate))
 	app.GET("/camera/:id", parseParamId, cameraDetail)
-	app.POST("/camera/:id", parseParamId, curdApiModify(modelCamera, []string{"name", "url", "disabled"}, nil, afterCameraUpdate))
+	app.POST("/camera/:id", parseParamId, curdApiModify(modelCamera, []string{"name", "url", "h264", "disabled"}, nil, afterCameraUpdate))
 	app.GET("/camera/:id/delete", parseParamId, curdApiDelete(modelCamera, nil, afterCameraDelete))
 
 	app.GET("/camera/:id/start", parseParamId, cameraStart)

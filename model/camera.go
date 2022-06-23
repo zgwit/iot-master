@@ -6,7 +6,8 @@ type Camera struct {
 	Id   int64  `json:"id"`
 	Name string `json:"name"`
 
-	Url string `json:"url"`
+	Url  string `json:"url"`
+	H264 bool   `json:"h264"`
 
 	Disabled bool      `json:"disabled"`
 	Updated  time.Time `json:"updated" xorm:"updated"`

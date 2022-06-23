@@ -83,6 +83,7 @@ func Start() error {
 	}
 
 	//创建API服务，接收数据流
+	gin.SetMode(gin.ReleaseMode)
 	app := gin.New()
 
 	//接收数据上传

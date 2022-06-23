@@ -71,6 +71,7 @@ func deviceDetail(ctx *gin.Context) {
 		var template model.Product
 		has, err := db.Engine.ID(device.ProductId).Get(&template)
 		if has && err == nil {
+			device.Product = template.Name
 			device.DeviceContent = template.DeviceContent
 		}
 	}
