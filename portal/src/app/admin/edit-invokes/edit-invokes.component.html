@@ -7,9 +7,9 @@
   <div nz-col [nzSpan]="24"
        *ngFor="let data of items; let i=index" cdkDrag>
     <nz-card nzSize="small" nzHoverable [nzExtra]="extraTemplate" (click)="edit(data)">
-      <p>目标：{{data.tags}}</p>
+      <p>目标：{{data.targets}}</p>
       <p>
-        {{data.command}} {{data.arguments.join(',')}}
+        命令：{{data.command}} {{data.arguments.join(',')}}
       </p>
 
     </nz-card>

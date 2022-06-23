@@ -1,52 +1,75 @@
-<app-toolbar>
-  <nz-space>
-    <button nz-button *nzSpaceItem nzType="default" (click)="clear()">清空</button>
-    <button nz-button *nzSpaceItem nzType="primary" (click)="add()">添加</button>
-  </nz-space>
-</app-toolbar>
+<a (click)="edit()">
+  <i nz-icon nzType="plus"></i>
+  添加
+</a>
 
-
-<nz-table [nzData]="formArray.controls" [nzFrontPagination]="false" nzSize="small" [formGroup]="formGroup">
-  <thead>
-  <tr>
-    <th>类型</th>
-    <th>定时</th>
-    <th>执行命令</th>
-    <th>禁用</th>
-    <th>操作</th>
-  </tr>
-  </thead>
-  <tbody formGroupName="items" cdkDropList (cdkDropListDropped)="drop($event)" >
-  <tr *ngFor="let data of formArray.controls; let i=index" [formGroupName]="i" cdkDrag>
-    <td>
-      <nz-select formControlName="type" nzSize="small" (ngModelChange)="change()" (change)="change()">
-        <nz-option nzValue="clock" nzLabel="定时"></nz-option>
-        <nz-option nzValue="crontab" nzLabel="crontab"></nz-option>
-      </nz-select>
-    </td>
-    <td>
-      <app-minute-time-picker *ngIf="data.value.type=='clock'"  formControlName="clock" nzSize="small" (change)="change()"></app-minute-time-picker>
-      <input *ngIf="data.value.type=='crontab'"  nz-input formControlName="crontab" nzSize="small" (change)="change()"/>
-    </td>
-    <td>
-      <app-edit-invokes formControlName="invokes" (change)="change()"></app-edit-invokes>
-    </td>
-    <td>
-      <label nz-checkbox formControlName="disabled" (change)="change()" (ngModelChange)="change()"></label>
-    </td>
-    <td>
-      <a cdkDragHandle title="移动">
+<nz-row [nzGutter]="[8,8]" cdkDropList (cdkDropListDropped)="drop($event)">
+  <div nz-col [nzSpan]="12" [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" [nzXl]="6" [nzXXl]="4"
+       *ngFor="let data of items; let i=index" cdkDrag>
+    <nz-card nzSize="small" [nzTitle]="data.name" nzHoverable [nzExtra]="extraTemplate" (click)="edit(data)">
+      <p>
+        类型：{{data.type}}，
+        <span *ngIf="data.type=='clock'">{{data.clock | minuteFormat }}</span>
+        <span *ngIf="data.type=='crontab'">{{data.crontab}}</span>
+        <span *ngIf="data.disabled">禁用</span>
+      </p>
+      <p *ngFor="let d of data.invokes">
+        {{d.targets.join(',')}}
+        执行：{{d.command}}
+        {{d.arguments.join(',')}}
+      </p>
+    </nz-card>
+    <ng-template #extraTemplate>
+      <a title="移动" cdkDragHandle>
         <i nz-icon nzType="drag" nzTheme="outline"></i>
       </a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a cdkDragHandle title="复制" (click)="copy(i)">
+      <a title="复制" (click)="copy(i); $event.stopPropagation()">
         <i nz-icon nzType="copy" nzTheme="outline"></i>
       </a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="remove(i)" title="删除">
+      <a title="删除" nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="remove(i)" (click)="$event.stopPropagation()">
         <i nz-icon nzType="delete" nzTheme="outline"></i>
       </a>
-    </td>
-  </tr>
-  </tbody>
-</nz-table>
+    </ng-template>
+  </div>
+</nz-row>
+
+<nz-modal [(nzVisible)]="showModal" nzTitle="编辑定时器" (nzOnOk)="onOk()" (nzOnCancel)="showModal=false">
+  <ng-container *nzModalContent>
+    <form [formGroup]="formGroup">
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">类型</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-select formControlName="type" nzSize="small">
+            <nz-option nzValue="clock" nzLabel="定时"></nz-option>
+            <nz-option nzValue="crontab" nzLabel="crontab"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">定时</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <app-minute-time-picker *ngIf="formGroup.value.type=='clock'"  formControlName="clock" nzSize="small"></app-minute-time-picker>
+          <input *ngIf="formGroup.value.type=='crontab'"  nz-input formControlName="crontab" nzSize="small"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">执行指令</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <app-edit-invokes formControlName="invokes"></app-edit-invokes>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">禁用</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-switch formControlName="disabled"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+
+    </form>
+  </ng-container>
+</nz-modal>
