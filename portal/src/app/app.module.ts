@@ -23,6 +23,10 @@ import {NzMessageModule} from 'ng-zorro-antd/message';
 import {NzListModule} from 'ng-zorro-antd/list';
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NgxAmapModule} from "ngx-amap";
+import {InstallComponent} from "./install/install.component";
+import {NzStepsModule} from "ng-zorro-antd/steps";
+import {NzLayoutModule} from "ng-zorro-antd/layout";
+import {MarkdownModule} from "ngx-markdown";
 //import {HelperModule} from "./helper/helper.module";
 
 registerLocaleData(zh, 'zh');
@@ -35,6 +39,7 @@ export function tokenGetter() {
   declarations: [
     AppComponent,
     LoginComponent,
+    InstallComponent,
     PageNotFoundComponent,
   ],
   imports: [
@@ -56,6 +61,9 @@ export function tokenGetter() {
     IconsProviderModule,
     HttpClientModule,
     NgxAmapModule.forRoot({apiKey: 'e4c1bd11fe1b25d77dae4cf3993f7034', debug: true}),
+    NzStepsModule,
+    NzLayoutModule,
+    MarkdownModule.forRoot(),
     //HelperModule,
   ],
   providers: [{provide: NZ_I18N, useValue: zh_CN}, {provide: LOCALE_ID, useValue: 'zh'}],

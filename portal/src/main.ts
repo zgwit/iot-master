@@ -6,6 +6,7 @@ import { environment } from './environments/environment';
 
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/yaml/yaml';
+import 'marked'
 
 if (environment.production) {
   enableProdMode();

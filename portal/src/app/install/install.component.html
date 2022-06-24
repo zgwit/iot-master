@@ -1,0 +1,56 @@
+<nz-layout class="install">
+  <nz-header class="header">
+
+    <nz-steps [nzCurrent]="current">
+      <nz-step nzTitle="使用协议"></nz-step>
+      <nz-step nzTitle="系统配置"></nz-step>
+      <nz-step nzTitle="数据库"></nz-step>
+      <nz-step nzTitle="历史存储"></nz-step>
+      <nz-step nzTitle="完成"></nz-step>
+    </nz-steps>
+
+  </nz-header>
+  <nz-content class="content">
+    <div class="inner">
+      <ng-container *ngIf="current == 0">
+        <markdown src="/assets/protocol.md"></markdown>
+      </ng-container>
+      <ng-container *ngIf="current == 1">
+        表单1
+      </ng-container>
+      <ng-container *ngIf="current == 2">
+        表单2
+      </ng-container>
+      <ng-container *ngIf="current == 3">
+        表单3
+      </ng-container>
+      <ng-container *ngIf="current == 4">
+        表单4
+      </ng-container>
+    </div>
+  </nz-content>
+  <nz-footer class="footer">
+    <ng-container *ngIf="current > 0">
+      <button nz-button nzType="default" (click)="current = current-1">
+        上一步
+      </button>
+    </ng-container>
+    <ng-container *ngIf="current > 0 && current < 4">
+      <button nz-button nzType="primary" (click)="current = current+1">
+        下一步
+      </button>
+    </ng-container>
+    <ng-container *ngIf="current == 0">
+      <button nz-button nzType="primary" (click)="current = current+1">
+        我已经阅读并同意以上使用协议
+      </button>
+    </ng-container>
+    <ng-container *ngIf="current == 4">
+      <button nz-button nzType="primary" (click)="submit()">
+        开始安装
+      </button>
+    </ng-container>
+
+  </nz-footer>
+</nz-layout>
+
