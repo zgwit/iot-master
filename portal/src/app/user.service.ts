@@ -13,6 +13,8 @@ export class UserService {
   constructor(private rs: RequestService) {
     rs.get('user/me').subscribe(res => {
       this.setUser(res.data);
+    }, error => {
+      this.userSub.next(undefined)
     })
   }
 

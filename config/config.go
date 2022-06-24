@@ -9,6 +9,7 @@ import (
 
 //Configure 配置
 type Configure struct {
+	FromFile bool     `yaml:"-"`
 	Node     string   `yaml:"node"`
 	Data     string   `yaml:"data"`
 	Serials  []string `yaml:"serials"`
@@ -40,7 +41,8 @@ func Load() error {
 
 	// 如果没有文件，则使用默认信息创建
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		return Store()
+		//return Store()
+		return nil
 	} else {
 		y, err := os.Open(filename)
 		if err != nil {
@@ -50,7 +52,15 @@ func Load() error {
 		defer y.Close()
 
 		d := yaml.NewDecoder(y)
-		return d.Decode(&Config)
+		err = d.Decode(&Config)
+		if err != nil {
+			log.Fatal(err)
+			return err
+		}
+
+		Config.FromFile = true
+
+		return nil
 	}
 }
 

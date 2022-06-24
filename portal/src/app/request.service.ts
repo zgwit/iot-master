@@ -28,7 +28,7 @@ export class RequestService {
           return of({error: '无效接口 ' + method + ' ' + uri});
         } else if (err.status === 401) {
           // window.location.href = '/login';
-          this.route.navigate(['/login']);
+          //this.route.navigate(['/login']);
           return of({error: '未登录'});
         }
         return of({error: err.message});

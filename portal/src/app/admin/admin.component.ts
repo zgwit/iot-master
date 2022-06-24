@@ -5,6 +5,7 @@ import {UserService} from "../user.service";
 import {Router} from '@angular/router';
 import {NzModalService} from "ng-zorro-antd/modal";
 import {PasswordComponent} from "./password/password.component";
+import {InfoService} from "../info.service";
 
 
 @Component({
@@ -20,18 +21,15 @@ export class AdminComponent implements OnInit {
 
   tabs: Array<any> = [{url: 'welcome'}]
 
-  version: any = {
-    version: "1.0.0"
-  }
-
-  constructor(private rs: RequestService, public us: UserService, private route: Router, private ms: NzModalService) {
+  constructor(private rs: RequestService,
+              public us: UserService,
+              public is: InfoService,
+              private route: Router,
+              private ms: NzModalService) {
     this.initMenu();
   }
 
   ngOnInit(): void {
-    this.rs.get("system/version").subscribe(res=>{
-      this.version = res.data
-    })
   }
 
   noop(): void {

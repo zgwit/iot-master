@@ -45,12 +45,18 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	})
 
 	app.POST("/login", login)
+	app.GET("/info", info)
+	app.POST("/install", install)
 
 	//检查 session，必须登录
 	app.Use(mustLogin)
 
 	app.GET("/logout", logout)
 	app.POST("/password", password)
+
+	//修改配置
+	app.GET("/config", loadConfig)
+	app.POST("/config", saveConfig)
 
 	//用户接口
 	modelUser := reflect.TypeOf(model.User{})
@@ -89,7 +95,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/template/create", curdApiCreate(modelTemplate, generateUUID, nil))
 	app.GET("/template/:id", parseParamStringId, curdApiGet(modelTemplate))
 	app.POST("/template/:id", parseParamStringId, curdApiModify(modelTemplate,
-		[]string{"name", "version", "products",
+		[]string{"name", "info", "products",
 			"hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"},
 		nil, nil))
 	app.GET("/template/:id/delete", parseParamStringId, curdApiDelete(modelTemplate, nil, nil))
@@ -124,7 +130,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/product/create", curdApiCreate(modelProduct, generateUUID, nil))
 	app.GET("/product/:id", parseParamStringId, curdApiGet(modelProduct))
 	app.POST("/product/:id", parseParamStringId, curdApiModify(modelProduct,
-		[]string{"name", "manufacturer", "version",
+		[]string{"name", "manufacturer", "info",
 			"hmi", "tags", "points", "pollers", "calculators", "alarms", "commands",
 			"context", "disabled"},
 		nil, nil))
@@ -214,7 +220,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/camera/:id/disable", parseParamId, curdApiDisable(modelCamera, true, nil, afterCameraDisable))
 
 	//系统接口
-	app.GET("/system/version", version)
 	app.GET("/system/cpu-info", cpuInfo)
 	app.GET("/system/cpu", cpuStats)
 	app.GET("/system/memory", memStats)
