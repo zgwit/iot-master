@@ -4,11 +4,12 @@ import {LoginComponent} from './login/login.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {InstallComponent} from "./install/install.component";
 import {LoginGuard} from "./login.guard";
+import {InstallGuard} from "./install.guard";
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/admin'},
   {path: 'login', pathMatch: 'full', component: LoginComponent},
-  {path: 'install', pathMatch: 'full', component: InstallComponent},
+  {path: 'install', pathMatch: 'full', component: InstallComponent, canActivate: [InstallGuard]},
   {path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule), canActivate: [LoginGuard]},
   //{path: 'admin', loadChildren: './admin/admin.module#AdminModule'},
 
