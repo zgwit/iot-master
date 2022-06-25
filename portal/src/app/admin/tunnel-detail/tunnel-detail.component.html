@@ -4,7 +4,10 @@
     <nz-list nzBordered>
       <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
       <nz-list-item><span>类型</span>{{data.type}}</nz-list-item>
-      <nz-list-item><span>地址</span>{{data.addr}}</nz-list-item>
+      <nz-list-item><span>地址</span>
+        <ng-container *ngIf="data.type=='serial'">{{data.serial.port}}</ng-container>
+        <ng-container *ngIf="data.type!='serial'">{{data.addr}}</ng-container>
+      </nz-list-item>
       <nz-list-item>
         <span>服务器</span>
         <a [routerLink]="'/admin/server/detail/'+data.server_id">{{data.server}}</a>

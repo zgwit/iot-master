@@ -35,7 +35,10 @@
       <td>{{ data.server }}</td>
       <td>{{data.disabled ? '❌' : ''}}{{ data.name }}</td>
       <td>{{ data.type }}</td>
-      <td>{{ data.addr }}</td>
+      <td>
+        <ng-container *ngIf="data.type=='serial'">{{data.serial.port}}</ng-container>
+        <ng-container *ngIf="data.type!='serial'">{{data.addr}}</ng-container>
+      </td>
       <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
       <td>{{data.last | fromNow}}</td>
       <td>{{data.running ? '在线' : '离线'}}</td>

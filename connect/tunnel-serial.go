@@ -32,10 +32,10 @@ func (s *TunnelSerial) Open() error {
 		BaudRate: s.tunnel.Serial.BaudRate,
 		DataBits: s.tunnel.Serial.DataBits,
 		StopBits: serial.StopBits(s.tunnel.Serial.StopBits),
-		Parity:   serial.Parity(s.tunnel.Serial.ParityMode),
+		Parity:   serial.Parity(s.tunnel.Serial.Parity),
 	}
 
-	port, err := serial.Open(s.tunnel.Addr, mode)
+	port, err := serial.Open(s.tunnel.Serial.Port, mode)
 	if err != nil {
 		//TODO 串口重试
 		s.Retry()

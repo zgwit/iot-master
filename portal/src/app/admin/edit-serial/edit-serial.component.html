@@ -1,6 +1,15 @@
 <form [formGroup]="formGroup" (change)="change()">
 
   <nz-form-item>
+    <nz-form-label [nzSpan]="5">端口</nz-form-label>
+    <nz-form-control [nzSpan]="12" nzErrorTip="">
+      <nz-radio-group formControlName="port">
+        <label nz-radio [nzValue]="s" *ngFor="let s of serials">{{s}}</label>
+      </nz-radio-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
     <nz-form-label [nzSpan]="5">波特率</nz-form-label>
     <nz-form-control [nzSpan]="12" nzErrorTip="">
       <nz-select formControlName="baud_rate">
@@ -52,7 +61,7 @@
   <nz-form-item>
     <nz-form-label [nzSpan]="5">检验位</nz-form-label>
     <nz-form-control [nzSpan]="12" nzErrorTip="">
-      <nz-select formControlName="parity_mode">
+      <nz-select formControlName="parity">
         <nz-option [nzValue]="0" nzLabel="无"></nz-option>
         <nz-option [nzValue]="1" nzLabel="偶"></nz-option>
         <nz-option [nzValue]="2" nzLabel="奇"></nz-option>

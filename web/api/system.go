@@ -6,6 +6,7 @@ import (
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/zgwit/iot-master/protocols"
+	"go.bug.st/serial"
 )
 
 func memStats(ctx *gin.Context) {
@@ -76,4 +77,13 @@ func protocolDetail(ctx *gin.Context) {
 		}
 	}
 	replyFail(ctx, "找不到协议")
+}
+
+func serialPortList(ctx *gin.Context) {
+	ports, err := serial.GetPortsList()
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	replyOk(ctx, ports)
 }

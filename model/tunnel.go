@@ -55,12 +55,12 @@ type Retry struct {
 
 //SerialOptions 串口参数
 type SerialOptions struct {
-	//PortName   string `json:"port_name"`   // /dev/tty.usb.. COM1
-	BaudRate   int  `json:"baud_rate"`   //9600 ... 115200 ...
-	DataBits   int  `json:"data_bits"`   //5 6 7 8
-	StopBits   int  `json:"stop_bits"`   //1 1.5 2
-	ParityMode int  `json:"parity_mode"` // 0:NONE 1:ODD 2:EVEN
-	RS485      bool `json:"rs485"`
+	Port     string `json:"port"`      // /dev/tty.usb.. COM1
+	BaudRate int    `json:"baud_rate"` //9600 ... 115200 ...
+	DataBits int    `json:"data_bits"` //5 6 7 8
+	StopBits int    `json:"stop_bits"` //1 1.5 2
+	Parity   int    `json:"parity"`    // 0:NONE 1:ODD 2:EVEN
+	//RS485    bool   `json:"rs485"`
 }
 
 //Check 检查
