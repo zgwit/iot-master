@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/config"
 	"github.com/zgwit/iot-master/model"
 	"net/http"
 	"reflect"
@@ -46,7 +47,21 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	app.POST("/login", login)
 	app.GET("/info", info)
-	app.POST("/install", install)
+
+	//安装的接口
+	if !config.Existing() {
+		ins := app.Group("/install", func(ctx *gin.Context) {
+			//仅限未安装的情况下调用
+			if config.Existing() {
+				replyFail(ctx, "已经安装过了")
+				return
+			}
+			ctx.Next()
+		})
+		ins.POST("/install/database", installDatabase)
+		ins.POST("/install/history", installHistory)
+		ins.POST("/install/system", installSystem)
+	}
 
 	//检查 session，必须登录
 	app.Use(mustLogin)

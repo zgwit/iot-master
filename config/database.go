@@ -2,10 +2,10 @@ package config
 
 //Database 参数
 type Database struct {
-	Type     string `yaml:"type"`
-	URL      string `yaml:"url"`
-	Debug    bool   `yaml:"debug"`
-	LogLevel int    `json:"log_level"`
+	Type     string `yaml:"type" json:"type"`
+	URL      string `yaml:"url" json:"url"`
+	Debug    bool   `yaml:"debug" json:"debug,omitempty"`
+	LogLevel int    `json:"log_level" json:"log_level"`
 }
 
 var DatabaseDefault = Database{

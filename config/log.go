@@ -1,23 +1,23 @@
 package config
 
 type LogOutput struct {
-	Filename   string `yaml:"filename"`
-	MaxSize    int    `yaml:"max_size"`
-	MaxAge     int    `yaml:"max_age"`
-	MaxBackups int    `yaml:"max_backups"`
+	Filename   string `yaml:"filename" json:"filename"`
+	MaxSize    int    `yaml:"max_size" json:"max_size,omitempty"`
+	MaxAge     int    `yaml:"max_age" json:"max_age,omitempty"`
+	MaxBackups int    `yaml:"max_backups" json:"max_backups,omitempty"`
 }
 
 //Log 参数
 type Log struct {
-	Text   bool      `yaml:"text"`
-	Format string    `yaml:"format,omitempty"`
-	Level  string    `yaml:"level"`
-	Output LogOutput `yaml:"output"`
+	Level  string    `yaml:"level" json:"level"`
+	Text   bool      `yaml:"text" json:"text,omitempty"`
+	Format string    `yaml:"format,omitempty" json:"format,omitempty"`
+	Output LogOutput `yaml:"output" json:"output"`
 }
 
 var LogDefault = Log{
-	Text:  false,
 	Level: "error",
+	Text:  false,
 	Output: LogOutput{
 		Filename: "log.txt",
 	},

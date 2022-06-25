@@ -14,7 +14,7 @@ func info(ctx *gin.Context) {
 		"git":       args.GitHash,
 		"gin":       gin.Version,
 		"runtime":   runtime.Version(),
-		"installed": config.Config.FromFile,
+		"installed": config.Existing(),
 		//expired: xxx
 	})
 }

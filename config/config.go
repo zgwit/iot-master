@@ -7,16 +7,21 @@ import (
 	"os"
 )
 
+func Existing() bool {
+	return existing
+}
+
+var existing = false
+
 //Configure 配置
 type Configure struct {
-	FromFile bool     `yaml:"-"`
-	Node     string   `yaml:"node"`
-	Data     string   `yaml:"data"`
-	Serials  []string `yaml:"serials"`
-	Web      Web      `yaml:"web"`
-	Database Database `yaml:"database"`
-	History  History  `yaml:"history"`
-	Log      Log      `yaml:"log"`
+	Node     string   `yaml:"node" json:"node"`
+	Data     string   `yaml:"data" json:"data"`
+	Web      Web      `yaml:"web" json:"web"`
+	Database Database `yaml:"database" json:"database"`
+	History  History  `yaml:"history" json:"history"`
+	Log      Log      `yaml:"log" json:"log"`
+	//Serials  []string `yaml:"serials" json:"serials"`
 }
 
 //Config 全局配置
@@ -58,7 +63,7 @@ func Load() error {
 			return err
 		}
 
-		Config.FromFile = true
+		existing = true
 
 		return nil
 	}
