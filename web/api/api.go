@@ -58,9 +58,10 @@ func RegisterRoutes(app *gin.RouterGroup) {
 			}
 			ctx.Next()
 		})
-		ins.POST("/install/database", installDatabase)
-		ins.POST("/install/history", installHistory)
-		ins.POST("/install/system", installSystem)
+		ins.POST("/base", installBase)
+		ins.POST("/database", installDatabase)
+		ins.POST("/history", installHistory)
+		ins.GET("/system", installSystem)
 	}
 
 	//检查 session，必须登录

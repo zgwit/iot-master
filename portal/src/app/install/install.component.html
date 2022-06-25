@@ -13,44 +13,95 @@
   <nz-content class="content">
     <div class="inner">
       <ng-container *ngIf="current == 0">
-        <markdown src="/assets/protocol.md"></markdown>
+        <markdown src="/assets/install/protocol.md"></markdown>
       </ng-container>
       <ng-container *ngIf="current == 1">
-        表单1
+
+        <form [formGroup]="baseForm">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">节点名称</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzErrorTip="">
+              <input nz-input formControlName="node" placeholder="" required/>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">数据路径</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzErrorTip="">
+              <input nz-input formControlName="data" placeholder="" required/>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">端口监听</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzErrorTip="">
+              <input nz-input formControlName="port" placeholder="" required/>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+
       </ng-container>
       <ng-container *ngIf="current == 2">
-        表单2
+        <form [formGroup]="databaseForm">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">类型</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzErrorTip="">
+              <nz-select formControlName="type">
+                <nz-option nzValue="sqlite" nzLabel="SQLite"></nz-option>
+                <nz-option nzValue="mysql" nzLabel="MySQL" nzDisabled></nz-option>
+                <nz-option nzValue="postgres" nzLabel="PostgreSQL" nzDisabled></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">地址</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzErrorTip="">
+              <input nz-input formControlName="url" placeholder="" required/>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+
+        <markdown src="/assets/install/database.md"></markdown>
+
       </ng-container>
       <ng-container *ngIf="current == 3">
-        表单3
+
+        <form [formGroup]="historyForm">
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">类型</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzErrorTip="">
+              <nz-select formControlName="type">
+                <nz-option nzValue="embed" nzLabel="内置数据库"></nz-option>
+                <nz-option nzValue="influxdb2" nzLabel="InfluxDB 2.0" nzDisabled></nz-option>
+                <nz-option nzValue="tsengine" nzLabel="涛思数据库" nzDisabled></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">参数</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzErrorTip="">
+              <app-input-yaml formControlName="options"></app-input-yaml>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+
       </ng-container>
       <ng-container *ngIf="current == 4">
-        表单4
+
+        完成安装
+
       </ng-container>
     </div>
   </nz-content>
   <nz-footer class="footer">
-    <ng-container *ngIf="current > 0">
-      <button nz-button nzType="default" (click)="current = current-1">
-        上一步
-      </button>
-    </ng-container>
-    <ng-container *ngIf="current > 0 && current < 4">
-      <button nz-button nzType="primary" (click)="current = current+1">
-        下一步
-      </button>
-    </ng-container>
-    <ng-container *ngIf="current == 0">
-      <button nz-button nzType="primary" (click)="current = current+1">
-        我已经阅读并同意
-      </button>
-    </ng-container>
-    <ng-container *ngIf="current == 4">
-      <button nz-button nzType="primary" (click)="submit()">
-        开始安装
-      </button>
-    </ng-container>
-
+      <button *ngIf="current > 0" nz-button nzType="default" (click)="current = current-1">上一步</button>
+      <button *ngIf="current == 0" nz-button nzType="primary" (click)="current = current+1">我已经阅读并同意</button>
+      <button *ngIf="current == 1" nz-button nzType="primary" (click)="submitBase()">下一步</button>
+      <button *ngIf="current == 2" nz-button nzType="primary" (click)="submitDatabase()">下一步</button>
+      <button *ngIf="current == 3" nz-button nzType="primary" (click)="submitHistory()">下一步</button>
+      <button *ngIf="current == 4" nz-button nzType="primary" (click)="install()">开始安装</button>
   </nz-footer>
 </nz-layout>
 

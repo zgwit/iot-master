@@ -52,7 +52,6 @@ export class EditProtocolComponent implements OnInit, ControlValueAccessor {
     })
   }
 
-
   change() {
     this.formGroup.markAsDirty();
     this.formGroup.updateValueAndValidity();

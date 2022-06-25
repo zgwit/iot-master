@@ -84,5 +84,13 @@ func Store() error {
 	e := yaml.NewEncoder(y)
 	defer e.Close()
 
-	return e.Encode(&Config)
+	err = e.Encode(&Config)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	existing = true
+
+	return nil
 }

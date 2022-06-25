@@ -7,33 +7,59 @@ import (
 	"github.com/zgwit/iot-master/history"
 )
 
-type installDatabaseBody struct {
-	Url string
+type installBaseObj struct {
+	Node string `json:"node"`
+	Data string `json:"data"`
+	Port string `json:"port"`
 }
 
-func installDatabase(ctx *gin.Context) {
-	var cfg config.Database
+func installBase(ctx *gin.Context) {
+	var cfg installBaseObj
 	err := ctx.BindJSON(&cfg)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	err = db.Open(&cfg)
+
+	config.Config.Node = cfg.Node
+	config.Config.Data = cfg.Data
+	config.Config.Web.Addr = cfg.Port
+
+	replyOk(ctx, nil)
+}
+
+func installDatabase(ctx *gin.Context) {
+	//var cfg config.Database
+	cfg := &config.Config.Database
+	err := ctx.BindJSON(cfg)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
+	err = db.Open(cfg)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	err = db.Sync()
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	
 	replyOk(ctx, nil)
 }
 
 func installHistory(ctx *gin.Context) {
-	var cfg config.History
-	err := ctx.BindJSON(&cfg)
+	//var cfg config.History
+	cfg := &config.Config.History
+	err := ctx.BindJSON(cfg)
 	if err != nil {
 		replyError(ctx, err)
 		return
 	}
-	err = history.Open(&cfg)
+	err = history.Open(cfg)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -44,13 +70,13 @@ func installHistory(ctx *gin.Context) {
 
 func installSystem(ctx *gin.Context) {
 	//var cfg config.Configure
-	err := ctx.BindJSON(&config.Config)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
+	//err := ctx.BindJSON(&config.Config)
+	//if err != nil {
+	//	replyError(ctx, err)
+	//	return
+	//}
 
-	err = config.Store()
+	err := config.Store()
 	if err != nil {
 		replyError(ctx, err)
 		return

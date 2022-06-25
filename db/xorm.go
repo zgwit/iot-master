@@ -29,10 +29,10 @@ func Open(cfg *config.Database) error {
 	//Engine.SetLogger(logrus.StandardLogger())
 
 	//同步表
-	err = Sync()
-	if err != nil {
-		return err
-	}
+	//err = Sync()
+	//if err != nil {
+	//	return err
+	//}
 
 	return nil
 }

@@ -27,6 +27,9 @@ import {InstallComponent} from "./install/install.component";
 import {NzStepsModule} from "ng-zorro-antd/steps";
 import {NzLayoutModule} from "ng-zorro-antd/layout";
 import {MarkdownModule} from "ngx-markdown";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {NzTableModule} from "ng-zorro-antd/table";
+import {HelperModule} from "./helper/helper.module";
 //import {HelperModule} from "./helper/helper.module";
 
 registerLocaleData(zh, 'zh');
@@ -64,6 +67,9 @@ export function tokenGetter() {
     NzStepsModule,
     NzLayoutModule,
     MarkdownModule.forRoot(),
+    NzSelectModule,
+    NzTableModule,
+    HelperModule,
     //HelperModule,
   ],
   providers: [{provide: NZ_I18N, useValue: zh_CN}, {provide: LOCALE_ID, useValue: 'zh'}],
