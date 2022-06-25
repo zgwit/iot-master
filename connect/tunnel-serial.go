@@ -2,10 +2,11 @@ package connect
 
 import (
 	"errors"
-	"github.com/jacobsa/go-serial/serial"
+	//"github.com/jacobsa/go-serial/serial"
 	"github.com/zgwit/iot-master/db"
 	"github.com/zgwit/iot-master/log"
 	"github.com/zgwit/iot-master/model"
+	"go.bug.st/serial"
 	"time"
 )
 
@@ -27,16 +28,14 @@ func (s *TunnelSerial) Open() error {
 	}
 	s.Emit("open")
 
-	options := serial.OpenOptions{
-		PortName:        s.tunnel.Addr,
-		BaudRate:        s.tunnel.Serial.BaudRate,
-		DataBits:        s.tunnel.Serial.DataBits,
-		StopBits:        s.tunnel.Serial.StopBits,
-		ParityMode:      serial.ParityMode(s.tunnel.Serial.ParityMode),
-		Rs485Enable:     s.tunnel.Serial.RS485,
-		MinimumReadSize: 4, //避免只读了一个字节就返回
+	mode := &serial.Mode{
+		BaudRate: s.tunnel.Serial.BaudRate,
+		DataBits: s.tunnel.Serial.DataBits,
+		StopBits: serial.StopBits(s.tunnel.Serial.StopBits),
+		Parity:   serial.Parity(s.tunnel.Serial.ParityMode),
 	}
-	port, err := serial.Open(options)
+
+	port, err := serial.Open(s.tunnel.Addr, mode)
 	if err != nil {
 		//TODO 串口重试
 		s.Retry()

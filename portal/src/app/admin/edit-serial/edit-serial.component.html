@@ -42,7 +42,8 @@
     <nz-form-label [nzSpan]="5">停止位</nz-form-label>
     <nz-form-control [nzSpan]="12" nzErrorTip="">
       <nz-select formControlName="stop_bits">
-        <nz-option [nzValue]="1" nzLabel="1"></nz-option>
+        <nz-option [nzValue]="0" nzLabel="1"></nz-option>
+        <nz-option [nzValue]="1" nzLabel="1.5"></nz-option>
         <nz-option [nzValue]="2" nzLabel="2"></nz-option>
       </nz-select>
     </nz-form-control>
@@ -56,13 +57,6 @@
         <nz-option [nzValue]="1" nzLabel="偶"></nz-option>
         <nz-option [nzValue]="2" nzLabel="奇"></nz-option>
       </nz-select>
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSpan]="5">RS485</nz-form-label>
-    <nz-form-control [nzSpan]="12" nzErrorTip="">
-      <nz-switch formControlName="rs485"></nz-switch>
     </nz-form-control>
   </nz-form-item>
 
