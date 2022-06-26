@@ -37,7 +37,7 @@ export class TunnelEditComponent implements OnInit {
       baud_rate: 9600,
       data_bits: 8,
       stop_bits: 1,
-      parity_mode: 0,
+      parity: 0,
       rs485: false,
     },
     "protocol": {

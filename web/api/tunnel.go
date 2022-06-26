@@ -68,6 +68,12 @@ func afterTunnelDelete(id interface{}) error {
 	return master.RemoveTunnel(id.(int64))
 }
 
+func afterTunnelEnable(id interface{}) error {
+	_ = master.RemoveTunnel(id.(int64))
+	err := master.LoadTunnel(id.(int64))
+	return err
+}
+
 func afterTunnelDisable(id interface{}) error {
 	return master.RemoveTunnel(id.(int64))
 }

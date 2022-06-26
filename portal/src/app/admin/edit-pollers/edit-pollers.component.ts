@@ -94,13 +94,13 @@ export class EditPollersComponent implements OnInit, ControlValueAccessor {
     if (!data) {
       data = {
         type: 'interval',
-        interval: 0,
+        interval: 1000,
         clock: 0,
         crontab: '',
         code: '',
         address: '',
         disabled: false,
-        length: 0,
+        length: 1,
       }
       this.items.push(data)
     }

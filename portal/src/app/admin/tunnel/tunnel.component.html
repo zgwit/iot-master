@@ -7,7 +7,10 @@
          *ngFor="let data of datum; let i=index" >
       <nz-card (click)="open(data)" nzSize="small" nzHoverable [nzTitle]="'通道：'+data.id" [nzExtra]="extraTemplate">
         <p>{{data.name}} {{data.running ? '[在线]' : '[离线]'}}</p>
-        <p>{{data.type}} {{data.addr}}</p>
+        <p>{{data.type}}
+          <ng-container *ngIf="data.type=='serial'">{{data.serial.port}}</ng-container>
+          <ng-container *ngIf="data.type!='serial'">{{data.addr}}</ng-container>
+        </p>
       </nz-card>
       <ng-template #extraTemplate>
         <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" (click)="$event.stopPropagation()">

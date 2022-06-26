@@ -13,6 +13,7 @@ import (
 	"mime"
 	"net/http"
 	"path"
+	"strings"
 	"time"
 )
 
@@ -101,7 +102,7 @@ func Serve(cfg *config.Web) {
 	//}
 
 	server = &http.Server{
-		Addr:    cfg.Addr,
+		Addr:    resolvePort(cfg.Addr),
 		Handler: app,
 	}
 
@@ -115,4 +116,11 @@ func Close() error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	return server.Shutdown(ctx)
+}
+
+func resolvePort(addr string) string {
+	if strings.IndexByte(addr, ':') == -1 {
+		return ":" + addr
+	}
+	return addr
 }
