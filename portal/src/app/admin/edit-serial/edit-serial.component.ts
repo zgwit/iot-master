@@ -29,7 +29,7 @@ export class EditSerialComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit(): void {
 
-    this.rs.get('system/protocols').subscribe(res => {
+    this.rs.get('system/serials').subscribe(res => {
       this.serials = res.data;
     })
     this.buildForm();

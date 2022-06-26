@@ -48,8 +48,8 @@
             <nz-form-control [nzSpan]="12" nzErrorTip="">
               <nz-select formControlName="type">
                 <nz-option nzValue="sqlite" nzLabel="SQLite"></nz-option>
-                <nz-option nzValue="mysql" nzLabel="MySQL" nzDisabled></nz-option>
-                <nz-option nzValue="postgres" nzLabel="PostgreSQL" nzDisabled></nz-option>
+                <nz-option nzValue="mysql" nzLabel="MySQL（商业版）" nzDisabled></nz-option>
+                <nz-option nzValue="postgres" nzLabel="PostgreSQL（商业版）" nzDisabled></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
@@ -73,8 +73,8 @@
             <nz-form-control [nzSpan]="12" nzErrorTip="">
               <nz-select formControlName="type">
                 <nz-option nzValue="embed" nzLabel="内置数据库"></nz-option>
-                <nz-option nzValue="influxdb2" nzLabel="InfluxDB 2.0" nzDisabled></nz-option>
-                <nz-option nzValue="tsengine" nzLabel="涛思数据库" nzDisabled></nz-option>
+                <nz-option nzValue="influxdb2" nzLabel="InfluxDB 2.0（商业版）" nzDisabled></nz-option>
+                <nz-option nzValue="tsengine" nzLabel="涛思数据库（商业版）" nzDisabled></nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
@@ -82,15 +82,18 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="5">参数</nz-form-label>
             <nz-form-control [nzSpan]="12" nzErrorTip="">
-              <app-input-yaml formControlName="options"></app-input-yaml>
+<!--              <app-input-yaml formControlName="options"></app-input-yaml>-->
+              <app-config-editor formControlName="options"></app-config-editor>
             </nz-form-control>
           </nz-form-item>
         </form>
 
+        <markdown src="/assets/install/history.md"></markdown>
+
       </ng-container>
       <ng-container *ngIf="current == 4">
 
-        完成安装
+        <markdown src="/assets/install/finish.md"></markdown>
 
       </ng-container>
     </div>
@@ -101,7 +104,7 @@
       <button *ngIf="current == 1" nz-button nzType="primary" (click)="submitBase()">下一步</button>
       <button *ngIf="current == 2" nz-button nzType="primary" (click)="submitDatabase()">下一步</button>
       <button *ngIf="current == 3" nz-button nzType="primary" (click)="submitHistory()">下一步</button>
-      <button *ngIf="current == 4" nz-button nzType="primary" (click)="install()">开始安装</button>
+      <button *ngIf="current == 4" nz-button nzType="primary" (click)="install()">完成安装</button>
   </nz-footer>
 </nz-layout>
 
