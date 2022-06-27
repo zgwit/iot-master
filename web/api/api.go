@@ -247,6 +247,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/system/protocols", protocolList)
 	app.GET("/system/protocol/:name", protocolDetail)
 	app.GET("/system/serials", serialPortList)
+	app.GET("/system/machine", machineInfo)
 
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）
 	app.Use(func(ctx *gin.Context) {

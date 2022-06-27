@@ -5,6 +5,7 @@ import (
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"
+	"github.com/super-l/machine-code/machine"
 	"go.bug.st/serial"
 	"iot-master/protocols"
 )
@@ -86,4 +87,14 @@ func serialPortList(ctx *gin.Context) {
 		return
 	}
 	replyOk(ctx, ports)
+}
+
+func machineInfo(ctx *gin.Context) {
+	info := machine.GetMachineData()
+	replyOk(ctx, gin.H{
+		"sn":   info.SerialNumber,
+		"mac":  info.Mac,
+		"uuid": info.PlatformUUID,
+		"cpu":  info.CpuId,
+	})
 }

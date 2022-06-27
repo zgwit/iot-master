@@ -11,7 +11,7 @@ import (
 var _filename = "iot-master.lic"
 var _license *license.Licence
 var _product = "iot-master-ce"
-var _key = "09c168e6b8195268fcee59e2c9759ad96f33c05a77caeef9f78d0af21ecf1f12"
+var _key = "e32edc3719d919ef1b6da8bf8def2baa1e7a197866c09e3fbce8d45db6012c61"
 
 func init() {
 	app, _ := filepath.Abs(os.Args[0])
