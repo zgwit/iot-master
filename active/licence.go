@@ -1,6 +1,7 @@
 package active
 
 import (
+	"encoding/hex"
 	"github.com/zgwit/go-license"
 	"os"
 	"path/filepath"
@@ -10,12 +11,7 @@ import (
 var _filename = "iot-master.lic"
 var _license *license.Licence
 var _product = "iot-master-ce"
-var _key = []byte{
-	0x09, 0xc1, 0x68, 0xe6, 0xb8, 0x19, 0x52, 0x68,
-	0xfc, 0xee, 0x59, 0xe2, 0xc9, 0x75, 0x9a, 0xd9,
-	0x6f, 0x33, 0xc0, 0x5a, 0x77, 0xca, 0xee, 0xf9,
-	0xf7, 0x8d, 0x0a, 0xf2, 0x1e, 0xcf, 0x1f, 0x12,
-}
+var _key = "09c168e6b8195268fcee59e2c9759ad96f33c05a77caeef9f78d0af21ecf1f12"
 
 func init() {
 	app, _ := filepath.Abs(os.Args[0])
@@ -50,7 +46,8 @@ func Load() error {
 }
 
 func Validate(lic *license.Licence) error {
-	err := lic.Verify(_key)
+	key, _ := hex.DecodeString(_key)
+	err := lic.Verify(key)
 	if err != nil {
 		return err
 	}
