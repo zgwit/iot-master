@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/kardianos/service"
+	"github.com/zgwit/iot-master/active"
 	"github.com/zgwit/iot-master/args"
 	"github.com/zgwit/iot-master/camera"
 	"github.com/zgwit/iot-master/config"
@@ -114,29 +115,42 @@ func originMain() {
 		log.Fatal(err)
 	}
 
-	err = db.Open(&config.Config.Database)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
+	//配置文件存在，说明已经安装
+	if config.Existing() {
+		//加载数据库
+		err = db.Open(&config.Config.Database)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer db.Close()
 
-	err = history.Open(&config.Config.History)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer history.Close()
+		//加载历史数据库
+		err = history.Open(&config.Config.History)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer history.Close()
 
-	err = master.Start()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer master.Stop()
+		//加载主程序
+		err = master.Start()
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer master.Stop()
 
-	err = camera.Start()
+		//加载相机
+		err = camera.Start()
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer camera.Stop()
+	}
+
+	//加载授权
+	err = active.Load()
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer camera.Stop()
 
 	//判断是否开启Web
 	web.Serve(&config.Config.Web)

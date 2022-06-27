@@ -43,6 +43,7 @@ import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
 import {CameraComponent} from "./camera/camera.component";
 import {CameraDetailComponent} from "./camera-detail/camera-detail.component";
 import {CameraEditComponent} from "./camera-edit/camera-edit.component";
+import {LicenseComponent} from "./license/license.component";
 
 const routes: Routes = [
   {
@@ -164,7 +165,7 @@ const routes: Routes = [
         path: 'setting', component: ContainerComponent, data: {breadcrumb: "设置"}, children: [
           {path: '', component: SettingComponent, data: {breadcrumb: "系统"}},
           {path: 'user', component: UserComponent, data: {breadcrumb: "用户"}},
-          {path: 'password', component: PasswordComponent, data: {breadcrumb: "修改密码"}},
+          {path: 'license', component: LicenseComponent, data: {breadcrumb: "激活码"}},
         ]
       },
 

@@ -130,6 +130,8 @@ import {CameraEditComponent} from "./camera-edit/camera-edit.component";
 import {CameraDetailComponent} from "./camera-detail/camera-detail.component";
 import {NzPaginationModule} from "ng-zorro-antd/pagination";
 import {NzEmptyModule} from "ng-zorro-antd/empty";
+import {LicenseComponent} from "./license/license.component";
+import {ActiveComponent} from "./active/active.component";
 
 @NgModule({
   declarations: [
@@ -168,6 +170,7 @@ import {NzEmptyModule} from "ng-zorro-antd/empty";
     PromptComponent,
     ChooseTemplateComponent, ChooseProductComponent, ChooseHmiComponent,
     ChooseDeviceComponent, ChooseTunnelComponent,
+    LicenseComponent, ActiveComponent,
   ],
   imports: [
     CommonModule,
