@@ -1,6 +1,6 @@
 package protocol
 
-import "github.com/zgwit/iot-master/connect"
+import "iot-master/connect"
 
 type Options map[string]interface{}
 

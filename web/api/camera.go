@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/camera"
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/camera"
+	"iot-master/db"
+	"iot-master/model"
 )
 
 func cameraList(ctx *gin.Context) {

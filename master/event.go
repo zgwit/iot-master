@@ -1,8 +1,8 @@
 package master
 
 import (
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/db"
+	"iot-master/model"
 )
 
 func CreateEvent(Target string, TargetId int64, Event string) {

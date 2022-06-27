@@ -1,10 +1,10 @@
 package master
 
 import (
-	"github.com/zgwit/iot-master/cron"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/iot-master/protocols/protocol"
+	"iot-master/cron"
+	"iot-master/log"
+	"iot-master/model"
+	"iot-master/protocols/protocol"
 )
 
 //Poller 采集器

@@ -2,8 +2,8 @@ package mitsubishi
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/helper"
+	"iot-master/connect"
+	"iot-master/helper"
 	"strconv"
 	"strings"
 )

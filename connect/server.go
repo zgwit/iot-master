@@ -2,8 +2,8 @@ package connect
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/events"
+	"iot-master/model"
 )
 
 //Server 通道

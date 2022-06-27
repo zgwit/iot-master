@@ -2,13 +2,13 @@ package master
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/iot-master/protocols"
-	"github.com/zgwit/iot-master/protocols/protocol"
 	"golang.org/x/tools/container/intsets"
+	"iot-master/connect"
+	"iot-master/db"
+	"iot-master/log"
+	"iot-master/model"
+	"iot-master/protocols"
+	"iot-master/protocols/protocol"
 	"sync"
 )
 

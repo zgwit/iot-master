@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"github.com/zgwit/iot-master/helper"
+	"iot-master/helper"
 	"time"
 )
 

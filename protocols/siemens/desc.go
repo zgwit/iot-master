@@ -1,8 +1,8 @@
 package siemens
 
 import (
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocols/protocol"
+	"iot-master/connect"
+	"iot-master/protocols/protocol"
 )
 
 var Codes = []protocol.Code{

@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/db"
+	"iot-master/db"
 	"reflect"
 	"xorm.io/xorm"
 )
@@ -65,7 +65,6 @@ type paramId struct {
 type paramStringId struct {
 	Id string `uri:"id"`
 }
-
 
 func parseParamId(ctx *gin.Context) {
 	var pid paramId

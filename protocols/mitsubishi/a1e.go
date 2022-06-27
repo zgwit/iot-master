@@ -1,6 +1,6 @@
 package mitsubishi
 
-import "github.com/zgwit/iot-master/connect"
+import "iot-master/connect"
 
 // A1eAdapter A1E协议
 type A1eAdapter struct {

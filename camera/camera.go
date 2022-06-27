@@ -3,8 +3,8 @@ package camera
 import (
 	"context"
 	"fmt"
-	"github.com/zgwit/iot-master/lib"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/lib"
+	"iot-master/model"
 	"os"
 	"os/exec"
 )

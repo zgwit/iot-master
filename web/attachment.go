@@ -2,9 +2,9 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/config"
 	"io"
 	"io/ioutil"
+	"iot-master/config"
 	"net/http"
 	"os"
 	"path/filepath"

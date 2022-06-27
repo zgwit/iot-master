@@ -3,7 +3,7 @@ package model
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/helper"
+	"iot-master/helper"
 	"math"
 	"strings"
 )

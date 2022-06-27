@@ -3,10 +3,10 @@ package camera
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/model"
 	"io"
+	"iot-master/db"
+	"iot-master/log"
+	"iot-master/model"
 	"math"
 	"path/filepath"
 	"strconv"

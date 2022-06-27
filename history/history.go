@@ -2,10 +2,10 @@ package history
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/history/influxdb2"
-	"github.com/zgwit/iot-master/history/storage"
-	"github.com/zgwit/iot-master/history/tstorage"
+	"iot-master/config"
+	"iot-master/history/influxdb2"
+	"iot-master/history/storage"
+	"iot-master/history/tstorage"
 )
 
 var Storage storage.Storage

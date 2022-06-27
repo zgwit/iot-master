@@ -1,6 +1,6 @@
 package siemens
 
-import "github.com/zgwit/iot-master/connect"
+import "iot-master/connect"
 
 //PPI 协议
 type PPI struct {

@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/zgwit/iot-master/args"
 	"gopkg.in/yaml.v3"
+	"iot-master/args"
 	"log"
 	"os"
 )

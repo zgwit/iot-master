@@ -2,8 +2,8 @@ package omron
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/model"
-	"github.com/zgwit/iot-master/protocols/protocol"
+	"iot-master/model"
+	"iot-master/protocols/protocol"
 	"regexp"
 	"strconv"
 )

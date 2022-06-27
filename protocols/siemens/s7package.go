@@ -2,7 +2,7 @@ package siemens
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/helper"
+	"iot-master/helper"
 )
 
 const (

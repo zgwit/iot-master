@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/history"
+	"iot-master/config"
+	"iot-master/db"
+	"iot-master/history"
 )
 
 type installBaseObj struct {
@@ -47,7 +47,7 @@ func installDatabase(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	
+
 	replyOk(ctx, nil)
 }
 

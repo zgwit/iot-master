@@ -1,7 +1,7 @@
 package modbus
 
 import (
-	"github.com/zgwit/iot-master/protocols/protocol"
+	"iot-master/protocols/protocol"
 )
 
 var Codes = []protocol.Code{

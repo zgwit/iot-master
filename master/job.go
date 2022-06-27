@@ -2,9 +2,9 @@ package master
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/cron"
-	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/cron"
+	"iot-master/events"
+	"iot-master/model"
 )
 
 //Job 任务

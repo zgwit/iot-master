@@ -2,8 +2,8 @@ package api
 
 import (
 	"encoding/json"
-	"github.com/zgwit/iot-master/events"
 	"golang.org/x/net/websocket"
+	"iot-master/events"
 )
 
 type WatchMessage struct {

@@ -1,8 +1,8 @@
 package db
 
 import (
-	"github.com/zgwit/iot-master/config"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/config"
+	"iot-master/model"
 	"xorm.io/xorm"
 	"xorm.io/xorm/log"
 

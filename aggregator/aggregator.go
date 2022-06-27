@@ -3,8 +3,8 @@ package aggregator
 import (
 	"fmt"
 	"github.com/PaesslerAG/gval"
-	"github.com/zgwit/iot-master/calc"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/calc"
+	"iot-master/model"
 )
 
 type Aggregator interface {

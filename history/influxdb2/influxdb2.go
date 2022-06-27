@@ -5,8 +5,8 @@ import (
 	"fmt"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	"github.com/influxdata/influxdb-client-go/v2/api"
-	"github.com/zgwit/iot-master/helper"
-	"github.com/zgwit/iot-master/history/storage"
+	"iot-master/helper"
+	"iot-master/history/storage"
 	"time"
 )
 

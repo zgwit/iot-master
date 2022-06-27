@@ -1,8 +1,8 @@
 package omron
 
 import (
-	helper2 "github.com/zgwit/iot-master/helper"
-	"github.com/zgwit/iot-master/protocols/protocol"
+	helper2 "iot-master/helper"
+	"iot-master/protocols/protocol"
 )
 
 func buildReadCommand(address protocol.Addr, length int) ([]byte, error) {

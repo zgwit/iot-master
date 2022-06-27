@@ -1,6 +1,6 @@
 package master
 
-import "github.com/zgwit/iot-master/connect"
+import "iot-master/connect"
 
 //Start 启动
 func Start() error {

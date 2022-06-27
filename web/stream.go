@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/camera"
+	"iot-master/camera"
 	"path/filepath"
 	"strconv"
 )

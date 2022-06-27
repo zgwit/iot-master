@@ -3,9 +3,9 @@ package omron
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/connect"
-	helper2 "github.com/zgwit/iot-master/helper"
-	"github.com/zgwit/iot-master/protocols/protocol"
+	"iot-master/connect"
+	helper2 "iot-master/helper"
+	"iot-master/protocols/protocol"
 	"time"
 )
 

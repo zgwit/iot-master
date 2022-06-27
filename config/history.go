@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/zgwit/iot-master/helper"
+	"iot-master/helper"
 )
 
 //History 参数

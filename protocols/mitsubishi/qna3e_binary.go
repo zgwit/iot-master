@@ -3,8 +3,8 @@ package mitsubishi
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/helper"
+	"iot-master/connect"
+	"iot-master/helper"
 )
 
 // A3EBinaryAdapter 协议

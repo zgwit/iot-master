@@ -2,11 +2,11 @@ package protocols
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocols/modbus"
-	"github.com/zgwit/iot-master/protocols/omron"
-	"github.com/zgwit/iot-master/protocols/protocol"
-	"github.com/zgwit/iot-master/protocols/siemens"
+	"iot-master/connect"
+	"iot-master/protocols/modbus"
+	"iot-master/protocols/omron"
+	"iot-master/protocols/protocol"
+	"iot-master/protocols/siemens"
 )
 
 var protocols = []protocol.Desc{

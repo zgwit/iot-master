@@ -2,8 +2,8 @@ package siemens
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/connect"
-	"github.com/zgwit/iot-master/protocols/protocol"
+	"iot-master/connect"
+	"iot-master/protocols/protocol"
 	"time"
 )
 

@@ -2,14 +2,13 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/config"
 	"io"
 	"io/ioutil"
+	"iot-master/config"
 	"net/http"
 	"os"
 	"path/filepath"
 )
-
 
 func hmiAttachmentRead(ctx *gin.Context) {
 	filename := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), ctx.Param("name"))

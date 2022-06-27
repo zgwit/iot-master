@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/master"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/db"
+	"iot-master/master"
+	"iot-master/model"
 )
 
 func transferList(ctx *gin.Context) {

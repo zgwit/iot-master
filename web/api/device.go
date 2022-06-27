@@ -2,11 +2,11 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/history"
-	"github.com/zgwit/iot-master/master"
-	"github.com/zgwit/iot-master/model"
 	"golang.org/x/net/websocket"
+	"iot-master/db"
+	"iot-master/history"
+	"iot-master/master"
+	"iot-master/model"
 )
 
 func deviceList(ctx *gin.Context) {

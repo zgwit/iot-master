@@ -2,9 +2,9 @@ package connect
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/log"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/db"
+	"iot-master/log"
+	"iot-master/model"
 	"net"
 	"time"
 )

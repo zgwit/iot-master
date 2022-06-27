@@ -2,11 +2,11 @@ package master
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/aggregator"
-	"github.com/zgwit/iot-master/calc"
-	"github.com/zgwit/iot-master/db"
-	"github.com/zgwit/iot-master/events"
-	"github.com/zgwit/iot-master/model"
+	"iot-master/aggregator"
+	"iot-master/calc"
+	"iot-master/db"
+	"iot-master/events"
+	"iot-master/model"
 	"strings"
 )
 

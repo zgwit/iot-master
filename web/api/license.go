@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/go-license"
-	"github.com/zgwit/iot-master/active"
+	"iot-master/active"
 )
 
 func licenseDetail(ctx *gin.Context) {

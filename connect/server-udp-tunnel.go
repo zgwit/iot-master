@@ -2,8 +2,8 @@ package connect
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/model"
 	"io"
+	"iot-master/model"
 	"net"
 	"time"
 )
