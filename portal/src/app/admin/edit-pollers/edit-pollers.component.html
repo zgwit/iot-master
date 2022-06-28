@@ -53,7 +53,10 @@
         <nz-form-label [nzSpan]="5">定时</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <nz-input-number *ngIf="formGroup.value.type=='interval'" formControlName="interval" [nzStep]="1" nzSize="small"></nz-input-number>
+          <ng-container *ngIf="formGroup.value.type=='interval'">毫秒</ng-container>
+
           <app-minute-time-picker *ngIf="formGroup.value.type=='clock'"  formControlName="clock" nzSize="small"></app-minute-time-picker>
+
           <input *ngIf="formGroup.value.type=='crontab'"  nz-input formControlName="crontab" nzSize="small"/>
         </nz-form-control>
       </nz-form-item>

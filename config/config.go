@@ -15,23 +15,25 @@ var existing = false
 
 //Configure 配置
 type Configure struct {
-	Node     string   `yaml:"node" json:"node"`
-	Data     string   `yaml:"data" json:"data"`
-	Web      Web      `yaml:"web" json:"web"`
-	Database Database `yaml:"database" json:"database"`
-	History  History  `yaml:"history" json:"history"`
-	Log      Log      `yaml:"log" json:"log"`
+	Node            string   `yaml:"node" json:"node"`
+	Data            string   `yaml:"data" json:"data"`
+	DefaultPassword string   `yaml:"default_password" json:"default_password"`
+	Web             Web      `yaml:"web" json:"web"`
+	Database        Database `yaml:"database" json:"database"`
+	History         History  `yaml:"history" json:"history"`
+	Log             Log      `yaml:"log" json:"log"`
 	//Serials  []string `yaml:"serials" json:"serials"`
 }
 
 //Config 全局配置
 var Config = Configure{
-	Node:     "root",
-	Data:     "data",
-	Web:      WebDefault,
-	Database: DatabaseDefault,
-	History:  HistoryDefault,
-	Log:      LogDefault,
+	Node:            "root",
+	Data:            "data",
+	DefaultPassword: "123456",
+	Web:             WebDefault,
+	Database:        DatabaseDefault,
+	History:         HistoryDefault,
+	Log:             LogDefault,
 }
 
 func init() {

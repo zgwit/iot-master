@@ -42,6 +42,13 @@
       </nz-form-item>
 
       <nz-form-item>
+        <nz-form-label [nzSpan]="5">包含参数</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-switch formControlName="argument"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
         <nz-form-label [nzSpan]="5">指令</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
           <app-edit-directives formControlName="directives" [points]="points" (change)="change()"></app-edit-directives>

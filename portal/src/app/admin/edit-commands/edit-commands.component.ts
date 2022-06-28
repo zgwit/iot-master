@@ -38,6 +38,7 @@ export class EditCommandsComponent implements OnInit, ControlValueAccessor {
   buildForm(data:any): void {
     this.formGroup = this.fb.group({
           name: [data.name, [Validators.required]],
+          argument: [data.argument, [Validators.required]],
           directives: [data.directives, [Validators.required]],
     })
   }
@@ -88,6 +89,7 @@ export class EditCommandsComponent implements OnInit, ControlValueAccessor {
     if (!data) {
       data = {
         name: '',
+        argument: false,
         directives: [],
       }
       this.items.push(data)

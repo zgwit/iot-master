@@ -42,6 +42,7 @@ export class InstallComponent implements OnInit {
       node: [node, [Validators.required]],
       data: ['data', [Validators.required]],
       port: ['8080', [Validators.required]],
+      default_password: ['123456', [Validators.required]],
     })
     this.databaseForm = this.fb.group({
       type: ['sqlite', [Validators.required]],

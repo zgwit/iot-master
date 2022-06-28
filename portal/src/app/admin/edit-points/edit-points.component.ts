@@ -101,7 +101,7 @@ export class EditPointsComponent implements OnInit, ControlValueAccessor {
         type: '',
         le: false,
         precision: 0,
-        store: true,
+        store: false,
         unit: "",
       }
       this.items.push(data)

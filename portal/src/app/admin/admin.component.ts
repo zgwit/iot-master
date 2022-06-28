@@ -43,7 +43,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   active() {
     this.ms.create({
-      nzTitle: "在线激活",
+      nzTitle: "在线注册",
       nzContent: ActiveComponent,
       nzMaskClosable: false,
     })
@@ -53,8 +53,9 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.rs.get("license").subscribe(res=>{
       if (!res.data) {
         this.ms.error({
-          nzContent: "产品未激活",
-          nzOkText: "在线激活",
+          nzTitle: "温馨提示",
+          nzContent: "物联大师开源版可以免费使用，为了能够给您提供更好的服务，请在线注册",
+          nzOkText: "在线注册",
           nzOnOk: instance => {
             this.active()
           }
@@ -65,8 +66,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       let lic = res.data;
       if (dayjs(lic.expireAt).isBefore(dayjs())) {
         this.ms.error({
-          nzContent: "授权码已经失效",
-          nzOkText: "在线激活",
+          nzContent: "授权已经失效",
+          nzOkText: "在线注册",
           nzOnOk: instance => {
             this.active()
           }

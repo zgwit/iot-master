@@ -2,9 +2,8 @@ package model
 
 //Command 命令
 type Command struct {
-	Name string `json:"name"`
-	//Label string `json:"label,omitempty"`
-
+	Name       string      `json:"name"`
+	Argument   bool        `json:"argument"`
 	Directives []Directive `json:"directives"`
 }
 

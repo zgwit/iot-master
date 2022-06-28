@@ -38,6 +38,13 @@
               <input nz-input formControlName="port" placeholder="" required/>
             </nz-form-control>
           </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">默认密码</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzErrorTip="">
+              <input nz-input formControlName="default_password" placeholder="" required/>
+            </nz-form-control>
+          </nz-form-item>
         </form>
 
       </ng-container>
