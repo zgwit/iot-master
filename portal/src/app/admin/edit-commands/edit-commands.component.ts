@@ -1,4 +1,4 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, forwardRef, Input, OnInit} from '@angular/core';
 import {ControlValueAccessor, FormArray, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
 
 @Component({
@@ -18,6 +18,8 @@ export class EditCommandsComponent implements OnInit, ControlValueAccessor {
   }
   onTouched: any = () => {
   }
+
+  @Input() points: any;
 
   items: any[] = [];
 

@@ -252,6 +252,7 @@ func (dev *Device) Set(name string, value interface{}) error {
 	for _, p := range dev.points {
 		if p.Name == name {
 			buf := p.Type.Encode(value, p.LittleEndian, p.Precision)
+			//dev.Context[name], _ = p.Type.Decode(buf, p.LittleEndian, p.Precision)
 			return dev.protocol.Write(dev.Station, p.Addr, buf)
 		}
 	}
@@ -302,7 +303,7 @@ func (dev *Device) Execute(command string, argv []interface{}) error {
 	//优先级：参数 > 表达式 > 初始值
 	env := make(map[string]interface{})
 	for i, v := range argv {
-		env["$"+strconv.Itoa(i)] = v
+		env["$"+strconv.Itoa(i+1)] = v
 	}
 	for k, v := range dev.Context {
 		env[k] = v
@@ -310,13 +311,15 @@ func (dev *Device) Execute(command string, argv []interface{}) error {
 
 	//执行
 	for _, directive := range cmd.Directives {
-		val := directive.Value
+		var val interface{} = directive.Value
 		if directive.Expression != "" {
 			v, err := expr.Eval(directive.Expression, env)
 			if err != nil {
 				return err
 			} else {
-				val = v.(float64)
+				val = v
+				//val = helper.ToFloat64(v)
+				//val = v.(float64)
 			}
 		}
 		//延迟执行

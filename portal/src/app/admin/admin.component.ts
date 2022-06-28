@@ -31,16 +31,13 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.initMenu();
   }
 
-  checkLicenseInterval!: any;
   checkLicenseTimeout!: any;
 
   ngOnInit(): void {
-    this.checkLicenseInterval = setInterval(()=> this.checkLicense(), 1000 * 60 * 60) //每小时执行一次
     this.checkLicenseTimeout = setTimeout(()=> this.checkLicense(), 1000 * 10) //10秒检查一次
   }
 
   ngOnDestroy() {
-    clearInterval(this.checkLicenseInterval)
     clearTimeout(this.checkLicenseTimeout)
   }
 

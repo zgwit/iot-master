@@ -44,7 +44,7 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">指令</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <app-edit-directives formControlName="directives" (change)="change()"></app-edit-directives>
+          <app-edit-directives formControlName="directives" [points]="points" (change)="change()"></app-edit-directives>
         </nz-form-control>
       </nz-form-item>
 

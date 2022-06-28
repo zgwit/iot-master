@@ -242,6 +242,11 @@ func (dt *DataType) Encode(value interface{}, le bool, precision int) []byte {
 
 //Decode 解码
 func (dt *DataType) Decode(buf []byte, le bool, precision int) (val interface{}, err error) {
+	//避免越界访问
+	if len(buf) < dt.Size() {
+		return nil, fmt.Errorf("长度不够")
+	}
+
 	switch *dt {
 	case TypeBIT:
 		if buf[0] > 0 {

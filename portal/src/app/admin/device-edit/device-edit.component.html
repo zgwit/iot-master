@@ -66,7 +66,7 @@
       </nz-collapse-panel>
 
       <nz-collapse-panel nzHeader="控制命令" nzActive>
-        <app-edit-commands formControlName="commands"></app-edit-commands>
+        <app-edit-commands formControlName="commands" [points]="basicForm.value.points"></app-edit-commands>
       </nz-collapse-panel>
 
       <nz-collapse-panel nzHeader="报警器" nzActive>

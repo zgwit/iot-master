@@ -49,7 +49,7 @@ export class DeviceDetailComponent implements OnInit {
       let params = res ? eval('['+res+']') : []
       this.rs.post(`device/${this.id}/execute`, {
         command: cmd.name,
-        parameters: params,
+        arguments: params,
       }).subscribe(res => {
 
       })

@@ -32,7 +32,10 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">数据点</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="point" required/>
+<!--          <input nz-input formControlName="point" required/>-->
+          <nz-select formControlName="point" nzSize="small" required>
+            <nz-option [nzValue]="pt.name" [nzLabel]="pt.label + '('+pt.name+')'" *ngFor="let pt of points"></nz-option>
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
 
