@@ -100,6 +100,10 @@ func (m *RTU) execute(cmd []byte) ([]byte, error) {
 		}
 		b := buf[3 : l-2]
 		return helper.Dup(b), nil
+	case FuncCodeWriteSingleCoil, FuncCodeWriteMultipleCoils,
+		FuncCodeWriteSingleRegister, FuncCodeWriteMultipleRegisters:
+		//写指令不处理
+		return nil, nil
 	default:
 		return nil, errors.New("不支持的指令")
 	}

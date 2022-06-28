@@ -106,6 +106,60 @@ func (dt *DataType) String() string {
 	return str
 }
 
+func (dt *DataType) Default() interface{} {
+	switch *dt {
+	case TypeBIT:
+		return false
+	case TypeBYTE:
+		return byte(0)
+	case TypeWORD:
+		return uint16(0)
+	case TypeDWORD:
+		return uint32(0)
+	case TypeQWORD:
+		return uint64(0)
+	case TypeSHORT:
+		return int16(0)
+	case TypeINTEGER:
+		return int32(0)
+	case TypeLONG:
+		return int64(0)
+	case TypeFLOAT:
+		return float32(0)
+	case TypeDOUBLE:
+		return float64(0)
+	default:
+		return 0
+	}
+}
+
+func (dt *DataType) Normalize(val interface{}) interface{} {
+	switch *dt {
+	case TypeBIT:
+		return helper.ToBool(val)
+	case TypeBYTE:
+		return helper.ToUint8(val)
+	case TypeWORD:
+		return helper.ToUint16(val)
+	case TypeDWORD:
+		return helper.ToUint32(val)
+	case TypeQWORD:
+		return helper.ToUint64(val)
+	case TypeSHORT:
+		return helper.ToInt16(val)
+	case TypeINTEGER:
+		return helper.ToInt32(val)
+	case TypeLONG:
+		return helper.ToInt64(val)
+	case TypeFLOAT:
+		return helper.ToFloat32(val)
+	case TypeDOUBLE:
+		return helper.ToFloat64(val)
+	default:
+		return 0
+	}
+}
+
 //Size 宽度
 func (dt *DataType) Size() int {
 	var s int

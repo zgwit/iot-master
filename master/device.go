@@ -6,6 +6,7 @@ import (
 	"github.com/antonmedv/expr"
 	"iot-master/db"
 	"iot-master/events"
+	"iot-master/helper"
 	"iot-master/history"
 	"iot-master/model"
 	"iot-master/protocols/protocol"
@@ -64,6 +65,15 @@ func NewDevice(m *model.Device) (*Device, error) {
 	//解析点位
 	for _, v := range dev.Points {
 		dev.points = append(dev.points, &Point{Point: *v, Addr: nil})
+
+		//初始化默认值
+		if v.Name != "" {
+			if v.Precision > 0 {
+				dev.Context[v.Name] = float64(0)
+			} else {
+				dev.Context[v.Name] = v.Type.Default()
+			}
+		}
 	}
 
 	//初始化
@@ -248,14 +258,23 @@ func (dev *Device) read(addr protocol.Addr, size int) error {
 }
 
 func (dev *Device) Set(name string, value interface{}) error {
-	dev.Context[name] = value
 	for _, p := range dev.points {
 		if p.Name == name {
+			if p.Precision > 0 {
+				value = helper.ToFloat64(value)
+			} else {
+				value = p.Type.Normalize(value)
+			}
+			dev.Context[name] = value
+
 			buf := p.Type.Encode(value, p.LittleEndian, p.Precision)
 			//dev.Context[name], _ = p.Type.Decode(buf, p.LittleEndian, p.Precision)
 			return dev.protocol.Write(dev.Station, p.Addr, buf)
 		}
 	}
+
+	//？？？不是数据点的是否要写入？？？
+	dev.Context[name] = value
 	return nil
 }
 
@@ -322,6 +341,7 @@ func (dev *Device) Execute(command string, argv []interface{}) error {
 				//val = v.(float64)
 			}
 		}
+
 		//延迟执行
 		if directive.Delay > 0 {
 			time.AfterFunc(time.Duration(directive.Delay)*time.Millisecond, func() {

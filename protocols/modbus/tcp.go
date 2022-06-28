@@ -145,6 +145,9 @@ func (m *TCP) handlePack(buf []byte) {
 		FuncCodeReadHoldingRegisters,
 		FuncCodeReadWriteMultipleRegisters:
 		req.resp <- response{buf: helper.Dup(buf[9:])}
+	case FuncCodeWriteSingleCoil, FuncCodeWriteMultipleCoils,
+		FuncCodeWriteSingleRegister, FuncCodeWriteMultipleRegisters:
+		//写指令不处理
 	default:
 		req.resp <- response{err: fmt.Errorf("错误功能码：%d", fc)}
 	}
