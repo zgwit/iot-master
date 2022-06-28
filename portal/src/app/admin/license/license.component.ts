@@ -26,7 +26,7 @@ export class LicenseComponent implements OnInit {
   }
 
   load() {
-    this.rs.get("/license").subscribe(res=>{
+    this.rs.get("license").subscribe(res=>{
       if (!res.data) {
         this.active()
         return
@@ -37,7 +37,7 @@ export class LicenseComponent implements OnInit {
 
   input() {
     this.cs.prompt({message: "输入激活码"}).subscribe(res=>{
-      this.rs.post("/license", {license: res}).subscribe(res=>{
+      this.rs.post("license", {license: res}).subscribe(res=>{
       })
     })
 

@@ -36,8 +36,8 @@ export class EditDirectivesComponent implements OnInit, ControlValueAccessor {
   buildForm(d:any): void {
     this.formGroup = this.fb.group({
           point: [d.point, [Validators.required]],
-          value: [d.value, [Validators.required]],
-          delay: [d.delay, [Validators.required]],
+          value: [d.value || 0, [Validators.required]],
+          delay: [d.delay || 0, [Validators.required]],
           expression: [d.expression, [Validators.required]],
     })
   }

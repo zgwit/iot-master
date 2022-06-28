@@ -30,6 +30,7 @@ import {MarkdownModule} from "ngx-markdown";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzTableModule} from "ng-zorro-antd/table";
 import {HelperModule} from "./helper/helper.module";
+import {NZ_CONFIG, NzConfig} from "ng-zorro-antd/core/config";
 //import {HelperModule} from "./helper/helper.module";
 
 registerLocaleData(zh, 'zh');
@@ -37,6 +38,12 @@ registerLocaleData(zh, 'zh');
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
+
+const ngZorroConfig: NzConfig = {
+  //不要关闭
+  modal: {nzMaskClosable: false}
+};
+
 
 @NgModule({
   declarations: [
@@ -72,7 +79,10 @@ export function tokenGetter() {
     HelperModule,
     //HelperModule,
   ],
-  providers: [{provide: NZ_I18N, useValue: zh_CN}, {provide: LOCALE_ID, useValue: 'zh'}],
+  providers: [
+    {provide: NZ_CONFIG, useValue: ngZorroConfig},
+    {provide: NZ_I18N, useValue: zh_CN},
+    {provide: LOCALE_ID, useValue: 'zh'}],
   bootstrap: [AppComponent]
 })
 export class AppModule {
