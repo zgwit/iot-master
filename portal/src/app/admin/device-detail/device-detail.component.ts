@@ -44,6 +44,7 @@ export class DeviceDetailComponent implements OnInit {
   exec(cmd: any) {
     if (!cmd.argument) {
       this.rs.post(`device/${this.id}/execute`, {command: cmd.name, arguments: [],}).subscribe(res => {
+        this.loadContext()
       })
       return
     }
@@ -54,7 +55,7 @@ export class DeviceDetailComponent implements OnInit {
     }, cmd.name).subscribe(res => {
       let params = res ? eval('[' + res + ']') : []
       this.rs.post(`device/${this.id}/execute`, {command: cmd.name, arguments: params,}).subscribe(res => {
-
+        this.loadContext()
       })
     })
   }
