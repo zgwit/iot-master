@@ -22,6 +22,11 @@
       <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
     </nz-list>
 
+    <nz-button-group *ngIf="data.type=='serial' || data.type=='tcp-client' || data.type=='udp-client' || data.type=='tcp-server' || data.type=='udp-server'">
+      <button nz-button (click)="start()">启动</button>
+      <button nz-button (click)="stop()">停止</button>
+    </nz-button-group>
+
     <a [routerLink]="'/admin/tunnel/monitor/'+data.id">监控</a>
 
   </nz-tab>

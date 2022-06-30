@@ -49,5 +49,17 @@ export class TunnelDetailComponent implements OnInit {
     })
   }
 
+  start() {
+      this.rs.get(`tunnel/${this.id}/start`).subscribe(res => {
+        this.load()
+      });
+  }
+
+  stop() {
+    this.rs.get(`tunnel/${this.id}/stop`).subscribe(res => {
+      this.load()
+    });
+  }
+
 
 }
