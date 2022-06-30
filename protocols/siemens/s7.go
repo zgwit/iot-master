@@ -103,7 +103,7 @@ func (s *S7) Write(station int, addr protocol.Addr, data []byte) error {
 
 	pack := S7Package{
 		Type:      MessageTypeJobRequest,
-		Reference: 0,
+		Reference: 1,
 		param: S7Parameter{
 			Code:  ParameterTypeWrite,
 			Count: 1,
@@ -118,7 +118,7 @@ func (s *S7) Write(station int, addr protocol.Addr, data []byte) error {
 			},
 		},
 		data: []S7Data{{
-			Type:  vt,
+			Type:  vt + 2,
 			Count: uint16(length),
 			Data:  data,
 		}},
