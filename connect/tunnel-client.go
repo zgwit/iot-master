@@ -66,6 +66,8 @@ func (client *TunnelClient) Retry() {
 
 func (client *TunnelClient) receive() {
 	client.running = true
+	client.online = true
+
 	client.Emit("online")
 
 	buf := make([]byte, 1024)
@@ -97,6 +99,7 @@ func (client *TunnelClient) receive() {
 		client.Emit("data", data)
 	}
 	client.running = false
+	client.online = false
 	client.Emit("offline")
 
 	client.Retry()

@@ -20,7 +20,7 @@ func tunnelList(ctx *gin.Context) {
 
 	query := body.toQuery()
 	query.Select("tunnel.*, " + //TODO 只返回需要的字段
-		" 0 as running, server.name as server")
+		" 0 as running, 0 as online, server.name as server")
 	query.Join("LEFT", "server", "tunnel.server_id=server.id")
 
 	cnt, err := query.FindAndCount(&tunnels)
@@ -32,6 +32,7 @@ func tunnelList(ctx *gin.Context) {
 		d := master.GetTunnel(lnk.Id)
 		if d != nil {
 			lnk.Running = d.Instance.Running()
+			lnk.Online = d.Instance.Online()
 		}
 	}
 
@@ -60,6 +61,7 @@ func tunnelDetail(ctx *gin.Context) {
 	d := master.GetTunnel(tunnel.Id)
 	if d != nil {
 		tunnel.Running = d.Instance.Running()
+		tunnel.Online = d.Instance.Online()
 	}
 	replyOk(ctx, tunnel)
 }

@@ -24,6 +24,7 @@ func (l *ServerTcpTunnel) Open() error {
 
 func (l *ServerTcpTunnel) receive() {
 	l.running = true
+	l.online = true
 	l.Emit("online")
 
 	buf := make([]byte, 1024)
@@ -48,5 +49,6 @@ func (l *ServerTcpTunnel) receive() {
 		l.Emit("data", buf[:n])
 	}
 	l.running = false
+	l.online = false
 	l.Emit("offline")
 }

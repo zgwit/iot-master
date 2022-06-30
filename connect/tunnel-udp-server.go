@@ -51,6 +51,7 @@ func (server *TunnelUdpServer) Open() error {
 				//continue
 				break
 			}
+			server.online = true
 			server.addr = addr
 
 			data := buf[:n]
@@ -62,6 +63,7 @@ func (server *TunnelUdpServer) Open() error {
 			server.Emit("data", data)
 		}
 		server.running = false
+		server.online = false
 		server.Emit("offline")
 	}()
 

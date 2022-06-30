@@ -55,7 +55,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         this.ms.error({
           nzTitle: "温馨提示",
           nzContent: "物联大师开源版可以免费使用，为了能够给您提供更好的服务，请在线注册",
-          nzOkText: "在线注册",
+          nzOkText: "确定",
           nzOnOk: instance => {
             this.active()
           }

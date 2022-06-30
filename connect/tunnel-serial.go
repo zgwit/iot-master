@@ -43,6 +43,7 @@ func (s *TunnelSerial) Open() error {
 		return err
 	}
 	s.running = true
+	s.online = true
 	s.link = port
 	s.retry = 0
 
@@ -73,6 +74,7 @@ func (s *TunnelSerial) Retry() {
 
 func (s *TunnelSerial) receive() {
 	s.running = true
+	s.online = true
 	s.Emit("online")
 
 	buf := make([]byte, 1024)
@@ -97,6 +99,7 @@ func (s *TunnelSerial) receive() {
 		s.Emit("data", buf[:n])
 	}
 	s.running = false
+	s.online = false
 	s.Emit("offline")
 
 	s.Retry()

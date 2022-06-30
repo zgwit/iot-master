@@ -97,6 +97,7 @@ func (l *ServerUdpTunnel) Pipe(pipe io.ReadWriteCloser) {
 
 func (l *ServerUdpTunnel) onData(data []byte) {
 	l.running = true
+	l.online = true
 
 	//透传
 	if l.pipe != nil {

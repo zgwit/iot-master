@@ -40,6 +40,7 @@ type DefaultDevice struct {
 type TunnelEx struct {
 	Tunnel  `xorm:"extends"`
 	Running bool   `json:"running"`
+	Online  bool   `json:"online"`
 	Server  string `json:"server"`
 }
 

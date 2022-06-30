@@ -23,6 +23,8 @@ type Tunnel interface {
 
 	Running() bool
 
+	Online() bool
+
 	First() bool
 
 	//Pipe 透传

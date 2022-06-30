@@ -27,6 +27,12 @@ func (a *Address) String() string {
 	case 0x83:
 		code = "M"
 	case 0x84:
+		code = "DB"
+	case 0x85:
+		code = "DI"
+	case 0x86:
+		code = "L"
+	case 0x87:
 		code = "V"
 	case 0x1D:
 		code = "T"
@@ -91,12 +97,18 @@ func ParseAddress(name, addr string) (protocol.Addr, error) {
 		code = 0x82
 	case "M":
 		code = 0x83
-	case "V", "DB":
+	case "DB":
 		code = 0x84
-	case "T":
-		code = 0x1D
+	case "DI":
+		code = 0x85
+	case "L":
+		code = 0x86
+	case "V":
+		code = 0x87
 	case "C":
 		code = 0x1C
+	case "T":
+		code = 0x1D
 	}
 	//addrRegexp.MatchString(addr)
 

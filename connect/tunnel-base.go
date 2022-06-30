@@ -19,6 +19,7 @@ type tunnelBase struct {
 	link io.ReadWriteCloser
 
 	running bool
+	online  bool
 	first   bool
 
 	retry      int
@@ -33,6 +34,10 @@ func (l *tunnelBase) Model() *model.Tunnel {
 
 func (l *tunnelBase) Running() bool {
 	return l.running
+}
+
+func (l *tunnelBase) Online() bool {
+	return l.online
 }
 
 func (l *tunnelBase) First() bool {

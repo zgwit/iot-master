@@ -138,9 +138,20 @@ func (s *S7) Write(station int, addr protocol.Addr, data []byte) error {
 		return err
 	}
 	code := resp.data[0].Code
-	if code != 0 {
+	if code != 0xff {
 		return fmt.Errorf("错误码 %d", code)
 	}
+
+	/*
+		0x00	Reserved	未定义，预留
+		0x01	Hardware error	硬件错误
+		0x03	Accessing the object not allowed	对象不允许访问
+		0x05	Invalid address	无效地址，所需的地址超出此PLC的极限
+		0x06	Data type not supported	数据类型不支持
+		0x07	Data type inconsistent	日期类型不一致
+		0x0a	Object does not exist	对象不存在
+		0xff	Success	成功
+	*/
 
 	return nil
 }

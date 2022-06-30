@@ -12,7 +12,8 @@
         <span>服务器</span>
         <a [routerLink]="'/admin/server/detail/'+data.server_id">{{data.server}}</a>
       </nz-list-item>
-      <nz-list-item><span>状态</span>{{data.running ? '启动' : '停止'}}</nz-list-item>
+      <nz-list-item><span>启动</span>{{data.running ? '启动' : '停止'}}</nz-list-item>
+      <nz-list-item><span>在线</span>{{data.online ? '在线' : '离线'}}</nz-list-item>
       <nz-list-item>
         <span>禁用</span>
         <nz-switch [ngModel]="data.disabled" (ngModelChange)="onEnableChange($event)"></nz-switch>

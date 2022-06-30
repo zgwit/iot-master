@@ -41,7 +41,7 @@
       </td>
       <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
       <td>{{data.last | fromNow}}</td>
-      <td>{{data.running ? '在线' : '离线'}}</td>
+      <td>{{data.online ? '在线' : '离线'}}</td>
     </tr>
     </tbody>
   </nz-table>

@@ -53,6 +53,8 @@ export class DeviceDetailComponent implements OnInit {
       message: "输入控制命令的参数",
       placeholder: "以逗号间隔"
     }, cmd.name).subscribe(res => {
+      if (!res) return; //取消按钮
+
       let params = res ? eval('[' + res + ']') : []
       this.rs.post(`device/${this.id}/execute`, {command: cmd.name, arguments: params,}).subscribe(res => {
         this.loadContext()

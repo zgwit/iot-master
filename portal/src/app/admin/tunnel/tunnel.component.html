@@ -6,7 +6,7 @@
     <div nz-col [nzSpan]="12" [nzXs]="24" [nzSm]="12" [nzMd]="12" [nzLg]="8" [nzXl]="6" [nzXXl]="4"
          *ngFor="let data of datum; let i=index" >
       <nz-card (click)="open(data)" nzSize="small" nzHoverable [nzTitle]="'通道：'+data.id" [nzExtra]="extraTemplate">
-        <p>{{data.name}} {{data.running ? '[在线]' : '[离线]'}}</p>
+        <p>{{data.name}} {{data.online ? '[在线]' : '[离线]'}}</p>
         <p>{{data.type}}
           <ng-container *ngIf="data.type=='serial'">{{data.serial.port}}</ng-container>
           <ng-container *ngIf="data.type!='serial'">{{data.addr}}</ng-container>
@@ -85,7 +85,7 @@
     </td>
     <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
     <td>{{data.last | fromNow}}</td>
-    <td>{{data.running ? '在线' : '离线'}}</td>
+    <td>{{data.online ? '在线' : '离线'}}</td>
     <td>
       <a [routerLink]="'/admin/tunnel/detail/'+data.id">详情</a>
       <nz-divider nzType="vertical"></nz-divider>
