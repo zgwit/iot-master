@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {NzMessageService} from "ng-zorro-antd/message";
+import cryptoRandomString from "crypto-random-string";
 
 @Component({
   selector: 'app-hmi-edit',
@@ -17,6 +18,7 @@ export class HmiEditComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
+    else this.data.id = cryptoRandomString({length: 20, type: 'alphanumeric'})
   }
 
   ngOnInit(): void {
@@ -34,8 +36,6 @@ export class HmiEditComponent implements OnInit {
 
   onSave(hmi: any) {
     console.log('save', hmi)
-    hmi.id = this.id;
-
     this.submitting = true
     const uri = this.id ? 'hmi/' + this.id : 'hmi/create';
     this.rs.post(uri, hmi).subscribe(res => {

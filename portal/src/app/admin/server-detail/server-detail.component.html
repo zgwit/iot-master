@@ -13,6 +13,11 @@
       <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
     </nz-list>
 
+    <nz-button-group>
+      <button nz-button (click)="start()">启动</button>
+      <button nz-button (click)="stop()">停止</button>
+    </nz-button-group>
+
   </nz-tab>
   <nz-tab nzTitle="相关通道">
     <ng-template nz-tab>

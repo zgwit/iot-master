@@ -33,6 +33,7 @@ export class TransferDetailComponent implements OnInit {
   onEnableChange(disabled: boolean) {
     if (!disabled) {
       this.rs.get(`transfer/${this.id}/enable`).subscribe(res => {
+        this.load()
       });
       return;
     }
@@ -41,12 +42,25 @@ export class TransferDetailComponent implements OnInit {
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk: () => {
         this.rs.get(`transfer/${this.id}/disable`).subscribe(res => {
+          this.load()
         });
       },
       nzOnCancel: () => {
         this.data.disabled = false;
       }
     })
+  }
+
+  start() {
+      this.rs.get(`transfer/${this.id}/start`).subscribe(res => {
+        this.load()
+      });
+  }
+
+  stop() {
+    this.rs.get(`transfer/${this.id}/stop`).subscribe(res => {
+      this.load()
+    });
   }
 
 

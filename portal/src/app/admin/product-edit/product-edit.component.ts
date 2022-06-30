@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {NzMessageService} from "ng-zorro-antd/message";
+import cryptoRandomString from "crypto-random-string";
 
 @Component({
   selector: 'app-product-edit',
@@ -70,8 +71,11 @@ export class ProductEditComponent implements OnInit {
 
   submit(): void {
     this.submitting = true
+    const data = this.basicForm.value;
+    //生成随机ID
+    if (!data.id) data.id = cryptoRandomString({length: 20, type: 'alphanumeric'})
     const uri = this.id ? 'product/' + this.id : 'product/create';
-    this.rs.post(uri, this.basicForm.value).subscribe(res => {
+    this.rs.post(uri, data).subscribe(res => {
       this.message.success("提交成功");
       this.router.navigate(['/admin/product/detail/' + res.data.id]);
     }).add(() => {

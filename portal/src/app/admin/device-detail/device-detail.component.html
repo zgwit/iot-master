@@ -13,12 +13,18 @@
             <span>通道</span>
             <a [routerLink]="'/admin/tunnel/detail/'+data.tunnel_id">{{data.tunnel || data.tunnel_id}}</a>
           </nz-list-item>
-          <nz-list-item><span>状态</span>{{data.running ? '启动' : '离线'}}</nz-list-item>
+          <nz-list-item><span>状态</span>{{data.running ? '启动' : '停止'}}</nz-list-item>
           <nz-list-item><span>禁用</span>
             <nz-switch [ngModel]="data.disabled" (ngModelChange)="onEnableChange($event)"></nz-switch>
           </nz-list-item>
           <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
         </nz-list>
+
+    <nz-button-group>
+      <button nz-button (click)="start()">启动</button>
+      <button nz-button (click)="stop()">停止</button>
+    </nz-button-group>
+
       </nz-collapse-panel>
 
       <nz-collapse-panel nzHeader="数据" nzActive>

@@ -33,6 +33,7 @@ export class TunnelDetailComponent implements OnInit {
   onEnableChange(disabled: boolean) {
     if (!disabled) {
       this.rs.get(`tunnel/${this.id}/enable`).subscribe(res => {
+        this.load()
       });
       return;
     }
@@ -41,6 +42,7 @@ export class TunnelDetailComponent implements OnInit {
       nzContent: "确认禁用吗?", //TODO 更丰富、人性 的 提醒
       nzOnOk: () => {
         this.rs.get(`tunnel/${this.id}/disable`).subscribe(res => {
+          this.load()
         });
       },
       nzOnCancel: () => {
