@@ -118,7 +118,7 @@ func (s *S7) Write(station int, addr protocol.Addr, data []byte) error {
 			},
 		},
 		data: []S7Data{{
-			Type:  vt + 2,
+			Type:  vt + 2, //transport size 3 bit 4 byte/word/qword
 			Count: uint16(length),
 			Data:  data,
 		}},

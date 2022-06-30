@@ -19,6 +19,12 @@ const (
 	MessageTypeAck        = 2
 	MessageTypeAckData    = 3
 	MessageTypeUserData   = 4
+
+	TransportSizeBit   = 3
+	TransportSizeByte  = 4
+	TransportSizeInt   = 5
+	TransportSizeReal  = 7
+	TransportSizeOctet = 9
 )
 
 //S7Parameter 固定14字节长
