@@ -29,6 +29,8 @@ import {RadarChartComponent} from "./components/chart/radar";
 import {ProgressComponent} from "./components/control/progress";
 import {SvgComponent} from "./components/control/svg";
 import {HtmlComponent} from "./components/control/html";
+import {ClockComponent} from "./components/control/clock";
+import {CameraComponent} from "./components/control/camera";
 
 export let GroupedComponents: Array<Group> = [];
 
@@ -78,7 +80,8 @@ let internalComponents = [
   //控件
   ButtonComponent, InputComponent, SwitchComponent, SliderComponent,
   ValueComponent, ProgressComponent, SvgComponent, HtmlComponent,
-  //ClockComponent, CameraComponent, WeatherComponent,
+  ClockComponent, CameraComponent,
+  //WeatherComponent,
   //工业
   //AlarmComponent,
   PipeComponent, ValveComponent, CanComponent, PoolComponent,
