@@ -67,6 +67,14 @@
               <input nz-input formControlName="url" placeholder="" required/>
             </nz-form-control>
           </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">同步表结构</nz-form-label>
+            <nz-form-control [nzSpan]="12" nzErrorTip="">
+              <nz-switch formControlName="sync"></nz-switch>
+            </nz-form-control>
+          </nz-form-item>
+
         </form>
 
         <markdown src="/assets/install/database.md"></markdown>

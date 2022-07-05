@@ -29,7 +29,7 @@ export class InstallComponent implements OnInit {
               private route: Router,
               private rs: RequestService,
               private is: InfoService,
-              ) {
+  ) {
     this.buildForms()
   }
 
@@ -47,6 +47,7 @@ export class InstallComponent implements OnInit {
     this.databaseForm = this.fb.group({
       type: ['sqlite', [Validators.required]],
       url: ['sqlite.db', [Validators.required]],
+      sync: [true, []],
     })
     this.historyForm = this.fb.group({
       type: ['embed', [Validators.required]],
@@ -56,25 +57,25 @@ export class InstallComponent implements OnInit {
   }
 
   submitBase() {
-    this.rs.post("install/base", this.baseForm.value).subscribe(res=>{
+    this.rs.post("install/base", this.baseForm.value).subscribe(res => {
       this.current++
     })
   }
 
   submitDatabase() {
-    this.rs.post("install/database", this.databaseForm.value).subscribe(res=>{
+    this.rs.post("install/database", this.databaseForm.value).subscribe(res => {
       this.current++
     })
   }
 
   submitHistory() {
-    this.rs.post("install/history", this.historyForm.value).subscribe(res=>{
+    this.rs.post("install/history", this.historyForm.value).subscribe(res => {
       this.current++
     })
   }
 
   install() {
-    this.rs.get("install/system").subscribe(res=>{
+    this.rs.get("install/system").subscribe(res => {
       this.is.info.installed = true //强制赋值已经安装，不太优雅~~
       this.route.navigate(["/admin"])
     })
