@@ -6,6 +6,7 @@ type Database struct {
 	URL      string `yaml:"url" json:"url"`
 	Debug    bool   `yaml:"debug" json:"debug,omitempty"`
 	LogLevel int    `json:"log_level" json:"log_level"`
+	Sync     bool   `yaml:"sync" json:"sync,omitempty"`
 }
 
 var DatabaseDefault = Database{
@@ -13,4 +14,5 @@ var DatabaseDefault = Database{
 	URL:      "sqlite3.db",
 	Debug:    false,
 	LogLevel: 4,
+	Sync:     false,
 }
