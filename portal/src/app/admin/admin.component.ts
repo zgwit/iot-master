@@ -34,11 +34,11 @@ export class AdminComponent implements OnInit, OnDestroy {
   checkLicenseTimeout!: any;
 
   ngOnInit(): void {
-    this.checkLicenseTimeout = setTimeout(()=> this.checkLicense(), 1000 * 10) //10秒检查一次
+    //this.checkLicenseTimeout = setTimeout(()=> this.checkLicense(), 1000 * 10) //10秒检查一次
   }
 
   ngOnDestroy() {
-    clearTimeout(this.checkLicenseTimeout)
+    //clearTimeout(this.checkLicenseTimeout)
   }
 
   active() {
@@ -54,7 +54,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       if (!res.data) {
         this.ms.error({
           nzTitle: "温馨提示",
-          nzContent: "物联大师开源版可以免费使用，为了能够给您提供更好的服务，请在线注册",
+          nzContent: "物联大师开源版可以免费使用，为了能够给您提供更好的服务，请在线注册!",
           nzOkText: "确定",
           nzOnOk: instance => {
             this.active()

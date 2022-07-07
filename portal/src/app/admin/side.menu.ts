@@ -102,10 +102,10 @@ export let SideMenu = [
         title: '用户管理',
         router: 'setting/user'
       },
-      {
-        title: '激活码',
-        router: 'setting/license'
-      },
+      // {
+      //   title: '激活码',
+      //   router: 'setting/license'
+      // },
     ]
   },
   {
