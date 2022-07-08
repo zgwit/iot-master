@@ -9,6 +9,27 @@ import (
 	"reflect"
 )
 
+func catchError(ctx *gin.Context) {
+	defer func() {
+		if err := recover(); err != nil {
+			//runtime.Stack()
+			//debug.Stack()
+			switch err.(type) {
+			case error:
+				replyError(ctx, err.(error))
+			case string:
+				replyFail(ctx, err.(string))
+			default:
+				ctx.JSON(http.StatusOK, gin.H{"error": err})
+			}
+		}
+	}()
+	ctx.Next()
+
+	//TODO 内容如果为空，返回404
+
+}
+
 func mustLogin(ctx *gin.Context) {
 	session := sessions.Default(ctx)
 	if user := session.Get("user"); user != nil {
@@ -24,29 +45,12 @@ func mustLogin(ctx *gin.Context) {
 
 func RegisterRoutes(app *gin.RouterGroup) {
 	//错误恢复，并返回至前端
-	app.Use(func(ctx *gin.Context) {
-		defer func() {
-			if err := recover(); err != nil {
-				//runtime.Stack()
-				//debug.Stack()
-				switch err.(type) {
-				case error:
-					replyError(ctx, err.(error))
-				case string:
-					replyFail(ctx, err.(string))
-				default:
-					ctx.JSON(http.StatusOK, gin.H{"error": err})
-				}
-			}
-		}()
-		ctx.Next()
+	app.Use(catchError)
 
-		//TODO 内容如果为空，返回404
-
-	})
+	app.GET("/info", info)
 
 	app.POST("/login", login)
-	app.GET("/info", info)
+	app.POST("/auth", auth)
 
 	//安装的接口
 	if !config.Existing() {
