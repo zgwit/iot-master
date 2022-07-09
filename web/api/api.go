@@ -31,13 +31,26 @@ func catchError(ctx *gin.Context) {
 }
 
 func mustLogin(ctx *gin.Context) {
+	//检查Token
+	token, has := ctx.GetQuery("token")
+	if has {
+		user, ok := tokens.Load(token)
+		if ok {
+			ctx.Set("user", user)
+			ctx.Next()
+		} else {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"ok": false, "error": "Unauthorized"})
+			ctx.Abort()
+		}
+		return
+	}
+
+	//检查Session
 	session := sessions.Default(ctx)
 	if user := session.Get("user"); user != nil {
 		ctx.Set("user", user)
 		ctx.Next()
 	} else {
-		//TODO 检查OAuth2返回的code，进一步获取用户信息，放置到session中
-
 		ctx.JSON(http.StatusUnauthorized, gin.H{"ok": false, "error": "Unauthorized"})
 		ctx.Abort()
 	}

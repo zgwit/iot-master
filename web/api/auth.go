@@ -4,8 +4,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"iot-master/config"
 	"iot-master/db"
+	"iot-master/lib"
 	"iot-master/model"
 )
+
+var tokens lib.ExpireCache
 
 type authObj struct {
 	Username string `json:"username"`
@@ -54,6 +57,11 @@ func auth(ctx *gin.Context) {
 		return
 	}
 
-	//TODO 生成Token
-	replyOk(ctx, user.Id)
+	//生成Token
+	token := lib.RandomString(12)
+
+	//保存用户
+	tokens.Store(token, &user)
+
+	replyOk(ctx, token)
 }
