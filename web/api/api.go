@@ -183,7 +183,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/component/:id/manifest", componentSave)
 	app.GET("/component/:id/delete", parseParamStringId, createCurdApiDelete[model.Component](nil, nil))
 
-	app.GET("/component/:id/export")
+	app.GET("/component/:id/export", componentExport)
 	app.POST("/component/import") //zip
 
 	//服务器接口

@@ -1,5 +1,5 @@
 <nz-tabset [nzTabBarExtraContent]="extraTemplate">
-  <nz-tab nzTitle="组态详情">
+  <nz-tab nzTitle="组件详情">
 
 
     <nz-list nzBordered>
@@ -9,31 +9,16 @@
       <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
     </nz-list>
 
-    <a [href]="'/api/hmi/'+id+'/export'" target="_blank">下载</a>
+    <a [href]="'/api/component/'+id+'/export'" target="_blank">下载</a>
 
-    <a [routerLink]="'/admin/hmi-edit/'+id">编辑组态</a>
+    <a [routerLink]="'/admin/component-edit/'+id">编辑组件</a>
 
     <!--    <div [app-html]="data.snap"></div>-->
 
     <hmi-viewer [hmi]="data"></hmi-viewer>
 
   </nz-tab>
-  <nz-tab nzTitle="相关设备" nzDisabled>
-    <ng-template nz-tab>
-      【待实现】
-    </ng-template>
-  </nz-tab>
-  <nz-tab nzTitle="相关产品" nzDisabled>
-    <ng-template nz-tab>
-      【待实现】
-    </ng-template>
-  </nz-tab>
-  <nz-tab nzTitle="相关项目" nzDisabled>
-    <ng-template nz-tab>
-      【待实现】
-    </ng-template>
-  </nz-tab>
-  <nz-tab nzTitle="相关模板" nzDisabled>
+  <nz-tab nzTitle="相关组态" nzDisabled>
     <ng-template nz-tab>
       【待实现】
     </ng-template>
@@ -50,7 +35,7 @@
     <i nz-icon nzType="profile"></i>
   </a>
   <nz-divider nzType="vertical"></nz-divider>
-  <a title="编辑" [routerLink]="'/admin/hmi-edit/'+id">
+  <a title="编辑" [routerLink]="'/admin/component-edit/'+id">
     <i nz-icon nzType="form"></i>
   </a>
 </ng-template>

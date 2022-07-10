@@ -45,6 +45,7 @@ import {LicenseComponent} from "./license/license.component";
 import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
 import {ComponentEditComponent} from "./component-edit/component-edit.component";
 import {ComponentEditContentComponent} from "./component-edit-content/component-edit-content.component";
+import {ComponentDetailComponent} from "./component-detail/component-detail.component";
 
 const routes: Routes = [
   {
@@ -140,6 +141,7 @@ const routes: Routes = [
       {
         path: 'component', component: ContainerComponent, data: {breadcrumb: "组件库"}, children: [
           {path: '', component: ComponentComponent, data: {breadcrumb: "组件库"}},
+          {path: 'detail/:id', component: ComponentDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: ComponentEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: ComponentEditComponent, data: {breadcrumb: "创建"}},
           {path: 'edit-content/:id', component: ComponentEditContentComponent, data: {breadcrumb: "编辑"}},

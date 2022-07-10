@@ -135,6 +135,7 @@ import {ActiveComponent} from "./active/active.component";
 import {HmiEditComponent} from './hmi-edit/hmi-edit.component';
 import {ComponentEditComponent} from './component-edit/component-edit.component';
 import {ComponentEditContentComponent} from './component-edit-content/component-edit-content.component';
+import { ComponentDetailComponent } from './component-detail/component-detail.component';
 
 @NgModule({
   declarations: [
@@ -173,7 +174,7 @@ import {ComponentEditContentComponent} from './component-edit-content/component-
     PromptComponent,
     ChooseTemplateComponent, ChooseProductComponent, ChooseHmiComponent,
     ChooseDeviceComponent, ChooseTunnelComponent,
-    LicenseComponent, ActiveComponent,
+    LicenseComponent, ActiveComponent, ComponentDetailComponent,
   ],
   imports: [
     CommonModule,

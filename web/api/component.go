@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io"
 	"iot-master/config"
+	"iot-master/lib"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -15,7 +16,9 @@ func componentLoad(ctx *gin.Context) {
 }
 
 func componentSave(ctx *gin.Context) {
-	filename := filepath.Join(config.Config.Data, "component", ctx.Param("id"), "component.json")
+	dir := filepath.Join(config.Config.Data, "component", ctx.Param("id"))
+	filename := filepath.Join(dir, "component.json")
+	_ = os.MkdirAll(dir, os.ModePerm) //应对目录不存在的问题
 	file, err := os.OpenFile(filename, os.O_CREATE, os.ModePerm)
 	if err != nil {
 		replyError(ctx, err)
@@ -30,4 +33,17 @@ func componentSave(ctx *gin.Context) {
 	}
 
 	replyOk(ctx, nil)
+}
+
+func componentExport(ctx *gin.Context) {
+	dir := filepath.Join(config.Config.Data, "component", ctx.Param("id"))
+	ctx.Header("Content-Type", `application/x-zip-compressed`)
+	ctx.Header("Content-Disposition", `attachment; filename="`+ctx.Param("id")+`.zip"`)
+	err := lib.ZipDir(dir, ctx.Writer)
+
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	//replyOk(ctx, nil)
 }
