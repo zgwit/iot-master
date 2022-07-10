@@ -6,7 +6,6 @@ import (
 	"iot-master/config"
 	"iot-master/model"
 	"net/http"
-	"reflect"
 )
 
 func catchError(ctx *gin.Context) {
@@ -95,63 +94,55 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/license", licenseUpdate)
 
 	//用户接口
-	modelUser := reflect.TypeOf(model.User{})
 	app.GET("/user/me", userMe)
-	app.POST("/user/list", curdApiList(modelUser))
-	app.POST("/user/create", parseParamId, curdApiCreate(modelUser, nil, nil))
-	app.GET("/user/:id", parseParamId, curdApiGet(modelUser))
-	app.POST("/user/:id", parseParamId, curdApiModify(modelUser, []string{"username", "nickname", "disabled"}, nil, nil))
-	app.GET("/user/:id/delete", parseParamId, curdApiDelete(modelUser, nil, nil))
+	app.POST("/user/list", createCurdApiList[model.User]())
+	app.POST("/user/create", parseParamId, createCurdApiCreate[model.User](nil, nil))
+	app.GET("/user/:id", parseParamId, createCurdApiGet[model.User]())
+	app.POST("/user/:id", parseParamId, createCurdApiModify[model.User](nil, nil, "username", "nickname", "disabled"))
+	app.GET("/user/:id/delete", parseParamId, createCurdApiDelete[model.User](nil, nil))
 	app.GET("/user/:id/password", parseParamId, userPassword)
-	app.GET("/user/:id/enable", parseParamId, curdApiDisable(modelUser, false, nil, nil))
-	app.GET("/user/:id/disable", parseParamId, curdApiDisable(modelUser, true, nil, nil))
+	app.GET("/user/:id/enable", parseParamId, createCurdApiDisable[model.User](false, nil, nil))
+	app.GET("/user/:id/disable", parseParamId, createCurdApiDisable[model.User](true, nil, nil))
 
 	//项目接口
-	modelProject := reflect.TypeOf(model.Project{})
 	app.POST("/project/list", projectList)
-	app.POST("/project/create", curdApiCreate(modelProject, nil, afterProjectCreate))
+	app.POST("/project/create", createCurdApiCreate[model.Project](nil, afterProjectCreate))
 	app.GET("/project/:id", parseParamId, projectDetail)
-	app.POST("/project/:id", parseParamId, curdApiModify(modelProject,
-		[]string{"name", "devices", "template_id",
-			"hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"},
-		nil, afterProjectUpdate))
-	app.GET("/project/:id/delete", parseParamId, curdApiDelete(modelProject, nil, afterProjectDelete))
+	app.POST("/project/:id", parseParamId, createCurdApiModify[model.Project](nil, afterProjectUpdate,
+		"name", "devices", "template_id", "hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"))
+	app.GET("/project/:id/delete", parseParamId, createCurdApiDelete[model.Project](nil, afterProjectDelete))
 
 	app.GET("/project/:id/start", parseParamId, projectStart)
 	app.GET("/project/:id/stop", parseParamId, projectStop)
-	app.GET("/project/:id/enable", parseParamId, curdApiDisable(modelProject, false, nil, afterProjectEnable))
-	app.GET("/project/:id/disable", parseParamId, curdApiDisable(modelProject, true, nil, afterProjectDisable))
+	app.GET("/project/:id/enable", parseParamId, createCurdApiDisable[model.Project](false, nil, afterProjectEnable))
+	app.GET("/project/:id/disable", parseParamId, createCurdApiDisable[model.Project](true, nil, afterProjectDisable))
 	app.GET("/project/:id/context", parseParamId, projectContext)
 	app.POST("/project/:id/context", parseParamId, projectContextUpdate)
 	app.GET("/project/:id/watch", parseParamId, projectWatch)
 
 	//模板接口
-	modelTemplate := reflect.TypeOf(model.Template{})
-	app.POST("/template/list", curdApiList(modelTemplate))
-	app.POST("/template/create", curdApiCreate(modelTemplate, generateUUID, nil))
-	app.GET("/template/:id", parseParamStringId, curdApiGet(modelTemplate))
-	app.POST("/template/:id", parseParamStringId, curdApiModify(modelTemplate,
-		[]string{"name", "info", "products",
-			"hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"},
-		nil, nil))
-	app.GET("/template/:id/delete", parseParamStringId, curdApiDelete(modelTemplate, nil, nil))
+	app.POST("/template/list", createCurdApiList[model.Template]())
+	app.POST("/template/create", createCurdApiCreate[model.Template](generateUUID, nil))
+	app.GET("/template/:id", parseParamStringId, createCurdApiGet[model.Template]())
+	app.POST("/template/:id", parseParamStringId, createCurdApiModify[model.Template](nil, nil,
+		"name", "info", "products", "hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"))
+	app.GET("/template/:id/delete", parseParamStringId, createCurdApiDelete[model.Template](nil, nil))
 
 	//设备接口
-	modelDevice := reflect.TypeOf(model.Device{})
 	app.POST("/device/list", deviceList)
-	app.POST("/device/create", curdApiCreate(modelDevice, nil, afterDeviceCreate))
+	app.POST("/device/create", createCurdApiCreate[model.Device](nil, afterDeviceCreate))
 	app.GET("/device/:id", parseParamId, deviceDetail)
-	app.POST("/device/:id", parseParamId, curdApiModify(modelDevice,
-		[]string{"name", "tunnel_id", "product_id", "station",
-			"hmi", "tags", "points", "pollers", "calculators", "alarms", "commands",
-			"context", "disabled"},
-		nil, afterDeviceUpdate))
-	app.GET("/device/:id/delete", parseParamId, curdApiDelete(modelDevice, nil, afterDeviceDelete))
+	app.POST("/device/:id", parseParamId, createCurdApiModify[model.Device](nil, afterDeviceUpdate,
+		"name", "tunnel_id", "product_id", "station",
+		"hmi", "tags", "points", "pollers", "calculators", "alarms", "commands",
+		"context", "disabled",
+	))
+	app.GET("/device/:id/delete", parseParamId, createCurdApiDelete[model.Device](nil, afterDeviceDelete))
 
 	app.GET("/device/:id/start", parseParamId, deviceStart)
 	app.GET("/device/:id/stop", parseParamId, deviceStop)
-	app.GET("/device/:id/enable", parseParamId, curdApiDisable(modelDevice, false, nil, afterDeviceEnable))
-	app.GET("/device/:id/disable", parseParamId, curdApiDisable(modelDevice, true, nil, afterDeviceDisable))
+	app.GET("/device/:id/enable", parseParamId, createCurdApiDisable[model.Device](false, nil, afterDeviceEnable))
+	app.GET("/device/:id/disable", parseParamId, createCurdApiDisable[model.Device](true, nil, afterDeviceDisable))
 	app.GET("/device/:id/context", parseParamId, deviceContext)
 	app.POST("/device/:id/context", parseParamId, deviceContextUpdate)
 	app.GET("/device/:id/watch", parseParamId, deviceWatch)
@@ -161,26 +152,23 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/device/:id/value/:name/history", parseParamId, deviceValueHistory)
 
 	//元件接口
-	modelProduct := reflect.TypeOf(model.Product{})
-	app.POST("/product/list", curdApiList(modelProduct))
-	app.POST("/product/create", curdApiCreate(modelProduct, generateUUID, nil))
-	app.GET("/product/:id", parseParamStringId, curdApiGet(modelProduct))
-	app.POST("/product/:id", parseParamStringId, curdApiModify(modelProduct,
-		[]string{"name", "manufacturer", "info",
-			"hmi", "tags", "points", "pollers", "calculators", "alarms", "commands",
-			"context", "disabled"},
-		nil, nil))
-	app.GET("/product/:id/delete", parseParamStringId, curdApiDelete(modelProduct, nil, nil))
+	app.POST("/product/list", createCurdApiList[model.Product]())
+	app.POST("/product/create", createCurdApiCreate[model.Product](generateUUID, nil))
+	app.GET("/product/:id", parseParamStringId, createCurdApiGet[model.Product]())
+	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil,
+		"name", "manufacturer", "info",
+		"hmi", "tags", "points", "pollers", "calculators", "alarms", "commands",
+		"context", "disabled",
+	))
+	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
 
 	//组态
-	modelHMI := reflect.TypeOf(model.Hmi{})
-	app.POST("/hmi/list", curdApiList(modelHMI))
-	app.POST("/hmi/create", curdApiCreate(modelHMI, generateUUID, nil))
-	app.GET("/hmi/:id", parseParamStringId, curdApiGet(modelHMI))
-	app.POST("/hmi/:id", parseParamStringId, curdApiModify(modelHMI,
-		[]string{"name", "width", "height", "snap", "entities"},
-		nil, nil))
-	app.GET("/hmi/:id/delete", parseParamStringId, curdApiDelete(modelHMI, nil, nil))
+	app.POST("/hmi/list", createCurdApiList[model.Hmi]())
+	app.POST("/hmi/create", createCurdApiCreate[model.Hmi](generateUUID, nil))
+	app.GET("/hmi/:id", parseParamStringId, createCurdApiGet[model.Hmi]())
+	app.POST("/hmi/:id", parseParamStringId, createCurdApiModify[model.Hmi](nil, nil,
+		"name", "width", "height", "snap", "entities"))
+	app.GET("/hmi/:id/delete", parseParamStringId, createCurdApiDelete[model.Hmi](nil, nil))
 	app.GET("/hmi/:id/export")
 
 	//组态的附件
@@ -190,70 +178,62 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.DELETE("/hmi/:id/attachment/*name", hmiAttachmentDelete)
 
 	//服务器接口
-	modelServer := reflect.TypeOf(model.Server{})
 	app.POST("/server/list", serverList)
-	app.POST("/server/create", curdApiCreate(modelServer, nil, afterServerCreate))
+	app.POST("/server/create", createCurdApiCreate[model.Server](nil, afterServerCreate))
 	app.GET("/server/:id", parseParamId, serverDetail)
-	app.POST("/server/:id", parseParamId, curdApiModify(modelServer,
-		[]string{"name", "type", "addr",
-			"retry", "register", "heartbeat", "protocol", "devices", "disabled"},
-		nil, afterServerUpdate))
-	app.GET("/server/:id/delete", parseParamId, curdApiDelete(modelServer, nil, afterServerDelete))
+	app.POST("/server/:id", parseParamId, createCurdApiModify[model.Server](nil, afterServerUpdate,
+		"name", "type", "addr",
+		"retry", "register", "heartbeat", "protocol", "devices", "disabled"))
+	app.GET("/server/:id/delete", parseParamId, createCurdApiDelete[model.Server](nil, afterServerDelete))
 
 	app.GET("/server/:id/start", parseParamId, serverStart)
 	app.GET("/server/:id/stop", parseParamId, serverStop)
-	app.GET("/server/:id/enable", parseParamId, curdApiDisable(modelServer, false, nil, afterServerEnable))
-	app.GET("/server/:id/disable", parseParamId, curdApiDisable(modelServer, true, nil, afterServerDisable))
+	app.GET("/server/:id/enable", parseParamId, createCurdApiDisable[model.Server](false, nil, afterServerEnable))
+	app.GET("/server/:id/disable", parseParamId, createCurdApiDisable[model.Server](true, nil, afterServerDisable))
 	app.GET("/server/:id/watch", parseParamId, serverWatch)
 
 	//通道接口
-	modelTunnel := reflect.TypeOf(model.Tunnel{})
 	app.POST("/tunnel/list", tunnelList)
-	app.POST("/tunnel/create", curdApiCreate(modelTunnel, nil, afterTunnelCreate))
+	app.POST("/tunnel/create", createCurdApiCreate[model.Tunnel](nil, afterTunnelCreate))
 	app.GET("/tunnel/:id", parseParamId, tunnelDetail)
-	app.POST("/tunnel/:id", parseParamId, curdApiModify(modelTunnel,
-		[]string{"name", "type", "addr", "retry", "heartbeat", "serial", "protocol", "disabled"},
-		nil, nil))
-	app.GET("/tunnel/:id/delete", parseParamId, curdApiDelete(modelTunnel, nil, afterTunnelDelete))
+	app.POST("/tunnel/:id", parseParamId, createCurdApiModify[model.Tunnel](nil, nil,
+		"name", "type", "addr", "retry", "heartbeat", "serial", "protocol", "disabled"))
+	app.GET("/tunnel/:id/delete", parseParamId, createCurdApiDelete[model.Tunnel](nil, afterTunnelDelete))
 	app.GET("/tunnel/:id/start", parseParamId, tunnelStart)
 	app.GET("/tunnel/:id/stop", parseParamId, tunnelClose)
-	app.GET("/tunnel/:id/enable", parseParamId, curdApiDisable(modelTunnel, false, nil, afterTunnelEnable))
-	app.GET("/tunnel/:id/disable", parseParamId, curdApiDisable(modelTunnel, true, nil, afterTunnelDisable))
+	app.GET("/tunnel/:id/enable", parseParamId, createCurdApiDisable[model.Tunnel](false, nil, afterTunnelEnable))
+	app.GET("/tunnel/:id/disable", parseParamId, createCurdApiDisable[model.Tunnel](true, nil, afterTunnelDisable))
 	app.GET("/tunnel/:id/watch", parseParamId, tunnelWatch)
 
 	//事件接口
-	modelEvent := reflect.TypeOf(model.Event{})
-	app.POST("/event/list", curdApiList(modelEvent))
+	app.POST("/event/list", createCurdApiList[model.Event]())
 	app.POST("/event/clear", eventClear)
-	app.GET("/event/:id/delete", parseParamId, curdApiDelete(modelEvent, nil, nil))
+	app.GET("/event/:id/delete", parseParamId, createCurdApiDelete[model.Event](nil, nil))
 
 	//透传接口
-	modelTransfer := reflect.TypeOf(model.Transfer{})
 	app.POST("/transfer/list", transferList)
-	app.POST("/transfer/create", curdApiCreate(modelTransfer, nil, afterTransferCreate))
+	app.POST("/transfer/create", createCurdApiCreate[model.Transfer](nil, afterTransferCreate))
 	app.GET("/transfer/:id", parseParamId, transferDetail)
-	app.POST("/transfer/:id", parseParamId, curdApiModify(modelTransfer,
-		[]string{"name", "port", "tunnel_id", "disabled"},
-		nil, afterPipeUpdate))
-	app.GET("/transfer/:id/delete", parseParamId, curdApiDelete(modelTransfer, nil, afterTransferDelete))
+	app.POST("/transfer/:id", parseParamId, createCurdApiModify[model.Transfer](nil, afterPipeUpdate,
+		"name", "port", "tunnel_id", "disabled"))
+	app.GET("/transfer/:id/delete", parseParamId, createCurdApiDelete[model.Transfer](nil, afterTransferDelete))
 
-	app.GET("/transfer/:id/enable", parseParamId, curdApiDisable(modelTransfer, false, nil, afterTransferEnable))
-	app.GET("/transfer/:id/disable", parseParamId, curdApiDisable(modelTransfer, true, nil, afterTransferDisable))
+	app.GET("/transfer/:id/enable", parseParamId, createCurdApiDisable[model.Transfer](false, nil, afterTransferEnable))
+	app.GET("/transfer/:id/disable", parseParamId, createCurdApiDisable[model.Transfer](true, nil, afterTransferDisable))
 	app.GET("/transfer/:id/start", parseParamId, transferStart)
 	app.GET("/transfer/:id/stop", parseParamId, transferStop)
 
 	//摄像头接口
-	modelCamera := reflect.TypeOf(model.Camera{})
 	app.POST("/camera/list", cameraList)
-	app.POST("/camera/create", curdApiCreate(modelCamera, nil, afterCameraCreate))
+	app.POST("/camera/create", createCurdApiCreate[model.Camera](nil, afterCameraCreate))
 	app.GET("/camera/:id", parseParamId, cameraDetail)
-	app.POST("/camera/:id", parseParamId, curdApiModify(modelCamera, []string{"name", "url", "h264", "disabled"}, nil, afterCameraUpdate))
-	app.GET("/camera/:id/delete", parseParamId, curdApiDelete(modelCamera, nil, afterCameraDelete))
+	app.POST("/camera/:id", parseParamId, createCurdApiModify[model.Camera](nil, afterCameraUpdate, "name", "url", "h264", "disabled"))
+	app.GET("/camera/:id/delete", parseParamId, createCurdApiDelete[model.Camera](nil, afterCameraDelete))
 
 	app.GET("/camera/:id/start", parseParamId, cameraStart)
 	app.GET("/camera/:id/stop", parseParamId, cameraStop)
-	app.GET("/camera/:id/enable", parseParamId, curdApiDisable(modelCamera, false, nil, afterCameraEnable))
-	app.GET("/camera/:id/disable", parseParamId, curdApiDisable(modelCamera, true, nil, afterCameraDisable))
+	app.GET("/camera/:id/enable", parseParamId, createCurdApiDisable[model.Camera](false, nil, afterCameraEnable))
+	app.GET("/camera/:id/disable", parseParamId, createCurdApiDisable[model.Camera](true, nil, afterCameraDisable))
 
 	//系统接口
 	app.GET("/system/cpu-info", cpuInfo)
