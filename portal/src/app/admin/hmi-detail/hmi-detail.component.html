@@ -5,10 +5,13 @@
     <nz-list nzBordered>
       <nz-list-item><span>ID</span>{{data.id}}</nz-list-item>
       <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
-      <nz-list-item><span>宽度</span>{{data.width}}</nz-list-item>
-      <nz-list-item><span>高度</span>{{data.height}}</nz-list-item>
+      <nz-list-item><span>版本</span>{{data.version}}</nz-list-item>
       <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
     </nz-list>
+
+    <a [href]="'/api/hmi/'+id+'/export'" target="_blank">下载</a>
+
+    <a [routerLink]="'/admin/hmi-edit/'+id">编辑组态</a>
 
     <!--    <div [app-html]="data.snap"></div>-->
 
@@ -47,7 +50,7 @@
     <i nz-icon nzType="profile"></i>
   </a>
   <nz-divider nzType="vertical"></nz-divider>
-  <a title="编辑" [routerLink]="'/admin/hmi-edit/'+id">
+  <a title="编辑" [routerLink]="'/admin/hmi-edit-content/'+id">
     <i nz-icon nzType="form"></i>
   </a>
 </ng-template>

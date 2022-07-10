@@ -62,7 +62,6 @@ export let SideMenu = [
       {
         title: '组件库',
         router: 'component',
-        disabled: true,
       },
     ]
   },

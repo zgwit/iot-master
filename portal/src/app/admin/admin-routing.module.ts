@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {AdminComponent} from './admin.component';
-import {WelcomeComponent} from "./welcome/welcome.component";
 import {UnknownComponent} from "./unknown/unknown.component";
 import {LogoutGuard} from "./logout.guard";
 import {DashComponent} from "./dash/dash.component";
@@ -16,7 +15,6 @@ import {PluginComponent} from "./plugin/plugin.component";
 import {ProtocolComponent} from "./protocol/protocol.component";
 import {SettingComponent} from "./setting/setting.component";
 import {UserComponent} from "./user/user.component";
-import {PasswordComponent} from "./password/password.component";
 import {ServerDetailComponent} from "./server-detail/server-detail.component";
 import {TunnelDetailComponent} from "./tunnel-detail/tunnel-detail.component";
 import {DeviceDetailComponent} from "./device-detail/device-detail.component";
@@ -39,20 +37,19 @@ import {HmiComponent} from "./hmi/hmi.component";
 import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
 import {DeviceValueComponent} from "./device-value/device-value.component";
 import {UserDetailComponent} from "./user-detail/user-detail.component";
-import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
+import {HmiEditContentComponent} from "./hmi-edit-content/hmi-edit-content.component";
 import {CameraComponent} from "./camera/camera.component";
 import {CameraDetailComponent} from "./camera-detail/camera-detail.component";
 import {CameraEditComponent} from "./camera-edit/camera-edit.component";
 import {LicenseComponent} from "./license/license.component";
+import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
+import {ComponentEditComponent} from "./component-edit/component-edit.component";
+import {ComponentEditContentComponent} from "./component-edit-content/component-edit-content.component";
 
 const routes: Routes = [
   {
     path: 'hmi-edit/:id',
-    component: HmiEditComponent,
-  },
-  {
-    path: 'hmi-create',
-    component: HmiEditComponent,
+    component: HmiEditContentComponent,
   },
   {
     path: '',
@@ -136,12 +133,16 @@ const routes: Routes = [
           {path: 'detail/:id', component: HmiDetailComponent, data: {breadcrumb: "详情"}},
           {path: 'edit/:id', component: HmiEditComponent, data: {breadcrumb: "编辑"}},
           {path: 'create', component: HmiEditComponent, data: {breadcrumb: "创建"}},
+          {path: 'edit-content/:id', component: HmiEditContentComponent, data: {breadcrumb: "编辑"}},
         ]
       },
 
       {
         path: 'component', component: ContainerComponent, data: {breadcrumb: "组件库"}, children: [
           {path: '', component: ComponentComponent, data: {breadcrumb: "组件库"}},
+          {path: 'edit/:id', component: ComponentEditComponent, data: {breadcrumb: "编辑"}},
+          {path: 'create', component: ComponentEditComponent, data: {breadcrumb: "创建"}},
+          {path: 'edit-content/:id', component: ComponentEditContentComponent, data: {breadcrumb: "编辑"}},
         ]
       },
 

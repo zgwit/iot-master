@@ -15,7 +15,7 @@
     <tr>
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
-      <th>尺寸</th>
+      <th nzColumnKey="version" [nzSortFn]="true">版本</th>
       <th nzColumnKey="created" [nzSortFn]="true">创建时间</th>
       <th nzWidth="100">操作</th>
     </tr>
@@ -24,12 +24,12 @@
     <tr *ngFor="let data of datum; let i=index" (dblclick)="open(data)">
       <td>{{ data.id }}</td>
       <td>{{ data.name }}</td>
-      <td>{{ data.width }} x {{ data.height }}</td>
+      <td>{{ data.version }}</td>
       <td [title]="data.created|dateString">{{data.created | fromNow}}</td>
       <td>
         <a [routerLink]="'/admin/hmi/detail/'+data.id">详情</a>
         <nz-divider nzType="vertical"></nz-divider>
-        <a [routerLink]="'/admin/hmi-edit/'+data.id">编辑</a>
+        <a [routerLink]="'/admin/hmi-edit-content/'+data.id">编辑</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click">
           更多

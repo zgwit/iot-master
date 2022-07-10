@@ -118,7 +118,7 @@ import {HmiDetailComponent} from "./hmi-detail/hmi-detail.component";
 import {ComponentComponent} from "./component/component.component";
 import {DashModule} from "../dash/dash.module";
 import {DeviceValueComponent} from "./device-value/device-value.component";
-import {HmiEditComponent} from "./hmi-edit/hmi-edit.component";
+import {HmiEditContentComponent} from "./hmi-edit-content/hmi-edit-content.component";
 import {HmiModule} from "../hmi/hmi.module";
 import {ChooseHmiComponent} from "./choose-hmi/choose-hmi.component";
 import {HmiBrowserComponent} from "./hmi-browser/hmi-browser.component";
@@ -132,6 +132,9 @@ import {NzPaginationModule} from "ng-zorro-antd/pagination";
 import {NzEmptyModule} from "ng-zorro-antd/empty";
 import {LicenseComponent} from "./license/license.component";
 import {ActiveComponent} from "./active/active.component";
+import {HmiEditComponent} from './hmi-edit/hmi-edit.component';
+import {ComponentEditComponent} from './component-edit/component-edit.component';
+import {ComponentEditContentComponent} from './component-edit-content/component-edit-content.component';
 
 @NgModule({
   declarations: [
@@ -154,9 +157,9 @@ import {ActiveComponent} from "./active/active.component";
     ProjectComponent, ProjectDetailComponent, ProjectEditComponent, ProjectHmiComponent,
     TemplateComponent, TemplateDetailComponent, TemplateEditComponent,
     TemplateProjectComponent, TemplateBrowserComponent,
-    HmiComponent, HmiDetailComponent, HmiEditComponent, HmiBrowserComponent,
+    HmiComponent, HmiDetailComponent, HmiEditComponent, HmiEditContentComponent, HmiBrowserComponent,
+    ComponentComponent, ComponentEditComponent, ComponentEditContentComponent,
     CameraComponent, CameraEditComponent, CameraDetailComponent,
-    ComponentComponent,
     EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
     EditDevicesComponent, EditProductsComponent, EditAlarmsComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,

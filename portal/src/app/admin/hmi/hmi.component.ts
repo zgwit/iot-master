@@ -53,7 +53,7 @@ export class HmiComponent implements OnInit {
   }
 
   create(): void {
-    this.router.navigate(["admin/hmi-create"]);
+    this.router.navigate(["admin/hmi/create"]);
   }
 
   open(data: any): void {

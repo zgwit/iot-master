@@ -16,7 +16,9 @@ func hmiLoad(ctx *gin.Context) {
 }
 
 func hmiSave(ctx *gin.Context) {
-	filename := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), "hmi.json")
+	dir := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"))
+	filename := filepath.Join(dir, "hmi.json")
+	_ = os.MkdirAll(dir, os.ModePerm) //应对目录不存在的问题
 	file, err := os.OpenFile(filename, os.O_CREATE, os.ModePerm)
 	if err != nil {
 		replyError(ctx, err)

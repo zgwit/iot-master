@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import cryptoRandomString from "crypto-random-string";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'app-hmi-edit',
@@ -13,12 +15,33 @@ export class HmiEditComponent implements OnInit {
   id: any;
   submitting = false;
 
-  data: any = {width:800, height: 600, entities:[]}
+  basicForm: FormGroup = new FormGroup({});
 
-  constructor(private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
+  data: any = {
+    "name": "新建组态",
+    "version": "1.0.0",
+  }
+
+  constructor(private fb: FormBuilder,
+              private route: ActivatedRoute,
+              private router: Router,
+              private rs: RequestService,
+              private message: NzMessageService,
+              private ms: NzModalService,
+              ) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
     else this.data.id = cryptoRandomString({length: 20, type: 'alphanumeric'})
+
+    this.buildForm();
+  }
+
+  buildForm(): void {
+    this.basicForm = this.fb.group({
+    id: [this.data.id, []],
+      name: [this.data.name, [Validators.required]],
+      version: [this.data.version, [Validators.required]],
+    });
   }
 
   ngOnInit(): void {
@@ -28,21 +51,32 @@ export class HmiEditComponent implements OnInit {
   load(): void {
     this.rs.get('hmi/' + this.id).subscribe(res => {
       this.data = res.data;
+      this.buildForm();
     })
   }
 
   submit(): void {
-  }
-
-  onSave(hmi: any) {
-    console.log('save', hmi)
     this.submitting = true
     const uri = this.id ? 'hmi/' + this.id : 'hmi/create';
-    this.rs.post(uri, hmi).subscribe(res => {
+    this.rs.post(uri, this.basicForm.value).subscribe(res => {
       this.message.success("提交成功");
       this.router.navigate(['/admin/hmi/detail/' + res.data.id]);
+
+      this.ms.confirm({
+        nzContent: "现在编辑组态？",
+        nzOnOk: ()=>{
+          this.router.navigate(['/admin/hmi-edit/' + res.data.id]);
+        }
+      })
+
     }).add(() => {
       this.submitting = false;
     })
   }
+
+  change() {
+    //console.log('change', e)
+    this.data = this.basicForm.value;
+  }
+
 }
