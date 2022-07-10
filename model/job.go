@@ -6,14 +6,10 @@ import (
 
 //Job 任务
 type Job struct {
-	Disabled bool `json:"disabled"`
+	Disabled bool `json:"disabled,omitempty"`
 
-	Type string `json:"type"` //clock, crontab
-
-	Clock    int            `json:"clock,omitempty"`
-	Weekdays []time.Weekday `json:"weekdays"`
-
-	Crontab string `json:"crontab,omitempty"`
+	Clock    int            `json:"clock"`
+	Weekdays []time.Weekday `json:"weekdays,omitempty"`
 
 	Invokes []Invoke `json:"invokes"`
 }

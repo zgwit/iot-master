@@ -45,9 +45,13 @@ func Clock(hours int, minutes int, fn func()) (*Job, error) {
 //ClockWithWeekdays 创建每日任务
 func ClockWithWeekdays(hours int, minutes int, weekdays []time.Weekday, fn func()) (*Job, error) {
 	s := Scheduler.Every(1).Day().At(hours).Hours().At(minutes).Minutes()
-	for _, w := range weekdays {
-		s.Weekday(w)
+	if len(weekdays) > 0 {
+		s.Weeks()
+		for _, w := range weekdays {
+			s.Weekday(w)
+		}
 	}
+
 	job, err := s.Do(fn)
 	if err != nil {
 		return nil, err

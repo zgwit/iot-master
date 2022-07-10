@@ -8,9 +8,7 @@
        *ngFor="let data of items; let i=index" cdkDrag>
     <nz-card nzSize="small" [nzTitle]="data.name" nzHoverable [nzExtra]="extraTemplate" (click)="edit(data)">
       <p>
-        类型：{{data.type}}，
-        <span *ngIf="data.type=='clock'">{{data.clock | minuteFormat }}</span>
-        <span *ngIf="data.type=='crontab'">{{data.crontab}}</span>
+        {{data.clock | minuteFormat }}
         <span *ngIf="data.disabled">禁用</span>
       </p>
       <p *ngFor="let d of data.invokes">
@@ -38,21 +36,11 @@
 <nz-modal [(nzVisible)]="showModal" nzTitle="编辑定时器" (nzOnOk)="onOk()" (nzOnCancel)="showModal=false">
   <ng-container *nzModalContent>
     <form [formGroup]="formGroup">
-      <nz-form-item>
-        <nz-form-label [nzSpan]="5">类型</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <nz-select formControlName="type" nzSize="small">
-            <nz-option nzValue="clock" nzLabel="定时"></nz-option>
-            <nz-option nzValue="crontab" nzLabel="crontab"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">定时</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <app-minute-time-picker *ngIf="formGroup.value.type=='clock'"  formControlName="clock" nzSize="small"></app-minute-time-picker>
-          <input *ngIf="formGroup.value.type=='crontab'"  nz-input formControlName="crontab" nzSize="small"/>
+          <app-minute-time-picker  formControlName="clock" nzSize="small"></app-minute-time-picker>
         </nz-form-control>
       </nz-form-item>
 

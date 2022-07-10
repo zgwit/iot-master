@@ -33,20 +33,18 @@ export class EditJobsComponent implements OnInit, ControlValueAccessor {
     this.buildForm({});
   }
 
-  buildForm(d:any): void {
+  buildForm(d: any): void {
     this.formGroup = this.fb.group({
-          type: [d.type, [Validators.required]],
-          clock: [d.clock, [Validators.required]],
-          crontab: [d.crontab, [Validators.required]],
-          invokes: [d.invokes || [], [Validators.required]],
-          disabled: [d.disabled, [Validators.required]],
+      clock: [d.clock, [Validators.required]],
+      invokes: [d.invokes || [], [Validators.required]],
+      disabled: [d.disabled, [Validators.required]],
     })
   }
 
   copy(i: number) {
     let item = this.items[i]
     item = JSON.parse(JSON.stringify(item))
-    this.items.splice(i+1, 0, item)
+    this.items.splice(i + 1, 0, item)
   }
 
   remove(i: number) {
@@ -88,13 +86,9 @@ export class EditJobsComponent implements OnInit, ControlValueAccessor {
   edit(data?: any) {
     if (!data) {
       data = {
-          type: 'clock',
-          crontab: '',
-          clock: 0,
-          invokes: [],
-          disabled: false,
-        as: '',
-        expression: '',
+        clock: 0,
+        invokes: [],
+        disabled: false,
       }
       this.items.push(data)
     }

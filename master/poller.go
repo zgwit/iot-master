@@ -23,22 +23,9 @@ func (p *Poller) Start() (err error) {
 		p.job.Cancel()
 		//return errors.New("已经启动")
 	}
-	switch p.Type {
-	case "interval":
-		p.job, err = cron.Interval(p.Interval, func() {
-			p.Execute()
-		})
-	case "clock":
-		hours := p.Clock / 60
-		minutes := p.Clock % 60
-		p.job, err = cron.Clock(hours, minutes, func() {
-			p.Execute()
-		})
-	case "crontab":
-		p.job, err = cron.Schedule(p.Crontab, func() {
-			p.Execute()
-		})
-	}
+	p.job, err = cron.Interval(p.Interval, func() {
+		p.Execute()
+	})
 	return
 }
 

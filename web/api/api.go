@@ -217,7 +217,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/tunnel/:id/delete", parseParamId, curdApiDelete(modelTunnel, nil, afterTunnelDelete))
 	app.GET("/tunnel/:id/start", parseParamId, tunnelStart)
 	app.GET("/tunnel/:id/stop", parseParamId, tunnelClose)
-	app.GET("/tunnel/:id/enable", parseParamId, curdApiDisable(modelTunnel, false, nil, nil))
+	app.GET("/tunnel/:id/enable", parseParamId, curdApiDisable(modelTunnel, false, nil, afterTunnelEnable))
 	app.GET("/tunnel/:id/disable", parseParamId, curdApiDisable(modelTunnel, true, nil, afterTunnelDisable))
 	app.GET("/tunnel/:id/watch", parseParamId, tunnelWatch)
 

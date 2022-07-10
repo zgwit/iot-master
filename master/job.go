@@ -23,21 +23,13 @@ func (j *Job) Start() error {
 		//return errors.New("任务已经启动")
 	}
 
-	var err error
-	switch j.Type {
-	case "clock":
-		hours := j.Clock / 60
-		minutes := j.Clock % 60
-		//TODO 处理weekdays
+	hours := j.Clock / 60
+	minutes := j.Clock % 60
 
-		j.job, err = cron.ClockWithWeekdays(hours, minutes, j.Weekdays, func() {
-			j.Execute()
-		})
-	case "crontab":
-		j.job, err = cron.Schedule(j.Crontab, func() {
-			j.Execute()
-		})
-	}
+	var err error
+	j.job, err = cron.ClockWithWeekdays(hours, minutes, j.Weekdays, func() {
+		j.Execute()
+	})
 	return err
 }
 
@@ -59,13 +51,7 @@ func (j *Job) Stop() {
 
 //String 任务描述
 func (j *Job) String() string {
-	switch j.Type {
-	case "clock":
-		hours := j.Clock / 60
-		minutes := j.Clock % 60
-		return fmt.Sprintf("%02d:%02d", hours, minutes)
-	case "crontab":
-		return j.Crontab
-	}
-	return ""
+	hours := j.Clock / 60
+	minutes := j.Clock % 60
+	return fmt.Sprintf("%02d:%02d", hours, minutes)
 }

@@ -37,10 +37,7 @@ export class EditPollersComponent implements OnInit, ControlValueAccessor {
 
   buildForm(d: any): void {
     this.formGroup =  this.fb.group({
-          type: [d.type, [Validators.required]],
           interval: [d.interval, [Validators.required]],
-          clock: [d.clock, [Validators.required]],
-          crontab: [d.crontab, [Validators.required]],
           code: [d.code, [Validators.required]],
           address: [d.address, [Validators.required]],
           length: [d.length, [Validators.required]],
@@ -93,10 +90,7 @@ export class EditPollersComponent implements OnInit, ControlValueAccessor {
   edit(data?: any) {
     if (!data) {
       data = {
-        type: 'interval',
         interval: 1000,
-        clock: 0,
-        crontab: '',
         code: '',
         address: '',
         disabled: false,

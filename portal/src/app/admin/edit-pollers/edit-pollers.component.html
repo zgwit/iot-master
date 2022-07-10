@@ -38,26 +38,11 @@
 <nz-modal [(nzVisible)]="showModal" nzTitle="编辑轮询器" (nzOnOk)="onOk()" (nzOnCancel)="showModal=false">
   <ng-container *nzModalContent>
     <form [formGroup]="formGroup">
-      <nz-form-item>
-        <nz-form-label [nzSpan]="5">类型</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <nz-select formControlName="type" nzSize="small">
-            <nz-option nzValue="interval" nzLabel="间隔ms"></nz-option>
-            <nz-option nzValue="clock" nzLabel="定时"></nz-option>
-            <nz-option nzValue="crontab" nzLabel="crontab"></nz-option>
-          </nz-select>
-        </nz-form-control>
-      </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="5">定时</nz-form-label>
+        <nz-form-label [nzSpan]="5">间隔（ms）</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <nz-input-number *ngIf="formGroup.value.type=='interval'" formControlName="interval" [nzStep]="1" nzSize="small"></nz-input-number>
-          <ng-container *ngIf="formGroup.value.type=='interval'">毫秒</ng-container>
-
-          <app-minute-time-picker *ngIf="formGroup.value.type=='clock'"  formControlName="clock" nzSize="small"></app-minute-time-picker>
-
-          <input *ngIf="formGroup.value.type=='crontab'"  nz-input formControlName="crontab" nzSize="small"/>
+          <nz-input-number formControlName="interval" [nzStep]="1" nzSize="small"></nz-input-number>
         </nz-form-control>
       </nz-form-item>
 
