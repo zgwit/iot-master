@@ -90,8 +90,8 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/config", loadConfig)
 	app.POST("/config", saveConfig)
 
-	app.GET("/license", licenseDetail)
-	app.POST("/license", licenseUpdate)
+	//app.GET("/license", licenseDetail)
+	//app.POST("/license", licenseUpdate)
 
 	//用户接口
 	app.GET("/user/me", userMe)
@@ -166,16 +166,25 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/hmi/list", createCurdApiList[model.Hmi]())
 	app.POST("/hmi/create", createCurdApiCreate[model.Hmi](generateUUID, nil))
 	app.GET("/hmi/:id", parseParamStringId, createCurdApiGet[model.Hmi]())
-	app.POST("/hmi/:id", parseParamStringId, createCurdApiModify[model.Hmi](nil, nil,
-		"name", "width", "height", "snap", "entities"))
+	app.POST("/hmi/:id", parseParamStringId, createCurdApiModify[model.Hmi](nil, nil, "name", "version"))
 	app.GET("/hmi/:id/delete", parseParamStringId, createCurdApiDelete[model.Hmi](nil, nil))
-	app.GET("/hmi/:id/export")
+	app.GET("/hmi/:id/manifest", hmiLoad)
+	app.POST("/hmi/:id/manifest", hmiSave)
 
-	//组态的附件
-	app.GET("/hmi/:id/attachment/*name", hmiAttachmentRead)
-	app.POST("/hmi/:id/attachment/*name", hmiAttachmentUpload)
-	app.PATCH("/hmi/:id/attachment/*name", hmiAttachmentRename)
-	app.DELETE("/hmi/:id/attachment/*name", hmiAttachmentDelete)
+	app.GET("/hmi/:id/export", hmiExport)
+	app.POST("/hmi/import") //zip
+
+	//组件
+	app.POST("/component/list", createCurdApiList[model.Component]())
+	app.POST("/component/create", createCurdApiCreate[model.Component](generateUUID, nil))
+	app.GET("/component/:id", parseParamStringId, createCurdApiGet[model.Component]())
+	app.POST("/component/:id", parseParamStringId, createCurdApiModify[model.Component](nil, nil, "name", "group", "version"))
+	app.GET("/component/:id/manifest", componentLoad)
+	app.POST("/component/:id/manifest", componentSave)
+	app.GET("/component/:id/delete", parseParamStringId, createCurdApiDelete[model.Component](nil, nil))
+
+	app.GET("/component/:id/export")
+	app.POST("/component/import") //zip
 
 	//服务器接口
 	app.POST("/server/list", serverList)
@@ -240,7 +249,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/system/cpu", cpuStats)
 	app.GET("/system/memory", memStats)
 	app.GET("/system/disk", diskStats)
-	app.GET("/system/cron")
 	app.GET("/system/protocols", protocolList)
 	app.GET("/system/protocol/:name", protocolDetail)
 	app.GET("/system/serials", serialPortList)

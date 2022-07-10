@@ -8,17 +8,11 @@ import (
 	"strings"
 )
 
-func Zip(srcDir string, destZip string) error {
-	zf, err := os.Create(destZip)
-	if err != nil {
-		return err
-	}
-	defer zf.Close()
-
-	archive := zip.NewWriter(zf)
+func ZipDir(srcDir string, writer io.Writer) error {
+	archive := zip.NewWriter(writer)
 	defer archive.Close()
 
-	err = filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+	return filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -56,11 +50,16 @@ func Zip(srcDir string, destZip string) error {
 		}
 		return nil
 	})
+}
+
+func Zip(srcDir string, destZip string) error {
+	zf, err := os.Create(destZip)
 	if err != nil {
 		return err
 	}
+	defer zf.Close()
 
-	return err
+	return ZipDir(srcDir, zf)
 }
 
 func Unzip(zipFile string, destDir string) error {
