@@ -30,8 +30,8 @@ export class DeviceHmiComponent implements OnInit, OnDestroy {
   }
 
   load() {
-    this.rs.get(`hmi/${this.hmi}`).subscribe(res=>{
-      this.data = res.data
+    this.rs.get(`hmi/${this.hmi}/manifest`).subscribe(res=>{
+      this.data = res
     })
   }
 

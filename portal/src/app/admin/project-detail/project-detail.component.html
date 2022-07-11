@@ -32,6 +32,7 @@
   </nz-tab>
   <nz-tab nzTitle="组态" [nzDisabled]="!data.hmi">
     <ng-template nz-tab>
+      <app-project-hmi [hmi]="data.hmi" [id]="id"></app-project-hmi>
     </ng-template>
   </nz-tab>
   <nz-tab nzTitle="告警记录">

@@ -11,6 +11,7 @@ export class HmiDetailComponent implements OnInit {
   id = '';
   data: any = {};
   loading = false;
+  hmi: any = {};
 
   constructor(private router: ActivatedRoute, private rs: RequestService) {
     this.id = router.snapshot.params['id'];
@@ -25,6 +26,9 @@ export class HmiDetailComponent implements OnInit {
     this.rs.get(`hmi/${this.id}`).subscribe(res=>{
       this.data = res.data;
       this.loading = false;
+    });
+    this.rs.get(`hmi/${this.id}/manifest`).subscribe(res=>{
+      this.hmi = res;
     });
   }
 }

@@ -7,15 +7,10 @@
       <nz-list-item><span>名称</span>{{data.name}}</nz-list-item>
       <nz-list-item><span>版本</span>{{data.version}}</nz-list-item>
       <nz-list-item><span>创建时间</span>{{data.created|dateString}}</nz-list-item>
+      <nz-list-item><span>导出</span><a [href]="'/api/component/'+id+'/export'" target="_blank">下载</a></nz-list-item>
+      <nz-list-item><span>编辑器</span><a [routerLink]="'/admin/component-edit/'+id">编辑</a></nz-list-item>
     </nz-list>
 
-    <a [href]="'/api/component/'+id+'/export'" target="_blank">下载</a>
-
-    <a [routerLink]="'/admin/component-edit/'+id">编辑组件</a>
-
-    <!--    <div [app-html]="data.snap"></div>-->
-
-    <hmi-viewer [hmi]="data"></hmi-viewer>
 
   </nz-tab>
   <nz-tab nzTitle="相关组态" nzDisabled>
