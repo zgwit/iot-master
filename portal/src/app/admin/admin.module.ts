@@ -136,6 +136,7 @@ import {HmiEditComponent} from './hmi-edit/hmi-edit.component';
 import {ComponentEditComponent} from './component-edit/component-edit.component';
 import {ComponentEditContentComponent} from './component-edit-content/component-edit-content.component';
 import { ComponentDetailComponent } from './component-detail/component-detail.component';
+import { ImportComponent } from './import/import.component';
 
 @NgModule({
   declarations: [
@@ -174,7 +175,7 @@ import { ComponentDetailComponent } from './component-detail/component-detail.co
     PromptComponent,
     ChooseTemplateComponent, ChooseProductComponent, ChooseHmiComponent,
     ChooseDeviceComponent, ChooseTunnelComponent,
-    LicenseComponent, ActiveComponent, ComponentDetailComponent,
+    LicenseComponent, ActiveComponent, ComponentDetailComponent, ImportComponent,
   ],
   imports: [
     CommonModule,

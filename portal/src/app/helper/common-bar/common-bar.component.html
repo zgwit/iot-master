@@ -25,7 +25,7 @@
 
   </form>
 
-  <nz-radio-group class="view" (change)="onViewChange($event)" [hidden]="noCreate!==false"
+  <nz-radio-group class="view" (change)="onViewChange($event)" [hidden]="noView!==false"
                   [(ngModel)]="view"
                   [ngModelOptions]="{standalone: true}"
                   (ngModelChange)="onViewChange($event)"
