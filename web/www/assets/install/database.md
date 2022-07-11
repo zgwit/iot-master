@@ -5,5 +5,5 @@
 | 类型| 地址示例 |
 |----|----|
 |SQLite| sqlite.db|
-|MySQL |root:123@/test?charset=utf8|
+|MySQL |root:123@tcp(ip:port)/test?charset=utf8 |
 |PostgreSQL| postgres://pqgotest:password@localhost/pqgotest?sslmode=verify-full|
