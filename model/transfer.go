@@ -10,7 +10,7 @@ type Transfer struct {
 	Disabled bool      `json:"disabled"`
 	Updated  time.Time `json:"updated" xorm:"updated"`
 	Created  time.Time `json:"created" xorm:"created"`
-	Deleted  time.Time `json:"-" xorm:"deleted"`
+	//Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
 type TransferEx struct {

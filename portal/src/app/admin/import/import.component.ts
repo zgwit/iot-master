@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NzUploadChangeParam} from "ng-zorro-antd/upload";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-import',
@@ -8,8 +9,10 @@ import {NzUploadChangeParam} from "ng-zorro-antd/upload";
 })
 export class ImportComponent implements OnInit {
   @Input() action: string = ''
+  @Input() type: string = '.zip'
+  @Input() accept: string = '.zip'
 
-  constructor() {
+  constructor(private ms: NzMessageService) {
   }
 
   ngOnInit(): void {
@@ -17,6 +20,11 @@ export class ImportComponent implements OnInit {
 
   uploadChange($event: NzUploadChangeParam) {
     console.log($event)
+    if ($event.type == "success") {
+      if ($event.file.response?.error) {
+        this.ms.error($event.file.response.error)
+      }
+    }
 
   }
 }

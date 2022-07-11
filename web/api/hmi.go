@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/mod/semver"
 	"io"
 	"io/fs"
 	"iot-master/config"
@@ -54,7 +55,7 @@ func hmiExport(ctx *gin.Context) {
 
 	ctx.Header("Content-Type", `application/x-zip-compressed`)
 	ctx.Header("Content-Disposition", `attachment; filename="`+id+`.zip"`)
-	//err := lib.ZipDir(dir, ctx.Writer)
+	//err := lib.ZipIntoWriter(dir, ctx.Writer)
 
 	zipper := lib.NewZipper(ctx.Writer)
 	defer zipper.Close()
@@ -67,7 +68,6 @@ func hmiExport(ctx *gin.Context) {
 	}
 
 	buf, err := json.Marshal(&obj)
-
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -88,4 +88,75 @@ func hmiExport(ctx *gin.Context) {
 		return
 	}
 	//replyOk(ctx, nil)
+}
+
+func hmiImport(ctx *gin.Context) {
+	//解析Body
+	file, header, err := ctx.Request.FormFile("file")
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	defer file.Close()
+
+	tempDir := filepath.Join(os.TempDir(), lib.RandomString(40))
+	err = lib.Unzip(file, header.Size, tempDir)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	filename := filepath.Join(tempDir, "manifest.json")
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		replyFail(ctx, "找不到入口文件")
+		return
+	}
+
+	var manifest model.Manifest[model.Hmi]
+	err = json.Unmarshal(data, &manifest)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	if manifest.Type != "hmi" {
+		_ = os.RemoveAll(tempDir)
+		replyFail(ctx, "不是组态文件")
+		return
+	}
+	_ = os.Remove(filename)
+
+	hmi := manifest.Model
+	dir := filepath.Join(config.Config.Data, "hmi", hmi.Id)
+
+	//删除已经存在的目录
+	var old model.Hmi
+	has, err := db.Engine.ID(hmi.Id).Get(&old)
+	if has && err == nil {
+		//版本比较，新版本取代旧版本
+		if semver.Compare(hmi.Version, old.Version) > 0 {
+			_, _ = db.Engine.ID(hmi.Id).Delete(&old)
+		} else {
+			replyFail(ctx, "已经存在，如果需要更新，请删除")
+			return
+		}
+	}
+
+	_, err = db.Engine.InsertOne(hmi)
+	if err != nil {
+		_ = os.RemoveAll(tempDir)
+		replyError(ctx, err)
+		return
+	}
+
+	_ = os.RemoveAll(dir)
+	err = os.Rename(tempDir, dir)
+	if err != nil {
+		_ = os.RemoveAll(tempDir)
+		replyError(ctx, err)
+		return
+	}
+
+	replyOk(ctx, hmi)
 }

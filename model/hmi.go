@@ -9,7 +9,7 @@ type Component struct {
 	Version string    `json:"version"` //semver
 	Updated time.Time `json:"updated" xorm:"updated"`
 	Created time.Time `json:"created" xorm:"created"`
-	Deleted time.Time `json:"-" xorm:"deleted"`
+	//Deleted time.Time `json:"-" xorm:"deleted"`
 }
 
 type Hmi struct {
@@ -18,5 +18,5 @@ type Hmi struct {
 	Version string    `json:"version"`
 	Updated time.Time `json:"updated" xorm:"updated"`
 	Created time.Time `json:"created" xorm:"created"`
-	Deleted time.Time `json:"-" xorm:"deleted"`
+	//Deleted time.Time `json:"-" xorm:"deleted"`
 }

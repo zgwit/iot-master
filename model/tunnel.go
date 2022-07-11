@@ -29,7 +29,7 @@ type Tunnel struct {
 	Last     time.Time `json:"last"`
 	Updated  time.Time `json:"updated" xorm:"updated"`
 	Created  time.Time `json:"created" xorm:"created"`
-	Deleted  time.Time `json:"-" xorm:"deleted"`
+	//Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
 type DefaultDevice struct {

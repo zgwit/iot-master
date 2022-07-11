@@ -3,6 +3,8 @@ import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {Router} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {parseTableQuery} from "../table";
+import {ImportComponent} from "../import/import.component";
+import {NzModalService} from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'app-component',
@@ -19,7 +21,7 @@ export class ComponentComponent implements OnInit {
 
   params: any = {filter: {}};
 
-  constructor(private router: Router, private rs: RequestService) {
+  constructor(private router: Router, private rs: RequestService, private ms: NzModalService) {
   }
 
   ngOnInit(): void {
@@ -64,5 +66,15 @@ export class ComponentComponent implements OnInit {
     this.rs.get(`component/${data.id}/delete`).subscribe(res=>{
       this.datum.splice(i, 1);
     });
+  }
+
+  import() {
+    this.ms.create({
+      nzTitle: "导入组件",
+      nzContent: ImportComponent,
+      nzComponentParams: {
+        action: "/api/component/import"
+      }
+    })
   }
 }

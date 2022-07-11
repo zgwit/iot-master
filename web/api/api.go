@@ -174,7 +174,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/hmi/:id/manifest", hmiSave)
 
 	app.GET("/hmi/:id/export", hmiExport)
-	app.POST("/hmi/import") //zip
+	app.POST("/hmi/import", hmiImport) //zip
 
 	//组件
 	app.POST("/component/list", createCurdApiList[model.Component]())
@@ -186,7 +186,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/component/:id/delete", parseParamStringId, createCurdApiDelete[model.Component](nil, nil))
 
 	app.GET("/component/:id/export", componentExport)
-	app.POST("/component/import") //zip
+	app.POST("/component/import", componentImport) //zip
 
 	//服务器接口
 	app.POST("/server/list", serverList)

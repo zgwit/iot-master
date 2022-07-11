@@ -23,6 +23,8 @@
       <i nz-icon nzType="close" *ngIf="keyword" (click)="keyword=''; search.emit(keyword)"></i>
     </ng-template>
 
+    <ng-content *nzSpaceItem></ng-content>
+
   </form>
 
   <nz-radio-group class="view" (change)="onViewChange($event)" [hidden]="noView!==false"

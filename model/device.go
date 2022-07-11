@@ -17,7 +17,7 @@ type Product struct {
 
 	Updated time.Time `json:"updated" xorm:"updated"`
 	Created time.Time `json:"created" xorm:"created"`
-	Deleted time.Time `json:"-" xorm:"deleted"`
+	//Deleted time.Time `json:"-" xorm:"deleted"`
 }
 
 type DeviceContent struct {
@@ -46,7 +46,7 @@ type Device struct {
 	Disabled bool      `json:"disabled"`
 	Updated  time.Time `json:"updated" xorm:"updated"`
 	Created  time.Time `json:"created" xorm:"created"`
-	Deleted  time.Time `json:"-" xorm:"deleted"`
+	//Deleted  time.Time `json:"-" xorm:"deleted"`
 }
 
 type DeviceEx struct {

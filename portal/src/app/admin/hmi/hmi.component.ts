@@ -3,6 +3,8 @@ import {NzTableQueryParams} from "ng-zorro-antd/table";
 import {Router} from "@angular/router";
 import {RequestService} from "../../request.service";
 import {parseTableQuery} from "../table";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {ImportComponent} from "../import/import.component";
 
 @Component({
   selector: 'app-hmi',
@@ -19,7 +21,7 @@ export class HmiComponent implements OnInit {
 
   params: any = {filter: {}};
 
-  constructor(private router: Router, private rs: RequestService) {
+  constructor(private router: Router, private rs: RequestService, private ms: NzModalService) {
   }
 
   ngOnInit(): void {
@@ -64,5 +66,15 @@ export class HmiComponent implements OnInit {
     this.rs.get(`hmi/${data.id}/delete`).subscribe(res=>{
       this.datum.splice(i, 1);
     });
+  }
+
+  import() {
+    this.ms.create({
+      nzTitle: "导入组态",
+      nzContent: ImportComponent,
+      nzComponentParams: {
+        action: "/api/hmi/import"
+      }
+    })
   }
 }
