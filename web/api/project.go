@@ -174,3 +174,75 @@ func projectWatch(ctx *gin.Context) {
 		watchAllEvents(ws, project)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
 }
+
+func projectTargets(ctx *gin.Context) {
+	var project model.Project
+	has, err := db.Engine.ID(ctx.GetInt64("id")).Cols("devices").Get(&project)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	} else if !has {
+		replyFail(ctx, "记录不存在")
+		return
+	}
+
+	set := make(map[string]bool)
+	for _, d := range project.Devices {
+		set[d.Name] = true
+
+		var dev model.Device
+		has, err = db.Engine.ID(d.Id).Cols("product_id", "tags").Get(&dev)
+		if has && err == nil {
+			//查询产品
+			if dev.ProductId != "" {
+				var p model.Product
+				has, err = db.Engine.ID(dev.ProductId).Cols("tags").Get(&p)
+				if has && err == nil {
+					dev.Tags = p.Tags
+				}
+			}
+			for _, t := range dev.Tags {
+				set[t] = true
+			}
+		}
+	}
+
+	targets := make([]string, 0)
+	for k, _ := range set {
+		targets = append(targets, k)
+	}
+
+	replyOk(ctx, targets)
+}
+
+func templateTargets(ctx *gin.Context) {
+	var template model.Template
+	has, err := db.Engine.ID(ctx.GetInt64("id")).Cols("products").Get(&template)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	} else if !has {
+		replyFail(ctx, "记录不存在")
+		return
+	}
+
+	set := make(map[string]bool)
+	for _, d := range template.Products {
+		set[d.Name] = true
+
+		var dev model.Device
+		has, err = db.Engine.ID(d.Id).Cols("tags").Get(&dev)
+		if has && err == nil {
+			for _, t := range dev.Tags {
+				set[t] = true
+			}
+		}
+	}
+
+	targets := make([]string, 0)
+	for k, _ := range set {
+		targets = append(targets, k)
+	}
+
+	replyOk(ctx, targets)
+}

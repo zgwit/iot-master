@@ -119,6 +119,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/project/:id/context", parseParamId, projectContext)
 	app.POST("/project/:id/context", parseParamId, projectContextUpdate)
 	app.GET("/project/:id/watch", parseParamId, projectWatch)
+	//app.GET("/project/:id/targets", parseParamId, projectTargets)
 
 	//模板接口
 	app.POST("/template/list", createCurdApiList[model.Template]())
@@ -127,6 +128,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/template/:id", parseParamStringId, createCurdApiModify[model.Template](nil, nil,
 		"name", "info", "products", "hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"))
 	app.GET("/template/:id/delete", parseParamStringId, createCurdApiDelete[model.Template](nil, nil))
+	//app.GET("/template/:id/targets", parseParamId, templateTargets)
 
 	//设备接口
 	app.POST("/device/list", deviceList)
