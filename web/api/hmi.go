@@ -59,12 +59,14 @@ func hmiExport(ctx *gin.Context) {
 	zipper := lib.NewZipper(ctx.Writer)
 	defer zipper.Close()
 
-	buf, err := json.Marshal(gin.H{
-		"type":  "hmi",
-		"model": &hmi,
-		"node":  config.Config.Node,
-		"time":  time.Now(),
-	})
+	obj := model.Manifest[model.Hmi]{
+		Type:  "hmi",
+		Node:  config.Config.Node,
+		Time:  time.Now(),
+		Model: &hmi,
+	}
+
+	buf, err := json.Marshal(&obj)
 
 	if err != nil {
 		replyError(ctx, err)
