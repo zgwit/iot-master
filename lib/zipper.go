@@ -56,7 +56,7 @@ func (z *Zipper) CompressFileWithInfo(filename string, base string, info os.File
 		return err
 	}
 
-	return nil
+	return z.archive.Flush()
 }
 
 func (z *Zipper) CompressFileWithInfoAndReader(name string, info os.FileInfo, reader io.Reader) error {
@@ -78,7 +78,7 @@ func (z *Zipper) CompressFileWithInfoAndReader(name string, info os.FileInfo, re
 		return err
 	}
 
-	return nil
+	return z.archive.Flush()
 }
 
 func (z *Zipper) CompressFileInfoAndContent(name string, info os.FileInfo, data []byte) error {
@@ -100,7 +100,7 @@ func (z *Zipper) CompressFileInfoAndContent(name string, info os.FileInfo, data 
 		return err
 	}
 
-	return nil
+	return z.archive.Flush()
 }
 
 func (z *Zipper) CompressDir(dir string) error {

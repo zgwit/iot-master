@@ -84,10 +84,10 @@ func componentExport(ctx *gin.Context) {
 
 	dir := filepath.Join(config.Config.Data, "component", id)
 	err = zipper.CompressDir(dir)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
+	//if err != nil {
+	//	replyError(ctx, err)
+	//	return
+	//}
 	//replyOk(ctx, nil)
 }
 
