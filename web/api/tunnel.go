@@ -113,10 +113,21 @@ func tunnelClose(ctx *gin.Context) {
 func tunnelWatch(ctx *gin.Context) {
 	tunnel := master.GetTunnel(ctx.GetInt64("id"))
 	if tunnel == nil {
-		replyFail(ctx, "找不到链接")
+		replyFail(ctx, "找不到通道")
 		return
 	}
 	websocket.Handler(func(ws *websocket.Conn) {
 		watchAllEvents(ws, tunnel.Instance)
+	}).ServeHTTP(ctx.Writer, ctx.Request)
+}
+
+func tunnelTransfer(ctx *gin.Context) {
+	tunnel := master.GetTunnel(ctx.GetInt64("id"))
+	if tunnel == nil {
+		replyFail(ctx, "找不到通道")
+		return
+	}
+	websocket.Handler(func(ws *websocket.Conn) {
+		tunnel.Instance.Pipe(ws)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
 }

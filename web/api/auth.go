@@ -8,7 +8,7 @@ import (
 	"iot-master/model"
 )
 
-var tokens lib.ExpireCache
+var tokens = lib.ExpireCache{Timeout: 60 * 60 * 2} //2h 可以改成配置
 
 type authObj struct {
 	Username string `json:"username"`

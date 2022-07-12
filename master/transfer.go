@@ -47,7 +47,7 @@ func (t *Transfer) Open() error {
 			if err != nil {
 				break
 			}
-			tunnel.Instance.Pipe(t.conn)
+			go tunnel.Instance.Pipe(t.conn)
 		}
 		t.running = false
 	}()

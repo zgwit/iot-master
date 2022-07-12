@@ -215,6 +215,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/tunnel/:id/enable", parseParamId, createCurdApiDisable[model.Tunnel](false, nil, afterTunnelEnable))
 	app.GET("/tunnel/:id/disable", parseParamId, createCurdApiDisable[model.Tunnel](true, nil, afterTunnelDisable))
 	app.GET("/tunnel/:id/watch", parseParamId, tunnelWatch)
+	app.GET("/tunnel/:id/transfer", parseParamId, tunnelTransfer)
 
 	//事件接口
 	app.POST("/event/list", createCurdApiList[model.Event]())
