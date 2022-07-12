@@ -118,22 +118,23 @@ func (l *tunnelBase) Pipe(pipe io.ReadWriteCloser) {
 		return
 	}
 
-	go func() {
-		buf := make([]byte, 1024)
-		for {
-			n, err := pipe.Read(buf)
-			if err != nil {
-				//pipe关闭，则不再透传
-				break
+	buf := make([]byte, 1024)
+	for {
+		n, err := pipe.Read(buf)
+		if err != nil {
+			if err == io.EOF {
+				continue
 			}
-			//将收到的数据转发出去
-			n, err = l.link.Write(buf[:n])
-			if err != nil {
-				//发送失败，说明连接失效
-				_ = pipe.Close()
-				break
-			}
+			//pipe关闭，则不再透传
+			break
 		}
-		l.pipe = nil
-	}()
+		//将收到的数据转发出去
+		n, err = l.link.Write(buf[:n])
+		if err != nil {
+			//发送失败，说明连接失效
+			_ = pipe.Close()
+			break
+		}
+	}
+	l.pipe = nil
 }

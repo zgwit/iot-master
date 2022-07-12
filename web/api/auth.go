@@ -49,7 +49,7 @@ func auth(ctx *gin.Context) {
 		if dp == "" {
 			dp = "123456"
 		}
-		obj.Password = dp
+		obj.Password = md5hash(dp)
 	}
 
 	if obj.Password != password {

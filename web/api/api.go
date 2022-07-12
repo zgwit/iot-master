@@ -61,8 +61,8 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	app.GET("/info", info)
 
+	app.GET("/auth", auth)
 	app.POST("/login", login)
-	app.POST("/auth", auth)
 
 	//安装的接口
 	if !config.Existing() {

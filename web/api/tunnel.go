@@ -128,6 +128,8 @@ func tunnelTransfer(ctx *gin.Context) {
 		return
 	}
 	websocket.Handler(func(ws *websocket.Conn) {
+		ws.PayloadType = websocket.BinaryFrame
+
 		tunnel.Instance.Pipe(ws)
 	}).ServeHTTP(ctx.Writer, ctx.Request)
 }
