@@ -122,9 +122,9 @@ func (l *tunnelBase) Pipe(pipe io.ReadWriteCloser) {
 	for {
 		n, err := pipe.Read(buf)
 		if err != nil {
-			if err == io.EOF {
-				continue
-			}
+			//if err == io.EOF {
+			//	continue
+			//}
 			//pipe关闭，则不再透传
 			break
 		}
