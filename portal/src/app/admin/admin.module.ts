@@ -137,6 +137,8 @@ import {ComponentEditComponent} from './component-edit/component-edit.component'
 import {ComponentEditContentComponent} from './component-edit-content/component-edit-content.component';
 import { ComponentDetailComponent } from './component-detail/component-detail.component';
 import { ImportComponent } from './import/import.component';
+import {EditValidatorsComponent} from "./edit-validators/edit-validators.component";
+import {NzAutocompleteModule} from "ng-zorro-antd/auto-complete";
 
 @NgModule({
   declarations: [
@@ -165,7 +167,7 @@ import { ImportComponent } from './import/import.component';
     EditPointsComponent, EditPollersComponent, EditJobsComponent, EditStrategiesComponent,
     EditDevicesComponent, EditProductsComponent, EditAlarmsComponent,
     EditCalculatorsComponent, EditCommandsComponent, EditAggregatorsComponent,
-    EditDirectivesComponent, EditInvokesComponent,
+    EditDirectivesComponent, EditInvokesComponent, EditValidatorsComponent,
     EventComponent, AlarmComponent,
     PluginComponent,
     ProtocolComponent,
@@ -225,6 +227,7 @@ import { ImportComponent } from './import/import.component';
     NzPopoverModule,
     NzPaginationModule,
     NzEmptyModule,
+    NzAutocompleteModule,
   ],
   bootstrap: [AdminComponent],
   providers: [ChooseService]

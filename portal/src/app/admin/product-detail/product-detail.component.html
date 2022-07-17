@@ -104,7 +104,7 @@
       </nz-collapse-panel>
 
       <nz-collapse-panel nzHeader="数据检查" nzActive>
-        <nz-table #alarmsTable nzSize="small" [nzData]="data.alarms" [nzFrontPagination]="false">
+        <nz-table #alarmsTable nzSize="small" [nzData]="data.validators" [nzFrontPagination]="false">
           <thead>
           <tr>
             <th>名称</th>
@@ -121,7 +121,12 @@
           <tbody>
           <tr *ngFor="let data of alarmsTable.data; let i=index">
             <td>{{ data.name }}</td>
-            <td>{{ data.condition }}</td>
+            <td>
+              {{ data.value }}
+              {{ data.compare }}
+              {{ data.value1 }}
+              {{ data.value2 }}
+            </td>
             <td>{{ data.delay }}</td>
             <td>{{ data.reset_timeout }}</td>
             <td>{{ data.reset_total }}</td>

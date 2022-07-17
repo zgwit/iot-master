@@ -8,7 +8,7 @@
        *ngFor="let data of items; let i=index" cdkDrag>
     <nz-card nzSize="small" [nzTitle]="data.name" nzHoverable [nzExtra]="extraTemplate" (click)="edit(data)">
       <p>
-        {{data.condition}}
+        {{data.value}} {{data.compare}} {{data.value1}} {{data.value2}}
         <span *ngIf="data.delay">延迟{{data.delay}}ms</span>
         <span *ngIf="data.disabled">禁用</span>
       </p>
@@ -31,7 +31,8 @@
         <i nz-icon nzType="copy" nzTheme="outline"></i>
       </a>
       <nz-divider nzType="vertical"></nz-divider>
-      <a title="删除" nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="remove(i)" (click)="$event.stopPropagation()">
+      <a title="删除" nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="remove(i)"
+         (click)="$event.stopPropagation()">
         <i nz-icon nzType="delete" nzTheme="outline"></i>
       </a>
     </ng-template>
@@ -42,16 +43,45 @@
   <ng-container *nzModalContent>
     <form [formGroup]="formGroup">
       <nz-form-item>
-        <nz-form-label [nzSpan]="5">名称</nz-form-label>
+        <nz-form-label [nzSpan]="5">变量</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="name" required/>
+          <input nz-input formControlName="value" [nzAutocomplete]="auto"/>
+          <nz-autocomplete #auto [compareWith]="compareFun">
+            <nz-auto-option *ngFor="let pt of points" [nzValue]="pt.name" [nzLabel]="pt.name">
+              {{pt.name}} - {{ pt.label }}
+            </nz-auto-option>
+          </nz-autocomplete>
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">对比</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-select formControlName="compare" nzSize="small" required>
+            <nz-option nzValue="=" nzLabel="等于"></nz-option>
+            <nz-option nzValue="!=" nzLabel="不等于"></nz-option>
+            <nz-option nzValue="<" nzLabel="小于"></nz-option>
+            <nz-option nzValue="<=" nzLabel="不大于"></nz-option>
+            <nz-option nzValue=">" nzLabel="大于"></nz-option>
+            <nz-option nzValue=">=" nzLabel="不小于"></nz-option>
+            <nz-option nzValue="><" nzLabel="之间"></nz-option>
+            <nz-option nzValue="<>" nzLabel="之外"></nz-option>
+          </nz-select>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSpan]="5">条件</nz-form-label>
+        <nz-form-label [nzSpan]="5">值1</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="condition" required/>
+          <nz-input-number formControlName="value1"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="formGroup.value.compare=='><' || formGroup.value.compare=='<>'">
+        <nz-form-label [nzSpan]="5">值2</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzErrorTip="">
+          <nz-input-number formControlName="value2"></nz-input-number>
         </nz-form-control>
       </nz-form-item>
 

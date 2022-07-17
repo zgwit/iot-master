@@ -58,21 +58,21 @@
       <nz-form-item>
         <nz-form-label [nzSpan]="5">延迟ms</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="delay" required/>
+          <nz-input-number formControlName="delay"></nz-input-number>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">超时重置ms</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="reset_timeout" required/>
+          <nz-input-number formControlName="reset_timeout"></nz-input-number>
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
         <nz-form-label [nzSpan]="5">超时重置次数</nz-form-label>
         <nz-form-control [nzSpan]="12" nzErrorTip="">
-          <input nz-input formControlName="reset_total" required/>
+          <nz-input-number formControlName="reset_total"></nz-input-number>
         </nz-form-control>
       </nz-form-item>
 

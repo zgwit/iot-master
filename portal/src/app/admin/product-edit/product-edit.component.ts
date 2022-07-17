@@ -32,17 +32,19 @@ export class ProductEditComponent implements OnInit {
     "commands": [],
     "pollers": [],
     "calculators": [],
-    "alarms": [],
+    "validators": [],
   }
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private rs: RequestService, private message: NzMessageService) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
+    else this.data.id = cryptoRandomString({length: 20, type: 'alphanumeric'})
     this.buildForm();
   }
 
   buildForm(): void {
     this.basicForm = this.fb.group({
+      id: [this.data.id, [Validators.required]],
       name: [this.data.name, [Validators.required]],
       hmi: [this.data.hmi, []],
       tags: [this.data.tags, []],
@@ -54,7 +56,7 @@ export class ProductEditComponent implements OnInit {
       commands: [this.data.commands || []],
       pollers: [this.data.pollers || []],
       calculators: [this.data.calculators || []],
-      alarms: [this.data.alarms || []],
+      validators: [this.data.validators || []],
     });
   }
 
@@ -72,8 +74,6 @@ export class ProductEditComponent implements OnInit {
   submit(): void {
     this.submitting = true
     const data = this.basicForm.value;
-    //生成随机ID
-    if (!data.id) data.id = cryptoRandomString({length: 20, type: 'alphanumeric'})
     const uri = this.id ? 'product/' + this.id : 'product/create';
     this.rs.post(uri, data).subscribe(res => {
       this.message.success("提交成功");

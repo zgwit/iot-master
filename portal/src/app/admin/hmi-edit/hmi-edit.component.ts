@@ -28,7 +28,7 @@ export class HmiEditComponent implements OnInit {
               private rs: RequestService,
               private message: NzMessageService,
               private ms: NzModalService,
-              ) {
+  ) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
     else this.data.id = cryptoRandomString({length: 20, type: 'alphanumeric'})
@@ -38,7 +38,7 @@ export class HmiEditComponent implements OnInit {
 
   buildForm(): void {
     this.basicForm = this.fb.group({
-    id: [this.data.id, []],
+      id: [this.data.id, []],
       name: [this.data.name, [Validators.required]],
       version: [this.data.version, [Validators.required]],
     });
@@ -64,7 +64,7 @@ export class HmiEditComponent implements OnInit {
 
       this.ms.confirm({
         nzContent: "现在编辑组态？",
-        nzOnOk: ()=>{
+        nzOnOk: () => {
           this.router.navigate(['/admin/hmi-edit/' + res.data.id]);
         }
       })

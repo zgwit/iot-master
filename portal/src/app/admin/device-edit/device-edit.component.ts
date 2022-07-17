@@ -55,7 +55,7 @@ export class DeviceEditComponent implements OnInit {
       pollers: [this.data.pollers || []],
       commands: [this.data.commands || []],
       calculators: [this.data.calculators || []],
-      alarms: [this.data.alarms || []],
+      validators: [this.data.validators || []],
     });
   }
 

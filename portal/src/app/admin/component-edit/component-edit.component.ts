@@ -29,7 +29,7 @@ export class ComponentEditComponent implements OnInit {
               private rs: RequestService,
               private message: NzMessageService,
               private ms: NzModalService,
-              ) {
+  ) {
     this.id = route.snapshot.paramMap.get('id');
     if (this.id) this.load();
     else this.data.id = cryptoRandomString({length: 20, type: 'alphanumeric'})
@@ -39,7 +39,7 @@ export class ComponentEditComponent implements OnInit {
 
   buildForm(): void {
     this.basicForm = this.fb.group({
-    id: [this.data.id, []],
+      id: [this.data.id, []],
       group: [this.data.group, [Validators.required]],
       name: [this.data.name, [Validators.required]],
       version: [this.data.version, [Validators.required]],
@@ -66,7 +66,7 @@ export class ComponentEditComponent implements OnInit {
 
       this.ms.confirm({
         nzContent: "现在编辑组件？",
-        nzOnOk: ()=>{
+        nzOnOk: () => {
           this.router.navigate(['/admin/component-edit/' + res.data.id]);
         }
       })
