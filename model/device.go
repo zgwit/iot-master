@@ -27,7 +27,8 @@ type DeviceContent struct {
 	Pollers     []*Poller     `json:"pollers"`
 	Calculators []*Calculator `json:"calculators"`
 	Commands    []*Command    `json:"commands"`
-	Alarms      []*Alarm      `json:"alarms"`
+	Validators  []*Validator  `json:"validators"`
+	//Alarms      []*Alarm      `json:"alarms"`
 }
 
 //Device 设备

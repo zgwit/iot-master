@@ -21,9 +21,9 @@ type Device struct {
 
 	Context map[string]interface{}
 
-	points  []*Point
-	pollers []*Poller
-	alarms  []*Alarm
+	points     []*Point
+	pollers    []*Poller
+	validators []*Validator
 
 	//命令索引
 	commandIndex map[string]*model.Command
@@ -40,7 +40,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 		Context:      make(map[string]interface{}),
 		commandIndex: make(map[string]*model.Command, 0),
 		pollers:      make([]*Poller, 0),
-		alarms:       make([]*Alarm, 0),
+		validators:   make([]*Validator, 0),
 	}
 	var err error
 
@@ -89,7 +89,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 		}
 	}
 
-	err = dev.initAlarms()
+	err = dev.initValidators()
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +142,7 @@ func (dev *Device) onData(data map[string]interface{}) {
 	}
 
 	//处理策略
-	for _, alarm := range dev.alarms {
+	for _, alarm := range dev.validators {
 		err := alarm.Execute(dev.Context)
 		if err != nil {
 			dev.Emit("error", err)
@@ -162,17 +162,12 @@ func (dev *Device) onData(data map[string]interface{}) {
 	}
 }
 
-func (dev *Device) initAlarms() error {
-	if dev.Alarms == nil {
+func (dev *Device) initValidators() error {
+	if dev.Validators == nil {
 		return nil
 	}
-	for _, v := range dev.Alarms {
-		a := &Alarm{Alarm: *v}
-		err := a.Init()
-		if err != nil {
-			return err
-		}
-
+	for _, v := range dev.Validators {
+		a := &Validator{Validator: *v}
 		a.On("alarm", func(alarm *model.AlarmContent) {
 			da := &model.DeviceAlarm{DeviceId: dev.Id, AlarmContent: *alarm}
 
@@ -183,7 +178,7 @@ func (dev *Device) initAlarms() error {
 			//上报
 			dev.Emit("alarm", da)
 		})
-		dev.alarms = append(dev.alarms, a)
+		dev.validators = append(dev.validators, a)
 	}
 	return nil
 }
