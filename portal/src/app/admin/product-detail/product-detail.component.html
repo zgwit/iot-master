@@ -97,7 +97,12 @@
           <tbody>
           <tr *ngFor="let data of commandsTable.data; let i=index">
             <td>{{ data.name }}</td>
-            <td>{{ data.directives }}</td>
+            <td>
+              <div *ngFor="let d of data.directives">
+                {{d.point}} = {{d.expression || d.value}}
+                <span *ngIf="d.delay">延迟{{d.delay}}ms</span>
+              </div>
+            </td>
           </tr>
           </tbody>
         </nz-table>
@@ -107,7 +112,6 @@
         <nz-table #alarmsTable nzSize="small" [nzData]="data.validators" [nzFrontPagination]="false">
           <thead>
           <tr>
-            <th>名称</th>
             <th>条件</th>
             <th>延迟</th>
             <th>超时重置</th>
@@ -120,7 +124,6 @@
           </thead>
           <tbody>
           <tr *ngFor="let data of alarmsTable.data; let i=index">
-            <td>{{ data.name }}</td>
             <td>
               {{ data.value }}
               {{ data.compare }}
