@@ -6,7 +6,7 @@
 
 **开源不易，加个星再走！！！**
 
-![公众号](https://iot-master.com/wxofficial.jpg)
+![公众号](https://iot-master.com/weixin.jpg)
 
 ### [说明文档](https://docs.iot-master.com/)  [在线演示demo](http://demo.iot-master.com:8080/) 用户名 admin 密码 123456
 
