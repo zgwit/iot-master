@@ -90,12 +90,6 @@
 > 8. 等等
 
 
-## 案例
-
-![案例](https://iot-master.com/ppt/08.jpg)
-
-![案例](https://iot-master.com/ppt/09.jpg)
-
 ## 联系方式
 
 - 邮箱：[jason@zgwit.com](mailto:jason@zgwit.com)
