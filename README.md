@@ -8,7 +8,7 @@
 
 ![公众号](https://iot-master.com/weixin.jpg)
 
-### [说明文档](https://docs.iot-master.com/)  [在线演示demo](http://demo.iot-master.com:8080/) 用户名 admin 密码 123456
+### [说明文档](https://iot-master.com/manual)  [在线演示demo](http://demo.iot-master.com:8080/) 用户名 admin 密码 123456
 
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
