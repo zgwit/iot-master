@@ -18,7 +18,4 @@ type Log struct {
 var LogDefault = Log{
 	Level: "error",
 	Text:  false,
-	Output: LogOutput{
-		Filename: "log.txt",
-	},
 }
