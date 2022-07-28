@@ -101,6 +101,7 @@ func Serve(cfg *config.Web) {
 	//	log.Fatal("HTTP 服务启动错误", err)
 	//}
 
+	log.Println("Web服务启动", cfg.Addr)
 	server = &http.Server{
 		Addr:    resolvePort(cfg.Addr),
 		Handler: app,
