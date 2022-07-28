@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/kardianos/service"
-	"iot-master/active"
 	"iot-master/args"
 	"iot-master/camera"
 	"iot-master/config"
@@ -158,12 +157,6 @@ func originMain() {
 			log.Fatal(err)
 		}
 		defer camera.Stop()
-	}
-
-	//加载授权
-	err = active.Load()
-	if err != nil {
-		log.Fatal(err)
 	}
 
 	//判断是否开启Web

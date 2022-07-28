@@ -20,7 +20,6 @@ require (
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/sirupsen/logrus v1.8.1
 	github.com/super-l/machine-code v0.0.0-20210720085303-62525d58dab0
-	github.com/zgwit/go-license v1.0.0
 	go.bug.st/serial v1.3.5
 	golang.org/x/mod v0.3.0
 	golang.org/x/net v0.0.0-20220614195744-fb05da6f9022

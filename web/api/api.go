@@ -90,9 +90,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/config", loadConfig)
 	app.POST("/config", saveConfig)
 
-	//app.GET("/license", licenseDetail)
-	//app.POST("/license", licenseUpdate)
-
 	//用户接口
 	app.GET("/user/me", userMe)
 	app.POST("/user/list", createCurdApiList[model.User]())
