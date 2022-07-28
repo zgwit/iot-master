@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/kardianos/service"
 	"iot-master/active"
 	"iot-master/args"
@@ -15,6 +16,17 @@ import (
 	"os/signal"
 	"syscall"
 )
+
+const banner = `
+###        #######       #     #                                   
+ #            #          ##   ##   ##    ####  ##### ###### #####  
+ #    ####    #          # # # #  #  #  #        #   #      #    # 
+ #   #    #   #   #####  #  #  # #    #  ####    #   #####  #    # 
+ #   #    #   #          #     # ######      #   #   #      #####  
+ #    ####    #          #     # #    # #    #   #   #      #   #  
+###           #          #     # #    #  ####    #   ###### #    # 
+
+`
 
 var serviceConfig = &service.Config{
 	Name:        "iot-master",
@@ -105,6 +117,8 @@ func (p *Program) run() {
 }
 
 func originMain() {
+	fmt.Print(banner)
+
 	err := config.Load()
 	if err != nil {
 		log.Fatal(err)
