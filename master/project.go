@@ -57,6 +57,7 @@ type Project struct {
 	alarms      []*Alarm
 	jobs        []*Job
 	strategies  []*Strategy
+	scripts     []*Script
 
 	deviceNameIndex map[string]*Device
 	deviceIdIndex   map[int64]*Device
@@ -76,6 +77,7 @@ func NewProject(m *model.Project) (*Project, error) {
 		alarms:          make([]*Alarm, 0),
 		jobs:            make([]*Job, 0),
 		strategies:      make([]*Strategy, 0),
+		scripts:         make([]*Script, 0),
 		deviceNameIndex: make(map[string]*Device),
 		deviceIdIndex:   make(map[int64]*Device),
 	}
@@ -246,6 +248,21 @@ func (prj *Project) initStrategies() error {
 	return nil
 }
 
+func (prj *Project) initScripts() error {
+	if prj.Scripts == nil {
+		return nil
+	}
+	for _, v := range prj.Scripts {
+		script := &Script{Script: *v}
+		err := script.Init(prj.Context)
+		if err != nil {
+			return err
+		}
+		prj.scripts = append(prj.scripts, script)
+	}
+	return nil
+}
+
 //initHandler 项目初始化
 func (prj *Project) initHandler() error {
 	//设备数据变化的处理函数
@@ -263,6 +280,14 @@ func (prj *Project) initHandler() error {
 		//处理响应
 		for _, strategy := range prj.strategies {
 			err := strategy.Execute(prj.Context)
+			if err != nil {
+				prj.Emit("error", err)
+			}
+		}
+
+		//处理脚本
+		for _, script := range prj.scripts {
+			err := script.OnData(prj.Context)
 			if err != nil {
 				prj.Emit("error", err)
 			}

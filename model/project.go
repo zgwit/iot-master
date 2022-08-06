@@ -24,6 +24,7 @@ type ProjectContent struct {
 	Jobs        []*Job        `json:"jobs"`
 	Alarms      []*Alarm      `json:"alarms"`
 	Strategies  []*Strategy   `json:"strategies"`
+	Scripts     []*Script     `json:"scripts"`
 }
 
 //Project 项目
