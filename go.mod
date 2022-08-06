@@ -5,7 +5,6 @@ go 1.18
 require (
 	github.com/PaesslerAG/gval v1.2.0
 	github.com/antonmedv/expr v1.9.0
-	github.com/dop251/goja v0.0.0-20220805083922-fdb999e670c9
 	github.com/gin-contrib/gzip v0.0.5
 	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/gin v1.7.7
@@ -21,6 +20,7 @@ require (
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/sirupsen/logrus v1.8.1
 	github.com/super-l/machine-code v0.0.0-20210720085303-62525d58dab0
+	github.com/yuin/gopher-lua v0.0.0-20220504180219-658193537a64
 	go.bug.st/serial v1.3.5
 	golang.org/x/mod v0.3.0
 	golang.org/x/net v0.0.0-20220614195744-fb05da6f9022
@@ -34,13 +34,11 @@ require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
 	github.com/creack/goselect v0.1.2 // indirect
 	github.com/deepmap/oapi-codegen v1.8.2 // indirect
-	github.com/dlclark/regexp2 v1.7.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
-	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/goccy/go-json v0.8.1 // indirect
 	github.com/golang/protobuf v1.3.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
@@ -49,6 +47,7 @@ require (
 	github.com/gorilla/sessions v1.2.0 // indirect
 	github.com/influxdata/line-protocol v0.0.0-20200327222509-2487e7298839 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/kr/pretty v0.3.0 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-sqlite3 v1.14.13 // indirect
@@ -68,7 +67,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/sys v0.0.0-20220614162138-6c1b26c55098 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	modernc.org/libc v1.16.8 // indirect
 	modernc.org/mathutil v1.4.1 // indirect
