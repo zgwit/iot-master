@@ -3,7 +3,7 @@ package flow
 type State struct {
 }
 
-func (s *State) FromJSON() error {
+func (s *State) FromX6JSON() error {
 	return nil
 }
 

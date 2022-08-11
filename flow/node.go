@@ -5,4 +5,6 @@ type Node interface {
 }
 
 type baseNode struct {
+	In  []string
+	Out []string
 }
