@@ -1,0 +1,27 @@
+syntax = "proto3";
+option go_package = "./plugin";
+
+package plugin;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/empty.proto";
+
+service Master {
+  rpc Watch(Id) returns(stream Context) {}
+  rpc Report(stream Context) returns(Context) {}
+}
+
+message Empty {}
+
+message Id {
+  int64 id = 1;
+}
+
+message Context {
+  int64 id = 1;
+  map<string, google.protobuf.Any> context = 2;
+}
+
+
+
+
