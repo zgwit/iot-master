@@ -1,0 +1,15 @@
+syntax = "proto3";
+option go_package = "./plugin";
+
+
+package plugin;
+
+import "plugin/common.proto";
+
+service Master {
+
+}
+
+
+
+
