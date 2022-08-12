@@ -1,14 +1,247 @@
 syntax = "proto3";
 option go_package = "./plugin";
 
-
 package plugin;
 
-import "plugin/common.proto";
+import "google/protobuf/any.proto";
 
-service Master {
+/* 通用定义 */
+
+message Empty {}
+
+message String {
+  string value = 1;
+}
+
+message Int64 {
+  int64 value = 1;
+}
+
+message Buffer {
+  bytes value = 1;
+}
+
+message Stream {
+  int64 id = 1;
+  bytes buffer = 2;
+}
+
+message Response {
+  bool ok = 1;
+  string error = 2;
+}
+
+message Context {
+  int64 id = 1;
+  map<string, google.protobuf.Any> context = 2;
+}
+
+
+/* 插件定义 */
+
+message List {
+  int64 skip = 1;
+  int64 limit = 2;
+}
+
+message Plugin {
+  string id = 1;
+  string name = 2;
+  string version = 3;
+  string entrypoint = 4;
+  string web = 5;
+  string rpc = 6;
+  map<string, string> dependencies = 7;
+}
+
+message PluginResponse {
+  bool ok = 1;
+  string error = 2;
+  Plugin data = 3;
+}
+
+message ListPluginResponse {
+  bool ok = 1;
+  string error = 2;
+  repeated Plugin data = 3;
+}
+
+
+service plugin {
+  rpc register(Plugin) returns (Response) {}
+  rpc unregister(String) returns (Response) {}
+  rpc list(List) returns (ListPluginResponse) {}
+  rpc get(String) returns (PluginResponse) {}
+  rpc open(String) returns (Response) {}
+  rpc close(String) returns (Response) {}
 
 }
+
+/* 连接定义 */
+
+message Tunnel {
+  int64 id = 1;
+  int64 serverId = 2;
+  string name = 3;
+  string type = 4;
+  string addr = 5;
+  string sn = 6;
+  string remote = 7;
+  string protocol = 8;
+  //TODO 与Model一致
+  bool disabled = 9;
+  int64 last = 10;
+  int64 created = 11;
+}
+
+message TunnelEvent {
+  string event = 1;
+  bytes data = 2;
+}
+
+message TunnelResponse {
+  bool ok = 1;
+  string error = 2;
+  Tunnel data = 3;
+}
+
+message ListTunnelResponse {
+  bool ok = 1;
+  string error = 2;
+  repeated Tunnel data = 3;
+}
+
+service tunnel {
+  rpc list(List) returns (ListTunnelResponse) {}
+  rpc get(Int64) returns (TunnelResponse) {}
+  rpc open(Int64) returns (Response) {}
+  rpc close(Int64) returns (Response) {}
+  rpc pipe(stream Stream) returns (stream Stream) {}
+  rpc watch(Int64) returns (stream TunnelEvent) {}
+  rpc watchAll(Empty) returns (stream TunnelEvent) {}
+}
+
+
+/* 连接定义 */
+
+message Server {
+  int64 id = 1;
+  string name = 3;
+  string type = 4;
+  string addr = 5;
+  string protocol = 7;
+  //TODO 与Model一致
+  bool disabled = 8;
+  int64 last = 10;
+  int64 created = 11;
+}
+
+message ServerEvent {
+  string event = 1;
+  bytes data = 2;
+}
+
+message ServerResponse {
+  bool ok = 1;
+  string error = 2;
+  Server data = 3;
+}
+
+message ListServerResponse {
+  bool ok = 1;
+  string error = 2;
+  repeated Server data = 3;
+}
+
+service server {
+  rpc list(List) returns (ListServerResponse) {}
+  rpc get(Int64) returns (ServerResponse) {}
+  rpc open(Int64) returns (Response) {}
+  rpc close(Int64) returns (Response) {}
+  rpc watch(Int64) returns (stream ServerEvent) {}
+  rpc watchAll(Empty) returns (stream ServerEvent) {}
+}
+
+
+/* 设备定义 */
+
+message Device {
+  int64 id = 1;
+  int64 tunnelId = 2;
+  int64 productId = 3;
+  string name = 4;
+  uint32 station = 5;
+  bool disabled = 9;
+  int64 last = 10;
+  int64 created = 11;
+}
+
+message DeviceEvent {
+  string event = 1;
+  bytes data = 2;
+}
+
+message DeviceResponse {
+  bool ok = 1;
+  string error = 2;
+  Device data = 3;
+}
+
+message ListDeviceResponse {
+  bool ok = 1;
+  string error = 2;
+  repeated Device data = 3;
+}
+
+service device {
+  rpc list(List) returns (ListDeviceResponse) {}
+  rpc get(Int64) returns (DeviceResponse) {}
+  rpc open(Int64) returns (Response) {}
+  rpc close(Int64) returns (Response) {}
+  rpc watch(Int64) returns (stream DeviceEvent) {}
+  rpc watchAll(Empty) returns (stream DeviceEvent) {}
+}
+
+
+/* 设备定义 */
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string version = 3;
+
+  bool disabled = 9;
+  int64 last = 10;
+  int64 created = 11;
+}
+
+message ProductEvent {
+  string event = 1;
+  bytes data = 2;
+}
+
+message ProductResponse {
+  bool ok = 1;
+  string error = 2;
+  Product data = 3;
+}
+
+message ListProductResponse {
+  bool ok = 1;
+  string error = 2;
+  repeated Product data = 3;
+}
+
+service product {
+  rpc list(List) returns (ListProductResponse) {}
+  rpc get(String) returns (ProductResponse) {}
+  rpc import(stream Buffer) returns (Response) {}
+  rpc export(String) returns (stream Buffer) {}
+}
+
+
+
+/* 插件定义 */
 
 
 

@@ -1,0 +1,53 @@
+syntax = "proto3";
+option go_package = "./plugin/protocol";
+
+package protocol;
+
+import "google/protobuf/empty.proto";
+
+message Response {
+  bool ok = 1;
+  string error = 2;
+}
+
+message Open {
+  int64 id = 1;
+  // options
+}
+
+message Close{
+  int64 id = 1;
+}
+
+message Protocol {
+  string name = 1;
+  string version = 2;
+}
+
+message Read{
+  string address = 1;
+  uint32 length = 2;
+}
+
+message Result{
+  bool ok = 1;
+  string error = 2;
+  bytes data = 3;
+}
+
+message Write{
+  string address = 1;
+  bytes data = 2;
+}
+
+
+service protocol {
+  rpc register(Protocol) returns(Response) {}
+  rpc open(Open) returns(Response) {}
+  rpc close(Close) returns(Response) {}
+  rpc read(Read) returns(Result) {}
+  rpc write(Write) returns(Response) {}
+}
+
+
+
