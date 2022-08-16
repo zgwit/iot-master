@@ -12,6 +12,7 @@ require (
 	github.com/glebarez/go-sqlite v1.17.3
 	github.com/go-co-op/gocron v1.12.0
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.3.0
 	github.com/influxdata/influxdb-client-go/v2 v2.8.2
 	github.com/jacobsa/go-serial v0.0.0-20180131005756-15cf729a72d4
@@ -24,8 +25,10 @@ require (
 	github.com/yuin/gopher-lua v0.0.0-20220504180219-658193537a64
 	go.bug.st/serial v1.3.5
 	golang.org/x/mod v0.3.0
-	golang.org/x/net v0.0.0-20220614195744-fb05da6f9022
+	golang.org/x/net v0.0.0-20220811182439-13a9a731de15
 	golang.org/x/tools v0.0.0-20201124115921-2c860bdd6e78
+	google.golang.org/grpc v1.48.0
+	google.golang.org/protobuf v1.28.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	xorm.io/xorm v1.3.0
@@ -43,7 +46,6 @@ require (
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/goccy/go-json v0.8.1 // indirect
-	github.com/golang/protobuf v1.3.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
@@ -68,8 +70,9 @@ require (
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	golang.org/x/crypto v0.0.0-20210616213533-5ff15b29337e // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	golang.org/x/sys v0.0.0-20220614162138-6c1b26c55098 // indirect
+	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	golang.org/x/text v0.3.7 // indirect
+	google.golang.org/genproto v0.0.0-20220810155839-1856144b1d9c // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	modernc.org/libc v1.16.8 // indirect
 	modernc.org/mathutil v1.4.1 // indirect
