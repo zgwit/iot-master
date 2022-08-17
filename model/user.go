@@ -1,7 +1,6 @@
 package model
 
 import (
-	"encoding/gob"
 	"time"
 )
 
@@ -15,10 +14,6 @@ type User struct {
 	Updated  time.Time `json:"updated" xorm:"updated"`
 	Created  time.Time `json:"created" xorm:"created"`
 	//Deleted  time.Time `json:"-" xorm:"deleted"`
-}
-
-func init() {
-	gob.Register(User{})
 }
 
 //Password 密码

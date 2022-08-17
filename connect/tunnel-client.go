@@ -3,7 +3,7 @@ package connect
 import (
 	"errors"
 	"iot-master/db"
-	"iot-master/log"
+	"iot-master/internal/log"
 	"iot-master/model"
 	"net"
 	"time"

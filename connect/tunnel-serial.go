@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/jacobsa/go-serial/serial"
 	"iot-master/db"
-	"iot-master/log"
+	"iot-master/internal/log"
 	"iot-master/model"
 	"time"
 )

@@ -1,7 +1,7 @@
 package master
 
 import (
-	"iot-master/log"
+	"iot-master/internal/log"
 	"iot-master/model"
 	"iot-master/pkg/cron"
 	"iot-master/protocols/protocol"

@@ -8,7 +8,7 @@ import (
 	"iot-master/history"
 	"iot-master/internal/args"
 	"iot-master/internal/config"
-	"iot-master/log"
+	"iot-master/internal/log"
 	"iot-master/master"
 	"iot-master/web"
 	"os"

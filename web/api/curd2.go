@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"iot-master/db"
-	"iot-master/log"
+	"iot-master/internal/log"
 	"reflect"
 )
 

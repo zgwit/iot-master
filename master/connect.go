@@ -5,7 +5,7 @@ import (
 	"golang.org/x/tools/container/intsets"
 	"iot-master/connect"
 	"iot-master/db"
-	"iot-master/log"
+	"iot-master/internal/log"
 	"iot-master/model"
 	"iot-master/protocols"
 	"iot-master/protocols/protocol"
