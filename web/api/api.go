@@ -118,15 +118,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/project/:id/watch", parseParamId, projectWatch)
 	//app.GET("/project/:id/targets", parseParamId, projectTargets)
 
-	//模板接口
-	app.POST("/template/list", createCurdApiList[model.Template]())
-	app.POST("/template/create", createCurdApiCreate[model.Template](generateUUID, nil))
-	app.GET("/template/:id", parseParamStringId, createCurdApiGet[model.Template]())
-	app.POST("/template/:id", parseParamStringId, createCurdApiModify[model.Template](nil, nil,
-		"name", "info", "products", "hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"))
-	app.GET("/template/:id/delete", parseParamStringId, createCurdApiDelete[model.Template](nil, nil))
-	//app.GET("/template/:id/targets", parseParamId, templateTargets)
-
 	//设备接口
 	app.POST("/device/list", deviceList)
 	app.POST("/device/create", createCurdApiCreate[model.Device](nil, afterDeviceCreate))
@@ -161,30 +152,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	))
 	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
 
-	//组态
-	app.POST("/hmi/list", createCurdApiList[model.Hmi]())
-	app.POST("/hmi/create", createCurdApiCreate[model.Hmi](generateUUID, nil))
-	app.GET("/hmi/:id", parseParamStringId, createCurdApiGet[model.Hmi]())
-	app.POST("/hmi/:id", parseParamStringId, createCurdApiModify[model.Hmi](nil, nil, "name", "version"))
-	app.GET("/hmi/:id/delete", parseParamStringId, createCurdApiDelete[model.Hmi](nil, nil))
-	app.GET("/hmi/:id/manifest", hmiLoad)
-	app.POST("/hmi/:id/manifest", hmiSave)
-
-	app.GET("/hmi/:id/export", hmiExport)
-	app.POST("/hmi/import", hmiImport) //zip
-
-	//组件
-	app.POST("/component/list", createCurdApiList[model.Component]())
-	app.POST("/component/create", createCurdApiCreate[model.Component](generateUUID, nil))
-	app.GET("/component/:id", parseParamStringId, createCurdApiGet[model.Component]())
-	app.POST("/component/:id", parseParamStringId, createCurdApiModify[model.Component](nil, nil, "name", "group", "version"))
-	app.GET("/component/:id/manifest", componentLoad)
-	app.POST("/component/:id/manifest", componentSave)
-	app.GET("/component/:id/delete", parseParamStringId, createCurdApiDelete[model.Component](nil, nil))
-
-	app.GET("/component/:id/export", componentExport)
-	app.POST("/component/import", componentImport) //zip
-
 	//服务器接口
 	app.POST("/server/list", serverList)
 	app.POST("/server/create", createCurdApiCreate[model.Server](nil, afterServerCreate))
@@ -213,36 +180,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/tunnel/:id/disable", parseParamId, createCurdApiDisable[model.Tunnel](true, nil, afterTunnelDisable))
 	app.GET("/tunnel/:id/watch", parseParamId, tunnelWatch)
 	app.GET("/tunnel/:id/transfer", parseParamId, tunnelTransfer)
-
-	//事件接口
-	app.POST("/event/list", createCurdApiList[model.Event]())
-	app.POST("/event/clear", eventClear)
-	app.GET("/event/:id/delete", parseParamId, createCurdApiDelete[model.Event](nil, nil))
-
-	//透传接口
-	app.POST("/transfer/list", transferList)
-	app.POST("/transfer/create", createCurdApiCreate[model.Transfer](nil, afterTransferCreate))
-	app.GET("/transfer/:id", parseParamId, transferDetail)
-	app.POST("/transfer/:id", parseParamId, createCurdApiModify[model.Transfer](nil, afterPipeUpdate,
-		"name", "port", "tunnel_id", "disabled"))
-	app.GET("/transfer/:id/delete", parseParamId, createCurdApiDelete[model.Transfer](nil, afterTransferDelete))
-
-	app.GET("/transfer/:id/enable", parseParamId, createCurdApiDisable[model.Transfer](false, nil, afterTransferEnable))
-	app.GET("/transfer/:id/disable", parseParamId, createCurdApiDisable[model.Transfer](true, nil, afterTransferDisable))
-	app.GET("/transfer/:id/start", parseParamId, transferStart)
-	app.GET("/transfer/:id/stop", parseParamId, transferStop)
-
-	//摄像头接口
-	app.POST("/camera/list", cameraList)
-	app.POST("/camera/create", createCurdApiCreate[model.Camera](nil, afterCameraCreate))
-	app.GET("/camera/:id", parseParamId, cameraDetail)
-	app.POST("/camera/:id", parseParamId, createCurdApiModify[model.Camera](nil, afterCameraUpdate, "name", "url", "h264", "disabled"))
-	app.GET("/camera/:id/delete", parseParamId, createCurdApiDelete[model.Camera](nil, afterCameraDelete))
-
-	app.GET("/camera/:id/start", parseParamId, cameraStart)
-	app.GET("/camera/:id/stop", parseParamId, cameraStop)
-	app.GET("/camera/:id/enable", parseParamId, createCurdApiDisable[model.Camera](false, nil, afterCameraEnable))
-	app.GET("/camera/:id/disable", parseParamId, createCurdApiDisable[model.Camera](true, nil, afterCameraDisable))
 
 	//系统接口
 	app.GET("/system/cpu-info", cpuInfo)

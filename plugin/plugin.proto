@@ -1,0 +1,92 @@
+syntax = "proto3";
+option go_package = "./plugin";
+
+package module;
+
+
+/* 模型定义 */
+
+message Empty {}
+
+message String {
+  string value = 1;
+}
+
+message Int64 {
+  int64 value = 1;
+}
+
+message Buffer {
+  bytes value = 1;
+}
+
+message List {
+  string keyword = 1;
+  int64 skip = 2;
+  int64 limit = 3;
+}
+
+message Command {
+  int64 id = 1;
+  string command = 2;
+  repeated double arguments = 3;
+}
+
+message Event {
+  string event = 1;
+  bytes data = 2;
+}
+
+
+/* 接口定义 */
+service module {
+  rpc register(Buffer) returns (Empty) {}
+  rpc unregister(String) returns (Empty) {}
+}
+
+service session {
+  rpc create(String) returns (Empty) {}
+  rpc get(String) returns (Buffer) {}
+  rpc delete(String) returns (Empty) {}
+}
+
+service tunnel {
+  rpc list(List) returns (Buffer) {}
+  rpc get(Int64) returns (Buffer) {}
+  rpc open(Int64) returns (Empty) {}
+  rpc close(Int64) returns (Empty) {}
+  rpc pipe(stream Buffer) returns (stream Buffer) {}
+}
+
+service server {
+  rpc list(List) returns (Buffer) {}
+  rpc get(Int64) returns (Buffer) {}
+  rpc open(Int64) returns (Empty) {}
+  rpc close(Int64) returns (Empty) {}
+}
+
+service product {
+  rpc list(List) returns (Buffer) {}
+  rpc get(String) returns (Buffer) {}
+  rpc import(stream Buffer) returns (Empty) {}
+  rpc export(String) returns (stream Buffer) {}
+}
+
+service device {
+  rpc list(List) returns (Buffer) {}
+  rpc get(Int64) returns (Buffer) {}
+  rpc open(Int64) returns (Empty) {}
+  rpc close(Int64) returns (Empty) {}
+  rpc execute(Command) returns (Empty) {}
+}
+
+service project {
+  rpc list(List) returns (Buffer) {}
+  rpc get(Int64) returns (Buffer) {}
+  rpc open(Int64) returns (Empty) {}
+  rpc close(Int64) returns (Empty) {}
+  rpc import(stream Buffer) returns (Empty) {}
+  rpc export(String) returns (stream Buffer) {}
+}
+
+
