@@ -12,8 +12,8 @@ message String {
   string value = 1;
 }
 
-message Int64 {
-  int64 value = 1;
+message Id {
+  uint64 value = 1;
 }
 
 message Buffer {
@@ -22,12 +22,12 @@ message Buffer {
 
 message List {
   string keyword = 1;
-  int64 skip = 2;
-  int64 limit = 3;
+  uint64 skip = 2;
+  uint64 limit = 3;
 }
 
 message Command {
-  int64 id = 1;
+  uint64 id = 1;
   string command = 2;
   repeated double arguments = 3;
 }
@@ -52,17 +52,17 @@ service session {
 
 service tunnel {
   rpc list(List) returns (Buffer) {}
-  rpc get(Int64) returns (Buffer) {}
-  rpc open(Int64) returns (Empty) {}
-  rpc close(Int64) returns (Empty) {}
+  rpc get(Id) returns (Buffer) {}
+  rpc open(Id) returns (Empty) {}
+  rpc close(Id) returns (Empty) {}
   rpc pipe(stream Buffer) returns (stream Buffer) {}
 }
 
 service server {
   rpc list(List) returns (Buffer) {}
-  rpc get(Int64) returns (Buffer) {}
-  rpc open(Int64) returns (Empty) {}
-  rpc close(Int64) returns (Empty) {}
+  rpc get(Id) returns (Buffer) {}
+  rpc open(Id) returns (Empty) {}
+  rpc close(Id) returns (Empty) {}
 }
 
 service product {
@@ -74,17 +74,17 @@ service product {
 
 service device {
   rpc list(List) returns (Buffer) {}
-  rpc get(Int64) returns (Buffer) {}
-  rpc open(Int64) returns (Empty) {}
-  rpc close(Int64) returns (Empty) {}
+  rpc get(Id) returns (Buffer) {}
+  rpc open(Id) returns (Empty) {}
+  rpc close(Id) returns (Empty) {}
   rpc execute(Command) returns (Empty) {}
 }
 
 service project {
   rpc list(List) returns (Buffer) {}
-  rpc get(Int64) returns (Buffer) {}
-  rpc open(Int64) returns (Empty) {}
-  rpc close(Int64) returns (Empty) {}
+  rpc get(Id) returns (Buffer) {}
+  rpc open(Id) returns (Empty) {}
+  rpc close(Id) returns (Empty) {}
   rpc import(stream Buffer) returns (Empty) {}
   rpc export(String) returns (stream Buffer) {}
 }
