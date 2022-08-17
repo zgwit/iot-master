@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/antonmedv/expr"
 	"iot-master/db"
-	"iot-master/helper"
 	"iot-master/history"
 	"iot-master/model"
+	"iot-master/pkg/convert"
 	"iot-master/pkg/events"
 	"iot-master/protocols/protocol"
 	"strconv"
@@ -256,7 +256,7 @@ func (dev *Device) Set(name string, value interface{}) error {
 	for _, p := range dev.points {
 		if p.Name == name {
 			if p.Precision > 0 {
-				value = helper.ToFloat64(value)
+				value = convert.ToFloat64(value)
 			} else {
 				value = p.Type.Normalize(value)
 			}

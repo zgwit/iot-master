@@ -3,7 +3,7 @@ package mitsubishi
 import (
 	"fmt"
 	"iot-master/connect"
-	"iot-master/helper"
+	"iot-master/pkg/bytes"
 	"strconv"
 )
 
@@ -31,13 +31,13 @@ func (t *A3C1) BuildCommand(cmd []byte) []byte {
 	length := len(cmd)
 
 	buf := make([]byte, 13+length)
-	buf[0] = 0x05                                 //ENQ
-	buf[1] = 0x46                                 //F 帧识别号H
-	buf[2] = 0x39                                 //9 帧识别号L
-	helper.WriteByteHex(buf[3:], t.StationNumber) //站编号
-	helper.WriteByteHex(buf[5:], t.NetworkNumber) //网络编号
-	helper.WriteByteHex(buf[7:], t.PlcNumber)     //PLC编号
-	helper.WriteByteHex(buf[9:], t.UpperNumber)   //上位机编号
+	buf[0] = 0x05                                //ENQ
+	buf[1] = 0x46                                //F 帧识别号H
+	buf[2] = 0x39                                //9 帧识别号L
+	bytes.WriteByteHex(buf[3:], t.StationNumber) //站编号
+	bytes.WriteByteHex(buf[5:], t.NetworkNumber) //网络编号
+	bytes.WriteByteHex(buf[7:], t.PlcNumber)     //PLC编号
+	bytes.WriteByteHex(buf[9:], t.UpperNumber)   //上位机编号
 
 	//命令
 	copy(buf[11:], cmd)
@@ -49,7 +49,7 @@ func (t *A3C1) BuildCommand(cmd []byte) []byte {
 	}
 
 	//最后两位是校验
-	helper.WriteByteHex(buf[len(buf)-2:], sum)
+	bytes.WriteByteHex(buf[len(buf)-2:], sum)
 
 	return buf
 

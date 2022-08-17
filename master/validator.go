@@ -1,8 +1,8 @@
 package master
 
 import (
-	"iot-master/helper"
 	"iot-master/model"
+	"iot-master/pkg/convert"
 	"iot-master/pkg/events"
 	"time"
 )
@@ -18,7 +18,7 @@ type Validator struct {
 func (a *Validator) Execute(ctx map[string]interface{}) error {
 
 	//条件检查
-	value := helper.ToFloat64(ctx[a.Value])
+	value := convert.ToFloat64(ctx[a.Value])
 	val := a.Compare.Eval(value, a.Value1, a.Value2)
 	if !val {
 		a.DelayChecker.Reset()

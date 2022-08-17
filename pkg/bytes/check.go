@@ -1,4 +1,4 @@
-package helper
+package bytes
 
 //Sum 和
 func Sum(buf []byte) byte {

@@ -1,4 +1,4 @@
-package helper
+package bytes
 
 import "math"
 
@@ -75,7 +75,6 @@ func ParseFloat64LittleEndian(buf []byte) float64 {
 	val := ParseUint64LittleEndian(buf)
 	return math.Float64frombits(val)
 }
-
 
 //Uint32ToBytes 编码
 func Uint32ToBytes(value uint32) []byte {

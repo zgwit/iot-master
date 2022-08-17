@@ -1,4 +1,4 @@
-package helper
+package convert
 
 func ToBool(value interface{}) bool {
 	switch value.(type) {

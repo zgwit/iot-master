@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"iot-master/connect"
-	helper2 "iot-master/helper"
+	"iot-master/pkg/bytes"
 	"strconv"
 	"strings"
 )
@@ -86,9 +86,9 @@ func (t *FxSpecial) Read(address string, length int) ([]byte, error) {
 	}
 
 	buf := make([]byte, 23)
-	buf[0] = 0x05                                   //ENQ
-	helper2.WriteUint8Hex(buf[1:], t.StationNumber) //站号
-	helper2.WriteByteHex(buf[3:], t.PlcNumber)      //PLC号
+	buf[0] = 0x05                                 //ENQ
+	bytes.WriteUint8Hex(buf[1:], t.StationNumber) //站号
+	bytes.WriteByteHex(buf[3:], t.PlcNumber)      //PLC号
 	if addr.IsBit {
 		buf[10] = 'B' //位
 	} else {
@@ -96,13 +96,13 @@ func (t *FxSpecial) Read(address string, length int) ([]byte, error) {
 		recvLength = recvLength << 1 // recvLength*2 字是双字节
 	}
 	buf[11] = 'R'                               //读取
-	helper2.WriteUint8Hex(buf[12:], t.Delay)    //延迟
+	bytes.WriteUint8Hex(buf[12:], t.Delay)      //延迟
 	copy(buf[14:], addr.Address)                // 偏移地址
 	copy(buf[19:], fmt.Sprintf("%02d", length)) //读取长度
 
 	if t.CheckSum {
 		//最后两位是和校验
-		helper2.WriteUint8Hex(buf[len(buf)-2:], helper2.Sum(buf[1:len(buf)-2]))
+		bytes.WriteUint8Hex(buf[len(buf)-2:], bytes.Sum(buf[1:len(buf)-2]))
 	} else {
 		buf = buf[:21]
 	}
@@ -122,10 +122,10 @@ func (t *FxSpecial) Read(address string, length int) ([]byte, error) {
 	ret := recv[5 : len(recv)-3]
 	if addr.IsBit {
 		//布尔数组
-		ret = helper2.AsciiToBool(ret)
+		ret = bytes.AsciiToBool(ret)
 	} else {
 		//转十六进制
-		ret = helper2.FromHex(ret)
+		ret = bytes.FromHex(ret)
 	}
 	return ret, nil
 }
@@ -139,18 +139,18 @@ func (t *FxSpecial) Write(address string, values []byte) error {
 
 	if addr.IsBit {
 		//布尔数组
-		values = helper2.BoolToAscii(values)
+		values = bytes.BoolToAscii(values)
 	} else {
 		//转十六进制
-		values = helper2.ToHex(values)
+		values = bytes.ToHex(values)
 	}
 
 	length := len(values)
 
 	buf := make([]byte, 23+length)
-	buf[0] = 0x05                                   //ENQ
-	helper2.WriteUint8Hex(buf[1:], t.StationNumber) //站号
-	helper2.WriteByteHex(buf[3:], t.PlcNumber)      //PLC号
+	buf[0] = 0x05                                 //ENQ
+	bytes.WriteUint8Hex(buf[1:], t.StationNumber) //站号
+	bytes.WriteByteHex(buf[3:], t.PlcNumber)      //PLC号
 	if addr.IsBit {
 		buf[10] = 'B' //位
 	} else {
@@ -158,14 +158,14 @@ func (t *FxSpecial) Write(address string, values []byte) error {
 		length = length >> 1 // length/2 字是双字节
 	}
 	buf[11] = 'W'                               //写入
-	helper2.WriteUint8Hex(buf[12:], t.Delay)    //延迟
+	bytes.WriteUint8Hex(buf[12:], t.Delay)      //延迟
 	copy(buf[14:], addr.Address)                // 偏移地址
 	copy(buf[19:], fmt.Sprintf("%02d", length)) //读取长度
 	copy(buf[21:], values)                      //写入数据
 
 	if t.CheckSum {
 		//最后两位是和校验
-		helper2.WriteUint8Hex(buf[len(buf)-2:], helper2.Sum(buf[1:len(buf)-2]))
+		bytes.WriteUint8Hex(buf[len(buf)-2:], bytes.Sum(buf[1:len(buf)-2]))
 	} else {
 		buf = buf[:21+length]
 	}

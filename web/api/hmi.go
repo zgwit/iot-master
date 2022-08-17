@@ -8,8 +8,9 @@ import (
 	"io/fs"
 	"iot-master/db"
 	"iot-master/internal/config"
-	"iot-master/lib"
 	"iot-master/model"
+	lib2 "iot-master/pkg/lib"
+	"iot-master/pkg/zip"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -57,7 +58,7 @@ func hmiExport(ctx *gin.Context) {
 	ctx.Header("Content-Disposition", `attachment; filename="`+id+`.zip"`)
 	//err := lib.ZipIntoWriter(dir, ctx.Writer)
 
-	zipper := lib.NewZipper(ctx.Writer)
+	zipper := zip.NewZipper(ctx.Writer)
 	defer zipper.Close()
 
 	obj := model.Manifest[model.Hmi]{
@@ -73,7 +74,7 @@ func hmiExport(ctx *gin.Context) {
 		return
 	}
 
-	info := lib.NewFileInfo("manifest.json", int64(len(buf)), fs.ModePerm, time.Now(), false)
+	info := lib2.NewFileInfo("manifest.json", int64(len(buf)), fs.ModePerm, time.Now(), false)
 
 	err = zipper.CompressFileInfoAndContent("manifest.json", info, buf)
 	if err != nil {
@@ -99,8 +100,8 @@ func hmiImport(ctx *gin.Context) {
 	}
 	defer file.Close()
 
-	tempDir := filepath.Join(os.TempDir(), lib.RandomString(40))
-	err = lib.Unzip(file, header.Size, tempDir)
+	tempDir := filepath.Join(os.TempDir(), lib2.RandomString(40))
+	err = zip.Unzip(file, header.Size, tempDir)
 	if err != nil {
 		replyError(ctx, err)
 		return
