@@ -25,11 +25,6 @@ func Start() error {
 		return err
 	}
 
-	err = LoadTransfers()
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -42,11 +37,6 @@ func Stop() {
 	allDevices.Range(func(key, value interface{}) bool {
 		dev := value.(*Device)
 		_ = dev.Stop()
-		return true
-	})
-	allTransfers.Range(func(key, value interface{}) bool {
-		dev := value.(*Transfer)
-		_ = dev.Close()
 		return true
 	})
 	allTunnels.Range(func(key, value interface{}) bool {

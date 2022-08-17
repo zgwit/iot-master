@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/antonmedv/expr"
 	"iot-master/db"
-	"iot-master/history"
 	"iot-master/model"
 	"iot-master/pkg/convert"
 	"iot-master/pkg/events"
@@ -21,9 +20,8 @@ type Device struct {
 
 	Context map[string]interface{}
 
-	points     []*Point
-	pollers    []*Poller
-	validators []*Validator
+	points  []*Point
+	pollers []*Poller
 
 	//命令索引
 	commandIndex map[string]*model.Command
@@ -40,7 +38,6 @@ func NewDevice(m *model.Device) (*Device, error) {
 		Context:      make(map[string]interface{}),
 		commandIndex: make(map[string]*model.Command, 0),
 		pollers:      make([]*Poller, 0),
-		validators:   make([]*Validator, 0),
 	}
 	var err error
 
@@ -81,19 +78,6 @@ func NewDevice(m *model.Device) (*Device, error) {
 		dev.pollers = append(dev.pollers, &Poller{Poller: *v, Addr: nil, Device: dev})
 	}
 
-	//初始化计算器
-	for _, calculator := range dev.Calculators {
-		err := calculator.Init()
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	err = dev.initValidators()
-	if err != nil {
-		return nil, err
-	}
-
 	return dev, nil
 }
 
@@ -130,57 +114,9 @@ func (dev *Device) BindTunnel(tunnel *Tunnel) error {
 }
 
 func (dev *Device) onData(data map[string]interface{}) {
-	//数据变化后，更新计算
-	for _, calculator := range dev.Calculators {
-		val, err := calculator.Evaluate(dev.Context)
-		if err != nil {
-			dev.Emit("error", err)
-		} else {
-			data[calculator.As] = val //也上报和保存
-			dev.Context[calculator.As] = val
-		}
-	}
-
-	//处理策略
-	for _, alarm := range dev.validators {
-		err := alarm.Execute(dev.Context)
-		if err != nil {
-			dev.Emit("error", err)
-		}
-	}
 
 	//向上广播
 	dev.Emit("data", data)
-
-	//保存到时序数据库
-	if history.Storage != nil {
-		//是否有必要起协程 或者 使用单一进程进行写入
-		go func() {
-			_ = history.Storage.Write(dev.Id, data)
-			//log
-		}()
-	}
-}
-
-func (dev *Device) initValidators() error {
-	if dev.Validators == nil {
-		return nil
-	}
-	for _, v := range dev.Validators {
-		a := &Validator{Validator: *v}
-		a.On("alarm", func(alarm *model.AlarmContent) {
-			da := &model.DeviceAlarm{DeviceId: dev.Id, AlarmContent: *alarm}
-
-			//入库
-			_, _ = db.Engine.InsertOne(da)
-			CreateDeviceEvent(dev.Id, "告警："+alarm.Message)
-
-			//上报
-			dev.Emit("alarm", da)
-		})
-		dev.validators = append(dev.validators, a)
-	}
-	return nil
 }
 
 //Start 设备启动
@@ -188,8 +124,6 @@ func (dev *Device) Start() error {
 	//if dev.running {
 	//	return errors.New("已经启动")
 	//}
-
-	CreateDeviceEvent(dev.Id, "启动")
 
 	//找到链接，导入协议
 	tunnel := GetTunnel(dev.TunnelId)
@@ -219,8 +153,6 @@ func (dev *Device) Start() error {
 //Stop 结束设备
 func (dev *Device) Stop() error {
 	dev.running = false
-
-	CreateDeviceEvent(dev.Id, "关闭")
 
 	for _, poller := range dev.pollers {
 		poller.Stop()
@@ -306,8 +238,6 @@ func (dev *Device) RefreshPoint(name string) (interface{}, error) {
 
 //Execute 执行命令
 func (dev *Device) Execute(command string, argv []interface{}) error {
-	CreateDeviceEvent(dev.Id, "执行："+command)
-
 	cmd, ok := dev.commandIndex[command]
 	if !ok {
 		return fmt.Errorf("找不到命令：%s", command)

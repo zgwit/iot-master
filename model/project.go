@@ -10,7 +10,6 @@ type Project struct {
 	Name string `json:"name"`
 
 	Devices []*ProjectDevice `json:"devices"`
-	Jobs    []*Job           `json:"jobs"`
 
 	Disabled bool      `json:"disabled"`
 	Updated  time.Time `json:"updated" xorm:"updated"`
