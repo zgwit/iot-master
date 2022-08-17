@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/config"
 	"iot-master/db"
 	"iot-master/history"
+	"iot-master/internal/config"
 )
 
 type installBaseObj struct {

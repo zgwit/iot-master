@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/config"
+	"iot-master/internal/config"
 )
 
 func loadConfig(ctx *gin.Context) {

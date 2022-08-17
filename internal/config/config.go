@@ -2,7 +2,7 @@ package config
 
 import (
 	"gopkg.in/yaml.v3"
-	"iot-master/args"
+	"iot-master/internal/args"
 	"log"
 	"os"
 )

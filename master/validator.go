@@ -1,9 +1,9 @@
 package master
 
 import (
-	"iot-master/events"
 	"iot-master/helper"
 	"iot-master/model"
+	"iot-master/pkg/events"
 	"time"
 )
 

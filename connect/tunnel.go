@@ -3,8 +3,8 @@ package connect
 import (
 	"fmt"
 	"io"
-	"iot-master/events"
 	"iot-master/model"
+	"iot-master/pkg/events"
 	"strings"
 	"time"
 )

@@ -2,9 +2,9 @@ package master
 
 import (
 	"fmt"
-	"iot-master/cron"
-	"iot-master/events"
 	"iot-master/model"
+	"iot-master/pkg/cron"
+	"iot-master/pkg/events"
 )
 
 //Job 任务

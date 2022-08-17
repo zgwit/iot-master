@@ -3,10 +3,10 @@ package master
 import (
 	"fmt"
 	"iot-master/aggregator"
-	"iot-master/calc"
 	"iot-master/db"
-	"iot-master/events"
 	"iot-master/model"
+	"iot-master/pkg/calc"
+	"iot-master/pkg/events"
 	"strings"
 )
 

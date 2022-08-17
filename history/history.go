@@ -2,10 +2,10 @@ package history
 
 import (
 	"fmt"
-	"iot-master/config"
 	"iot-master/history/influxdb2"
 	"iot-master/history/storage"
 	"iot-master/history/tstorage"
+	"iot-master/internal/config"
 )
 
 var Storage storage.Storage

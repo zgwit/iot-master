@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/kardianos/service"
-	"iot-master/args"
 	"iot-master/camera"
-	"iot-master/config"
 	"iot-master/db"
 	"iot-master/history"
+	"iot-master/internal/args"
+	"iot-master/internal/config"
 	"iot-master/log"
 	"iot-master/master"
 	"iot-master/web"

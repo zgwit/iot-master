@@ -3,8 +3,8 @@ package connect
 import (
 	"errors"
 	"iot-master/db"
-	"iot-master/events"
 	"iot-master/model"
+	"iot-master/pkg/events"
 	"net"
 	"time"
 )

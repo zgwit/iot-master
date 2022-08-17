@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"iot-master/config"
 	"iot-master/db"
+	"iot-master/internal/config"
 	"iot-master/master"
 	"iot-master/model"
 )
@@ -68,7 +68,7 @@ func login(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	
+
 	//初始化密码
 	if !has {
 		dp := config.Config.DefaultPassword

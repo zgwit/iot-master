@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/args"
-	"iot-master/config"
+	"iot-master/internal/args"
+	"iot-master/internal/config"
 	"runtime"
 )
 

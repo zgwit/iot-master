@@ -2,8 +2,8 @@ package connect
 
 import (
 	"fmt"
-	"iot-master/events"
 	"iot-master/model"
+	"iot-master/pkg/events"
 )
 
 //Server 通道

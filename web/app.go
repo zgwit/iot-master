@@ -7,7 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-gonic/gin"
-	"iot-master/config"
+	"iot-master/internal/config"
 	"iot-master/log"
 	"iot-master/web/api"
 	"mime"

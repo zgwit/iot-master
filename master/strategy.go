@@ -3,9 +3,9 @@ package master
 import (
 	"context"
 	"github.com/PaesslerAG/gval"
-	"iot-master/calc"
-	"iot-master/events"
 	"iot-master/model"
+	"iot-master/pkg/calc"
+	"iot-master/pkg/events"
 	"time"
 )
 

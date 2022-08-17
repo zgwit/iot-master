@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"iot-master/config"
+	"iot-master/internal/config"
 	"iot-master/model"
 	"net/http"
 )

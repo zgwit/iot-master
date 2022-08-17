@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"io"
 	"io/ioutil"
-	"iot-master/config"
+	"iot-master/internal/config"
 	"net/http"
 	"os"
 	"path/filepath"

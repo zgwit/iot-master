@@ -3,7 +3,7 @@ package log
 import (
 	"github.com/sirupsen/logrus"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"iot-master/config"
+	"iot-master/internal/config"
 	"os"
 )
 
