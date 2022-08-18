@@ -2,11 +2,11 @@ package protocols
 
 import (
 	"fmt"
-	"iot-master/connect"
 	"iot-master/protocols/modbus"
 	"iot-master/protocols/omron"
 	"iot-master/protocols/protocol"
 	"iot-master/protocols/siemens"
+	"iot-master/conn"
 )
 
 var protocols = []protocol.Desc{
@@ -36,7 +36,7 @@ func Get(name string) (*protocol.Desc, error) {
 	return nil, fmt.Errorf("未知协议 %s", name)
 }
 
-func Create(link connect.Tunnel, name string, options protocol.Options) (protocol.Protocol, error) {
+func Create(link conn.Tunnel, name string, options protocol.Options) (protocol.Protocol, error) {
 	for _, d := range protocols {
 		if d.Name == name {
 			return d.Factory(link, options), nil

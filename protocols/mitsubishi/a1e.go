@@ -1,11 +1,13 @@
 package mitsubishi
 
-import "iot-master/connect"
+import (
+	"iot-master/conn"
+)
 
 // A1eAdapter A1E协议
 type A1eAdapter struct {
 	PlcNumber byte
-	link      connect.Tunnel
+	link      conn.Tunnel
 }
 
 func NewA1eAdapter() *A1eAdapter {

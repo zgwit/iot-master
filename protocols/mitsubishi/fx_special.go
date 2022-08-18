@@ -3,7 +3,7 @@ package mitsubishi
 import (
 	"errors"
 	"fmt"
-	"iot-master/connect"
+	"iot-master/conn"
 	"iot-master/pkg/bytes"
 	"strconv"
 	"strings"
@@ -69,7 +69,7 @@ type FxSpecial struct {
 	CheckSum bool //默认true
 	Delay    uint8
 
-	link connect.Tunnel
+	link conn.Tunnel
 }
 
 func NewFxSpecial() *FxSpecial {

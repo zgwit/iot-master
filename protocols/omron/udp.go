@@ -3,9 +3,9 @@ package omron
 import (
 	"errors"
 	"fmt"
-	"iot-master/connect"
 	"iot-master/pkg/bytes"
 	"iot-master/protocols/protocol"
+	"iot-master/conn"
 	"time"
 )
 
@@ -43,10 +43,10 @@ type UdpFrame struct {
 
 type FinsUdp struct {
 	frame UdpFrame
-	link  connect.Tunnel
+	link  conn.Tunnel
 }
 
-func NewFinsUDP(link connect.Tunnel, opts protocol.Options) protocol.Protocol {
+func NewFinsUDP(link conn.Tunnel, opts protocol.Options) protocol.Protocol {
 	fins := &FinsUdp{link: link}
 	link.On("data", func(data []byte) {
 		//fins.OnData(data)

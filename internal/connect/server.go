@@ -2,6 +2,7 @@ package connect
 
 import (
 	"fmt"
+	"iot-master/conn"
 	"iot-master/model"
 	"iot-master/pkg/events"
 )
@@ -12,7 +13,7 @@ type Server interface {
 
 	Open() error
 	Close() error
-	GetTunnel(id int64) Tunnel
+	GetTunnel(id int64) conn.Tunnel
 	Running() bool
 }
 

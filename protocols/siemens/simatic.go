@@ -1,7 +1,7 @@
 package siemens
 
 import (
-	"iot-master/connect"
+	"iot-master/conn"
 	"iot-master/pkg/bytes"
 	"iot-master/protocols/protocol"
 )
@@ -10,7 +10,7 @@ type Simatic struct {
 	handshake1 []byte
 	handshake2 []byte
 
-	link connect.Tunnel
+	link conn.Tunnel
 	desc *protocol.Desc
 }
 

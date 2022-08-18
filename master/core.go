@@ -1,6 +1,8 @@
 package master
 
-import "iot-master/connect"
+import (
+	"iot-master/conn"
+)
 
 //Start 启动
 func Start() error {
@@ -40,7 +42,7 @@ func Stop() {
 		return true
 	})
 	allTunnels.Range(func(key, value interface{}) bool {
-		tnl := value.(connect.Tunnel)
+		tnl := value.(conn.Tunnel)
 		_ = tnl.Close()
 		return true
 	})

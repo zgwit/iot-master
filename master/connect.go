@@ -9,6 +9,7 @@ import (
 	"iot-master/model"
 	"iot-master/protocols"
 	"iot-master/protocols/protocol"
+	"iot-master/conn"
 	"sync"
 )
 
@@ -22,11 +23,11 @@ type Server struct {
 
 type Tunnel struct {
 	model.Tunnel
-	Instance connect.Tunnel
+	Instance conn.Tunnel
 	protocol protocol.Protocol
 }
 
-func bindTunnel(instance connect.Tunnel) error {
+func bindTunnel(instance conn.Tunnel) error {
 	tunnel := &Tunnel{
 		Tunnel:   *instance.Model(),
 		Instance: instance,
@@ -194,7 +195,7 @@ func startServer(server *model.Server) error {
 		CreateServerEvent(server.Id, "关闭")
 	})
 
-	svr.On("tunnel", func(tunnel connect.Tunnel) {
+	svr.On("tunnel", func(tunnel conn.Tunnel) {
 		//第一次连接，初始化默认设备
 		if tunnel.First() && server.Devices != nil {
 			for _, d := range server.Devices {

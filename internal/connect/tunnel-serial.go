@@ -2,9 +2,11 @@ package connect
 
 import (
 	"errors"
+	"fmt"
 	"github.com/jacobsa/go-serial/serial"
-	"iot-master/db"
+	"iot-master/internal/db"
 	"iot-master/internal/log"
+	"iot-master/internal/mqtt"
 	"iot-master/model"
 	"time"
 )
@@ -54,7 +56,8 @@ func (s *TunnelSerial) Open() error {
 
 	//上线
 	s.tunnel.Last = time.Now()
-	_, _ = db.Engine.ID(s.tunnel.Id).Cols("last").Update(s.tunnel)
+	_ = db.Store().Update(s.tunnel.Id, &s.tunnel)
+	_ = mqtt.Publish(fmt.Sprintf("tunnel/%d/online", s.tunnel.Id), nil)
 
 	return nil
 }
