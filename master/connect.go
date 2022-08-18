@@ -2,14 +2,15 @@ package master
 
 import (
 	"fmt"
+	"github.com/timshannon/bolthold"
 	"golang.org/x/tools/container/intsets"
-	"iot-master/connect"
-	"iot-master/db"
+	"iot-master/conn"
+	"iot-master/internal/connect"
+	"iot-master/internal/db"
 	"iot-master/internal/log"
 	"iot-master/model"
 	"iot-master/protocols"
 	"iot-master/protocols/protocol"
-	"iot-master/conn"
 	"sync"
 )
 
@@ -44,7 +45,8 @@ func bindTunnel(instance conn.Tunnel) error {
 
 	//找到相关Device，导入Mapper
 	var devices []model.Device
-	err = db.Engine.Where("tunnel_id=?", tunnel.Id).Find(&devices)
+	//err = db.Engine.Where("tunnel_id=?", tunnel.Id).Find(&devices)
+	err = db.Store().Find(&devices, bolthold.Where("TunnelId").Eq(tunnel.Id))
 	if err != nil {
 		return err
 	}
@@ -138,7 +140,7 @@ func LoadTunnels() error {
 }
 
 //LoadTunnel 加载通道
-func LoadTunnel(id int64) error {
+func LoadTunnel(id uint64) error {
 	var tunnel model.Tunnel
 	has, err := db.Engine.ID(id).Get(&tunnel)
 	if err != nil {
@@ -158,7 +160,7 @@ func LoadTunnel(id int64) error {
 	return nil
 }
 
-func GetTunnel(id int64) *Tunnel {
+func GetTunnel(id uint64) *Tunnel {
 	d, ok := allTunnels.Load(id)
 	if ok {
 		return d.(*Tunnel)
@@ -166,7 +168,7 @@ func GetTunnel(id int64) *Tunnel {
 	return nil
 }
 
-func RemoveTunnel(id int64) error {
+func RemoveTunnel(id uint64) error {
 	d, ok := allTunnels.LoadAndDelete(id)
 	if ok {
 		lnk := d.(*Tunnel)
@@ -255,7 +257,7 @@ func LoadServers() error {
 }
 
 //LoadServer 加载通道
-func LoadServer(id int64) error {
+func LoadServer(id uint64) error {
 	var tunnel model.Server
 	has, err := db.Engine.ID(id).Get(&tunnel)
 	if err != nil {
@@ -276,7 +278,7 @@ func LoadServer(id int64) error {
 }
 
 //GetServer 获取通道
-func GetServer(id int64) *Server {
+func GetServer(id uint64) *Server {
 	d, ok := allServers.Load(id)
 	if ok {
 		return d.(*Server)
@@ -284,7 +286,7 @@ func GetServer(id int64) *Server {
 	return nil
 }
 
-func RemoveServer(id int64) error {
+func RemoveServer(id uint64) error {
 	d, ok := allServers.LoadAndDelete(id)
 	if ok {
 		tnl := d.(*Server)

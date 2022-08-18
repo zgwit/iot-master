@@ -10,7 +10,7 @@ type Product struct {
 	Name         string   `json:"name"`
 	Manufacturer string   `json:"manufacturer"` //厂家
 	Version      string   `json:"version"`      //SEMVER
-	Protocol     Protocol `json:"protocol" xorm:"JSON"`
+	Protocol     Protocol `json:"protocol"`
 	//Tunnel       string `json:"tunnel"` // serial tcp udp ???
 
 	Tags     []string   `json:"tags,omitempty"`
@@ -18,20 +18,18 @@ type Product struct {
 	Pollers  []*Poller  `json:"pollers"`
 	Commands []*Command `json:"commands"`
 
-	Updated time.Time `json:"updated" xorm:"updated"`
 	Created time.Time `json:"created" xorm:"created"`
 }
 
 //Device 设备
 type Device struct {
-	Id        int64  `json:"id"`
-	TunnelId  int64  `json:"tunnel_id" xorm:"index"`
+	Id        uint64 `json:"id"`
+	TunnelId  uint64 `json:"tunnel_id" boltholdIndex:"TunnelId"`
 	ProductId string `json:"product_id"`
 
 	Name    string `json:"name"`
 	Station int    `json:"station"`
 
 	Disabled bool      `json:"disabled"`
-	Updated  time.Time `json:"updated" xorm:"updated"`
 	Created  time.Time `json:"created" xorm:"created"`
 }

@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/antonmedv/expr"
-	"iot-master/db"
 	"iot-master/model"
 	"iot-master/pkg/convert"
 	"iot-master/pkg/events"
@@ -17,6 +16,8 @@ import (
 type Device struct {
 	model.Device
 	events.EventEmitter
+
+	product *model.Product
 
 	Context map[string]interface{}
 
@@ -39,28 +40,21 @@ func NewDevice(m *model.Device) (*Device, error) {
 		commandIndex: make(map[string]*model.Command, 0),
 		pollers:      make([]*Poller, 0),
 	}
-	var err error
 
-	//加载模板
-	if dev.ProductId != "" {
-		var product model.Product
-		has, err := db.Engine.ID(dev.ProductId).Get(&product)
-		if err != nil {
-			return nil, err
-		}
-		if !has {
-			return nil, fmt.Errorf("找不到模板 %s", dev.ProductId)
-		}
-		dev.DeviceContent = product.DeviceContent
+	//加载产品
+	var err error
+	dev.product, err = LoadProduct(dev.ProductId)
+	if err != nil {
+		return nil, err
 	}
 
 	//索引命令
-	for _, cmd := range m.Commands {
+	for _, cmd := range dev.product.Commands {
 		dev.commandIndex[cmd.Name] = cmd
 	}
 
 	//解析点位
-	for _, v := range dev.Points {
+	for _, v := range dev.product.Points {
 		dev.points = append(dev.points, &Point{Point: *v, Addr: nil})
 
 		//初始化默认值
@@ -74,7 +68,7 @@ func NewDevice(m *model.Device) (*Device, error) {
 	}
 
 	//初始化
-	for _, v := range dev.Pollers {
+	for _, v := range dev.product.Pollers {
 		dev.pollers = append(dev.pollers, &Poller{Poller: *v, Addr: nil, Device: dev})
 	}
 

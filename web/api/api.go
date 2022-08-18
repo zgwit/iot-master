@@ -115,7 +115,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/project/:id/disable", parseParamId, createCurdApiDisable[model.Project](true, nil, afterProjectDisable))
 	app.GET("/project/:id/context", parseParamId, projectContext)
 	app.POST("/project/:id/context", parseParamId, projectContextUpdate)
-	app.GET("/project/:id/watch", parseParamId, projectWatch)
 	//app.GET("/project/:id/targets", parseParamId, projectTargets)
 
 	//设备接口
@@ -135,7 +134,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/device/:id/disable", parseParamId, createCurdApiDisable[model.Device](true, nil, afterDeviceDisable))
 	app.GET("/device/:id/context", parseParamId, deviceContext)
 	app.POST("/device/:id/context", parseParamId, deviceContextUpdate)
-	app.GET("/device/:id/watch", parseParamId, deviceWatch)
 	app.GET("/device/:id/refresh", parseParamId, deviceRefresh)
 	app.GET("/device/:id/refresh/:name", parseParamId, deviceRefreshPoint)
 	app.POST("/device/:id/execute", parseParamId, deviceExecute)
@@ -165,7 +163,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/server/:id/stop", parseParamId, serverStop)
 	app.GET("/server/:id/enable", parseParamId, createCurdApiDisable[model.Server](false, nil, afterServerEnable))
 	app.GET("/server/:id/disable", parseParamId, createCurdApiDisable[model.Server](true, nil, afterServerDisable))
-	app.GET("/server/:id/watch", parseParamId, serverWatch)
 
 	//通道接口
 	app.POST("/tunnel/list", tunnelList)
@@ -178,7 +175,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/tunnel/:id/stop", parseParamId, tunnelClose)
 	app.GET("/tunnel/:id/enable", parseParamId, createCurdApiDisable[model.Tunnel](false, nil, afterTunnelEnable))
 	app.GET("/tunnel/:id/disable", parseParamId, createCurdApiDisable[model.Tunnel](true, nil, afterTunnelDisable))
-	app.GET("/tunnel/:id/watch", parseParamId, tunnelWatch)
 	app.GET("/tunnel/:id/transfer", parseParamId, tunnelTransfer)
 
 	//系统接口
