@@ -3,15 +3,16 @@ package master
 import (
 	"fmt"
 	"github.com/timshannon/bolthold"
-	"golang.org/x/tools/container/intsets"
 	"iot-master/conn"
 	"iot-master/internal/connect"
 	"iot-master/internal/db"
 	"iot-master/internal/log"
+	"iot-master/internal/mqtt"
 	"iot-master/model"
 	"iot-master/protocols"
 	"iot-master/protocols/protocol"
 	"sync"
+	"time"
 )
 
 var allServers sync.Map
@@ -62,16 +63,17 @@ func bindTunnel(instance conn.Tunnel) error {
 	//}
 
 	instance.On("open", func() {
-		CreateTunnelEvent(tunnel.Id, "打开")
 		//TODO 动态加载设备？？？
+		_ = mqtt.Publish(fmt.Sprintf("tunnel/%d/open", tunnel.Id), nil)
 	})
 
 	instance.On("close", func() {
-		CreateTunnelEvent(tunnel.Id, "关闭")
+		_ = mqtt.Publish(fmt.Sprintf("tunnel/%d/close", tunnel.Id), nil)
 	})
 
 	instance.On("online", func() {
-		CreateTunnelEvent(tunnel.Id, "上线")
+		_ = mqtt.Publish(fmt.Sprintf("tunnel/%d/online", tunnel.Id), nil)
+
 		for _, d := range devices {
 			dev := GetDevice(d.Id)
 			if dev != nil {
@@ -85,7 +87,8 @@ func bindTunnel(instance conn.Tunnel) error {
 	})
 
 	instance.On("offline", func() {
-		CreateTunnelEvent(tunnel.Id, "下线")
+		_ = mqtt.Publish(fmt.Sprintf("tunnel/%d/offline", tunnel.Id), nil)
+
 		for _, d := range devices {
 			dev := GetDevice(d.Id)
 			if dev != nil {
@@ -118,38 +121,29 @@ func startTunnel(tunnel *model.Tunnel) error {
 
 //LoadTunnels 加载通道
 func LoadTunnels() error {
-	var tunnels []*model.Tunnel
-	err := db.Engine.Limit(intsets.MaxInt).Where("server_id=0").Find(&tunnels)
-	if err != nil {
-		return err
-	}
-	for _, tunnel := range tunnels {
+	return db.Store().ForEach(bolthold.Where("ServerId").Eq(0), func(tunnel *model.Tunnel) error {
 		if tunnel.Disabled {
-			continue
+			return nil
 		}
 
-		tunnel := tunnel //避免range闭包问题
 		go func() {
 			err := startTunnel(tunnel)
 			if err != nil {
 				log.Error(err)
 			}
 		}()
-	}
-	return nil
+
+		return nil
+	})
 }
 
 //LoadTunnel 加载通道
 func LoadTunnel(id uint64) error {
 	var tunnel model.Tunnel
-	has, err := db.Engine.ID(id).Get(&tunnel)
+	err := db.Store().Get(id, &tunnel)
 	if err != nil {
 		return err
 	}
-	if !has {
-		return fmt.Errorf("连接不存在 %d", id)
-	}
-
 	if tunnel.Disabled {
 		return nil //TODO error ??
 	}
@@ -189,12 +183,12 @@ func startServer(server *model.Server) error {
 	})
 
 	svr.On("open", func() {
-		CreateServerEvent(server.Id, "打开")
 		//TODO 加载设备？？？
+		_ = mqtt.Publish(fmt.Sprintf("server/%d/open", server.Id), nil)
 	})
 
 	svr.On("close", func() {
-		CreateServerEvent(server.Id, "关闭")
+		_ = mqtt.Publish(fmt.Sprintf("server/%d/close", server.Id), nil)
 	})
 
 	svr.On("tunnel", func(tunnel conn.Tunnel) {
@@ -205,8 +199,9 @@ func startServer(server *model.Server) error {
 					TunnelId:  tunnel.Model().Id,
 					Station:   d.Station,
 					ProductId: d.ProductId,
+					Created:   time.Now(),
 				}
-				_, err = db.Engine.InsertOne(&dev)
+				err := db.Store().Insert(bolthold.NextSequence(), &dev)
 				if err != nil {
 					log.Error(err)
 				}
@@ -235,42 +230,31 @@ func startServer(server *model.Server) error {
 
 //LoadServers 加载通道
 func LoadServers() error {
-	var servers []*model.Server
-	err := db.Engine.Limit(intsets.MaxInt).Find(&servers)
-	if err != nil {
-		return err
-	}
-	for _, server := range servers {
+	return db.Store().ForEach(nil, func(server *model.Server) error {
 		if server.Disabled {
-			continue
+			return nil
 		}
-
-		server := server //避免for闭包问题
 		go func() {
 			err := startServer(server)
 			if err != nil {
 				log.Error(err)
 			}
 		}()
-	}
-	return nil
+		return nil
+	})
 }
 
 //LoadServer 加载通道
 func LoadServer(id uint64) error {
-	var tunnel model.Server
-	has, err := db.Engine.ID(id).Get(&tunnel)
+	var server model.Server
+	err := db.Store().Get(id, &server)
 	if err != nil {
 		return err
 	}
-	if !has {
-		return fmt.Errorf("连接不存在 %d", id)
-	}
-
-	if tunnel.Disabled {
+	if server.Disabled {
 		return nil //TODO error ??
 	}
-	err = startServer(&tunnel)
+	err = startServer(&server)
 	if err != nil {
 		return err
 	}

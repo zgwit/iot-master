@@ -2,7 +2,6 @@ package master
 
 import (
 	"fmt"
-	"iot-master/db"
 	"iot-master/internal/log"
 	"iot-master/model"
 	"math"
@@ -39,7 +38,7 @@ func LoadDevices() error {
 }
 
 //LoadDevice 加载设备
-func LoadDevice(id int64) (*Device, error) {
+func LoadDevice(id uint64) (*Device, error) {
 	device := &model.Device{}
 	has, err := db.Engine.ID(id).Get(device)
 	if err != nil {
@@ -60,7 +59,7 @@ func LoadDevice(id int64) (*Device, error) {
 }
 
 //GetDevice 获取设备
-func GetDevice(id int64) *Device {
+func GetDevice(id uint64) *Device {
 	d, ok := allDevices.Load(id)
 	if ok {
 		return d.(*Device)
@@ -69,7 +68,7 @@ func GetDevice(id int64) *Device {
 }
 
 //RemoveDevice 删除设备
-func RemoveDevice(id int64) error {
+func RemoveDevice(id uint64) error {
 	d, ok := allDevices.LoadAndDelete(id)
 	if ok {
 		dev := d.(*Device)
@@ -79,7 +78,7 @@ func RemoveDevice(id int64) error {
 }
 
 //GetProject 获取项目
-func GetProject(id int64) *Project {
+func GetProject(id uint64) *Project {
 	d, ok := allProjects.Load(id)
 	if ok {
 		return d.(*Project)
@@ -88,7 +87,7 @@ func GetProject(id int64) *Project {
 }
 
 //RemoveProject 删除项目
-func RemoveProject(id int64) error {
+func RemoveProject(id uint64) error {
 	d, ok := allProjects.LoadAndDelete(id)
 	if ok {
 		dev := d.(*Project)
@@ -125,7 +124,7 @@ func LoadProjects() error {
 }
 
 //LoadProject 加载项目
-func LoadProject(id int64) (*Project, error) {
+func LoadProject(id uint64) (*Project, error) {
 	project := &model.Project{}
 	has, err := db.Engine.ID(id).Get(project)
 	if err != nil {
