@@ -2,20 +2,16 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/db"
+	"iot-master/internal/db"
 	"iot-master/model"
 )
 
 func userMe(ctx *gin.Context) {
 	id := ctx.GetUint64("user")
 	var user model.User
-	has, err := db.Engine.ID(id).Get(&user)
+	err := db.Store().Get(id, &user)
 	if err != nil {
 		replyError(ctx, err)
-		return
-	}
-	if !has {
-		replyFail(ctx, "用户不存在")
 		return
 	}
 	replyOk(ctx, &user)
@@ -29,7 +25,7 @@ func userPassword(ctx *gin.Context) {
 	//p.Password = md5hash(pwd)
 	p.Password = pwd //前端已经加密过
 
-	_, err := db.Engine.Cols("password").Update(&p)
+	err := db.Store().Update(p.Id, &pwd)
 	if err != nil {
 		replyError(ctx, err)
 		return

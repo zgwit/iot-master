@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"iot-master/link"
-	"iot-master/pkg/bytes"
+	"iot-master/pkg/bin"
 	"iot-master/protocols/protocol"
 	"time"
 )
@@ -100,7 +100,7 @@ func (f *FinsUdp) Read(station int, address protocol.Addr, size int) ([]byte, er
 	}
 
 	//[命令码 1 1] [结束码 0 0] , data
-	code := bytes.ParseUint16(recv[2:])
+	code := bin.ParseUint16(recv[2:])
 	if code != 0 {
 		return nil, fmt.Errorf("错误码: %d", code)
 	}
@@ -128,7 +128,7 @@ func (f *FinsUdp) Write(station int, address protocol.Addr, values []byte) error
 		return err
 	}
 	//[命令码 1 1] [结束码 0 0]
-	code := bytes.ParseUint16(recv[2:])
+	code := bin.ParseUint16(recv[2:])
 	if code != 0 {
 		return fmt.Errorf("错误码: %d", code)
 	}

@@ -2,7 +2,7 @@ package siemens
 
 import (
 	"fmt"
-	"iot-master/pkg/bytes"
+	"iot-master/pkg/bin"
 )
 
 const (
@@ -56,10 +56,10 @@ func (p *S7Parameter) encode() []byte {
 
 	cursor := 6
 	for i, area := range p.Areas {
-		bytes.WriteUint16(buf[cursor:], area.Size)     // 访问数据的个数
-		bytes.WriteUint16(buf[cursor+2:], area.DB)     //db number DB块编号，如果访问的是DB块的话
-		buf[cursor+4] = area.Code                      //area 访问数据类型
-		bytes.WriteUint24(buf[cursor+5:], area.Offset) //address 偏移位置
+		bin.WriteUint16(buf[cursor:], area.Size)     // 访问数据的个数
+		bin.WriteUint16(buf[cursor+2:], area.DB)     //db number DB块编号，如果访问的是DB块的话
+		buf[cursor+4] = area.Code                    //area 访问数据类型
+		bin.WriteUint24(buf[cursor+5:], area.Offset) //address 偏移位置
 		cursor += i * 8
 	}
 	return buf
@@ -83,7 +83,7 @@ type S7Data struct {
 func (p *S7Data) encode() []byte {
 	data := p.Data
 	if p.Type == VariableTypeBit {
-		data = bytes.ShrinkBool(data)
+		data = bin.ShrinkBool(data)
 		p.Count = uint16(len(data))
 	}
 
@@ -92,7 +92,7 @@ func (p *S7Data) encode() []byte {
 
 	buf[0] = p.Code
 	buf[1] = p.Type
-	bytes.WriteUint16(buf[2:], p.Count)
+	bin.WriteUint16(buf[2:], p.Count)
 	copy(buf[4:], data)
 	return buf
 }
@@ -105,11 +105,11 @@ func (p *S7Data) decode(buf []byte) (int, error) {
 	}
 
 	p.Type = buf[1]
-	p.Count = bytes.ParseUint16(buf[2:])
+	p.Count = bin.ParseUint16(buf[2:])
 	length := int(p.Count)
 	p.Data = buf[4 : length+4]
 	if p.Type == VariableTypeBit {
-		p.Data = bytes.ExpandBool(buf, length*8)
+		p.Data = bin.ExpandBool(buf, length*8)
 	}
 	return length + 4, nil
 }
@@ -143,7 +143,7 @@ func (p *S7Package) encode() []byte {
 	//TPKT
 	buf[0] = 0x03
 	buf[1] = 0x00
-	bytes.WriteUint16(buf[2:], uint16(size)) // 长度
+	bin.WriteUint16(buf[2:], uint16(size)) // 长度
 	//ISO-COTP
 	buf[4] = 0x02 // 固定
 	buf[5] = 0xF0
@@ -153,9 +153,9 @@ func (p *S7Package) encode() []byte {
 	buf[8] = p.Type //Message Type(ROSCTR) 1 Job Request 2 Ack 3 Ack-Data 7 Userdata
 	buf[9] = 0x0    //Reserved
 	buf[10] = 0x0
-	bytes.WriteUint16LittleEndian(buf[11:], p.Reference) // PDU ref 标识序列号(可以像Modbus TCP一样使用)
-	bytes.WriteUint16(buf[13:], uint16(paramLength))     // Param length
-	bytes.WriteUint16(buf[15:], uint16(dataLength))      // Data length
+	bin.WriteUint16LittleEndian(buf[11:], p.Reference) // PDU ref 标识序列号(可以像Modbus TCP一样使用)
+	bin.WriteUint16(buf[13:], uint16(paramLength))     // Param length
+	bin.WriteUint16(buf[15:], uint16(dataLength))      // Data length
 
 	//复制参数
 	cursor := 17
@@ -176,15 +176,15 @@ func (p *S7Package) encode() []byte {
 }
 
 func (p *S7Package) decode(buf []byte) error {
-	length := bytes.ParseUint16(buf[2:])
+	length := bin.ParseUint16(buf[2:])
 	if len(buf) < int(length) {
 		return fmt.Errorf("长度不够 %d %d", length, len(buf))
 	}
 
 	p.Type = buf[8]
-	p.Reference = bytes.ParseUint16LittleEndian(buf[11:])
-	paramLength := bytes.ParseUint16(buf[13:])
-	dataLength := bytes.ParseUint16(buf[15:])
+	p.Reference = bin.ParseUint16LittleEndian(buf[11:])
+	paramLength := bin.ParseUint16(buf[13:])
+	dataLength := bin.ParseUint16(buf[15:])
 
 	//仅当 ack-data
 	ErrorClass := buf[17]

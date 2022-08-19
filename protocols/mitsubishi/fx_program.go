@@ -3,7 +3,7 @@ package mitsubishi
 import (
 	"errors"
 	"iot-master/link"
-	"iot-master/pkg/bytes"
+	"iot-master/pkg/bin"
 	"strconv"
 	"strings"
 )
@@ -92,11 +92,11 @@ func (t *FxProgram) Read(address string, length int) ([]byte, error) {
 	}
 
 	buf := make([]byte, 11)
-	buf[0] = 0x02                               // STX
-	buf[1] = 0x30                               // 命令 Read
-	bytes.WriteUint16Hex(buf[2:], addr.Address) // 偏移地址
-	bytes.WriteUint8Hex(buf[6:], uint8(length)) // 读取长度
-	buf[8] = 0x03                               // ETX
+	buf[0] = 0x02                             // STX
+	buf[1] = 0x30                             // 命令 Read
+	bin.WriteUint16Hex(buf[2:], addr.Address) // 偏移地址
+	bin.WriteUint8Hex(buf[6:], uint8(length)) // 读取长度
+	buf[8] = 0x03                             // ETX
 
 	// 计算和校验
 	var sum uint8 = 0
@@ -105,7 +105,7 @@ func (t *FxProgram) Read(address string, length int) ([]byte, error) {
 	}
 
 	//最后两位是校验
-	bytes.WriteUint8Hex(buf[len(buf)-2:], sum)
+	bin.WriteUint8Hex(buf[len(buf)-2:], sum)
 
 	//发送请求
 	if e := t.link.Write(buf); e != nil {
@@ -130,7 +130,7 @@ func (t *FxProgram) Read(address string, length int) ([]byte, error) {
 		return nil, errors.New("返回错误")
 	}
 
-	ret := bytes.FromHex(recv[1 : length-3])
+	ret := bin.FromHex(recv[1 : length-3])
 
 	return ret, nil
 }
@@ -144,17 +144,17 @@ func (t *FxProgram) Write(address string, values []byte) error {
 	}
 
 	//先转成十六进制
-	values = bytes.ToHex(values)
+	values = bin.ToHex(values)
 
 	length := len(values)
 
 	buf := make([]byte, 11+length)
-	buf[0] = 0x02                               // STX
-	buf[1] = 0x31                               // 命令 Write
-	bytes.WriteUint16Hex(buf[2:], addr.Address) // 偏移地址
-	bytes.WriteUint8Hex(buf[6:], uint8(length)) // 写入长度
-	copy(buf[8:], values)                       // 写入内容
-	buf[len(buf)-3] = 0x03                      // ETX
+	buf[0] = 0x02                             // STX
+	buf[1] = 0x31                             // 命令 Write
+	bin.WriteUint16Hex(buf[2:], addr.Address) // 偏移地址
+	bin.WriteUint8Hex(buf[6:], uint8(length)) // 写入长度
+	copy(buf[8:], values)                     // 写入内容
+	buf[len(buf)-3] = 0x03                    // ETX
 
 	// 计算和校验
 	var sum uint8 = 0
@@ -162,7 +162,7 @@ func (t *FxProgram) Write(address string, values []byte) error {
 		sum += buf[i]
 	}
 	//最后两位是校验
-	bytes.WriteUint8Hex(buf[len(buf)-2:], sum)
+	bin.WriteUint8Hex(buf[len(buf)-2:], sum)
 
 	//发送请求
 	if e := t.link.Write(buf); e != nil {

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"iot-master/link"
-	"iot-master/pkg/bytes"
+	"iot-master/pkg/bin"
 	"iot-master/protocols/protocol"
 	"time"
 )
@@ -43,12 +43,12 @@ func (f *Fins) execute(cmd []byte) ([]byte, error) {
 	}
 
 	//头16字节：FINS + 长度 + 命令 + 错误码
-	status := bytes.ParseUint32(buf[12:])
+	status := bin.ParseUint32(buf[12:])
 	if status != 0 {
 		return nil, fmt.Errorf("TCP状态错误: %d", status)
 	}
 
-	length := bytes.ParseUint32(buf[4:])
+	length := bin.ParseUint32(buf[4:])
 	//判断剩余长度
 	if int(length)+8 < len(buf) {
 		return nil, fmt.Errorf("长度错误: %d", length)
@@ -100,7 +100,7 @@ func (f *Fins) Read(station int, address protocol.Addr, size int) ([]byte, error
 
 	//[UDP 10字节] [命令码 1 1] [结束码 0 0] , data
 
-	code := bytes.ParseUint16(recv[12:])
+	code := bin.ParseUint16(recv[12:])
 	if code != 0 {
 		return nil, fmt.Errorf("错误码: %d", code)
 	}
@@ -132,7 +132,7 @@ func (f *Fins) Write(station int, address protocol.Addr, values []byte) error {
 	}
 
 	//[UDP 10字节] [命令码 1 1] [结束码 0 0]
-	code := bytes.ParseUint32(recv[12:])
+	code := bin.ParseUint32(recv[12:])
 	if code != 0 {
 		return fmt.Errorf("错误码: %d", code)
 	}

@@ -1,4 +1,4 @@
-package bytes
+package bin
 
 //Sum 和
 func Sum(buf []byte) byte {

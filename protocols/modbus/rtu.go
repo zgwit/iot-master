@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"iot-master/link"
-	"iot-master/pkg/bytes"
+	"iot-master/pkg/bin"
 	"iot-master/protocols/protocol"
 	"time"
 )
@@ -56,7 +56,7 @@ func (m *RTU) execute(cmd []byte) ([]byte, error) {
 		return nil, errors.New("长度不足")
 	}
 
-	crc := bytes.ParseUint16LittleEndian(buf[l-2:])
+	crc := bin.ParseUint16LittleEndian(buf[l-2:])
 
 	if crc != CRC16(buf[:l-2]) {
 		//检验错误
@@ -88,7 +88,7 @@ func (m *RTU) execute(cmd []byte) ([]byte, error) {
 		}
 		b := buf[3 : l-2]
 		//数组解压
-		bb := bytes.ExpandBool(b, count)
+		bb := bin.ExpandBool(b, count)
 		return bb, nil
 	case FuncCodeReadInputRegisters,
 		FuncCodeReadHoldingRegisters,
@@ -99,7 +99,7 @@ func (m *RTU) execute(cmd []byte) ([]byte, error) {
 			return nil, errors.New("长度不足")
 		}
 		b := buf[3 : l-2]
-		return bytes.Dup(b), nil
+		return bin.Dup(b), nil
 	case FuncCodeWriteSingleCoil, FuncCodeWriteMultipleCoils,
 		FuncCodeWriteSingleRegister, FuncCodeWriteMultipleRegisters:
 		//写指令不处理
@@ -114,9 +114,9 @@ func (m *RTU) Read(station int, address protocol.Addr, size int) ([]byte, error)
 	b := make([]byte, 8)
 	b[0] = uint8(station)
 	b[1] = addr.Code
-	bytes.WriteUint16(b[2:], addr.Offset)
-	bytes.WriteUint16(b[4:], uint16(size))
-	bytes.WriteUint16LittleEndian(b[6:], CRC16(b[:6]))
+	bin.WriteUint16(b[2:], addr.Offset)
+	bin.WriteUint16(b[4:], uint16(size))
+	bin.WriteUint16LittleEndian(b[6:], CRC16(b[:6]))
 
 	return m.execute(b)
 }
@@ -143,10 +143,10 @@ func (m *RTU) Write(station int, address protocol.Addr, buf []byte) error {
 		} else {
 			code = 15 //0x0F
 			//数组压缩
-			b := bytes.ShrinkBool(buf)
+			b := bin.ShrinkBool(buf)
 			count := len(b)
 			buf = make([]byte, 3+count)
-			bytes.WriteUint16(buf, uint16(length))
+			bin.WriteUint16(buf, uint16(length))
 			buf[2] = uint8(count)
 			copy(buf[3:], b)
 		}
@@ -156,7 +156,7 @@ func (m *RTU) Write(station int, address protocol.Addr, buf []byte) error {
 		} else {
 			code = 16 //0x10
 			b := make([]byte, 3+length)
-			bytes.WriteUint16(b, uint16(length/2))
+			bin.WriteUint16(b, uint16(length/2))
 			b[2] = uint8(length)
 			copy(b[3:], buf)
 			buf = b
@@ -169,9 +169,9 @@ func (m *RTU) Write(station int, address protocol.Addr, buf []byte) error {
 	b := make([]byte, l)
 	b[0] = uint8(station)
 	b[1] = code
-	bytes.WriteUint16(b[2:], addr.Offset)
+	bin.WriteUint16(b[2:], addr.Offset)
 	copy(b[4:], buf)
-	bytes.WriteUint16LittleEndian(b[l-2:], CRC16(b[:l-2]))
+	bin.WriteUint16LittleEndian(b[l-2:], CRC16(b[:l-2]))
 
 	_, err := m.execute(b)
 	return err

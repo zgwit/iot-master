@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"iot-master/link"
-	"iot-master/pkg/bytes"
+	"iot-master/pkg/bin"
 	"iot-master/protocols/protocol"
 	"time"
 )
@@ -41,7 +41,7 @@ func (f *FinsHostLink) execute(cmd []byte) ([]byte, error) {
 	//@ [单元号] [F A] [0 0] [4 0 ICF][0 0 DA2][0 0 SA2][ SID ]
 	//[命令码 4字节] [状态码 4字节] [ ...data... ]
 	//[FCS][* CR]
-	recv := bytes.FromHex(buf[15 : l-4])
+	recv := bin.FromHex(buf[15 : l-4])
 
 	//记录响应的SID
 	//t.frame.SID = FromHex(payload[13:15])[0]
@@ -71,7 +71,7 @@ func (f *FinsHostLink) Read(station int, address protocol.Addr, size int) ([]byt
 	}
 
 	//[命令码 1 1] [结束码 0 0] , data
-	code := bytes.ParseUint16(recv[2:])
+	code := bin.ParseUint16(recv[2:])
 	if code != 0 {
 		return nil, fmt.Errorf("错误码: %d", code)
 	}
@@ -100,7 +100,7 @@ func (f *FinsHostLink) Write(station int, address protocol.Addr, values []byte) 
 	}
 
 	//[命令码 1 1] [结束码 0 0]
-	code := bytes.ParseUint16(recv[2:])
+	code := bin.ParseUint16(recv[2:])
 	if code != 0 {
 		return fmt.Errorf("错误码: %d", code)
 	}

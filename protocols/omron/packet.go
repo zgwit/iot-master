@@ -1,7 +1,7 @@
 package omron
 
 import (
-	"iot-master/pkg/bytes"
+	"iot-master/pkg/bin"
 	"iot-master/protocols/protocol"
 )
 
@@ -16,11 +16,11 @@ func buildReadCommand(address protocol.Addr, length int) ([]byte, error) {
 	buf[1] = 0x01 //SRC
 	buf[2] = addr.Code
 	// 地址
-	bytes.WriteUint16(buf[3:], uint16(addr.Offset))
+	bin.WriteUint16(buf[3:], uint16(addr.Offset))
 	// 位地址
 	buf[5] = addr.Bits
 	// 长度
-	bytes.WriteUint16(buf[6:], uint16(length))
+	bin.WriteUint16(buf[6:], uint16(length))
 
 	return buf, nil
 }
@@ -38,14 +38,14 @@ func buildWriteCommand(address protocol.Addr, values []byte) ([]byte, error) {
 	buf[2] = addr.Code
 
 	// 地址
-	bytes.WriteUint16(buf[3:], uint16(addr.Offset))
+	bin.WriteUint16(buf[3:], uint16(addr.Offset))
 	buf[5] = addr.Bits
 
 	if addr.IsBit {
 		length = length / 2 // 一个word是双字节
 	}
 	// 长度
-	bytes.WriteUint16(buf[6:], uint16(length))
+	bin.WriteUint16(buf[6:], uint16(length))
 
 	//数据
 	copy(buf[8:], values)
@@ -64,13 +64,13 @@ func packTCPCommand(cmd uint32, payload []byte) []byte {
 	buf[3] = 0x53
 
 	//长度
-	bytes.WriteUint32(buf[4:], uint32(length))
+	bin.WriteUint32(buf[4:], uint32(length))
 
 	//命令码 读写时为2
-	bytes.WriteUint32(buf[8:], uint32(cmd))
+	bin.WriteUint32(buf[8:], uint32(cmd))
 
 	//错误码
-	bytes.WriteUint32(buf[12:], 0)
+	bin.WriteUint32(buf[12:], 0)
 
 	//附加数据
 	copy(buf[16:], payload)
@@ -101,21 +101,21 @@ func packUDPCommand(uf *UdpFrame, payload []byte) []byte {
 }
 
 func packAsciiCommand(uf *UdpFrame, payload []byte) []byte {
-	cmd := bytes.ToHex(payload)
+	cmd := bin.ToHex(payload)
 
 	length := len(cmd)
 
 	buf := make([]byte, 18+length)
 
 	buf[0] = '@'
-	bytes.WriteByteHex(buf[1:], uf.DA1) //PLC设备号
-	buf[3] = 'F'                        //识别码
+	bin.WriteByteHex(buf[1:], uf.DA1) //PLC设备号
+	buf[3] = 'F'                      //识别码
 	buf[4] = 'A'
 	buf[5] = 0x30 //响应等待时间 x 15ms
-	bytes.WriteByteHex(buf[6:], uf.ICF)
-	bytes.WriteByteHex(buf[8:], uf.DA2)
-	bytes.WriteByteHex(buf[10:], uf.SA2)
-	bytes.WriteByteHex(buf[12:], uf.SID)
+	bin.WriteByteHex(buf[6:], uf.ICF)
+	bin.WriteByteHex(buf[8:], uf.DA2)
+	bin.WriteByteHex(buf[10:], uf.SA2)
+	bin.WriteByteHex(buf[12:], uf.SID)
 	copy(buf[14:], cmd)
 
 	//计算FCS
@@ -123,7 +123,7 @@ func packAsciiCommand(uf *UdpFrame, payload []byte) []byte {
 	for i := 1; i < length+14; i++ {
 		tmp = tmp ^ buf[i]
 	}
-	bytes.WriteByteHex(buf[length+14:], tmp)
+	bin.WriteByteHex(buf[length+14:], tmp)
 	buf[length+16] = '*'
 	buf[length+17] = 0x0D //CR
 

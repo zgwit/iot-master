@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"iot-master/link"
-	"iot-master/pkg/bytes"
+	"iot-master/pkg/bin"
 	"iot-master/protocols/protocol"
 	"sync"
 	"time"
@@ -56,7 +56,7 @@ func (m *TCP) execute(cmd []byte, immediate bool) ([]byte, error) {
 	}
 
 	id := m.increment
-	bytes.WriteUint16(cmd, id) //写入事务ID
+	bin.WriteUint16(cmd, id) //写入事务ID
 	m.increment++
 	if m.increment < 0x0A0A {
 		m.increment = 0x0A0A
@@ -97,7 +97,7 @@ func (m *TCP) OnData(buf []byte) {
 		return //长度不够
 	}
 
-	length := bytes.ParseUint16(buf[4:])
+	length := bin.ParseUint16(buf[4:])
 	packLen := int(length) + 6
 
 	if l < packLen {
@@ -117,7 +117,7 @@ func (m *TCP) OnData(buf []byte) {
 }
 
 func (m *TCP) handlePack(buf []byte) {
-	id := bytes.ParseUint16(buf)
+	id := bin.ParseUint16(buf)
 	r, ok := m.requests.LoadAndDelete(id)
 	if !ok {
 		return
@@ -139,12 +139,12 @@ func (m *TCP) handlePack(buf []byte) {
 	case FuncCodeReadDiscreteInputs,
 		FuncCodeReadCoils:
 		//数组解压
-		bb := bytes.ExpandBool(buf[9:], count)
+		bb := bin.ExpandBool(buf[9:], count)
 		req.resp <- response{buf: bb}
 	case FuncCodeReadInputRegisters,
 		FuncCodeReadHoldingRegisters,
 		FuncCodeReadWriteMultipleRegisters:
-		req.resp <- response{buf: bytes.Dup(buf[9:])}
+		req.resp <- response{buf: bin.Dup(buf[9:])}
 	case FuncCodeWriteSingleCoil, FuncCodeWriteMultipleCoils,
 		FuncCodeWriteSingleRegister, FuncCodeWriteMultipleRegisters:
 		//写指令不处理
@@ -157,12 +157,12 @@ func (m *TCP) Read(station int, address protocol.Addr, size int) ([]byte, error)
 	addr := address.(*Address)
 	b := make([]byte, 12)
 	//helper.WriteUint16(b, id)
-	bytes.WriteUint16(b[2:], 0) //协议版本
-	bytes.WriteUint16(b[4:], 6) //剩余长度
+	bin.WriteUint16(b[2:], 0) //协议版本
+	bin.WriteUint16(b[4:], 6) //剩余长度
 	b[6] = uint8(station)
 	b[7] = addr.Code
-	bytes.WriteUint16(b[8:], addr.Offset)
-	bytes.WriteUint16(b[10:], uint16(size))
+	bin.WriteUint16(b[8:], addr.Offset)
+	bin.WriteUint16(b[10:], uint16(size))
 
 	return m.execute(b, true)
 }
@@ -171,12 +171,12 @@ func (m *TCP) Poll(station int, address protocol.Addr, size int) ([]byte, error)
 	addr := address.(*Address)
 	b := make([]byte, 12)
 	//helper.WriteUint16(b, id)
-	bytes.WriteUint16(b[2:], 0) //协议版本
-	bytes.WriteUint16(b[4:], 6) //剩余长度
+	bin.WriteUint16(b[2:], 0) //协议版本
+	bin.WriteUint16(b[4:], 6) //剩余长度
 	b[6] = uint8(station)
 	b[7] = addr.Code
-	bytes.WriteUint16(b[8:], addr.Offset)
-	bytes.WriteUint16(b[10:], uint16(size))
+	bin.WriteUint16(b[8:], addr.Offset)
+	bin.WriteUint16(b[10:], uint16(size))
 
 	return m.execute(b, false)
 }
@@ -199,10 +199,10 @@ func (m *TCP) Write(station int, address protocol.Addr, buf []byte) error {
 		} else {
 			code = 15 //0x0F
 			//数组压缩
-			b := bytes.ShrinkBool(buf)
+			b := bin.ShrinkBool(buf)
 			count := len(b)
 			buf = make([]byte, 3+count)
-			bytes.WriteUint16(buf, uint16(length))
+			bin.WriteUint16(buf, uint16(length))
 			buf[2] = uint8(count)
 			copy(buf[3:], b)
 		}
@@ -212,7 +212,7 @@ func (m *TCP) Write(station int, address protocol.Addr, buf []byte) error {
 		} else {
 			code = 16 //0x10
 			b := make([]byte, 3+length)
-			bytes.WriteUint16(b, uint16(length/2))
+			bin.WriteUint16(b, uint16(length/2))
 			b[2] = uint8(length)
 			copy(b[3:], buf)
 			buf = b
@@ -224,11 +224,11 @@ func (m *TCP) Write(station int, address protocol.Addr, buf []byte) error {
 	l := 10 + len(buf)
 	b := make([]byte, l)
 	//helper.WriteUint16(b, id)
-	bytes.WriteUint16(b[2:], 0) //协议版本
-	bytes.WriteUint16(b[4:], 6) //剩余长度
+	bin.WriteUint16(b[2:], 0) //协议版本
+	bin.WriteUint16(b[4:], 6) //剩余长度
 	b[6] = uint8(station)
 	b[7] = code
-	bytes.WriteUint16(b[8:], addr.Offset)
+	bin.WriteUint16(b[8:], addr.Offset)
 	copy(b[10:], buf)
 
 	_, err := m.execute(b, true)

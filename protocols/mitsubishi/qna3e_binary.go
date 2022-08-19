@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"iot-master/link"
-	"iot-master/pkg/bytes"
+	"iot-master/pkg/bin"
 )
 
 // A3EBinaryAdapter 协议
@@ -39,12 +39,12 @@ func (t *A3EBinaryAdapter) request(cmd []byte) ([]byte, error) {
 	//	return nil, e
 	//}
 
-	status := bytes.ParseUint32(buf[12:])
+	status := bin.ParseUint32(buf[12:])
 	if status != 0 {
 		return nil, errors.New(fmt.Sprintf("TCP状态错误: %d", status))
 	}
 
-	length := bytes.ParseUint32(buf[4:]) - 8
+	length := bin.ParseUint32(buf[4:]) - 8
 
 	payload := make([]byte, length)
 	//t.link.Read(payload)
@@ -58,13 +58,13 @@ func (t *A3EBinaryAdapter) BuildCommand(cmd []byte) []byte {
 	buf := make([]byte, 11+length)
 	buf[0] = 0x50 //副标题
 	buf[1] = 0x00
-	buf[2] = t.NetworkNumber                               //网络号
-	buf[3] = t.PlcNumber                                   //PLC编号
-	buf[4] = t.IoNumber                                    //目标IO编号 L
-	buf[5] = 0x03                                          //目标IO编号 H
-	buf[6] = t.StationNumber                               //站编号
-	bytes.WriteUint16LittleEndian(buf[7:], uint16(length)) //请求数据长度
-	bytes.WriteUint16LittleEndian(buf[9:], 10)             //CPU监视定时器
+	buf[2] = t.NetworkNumber                             //网络号
+	buf[3] = t.PlcNumber                                 //PLC编号
+	buf[4] = t.IoNumber                                  //目标IO编号 L
+	buf[5] = 0x03                                        //目标IO编号 H
+	buf[6] = t.StationNumber                             //站编号
+	bin.WriteUint16LittleEndian(buf[7:], uint16(length)) //请求数据长度
+	bin.WriteUint16LittleEndian(buf[9:], 10)             //CPU监视定时器
 	//命令
 	copy(buf[11:], cmd)
 
@@ -91,9 +91,9 @@ func (t *A3EBinaryAdapter) Read(address string, length int) ([]byte, error) {
 		buf[2] = 0x00
 	}
 	buf[3] = 0x00
-	bytes.WriteUint24LittleEndian(buf[4:], uint32(addr.Addr)) // 起始地址的地位
-	buf[7] = addr.Code                                        // 指明读取的数据
-	bytes.WriteUint16LittleEndian(buf[8:], uint16(length))    //软元件的长度
+	bin.WriteUint24LittleEndian(buf[4:], uint32(addr.Addr)) // 起始地址的地位
+	buf[7] = addr.Code                                      // 指明读取的数据
+	bin.WriteUint16LittleEndian(buf[8:], uint16(length))    //软元件的长度
 
 	//构建命令
 	cmd := t.BuildCommand(buf)
@@ -131,9 +131,9 @@ func (t *A3EBinaryAdapter) Write(address string, values []byte) error {
 		buf[2] = 0x00
 	}
 	buf[3] = 0x00
-	bytes.WriteUint24LittleEndian(buf[4:], uint32(addr.Addr)) // 起始地址的地位
-	buf[7] = addr.Code                                        // 指明写入的数据
-	bytes.WriteUint16LittleEndian(buf[8:], uint16(length))    //软元件的长度
+	bin.WriteUint24LittleEndian(buf[4:], uint32(addr.Addr)) // 起始地址的地位
+	buf[7] = addr.Code                                      // 指明写入的数据
+	bin.WriteUint16LittleEndian(buf[8:], uint16(length))    //软元件的长度
 
 	copy(buf[10:], values)
 
