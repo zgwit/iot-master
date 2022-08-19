@@ -76,7 +76,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		})
 		ins.POST("/base", installBase)
 		ins.POST("/database", installDatabase)
-		ins.POST("/history", installHistory)
 		ins.GET("/system", installSystem)
 	}
 

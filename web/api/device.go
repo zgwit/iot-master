@@ -3,9 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/websocket"
-	"iot-master/db"
-	"iot-master/history"
-	"iot-master/master"
+	"iot-master/internal/core"
 	"iot-master/model"
 )
 
@@ -36,7 +34,7 @@ func deviceList(ctx *gin.Context) {
 
 	//补充running状态
 	for _, dev := range devs {
-		d := master.GetDevice(dev.Id)
+		d := core.GetDevice(dev.Id)
 		if d != nil {
 			dev.Running = d.Running()
 		}
@@ -48,7 +46,7 @@ func deviceList(ctx *gin.Context) {
 func afterDeviceCreate(data interface{}) error {
 	device := data.(*model.Device)
 	//启动
-	dev, err := master.LoadDevice(device.Id)
+	dev, err := core.LoadDevice(device.Id)
 	if err == nil {
 		err = dev.Start()
 	}
@@ -57,7 +55,7 @@ func afterDeviceCreate(data interface{}) error {
 
 func deviceDetail(ctx *gin.Context) {
 	var device model.DeviceEx
-	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&device.Device)
+	has, err := db.Engine.ID(ctx.GetUint64("id")).Get(&device.Device)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -76,7 +74,7 @@ func deviceDetail(ctx *gin.Context) {
 		}
 	}
 
-	d := master.GetDevice(device.Id)
+	d := core.GetDevice(device.Id)
 	if d != nil {
 		device.Running = d.Running()
 	}
@@ -87,8 +85,8 @@ func deviceDetail(ctx *gin.Context) {
 func afterDeviceUpdate(data interface{}) error {
 	device := data.(*model.Device)
 	//重新启动
-	_ = master.RemoveDevice(device.Id)
-	dev, err := master.LoadDevice(device.Id)
+	_ = core.RemoveDevice(device.Id)
+	dev, err := core.LoadDevice(device.Id)
 	if err == nil {
 		err = dev.Start()
 	}
@@ -96,11 +94,11 @@ func afterDeviceUpdate(data interface{}) error {
 }
 
 func afterDeviceDelete(id interface{}) error {
-	return master.RemoveDevice(id.(int64))
+	return core.RemoveDevice(id.(uint64))
 }
 
 func deviceStart(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt64("id"))
+	device := core.GetDevice(ctx.GetUint64("id"))
 	if device == nil {
 		replyFail(ctx, "not found")
 		return
@@ -115,7 +113,7 @@ func deviceStart(ctx *gin.Context) {
 }
 
 func deviceStop(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt64("id"))
+	device := core.GetDevice(ctx.GetUint64("id"))
 	if device == nil {
 		replyFail(ctx, "not found")
 		return
@@ -130,8 +128,8 @@ func deviceStop(ctx *gin.Context) {
 }
 
 func afterDeviceEnable(id interface{}) error {
-	_ = master.RemoveDevice(id.(int64))
-	dev, err := master.LoadDevice(id.(int64))
+	_ = core.RemoveDevice(id.(int64))
+	dev, err := core.LoadDevice(id.(int64))
 	if err != nil {
 		err = dev.Start()
 	}
@@ -139,11 +137,11 @@ func afterDeviceEnable(id interface{}) error {
 }
 
 func afterDeviceDisable(id interface{}) error {
-	return master.RemoveDevice(id.(int64))
+	return core.RemoveDevice(id.(int64))
 }
 
 func deviceContext(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt64("id"))
+	device := core.GetDevice(ctx.GetUint64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -159,7 +157,7 @@ func deviceContextUpdate(ctx *gin.Context) {
 		return
 	}
 
-	device := master.GetDevice(ctx.GetInt64("id"))
+	device := core.GetDevice(ctx.GetUint64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -177,7 +175,7 @@ func deviceContextUpdate(ctx *gin.Context) {
 }
 
 func deviceRefresh(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt64("id"))
+	device := core.GetDevice(ctx.GetUint64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -191,7 +189,7 @@ func deviceRefresh(ctx *gin.Context) {
 }
 
 func deviceRefreshPoint(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt64("id"))
+	device := core.GetDevice(ctx.GetUint64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -217,7 +215,7 @@ func deviceExecute(ctx *gin.Context) {
 		return
 	}
 
-	device := master.GetDevice(ctx.GetInt64("id"))
+	device := core.GetDevice(ctx.GetUint64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -231,7 +229,7 @@ func deviceExecute(ctx *gin.Context) {
 }
 
 func deviceWatch(ctx *gin.Context) {
-	device := master.GetDevice(ctx.GetInt64("id"))
+	device := core.GetDevice(ctx.GetUint64("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -252,7 +250,7 @@ func deviceValueHistory(ctx *gin.Context) {
 		return
 	}
 
-	values, err := history.Storage.Query(ctx.GetInt64("id"), key, start, end, window)
+	values, err := history.Storage.Query(ctx.GetUint64("id"), key, start, end, window)
 	if err != nil {
 		replyError(ctx, err)
 		return

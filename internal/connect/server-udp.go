@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/timshannon/bolthold"
-	"iot-master/conn"
 	"iot-master/internal/db"
 	"iot-master/internal/mqtt"
+	"iot-master/link"
 	"iot-master/model"
 	"iot-master/pkg/events"
 	"net"
@@ -19,7 +19,7 @@ type ServerUDP struct {
 
 	server *model.Server
 
-	children map[int64]*ServerUdpTunnel
+	children map[uint64]*ServerUdpTunnel
 	tunnels  map[string]*ServerUdpTunnel
 
 	listener *net.UDPConn
@@ -29,7 +29,7 @@ type ServerUDP struct {
 func newServerUDP(server *model.Server) *ServerUDP {
 	svr := &ServerUDP{
 		server:   server,
-		children: make(map[int64]*ServerUdpTunnel),
+		children: make(map[uint64]*ServerUdpTunnel),
 		tunnels:  make(map[string]*ServerUdpTunnel),
 	}
 	return svr
@@ -142,7 +142,7 @@ func (server *ServerUDP) Close() (err error) {
 }
 
 //GetTunnel 获取链接
-func (server *ServerUDP) GetTunnel(id int64) conn.Tunnel {
+func (server *ServerUDP) GetTunnel(id uint64) link.Tunnel {
 	return server.children[id]
 }
 

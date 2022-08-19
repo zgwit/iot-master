@@ -2,7 +2,7 @@ package siemens
 
 import (
 	"fmt"
-	"iot-master/conn"
+	"iot-master/link"
 	"iot-master/protocols/protocol"
 	"time"
 )
@@ -11,7 +11,7 @@ type S7 struct {
 	handshake1 []byte
 	handshake2 []byte
 
-	link conn.Tunnel
+	link link.Tunnel
 	desc *protocol.Desc
 }
 

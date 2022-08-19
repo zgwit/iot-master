@@ -2,7 +2,7 @@ package mitsubishi
 
 import (
 	"errors"
-	"iot-master/conn"
+	"iot-master/link"
 	"iot-master/pkg/bytes"
 	"strconv"
 	"strings"
@@ -76,7 +76,7 @@ func parseFxProgramAddress(address string) (addr fxProgramAddr, err error) {
 
 //FxProgram FX协议
 type FxProgram struct {
-	link conn.Tunnel
+	link link.Tunnel
 }
 
 //NewFxSerial 新建

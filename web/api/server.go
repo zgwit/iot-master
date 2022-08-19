@@ -46,7 +46,7 @@ func afterServerCreate(data interface{}) error {
 
 func serverDetail(ctx *gin.Context) {
 	var server model.ServerEx
-	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&server.Server)
+	has, err := db.Engine.ID(ctx.GetUint64("id")).Get(&server.Server)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -73,7 +73,7 @@ func afterServerDelete(id interface{}) error {
 }
 
 func serverStart(ctx *gin.Context) {
-	server := master.GetServer(ctx.GetInt64("id"))
+	server := master.GetServer(ctx.GetUint64("id"))
 	if server == nil {
 		replyFail(ctx, "not found")
 		return
@@ -88,7 +88,7 @@ func serverStart(ctx *gin.Context) {
 }
 
 func serverStop(ctx *gin.Context) {
-	server := master.GetServer(ctx.GetInt64("id"))
+	server := master.GetServer(ctx.GetUint64("id"))
 	if server == nil {
 		replyFail(ctx, "not found")
 		return
@@ -112,7 +112,7 @@ func afterServerDisable(id interface{}) error {
 }
 
 func serverWatch(ctx *gin.Context) {
-	server := master.GetServer(ctx.GetInt64("id"))
+	server := master.GetServer(ctx.GetUint64("id"))
 	if server == nil {
 		replyFail(ctx, "找不到通道")
 		return

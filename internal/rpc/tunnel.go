@@ -12,17 +12,17 @@ func (*tunnelServer) List(ctx context.Context, list *plugin.List) (*plugin.Buffe
 	panic("implement me")
 }
 
-func (*tunnelServer) Get(ctx context.Context, i *plugin.Int64) (*plugin.Buffer, error) {
+func (*tunnelServer) Get(ctx context.Context, i *plugin.Id) (*plugin.Buffer, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (*tunnelServer) Open(ctx context.Context, i *plugin.Int64) (*plugin.Empty, error) {
+func (*tunnelServer) Open(ctx context.Context, i *plugin.Id) (*plugin.Empty, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (*tunnelServer) Close(ctx context.Context, i *plugin.Int64) (*plugin.Empty, error) {
+func (*tunnelServer) Close(ctx context.Context, i *plugin.Id) (*plugin.Empty, error) {
 	//TODO implement me
 	panic("implement me")
 }

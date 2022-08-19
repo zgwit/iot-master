@@ -3,9 +3,9 @@ package modbus
 import (
 	"errors"
 	"fmt"
+	"iot-master/link"
 	"iot-master/pkg/bytes"
 	"iot-master/protocols/protocol"
-	"iot-master/conn"
 	"time"
 )
 
@@ -21,10 +21,10 @@ type request struct {
 
 //RTU Modbus-RTU协议
 type RTU struct {
-	link conn.Tunnel
+	link link.Tunnel
 }
 
-func NewRTU(link conn.Tunnel, opts protocol.Options) protocol.Protocol {
+func NewRTU(link link.Tunnel, opts protocol.Options) protocol.Protocol {
 	rtu := &RTU{
 		link: link,
 		//slave: opts["slave"].(uint8),

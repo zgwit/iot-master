@@ -3,7 +3,7 @@ package mitsubishi
 import (
 	"errors"
 	"fmt"
-	"iot-master/conn"
+	"iot-master/link"
 	"iot-master/pkg/bytes"
 	"strconv"
 )
@@ -15,7 +15,7 @@ type A3EAdapter struct {
 	PlcNumber     byte //PLC编号
 	IoNumber      byte //IO编号
 
-	link conn.Tunnel
+	link link.Tunnel
 }
 
 func NewA3EAdapter() *A3EAdapter {

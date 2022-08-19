@@ -2,9 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/db"
-	"iot-master/history"
 	"iot-master/internal/config"
+	"iot-master/internal/db"
 )
 
 type installBaseObj struct {
@@ -42,30 +41,7 @@ func installDatabase(ctx *gin.Context) {
 		return
 	}
 
-	err = db.Sync()
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
 	replyOk(ctx, nil)
-}
-
-func installHistory(ctx *gin.Context) {
-	//var cfg config.History
-	cfg := &config.Config.History
-	err := ctx.BindJSON(cfg)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	err = history.Open(cfg)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyOk(ctx, nil)
-
 }
 
 func installSystem(ctx *gin.Context) {

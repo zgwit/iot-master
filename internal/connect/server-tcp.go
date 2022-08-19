@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"github.com/timshannon/bolthold"
-	"iot-master/conn"
 	"iot-master/internal/db"
 	"iot-master/internal/mqtt"
+	"iot-master/link"
 	"iot-master/model"
 	"iot-master/pkg/events"
 	"net"
@@ -19,7 +19,7 @@ type ServerTCP struct {
 
 	server *model.Server
 
-	children map[int64]*ServerTcpTunnel
+	children map[uint64]*ServerTcpTunnel
 
 	listener *net.TCPListener
 
@@ -29,7 +29,7 @@ type ServerTCP struct {
 func newServerTCP(server *model.Server) *ServerTCP {
 	svr := &ServerTCP{
 		server:   server,
-		children: make(map[int64]*ServerTcpTunnel),
+		children: make(map[uint64]*ServerTcpTunnel),
 	}
 	return svr
 }
@@ -136,7 +136,7 @@ func (server *ServerTCP) Close() (err error) {
 }
 
 //GetTunnel 获取连接
-func (server *ServerTCP) GetTunnel(id int64) conn.Tunnel {
+func (server *ServerTCP) GetTunnel(id uint64) link.Tunnel {
 	return server.children[id]
 }
 

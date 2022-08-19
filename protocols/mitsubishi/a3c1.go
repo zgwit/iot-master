@@ -2,7 +2,7 @@ package mitsubishi
 
 import (
 	"fmt"
-	"iot-master/conn"
+	"iot-master/link"
 	"iot-master/pkg/bytes"
 	"strconv"
 )
@@ -14,7 +14,7 @@ type A3C1 struct {
 	PlcNumber     byte //PLC编号
 	UpperNumber   byte //上位机编号
 
-	link conn.Tunnel
+	link link.Tunnel
 }
 
 func NewA3C1() *A3C1 {

@@ -1,4 +1,4 @@
-package master
+package core
 
 import (
 	"iot-master/model"

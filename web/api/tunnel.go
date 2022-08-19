@@ -49,7 +49,7 @@ func afterTunnelCreate(data interface{}) error {
 
 func tunnelDetail(ctx *gin.Context) {
 	var tunnel model.TunnelEx
-	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&tunnel.Tunnel)
+	has, err := db.Engine.ID(ctx.GetUint64("id")).Get(&tunnel.Tunnel)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -81,7 +81,7 @@ func afterTunnelDisable(id interface{}) error {
 }
 
 func tunnelStart(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetInt64("id"))
+	tunnel := master.GetTunnel(ctx.GetUint64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "tunnel not found")
 		return
@@ -96,7 +96,7 @@ func tunnelStart(ctx *gin.Context) {
 }
 
 func tunnelClose(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetInt64("id"))
+	tunnel := master.GetTunnel(ctx.GetUint64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "tunnel not found")
 		return
@@ -111,7 +111,7 @@ func tunnelClose(ctx *gin.Context) {
 }
 
 func tunnelWatch(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetInt64("id"))
+	tunnel := master.GetTunnel(ctx.GetUint64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "找不到通道")
 		return
@@ -122,7 +122,7 @@ func tunnelWatch(ctx *gin.Context) {
 }
 
 func tunnelTransfer(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetInt64("id"))
+	tunnel := master.GetTunnel(ctx.GetUint64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "找不到通道")
 		return

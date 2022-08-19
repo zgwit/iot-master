@@ -3,8 +3,6 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/websocket"
-	"iot-master/db"
-	"iot-master/master"
 	"iot-master/model"
 )
 
@@ -52,7 +50,7 @@ func afterProjectCreate(data interface{}) error {
 func projectDetail(ctx *gin.Context) {
 	var project model.ProjectEx
 
-	has, err := db.Engine.ID(ctx.GetInt64("id")).Get(&project.Project)
+	has, err := db.Engine.ID(ctx.GetUint64("id")).Get(&project.Project)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -91,7 +89,7 @@ func afterProjectDelete(id interface{}) error {
 }
 
 func projectStart(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetInt64("id"))
+	project := master.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "not found")
 		return
@@ -106,7 +104,7 @@ func projectStart(ctx *gin.Context) {
 }
 
 func projectStop(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetInt64("id"))
+	project := master.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "not found")
 		return
@@ -131,7 +129,7 @@ func afterProjectDisable(id interface{}) error {
 }
 
 func projectContext(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetInt64("id"))
+	project := master.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "找不到项目")
 		return
@@ -147,7 +145,7 @@ func projectContextUpdate(ctx *gin.Context) {
 		return
 	}
 
-	project := master.GetProject(ctx.GetInt64("id"))
+	project := master.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "找不到项目")
 		return
@@ -165,7 +163,7 @@ func projectContextUpdate(ctx *gin.Context) {
 }
 
 func projectWatch(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetInt64("id"))
+	project := master.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "找不到项目")
 		return
@@ -177,7 +175,7 @@ func projectWatch(ctx *gin.Context) {
 
 func projectTargets(ctx *gin.Context) {
 	var project model.Project
-	has, err := db.Engine.ID(ctx.GetInt64("id")).Cols("devices").Get(&project)
+	has, err := db.Engine.ID(ctx.GetUint64("id")).Cols("devices").Get(&project)
 	if err != nil {
 		replyError(ctx, err)
 		return
@@ -217,7 +215,7 @@ func projectTargets(ctx *gin.Context) {
 
 func templateTargets(ctx *gin.Context) {
 	var template model.Template
-	has, err := db.Engine.ID(ctx.GetInt64("id")).Cols("products").Get(&template)
+	has, err := db.Engine.ID(ctx.GetUint64("id")).Cols("products").Get(&template)
 	if err != nil {
 		replyError(ctx, err)
 		return

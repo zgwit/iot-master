@@ -3,7 +3,7 @@ package modbus
 import (
 	"errors"
 	"fmt"
-	"iot-master/conn"
+	"iot-master/link"
 	"iot-master/pkg/bytes"
 	"iot-master/protocols/protocol"
 	"sync"
@@ -12,14 +12,14 @@ import (
 
 //TCP Modbus-TCP协议
 type TCP struct {
-	link  conn.Tunnel
+	link  link.Tunnel
 	queue chan interface{} //in
 
 	requests  sync.Map
 	increment uint16
 }
 
-func NewTCP(link conn.Tunnel, opts protocol.Options) protocol.Protocol {
+func NewTCP(link link.Tunnel, opts protocol.Options) protocol.Protocol {
 	concurrency := opts.GetInt("concurrency", 10)
 
 	tcp := &TCP{

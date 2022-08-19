@@ -2,14 +2,14 @@ package connect
 
 import (
 	"fmt"
-	"iot-master/conn"
+	"iot-master/link"
 	"iot-master/model"
 	"strings"
 )
 
 //NewTunnel 创建通道
-func NewTunnel(tunnel *model.Tunnel) (conn.Tunnel, error) {
-	var tnl conn.Tunnel
+func NewTunnel(tunnel *model.Tunnel) (link.Tunnel, error) {
+	var tnl link.Tunnel
 	switch tunnel.Type {
 	case "serial":
 		tnl = newTunnelSerial(tunnel)

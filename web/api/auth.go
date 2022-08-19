@@ -2,8 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/db"
+	"github.com/timshannon/bolthold"
 	"iot-master/internal/config"
+	"iot-master/internal/db"
 	"iot-master/model"
 	lib2 "iot-master/pkg/lib"
 )
@@ -20,14 +21,13 @@ func auth(ctx *gin.Context) {
 	password := ctx.Query("password")
 
 	var user model.User
-	has, err := db.Engine.Where("username=?", username).Get(&user)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
+	err := db.Store().FindOne(&user, bolthold.Where("Username").Eq(username))
 
-	if !has {
+	if err == bolthold.ErrNotFound {
 		replyFail(ctx, "找不到用户")
+		return
+	} else if err != nil {
+		replyError(ctx, err)
 		return
 	}
 
@@ -37,19 +37,17 @@ func auth(ctx *gin.Context) {
 	}
 
 	var obj model.Password
-	has, err = db.Engine.ID(user.Id).Get(&obj)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	//初始化密码
-	if !has {
+	err = db.Store().Get(user.Id, &obj)
+	if err == bolthold.ErrNotFound {
+		//初始化密码
 		dp := config.Config.DefaultPassword
 		if dp == "" {
 			dp = "123456"
 		}
 		obj.Password = md5hash(dp)
+	} else if err != nil {
+		replyError(ctx, err)
+		return
 	}
 
 	if obj.Password != password {

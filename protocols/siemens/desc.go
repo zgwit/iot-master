@@ -1,8 +1,8 @@
 package siemens
 
 import (
+	"iot-master/link"
 	"iot-master/protocols/protocol"
-	"iot-master/conn"
 )
 
 var Codes = []protocol.Code{
@@ -22,7 +22,7 @@ var DescS7_200 = protocol.Desc{
 	Version: "1.0",
 	Label:   "Simatic S7-200",
 	Codes:   Codes,
-	Factory: func(tunnel conn.Tunnel, opts protocol.Options) protocol.Protocol {
+	Factory: func(tunnel link.Tunnel, opts protocol.Options) protocol.Protocol {
 		return &Simatic{
 			handshake1: parseHex(handshake1_200),
 			handshake2: parseHex(handshake2_200),
@@ -45,7 +45,7 @@ var DescS7_300 = protocol.Desc{
 	Version: "1.0",
 	Label:   "Simatic S7-300",
 	Codes:   Codes,
-	Factory: func(tunnel conn.Tunnel, opts protocol.Options) protocol.Protocol {
+	Factory: func(tunnel link.Tunnel, opts protocol.Options) protocol.Protocol {
 		return &Simatic{
 			handshake1: parseHex(handshake1_300),
 			handshake2: parseHex(handshake2_300),
@@ -59,7 +59,7 @@ var DescS7_400 = protocol.Desc{
 	Version: "1.0",
 	Label:   "Simatic S7-400",
 	Codes:   Codes,
-	Factory: func(tunnel conn.Tunnel, opts protocol.Options) protocol.Protocol {
+	Factory: func(tunnel link.Tunnel, opts protocol.Options) protocol.Protocol {
 		//TODO 设置机架和槽号
 		//setRackSlot()
 		return &Simatic{
@@ -75,7 +75,7 @@ var DescS7_1200 = protocol.Desc{
 	Version: "1.0",
 	Label:   "Simatic S7-1200",
 	Codes:   Codes,
-	Factory: func(tunnel conn.Tunnel, opts protocol.Options) protocol.Protocol {
+	Factory: func(tunnel link.Tunnel, opts protocol.Options) protocol.Protocol {
 		return &Simatic{
 			handshake1: parseHex(handshake1_1200),
 			handshake2: parseHex(handshake2_1200),
@@ -89,7 +89,7 @@ var DescS7_1500 = protocol.Desc{
 	Version: "1.0",
 	Label:   "Simatic S7-1500",
 	Codes:   Codes,
-	Factory: func(tunnel conn.Tunnel, opts protocol.Options) protocol.Protocol {
+	Factory: func(tunnel link.Tunnel, opts protocol.Options) protocol.Protocol {
 		return &Simatic{
 			handshake1: parseHex(handshake1_1500),
 			handshake2: parseHex(handshake2_1500),
@@ -98,7 +98,7 @@ var DescS7_1500 = protocol.Desc{
 	},
 }
 
-func new200Smart(tunnel conn.Tunnel, opts protocol.Options) protocol.Protocol {
+func new200Smart(tunnel link.Tunnel, opts protocol.Options) protocol.Protocol {
 	s7 := &S7{
 		handshake1: parseHex(handshake1_200_smart),
 		handshake2: parseHex(handshake2_200_smart),

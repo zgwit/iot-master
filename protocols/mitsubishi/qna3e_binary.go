@@ -3,7 +3,7 @@ package mitsubishi
 import (
 	"errors"
 	"fmt"
-	"iot-master/conn"
+	"iot-master/link"
 	"iot-master/pkg/bytes"
 )
 
@@ -14,7 +14,7 @@ type A3EBinaryAdapter struct {
 	PlcNumber     byte //PLC编号
 	IoNumber      byte //IO编号
 
-	link conn.Tunnel
+	link link.Tunnel
 }
 
 func NewA3EBinaryAdapter() *A3EBinaryAdapter {

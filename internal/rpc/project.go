@@ -12,17 +12,17 @@ func (*projectServer) List(ctx context.Context, list *plugin.List) (*plugin.Buff
 	panic("implement me")
 }
 
-func (*projectServer) Get(ctx context.Context, i *plugin.Int64) (*plugin.Buffer, error) {
+func (*projectServer) Get(ctx context.Context, i *plugin.Id) (*plugin.Buffer, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (*projectServer) Open(ctx context.Context, i *plugin.Int64) (*plugin.Empty, error) {
+func (*projectServer) Open(ctx context.Context, i *plugin.Id) (*plugin.Empty, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (*projectServer) Close(ctx context.Context, i *plugin.Int64) (*plugin.Empty, error) {
+func (*projectServer) Close(ctx context.Context, i *plugin.Id) (*plugin.Empty, error) {
 	//TODO implement me
 	panic("implement me")
 }

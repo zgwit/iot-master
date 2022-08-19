@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/db"
+	"iot-master/internal/db"
 	"iot-master/internal/log"
 	"reflect"
 )
@@ -18,11 +18,11 @@ func createCurdApiList[T any](fields ...string) gin.HandlerFunc {
 		}
 
 		query := body.toQuery()
-		if len(fields) > 0 {
-			query.Cols(fields...)
-		}
 
 		var datum []T
+		db.Store().Count(datum, query)
+		err = db.Store().Find(&datum, query)
+
 		cnt, err := query.FindAndCount(&datum)
 		if err != nil {
 			replyError(ctx, err)
@@ -156,7 +156,7 @@ func createCurdApiGet[T any](fields ...string) gin.HandlerFunc {
 
 func createCurdApiDisable[T any](disable bool, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		//id := ctx.GetInt64("id")
+		//id := ctx.GetUint64("id")
 		id := ctx.MustGet("id")
 		if before != nil {
 			if err := before(id); err != nil {

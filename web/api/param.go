@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/db"
+	"github.com/timshannon/bolthold"
 	"reflect"
-	"xorm.io/xorm"
+	"regexp"
 )
 
 type paramSearchEx struct {
@@ -15,45 +15,49 @@ type paramSearchEx struct {
 	Keywords map[string]string      `form:"keyword" json:"keyword"`
 }
 
-func (body *paramSearchEx) toQuery() *xorm.Session {
+func (body *paramSearchEx) toQuery() *bolthold.Query {
 	if body.Limit < 1 {
 		body.Limit = 20
 	}
-	op := db.Engine.Limit(body.Limit, body.Skip)
+
+	op := &bolthold.Query{}
+	op.Skip(body.Skip).Limit(body.Limit)
 
 	for k, v := range body.Filters {
 		if reflect.TypeOf(v).Kind() == reflect.Slice {
 			ll := len(v.([]interface{}))
 			if ll > 0 {
 				if ll == 1 {
-					op.And(k+"=?", v.([]interface{})[0])
+					op.And(k).Eq(v.([]interface{})[0])
 				} else {
-					op.In(k, v)
+					op.And(k).In(bolthold.Slice(v))
 				}
 			}
 		} else {
 			if v != nil {
-				op.And(k+"=?", v)
+				op.And(k).Eq(v)
 			}
 		}
 	}
 
 	for k, v := range body.Keywords {
 		if v != "" {
-			op.And(k+" like", "%"+v+"%")
+			//op.And(k+" like", "%"+v+"%")
+			reg := regexp.MustCompile(v)
+			op.And(k).RegExp(reg)
 		}
 	}
 
 	if len(body.Sort) > 0 {
 		for k, v := range body.Sort {
-			if v > 0 {
-				op.Asc(k)
-			} else {
-				op.Desc(k)
+			op.SortBy(k)
+			if v < 0 {
+				op.Reverse()
 			}
 		}
 	} else {
-		op.Desc("id")
+		//默认ID逆序
+		op.SortBy("Id").Reverse()
 	}
 
 	return op

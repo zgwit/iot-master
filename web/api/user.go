@@ -7,7 +7,7 @@ import (
 )
 
 func userMe(ctx *gin.Context) {
-	id := ctx.GetInt64("user")
+	id := ctx.GetUint64("user")
 	var user model.User
 	has, err := db.Engine.ID(id).Get(&user)
 	if err != nil {
@@ -23,7 +23,7 @@ func userMe(ctx *gin.Context) {
 
 func userPassword(ctx *gin.Context) {
 	var p model.Password
-	p.Id = ctx.GetInt64("id")
+	p.Id = ctx.GetUint64("id")
 	pwd := ctx.PostForm("password")
 
 	//p.Password = md5hash(pwd)

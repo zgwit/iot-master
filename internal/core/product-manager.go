@@ -1,4 +1,4 @@
-package master
+package core
 
 import (
 	"github.com/timshannon/bolthold"

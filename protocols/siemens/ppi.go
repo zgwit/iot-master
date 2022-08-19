@@ -1,12 +1,12 @@
 package siemens
 
 import (
-	"iot-master/conn"
+	"iot-master/link"
 )
 
 //PPI 协议
 type PPI struct {
-	link conn.Tunnel
+	link link.Tunnel
 }
 
 //Read 读到数据

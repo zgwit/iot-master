@@ -3,13 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/kardianos/service"
-	"iot-master/camera"
-	"iot-master/db"
-	"iot-master/history"
 	"iot-master/internal/args"
 	"iot-master/internal/config"
+	"iot-master/internal/core"
+	"iot-master/internal/db"
 	"iot-master/internal/log"
-	"iot-master/master"
 	"iot-master/web"
 	"os"
 	"os/signal"
@@ -137,26 +135,12 @@ func originMain() {
 		}
 		defer db.Close()
 
-		//加载历史数据库
-		err = history.Open(&config.Config.History)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer history.Close()
-
 		//加载主程序
-		err = master.Start()
+		err = core.Start()
 		if err != nil {
 			log.Fatal(err)
 		}
-		defer master.Stop()
-
-		//加载相机
-		err = camera.Start()
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer camera.Stop()
+		defer core.Stop()
 	}
 
 	//判断是否开启Web

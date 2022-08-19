@@ -1,8 +1,7 @@
-package master
+package core
 
 import (
 	"fmt"
-	"iot-master/db"
 	"iot-master/model"
 	"iot-master/pkg/calc"
 	"iot-master/pkg/events"
@@ -34,7 +33,7 @@ func (d *ProjectDevice) belongTargets(targets []string) bool {
 		if target == d.Name {
 			return true
 		}
-		for _, tag := range d.device.Tags {
+		for _, tag := range d.device.product.Tags {
 			//strings.EqualFold
 			if target == tag {
 				return true
@@ -53,7 +52,7 @@ type Project struct {
 	Devices []*ProjectDevice
 
 	deviceNameIndex map[string]*Device
-	deviceIdIndex   map[int64]*Device
+	deviceIdIndex   map[uint64]*Device
 
 	deviceDataHandler func(data map[string]interface{})
 
@@ -66,20 +65,7 @@ func NewProject(m *model.Project) (*Project, error) {
 		Context:         make(map[string]interface{}),
 		Devices:         make([]*ProjectDevice, 0),
 		deviceNameIndex: make(map[string]*Device),
-		deviceIdIndex:   make(map[int64]*Device),
-	}
-
-	//加载模板
-	if prj.TemplateId != "" {
-		var template model.Template
-		has, err := db.Engine.ID(prj.TemplateId).Get(&template)
-		if err != nil {
-			return nil, err
-		}
-		if !has {
-			return nil, fmt.Errorf("找不到模板 %s", prj.TemplateId)
-		}
-		prj.ProjectContent = template.ProjectContent
+		deviceIdIndex:   make(map[uint64]*Device),
 	}
 
 	err := prj.initDevices()

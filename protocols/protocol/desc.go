@@ -1,7 +1,7 @@
 package protocol
 
 import (
-	"iot-master/conn"
+	"iot-master/link"
 )
 
 type Options map[string]interface{}
@@ -14,7 +14,7 @@ func (opts Options) GetInt(name string, value int) int {
 	return value
 }
 
-type Factory func(tunnel conn.Tunnel, opts Options) Protocol
+type Factory func(tunnel link.Tunnel, opts Options) Protocol
 
 type Parser func(code string, addr string) (Addr, error)
 
