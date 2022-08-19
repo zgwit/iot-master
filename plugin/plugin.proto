@@ -56,6 +56,13 @@ service session {
   rpc delete(String) returns (Empty) {}
 }
 
+service user {
+  rpc list(List) returns (Buffer) {}
+  rpc get(Id) returns (Buffer) {}
+  rpc enable(Id) returns (Empty) {}
+  rpc disable(Id) returns (Empty) {}
+}
+
 service tunnel {
   rpc list(List) returns (Buffer) {}
   rpc get(Id) returns (Buffer) {}

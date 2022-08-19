@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/websocket"
 	"iot-master/db"
-	"iot-master/master"
+	"iot-master/internal/core"
 	"iot-master/model"
 )
 
@@ -27,7 +27,7 @@ func serverList(ctx *gin.Context) {
 		return
 	}
 	for _, tnl := range servers {
-		d := master.GetServer(tnl.Id)
+		d := core.GetServer(tnl.Id)
 		if d != nil {
 			tnl.Running = d.Instance.Running()
 		}
@@ -39,7 +39,7 @@ func serverList(ctx *gin.Context) {
 func afterServerCreate(data interface{}) error {
 	server := data.(*model.Server)
 	if !server.Disabled {
-		return master.LoadServer(server.Id)
+		return core.LoadServer(server.Id)
 	}
 	return nil
 }
@@ -55,7 +55,7 @@ func serverDetail(ctx *gin.Context) {
 		replyFail(ctx, "记录不存在")
 		return
 	}
-	d := master.GetServer(server.Id)
+	d := core.GetServer(server.Id)
 	if d != nil {
 		server.Running = d.Instance.Running()
 	}
@@ -64,16 +64,16 @@ func serverDetail(ctx *gin.Context) {
 
 func afterServerUpdate(data interface{}) error {
 	server := data.(*model.Server)
-	_ = master.RemoveServer(server.Id)
-	return master.LoadServer(server.Id)
+	_ = core.RemoveServer(server.Id)
+	return core.LoadServer(server.Id)
 }
 
 func afterServerDelete(id interface{}) error {
-	return master.RemoveServer(id.(int64))
+	return core.RemoveServer(id.(int64))
 }
 
 func serverStart(ctx *gin.Context) {
-	server := master.GetServer(ctx.GetUint64("id"))
+	server := core.GetServer(ctx.GetUint64("id"))
 	if server == nil {
 		replyFail(ctx, "not found")
 		return
@@ -88,7 +88,7 @@ func serverStart(ctx *gin.Context) {
 }
 
 func serverStop(ctx *gin.Context) {
-	server := master.GetServer(ctx.GetUint64("id"))
+	server := core.GetServer(ctx.GetUint64("id"))
 	if server == nil {
 		replyFail(ctx, "not found")
 		return
@@ -103,16 +103,16 @@ func serverStop(ctx *gin.Context) {
 }
 
 func afterServerEnable(id interface{}) error {
-	_ = master.RemoveServer(id.(int64))
-	return master.LoadServer(id.(int64))
+	_ = core.RemoveServer(id.(int64))
+	return core.LoadServer(id.(int64))
 }
 
 func afterServerDisable(id interface{}) error {
-	return master.RemoveServer(id.(int64))
+	return core.RemoveServer(id.(int64))
 }
 
 func serverWatch(ctx *gin.Context) {
-	server := master.GetServer(ctx.GetUint64("id"))
+	server := core.GetServer(ctx.GetUint64("id"))
 	if server == nil {
 		replyFail(ctx, "找不到通道")
 		return

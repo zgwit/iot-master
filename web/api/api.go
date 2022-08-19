@@ -94,7 +94,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/user/list", createCurdApiList[model.User]())
 	app.POST("/user/create", parseParamId, createCurdApiCreate[model.User](nil, nil))
 	app.GET("/user/:id", parseParamId, createCurdApiGet[model.User]())
-	app.POST("/user/:id", parseParamId, createCurdApiModify[model.User](nil, nil, "username", "nickname", "disabled"))
+	app.POST("/user/:id", parseParamId, createCurdApiModify[model.User](nil, nil))
 	app.GET("/user/:id/delete", parseParamId, createCurdApiDelete[model.User](nil, nil))
 	app.GET("/user/:id/password", parseParamId, userPassword)
 	app.GET("/user/:id/enable", parseParamId, createCurdApiDisable[model.User](false, nil, nil))
@@ -104,8 +104,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/project/list", projectList)
 	app.POST("/project/create", createCurdApiCreate[model.Project](nil, afterProjectCreate))
 	app.GET("/project/:id", parseParamId, projectDetail)
-	app.POST("/project/:id", parseParamId, createCurdApiModify[model.Project](nil, afterProjectUpdate,
-		"name", "devices", "template_id", "hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"))
+	app.POST("/project/:id", parseParamId, createCurdApiModify[model.Project](nil, afterProjectUpdate))
 	app.GET("/project/:id/delete", parseParamId, createCurdApiDelete[model.Project](nil, afterProjectDelete))
 
 	app.GET("/project/:id/start", parseParamId, projectStart)
@@ -120,11 +119,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/device/list", deviceList)
 	app.POST("/device/create", createCurdApiCreate[model.Device](nil, afterDeviceCreate))
 	app.GET("/device/:id", parseParamId, deviceDetail)
-	app.POST("/device/:id", parseParamId, createCurdApiModify[model.Device](nil, afterDeviceUpdate,
-		"name", "tunnel_id", "product_id", "station",
-		"hmi", "tags", "points", "pollers", "calculators", "validators", "commands",
-		"context", "disabled",
-	))
+	app.POST("/device/:id", parseParamId, createCurdApiModify[model.Device](nil, afterDeviceUpdate))
 	app.GET("/device/:id/delete", parseParamId, createCurdApiDelete[model.Device](nil, afterDeviceDelete))
 
 	app.GET("/device/:id/start", parseParamId, deviceStart)
@@ -142,20 +137,14 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/product/list", createCurdApiList[model.Product]())
 	app.POST("/product/create", createCurdApiCreate[model.Product](generateUUID, nil))
 	app.GET("/product/:id", parseParamStringId, createCurdApiGet[model.Product]())
-	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil,
-		"name", "manufacturer", "info",
-		"hmi", "tags", "points", "pollers", "calculators", "validators", "commands",
-		"context", "disabled",
-	))
+	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil))
 	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
 
 	//服务器接口
 	app.POST("/server/list", serverList)
 	app.POST("/server/create", createCurdApiCreate[model.Server](nil, afterServerCreate))
 	app.GET("/server/:id", parseParamId, serverDetail)
-	app.POST("/server/:id", parseParamId, createCurdApiModify[model.Server](nil, afterServerUpdate,
-		"name", "type", "addr",
-		"retry", "register", "heartbeat", "protocol", "devices", "disabled"))
+	app.POST("/server/:id", parseParamId, createCurdApiModify[model.Server](nil, afterServerUpdate))
 	app.GET("/server/:id/delete", parseParamId, createCurdApiDelete[model.Server](nil, afterServerDelete))
 
 	app.GET("/server/:id/start", parseParamId, serverStart)
@@ -167,8 +156,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/tunnel/list", tunnelList)
 	app.POST("/tunnel/create", createCurdApiCreate[model.Tunnel](nil, afterTunnelCreate))
 	app.GET("/tunnel/:id", parseParamId, tunnelDetail)
-	app.POST("/tunnel/:id", parseParamId, createCurdApiModify[model.Tunnel](nil, nil,
-		"name", "type", "addr", "retry", "heartbeat", "serial", "protocol", "disabled"))
+	app.POST("/tunnel/:id", parseParamId, createCurdApiModify[model.Tunnel](nil, nil))
 	app.GET("/tunnel/:id/delete", parseParamId, createCurdApiDelete[model.Tunnel](nil, afterTunnelDelete))
 	app.GET("/tunnel/:id/start", parseParamId, tunnelStart)
 	app.GET("/tunnel/:id/stop", parseParamId, tunnelClose)
@@ -193,7 +181,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	})
 }
 
-func replyList(ctx *gin.Context, data interface{}, total int64) {
+func replyList(ctx *gin.Context, data interface{}, total int) {
 	ctx.JSON(http.StatusOK, gin.H{"data": data, "total": total})
 }
 

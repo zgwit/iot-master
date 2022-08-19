@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/websocket"
+	"iot-master/internal/core"
 	"iot-master/model"
 )
 
@@ -32,7 +33,7 @@ func projectList(ctx *gin.Context) {
 
 	//补充running状态
 	for _, dev := range projects {
-		d := master.GetProject(dev.Id)
+		d := core.GetProject(dev.Id)
 		if d != nil {
 			dev.Running = d.Running()
 		}
@@ -43,7 +44,7 @@ func projectList(ctx *gin.Context) {
 
 func afterProjectCreate(data interface{}) error {
 	project := data.(*model.Project)
-	_, err := master.LoadProject(project.Id)
+	_, err := core.LoadProject(project.Id)
 	return err
 }
 
@@ -69,7 +70,7 @@ func projectDetail(ctx *gin.Context) {
 		}
 	}
 
-	d := master.GetProject(project.Id)
+	d := core.GetProject(project.Id)
 	if d != nil {
 		project.Running = d.Running()
 	}
@@ -79,17 +80,17 @@ func projectDetail(ctx *gin.Context) {
 
 func afterProjectUpdate(data interface{}) error {
 	project := data.(*model.Project)
-	_ = master.RemoveProject(project.Id)
-	_, err := master.LoadProject(project.Id)
+	_ = core.RemoveProject(project.Id)
+	_, err := core.LoadProject(project.Id)
 	return err
 }
 
 func afterProjectDelete(id interface{}) error {
-	return master.RemoveProject(id.(int64))
+	return core.RemoveProject(id.(uint64))
 }
 
 func projectStart(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetUint64("id"))
+	project := core.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "not found")
 		return
@@ -104,7 +105,7 @@ func projectStart(ctx *gin.Context) {
 }
 
 func projectStop(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetUint64("id"))
+	project := core.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "not found")
 		return
@@ -119,17 +120,17 @@ func projectStop(ctx *gin.Context) {
 }
 
 func afterProjectEnable(id interface{}) error {
-	_ = master.RemoveProject(id.(int64))
-	_, err := master.LoadProject(id.(int64))
+	_ = core.RemoveProject(id.(int64))
+	_, err := core.LoadProject(id.(int64))
 	return err
 }
 
 func afterProjectDisable(id interface{}) error {
-	return master.RemoveProject(id.(int64))
+	return core.RemoveProject(id.(int64))
 }
 
 func projectContext(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetUint64("id"))
+	project := core.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "找不到项目")
 		return
@@ -145,7 +146,7 @@ func projectContextUpdate(ctx *gin.Context) {
 		return
 	}
 
-	project := master.GetProject(ctx.GetUint64("id"))
+	project := core.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "找不到项目")
 		return
@@ -163,7 +164,7 @@ func projectContextUpdate(ctx *gin.Context) {
 }
 
 func projectWatch(ctx *gin.Context) {
-	project := master.GetProject(ctx.GetUint64("id"))
+	project := core.GetProject(ctx.GetUint64("id"))
 	if project == nil {
 		replyFail(ctx, "找不到项目")
 		return

@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/net/websocket"
 	"iot-master/db"
-	"iot-master/master"
 	"iot-master/model"
 )
 
@@ -29,7 +28,7 @@ func tunnelList(ctx *gin.Context) {
 		return
 	}
 	for _, lnk := range tunnels {
-		d := master.GetTunnel(lnk.Id)
+		d := core.GetTunnel(lnk.Id)
 		if d != nil {
 			lnk.Running = d.Instance.Running()
 			lnk.Online = d.Instance.Online()
@@ -42,7 +41,7 @@ func tunnelList(ctx *gin.Context) {
 func afterTunnelCreate(data interface{}) error {
 	tunnel := data.(*model.Tunnel)
 	if !tunnel.Disabled {
-		return master.LoadTunnel(tunnel.Id)
+		return core.LoadTunnel(tunnel.Id)
 	}
 	return nil
 }
@@ -58,7 +57,7 @@ func tunnelDetail(ctx *gin.Context) {
 		replyFail(ctx, "记录不存在")
 		return
 	}
-	d := master.GetTunnel(tunnel.Id)
+	d := core.GetTunnel(tunnel.Id)
 	if d != nil {
 		tunnel.Running = d.Instance.Running()
 		tunnel.Online = d.Instance.Online()
@@ -67,21 +66,21 @@ func tunnelDetail(ctx *gin.Context) {
 }
 
 func afterTunnelDelete(id interface{}) error {
-	return master.RemoveTunnel(id.(int64))
+	return core.RemoveTunnel(id.(int64))
 }
 
 func afterTunnelEnable(id interface{}) error {
-	_ = master.RemoveTunnel(id.(int64))
-	err := master.LoadTunnel(id.(int64))
+	_ = core.RemoveTunnel(id.(int64))
+	err := core.LoadTunnel(id.(int64))
 	return err
 }
 
 func afterTunnelDisable(id interface{}) error {
-	return master.RemoveTunnel(id.(int64))
+	return core.RemoveTunnel(id.(int64))
 }
 
 func tunnelStart(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetUint64("id"))
+	tunnel := core.GetTunnel(ctx.GetUint64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "tunnel not found")
 		return
@@ -96,7 +95,7 @@ func tunnelStart(ctx *gin.Context) {
 }
 
 func tunnelClose(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetUint64("id"))
+	tunnel := core.GetTunnel(ctx.GetUint64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "tunnel not found")
 		return
@@ -111,7 +110,7 @@ func tunnelClose(ctx *gin.Context) {
 }
 
 func tunnelWatch(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetUint64("id"))
+	tunnel := core.GetTunnel(ctx.GetUint64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "找不到通道")
 		return
@@ -122,7 +121,7 @@ func tunnelWatch(ctx *gin.Context) {
 }
 
 func tunnelTransfer(ctx *gin.Context) {
-	tunnel := master.GetTunnel(ctx.GetUint64("id"))
+	tunnel := core.GetTunnel(ctx.GetUint64("id"))
 	if tunnel == nil {
 		replyFail(ctx, "找不到通道")
 		return

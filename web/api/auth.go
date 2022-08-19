@@ -6,10 +6,10 @@ import (
 	"iot-master/internal/config"
 	"iot-master/internal/db"
 	"iot-master/model"
-	lib2 "iot-master/pkg/lib"
+	"iot-master/pkg/lib"
 )
 
-var tokens = lib2.ExpireCache{Timeout: 60 * 60 * 2} //2h 可以改成配置
+var tokens = lib.ExpireCache{Timeout: 60 * 60 * 2} //2h 可以改成配置
 
 type authObj struct {
 	Username string `json:"username"`
@@ -56,7 +56,7 @@ func auth(ctx *gin.Context) {
 	}
 
 	//生成Token
-	token := lib2.RandomString(12)
+	token := lib.RandomString(12)
 
 	//保存用户
 	tokens.Store(token, &user)
