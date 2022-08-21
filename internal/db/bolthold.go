@@ -2,7 +2,7 @@ package db
 
 import (
 	"github.com/timshannon/bolthold"
-	"iot-master/internal/config"
+	"github.com/zgwit/iot-master/internal/config"
 	"os"
 	"regexp"
 )

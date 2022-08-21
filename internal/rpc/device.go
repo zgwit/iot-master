@@ -3,10 +3,10 @@ package rpc
 import (
 	"context"
 	"encoding/json"
-	"iot-master/internal/db"
+	"github.com/zgwit/iot-master/internal/db"
 
-	"iot-master/model"
-	"iot-master/plugin"
+	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/plugin"
 )
 
 type deviceServer struct{}

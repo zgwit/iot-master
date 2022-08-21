@@ -3,14 +3,14 @@ package core
 import (
 	"fmt"
 	"github.com/timshannon/bolthold"
-	"iot-master/internal/connect"
-	"iot-master/internal/db"
-	"iot-master/internal/log"
-	"iot-master/internal/mqtt"
-	"iot-master/link"
-	"iot-master/model"
-	"iot-master/protocols"
-	"iot-master/protocols/protocol"
+	"github.com/zgwit/iot-master/internal/connect"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/internal/log"
+	"github.com/zgwit/iot-master/internal/mqtt"
+	"github.com/zgwit/iot-master/link"
+	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/protocols"
+	"github.com/zgwit/iot-master/protocols/protocol"
 	"sync"
 )
 

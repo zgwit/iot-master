@@ -6,8 +6,8 @@ import (
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/super-l/machine-code/machine"
+	"github.com/zgwit/iot-master/protocols"
 	"go.bug.st/serial"
-	"iot-master/protocols"
 )
 
 func memStats(ctx *gin.Context) {

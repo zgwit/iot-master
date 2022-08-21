@@ -1,7 +1,7 @@
 package siemens
 
 import (
-	"iot-master/link"
+	"github.com/zgwit/iot-master/link"
 )
 
 //PPI 协议

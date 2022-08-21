@@ -3,10 +3,10 @@ package connect
 import (
 	"errors"
 	"fmt"
-	"iot-master/internal/db"
-	"iot-master/internal/log"
-	"iot-master/internal/mqtt"
-	"iot-master/model"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/internal/log"
+	"github.com/zgwit/iot-master/internal/mqtt"
+	"github.com/zgwit/iot-master/model"
 	"net"
 	"time"
 )

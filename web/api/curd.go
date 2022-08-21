@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/timshannon/bolthold"
-	"iot-master/internal/db"
-	"iot-master/internal/log"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/internal/log"
 	"reflect"
 )
 

@@ -1,14 +1,13 @@
 package core
 
 import (
-	"iot-master/internal/db"
-	"iot-master/internal/log"
-	"iot-master/model"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/internal/log"
+	"github.com/zgwit/iot-master/model"
 	"sync"
 )
 
 var allDevices sync.Map
-
 
 func GetDevice(id uint64) *Device {
 	d, ok := allDevices.Load(id)
@@ -26,7 +25,6 @@ func RemoveDevice(id uint64) error {
 	}
 	return nil //error
 }
-
 
 func LoadDevices() error {
 	return db.Store().ForEach(nil, func(d *model.Device) error {
@@ -48,7 +46,6 @@ func LoadDevices() error {
 	})
 }
 
-
 func LoadDevice(id uint64) (*Device, error) {
 	var device model.Device
 
@@ -56,7 +53,7 @@ func LoadDevice(id uint64) (*Device, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	dev, err := NewDevice(&device)
 	if err != nil {
 		return dev, err

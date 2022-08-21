@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/internal/core"
-	"iot-master/model"
+	"github.com/zgwit/iot-master/internal/core"
+	"github.com/zgwit/iot-master/model"
 )
 
 func afterDeviceCreate(data interface{}) error {

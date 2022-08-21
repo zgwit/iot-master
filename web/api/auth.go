@@ -3,10 +3,10 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/timshannon/bolthold"
-	"iot-master/internal/config"
-	"iot-master/internal/db"
-	"iot-master/model"
-	"iot-master/pkg/lib"
+	"github.com/zgwit/iot-master/internal/config"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/pkg/lib"
 )
 
 var tokens = lib.ExpireCache{Timeout: 60 * 60 * 2} //2h 可以改成配置

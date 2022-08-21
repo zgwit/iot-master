@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/internal/config"
-	"iot-master/internal/db"
+	"github.com/zgwit/iot-master/internal/config"
+	"github.com/zgwit/iot-master/internal/db"
 )
 
 type installBaseObj struct {

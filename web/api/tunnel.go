@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/internal/core"
+	"github.com/zgwit/iot-master/model"
 	"golang.org/x/net/websocket"
-	"iot-master/internal/core"
-	"iot-master/model"
 )
 
 func afterTunnelCreate(data interface{}) error {

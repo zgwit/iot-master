@@ -1,14 +1,13 @@
 package core
 
 import (
-	"iot-master/internal/db"
-	"iot-master/internal/log"
-	"iot-master/model"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/internal/log"
+	"github.com/zgwit/iot-master/model"
 	"sync"
 )
 
 var allProjects sync.Map
-
 
 func GetProject(id uint64) *Project {
 	d, ok := allProjects.Load(id)
@@ -26,7 +25,6 @@ func RemoveProject(id uint64) error {
 	}
 	return nil //error
 }
-
 
 func LoadProjects() error {
 	return db.Store().ForEach(nil, func(p *model.Project) error {
@@ -48,7 +46,6 @@ func LoadProjects() error {
 		return nil
 	})
 }
-
 
 func LoadProject(id uint64) (*Project, error) {
 	var project model.Project

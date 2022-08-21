@@ -2,8 +2,8 @@ package mitsubishi
 
 import (
 	"fmt"
-	"iot-master/link"
-	"iot-master/pkg/bin"
+	"github.com/zgwit/iot-master/link"
+	"github.com/zgwit/iot-master/pkg/bin"
 	"strconv"
 )
 

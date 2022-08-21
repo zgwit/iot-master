@@ -2,9 +2,9 @@ package core
 
 import (
 	"fmt"
-	"iot-master/model"
-	"iot-master/pkg/calc"
-	"iot-master/pkg/events"
+	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/pkg/calc"
+	"github.com/zgwit/iot-master/pkg/events"
 	"strings"
 )
 

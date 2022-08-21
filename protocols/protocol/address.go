@@ -1,6 +1,6 @@
 package protocol
 
-import "iot-master/model"
+import "github.com/zgwit/iot-master/model"
 
 //Addr 地址
 //type Addr struct {

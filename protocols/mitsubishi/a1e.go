@@ -1,7 +1,7 @@
 package mitsubishi
 
 import (
-	"iot-master/link"
+	"github.com/zgwit/iot-master/link"
 )
 
 // A1eAdapter A1E协议

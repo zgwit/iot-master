@@ -6,9 +6,9 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/timshannon/bolthold"
-	"iot-master/internal/config"
-	"iot-master/internal/db"
-	"iot-master/model"
+	"github.com/zgwit/iot-master/internal/config"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/model"
 	"time"
 )
 

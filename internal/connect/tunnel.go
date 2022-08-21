@@ -2,8 +2,8 @@ package connect
 
 import (
 	"fmt"
-	"iot-master/link"
-	"iot-master/model"
+	"github.com/zgwit/iot-master/link"
+	"github.com/zgwit/iot-master/model"
 	"strings"
 )
 

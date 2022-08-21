@@ -2,8 +2,8 @@ package core
 
 import (
 	"github.com/timshannon/bolthold"
-	"iot-master/internal/db"
-	"iot-master/model"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/model"
 	"sync"
 )
 

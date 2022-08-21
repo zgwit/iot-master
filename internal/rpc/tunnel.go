@@ -2,7 +2,7 @@ package rpc
 
 import (
 	"context"
-	"iot-master/plugin"
+	"github.com/zgwit/iot-master/plugin"
 )
 
 type tunnelServer struct{}
