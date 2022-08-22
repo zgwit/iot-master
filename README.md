@@ -16,7 +16,6 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/zgwit/iot-master.svg)](https://pkg.go.dev/github.com/zgwit/iot-master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
 
-
 物联大师是[无锡真格智能科技有限公司](https://labs.zgwit.com)
 推出的开源且免费的物联网智能网关系统，集成了标准Modbus和一些主流PLC协议，支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控、远程调试等功能，
 适用于大部分物联网或工业互联网应用场景。
@@ -35,7 +34,6 @@
 - 支持Web组态，可视化，大屏展示，~~毕竟很多物联网项目都是面子工程~~
 - 在线产品库、模板库、组态库，小白也能分分钟搞得有模有样【还在努力建设中】
 
-
 ## 项目架构图
 
 ![结构图](https://iot-master.com/frame.svg)
@@ -43,7 +41,6 @@
 ## 组态编辑器（可视化）
 
 ![云组态](https://iot-master.com/hmi-editor.png)
-
 
 ## 协议支持
 
@@ -66,7 +63,23 @@
 | Mitsubishi Q4C       | ❌   |     |             |
 | Mitsubishi Q4E       | ❌   |     |             |
 
+## 官方插件
+
+- [ ] Flow 流式计算
+- [ ] *SCADA Web组态
+- [ ] *OPC-UA
+- [ ] MQTT 数据上报
+- [ ] DASH 数据看板
+- [ ] Influxdb2
+- [ ] *TDengine
+- [ ] *Camera 视频监控
+- [ ] *Weixin 微信支持
+- [ ] *Notice 报警通知
+
+注: *标为收费插件
+
 ## 咨询服务
+
 **本公司目前提供免费的物联网方案咨询服务，结合我们十多年的行业经验，给您提供最好的建议，请联系 15161515197（微信同号）**
 
 > PS. 提供此服务的主要目的是让用户少走弯路，为物联网行业的健康发展尽绵薄之力。
@@ -80,15 +93,12 @@
 > 7. 不支持高并发量，市场爆发了，平台反而跟不上
 > 8. 等等
 
-
 ## 联系方式
 
 - 邮箱：[jason@zgwit.com](mailto:jason@zgwit.com)
 - 手机：[15161515197](tel:15161515197)(微信同号)
 
 ![微信群](https://iot-master.com/iot-master.png)
-
-
 
 ## 星星
 

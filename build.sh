@@ -4,7 +4,10 @@ go env -w GOPROXY=https://goproxy.cn,direct
 go env -w GOPRIVATE=*.gitlab.com,*.gitee.com
 go env -w GOSUMDB=off
 
+app="iot-master"
+pkg="github.com/zgwit/iot-master"
 version="1.0.0"
+
 read -t 5 -p "please input version(default:$version)" ver
 if [ -n "${ver}" ];then
 	version=$ver
@@ -15,16 +18,16 @@ gitHash=$(git show -s --format=%H)
 buildTime=$(date -d today +"%Y-%m-%d %H:%M:%S")
 
 # -w -s
-ldflags="-X 'iot-master/args.Version=$version' \
--X 'iot-master/args.gitHash=$gitHash' \
--X 'iot-master/args.buildTime=$buildTime'"
+ldflags="-X '$pkg/internal/args.Version=$version' \
+-X '$pkg/internal/args.gitHash=$gitHash' \
+-X '$pkg/internal/args.buildTime=$buildTime'"
 
 #export CGO_ENABLED=1
+#CC=x86_64-w64-mingw32-gcc
 
 export GOARCH=amd64
 
 export GOOS=windows
-#CC=x86_64-w64-mingw32-gcc
 name="iot-master-windows-amd64.exe"
 go build -ldflags "$ldflags" -o iot-master-windows-amd64.exe main.go
 tar -zvcf iot-master-windows-amd64.tar.gz iot-master-windows-amd64.exe

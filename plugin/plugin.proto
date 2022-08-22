@@ -1,5 +1,9 @@
 syntax = "proto3";
+
 option go_package = "./plugin";
+
+option java_multiple_files = true;
+option java_package = "iot.master.plugin";
 
 package module;
 
