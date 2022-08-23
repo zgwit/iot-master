@@ -8,6 +8,7 @@ import (
 	"github.com/zgwit/iot-master/internal/core"
 	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/internal/log"
+	"github.com/zgwit/iot-master/internal/rpc"
 	"github.com/zgwit/iot-master/web"
 	"os"
 	"os/signal"
@@ -141,6 +142,12 @@ func originMain() {
 			log.Fatal(err)
 		}
 		defer core.Stop()
+
+		err = rpc.Open()
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rpc.Close()
 	}
 
 	//判断是否开启Web

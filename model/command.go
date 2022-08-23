@@ -16,10 +16,3 @@ type Directive struct {
 	//使用表达式
 	Expression string `json:"expression,omitempty"`
 }
-
-//Invoke 执行
-type Invoke struct {
-	Targets   []string `json:"targets"`
-	Command   string   `json:"command"`
-	Arguments []string `json:"arguments"`
-}

@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/pkg/calc"
 	"github.com/zgwit/iot-master/pkg/events"
+	"reflect"
 	"strings"
 )
 
@@ -166,24 +167,24 @@ func (prj *Project) Set(name string, value interface{}) error {
 	return nil
 }
 
-func (prj *Project) execute(in *model.Invoke) error {
+func (prj *Project) Execute(targets []string, command string, arguments []interface{}) error {
 	args := make([]interface{}, 0)
-	for _, d := range in.Arguments {
-		//tp := reflect.TypeOf(d).Kind()
-		//if tp == reflect.String {
-		//} else if tp == reflect.Float64 {
-		//	args = append(args, d.(float64))
-		//}
-		val, err := calc.Language.Evaluate(d, prj.Context)
-		if err != nil {
-			return err
+	for _, d := range arguments {
+		tp := reflect.TypeOf(d).Kind()
+		if tp == reflect.String {
+			val, err := calc.Language.Evaluate(d.(string), prj.Context)
+			if err != nil {
+				return err
+			}
+			args = append(args, val)
+		} else {
+			args = append(args, d)
 		}
-		args = append(args, val)
 	}
 
 	for _, d := range prj.Devices {
-		if d.belongTargets(in.Targets) {
-			err := d.device.Execute(in.Command, args)
+		if d.belongTargets(targets) {
+			err := d.device.Execute(command, args)
 			if err != nil {
 				return err
 			}

@@ -31,9 +31,10 @@ message List {
 }
 
 message ProjectCommand {
-  repeated string targets = 1;
-  string command = 2;
-  repeated double arguments = 3;
+  uint64 id = 1;
+  repeated string targets = 2;
+  string command = 3;
+  repeated double arguments = 4;
 }
 
 message DeviceCommand {
