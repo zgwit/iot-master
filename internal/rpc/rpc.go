@@ -28,13 +28,19 @@ func Open() error {
 	plugin.RegisterServerServer(server, &serverServer{})
 	plugin.RegisterUserServer(server, &userServer{})
 
-	l, err := net.Listen("tcp", ":1843")
+	tcp, err := net.Listen("tcp", ":1843")
 	if err != nil {
 		return err
 	}
-	//net.Listen("unixsock", "/iot-master.sock")
+	unix, err := net.Listen("unix", "/iot-master.sock")
+	if err != nil {
+		return err
+	}
 
-	return server.Serve(l)
+	go server.Serve(tcp)
+	go server.Serve(unix)
+
+	return nil
 }
 
 func Close() {
