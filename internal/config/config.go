@@ -7,21 +7,16 @@ import (
 	"os"
 )
 
-func Existing() bool {
-	return existing
-}
-
-var existing = false
-
 //Configure 配置
 type Configure struct {
 	Node            string   `yaml:"node" json:"node"`
 	Data            string   `yaml:"data" json:"data"`
 	DefaultPassword string   `yaml:"default_password" json:"default_password"`
-	Web             Web      `yaml:"web" json:"web"`
 	Database        Database `yaml:"database" json:"database"`
+	Web             Web      `yaml:"web" json:"web"`
+	MQTT            MQTT     `yaml:"mqtt" json:"mqtt"`
+	RPC             RPC      `yaml:"rpc" json:"rpc"`
 	Log             Log      `yaml:"log" json:"log"`
-	//Serials  []string `yaml:"serials" json:"serials"`
 }
 
 //Config 全局配置
@@ -29,8 +24,10 @@ var Config = Configure{
 	Node:            "root",
 	Data:            "data",
 	DefaultPassword: "123456",
-	Web:             WebDefault,
 	Database:        DatabaseDefault,
+	Web:             WebDefault,
+	MQTT:            MQTTDefault,
+	RPC:             RPCDefault,
 	Log:             LogDefault,
 }
 
@@ -46,8 +43,8 @@ func Load() error {
 
 	// 如果没有文件，则使用默认信息创建
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
-		//return Store()
-		return nil
+		return Store()
+		//return nil
 	} else {
 		y, err := os.Open(filename)
 		if err != nil {
@@ -62,8 +59,6 @@ func Load() error {
 			log.Fatal(err)
 			return err
 		}
-
-		existing = true
 
 		return nil
 	}
@@ -89,8 +84,6 @@ func Store() error {
 		log.Fatal(err)
 		return err
 	}
-
-	existing = true
 
 	return nil
 }

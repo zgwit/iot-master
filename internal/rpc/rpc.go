@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"encoding/json"
+	"github.com/zgwit/iot-master/internal/config"
 	"github.com/zgwit/iot-master/plugin"
 	"google.golang.org/grpc"
 	"net"
@@ -18,7 +19,7 @@ func jsonMarshalBuffer(value interface{}) (*plugin.Buffer, error) {
 
 var server *grpc.Server
 
-func Open() error {
+func Open(rpc config.RPC) error {
 	server = grpc.NewServer()
 	plugin.RegisterModuleServer(server, &moduleServer{})
 	plugin.RegisterDeviceServer(server, &deviceServer{})
@@ -28,17 +29,21 @@ func Open() error {
 	plugin.RegisterServerServer(server, &serverServer{})
 	plugin.RegisterUserServer(server, &userServer{})
 
-	tcp, err := net.Listen("tcp", ":1843")
-	if err != nil {
-		return err
-	}
-	unix, err := net.Listen("unix", "/iot-master.sock")
-	if err != nil {
-		return err
+	if rpc.Addr != "" {
+		tcp, err := net.Listen("tcp", rpc.Addr)
+		if err != nil {
+			return err
+		}
+		go server.Serve(tcp)
 	}
 
-	go server.Serve(tcp)
-	go server.Serve(unix)
+	if rpc.Sock != "" {
+		unix, err := net.Listen("unix", rpc.Sock)
+		if err != nil {
+			return err
+		}
+		go server.Serve(unix)
+	}
 
 	return nil
 }

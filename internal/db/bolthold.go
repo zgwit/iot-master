@@ -13,7 +13,7 @@ func Store() *bolthold.Store {
 	return store
 }
 
-func Open(cfg *config.Database) (err error) {
+func Open(cfg config.Database) (err error) {
 	store, err = bolthold.Open(cfg.Path, os.ModePerm, nil)
 	return
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/zgwit/iot-master/internal/core"
 	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/internal/log"
+	"github.com/zgwit/iot-master/internal/mqtt"
 	"github.com/zgwit/iot-master/internal/rpc"
 	"github.com/zgwit/iot-master/web"
 	"os"
@@ -122,33 +123,38 @@ func originMain() {
 		log.Fatal(err)
 	}
 
-	err = log.Open(&config.Config.Log)
+	err = log.Open(config.Config.Log)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	//配置文件存在，说明已经安装
-	if config.Existing() {
-		//加载数据库
-		err = db.Open(&config.Config.Database)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer db.Close()
-
-		//加载主程序
-		err = core.Start()
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer core.Stop()
-
-		err = rpc.Open()
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer rpc.Close()
+	//加载数据库
+	err = db.Open(config.Config.Database)
+	if err != nil {
+		log.Fatal(err)
 	}
+	defer db.Close()
+
+	//加载主程序
+	err = core.Start()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer core.Stop()
+
+	//MQTT总线
+	err = mqtt.Open(config.Config.MQTT)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer mqtt.Close()
+
+	//插件RPC
+	err = rpc.Open(config.Config.RPC)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rpc.Close()
 
 	//判断是否开启Web
 	web.Serve(&config.Config.Web)
