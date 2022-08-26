@@ -82,7 +82,7 @@ func (server *ServerUDP) Open() error {
 				Addr:     sn,
 			}
 
-			err = db.Store().FindOne(&tunnel, bolthold.Where("ServerId").Eq(server.server.Id).And("Addr").Eq(sn))
+			err = db.Store().FindOne(&tunnel, bolthold.Where("ServerId").Eq(server.server.Id).And("SN").Eq(sn))
 			has := err == bolthold.ErrNotFound
 			//has, err := db.Engine.Where("server_id=?", server.server.Id).And("addr", sn).Get(&tunnel)
 			if err != nil {
@@ -96,6 +96,9 @@ func (server *ServerUDP) Open() error {
 				//保存一条新记录
 				tunnel.Type = "server-udp"
 				tunnel.Name = sn
+				tunnel.Name = sn
+				tunnel.SN = sn
+				tunnel.Addr = server.server.Addr
 				tunnel.Heartbeat = server.server.Heartbeat
 				tunnel.Protocol = server.server.Protocol
 				//_, _ = db.Engine.InsertOne(&tunnel)

@@ -17,8 +17,9 @@ type Tunnel struct {
 	Id        uint64          `json:"id"`
 	ServerId  uint64          `json:"server_id" boltholdIndex:"ServerId"`
 	Name      string          `json:"name"`
+	SN        string          `json:"sn" boltholdIndex:"Addr"`
 	Type      string          `json:"type"` //serial tcp-client tcp-server udp-client udp-server server-tcp server-udp
-	Addr      string          `json:"addr" boltholdIndex:"Addr"`
+	Addr      string          `json:"addr"`
 	Remote    string          `json:"remote"`
 	Retry     Retry           `json:"retry"` //重试
 	Heartbeat HeartBeatPacket `json:"heartbeat"`
