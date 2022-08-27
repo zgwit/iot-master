@@ -29,7 +29,7 @@ func replyError(ctx *gin.Context, err error) {
 func registerAttachment(name string, app *gin.RouterGroup) {
 	//组态的附件
 	app.GET("/:id/*name", func(ctx *gin.Context) {
-		filename := filepath.Join(config.Config.Data, "hmi", ctx.Param("id"), ctx.Param("name"))
+		filename := filepath.Join(config.Config.Data, name, ctx.Param("id"), ctx.Param("name"))
 		stat, err := os.Stat(filename)
 		if err != nil {
 			replyError(ctx, err)

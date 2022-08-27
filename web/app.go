@@ -57,6 +57,7 @@ func Serve(cfg *config.Web) {
 	//附件
 	registerAttachment("product", app.Group("/product"))
 	registerAttachment("project", app.Group("/project"))
+	registerAttachment("plugin", app.Group("/plugin"))
 
 	//前端静态文件
 	//app.StaticFS("/www", http.FS(wwwFiles))

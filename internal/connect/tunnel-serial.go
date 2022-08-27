@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-//TunnelSerial 串口
+// TunnelSerial 串口
 type TunnelSerial struct {
 	tunnelBase
 }
@@ -22,7 +22,7 @@ func newTunnelSerial(tunnel *model.Tunnel) *TunnelSerial {
 	}
 }
 
-//Open 打开
+// Open 打开
 func (s *TunnelSerial) Open() error {
 	if s.running {
 		return errors.New("serial is opened")
@@ -30,12 +30,13 @@ func (s *TunnelSerial) Open() error {
 	s.Emit("open")
 
 	mode := serial.OpenOptions{
-		PortName:        s.tunnel.Serial.Port,
-		BaudRate:        s.tunnel.Serial.BaudRate,
-		DataBits:        s.tunnel.Serial.DataBits,
-		StopBits:        s.tunnel.Serial.StopBits,
-		ParityMode:      serial.ParityMode(s.tunnel.Serial.Parity),
-		MinimumReadSize: 4, //避免单字节读出
+		PortName:              s.tunnel.Serial.Port,
+		BaudRate:              s.tunnel.Serial.BaudRate,
+		DataBits:              s.tunnel.Serial.DataBits,
+		StopBits:              s.tunnel.Serial.StopBits,
+		ParityMode:            serial.ParityMode(s.tunnel.Serial.Parity),
+		MinimumReadSize:       4,   //避免单字节读出
+		InterCharacterTimeout: 100, //100ms分包
 	}
 
 	port, err := serial.Open(mode)
