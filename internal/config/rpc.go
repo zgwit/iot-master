@@ -1,6 +1,11 @@
 package config
 
-//RPC 参数
+import (
+	"os"
+	"path"
+)
+
+// RPC 参数
 type RPC struct {
 	Addr string
 	Sock string
@@ -8,5 +13,5 @@ type RPC struct {
 
 var RPCDefault = RPC{
 	Addr: ":1843",
-	Sock: "/iot-master-rpc.sock",
+	Sock: path.Join(os.TempDir(), "iot-master-rpc.sock"),
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/zgwit/iot-master/plugin"
 	"google.golang.org/grpc"
 	"net"
+	"os"
 )
 
 func jsonMarshalBuffer(value interface{}) (*plugin.Buffer, error) {
@@ -38,6 +39,7 @@ func Open(rpc config.RPC) error {
 	}
 
 	if rpc.Sock != "" {
+		_ = os.Remove(rpc.Sock)
 		unix, err := net.Listen("unix", rpc.Sock)
 		if err != nil {
 			return err

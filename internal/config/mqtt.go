@@ -1,6 +1,11 @@
 package config
 
-//MQTT 参数
+import (
+	"os"
+	"path"
+)
+
+// MQTT 参数
 type MQTT struct {
 	Addr string
 	Sock string
@@ -8,5 +13,5 @@ type MQTT struct {
 
 var MQTTDefault = MQTT{
 	Addr: ":1883",
-	Sock: "/iot-master-mqtt.sock",
+	Sock: path.Join(os.TempDir(), "iot-master-mqtt.sock"),
 }

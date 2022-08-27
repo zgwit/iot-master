@@ -63,7 +63,7 @@ func Serve(cfg *config.Web) {
 
 	wwwFS := http.FS(wwwFiles)
 	app.Use(func(c *gin.Context) {
-		
+
 		if c.Request.Method == http.MethodGet {
 			//支持前端框架的无“#”路由
 			fn := path.Join("www", c.Request.RequestURI)

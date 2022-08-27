@@ -5,6 +5,7 @@ import (
 	"github.com/mochi-co/mqtt/server/listeners/auth"
 	"github.com/mochi-co/mqtt/server/system"
 	"net"
+	"os"
 	"sync"
 	"sync/atomic"
 )
@@ -59,6 +60,7 @@ func (l *UnixSock) ID() string {
 // Listen starts listening on the listener's network address.
 func (l *UnixSock) Listen(s *system.Info) error {
 	var err error
+	_ = os.Remove(l.address)
 	l.listen, err = net.Listen(l.protocol, l.address)
 	return err
 }
