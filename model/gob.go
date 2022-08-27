@@ -9,5 +9,5 @@ func init() {
 	gob.Register(Product{})
 	gob.Register(Tunnel{})
 	gob.Register(Server{})
-	gob.Register(Module{})
+	gob.Register(Plugin{})
 }

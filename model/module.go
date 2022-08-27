@@ -2,7 +2,7 @@ package model
 
 import "time"
 
-type Module struct {
+type Plugin struct {
 	Id           string            `json:"id"`
 	Name         string            `json:"name"`
 	Version      string            `json:"version"`
@@ -14,6 +14,5 @@ type Module struct {
 type License struct {
 	Id      string    `json:"id"`
 	Content string    `json:"content"`
-	Updated time.Time `json:"updated"`
 	Created time.Time `json:"created"`
 }

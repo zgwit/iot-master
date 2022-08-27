@@ -55,14 +55,15 @@ func Serve(cfg *config.Web) {
 	api.RegisterRoutes(app.Group("/api"))
 
 	//附件
-	registerAttachment("hmi", app.Group("/hmi"))
-	registerAttachment("component", app.Group("/component"))
+	registerAttachment("product", app.Group("/product"))
+	registerAttachment("project", app.Group("/project"))
 
 	//前端静态文件
 	//app.StaticFS("/www", http.FS(wwwFiles))
 
 	wwwFS := http.FS(wwwFiles)
 	app.Use(func(c *gin.Context) {
+		
 		if c.Request.Method == http.MethodGet {
 			//支持前端框架的无“#”路由
 			fn := path.Join("www", c.Request.RequestURI)
