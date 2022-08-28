@@ -6,7 +6,6 @@
 
 **开源不易，加个星再走！！！**
 
-![公众号](https://iot-master.com/weixin.jpg)
 
 ### [说明文档](https://iot-master.com/manual)  [在线演示demo](http://demo.iot-master.com:8080/) 用户名 admin 密码 123456
 
@@ -77,6 +76,14 @@
 - [ ] *Notice 报警通知
 
 注: *标为收费插件
+
+
+## 前端代码库
+
+[H5版，基于uniapp，默认界面](https://github.com/zgwit/iot-master-uniapp)
+
+[PC版，基于NG-ZORRO](https://github.com/zgwit/iot-master-ui)（暂不维护，有商业需求请联系）
+
 
 ## 咨询服务
 
