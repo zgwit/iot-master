@@ -41,27 +41,6 @@
 
 ![云组态](https://iot-master.com/hmi-editor.png)
 
-## 协议支持
-
-| 名称                   | 支持  | 测试  | 说明          |
-|----------------------|-----|-----|-------------|
-| Modbus RTU           | ✔   | ✔   |             |
-| Modbus TCP           | ✔   | ✔   |             |
-| Modbus ASCII         | ❌   |     | 使用场景较少，暂不支持 |
-| Omron Fins           | ✔   | 待测试 |             |
-| Omron Hostlink       | ✔   | 待测试 |             |
-| Siemens PPI          | ❌   |     |             |
-| Siemens FetchWrite   | ❌   |     |             |
-| Siemens S7           | ✔   | ✔   |             |
-| Mitsubishi FxProgram | ❌   |     |             |
-| Mitsubishi FxSpecial | ❌   |     |             |
-| Mitsubishi A1C       | ❌   |     |             |
-| Mitsubishi A1E       | ❌   |     |             |
-| Mitsubishi Q2C       | ❌   |     |             |
-| Mitsubishi Q3E       | ❌   |     |             |
-| Mitsubishi Q4C       | ❌   |     |             |
-| Mitsubishi Q4E       | ❌   |     |             |
-
 ## 官方插件
 
 - [ ] Flow 流式计算
@@ -107,6 +86,8 @@
 
 ![微信群](https://iot-master.com/iot-master.png)
 
-## 星星
+## 开源协议
 
-[![Stargazers over time](https://starchart.cc/zgwit/iot-master.svg)](https://starchart.cc/zgwit/iot-master)
+[GPL](https://github.com/zgwit/iot-master/blob/main/LICENSE)
+
+补充：任何组织或个人都可以免费使用或做二次开发，但不得用于商业售卖，如有需求请联系我们。
