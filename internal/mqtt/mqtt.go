@@ -2,6 +2,7 @@ package mqtt
 
 import (
 	"github.com/mochi-co/mqtt/server"
+	"github.com/mochi-co/mqtt/server/events"
 	"github.com/mochi-co/mqtt/server/listeners"
 	"github.com/mochi-co/mqtt/server/listeners/auth"
 	"github.com/zgwit/iot-master/internal/config"
@@ -11,6 +12,10 @@ var mqttServer *server.Server
 
 func Open(cfg config.MQTT) error {
 	mqttServer = server.New()
+	mqttServer.Events.OnProcessMessage = func(client events.Client, packet events.Packet) (pkg events.Packet, err error) {
+
+		return
+	}
 
 	c := &listeners.Config{
 		Auth: new(auth.Allow), //TODO check plugin, mqtt device
