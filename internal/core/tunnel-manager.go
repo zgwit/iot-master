@@ -5,10 +5,10 @@ import (
 	"github.com/timshannon/bolthold"
 	"github.com/zgwit/iot-master/internal/connect"
 	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/internal/log"
 	"github.com/zgwit/iot-master/internal/mqtt"
 	"github.com/zgwit/iot-master/link"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/pkg/log"
 	"github.com/zgwit/iot-master/protocols"
 	"github.com/zgwit/iot-master/protocols/protocol"
 	"sync"
@@ -117,7 +117,7 @@ func startTunnel(tunnel *model.Tunnel) error {
 	return tnl.Open()
 }
 
-//LoadTunnels 加载通道
+// LoadTunnels 加载通道
 func LoadTunnels() error {
 	return db.Store().ForEach(bolthold.Where("ServerId").Eq(0), func(tunnel *model.Tunnel) error {
 		if tunnel.Disabled {
@@ -135,7 +135,7 @@ func LoadTunnels() error {
 	})
 }
 
-//LoadTunnel 加载通道
+// LoadTunnel 加载通道
 func LoadTunnel(id uint64) error {
 	var tunnel model.Tunnel
 	err := db.Store().Get(id, &tunnel)

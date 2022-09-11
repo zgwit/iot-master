@@ -1,13 +1,13 @@
 package core
 
 import (
-	"github.com/zgwit/iot-master/internal/log"
 	"github.com/zgwit/iot-master/model"
 	"github.com/zgwit/iot-master/pkg/cron"
+	"github.com/zgwit/iot-master/pkg/log"
 	"github.com/zgwit/iot-master/protocols/protocol"
 )
 
-//Poller 采集器
+// Poller 采集器
 type Poller struct {
 	model.Poller
 	Addr   protocol.Addr
@@ -17,7 +17,7 @@ type Poller struct {
 	job     *cron.Job
 }
 
-//Start 启动
+// Start 启动
 func (p *Poller) Start() (err error) {
 	if p.job != nil {
 		p.job.Cancel()
@@ -29,7 +29,7 @@ func (p *Poller) Start() (err error) {
 	return
 }
 
-//Execute 执行
+// Execute 执行
 func (p *Poller) Execute() {
 	//阻塞情况下，采集数据，要等待，避免大量读指令阻塞
 	//if !p.Parallel && p.reading {
@@ -52,7 +52,7 @@ func (p *Poller) read() {
 	}
 }
 
-//Stop 结束
+// Stop 结束
 func (p *Poller) Stop() {
 	if p.job != nil {
 		p.job.Cancel()

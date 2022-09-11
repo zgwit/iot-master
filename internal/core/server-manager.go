@@ -5,10 +5,10 @@ import (
 	"github.com/timshannon/bolthold"
 	"github.com/zgwit/iot-master/internal/connect"
 	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/internal/log"
 	"github.com/zgwit/iot-master/internal/mqtt"
 	"github.com/zgwit/iot-master/link"
 	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/pkg/log"
 	"sync"
 	"time"
 )
@@ -72,7 +72,7 @@ func startServer(server *model.Server) error {
 	return nil
 }
 
-//LoadServers 加载通道
+// LoadServers 加载通道
 func LoadServers() error {
 	return db.Store().ForEach(nil, func(server *model.Server) error {
 		if server.Disabled {
@@ -88,7 +88,7 @@ func LoadServers() error {
 	})
 }
 
-//LoadServer 加载通道
+// LoadServer 加载通道
 func LoadServer(id uint64) error {
 	var server model.Server
 	err := db.Store().Get(id, &server)
@@ -105,7 +105,7 @@ func LoadServer(id uint64) error {
 	return nil
 }
 
-//GetServer 获取通道
+// GetServer 获取通道
 func GetServer(id uint64) *Server {
 	d, ok := allServers.Load(id)
 	if ok {

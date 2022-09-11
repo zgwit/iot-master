@@ -5,7 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/timshannon/bolthold"
 	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/internal/log"
+	"github.com/zgwit/iot-master/pkg/log"
 	"reflect"
 )
 
