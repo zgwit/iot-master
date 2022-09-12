@@ -78,41 +78,18 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/user/list", createCurdApiList[model.User]())
 	app.POST("/user/create", parseParamId, createCurdApiCreate[model.User](nil, nil))
 	app.GET("/user/:id", parseParamId, createCurdApiGet[model.User]())
-	app.POST("/user/:id", parseParamId, createCurdApiModify[model.User](nil, nil))
+	app.POST("/user/:id", parseParamId, createCurdApiModify[model.User](nil, nil, "username", "nickname", "disabled"))
 	app.GET("/user/:id/delete", parseParamId, createCurdApiDelete[model.User](nil, nil))
 	app.GET("/user/:id/password", parseParamId, userPassword)
 	app.GET("/user/:id/enable", parseParamId, createCurdApiDisable[model.User](false, nil, nil))
 	app.GET("/user/:id/disable", parseParamId, createCurdApiDisable[model.User](true, nil, nil))
 
-	//设备接口
-	app.POST("/device/list", createCurdApiList[model.Device]())
-	app.POST("/device/create", createCurdApiCreate[model.Device](nil, afterDeviceCreate))
-	app.GET("/device/:id", parseParamId, createCurdApiGet[model.Device]())
-	app.POST("/device/:id", parseParamId, createCurdApiModify[model.Device](nil, afterDeviceUpdate))
-	app.GET("/device/:id/delete", parseParamId, createCurdApiDelete[model.Device](nil, afterDeviceDelete))
-
-	app.GET("/device/:id/start", parseParamId, deviceStart)
-	app.GET("/device/:id/stop", parseParamId, deviceStop)
-	app.GET("/device/:id/enable", parseParamId, createCurdApiDisable[model.Device](false, nil, afterDeviceEnable))
-	app.GET("/device/:id/disable", parseParamId, createCurdApiDisable[model.Device](true, nil, afterDeviceDisable))
-	app.GET("/device/:id/context", parseParamId, deviceContext)
-	app.POST("/device/:id/context", parseParamId, deviceContextUpdate)
-	app.GET("/device/:id/refresh", parseParamId, deviceRefresh)
-	app.GET("/device/:id/refresh/:name", parseParamId, deviceRefreshPoint)
-	app.POST("/device/:id/execute", parseParamId, deviceExecute)
-
-	//元件接口
-	app.POST("/product/list", createCurdApiList[model.Product]())
-	app.POST("/product/create", createCurdApiCreate[model.Product](generateUUID, nil))
-	app.GET("/product/:id", parseParamStringId, createCurdApiGet[model.Product]())
-	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil))
-	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
-
 	//项目接口
-	app.POST("/project/list", createCurdApiList[model.Project]())
+	app.POST("/project/list", projectList)
 	app.POST("/project/create", createCurdApiCreate[model.Project](nil, afterProjectCreate))
-	app.GET("/project/:id", parseParamId, createCurdApiGet[model.Project]())
-	app.POST("/project/:id", parseParamId, createCurdApiModify[model.Project](nil, afterProjectUpdate))
+	app.GET("/project/:id", parseParamId, projectDetail)
+	app.POST("/project/:id", parseParamId, createCurdApiModify[model.Project](nil, afterProjectUpdate,
+		"name", "devices", "template_id", "hmi", "aggregators", "jobs", "alarms", "strategies", "context", "disabled"))
 	app.GET("/project/:id/delete", parseParamId, createCurdApiDelete[model.Project](nil, afterProjectDelete))
 
 	app.GET("/project/:id/start", parseParamId, projectStart)
@@ -121,31 +98,73 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/project/:id/disable", parseParamId, createCurdApiDisable[model.Project](true, nil, afterProjectDisable))
 	app.GET("/project/:id/context", parseParamId, projectContext)
 	app.POST("/project/:id/context", parseParamId, projectContextUpdate)
+	app.GET("/project/:id/watch", parseParamId, projectWatch)
 	//app.GET("/project/:id/targets", parseParamId, projectTargets)
 
-	//通道接口
-	app.POST("/tunnel/list", createCurdApiList[model.Tunnel]())
-	app.POST("/tunnel/create", createCurdApiCreate[model.Tunnel](nil, afterTunnelCreate))
-	app.GET("/tunnel/:id", parseParamId, createCurdApiGet[model.Tunnel]())
-	app.POST("/tunnel/:id", parseParamId, createCurdApiModify[model.Tunnel](nil, nil))
-	app.GET("/tunnel/:id/delete", parseParamId, createCurdApiDelete[model.Tunnel](nil, afterTunnelDelete))
-	app.GET("/tunnel/:id/start", parseParamId, tunnelStart)
-	app.GET("/tunnel/:id/stop", parseParamId, tunnelClose)
-	app.GET("/tunnel/:id/enable", parseParamId, createCurdApiDisable[model.Tunnel](false, nil, afterTunnelEnable))
-	app.GET("/tunnel/:id/disable", parseParamId, createCurdApiDisable[model.Tunnel](true, nil, afterTunnelDisable))
-	app.GET("/tunnel/:id/transfer", parseParamId, tunnelTransfer)
+	//设备接口
+	app.POST("/device/list", deviceList)
+	app.POST("/device/create", createCurdApiCreate[model.Device](nil, afterDeviceCreate))
+	app.GET("/device/:id", parseParamId, deviceDetail)
+	app.POST("/device/:id", parseParamId, createCurdApiModify[model.Device](nil, afterDeviceUpdate,
+		"name", "tunnel_id", "product_id", "station",
+		"hmi", "tags", "points", "pollers", "calculators", "validators", "commands",
+		"context", "disabled",
+	))
+	app.GET("/device/:id/delete", parseParamId, createCurdApiDelete[model.Device](nil, afterDeviceDelete))
+
+	app.GET("/device/:id/start", parseParamId, deviceStart)
+	app.GET("/device/:id/stop", parseParamId, deviceStop)
+	app.GET("/device/:id/enable", parseParamId, createCurdApiDisable[model.Device](false, nil, afterDeviceEnable))
+	app.GET("/device/:id/disable", parseParamId, createCurdApiDisable[model.Device](true, nil, afterDeviceDisable))
+	app.GET("/device/:id/context", parseParamId, deviceContext)
+	app.POST("/device/:id/context", parseParamId, deviceContextUpdate)
+	app.GET("/device/:id/watch", parseParamId, deviceWatch)
+	app.GET("/device/:id/refresh", parseParamId, deviceRefresh)
+	app.GET("/device/:id/refresh/:name", parseParamId, deviceRefreshPoint)
+	app.POST("/device/:id/execute", parseParamId, deviceExecute)
+
+	//元件接口
+	app.POST("/product/list", createCurdApiList[model.Product]())
+	app.POST("/product/create", createCurdApiCreate[model.Product](generateUUID, nil))
+	app.GET("/product/:id", parseParamStringId, createCurdApiGet[model.Product]())
+	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil,
+		"name", "manufacturer", "info",
+		"hmi", "tags", "points", "pollers", "calculators", "validators", "commands",
+		"context", "disabled",
+	))
+	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
+
+
 
 	//服务器接口
-	app.POST("/server/list", createCurdApiList[model.Server]())
+	app.POST("/server/list", serverList)
 	app.POST("/server/create", createCurdApiCreate[model.Server](nil, afterServerCreate))
-	app.GET("/server/:id", parseParamId, createCurdApiGet[model.Server]())
-	app.POST("/server/:id", parseParamId, createCurdApiModify[model.Server](nil, afterServerUpdate))
+	app.GET("/server/:id", parseParamId, serverDetail)
+	app.POST("/server/:id", parseParamId, createCurdApiModify[model.Server](nil, afterServerUpdate,
+		"name", "type", "addr",
+		"retry", "register", "heartbeat", "protocol", "devices", "disabled"))
 	app.GET("/server/:id/delete", parseParamId, createCurdApiDelete[model.Server](nil, afterServerDelete))
 
 	app.GET("/server/:id/start", parseParamId, serverStart)
 	app.GET("/server/:id/stop", parseParamId, serverStop)
 	app.GET("/server/:id/enable", parseParamId, createCurdApiDisable[model.Server](false, nil, afterServerEnable))
 	app.GET("/server/:id/disable", parseParamId, createCurdApiDisable[model.Server](true, nil, afterServerDisable))
+	app.GET("/server/:id/watch", parseParamId, serverWatch)
+
+	//通道接口
+	app.POST("/tunnel/list", tunnelList)
+	app.POST("/tunnel/create", createCurdApiCreate[model.Tunnel](nil, afterTunnelCreate))
+	app.GET("/tunnel/:id", parseParamId, tunnelDetail)
+	app.POST("/tunnel/:id", parseParamId, createCurdApiModify[model.Tunnel](nil, nil,
+		"name", "type", "addr", "retry", "heartbeat", "serial", "protocol", "disabled"))
+	app.GET("/tunnel/:id/delete", parseParamId, createCurdApiDelete[model.Tunnel](nil, afterTunnelDelete))
+	app.GET("/tunnel/:id/start", parseParamId, tunnelStart)
+	app.GET("/tunnel/:id/stop", parseParamId, tunnelClose)
+	app.GET("/tunnel/:id/enable", parseParamId, createCurdApiDisable[model.Tunnel](false, nil, afterTunnelEnable))
+	app.GET("/tunnel/:id/disable", parseParamId, createCurdApiDisable[model.Tunnel](true, nil, afterTunnelDisable))
+	app.GET("/tunnel/:id/watch", parseParamId, tunnelWatch)
+	app.GET("/tunnel/:id/transfer", parseParamId, tunnelTransfer)
+
 
 	//系统接口
 	app.GET("/system/cpu-info", cpuInfo)
@@ -164,7 +183,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	})
 }
 
-func replyList(ctx *gin.Context, data interface{}, total int) {
+func replyList(ctx *gin.Context, data interface{}, total int64) {
 	ctx.JSON(http.StatusOK, gin.H{"data": data, "total": total})
 }
 

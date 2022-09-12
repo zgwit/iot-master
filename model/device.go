@@ -22,8 +22,8 @@ type Product struct {
 
 // Device 设备
 type Device struct {
-	Id        uint64 `json:"id"`
-	TunnelId  uint64 `json:"tunnel_id" boltholdIndex:"TunnelId"`
+	Id        int64 `json:"id"`
+	TunnelId  int64 `json:"tunnel_id" boltholdIndex:"TunnelId"`
 	ProductId string `json:"product_id"`
 
 	Name    string `json:"name"`

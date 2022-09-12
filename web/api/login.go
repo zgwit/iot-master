@@ -35,15 +35,18 @@ func login(ctx *gin.Context) {
 	}
 
 	var user model.User
-	err := db.Store().FindOne(&user, bolthold.Where("Username").Eq(obj.Username))
+	has, err := db.Engine.Where("username=?", obj.Username).Get(&user)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
 
-	if err == bolthold.ErrNotFound {
+	if !has {
 		//管理员自动创建
 		if obj.Username == "admin" {
 			user.Username = obj.Username
 			user.Nickname = "管理员"
-			user.Created = time.Now()
-			err = db.Store().Insert(bolthold.NextSequence(), &user)
+			_, err = db.Engine.InsertOne(&user)
 			if err != nil {
 				replyError(ctx, err)
 				return
@@ -52,9 +55,7 @@ func login(ctx *gin.Context) {
 			replyFail(ctx, "找不到用户")
 			return
 		}
-	} else if err != nil {
-		replyError(ctx, err)
-		return
+
 	}
 
 	if user.Disabled {
@@ -62,24 +63,35 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	var pwd model.Password
-	err = db.Store().Get(user.Id, &pwd)
-	if err == bolthold.ErrNotFound {
-		//初始化密码
+	var password model.Password
+	has, err = db.Engine.ID(user.Id).Get(&password)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+	
+	//初始化密码
+	if !has {
 		dp := config.Config.DefaultPassword
 		if dp == "" {
 			dp = "123456"
 		}
-		pwd.Password = md5hash(dp)
-	} else if err != nil {
-		replyError(ctx, err)
-		return
+
+		password.Id = user.Id
+		password.Password = md5hash(dp)
+		_, err = db.Engine.InsertOne(&password)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
 	}
 
-	if pwd.Password != obj.Password {
+	if password.Password != obj.Password {
 		replyFail(ctx, "密码错误")
 		return
 	}
+
+	master.CreateUserEvent(user.Id, "登录")
 
 	//存入session
 	session.Set("user", user.Id)
@@ -96,7 +108,9 @@ func logout(ctx *gin.Context) {
 		return
 	}
 
-	//user := u.(uint64)
+	user := u.(int64)
+	master.CreateUserEvent(user, "退出")
+
 	session.Clear()
 	_ = session.Save()
 	replyOk(ctx, nil)
@@ -116,9 +130,13 @@ func password(ctx *gin.Context) {
 	}
 
 	var pwd model.Password
-	err := db.Store().Get(ctx.GetUint64("user"), &pwd)
+	has, err := db.Engine.ID(ctx.GetInt64("user")).Get(&pwd)
 	if err != nil {
 		replyError(ctx, err)
+		return
+	}
+	if !has {
+		replyFail(ctx, "用户不存在")
 		return
 	}
 	if obj.Old != pwd.Password {
@@ -127,7 +145,7 @@ func password(ctx *gin.Context) {
 	}
 
 	pwd.Password = obj.New //前端已经加密过
-	err = db.Store().Update(pwd.Id, &pwd)
+	_, err = db.Engine.Cols("password").Update(&pwd)
 	if err != nil {
 		replyError(ctx, err)
 		return

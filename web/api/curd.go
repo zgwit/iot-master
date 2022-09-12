@@ -3,9 +3,8 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/timshannon/bolthold"
-	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/pkg/log"
+	"iot-master/db"
+	"iot-master/log"
 	"reflect"
 )
 
@@ -22,8 +21,19 @@ func generateUUID(data interface{}) error {
 	return nil
 }
 
-func createCurdApiList[T any]() gin.HandlerFunc {
+func createSliceFromType(mod reflect.Type) interface{} {
+	//datas := reflect.MakeSlice(reflect.SliceOf(mod), 0, 10).Interface()
+
+	//解决不可寻址的问题，参考modern-go/reflect2 safe_slice.go
+	val := reflect.MakeSlice(reflect.SliceOf(mod), 0, 1)
+	ptr := reflect.New(val.Type())
+	ptr.Elem().Set(val)
+	return ptr.Interface()
+}
+
+func curdApiList(mod reflect.Type) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		datum := createSliceFromType(mod)
 
 		var body paramSearchEx
 		err := ctx.ShouldBindJSON(&body)
@@ -34,14 +44,7 @@ func createCurdApiList[T any]() gin.HandlerFunc {
 
 		query := body.toQuery()
 
-		var datum []T
-		cnt, err := db.Store().Count(datum, query)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
-
-		err = db.Store().Find(&datum, query)
+		cnt, err := query.FindAndCount(datum)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -52,23 +55,23 @@ func createCurdApiList[T any]() gin.HandlerFunc {
 	}
 }
 
-func createCurdApiCreate[T any](before, after hook) gin.HandlerFunc {
+func curdApiCreate(mod reflect.Type, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var data T
-		err := ctx.ShouldBindJSON(&data)
+		data := reflect.New(mod).Interface()
+		err := ctx.ShouldBindJSON(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
 		}
 
 		if before != nil {
-			if err := before(&data); err != nil {
+			if err := before(data); err != nil {
 				replyError(ctx, err)
 				return
 			}
 		}
 
-		err = db.Store().Insert(bolthold.NextSequence(), &data)
+		_, err = db.Engine.InsertOne(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -76,24 +79,25 @@ func createCurdApiCreate[T any](before, after hook) gin.HandlerFunc {
 
 		if after != nil {
 			go func() {
-				err := after(&data)
+				err := after(data)
 				if err != nil {
 					log.Error(err)
 				}
 			}()
 		}
 
-		replyOk(ctx, &data)
+		replyOk(ctx, data)
 	}
 }
 
-func createCurdApiModify[T any](before, after hook) gin.HandlerFunc {
+func curdApiModify(mod reflect.Type, updateFields []string, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var data T
-		err := ctx.ShouldBindJSON(&data)
+		value := reflect.New(mod)
+		data := value.Interface()
+		err := ctx.ShouldBindJSON(data)
 		//写入ID
 		id := ctx.MustGet("id")
-		//value.Elem().FieldByName("Id").Set(reflect.ValueOf(id))
+		value.Elem().FieldByName("Id").Set(reflect.ValueOf(id))
 
 		if err != nil {
 			replyError(ctx, err)
@@ -101,13 +105,13 @@ func createCurdApiModify[T any](before, after hook) gin.HandlerFunc {
 		}
 
 		if before != nil {
-			if err := before(&data); err != nil {
+			if err := before(data); err != nil {
 				replyError(ctx, err)
 				return
 			}
 		}
 
-		err = db.Store().Update(id, &data)
+		_, err = db.Engine.ID(id).Cols(updateFields...).Update(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -115,18 +119,18 @@ func createCurdApiModify[T any](before, after hook) gin.HandlerFunc {
 
 		if after != nil {
 			go func() {
-				err := after(&data)
+				err := after(data)
 				if err != nil {
 					log.Error(err)
 				}
 			}()
 		}
 
-		replyOk(ctx, &data)
+		replyOk(ctx, data)
 	}
 }
 
-func createCurdApiDelete[T any](before, after hook) gin.HandlerFunc {
+func curdApiDelete(mod reflect.Type, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id := ctx.MustGet("id")
 		if before != nil {
@@ -136,8 +140,8 @@ func createCurdApiDelete[T any](before, after hook) gin.HandlerFunc {
 			}
 		}
 
-		var data T
-		err := db.Store().Delete(id, data)
+		data := reflect.New(mod).Interface()
+		_, err := db.Engine.ID(id).Delete(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
@@ -156,22 +160,25 @@ func createCurdApiDelete[T any](before, after hook) gin.HandlerFunc {
 	}
 }
 
-func createCurdApiGet[T any]() gin.HandlerFunc {
+func curdApiGet(mod reflect.Type) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id := ctx.MustGet("id")
-		var data T
-		err := db.Store().Get(id, &data)
+		data := reflect.New(mod).Interface()
+		has, err := db.Engine.ID(id).Get(data)
 		if err != nil {
 			replyError(ctx, err)
 			return
+		} else if !has {
+			replyFail(ctx, "记录不存在")
+			return
 		}
-		replyOk(ctx, &data)
+		replyOk(ctx, data)
 	}
 }
 
-func createCurdApiDisable[T any](disable bool, before, after hook) gin.HandlerFunc {
+func curdApiDisable(mod reflect.Type, disable bool, before, after hook) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		//id := ctx.GetUint64("id")
+		//id := ctx.GetInt64("id")
 		id := ctx.MustGet("id")
 		if before != nil {
 			if err := before(id); err != nil {
@@ -180,20 +187,10 @@ func createCurdApiDisable[T any](disable bool, before, after hook) gin.HandlerFu
 			}
 		}
 
-		//value := reflect.New(mod)
-		//value.Elem().FieldByName("Disabled").SetBool(disable)
-		//data := value.Interface()
-		var data T
-
-		err := db.Store().Get(id, &data)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
-
-		reflect.ValueOf(data).FieldByName("Disabled").SetBool(disable)
-
-		err = db.Store().Update(id, &data)
+		value := reflect.New(mod)
+		value.Elem().FieldByName("Disabled").SetBool(disable)
+		data := value.Interface()
+		_, err := db.Engine.ID(id).Cols("disabled").Update(data)
 		if err != nil {
 			replyError(ctx, err)
 			return

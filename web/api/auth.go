@@ -21,13 +21,14 @@ func auth(ctx *gin.Context) {
 	password := ctx.Query("password")
 
 	var user model.User
-	err := db.Store().FindOne(&user, bolthold.Where("Username").Eq(username))
-
-	if err == bolthold.ErrNotFound {
-		replyFail(ctx, "找不到用户")
-		return
-	} else if err != nil {
+	has, err := db.Engine.Where("username=?", username).Get(&user)
+	if err != nil {
 		replyError(ctx, err)
+		return
+	}
+
+	if !has {
+		replyFail(ctx, "找不到用户")
 		return
 	}
 
@@ -37,17 +38,19 @@ func auth(ctx *gin.Context) {
 	}
 
 	var obj model.Password
-	err = db.Store().Get(user.Id, &obj)
-	if err == bolthold.ErrNotFound {
-		//初始化密码
+	has, err = db.Engine.ID(user.Id).Get(&obj)
+	if err != nil {
+		replyError(ctx, err)
+		return
+	}
+
+	//初始化密码
+	if !has {
 		dp := config.Config.DefaultPassword
 		if dp == "" {
 			dp = "123456"
 		}
 		obj.Password = md5hash(dp)
-	} else if err != nil {
-		replyError(ctx, err)
-		return
 	}
 
 	if obj.Password != password {

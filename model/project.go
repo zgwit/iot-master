@@ -6,7 +6,7 @@ import (
 
 //Project 项目
 type Project struct {
-	Id   uint64 `json:"id"`
+	Id   int64 `json:"id"`
 	Name string `json:"name"`
 
 	Devices []*ProjectDevice `json:"devices"`
