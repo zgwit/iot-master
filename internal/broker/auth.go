@@ -1,4 +1,4 @@
-package mqtt
+package broker
 
 type Auth struct{}
 

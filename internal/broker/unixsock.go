@@ -1,4 +1,4 @@
-package mqtt
+package broker
 
 import (
 	"github.com/mochi-co/mqtt/server/listeners"

@@ -7,7 +7,6 @@ import (
 	"github.com/zgwit/iot-master/internal/config"
 	"github.com/zgwit/iot-master/internal/core"
 	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/internal/mqtt"
 	"github.com/zgwit/iot-master/pkg/log"
 	"github.com/zgwit/iot-master/web"
 	"os"
@@ -142,11 +141,11 @@ func originMain() {
 	defer core.Stop()
 
 	//MQTT总线
-	err = mqtt.Open(config.Config.MQTT)
+	err = broker.Open(config.Config.Broker)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer mqtt.Close()
+	defer broker.Close()
 
 	//判断是否开启Web
 	web.Serve(&config.Config.Web)

@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/zgwit/iot-master/internal/args"
+	"github.com/zgwit/iot-master/internal/broker"
 	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/pkg/log"
 	"github.com/zgwit/iot-master/web"
@@ -11,13 +12,13 @@ import (
 
 // Configure 配置
 type Configure struct {
-	Node            string      `yaml:"node" json:"node"`
-	Data            string      `yaml:"data" json:"data"`
-	DefaultPassword string      `yaml:"default_password" json:"default_password"`
-	Database        db.Options  `yaml:"database" json:"database"`
-	Web             web.Options `yaml:"web" json:"web"`
-	MQTT            MQTT        `yaml:"mqtt" json:"mqtt"`
-	Log             log.Options `yaml:"log" json:"log"`
+	Node            string         `yaml:"node" json:"node"`
+	Data            string         `yaml:"data" json:"data"`
+	DefaultPassword string         `yaml:"default_password" json:"default_password"`
+	Web             web.Options    `yaml:"web" json:"web"`
+	Broker          broker.Options `yaml:"broker" json:"broker"`
+	Database        db.Options     `yaml:"database" json:"database"`
+	Log             log.Options    `yaml:"log" json:"log"`
 }
 
 // Config 全局配置
@@ -25,29 +26,30 @@ var Config = Configure{
 	Node:            "root",
 	Data:            "data",
 	DefaultPassword: "123456",
-	Database:        DatabaseDefault,
-	Web:             WebDefault,
-	MQTT:            MQTTDefault,
-	Log:             LogDefault,
-}
-var WebDefault = web.Options{
-	Addr:     ":8080",
-	Debug:    true,
-	Compress: true,
-}
 
-var LogDefault = log.Options{
-	Level:  "trace",
-	Caller: true,
-	Text:   false,
-}
+	Database: db.Options{
+		Type:     "sqlite",
+		URL:      "sqlite3.db",
+		Debug:    false,
+		LogLevel: 4,
+		Sync:     true,
+	},
 
-var DatabaseDefault = db.Options{
-	Type:     "sqlite",
-	URL:      "sqlite3.db",
-	Debug:    false,
-	LogLevel: 4,
-	Sync:     true,
+	Web: web.Options{
+		Addr:     ":8080",
+		Debug:    true,
+		Compress: true,
+	},
+
+	Broker: broker.Options{
+		Url: "internal",
+	},
+
+	Log: log.Options{
+		Level:  "trace",
+		Caller: true,
+		Text:   false,
+	},
 }
 
 func init() {
