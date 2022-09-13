@@ -11,10 +11,9 @@ type Protocol struct {
 
 // Tunnel 通道模型
 type Tunnel struct {
-	Id       int64         `json:"id"`
-	ServerId int64         `json:"server_id" boltholdIndex:"ServerId"`
+	Id       string        `json:"id"`
+	ServerId string        `json:"server_id" boltholdIndex:"ServerId"`
 	Name     string        `json:"name"`
-	SN       string        `json:"sn" boltholdIndex:"Addr"`
 	Type     string        `json:"type"` //serial tcp-client tcp-server udp-client udp-server server-tcp server-udp
 	Addr     string        `json:"addr"`
 	Remote   string        `json:"remote"`

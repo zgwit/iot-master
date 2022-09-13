@@ -3,12 +3,13 @@ package model
 import "time"
 
 type Plugin struct {
-	Id           string            `json:"id"`
+	Id           string            `json:"id" xorm:"pk"`
 	Name         string            `json:"name"`
 	Version      string            `json:"version"`
 	Command      string            `json:"command,omitempty"`
 	Entrypoint   string            `json:"entrypoint,omitempty"`
 	Dependencies map[string]string `json:"dependencies,omitempty"`
+	Created      time.Time         `json:"created"`
 }
 
 type License struct {

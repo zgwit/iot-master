@@ -5,7 +5,7 @@ import (
 )
 
 type Server struct {
-	Id       int64          `json:"id"`
+	Id       string          `json:"id" xorm:"pk"`
 	Name     string          `json:"name"`
 	Type     string          `json:"type"` //tcp udp
 	Addr     string          `json:"addr"`
