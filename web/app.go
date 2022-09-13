@@ -7,7 +7,6 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/internal/config"
 	"github.com/zgwit/iot-master/pkg/log"
 	"github.com/zgwit/iot-master/web/api"
 	"mime"
@@ -29,7 +28,7 @@ var wwwFiles embed.FS
 
 var server *http.Server
 
-func Serve(cfg *config.Web) {
+func Serve(cfg *Options) {
 	if !cfg.Debug {
 		gin.SetMode(gin.ReleaseMode)
 	}

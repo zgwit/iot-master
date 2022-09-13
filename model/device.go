@@ -11,9 +11,7 @@ type Product struct {
 	Manufacturer string   `json:"manufacturer"` //厂家
 	Version      string   `json:"version"`      //SEMVER
 	Protocol     Protocol `json:"protocol"`
-	//Tunnel       string `json:"tunnel"` // serial tcp udp ???
 
-	Tags    []string  `json:"tags,omitempty"`
 	Points  []*Point  `json:"points"`
 	Pollers []*Poller `json:"pollers"`
 
@@ -22,8 +20,8 @@ type Product struct {
 
 // Device 设备
 type Device struct {
-	Id        int64 `json:"id"`
-	TunnelId  int64 `json:"tunnel_id" boltholdIndex:"TunnelId"`
+	Id        string `json:"id"`
+	TunnelId  string `json:"tunnel_id" boltholdIndex:"TunnelId"`
 	ProductId string `json:"product_id"`
 
 	Name    string `json:"name"`

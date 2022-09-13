@@ -1,7 +1,6 @@
 package db
 
 import (
-	"github.com/zgwit/iot-master/internal/config"
 	"github.com/zgwit/iot-master/model"
 	"xorm.io/xorm"
 	"xorm.io/xorm/log"
@@ -15,7 +14,7 @@ import (
 
 var Engine *xorm.Engine
 
-func Open(cfg *config.Database) error {
+func Open(cfg Options) error {
 	var err error
 	Engine, err = xorm.NewEngine(cfg.Type, cfg.URL)
 	if err != nil {
@@ -46,11 +45,8 @@ func Close() error {
 func Sync() error {
 	return Engine.Sync2(
 		new(model.User), new(model.Password),
-		new(model.Tunnel), new(model.Server), new(model.Transfer),
+		new(model.Tunnel), new(model.Server),
 		new(model.Device), new(model.Product),
-		new(model.Project), new(model.Template),
-		new(model.Hmi), new(model.Component),
-		new(model.Event), new(model.Camera),
-		new(model.DeviceAlarm), new(model.ProjectAlarm),
+		new(model.Project),
 	)
 }

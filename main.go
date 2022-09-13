@@ -8,7 +8,6 @@ import (
 	"github.com/zgwit/iot-master/internal/core"
 	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/internal/mqtt"
-	"github.com/zgwit/iot-master/internal/rpc"
 	"github.com/zgwit/iot-master/pkg/log"
 	"github.com/zgwit/iot-master/web"
 	"os"
@@ -148,13 +147,6 @@ func originMain() {
 		log.Fatal(err)
 	}
 	defer mqtt.Close()
-
-	//插件RPC
-	err = rpc.Open(config.Config.RPC)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rpc.Close()
 
 	//判断是否开启Web
 	web.Serve(&config.Config.Web)

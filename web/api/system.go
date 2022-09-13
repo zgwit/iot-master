@@ -6,7 +6,6 @@ import (
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/super-l/machine-code/machine"
-	"github.com/zgwit/iot-master/protocols"
 	"go.bug.st/serial"
 )
 
@@ -65,18 +64,18 @@ func diskStats(ctx *gin.Context) {
 }
 
 func protocolList(ctx *gin.Context) {
-	ps := protocols.Protocols()
-	replyOk(ctx, ps)
+	//ps := protocols.Protocols()
+	//replyOk(ctx, ps)
 }
 
 func protocolDetail(ctx *gin.Context) {
-	name := ctx.Param("name")
-	for _, p := range protocols.Protocols() {
-		if p.Name == name {
-			replyOk(ctx, p)
-			return
-		}
-	}
+	//name := ctx.Param("name")
+	//for _, p := range protocols.Protocols() {
+	//	if p.Name == name {
+	//		replyOk(ctx, p)
+	//		return
+	//	}
+	//}
 	replyFail(ctx, "找不到协议")
 }
 

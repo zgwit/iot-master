@@ -2,24 +2,25 @@ package config
 
 import (
 	"github.com/zgwit/iot-master/internal/args"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/pkg/log"
+	"github.com/zgwit/iot-master/web"
 	"gopkg.in/yaml.v3"
-	"log"
 	"os"
 )
 
-//Configure 配置
+// Configure 配置
 type Configure struct {
-	Node            string   `yaml:"node" json:"node"`
-	Data            string   `yaml:"data" json:"data"`
-	DefaultPassword string   `yaml:"default_password" json:"default_password"`
-	Database        Database `yaml:"database" json:"database"`
-	Web             Web      `yaml:"web" json:"web"`
-	MQTT            MQTT     `yaml:"mqtt" json:"mqtt"`
-	RPC             RPC      `yaml:"rpc" json:"rpc"`
-	Log             Log      `yaml:"log" json:"log"`
+	Node            string      `yaml:"node" json:"node"`
+	Data            string      `yaml:"data" json:"data"`
+	DefaultPassword string      `yaml:"default_password" json:"default_password"`
+	Database        db.Options  `yaml:"database" json:"database"`
+	Web             web.Options `yaml:"web" json:"web"`
+	MQTT            MQTT        `yaml:"mqtt" json:"mqtt"`
+	Log             log.Options `yaml:"log" json:"log"`
 }
 
-//Config 全局配置
+// Config 全局配置
 var Config = Configure{
 	Node:            "root",
 	Data:            "data",
@@ -27,15 +28,33 @@ var Config = Configure{
 	Database:        DatabaseDefault,
 	Web:             WebDefault,
 	MQTT:            MQTTDefault,
-	RPC:             RPCDefault,
 	Log:             LogDefault,
+}
+var WebDefault = web.Options{
+	Addr:     ":8080",
+	Debug:    true,
+	Compress: true,
+}
+
+var LogDefault = log.Options{
+	Level:  "trace",
+	Caller: true,
+	Text:   false,
+}
+
+var DatabaseDefault = db.Options{
+	Type:     "sqlite",
+	URL:      "sqlite3.db",
+	Debug:    false,
+	LogLevel: 4,
+	Sync:     true,
 }
 
 func init() {
 	Config.Node, _ = os.Hostname()
 }
 
-//Load 加载
+// Load 加载
 func Load() error {
 	//log.Println("加载配置")
 	//从参数中读取配置文件名

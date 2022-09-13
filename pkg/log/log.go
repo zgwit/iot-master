@@ -2,12 +2,11 @@ package log
 
 import (
 	"github.com/sirupsen/logrus"
-	"github.com/zgwit/iot-master/internal/config"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
 )
 
-func Open(opts config.Log) error {
+func Open(opts Options) error {
 
 	if opts.Caller {
 		logrus.SetReportCaller(true)
@@ -19,7 +18,7 @@ func Open(opts config.Log) error {
 		logrus.SetFormatter(&logrus.JSONFormatter{TimestampFormat: opts.Format})
 	}
 
-	// LogOutput to stdout instead of the default stderr
+	// Output to stdout instead of the default stderr
 	// Can be any io.Writer, see below for File example
 	if opts.Output.Filename == "" {
 		logrus.SetOutput(os.Stdout)
