@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"errors"
-	"github.com/zgwit/iot-master/internal/broker"
 	"github.com/zgwit/iot-master/internal/core"
 	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/model"
@@ -31,8 +30,10 @@ func afterServerCreate(data interface{}) error {
 	}
 
 	payload, err := json.Marshal(server)
-	broker.MQTT.Publish("/gateway/"+gid+"/download/server", 0, false, payload)
-	return err
+	if err != nil {
+		return err
+	}
+	return core.Publish("/gateway/"+gid+"/download/server", payload)
 }
 
 func afterServerUpdate(data interface{}) error {
@@ -44,8 +45,10 @@ func afterServerUpdate(data interface{}) error {
 	}
 
 	payload, err := json.Marshal(server)
-	broker.MQTT.Publish("/gateway/"+gid+"/download/server", 0, false, payload)
-	return err
+	if err != nil {
+		return err
+	}
+	return core.Publish("/gateway/"+gid+"/download/server", payload)
 }
 
 func afterServerDelete(id interface{}) error {

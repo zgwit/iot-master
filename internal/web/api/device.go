@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/internal/broker"
 	"github.com/zgwit/iot-master/internal/core"
 	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/model"
@@ -33,8 +32,10 @@ func afterDeviceCreate(data interface{}) error {
 	}
 
 	payload, err := json.Marshal(device)
-	broker.MQTT.Publish("/gateway/"+gid+"/download/device", 0, false, payload)
-	return err
+	if err != nil {
+		return err
+	}
+	return core.Publish("/gateway/"+gid+"/download/device", payload)
 }
 
 func afterDeviceUpdate(data interface{}) error {
@@ -46,9 +47,10 @@ func afterDeviceUpdate(data interface{}) error {
 	}
 
 	payload, err := json.Marshal(device)
-	broker.MQTT.Publish("/gateway/"+gid+"/download/device", 0, false, payload)
-
-	return err
+	if err != nil {
+		return err
+	}
+	return core.Publish("/gateway/"+gid+"/download/device", payload)
 }
 
 func afterDeviceDelete(id interface{}) error {

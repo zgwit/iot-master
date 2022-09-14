@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/kardianos/service"
 	"github.com/zgwit/iot-master/internal/args"
-	"github.com/zgwit/iot-master/internal/broker"
 	"github.com/zgwit/iot-master/internal/config"
+	"github.com/zgwit/iot-master/internal/core"
 	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/internal/web"
 	"github.com/zgwit/iot-master/pkg/log"
@@ -141,11 +141,11 @@ func originMain() {
 	//defer core.Stop()
 
 	//MQTT总线
-	err = broker.Open(config.Config.Broker)
+	err = core.Open(config.Config.Broker)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer broker.Close()
+	defer core.Close()
 
 	//判断是否开启Web
 	web.Serve(config.Config.Web)

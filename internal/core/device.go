@@ -2,7 +2,6 @@ package core
 
 import (
 	"encoding/json"
-	"github.com/zgwit/iot-master/internal/broker"
 	"github.com/zgwit/iot-master/model"
 )
 
@@ -21,12 +20,18 @@ type Device struct {
 
 func (d *Device) Assign(points map[string]any) error {
 	data, _ := json.Marshal(points)
-	broker.MQTT.Publish("/device/"+d.Id+"/command/assign", 0, false, data)
+	err := Publish("/device/"+d.Id+"/command/assign", data)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (d *Device) Refresh() error {
-	broker.MQTT.Publish("/device/"+d.Id+"/command/refresh", 0, false, "")
+	err := Publish("/device/"+d.Id+"/command/refresh", []byte(""))
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
