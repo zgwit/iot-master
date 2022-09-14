@@ -22,20 +22,6 @@ func getTunnelGateway(TunnelId string) (string, error) {
 
 	return tunnel.GatewayId, nil
 }
-
-func getServerGateway(TunnelId string) (string, error) {
-	var tunnel model.Server
-	has, err := db.Engine.Get(TunnelId, &tunnel)
-	if err != nil {
-		return "", err
-	}
-	if !has {
-		return "", errors.New("找不到服务")
-	}
-
-	return tunnel.GatewayId, nil
-}
-
 func afterDeviceCreate(data interface{}) error {
 	device := data.(*model.Device)
 
@@ -53,41 +39,33 @@ func afterDeviceCreate(data interface{}) error {
 
 func afterDeviceUpdate(data interface{}) error {
 	device := data.(*model.Device)
-	//重新启动
-	_ = core.RemoveDevice(device.Id)
-	dev, err := core.LoadDevice(device.Id)
-	if err == nil {
-		err = dev.Start()
+
+	gid, err := getTunnelGateway(device.TunnelId)
+	if err != nil {
+		return err
 	}
+
+	payload, err := json.Marshal(device)
+	broker.MQTT.Publish("/gateway/"+gid+"/download/device", 0, false, payload)
+
 	return err
 }
 
 func afterDeviceDelete(id interface{}) error {
-	return core.RemoveDevice(id.(int64))
+	core.Devices.Delete(id.(string))
+	return nil
 }
 
-func afterDeviceEnable(id interface{}) error {
-	_ = core.RemoveProject(id.(int64))
-	_, err := core.LoadProject(id.(int64))
-	return err
-}
-
-func afterDeviceDisable(id interface{}) error {
-	_ = core.RemoveProject(id.(int64))
-	_, err := core.LoadProject(id.(int64))
-	return err
-}
-
-func deviceContext(ctx *gin.Context) {
-	device := core.GetDevice(ctx.GetInt64("id"))
+func deviceValues(ctx *gin.Context) {
+	device := core.Devices.Load(ctx.GetString("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
 	}
-	replyOk(ctx, device.Context)
+	replyOk(ctx, device.Values)
 }
 
-func deviceContextUpdate(ctx *gin.Context) {
+func deviceAssign(ctx *gin.Context) {
 	var values map[string]interface{}
 	err := ctx.ShouldBindJSON(values)
 	if err != nil {
@@ -95,25 +73,23 @@ func deviceContextUpdate(ctx *gin.Context) {
 		return
 	}
 
-	device := core.GetDevice(ctx.GetInt64("id"))
+	device := core.Devices.Load(ctx.GetString("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
 	}
 
-	for k, v := range values {
-		err := device.Set(k, v)
-		if err != nil {
-			replyError(ctx, err)
-			return
-		}
+	err = device.Assign(values)
+	if err != nil {
+		replyError(ctx, err)
+		return
 	}
 
 	replyOk(ctx, nil)
 }
 
 func deviceRefresh(ctx *gin.Context) {
-	device := core.GetDevice(ctx.GetInt64("id"))
+	device := core.Devices.Load(ctx.GetString("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备")
 		return
@@ -123,5 +99,5 @@ func deviceRefresh(ctx *gin.Context) {
 		replyError(ctx, err)
 		return
 	}
-	replyOk(ctx, device.Context)
+	replyOk(ctx, nil)
 }

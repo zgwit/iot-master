@@ -79,10 +79,8 @@ func RegisterHandlers(client mqtt.Client) {
 		device := strings.Split(message.Topic(), "/")[2]
 		var status model.Status
 		_ = json.Unmarshal(message.Payload(), &status)
-		if d, ok := Devices.Load(device); ok {
-			if dev, ok := d.(*Device); ok {
-				dev.Status = status
-			}
+		if dev := Devices.Load(device); dev != nil {
+			dev.Status = status
 		} else {
 			Devices.Store(device, &Device{
 				Id:     device,
@@ -95,20 +93,17 @@ func RegisterHandlers(client mqtt.Client) {
 	//查询项目状态
 	client.Subscribe("/project/+/command/status", 0, func(client mqtt.Client, message mqtt.Message) {
 		project := strings.Split(message.Topic(), "/")[2]
-		if p, ok := Projects.Load(project); ok {
-			if prj, ok := p.(*Project); ok {
-				_ = prj.Status()
-			}
+		if prj := Projects.Load(project); prj != nil {
+			payload, _ := json.Marshal(prj.Status)
+			client.Publish("/project/"+project+"/status", 0, false, payload)
 		}
 	})
 
 	//刷新项目数据
 	client.Subscribe("/project/+/command/refresh", 0, func(client mqtt.Client, message mqtt.Message) {
 		project := strings.Split(message.Topic(), "/")[2]
-		if p, ok := Projects.Load(project); ok {
-			if prj, ok := p.(*Project); ok {
-				_ = prj.Refresh()
-			}
+		if prj := Projects.Load(project); prj != nil {
+			_ = prj.Refresh()
 		}
 	})
 
@@ -117,10 +112,8 @@ func RegisterHandlers(client mqtt.Client) {
 		project := strings.Split(message.Topic(), "/")[2]
 		points := make(map[string]any)
 		_ = json.Unmarshal(message.Payload(), &points)
-		if p, ok := Projects.Load(project); ok {
-			if prj, ok := p.(*Project); ok {
-				_ = prj.Assign(points)
-			}
+		if prj := Projects.Load(project); prj != nil {
+			_ = prj.Assign(points)
 		}
 	})
 

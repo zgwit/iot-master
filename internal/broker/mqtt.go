@@ -66,5 +66,12 @@ func Close() {
 }
 
 func Publish(topic string, payload []byte) error {
-	return mqttServer.Publish(topic, payload, false)
+	//TODO 兼容struct类型
+
+	if mqttServer != nil {
+		return mqttServer.Publish(topic, payload, false)
+	}
+
+	MQTT.Publish(topic, 0, false, payload)
+	return nil
 }

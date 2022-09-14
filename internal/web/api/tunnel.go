@@ -1,29 +1,21 @@
 package api
 
 import (
+	"encoding/json"
+	"github.com/zgwit/iot-master/internal/broker"
+	"github.com/zgwit/iot-master/internal/core"
 	"github.com/zgwit/iot-master/model"
 )
 
 func afterTunnelCreate(data interface{}) error {
 	tunnel := data.(*model.Tunnel)
-	if !tunnel.Disabled {
-		return core.LoadTunnel(tunnel.Id)
-	}
-	return nil
+
+	payload, err := json.Marshal(tunnel)
+	broker.MQTT.Publish("/gateway/"+tunnel.GatewayId+"/download/tunnel", 0, false, payload)
+	return err
 }
 
 func afterTunnelDelete(id interface{}) error {
-	return core.RemoveTunnel(id.(int64))
-}
-
-func afterTunnelEnable(id interface{}) error {
-	_ = core.RemoveProject(id.(int64))
-	_, err := core.LoadProject(id.(int64))
-	return err
-}
-
-func afterTunnelDisable(id interface{}) error {
-	_ = core.RemoveProject(id.(int64))
-	_, err := core.LoadProject(id.(int64))
-	return err
+	core.TunnelStatus.Delete(id.(string))
+	return nil
 }

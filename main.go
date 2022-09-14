@@ -148,7 +148,7 @@ func originMain() {
 	defer broker.Close()
 
 	//判断是否开启Web
-	web.Serve(&config.Config.Web)
+	web.Serve(config.Config.Web)
 }
 
 func shutdown() error {

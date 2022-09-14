@@ -1,35 +1,54 @@
 package api
 
 import (
+	"encoding/json"
+	"errors"
+	"github.com/zgwit/iot-master/internal/broker"
+	"github.com/zgwit/iot-master/internal/core"
+	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/model"
 )
 
+func getServerGateway(TunnelId string) (string, error) {
+	var tunnel model.Server
+	has, err := db.Engine.Get(TunnelId, &tunnel)
+	if err != nil {
+		return "", err
+	}
+	if !has {
+		return "", errors.New("找不到服务")
+	}
+
+	return tunnel.GatewayId, nil
+}
+
 func afterServerCreate(data interface{}) error {
 	server := data.(*model.Server)
-	if !server.Disabled {
-		return core.LoadServer(server.Id)
+
+	gid, err := getTunnelGateway(server.Id)
+	if err != nil {
+		return err
 	}
-	return nil
+
+	payload, err := json.Marshal(server)
+	broker.MQTT.Publish("/gateway/"+gid+"/download/server", 0, false, payload)
+	return err
 }
 
 func afterServerUpdate(data interface{}) error {
 	server := data.(*model.Server)
-	_ = core.RemoveServer(server.Id)
-	return core.LoadServer(server.Id)
+
+	gid, err := getTunnelGateway(server.Id)
+	if err != nil {
+		return err
+	}
+
+	payload, err := json.Marshal(server)
+	broker.MQTT.Publish("/gateway/"+gid+"/download/server", 0, false, payload)
+	return err
 }
 
 func afterServerDelete(id interface{}) error {
-	return core.RemoveServer(id.(int64))
-}
-
-func afterServerEnable(id interface{}) error {
-	_ = core.RemoveProject(id.(int64))
-	_, err := core.LoadProject(id.(int64))
-	return err
-}
-
-func afterServerDisable(id interface{}) error {
-	_ = core.RemoveProject(id.(int64))
-	_, err := core.LoadProject(id.(int64))
-	return err
+	core.ServerStatus.Delete(id.(string))
+	return nil
 }
