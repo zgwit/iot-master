@@ -1,10 +1,10 @@
 package config
 
 import (
-	"github.com/zgwit/iot-master/internal/args"
-	"github.com/zgwit/iot-master/internal/broker"
-	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/pkg/log"
+	"github.com/zgwit/iot-master/v2/internal/args"
+	"github.com/zgwit/iot-master/v2/internal/broker"
+	"github.com/zgwit/iot-master/v2/internal/db"
+	"github.com/zgwit/iot-master/v2/pkg/log"
 	"gopkg.in/yaml.v3"
 	"os"
 )

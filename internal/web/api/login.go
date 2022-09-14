@@ -5,9 +5,9 @@ import (
 	"encoding/hex"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/internal/config"
-	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/v2/internal/config"
+	"github.com/zgwit/iot-master/v2/internal/db"
+	"github.com/zgwit/iot-master/v2/model"
 )
 
 type loginObj struct {

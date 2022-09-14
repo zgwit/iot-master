@@ -7,8 +7,8 @@ import (
 	"github.com/mochi-co/mqtt/server/events"
 	"github.com/mochi-co/mqtt/server/listeners"
 	"github.com/mochi-co/mqtt/server/listeners/auth"
-	"github.com/zgwit/iot-master/internal/broker"
-	"github.com/zgwit/iot-master/pkg/vconn"
+	"github.com/zgwit/iot-master/v2/internal/broker"
+	"github.com/zgwit/iot-master/v2/pkg/vconn"
 	"net"
 )
 

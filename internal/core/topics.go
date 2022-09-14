@@ -3,8 +3,8 @@ package core
 import (
 	"encoding/json"
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/v2/internal/db"
+	"github.com/zgwit/iot-master/v2/model"
 	"strings"
 )
 

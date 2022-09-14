@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/v2/model"
 )
 
 var TunnelStatus Map[model.Status] //status

@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/v2/internal/db"
+	"github.com/zgwit/iot-master/v2/model"
 )
 
 func userMe(ctx *gin.Context) {

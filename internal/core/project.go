@@ -1,6 +1,6 @@
 package core
 
-import "github.com/zgwit/iot-master/model"
+import "github.com/zgwit/iot-master/v2/model"
 
 func NewProject(id string) *Project {
 	return &Project{

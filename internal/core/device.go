@@ -2,7 +2,7 @@ package core
 
 import (
 	"encoding/json"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/v2/model"
 )
 
 func NewDevice(id string) *Device {

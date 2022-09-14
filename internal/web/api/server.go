@@ -3,9 +3,9 @@ package api
 import (
 	"encoding/json"
 	"errors"
-	"github.com/zgwit/iot-master/internal/core"
-	"github.com/zgwit/iot-master/internal/db"
-	"github.com/zgwit/iot-master/model"
+	"github.com/zgwit/iot-master/v2/internal/core"
+	"github.com/zgwit/iot-master/v2/internal/db"
+	"github.com/zgwit/iot-master/v2/model"
 )
 
 func getServerGateway(TunnelId string) (string, error) {
