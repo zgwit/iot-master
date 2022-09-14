@@ -6,6 +6,13 @@ import (
 	"github.com/zgwit/iot-master/model"
 )
 
+func NewDevice(id string) *Device {
+	return &Device{
+		Id:     id,
+		Values: make(map[string]any),
+	}
+}
+
 type Device struct {
 	Id     string
 	Values map[string]any

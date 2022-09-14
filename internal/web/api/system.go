@@ -6,7 +6,6 @@ import (
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/super-l/machine-code/machine"
-	"go.bug.st/serial"
 )
 
 func memStats(ctx *gin.Context) {
@@ -61,31 +60,6 @@ func diskStats(ctx *gin.Context) {
 		usages = append(usages, usage)
 	}
 	replyOk(ctx, usages)
-}
-
-func protocolList(ctx *gin.Context) {
-	//ps := protocols.Protocols()
-	//replyOk(ctx, ps)
-}
-
-func protocolDetail(ctx *gin.Context) {
-	//name := ctx.Param("name")
-	//for _, p := range protocols.Protocols() {
-	//	if p.Name == name {
-	//		replyOk(ctx, p)
-	//		return
-	//	}
-	//}
-	replyFail(ctx, "找不到协议")
-}
-
-func serialPortList(ctx *gin.Context) {
-	ports, err := serial.GetPortsList()
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyOk(ctx, ports)
 }
 
 func machineInfo(ctx *gin.Context) {

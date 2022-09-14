@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/timshannon/bolthold"
+	"github.com/zgwit/iot-master/internal/db"
 	"reflect"
 	"xorm.io/xorm"
 )
@@ -88,4 +88,18 @@ func parseParamStringId(ctx *gin.Context) {
 	}
 	ctx.Set("id", pid.Id)
 	ctx.Next()
+}
+
+type paramList struct {
+	Skip  int `form:"skip" json:"skip"`
+	Limit int `form:"limit" json:"limit"`
+}
+
+func (body *paramList) toQuery() *xorm.Session {
+	if body.Limit < 1 {
+		body.Limit = 20
+	}
+	op := db.Engine.Limit(body.Limit, body.Skip)
+	op.Desc("id")
+	return op
 }

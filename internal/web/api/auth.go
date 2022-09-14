@@ -2,7 +2,6 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/timshannon/bolthold"
 	"github.com/zgwit/iot-master/internal/config"
 	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/model"

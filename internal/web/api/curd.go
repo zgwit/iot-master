@@ -2,16 +2,56 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"iot-master/db"
-	"iot-master/log"
+	"github.com/google/uuid"
+	"github.com/zgwit/iot-master/internal/db"
+	"github.com/zgwit/iot-master/pkg/log"
 	"reflect"
 )
 
-func createCurdApiList[T any](fields ...string) gin.HandlerFunc {
+type hook func(value interface{}) error
+
+func generateUUID(data interface{}) error {
+	value := reflect.ValueOf(data).Elem()
+	field := value.FieldByName("Id")
+	//使用UUId作为Id
+	//field.IsZero() 如果为空串时，生成UUID
+	if field.Len() == 0 {
+		field.SetString(uuid.NewString())
+	}
+	return nil
+}
+
+func createCurdApiSearch[T any](fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var body paramSearchEx
 		err := ctx.ShouldBindJSON(&body)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+
+		query := body.toQuery()
+		if len(fields) > 0 {
+			query.Cols(fields...)
+		}
+
+		var datum []T
+		cnt, err := query.FindAndCount(&datum)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+
+		//replyOk(ctx, cs)
+		replyList(ctx, datum, cnt)
+	}
+}
+
+func createCurdApiList[T any](fields ...string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var body paramList
+		err := ctx.ShouldBindQuery(&body)
 		if err != nil {
 			replyError(ctx, err)
 			return

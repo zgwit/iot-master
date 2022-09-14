@@ -5,7 +5,6 @@ import (
 	"github.com/zgwit/iot-master/internal/broker"
 	"github.com/zgwit/iot-master/internal/db"
 	"github.com/zgwit/iot-master/pkg/log"
-	"github.com/zgwit/iot-master/web"
 	"gopkg.in/yaml.v3"
 	"os"
 )
@@ -15,7 +14,7 @@ type Configure struct {
 	Node            string         `yaml:"node" json:"node"`
 	Data            string         `yaml:"data" json:"data"`
 	DefaultPassword string         `yaml:"default_password" json:"default_password"`
-	Web             web.Options    `yaml:"web" json:"web"`
+	Web             string         `yaml:"web" json:"web"`
 	Broker          broker.Options `yaml:"broker" json:"broker"`
 	Database        db.Options     `yaml:"database" json:"database"`
 	Log             log.Options    `yaml:"log" json:"log"`
@@ -26,6 +25,7 @@ var Config = Configure{
 	Node:            "root",
 	Data:            "data",
 	DefaultPassword: "123456",
+	Web:             ":8080",
 
 	Database: db.Options{
 		Type:     "sqlite",
@@ -33,12 +33,6 @@ var Config = Configure{
 		Debug:    false,
 		LogLevel: 4,
 		Sync:     true,
-	},
-
-	Web: web.Options{
-		Addr:     ":8080",
-		Debug:    true,
-		Compress: true,
 	},
 
 	Broker: broker.Options{

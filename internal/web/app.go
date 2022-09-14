@@ -7,8 +7,8 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/memstore"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/internal/web/api"
 	"github.com/zgwit/iot-master/pkg/log"
-	"github.com/zgwit/iot-master/web/api"
 	"mime"
 	"net/http"
 	"path"
@@ -28,35 +28,26 @@ var wwwFiles embed.FS
 
 var server *http.Server
 
-func Serve(cfg *Options) {
-	if !cfg.Debug {
-		gin.SetMode(gin.ReleaseMode)
-	}
+func Serve(addr string) {
+	gin.SetMode(gin.ReleaseMode)
 
 	//GIN初始化
 	//app := gin.Default()
 	app := gin.New()
 	app.Use(gin.Recovery())
 
-	if cfg.Debug {
-		app.Use(gin.Logger())
-	}
+	//if cfg.Debug {
+	app.Use(gin.Logger())
 
 	//启用session
 	app.Use(sessions.Sessions("iot-master", memstore.NewStore([]byte("iot-master"))))
 
 	//开启压缩
-	if cfg.Compress {
-		app.Use(gzip.Gzip(gzip.DefaultCompression)) //gzip.WithExcludedPathsRegexs([]string{".*"})
-	}
+	//if cfg.Compress {
+	app.Use(gzip.Gzip(gzip.DefaultCompression)) //gzip.WithExcludedPathsRegexs([]string{".*"})
 
 	//注册前端接口
 	api.RegisterRoutes(app.Group("/api"))
-
-	//附件
-	registerAttachment("product", app.Group("/product"))
-	registerAttachment("project", app.Group("/project"))
-	registerAttachment("plugin", app.Group("/plugin"))
 
 	//前端静态文件
 	//app.StaticFS("/www", http.FS(wwwFiles))
@@ -99,9 +90,9 @@ func Serve(cfg *Options) {
 	//	log.Fatal("HTTP 服务启动错误", err)
 	//}
 
-	log.Println("Web服务启动", cfg.Addr)
+	log.Println("Web服务启动", addr)
 	server = &http.Server{
-		Addr:    resolvePort(cfg.Addr),
+		Addr:    resolvePort(addr),
 		Handler: app,
 	}
 
