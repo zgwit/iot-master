@@ -9,7 +9,13 @@ type Plugin struct {
 	Command      string            `json:"command,omitempty"`
 	Entrypoint   string            `json:"entrypoint,omitempty"`
 	Dependencies map[string]string `json:"dependencies,omitempty"`
+	Disabled     bool              `json:"disabled"`
 	Created      time.Time         `json:"created"`
+}
+
+type PluginEx struct {
+	Plugin
+	Status map[string]interface{} `json:"status"`
 }
 
 type License struct {

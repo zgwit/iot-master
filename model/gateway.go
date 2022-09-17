@@ -9,3 +9,8 @@ type Gateway struct {
 	Version int       `json:"version"` //用于版本同步？
 	Created time.Time `json:"created" xorm:"created"`
 }
+
+type GatewayEx struct {
+	Gateway
+	Status map[string]interface{} `json:"status"`
+}

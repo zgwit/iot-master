@@ -16,3 +16,8 @@ type Device struct {
 	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created" xorm:"created"`
 }
+
+type DeviceEx struct {
+	Device
+	Status map[string]interface{} `json:"status"`
+}

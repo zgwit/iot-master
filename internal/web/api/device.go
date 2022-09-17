@@ -11,7 +11,7 @@ import (
 
 func getTunnelGateway(TunnelId string) (string, error) {
 	var tunnel model.Tunnel
-	has, err := db.Engine.Get(TunnelId, &tunnel)
+	has, err := db.Engine.ID(TunnelId).Cols("gateway_id").Get(&tunnel)
 	if err != nil {
 		return "", err
 	}
@@ -21,6 +21,7 @@ func getTunnelGateway(TunnelId string) (string, error) {
 
 	return tunnel.GatewayId, nil
 }
+
 func afterDeviceCreate(data interface{}) error {
 	device := data.(*model.Device)
 
@@ -54,8 +55,9 @@ func afterDeviceUpdate(data interface{}) error {
 }
 
 func afterDeviceDelete(id interface{}) error {
-	core.Devices.Delete(id.(string))
-	return nil
+	did := id.(string)
+	core.Devices.Delete(did)
+	return core.Publish("/device/"+did+"/command/delete", []byte(""))
 }
 
 func deviceValues(ctx *gin.Context) {

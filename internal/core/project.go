@@ -5,14 +5,14 @@ import "github.com/zgwit/iot-master/v2/model"
 func NewProject(id string) *Project {
 	return &Project{
 		Id:      id,
-		Values:  make(map[string]any),
+		Values:  make(model.Values),
 		Devices: make(map[string]*Device),
 	}
 }
 
 type Project struct {
 	Id      string
-	Values  map[string]any
+	Values  model.Values
 	Status  model.Status
 	Devices map[string]*Device
 }

@@ -8,31 +8,27 @@ import (
 func NewDevice(id string) *Device {
 	return &Device{
 		Id:     id,
-		Values: make(map[string]any),
+		Values: make(model.Values),
+		Status: make(model.Status),
 	}
 }
 
 type Device struct {
 	Id     string
-	Values map[string]any
+	Values model.Values
 	Status model.Status
 }
 
 func (d *Device) Assign(points map[string]any) error {
-	data, _ := json.Marshal(points)
-	err := Publish("/device/"+d.Id+"/command/assign", data)
+	data, err := json.Marshal(points)
 	if err != nil {
 		return err
 	}
-	return nil
+	return Publish("/device/"+d.Id+"/command/assign", data)
 }
 
 func (d *Device) Refresh() error {
-	err := Publish("/device/"+d.Id+"/command/refresh", []byte(""))
-	if err != nil {
-		return err
-	}
-	return nil
+	return Publish("/device/"+d.Id+"/command/refresh", []byte(""))
 }
 
 //func (d *Device) Status() error {

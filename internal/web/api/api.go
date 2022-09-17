@@ -108,7 +108,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		"hmi", "tags", "points", "pollers", "calculators", "validators", "commands",
 		"context", "disabled",
 	))
-	app.GET("/device/:id/delete", parseParamId, createCurdApiDelete[model.Device](nil, afterDeviceDelete))
+	app.GET("/device/:id/delete", parseParamId, createCurdApiDelete[model.Device](afterDeviceDelete, nil))
 
 	app.GET("/device/:id/values", parseParamId, deviceValues)
 	app.POST("/device/:id/assign", parseParamId, deviceAssign)
@@ -141,7 +141,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/tunnel/list", createCurdApiList[model.Tunnel]())
 	app.POST("/tunnel/create", createCurdApiCreate[model.Tunnel](nil, afterTunnelCreate))
 	app.GET("/tunnel/:id", parseParamId, createCurdApiGet[model.Tunnel]())
-	app.POST("/tunnel/:id", parseParamId, createCurdApiModify[model.Tunnel](nil, nil,
+	app.POST("/tunnel/:id", parseParamId, createCurdApiModify[model.Tunnel](nil, afterTunnelUpdate,
 		"name", "type", "addr", "retry", "heartbeat", "serial", "protocol", "disabled"))
 	app.GET("/tunnel/:id/delete", parseParamId, createCurdApiDelete[model.Tunnel](nil, afterTunnelDelete))
 
