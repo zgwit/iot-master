@@ -53,7 +53,6 @@ func login(ctx *gin.Context) {
 			replyFail(ctx, "找不到用户")
 			return
 		}
-
 	}
 
 	if user.Disabled {

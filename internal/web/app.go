@@ -5,7 +5,7 @@ import (
 	"embed"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/memstore"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v2/internal/web/api"
 	"github.com/zgwit/iot-master/v2/pkg/log"
@@ -40,7 +40,7 @@ func Serve(addr string) {
 	app.Use(gin.Logger())
 
 	//启用session
-	app.Use(sessions.Sessions("iot-master", memstore.NewStore([]byte("iot-master"))))
+	app.Use(sessions.Sessions("iot-master", cookie.NewStore([]byte("iot-master"))))
 
 	//开启压缩
 	//if cfg.Compress {
