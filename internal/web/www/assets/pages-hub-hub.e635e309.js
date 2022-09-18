@@ -1,0 +1,1 @@
+import{o as a,c as e,w as r,b as s,e as t}from"./index.945c150b.js";import{_ as o}from"./plugin-vue_export-helper.21dcd24c.js";var n=o({data:()=>({})},[["render",function(o,n,d,u,c,l){const p=t;return a(),e(p,null,{default:r((()=>[s(" 在线资源库：产品，插件，模板， ")])),_:1})}]]);export{n as default};
