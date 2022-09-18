@@ -21,6 +21,7 @@ type Tunnel struct {
 	Retry     Retry         `json:"retry"` //重试
 	Serial    SerialOptions `json:"serial"`
 	Protocol  Protocol      `json:"protocol"`
+	Interval  int64         `json:"interval"` //轮询间隔
 	//Devices   []DefaultDevice  `json:"devices"` //默认设备
 
 	Disabled bool      `json:"disabled"`

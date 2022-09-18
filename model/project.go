@@ -6,8 +6,9 @@ import (
 
 // Project 项目
 type Project struct {
-	Id   string `json:"id" xorm:"pk"`
-	Name string `json:"name"`
+	Id          string `json:"id" xorm:"pk"`
+	Name        string `json:"name"`
+	InterfaceId string `json:"interface_id"`
 
 	Devices []*ProjectDevice `json:"devices"`
 
