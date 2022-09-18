@@ -8,7 +8,7 @@ type Product struct {
 	Name         string   `json:"name"`
 	Manufacturer string   `json:"manufacturer"` //厂家
 	Version      string   `json:"version"`      //SEMVER
-	Protocol     Protocol `json:"protocol"`
+	Protocol     Protocol `json:"protocol" xorm:"JSON"`
 
 	Points  []*Point  `json:"points"`
 	Pollers []*Poller `json:"pollers"`

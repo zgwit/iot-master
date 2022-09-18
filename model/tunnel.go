@@ -18,9 +18,9 @@ type Tunnel struct {
 	Type      string        `json:"type"` //serial tcp-client tcp-server udp-client udp-server server-tcp server-udp
 	Addr      string        `json:"addr"`
 	Remote    string        `json:"remote"`
-	Retry     Retry         `json:"retry"` //重试
-	Serial    SerialOptions `json:"serial"`
-	Protocol  Protocol      `json:"protocol"`
+	Retry     Retry         `json:"retry" xorm:"JSON"` //重试
+	Serial    SerialOptions `json:"serial" xorm:"JSON"`
+	Protocol  Protocol      `json:"protocol" xorm:"JSON"`
 	Interval  int64         `json:"interval"` //轮询间隔
 	//Devices   []DefaultDevice  `json:"devices"` //默认设备
 

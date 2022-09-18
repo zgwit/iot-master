@@ -47,6 +47,6 @@ func Sync() error {
 		new(model.User), new(model.Password),
 		new(model.Tunnel), new(model.Server), new(model.Gateway),
 		new(model.Device), new(model.Product), new(model.Project),
-		new(model.Plugin),
+		new(model.Plugin), new(model.Interface),
 	)
 }

@@ -163,6 +163,15 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		"name"))
 	app.GET("/interface/:id/delete", parseParamStringId, createCurdApiDelete[model.Interface](nil, nil))
 
+	//插件接口
+	app.POST("/plugin/search", createCurdApiSearch[model.Plugin]())
+	app.GET("/plugin/list", createCurdApiList[model.Plugin]())
+	app.POST("/plugin/create", createCurdApiCreate[model.Plugin](generateUUID, nil))
+	app.GET("/plugin/:id", parseParamStringId, createCurdApiGet[model.Plugin]())
+	app.POST("/plugin/:id", parseParamStringId, createCurdApiModify[model.Plugin](nil, nil,
+		"name"))
+	app.GET("/plugin/:id/delete", parseParamStringId, createCurdApiDelete[model.Plugin](nil, nil))
+
 	//系统接口
 	app.GET("/system/cpu-info", cpuInfo)
 	app.GET("/system/cpu", cpuStats)

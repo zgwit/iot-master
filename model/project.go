@@ -10,7 +10,7 @@ type Project struct {
 	Name        string `json:"name"`
 	InterfaceId string `json:"interface_id"`
 
-	Devices []*ProjectDevice `json:"devices"`
+	Devices []*ProjectDevice `json:"devices" xorm:"JSON"`
 
 	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created" xorm:"created"`
