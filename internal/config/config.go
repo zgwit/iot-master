@@ -11,7 +11,6 @@ import (
 
 // Configure 配置
 type Configure struct {
-	Node            string         `yaml:"node" json:"node"`
 	Data            string         `yaml:"data" json:"data"`
 	DefaultPassword string         `yaml:"default_password" json:"default_password"`
 	Web             string         `yaml:"web" json:"web"`
@@ -22,7 +21,6 @@ type Configure struct {
 
 // Config 全局配置
 var Config = Configure{
-	Node:            "root",
 	Data:            "data",
 	DefaultPassword: "123456",
 	Web:             ":8080",
@@ -44,10 +42,6 @@ var Config = Configure{
 		Caller: true,
 		Text:   false,
 	},
-}
-
-func init() {
-	Config.Node, _ = os.Hostname()
 }
 
 // Load 加载
