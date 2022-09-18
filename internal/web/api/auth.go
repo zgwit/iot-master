@@ -5,15 +5,7 @@ import (
 	"github.com/zgwit/iot-master/v2/internal/config"
 	"github.com/zgwit/iot-master/v2/internal/db"
 	"github.com/zgwit/iot-master/v2/model"
-	"github.com/zgwit/iot-master/v2/pkg/lib"
 )
-
-var tokens = lib.ExpireCache{Timeout: 60 * 60 * 2} //2h 可以改成配置
-
-type authObj struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
 
 func auth(ctx *gin.Context) {
 	username := ctx.Query("username")
@@ -58,10 +50,12 @@ func auth(ctx *gin.Context) {
 	}
 
 	//生成Token
-	token := lib.RandomString(12)
+	token, err := jwtGenerate(user.Id)
+	if err != nil {
+		return
+	}
 
-	//保存用户
-	tokens.Store(token, &user)
-
-	replyOk(ctx, token)
+	replyOk(ctx, gin.H{
+		token: token,
+	})
 }

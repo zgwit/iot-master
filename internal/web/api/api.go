@@ -29,17 +29,23 @@ func catchError(ctx *gin.Context) {
 }
 
 func mustLogin(ctx *gin.Context) {
-	//检查Token
-	token, has := ctx.GetQuery("token")
-	if has {
-		user, ok := tokens.Load(token)
-		if ok {
-			ctx.Set("user", user)
-			ctx.Next()
-		} else {
+	token := ctx.Request.URL.Query().Get("token")
+	if token == "" {
+		token = ctx.Request.Header.Get("Authorization")
+		if token != "" {
+			//此处需要去掉 Bearer
+			token = token[7:]
+		}
+	}
+
+	if token != "" {
+		claims, err := jwtVerify(token)
+		if err != nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"ok": false, "error": "Unauthorized"})
 			ctx.Abort()
 		}
+		ctx.Set("user", claims.Id) //与session统一
+		ctx.Next()
 		return
 	}
 

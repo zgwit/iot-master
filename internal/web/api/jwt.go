@@ -1,26 +1,26 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"time"
 )
 
 type Claims struct {
-	Id int `json:"id"`
+	Id int64 `json:"id"`
 	jwt.RegisteredClaims
 }
 
 const key = "iot-master"
 
-func generate() (string, error) {
+func jwtGenerate(id int64) (string, error) {
 	var claims Claims
-	claims.ExpiresAt = jwt.NewNumericDate(time.Now())
+	claims.Id = id
+	claims.ExpiresAt = jwt.NewNumericDate(time.Now().AddDate(0, 1, 0))
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(key)
 }
 
-func verify(str string) (*Claims, error) {
+func jwtVerify(str string) (*Claims, error) {
 	var claims Claims
 	token, err := jwt.ParseWithClaims(str, &claims, func(token *jwt.Token) (interface{}, error) {
 		return key, nil
@@ -30,15 +30,4 @@ func verify(str string) (*Claims, error) {
 	} else {
 		return nil, err
 	}
-}
-
-func jwtMiddleware(c *gin.Context) {
-	token := c.Request.Header.Get("Authorization")
-	token = c.Request.URL.Query().Get("token")
-	claims, err := verify(token)
-	if err != nil {
-		c.Abort()
-	}
-	c.Set("claims", claims)
-	c.Next()
 }
