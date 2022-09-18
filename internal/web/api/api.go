@@ -151,7 +151,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/tunnel/create", createCurdApiCreate[model.Tunnel](generateUUID, afterTunnelCreate))
 	app.GET("/tunnel/:id", parseParamStringId, createCurdApiGet[model.Tunnel]())
 	app.POST("/tunnel/:id", parseParamStringId, createCurdApiModify[model.Tunnel](nil, afterTunnelUpdate,
-		"name", "type", "addr", "retry", "heartbeat", "serial", "protocol", "disabled"))
+		"name", "type", "addr", "retry", "serial", "protocol", "disabled"))
 	app.GET("/tunnel/:id/delete", parseParamStringId, createCurdApiDelete[model.Tunnel](nil, afterTunnelDelete))
 
 	//界面接口

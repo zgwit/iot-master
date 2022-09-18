@@ -11,7 +11,7 @@ type Protocol struct {
 
 // Tunnel 通道模型
 type Tunnel struct {
-	Id        string        `json:"id"`
+	Id        string        `json:"id" xorm:"pk"`
 	GatewayId string        `json:"gateway_id"`
 	ServerId  string        `json:"server_id" boltholdIndex:"ServerId"`
 	Name      string        `json:"name"`
