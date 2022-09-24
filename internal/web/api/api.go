@@ -41,7 +41,7 @@ func mustLogin(ctx *gin.Context) {
 	if token != "" {
 		claims, err := jwtVerify(token)
 		if err != nil {
-			ctx.JSON(http.StatusUnauthorized, gin.H{"ok": false, "error": "Unauthorized"})
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 			ctx.Abort()
 		}
 		ctx.Set("user", claims.Id) //与session统一
@@ -55,7 +55,7 @@ func mustLogin(ctx *gin.Context) {
 		ctx.Set("user", user)
 		ctx.Next()
 	} else {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"ok": false, "error": "Unauthorized"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		ctx.Abort()
 	}
 }
@@ -135,6 +135,10 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		"name", "type", "version"))
 	app.GET("/gateway/:id/delete", parseParamStringId, createCurdApiDelete[model.Gateway](nil, nil))
 
+	//网关的通道和服务
+	app.GET("/gateway/:id/list/tunnel", parseParamStringId, createCurdApiListWithId[model.Tunnel]("gateway_id"))
+	app.GET("/gateway/:id/list/server", parseParamStringId, createCurdApiListWithId[model.Server]("gateway_id"))
+
 	//服务器接口
 	app.POST("/server/search", createCurdApiSearch[model.Server]())
 	app.GET("/server/list", createCurdApiList[model.Server]())
@@ -145,6 +149,9 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		"retry", "register", "heartbeat", "protocol", "devices", "disabled"))
 	app.GET("/server/:id/delete", parseParamStringId, createCurdApiDelete[model.Server](nil, afterServerDelete))
 
+	//服务的通道
+	app.GET("/server/:id/list/tunnel", parseParamStringId, createCurdApiListWithId[model.Tunnel]("server_id"))
+
 	//通道接口
 	app.POST("/tunnel/search", createCurdApiSearch[model.Tunnel]())
 	app.GET("/tunnel/list", createCurdApiList[model.Tunnel]())
@@ -153,6 +160,9 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/tunnel/:id", parseParamStringId, createCurdApiModify[model.Tunnel](nil, afterTunnelUpdate,
 		"name", "type", "addr", "retry", "serial", "protocol", "disabled"))
 	app.GET("/tunnel/:id/delete", parseParamStringId, createCurdApiDelete[model.Tunnel](nil, afterTunnelDelete))
+
+	//通道的设备
+	app.GET("/tunnel/:id/list/device", parseParamStringId, createCurdApiListWithId[model.Device]("tunnel_id"))
 
 	//界面接口
 	app.POST("/interface/search", createCurdApiSearch[model.Interface]())

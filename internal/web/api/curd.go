@@ -48,6 +48,36 @@ func createCurdApiSearch[T any](fields ...string) gin.HandlerFunc {
 	}
 }
 
+func createCurdApiListWithId[T any](field string, fields ...string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var body paramList
+		err := ctx.ShouldBindQuery(&body)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+
+		query := body.toQuery()
+		if len(fields) > 0 {
+			query.Cols(fields...)
+		}
+
+		//添加条件
+		id := ctx.MustGet("id")
+		query.Where(field+"=?", id)
+
+		var datum []T
+		cnt, err := query.FindAndCount(&datum)
+		if err != nil {
+			replyError(ctx, err)
+			return
+		}
+
+		//replyOk(ctx, cs)
+		replyList(ctx, datum, cnt)
+	}
+}
+
 func createCurdApiList[T any](fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var body paramList
