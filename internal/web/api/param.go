@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v2/internal/db"
 	"reflect"
+	"xorm.io/builder"
 	"xorm.io/xorm"
 )
 
@@ -38,9 +39,17 @@ func (body *paramSearchEx) toQuery() *xorm.Session {
 		}
 	}
 
-	for k, v := range body.Keywords {
-		if v != "" {
-			op.And(k+" like ?", "%"+v+"%")
+	//builder.Or(builder.Like{})
+	if len(body.Keywords) > 0 {
+		likes := make([]builder.Cond, 0)
+		for k, v := range body.Keywords {
+			if v != "" {
+				//op.And(k+" like ?", "%"+v+"%")
+				likes = append(likes, &builder.Like{k, v})
+			}
+		}
+		if len(likes) > 0 {
+			op.And(builder.Or(likes...))
 		}
 	}
 
