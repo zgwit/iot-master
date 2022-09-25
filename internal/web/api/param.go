@@ -40,7 +40,7 @@ func (body *paramSearchEx) toQuery() *xorm.Session {
 
 	for k, v := range body.Keywords {
 		if v != "" {
-			op.And(k+" like", "%"+v+"%")
+			op.And(k+" like ?", "%"+v+"%")
 		}
 	}
 
