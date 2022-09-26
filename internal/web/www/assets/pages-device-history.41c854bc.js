@@ -1,1 +1,0 @@
-import{o as a,c as e,w as r,b as s,d as t}from"./index.9b1e08a7.js";import{_ as o}from"./plugin-vue_export-helper.21dcd24c.js";var d=o({data:()=>({})},[["render",function(o,d,n,u,l,p){const c=t;return a(),e(c,null,{default:r((()=>[s(" TODO：历史曲线 ")])),_:1})}]]);export{d as default};

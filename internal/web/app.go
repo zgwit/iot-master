@@ -23,7 +23,7 @@ func init() {
 	}
 }
 
-//go:embed www
+//go:embed all:www
 var wwwFiles embed.FS
 
 var server *http.Server
@@ -57,7 +57,13 @@ func Serve(addr string) {
 
 		if c.Request.Method == http.MethodGet {
 			//支持前端框架的无“#”路由
-			fn := path.Join("www", c.Request.RequestURI)
+			fn := path.Join("www", c.Request.URL.Path) //删除查询参数
+			//i := strings.IndexByte(c.Request.RequestURI, '?')
+			//if i > -1 {
+			//	c.Request.URL.Path
+			//
+			//	fn = fn[:i]
+			//}
 			f, err := wwwFS.Open(fn)
 			if err == nil {
 				defer f.Close()
