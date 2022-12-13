@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\.js]
+"Content Type"="text/javascript"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Classes\.js]
+"Content Type"="text/javascript"
