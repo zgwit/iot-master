@@ -1,6 +1,6 @@
 # 物联大师
 
-**注意，[V2.0]版本与[V2.0](https://github.com/zgwit/iot-master/tree/v1)和[V1.0](https://github.com/zgwit/iot-master/tree/v1)有较大差异，不可以直接升级！！！**
+**注意，[V3.0]版本与[V2.0](https://github.com/zgwit/iot-master/tree/v1)和[V1.0](https://github.com/zgwit/iot-master/tree/v1)有较大差异，不可以直接升级！！！**
 
 ### [说明文档](https://iot-master.com/manual)  [演示demo](http://demo.iot-master.com:8080/) 账号密码 admin 123456
 
@@ -11,13 +11,15 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
 
 物联大师是[无锡真格智能科技有限公司](https://labs.zgwit.com)
-推出的开源且免费的物联网智能网关系统，集成了标准Modbus和一些主流PLC协议，支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控、远程调试等功能，
+推出的开源且免费的物联网中台系统，内置MQTT、TCP Server/Client、UDP Server/Client、串口等接入服务，
+系统集成标准Modbus，水务（SL651、SZY206），电力（DL/T645、IEC101、102、103、104、61850）以及一些主流PLC协议，
+系统可以通过插件支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控、远程调试等功能，
 适用于大部分物联网或工业互联网应用场景。
 系统采用Golang编程实现，支持多种操作系统和CPU架构，可以运行在智能网关上，也可以安装在现场的电脑或工控机上，还能部署到云端服务器。
-系统支持可视化显示，内置组态编辑器和组件库，能够实现Web组态（SCADA），支持投放大屏。
 
 项目摒弃复杂的平台架构思维，远离微服务，从真实需求出发，注重用户体验，做到简捷而不简单，真正解决物联网缺乏灵魂的问题。
-我们的宗旨是：让物联网实施变成一件简单的事情!!!
+
+我们的宗旨是：**让物联网实施变成一件简单的事情!!!**
 
 ## 项目的优势
 
@@ -32,7 +34,7 @@
 
 ![结构图](https://iot-master.com/frame.svg)
 
-物联大师2.0拆分为边缘计算网关和主程序两部分，基于MQTT消息总线实现数据交换，通过插件机制实现系统的灵活扩展
+物联大师3.0拆分为边缘计算网关和主程序两部分，基于MQTT消息总线实现数据交换，通过插件机制实现系统的灵活扩展
 
 注：MQTT协议目前仅支持3.1.1，可以使用系统内置的开源MQTT总线[mochi-co/mqtt](https://github.com/mochi-co/mqtt)或第三方服务
 
