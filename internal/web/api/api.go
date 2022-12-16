@@ -112,18 +112,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		"name", "manufacturer", "version", "protocol", "points", "pollers", "disabled"))
 	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
 
-	//网关接口
-	app.POST("/gateway/search", createCurdApiSearch[model.Gateway]())
-	app.GET("/gateway/list", createCurdApiList[model.Gateway]())
-	app.POST("/gateway/create", createCurdApiCreate[model.Gateway](generateUUID, nil))
-	app.GET("/gateway/:id", parseParamStringId, createCurdApiGet[model.Gateway]())
-	app.POST("/gateway/:id", parseParamStringId, createCurdApiModify[model.Gateway](nil, nil, "name", "type", "version"))
-	app.GET("/gateway/:id/delete", parseParamStringId, createCurdApiDelete[model.Gateway](nil, nil))
-
-	//网关的通道和服务
-	app.GET("/gateway/:id/list/tunnel", parseParamStringId, createCurdApiListWithId[model.Tunnel]("gateway_id"))
-	app.GET("/gateway/:id/list/server", parseParamStringId, createCurdApiListWithId[model.Server]("gateway_id"))
-
 	//服务器接口
 	app.POST("/server/search", createCurdApiSearch[model.Server]())
 	app.GET("/server/list", createCurdApiList[model.Server]())
