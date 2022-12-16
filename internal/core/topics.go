@@ -9,21 +9,6 @@ import (
 )
 
 func subscribeTopics(client mqtt.Client) {
-	//网关事件
-	client.Subscribe("/gateway/+/event", 0, func(client mqtt.Client, message mqtt.Message) {
-		id := strings.Split(message.Topic(), "/")[2]
-		var event model.Event
-		_ = json.Unmarshal(message.Payload(), &event)
-		_, _ = db.Engine.InsertOne(&model.GatewayEvent{Event: event, GatewayId: id})
-	})
-
-	//网关状态
-	client.Subscribe("/gateway/+/status", 0, func(client mqtt.Client, message mqtt.Message) {
-		id := strings.Split(message.Topic(), "/")[2]
-		var status model.Status
-		_ = json.Unmarshal(message.Payload(), &status)
-		GatewayStatus.Store(id, &status)
-	})
 
 	//通道事件
 	client.Subscribe("/tunnel/+/event", 0, func(client mqtt.Client, message mqtt.Message) {
