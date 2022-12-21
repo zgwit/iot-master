@@ -1,6 +1,7 @@
 # 物联大师
 
-**注意，[V3.0]版本与[V2.0](https://github.com/zgwit/iot-master/tree/v1)和[V1.0](https://github.com/zgwit/iot-master/tree/v1)有较大差异，不可以直接升级！！！**
+**注意，[V3.0]版本与[V2.0](https://github.com/zgwit/iot-master/tree/v1)
+和[V1.0](https://github.com/zgwit/iot-master/tree/v1)有较大差异，不可以直接升级！！！**
 
 ### [说明文档](https://iot-master.com/manual)  [演示demo](http://demo.iot-master.com:8080/) 账号密码 admin 123456
 
@@ -33,21 +34,18 @@
 ## 项目架构图
 
 ![结构图](https://iot-master.com/frame.svg)
+【图待更新】
 
-物联大师3.0拆分为边缘计算网关和主程序两部分，基于MQTT消息总线实现数据交换，通过插件机制实现系统的灵活扩展
-
-注：MQTT协议目前仅支持3.1.1，可以使用系统内置的开源MQTT总线[mochi-co/mqtt](https://github.com/mochi-co/mqtt)或第三方服务
+物联大师3.0采用模块化设计，基于MQTT消息总线实现数据交换，通过插件机制实现系统的灵活扩展
 
 ## 项目前端
 
 ### [H5&APP版](https://github.com/zgwit/iot-master-uniapp)，基于uniapp框架
 
-|    |    |
-|----|----|
-|![app](https://iot-master.com/app1.png)|![app](https://iot-master.com/app2.png)|
-|![app](https://iot-master.com/app3.png)|![app](https://iot-master.com/app4.png)|
-
-
+|                                         |                                         |
+|-----------------------------------------|-----------------------------------------|
+| ![app](https://iot-master.com/app1.png) | ![app](https://iot-master.com/app2.png) |
+| ![app](https://iot-master.com/app3.png) | ![app](https://iot-master.com/app4.png) |
 
 ### [PC版](https://github.com/zgwit/iot-master-ui)，基于NG-ZORRO框架
 
@@ -78,9 +76,43 @@
 |-----------------------------------------|----------------------------------------|
 | ![微信群](https://iot-master.com/tech.png) | ![微信群](https://iot-master.com/vip.png) |
 
-
 ## 开源协议
 
-[GPL](https://github.com/zgwit/iot-master/blob/main/LICENSE)
+[GPL v3](https://github.com/zgwit/iot-master/blob/main/LICENSE)
 
 补充：任何组织或个人都可以免费使用或做二次开发，但不得用于商业售卖，如有需求请联系我们。
+
+
+### 官方插件
+
+| 插件                                                                        | 完成  | 测试  |
+|---------------------------------------------------------------------------|-----|-----|
+| ==通讯服务==                                                                  |     |     |
+| [MQTT Broker](https://github.com/go-well/mqtt-broker)，支持MQTT 3.1.1和MQTT 5 | ✅   | ⬜   |
+| [TCP Server](https://github.com/go-well/tcp-server)，支持注册包和心跳包             | ⬜   | ⬜   |
+| [TCP Client](https://github.com/go-well/tcp-client)                       | ⬜   | ⬜   |
+| [UDP Server](https://github.com/go-well/udp-server)，支持注册包前缀               | ⬜   | ⬜   |
+| [UDP Client](https://github.com/go-well/udp-client)                       | ⬜   | ⬜   |
+| [Serial Port](https://github.com/go-well/serial-port)                     | ⬜   | ⬜   |
+| Coap Server                                                               | ⬜   | ⬜   |
+| ==协议解析==                                                                  |     |     |
+| JSON Parser，支持阿里云，京东云等多个物联网平台格式                                           | ⬜   | ⬜   |
+| Modbus RTU                                                                | ⬜   | ⬜   |
+| Modbus TCP，支持并发读                                                          | ⬜   | ⬜   |
+| DLT645-2007，电力规约                                                          | ⬜   | ⬜   |
+| 西门子PLC，S7系统，PPI，MPI，FetchWrite                                            | ⬜   | ⬜   |
+| 三菱PLC                                                                     | ⬜   | ⬜   |
+| 欧姆龙PLC，Hostlink，Fins                                                      | ⬜   | ⬜   |
+| ==数据存储==                                                                  |     |     |
+| Influx1                                                                   | ⬜   | ⬜   |
+| Influx2                                                                   | ⬜   | ⬜   |
+| TDEngine                                                                  | ⬜   | ⬜   |
+| OpenTSDB                                                                  | ⬜   | ⬜   |
+| ==数据处理==                                                                  |     |     |
+| 流式计算                                                                      | ⬜   | ⬜   |
+| 异常报警，向MQTT总线发送报警，支持短信、语音、微信、Webhook等                                      | ⬜   | ⬜   |
+| 报表引擎                                                                      | ⬜   | ⬜   |
+| ==基础应用==                                                                  |     |     |
+| Web组态                                                                     | ⬜   | ⬜   |
+| 3D数据孪生                                                                    | ⬜   | ⬜   |
+
