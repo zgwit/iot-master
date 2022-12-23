@@ -33,8 +33,7 @@
 
 ## 项目架构图
 
-![结构图](https://iot-master.com/frame.svg)
-【图待更新】
+![结构图](https://iot-master.com/frame.jpg)
 
 物联大师3.0采用模块化设计，基于MQTT消息总线实现数据交换，通过插件机制实现系统的灵活扩展
 
