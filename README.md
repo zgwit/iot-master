@@ -39,14 +39,18 @@
 
 ## 项目前端
 
-### H5&APP版[源码](https://github.com/zgwit/iot-master-uniapp)，基于uniapp框架
+### H5&APP版，基于uniapp框架
+
+[github.com/zgwit/iot-master-uniapp](https://github.com/zgwit/iot-master-uniapp)
 
 |                                         |                                         |
 |-----------------------------------------|-----------------------------------------|
 | ![app](https://iot-master.com/app1.png) | ![app](https://iot-master.com/app2.png) |
 | ![app](https://iot-master.com/app3.png) | ![app](https://iot-master.com/app4.png) |
 
-### PC版[源码](https://github.com/zgwit/iot-master-ui)，基于NG-ZORRO框架
+### PC版，基于NG-ZORRO框架
+
+[github.com/zgwit/iot-master-ui](https://github.com/zgwit/iot-master-ui)
 
 ![web](https://iot-master.com/web1.jpg)
 ![scada](https://iot-master.com/hmi-editor.png)
