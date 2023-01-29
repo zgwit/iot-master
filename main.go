@@ -141,14 +141,14 @@ func originMain() {
 	//defer core.Stop()
 
 	//MQTT总线
-	err = core.Open(config.Config.Broker)
+	err = core.Open()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer core.Close()
 
 	//判断是否开启Web
-	web.Serve(config.Config.Web)
+	web.Serve(fmt.Sprintf(":%d", config.Config.Web))
 }
 
 func shutdown() error {

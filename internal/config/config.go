@@ -2,7 +2,6 @@ package config
 
 import (
 	"github.com/zgwit/iot-master/v3/internal/args"
-	"github.com/zgwit/iot-master/v3/internal/broker"
 	"github.com/zgwit/iot-master/v3/internal/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"gopkg.in/yaml.v3"
@@ -11,30 +10,23 @@ import (
 
 // Configure 配置
 type Configure struct {
-	Data            string         `yaml:"data" json:"data"`
-	DefaultPassword string         `yaml:"default_password" json:"default_password"`
-	Web             string         `yaml:"web" json:"web"`
-	Broker          broker.Options `yaml:"broker" json:"broker"`
-	Database        db.Options     `yaml:"database" json:"database"`
-	Log             log.Options    `yaml:"log" json:"log"`
+	Data     string      `yaml:"data" json:"data"`
+	Web      uint16      `yaml:"web" json:"web"`
+	Database db.Options  `yaml:"database" json:"database"`
+	Log      log.Options `yaml:"log" json:"log"`
 }
 
 // Config 全局配置
 var Config = Configure{
-	Data:            "data",
-	DefaultPassword: "123456",
-	Web:             ":8080",
+	Data: "data",
+	Web:  8888,
 
 	Database: db.Options{
-		Type:     "sqlite3",
-		URL:      "sqlite3.db",
+		Type:     "mysql",
+		URL:      "root:123456@localhost:3306/master?charset=utf8",
 		Debug:    false,
 		LogLevel: 4,
 		Sync:     true,
-	},
-
-	Broker: broker.Options{
-		Url: "internal",
 	},
 
 	Log: log.Options{
