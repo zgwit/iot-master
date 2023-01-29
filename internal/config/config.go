@@ -26,7 +26,7 @@ var Config = Configure{
 	Web:             ":8080",
 
 	Database: db.Options{
-		Type:     "sqlite",
+		Type:     "sqlite3",
 		URL:      "sqlite3.db",
 		Debug:    false,
 		LogLevel: 4,
@@ -40,7 +40,7 @@ var Config = Configure{
 	Log: log.Options{
 		Level:  "trace",
 		Caller: true,
-		Text:   false,
+		Text:   true,
 	},
 }
 

@@ -6,8 +6,8 @@ import (
 	"xorm.io/xorm/log"
 
 	//加载数据库驱动
-	//_ "github.com/mattn/go-sqlite3" //CGO版本
-	_ "github.com/glebarez/go-sqlite" //纯Go版本 使用ccgo翻译的，暂未发现问题
+	_ "github.com/mattn/go-sqlite3" //CGO版本
+	//_ "github.com/glebarez/go-sqlite" //纯Go版本 使用ccgo翻译的，暂未发现问题
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 )
@@ -45,7 +45,7 @@ func Close() error {
 func Sync() error {
 	return Engine.Sync2(
 		new(model.User), new(model.Password),
-		new(model.Tunnel), new(model.Server),
+		new(model.Tunnel), new(model.Entrypoint),
 		new(model.Device), new(model.Product),
 		new(model.Plugin), new(model.Interface),
 	)

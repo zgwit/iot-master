@@ -9,4 +9,4 @@ var ServerStatus Map[model.Status] //status
 
 var Devices Map[Device]
 
-var Services Map[model.Service]
+var Services Map[model.Function]
