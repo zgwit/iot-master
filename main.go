@@ -28,7 +28,7 @@ const banner = `
 var serviceConfig = &service.Config{
 	Name:        "iot-master",
 	DisplayName: "物联大师",
-	Description: "物联网设备自动控制系统",
+	Description: "物联网数据中台",
 	Arguments:   nil,
 }
 

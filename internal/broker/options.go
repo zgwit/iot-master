@@ -7,3 +7,5 @@ type Options struct {
 	Username string `yaml:"username" json:"username,omitempty"`
 	Password string `yaml:"password" json:"password,omitempty"`
 }
+
+type
