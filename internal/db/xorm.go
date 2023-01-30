@@ -7,7 +7,7 @@ import (
 
 	//加载数据库驱动
 	//_ "github.com/mattn/go-sqlite3" //CGO版本
-	//_ "github.com/glebarez/go-sqlite" //纯Go版本 使用ccgo翻译的，有文件锁问题
+	//_ "github.com/glebarez/go-sqlite" //纯Go版本 使用ccgo翻译的，偶有文件锁问题
 	_ "github.com/go-sql-driver/mysql"
 	//_ "github.com/lib/pq" //PostgreSQL
 	//_ "github.com/mattn/go-oci8" //Oracle
