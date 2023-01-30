@@ -3,10 +3,10 @@ package model
 import "time"
 
 type Gateway struct {
-	Id       string    `json:"id" xorm:"pk"`
+	Id       int64     `json:"id" xorm:"pk"`
 	Name     string    `json:"name"`
 	Desc     string    `json:"desc"`
-	Client   string    `json:"client,omitempty"` //ClientID 是否与ID重复？
+	ClientId string    `json:"client_id,omitempty"` //ClientID
 	Username string    `json:"username"`
 	Password string    `json:"password"`
 	Disabled bool      `json:"disabled"`

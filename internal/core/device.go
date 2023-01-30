@@ -2,21 +2,18 @@ package core
 
 import (
 	"encoding/json"
-	"github.com/zgwit/iot-master/v3/model"
 )
 
 func NewDevice(id string) *Device {
 	return &Device{
-		Id:     id,
-		Values: make(model.Values),
-		Status: make(model.Status),
+		Id: id,
 	}
 }
 
 type Device struct {
 	Id     string
-	Values model.Values
-	Status model.Status
+	Values map[string]any
+	Status map[string]any
 }
 
 func (d *Device) Assign(points map[string]any) error {

@@ -11,7 +11,7 @@ import (
 )
 
 func ServiceProxy(ctx *gin.Context) {
-	svc := core.Services.Load(ctx.Param("name"))
+	svc := core.Servers.Load(ctx.Param("name"))
 	if svc == nil {
 		replyFail(ctx, "服务未注册")
 		return
