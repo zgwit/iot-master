@@ -7,7 +7,7 @@ import (
 )
 
 func afterServerCreate(data interface{}) error {
-	server := data.(*model.Entrypoint)
+	server := data.(*model.Server)
 
 	payload, err := json.Marshal(server)
 	if err != nil {
@@ -17,7 +17,7 @@ func afterServerCreate(data interface{}) error {
 }
 
 func afterServerUpdate(data interface{}) error {
-	server := data.(*model.Entrypoint)
+	server := data.(*model.Server)
 	payload, err := json.Marshal(server)
 	if err != nil {
 		return err

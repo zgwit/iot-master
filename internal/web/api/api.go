@@ -113,12 +113,12 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
 
 	//服务器接口
-	app.POST("/server/search", createCurdApiSearch[model.Entrypoint]())
-	app.GET("/server/list", createCurdApiList[model.Entrypoint]())
-	app.POST("/server/create", createCurdApiCreate[model.Entrypoint](generateUUID, afterServerCreate))
-	app.GET("/server/:id", parseParamStringId, createCurdApiGet[model.Entrypoint]())
-	app.POST("/server/:id", parseParamStringId, createCurdApiModify[model.Entrypoint](nil, afterServerUpdate, "name", "type", "addr", "retry", "register", "heartbeat", "protocol", "devices", "disabled"))
-	app.GET("/server/:id/delete", parseParamStringId, createCurdApiDelete[model.Entrypoint](nil, afterServerDelete))
+	app.POST("/server/search", createCurdApiSearch[model.Server]())
+	app.GET("/server/list", createCurdApiList[model.Server]())
+	app.POST("/server/create", createCurdApiCreate[model.Server](generateUUID, afterServerCreate))
+	app.GET("/server/:id", parseParamStringId, createCurdApiGet[model.Server]())
+	app.POST("/server/:id", parseParamStringId, createCurdApiModify[model.Server](nil, afterServerUpdate, "name", "type", "addr", "retry", "register", "heartbeat", "protocol", "devices", "disabled"))
+	app.GET("/server/:id/delete", parseParamStringId, createCurdApiDelete[model.Server](nil, afterServerDelete))
 
 	//服务的通道
 	app.GET("/server/:id/list/tunnel", parseParamStringId, createCurdApiListWithId[model.Tunnel]("server_id"))

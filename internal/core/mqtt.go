@@ -41,7 +41,7 @@ func Open() error {
 func loadListeners() error {
 	//监听服务
 	//加载数据库中 entrypoint
-	var entries []model.Entrypoint
+	var entries []model.Server
 	err := db.Engine.Find(&entries)
 	if err != nil && err != xorm.ErrNotExist {
 		return err
