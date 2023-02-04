@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/internal/config"
 	"github.com/zgwit/iot-master/v3/internal/db"
 	"github.com/zgwit/iot-master/v3/model"
 )
@@ -69,10 +68,7 @@ func login(ctx *gin.Context) {
 
 	//初始化密码
 	if !has {
-		dp := config.Config.DefaultPassword
-		if dp == "" {
-			dp = "123456"
-		}
+		dp := "123456"
 
 		password.Id = user.Id
 		password.Password = md5hash(dp)
@@ -88,7 +84,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user.Id, Event: model.Event{Type: "登录"}})
+	//_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user.Id, Event: model.Event{Type: "登录"}})
 
 	//存入session
 	session.Set("user", user.Id)
@@ -105,8 +101,8 @@ func logout(ctx *gin.Context) {
 		return
 	}
 
-	user := u.(int64)
-	_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user, Event: model.Event{Type: "退出"}})
+	//user := u.(int64)
+	//_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user, Event: model.Event{Type: "退出"}})
 
 	session.Clear()
 	_ = session.Save()

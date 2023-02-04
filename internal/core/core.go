@@ -7,3 +7,5 @@ import (
 var Devices Map[Device]
 
 var Servers Map[model.Server]
+
+var Services Map[model.Service]

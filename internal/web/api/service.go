@@ -11,7 +11,7 @@ import (
 )
 
 func ServiceProxy(ctx *gin.Context) {
-	svc := core.Servers.Load(ctx.Param("name"))
+	svc := core.Services.Load(ctx.Param("name"))
 	if svc == nil {
 		replyFail(ctx, "服务未注册")
 		return
@@ -22,12 +22,12 @@ func ServiceProxy(ctx *gin.Context) {
 	//u := ctx.Request.RequestURI[l:]
 
 	req := ctx.Request.Clone(ctx)
-	req.URL, _ = url.Parse(svc.Addr + req.RequestURI)
+	req.URL, _ = url.Parse(svc.Address + req.RequestURI)
 	req.RequestURI = ""
 
 	//req, _ := http.NewRequest(ctx.Request.Method, ctx.Request.RequestURI, ctx.Request.Body)
 	cli := http.Client{}
-	if svc.Net == "unix" {
+	if svc.Type == "unix" {
 		cli.Transport = &http.Transport{DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
 			return net.Dial(network, addr)
 		}}

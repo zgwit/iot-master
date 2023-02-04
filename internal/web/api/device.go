@@ -2,56 +2,31 @@ package api
 
 import (
 	"encoding/json"
-	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/internal/core"
-	"github.com/zgwit/iot-master/v3/internal/db"
 	"github.com/zgwit/iot-master/v3/model"
 )
-
-func getTunnelGateway(TunnelId string) (string, error) {
-	var tunnel model.Tunnel
-	has, err := db.Engine.ID(TunnelId).Cols("gateway_id").Get(&tunnel)
-	if err != nil {
-		return "", err
-	}
-	if !has {
-		return "", errors.New("找不到通道")
-	}
-
-	return tunnel.GatewayId, nil
-}
 
 func afterDeviceCreate(data interface{}) error {
 	device := data.(*model.Device)
 
 	core.Devices.Store(device.Id, core.NewDevice(device.Id))
 
-	gid, err := getTunnelGateway(device.TunnelId)
-	if err != nil {
-		return err
-	}
-
 	payload, err := json.Marshal(device)
 	if err != nil {
 		return err
 	}
-	return core.Publish("/gateway/"+gid+"/download/device", payload)
+	return core.Publish("/gateway/"+device.GatewayId+"/download/device", payload)
 }
 
 func afterDeviceUpdate(data interface{}) error {
 	device := data.(*model.Device)
 
-	gid, err := getTunnelGateway(device.TunnelId)
-	if err != nil {
-		return err
-	}
-
 	payload, err := json.Marshal(device)
 	if err != nil {
 		return err
 	}
-	return core.Publish("/gateway/"+gid+"/download/device", payload)
+	return core.Publish("/gateway/"+device.GatewayId+"/download/device", payload)
 }
 
 func afterDeviceDelete(id interface{}) error {

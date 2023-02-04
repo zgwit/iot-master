@@ -2,7 +2,6 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/internal/config"
 	"github.com/zgwit/iot-master/v3/internal/db"
 	"github.com/zgwit/iot-master/v3/model"
 )
@@ -37,10 +36,7 @@ func auth(ctx *gin.Context) {
 
 	//初始化密码
 	if !has {
-		dp := config.Config.DefaultPassword
-		if dp == "" {
-			dp = "123456"
-		}
+		dp := "123456"
 		obj.Password = md5hash(dp)
 	}
 
