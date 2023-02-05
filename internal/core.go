@@ -11,7 +11,7 @@ func Open() error {
 		return err
 	}
 
-	err = subscribeService()
+	err = subscribeMaster()
 	if err != nil {
 		return err
 	}

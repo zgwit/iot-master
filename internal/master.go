@@ -8,7 +8,7 @@ import (
 
 var Applications Map[model.App]
 
-func subscribeService() error {
+func subscribeMaster() error {
 
 	//注册应用
 	mqttClient.Subscribe("master/register", 0, func(client paho.Client, message paho.Message) {
