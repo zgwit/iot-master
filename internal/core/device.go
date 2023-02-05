@@ -4,16 +4,18 @@ import (
 	"encoding/json"
 )
 
-func NewDevice(id string) *Device {
-	return &Device{
-		Id: id,
-	}
-}
+var Devices Map[Device]
 
 type Device struct {
 	Id     string
 	Values map[string]any
 	Status map[string]any
+}
+
+func NewDevice(id string) *Device {
+	return &Device{
+		Id: id,
+	}
 }
 
 func (d *Device) Assign(points map[string]any) error {

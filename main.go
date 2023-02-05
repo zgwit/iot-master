@@ -141,7 +141,7 @@ func originMain() {
 	//defer core.Stop()
 
 	//MQTT总线
-	err = core.Open()
+	err = core.OpenMqttServer()
 	if err != nil {
 		log.Fatal(err)
 	}

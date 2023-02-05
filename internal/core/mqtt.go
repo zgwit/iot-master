@@ -15,7 +15,7 @@ import (
 
 var mqttServer *mqtt.Server
 
-func Open() error {
+func OpenMqttServer() error {
 
 	//创建内部Broker
 	mqttServer = mqtt.New(nil)
@@ -48,12 +48,21 @@ func loadListeners() error {
 	}
 
 	for _, e := range entries {
-		l := listeners.NewTCP("tcp", fmt.Sprintf(":%d", e.Port), nil)
+		id := fmt.Sprintf("tcp-%d", e.Id)
+		port := fmt.Sprintf(":%d", e.Port)
+		l := listeners.NewTCP(id, port, nil)
 		err = mqttServer.AddListener(l)
 		if err != nil {
 			//return err
 			log.Error(err)
 		}
+	}
+
+	//插件用
+	l := listeners.NewUnixSock("plugin", "iot-master.sock")
+	err = mqttServer.AddListener(l)
+	if err != nil {
+		return err
 	}
 
 	return nil
