@@ -10,7 +10,10 @@ import (
 func afterDeviceCreate(data interface{}) error {
 	device := data.(*model.Device)
 
-	core.Devices.Store(device.Id, core.NewDevice(device.Id))
+	core.Devices.Store(device.Id, &core.Device{
+		Id:         device.Id,
+		Properties: make(map[string]any),
+	})
 
 	payload, err := json.Marshal(device)
 	if err != nil {
@@ -35,48 +38,11 @@ func afterDeviceDelete(id interface{}) error {
 	return core.Publish("/device/"+did+"/command/delete", []byte(""))
 }
 
-func deviceValues(ctx *gin.Context) {
+func deviceProperties(ctx *gin.Context) {
 	device := core.Devices.Load(ctx.GetString("id"))
 	if device == nil {
 		replyFail(ctx, "找不到设备变量")
 		return
 	}
-	replyOk(ctx, device.Values)
-}
-
-func deviceAssign(ctx *gin.Context) {
-	var values map[string]interface{}
-	err := ctx.ShouldBindJSON(values)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	device := core.Devices.Load(ctx.GetString("id"))
-	if device == nil {
-		replyFail(ctx, "找不到设备")
-		return
-	}
-
-	err = device.Assign(values)
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-
-	replyOk(ctx, nil)
-}
-
-func deviceRefresh(ctx *gin.Context) {
-	device := core.Devices.Load(ctx.GetString("id"))
-	if device == nil {
-		replyFail(ctx, "找不到设备")
-		return
-	}
-	err := device.Refresh()
-	if err != nil {
-		replyError(ctx, err)
-		return
-	}
-	replyOk(ctx, nil)
+	replyOk(ctx, device.Properties)
 }

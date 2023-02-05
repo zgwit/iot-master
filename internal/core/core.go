@@ -12,6 +12,11 @@ func Open() error {
 		return err
 	}
 
+	err = subscribeService()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

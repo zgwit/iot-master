@@ -91,6 +91,17 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/user/:id/enable", parseParamId, createCurdApiDisable[model.User](false, nil, nil))
 	app.GET("/user/:id/disable", parseParamId, createCurdApiDisable[model.User](true, nil, nil))
 
+	//网关接口
+	app.POST("/gateway/search", createCurdApiSearch[model.Gateway]())
+	app.GET("/gateway/list", createCurdApiList[model.Gateway]())
+	app.POST("/gateway/create", createCurdApiCreate[model.Gateway](generateUUID, nil))
+	app.GET("/gateway/:id", parseParamStringId, createCurdApiGet[model.Gateway]())
+	app.POST("/gateway/:id", parseParamStringId, createCurdApiModify[model.Gateway](nil, nil,
+		"name", "desc", "username", "password", "client_id", "disabled"))
+	app.GET("/gateway/:id/delete", parseParamStringId, createCurdApiDelete[model.Gateway](afterDeviceDelete, nil))
+
+	app.GET("/device/:id/properties", parseParamStringId, gatewayProperties)
+
 	//设备接口
 	app.POST("/device/search", createCurdApiSearch[model.Device]())
 	app.GET("/device/list", createCurdApiList[model.Device]())
@@ -99,9 +110,9 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/device/:id", parseParamStringId, createCurdApiModify[model.Device](nil, afterDeviceUpdate, "name", "tunnel_id", "model_id", "interface_id", "station", "disabled"))
 	app.GET("/device/:id/delete", parseParamStringId, createCurdApiDelete[model.Device](afterDeviceDelete, nil))
 
-	app.GET("/device/:id/values", parseParamStringId, deviceValues)
-	app.POST("/device/:id/assign", parseParamStringId, deviceAssign)
-	app.GET("/device/:id/refresh", parseParamStringId, deviceRefresh)
+	app.GET("/device/:id/properties", parseParamStringId, deviceProperties)
+	//app.POST("/device/:id/assign", parseParamStringId, deviceAssign)
+	//app.GET("/device/:id/refresh", parseParamStringId, deviceRefresh)
 
 	//元件接口
 	app.POST("/model/search", createCurdApiSearch[model.Model]())
