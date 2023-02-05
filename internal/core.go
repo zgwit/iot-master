@@ -1,7 +1,6 @@
-package core
+package internal
 
 func Open() error {
-
 	err := openMqttServer()
 	if err != nil {
 		return err
@@ -17,6 +16,7 @@ func Open() error {
 		return err
 	}
 
+	//webServe(fmt.Sprintf(":%d", config.Config.Web))
 	return nil
 }
 
@@ -28,4 +28,5 @@ func Close() {
 		_ = mqttServer.Close()
 	}
 	//TODO clear gateways devices cache
+
 }

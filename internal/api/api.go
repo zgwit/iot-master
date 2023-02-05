@@ -133,13 +133,13 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/server/:id/delete", parseParamId, createCurdApiDelete[model.Server](nil, nil))
 
 	//服务器接口
-	app.POST("/service/search", createCurdApiSearch[model.Service]())
-	app.GET("/service/list", createCurdApiList[model.Service]())
-	app.POST("/service/create", createCurdApiCreate[model.Service](generateUUID, nil))
-	app.GET("/service/:id", parseParamStringId, createCurdApiGet[model.Service]())
-	app.POST("/service/:id", parseParamStringId, createCurdApiModify[model.Service](nil,
+	app.POST("/service/search", createCurdApiSearch[model.App]())
+	app.GET("/service/list", createCurdApiList[model.App]())
+	app.POST("/service/create", createCurdApiCreate[model.App](generateUUID, nil))
+	app.GET("/service/:id", parseParamStringId, createCurdApiGet[model.App]())
+	app.POST("/service/:id", parseParamStringId, createCurdApiModify[model.App](nil,
 		nil, "name", "type", "address", "desc", "disabled"))
-	app.GET("/service/:id/delete", parseParamStringId, createCurdApiDelete[model.Service](nil, nil))
+	app.GET("/service/:id/delete", parseParamStringId, createCurdApiDelete[model.App](nil, nil))
 
 	//插件接口
 	app.POST("/plugin/search", createCurdApiSearch[model.Plugin]())

@@ -3,7 +3,7 @@ package api
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/internal/core"
+	"github.com/zgwit/iot-master/v3/internal"
 	"io"
 	"net"
 	"net/http"
@@ -11,7 +11,7 @@ import (
 )
 
 func ServiceProxy(ctx *gin.Context) {
-	svc := core.Services.Load(ctx.Param("name"))
+	svc := internal.Applications.Load(ctx.Param("name"))
 	if svc == nil {
 		replyFail(ctx, "服务未注册")
 		return

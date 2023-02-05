@@ -8,7 +8,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/internal/web/api"
+	"github.com/zgwit/iot-master/v3/internal/api"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"mime"
 	"net/http"
