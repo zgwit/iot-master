@@ -12,8 +12,8 @@
 
 ```javascript
 {
-        gateway: 'id',
-        timestamp: 1229939, //utc,
+        id: 'id', //网关ID
+        timestamp: 1229939, //时间戳 utc,
         //属性
         properties: [
                 {
@@ -21,11 +21,11 @@
                     value: any, //值
                 }
             ]
-    //子设置
+    //子设备
     devices: [
         id: 'id', //ID
         timestamp: 1229939, //utc,
-        properties: [ //结构同上级属性
+        properties: [ //结构同网关的属性
             {
                 name: 'property id', //属性ID
                 value: any, //值

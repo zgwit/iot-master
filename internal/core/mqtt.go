@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/mochi-co/mqtt/v2"
@@ -18,7 +19,7 @@ import (
 var mqttServer *mqtt.Server
 var mqttClient paho.Client
 
-func OpenMqttServer() error {
+func openMqttServer() error {
 
 	//创建内部Broker
 	mqttServer = mqtt.New(nil)
@@ -105,13 +106,14 @@ func mqttCreateInternalClient() error {
 	return nil
 }
 
-func Close() {
-	if mqttServer != nil {
-		_ = mqttServer.Close()
-	}
+func Publish(topic string, payload []byte) error {
+	return mqttServer.Publish(topic, payload, false, 0)
 }
 
-func Publish(topic string, payload []byte) error {
-	//TODO 兼容struct类型
-	return mqttServer.Publish(topic, payload, false, 0)
+func PublishEx(topic string, payload any) error {
+	bytes, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+	return mqttServer.Publish(topic, bytes, false, 0)
 }
