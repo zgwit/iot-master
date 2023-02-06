@@ -21,11 +21,11 @@ func Open() error {
 }
 
 func Close() {
-	if mqttClient != nil {
-		mqttClient.Disconnect(0)
+	if MqttClient != nil {
+		MqttClient.Disconnect(0)
 	}
-	if mqttServer != nil {
-		_ = mqttServer.Close()
+	if MqttServer != nil {
+		_ = MqttServer.Close()
 	}
 	//TODO clear gateways devices cache
 

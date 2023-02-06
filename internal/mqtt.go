@@ -16,16 +16,16 @@ import (
 	"xorm.io/xorm"
 )
 
-var mqttServer *mqtt.Server
-var mqttClient paho.Client
+var MqttServer *mqtt.Server
+var MqttClient paho.Client
 
 func openMqttServer() error {
 
 	//创建内部Broker
-	mqttServer = mqtt.New(nil)
+	MqttServer = mqtt.New(nil)
 
 	//TODO 鉴权
-	_ = mqttServer.AddHook(new(auth.AllowHook), nil)
+	_ = MqttServer.AddHook(new(auth.AllowHook), nil)
 
 	err := mqttLoadListeners()
 	if err != nil {
@@ -37,7 +37,7 @@ func openMqttServer() error {
 		return err
 	}
 
-	err = mqttServer.Serve()
+	err = MqttServer.Serve()
 	if err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func mqttLoadListeners() error {
 		id := fmt.Sprintf("tcp-%d", e.Id)
 		port := fmt.Sprintf(":%d", e.Port)
 		l := listeners.NewTCP(id, port, nil)
-		err = mqttServer.AddListener(l)
+		err = MqttServer.AddListener(l)
 		if err != nil {
 			//return err
 			log.Error(err)
@@ -75,11 +75,11 @@ func mqttLoadListeners() error {
 
 func mqttCreatePluginListener() error {
 	l := listeners.NewUnixSock("plugin", "iot-master.sock")
-	return mqttServer.AddListener(l)
+	return MqttServer.AddListener(l)
 }
 
 func mqttCreateInternalClient() error {
-	//client := mqttServer.NewClient(nil, "internal", "internal", true)
+	//client := MqttServer.NewClient(nil, "internal", "internal", true)
 	opts := paho.NewClientOptions()
 	opts.AddBroker(":1883")
 	opts.SetClientID("internal")
@@ -87,13 +87,13 @@ func mqttCreateInternalClient() error {
 	opts.SetDialer(&net.Dialer{
 		Resolver: &net.Resolver{Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
 			c1, c2 := vconn.New()
-			_ = mqttServer.EstablishConnection("internal", c1)
+			_ = MqttServer.EstablishConnection("internal", c1)
 			return c2, nil
 		}},
 	})
 
-	mqttClient = paho.NewClient(opts)
-	token := mqttClient.Connect()
+	MqttClient = paho.NewClient(opts)
+	token := MqttClient.Connect()
 	token.Wait()
 	err := token.Error()
 	if err != nil {
@@ -107,7 +107,7 @@ func mqttCreateInternalClient() error {
 }
 
 func Publish(topic string, payload []byte) error {
-	return mqttServer.Publish(topic, payload, false, 0)
+	return MqttServer.Publish(topic, payload, false, 0)
 }
 
 func PublishEx(topic string, payload any) error {
@@ -115,5 +115,5 @@ func PublishEx(topic string, payload any) error {
 	if err != nil {
 		return err
 	}
-	return mqttServer.Publish(topic, bytes, false, 0)
+	return MqttServer.Publish(topic, bytes, false, 0)
 }

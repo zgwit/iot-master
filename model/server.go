@@ -13,3 +13,10 @@ type Server struct {
 	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created" xorm:"created"`
 }
+
+type ServerHistory struct {
+	Id       int64     `json:"id"`
+	ServerId int64     `json:"server_id"`
+	Event    string    `json:"event"`
+	Created  time.Time `json:"created" xorm:"created"`
+}

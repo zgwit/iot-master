@@ -22,7 +22,7 @@ type Device struct {
 }
 
 func subscribeProperty() error {
-	mqttClient.Subscribe("up/gateway/+/property", 0, func(client paho.Client, message paho.Message) {
+	MqttClient.Subscribe("up/gateway/+/property", 0, func(client paho.Client, message paho.Message) {
 		var prop model.PayloadPropertyUp
 		err := json.Unmarshal(message.Payload(), &prop)
 		if err != nil {

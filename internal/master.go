@@ -11,13 +11,19 @@ var Applications Map[model.App]
 func subscribeMaster() error {
 
 	//注册应用
-	mqttClient.Subscribe("master/register", 0, func(client paho.Client, message paho.Message) {
+	MqttClient.Subscribe("master/register", 0, func(client paho.Client, message paho.Message) {
 		var svc model.App
 		err := json.Unmarshal(message.Payload(), &svc)
 		if err != nil {
 			return
 		}
 		Applications.Store(svc.Name, &svc)
+	})
+
+	//反注册
+	MqttClient.Subscribe("master/unregister", 0, func(client paho.Client, message paho.Message) {
+		name := string(message.Payload())
+		Applications.Delete(name)
 	})
 
 	return nil
