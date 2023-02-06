@@ -1,8 +1,9 @@
-package api
+package web
 
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/syndtr/goleveldb/leveldb/errors"
 	"github.com/zgwit/iot-master/v3/internal"
 	"io"
 	"net"
@@ -10,10 +11,10 @@ import (
 	"net/url"
 )
 
-func ServiceProxy(ctx *gin.Context) {
+func appProxy(ctx *gin.Context) {
 	svc := internal.Applications.Load(ctx.Param("name"))
 	if svc == nil {
-		replyFail(ctx, "服务未注册")
+		_ = ctx.Error(errors.New("应用未注册"))
 		return
 	}
 
@@ -35,7 +36,7 @@ func ServiceProxy(ctx *gin.Context) {
 
 	resp, err := cli.Do(req)
 	if err != nil {
-		replyError(ctx, err)
+		_ = ctx.Error(err)
 		return
 	}
 
@@ -44,7 +45,7 @@ func ServiceProxy(ctx *gin.Context) {
 	//_ = resp.Write(ctx.Writer)
 	_, err = io.Copy(ctx.Writer, resp.Body)
 	if err != nil {
-		replyError(ctx, err)
+		_ = ctx.Error(errors.New("应用未注册"))
 		return
 	}
 
