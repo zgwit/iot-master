@@ -13,6 +13,7 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/vconn"
 	"net"
+	"net/url"
 	"xorm.io/xorm"
 )
 
@@ -83,7 +84,13 @@ func mqttCreateInternalClient() error {
 	opts := paho.NewClientOptions()
 	opts.AddBroker(":1883")
 	opts.SetClientID("internal")
-	//TODO 这里不生效，为啥
+	//使用虚拟连接
+	opts.SetCustomOpenConnectionFn(func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
+		c1, c2 := vconn.New()
+		_ = MqttServer.EstablishConnection("internal", c1)
+		return c2, nil
+	})
+	// 这里不生效，没搞懂为啥，所以使用SetCustomOpenConnectionFn
 	opts.SetDialer(&net.Dialer{
 		Resolver: &net.Resolver{Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
 			c1, c2 := vconn.New()

@@ -7,6 +7,17 @@ import (
 	"time"
 )
 
+type vAddr struct {
+}
+
+func (a *vAddr) Network() string {
+	return "virtual"
+}
+
+func (a *vAddr) String() string {
+	return "virtual"
+}
+
 type VConn struct {
 	*io.PipeReader
 	*io.PipeWriter
@@ -27,8 +38,8 @@ func (c *VConn) Close() error {
 	return nil
 }
 
-func (c *VConn) LocalAddr() net.Addr                { return nil }
-func (c *VConn) RemoteAddr() net.Addr               { return nil }
+func (c *VConn) LocalAddr() net.Addr                { return &vAddr{} }
+func (c *VConn) RemoteAddr() net.Addr               { return &vAddr{} }
 func (c *VConn) SetDeadline(t time.Time) error      { return nil }
 func (c *VConn) SetReadDeadline(t time.Time) error  { return nil }
 func (c *VConn) SetWriteDeadline(t time.Time) error { return nil }
