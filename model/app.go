@@ -3,10 +3,10 @@ package model
 import "time"
 
 type App struct {
-	Id      int64  `json:"id"`
+	Id      string `json:"id" xorm:"pk"`
 	Name    string `json:"name"`
 	Icon    string `json:"icon,omitempty"`
-	Label   string `json:"label"`
+	Entry   string `json:"entry,omitempty"`
 	Desc    string `json:"desc"`
 	Type    string `json:"type"` //tcp unix
 	Address string `json:"address"`
@@ -16,7 +16,7 @@ type App struct {
 
 type AppHistory struct {
 	Id      int64     `json:"id"`
-	AppId   int64     `json:"app_id"`
+	AppId   string    `json:"app_id"`
 	Event   string    `json:"event"`
 	Created time.Time `json:"created" xorm:"created"`
 }
