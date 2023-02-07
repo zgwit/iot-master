@@ -100,7 +100,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		"name", "desc", "username", "password", "client_id", "disabled"))
 	app.GET("/gateway/:id/delete", parseParamStringId, createCurdApiDelete[model.Gateway](afterDeviceDelete, nil))
 
-	app.GET("/device/:id/properties", parseParamStringId, gatewayProperties)
+	app.GET("/gateway/:id/properties", parseParamStringId, gatewayProperties)
 
 	//设备接口
 	app.POST("/device/search", createCurdApiSearch[model.Device]())

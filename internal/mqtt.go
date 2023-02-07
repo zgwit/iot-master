@@ -87,7 +87,13 @@ func mqttCreateInternalClient() error {
 	//使用虚拟连接
 	opts.SetCustomOpenConnectionFn(func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
 		c1, c2 := vconn.New()
-		_ = MqttServer.EstablishConnection("internal", c1)
+		//EstablishConnection会读取connect，导致拥堵
+		go func() {
+			err := MqttServer.EstablishConnection("internal", c1)
+			if err != nil {
+				log.Error(err)
+			}
+		}()
 		return c2, nil
 	})
 	// 这里不生效，没搞懂为啥，所以使用SetCustomOpenConnectionFn
