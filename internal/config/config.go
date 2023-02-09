@@ -12,6 +12,7 @@ import (
 type Configure struct {
 	Data     string      `yaml:"data" json:"data"`
 	Web      uint16      `yaml:"web" json:"web"`
+	Oem      OEM         `yaml:"oem" json:"oem"`
 	Database db.Options  `yaml:"database" json:"database"`
 	Log      log.Options `yaml:"log" json:"log"`
 }
@@ -20,7 +21,12 @@ type Configure struct {
 var Config = Configure{
 	Data: "data",
 	Web:  8888,
-
+	Oem: OEM{
+		Title:     "物联大师",
+		Logo:      "",
+		Company:   "无锡真格智能科技有限公司",
+		Copyright: "©2023",
+	},
 	Database: db.Options{
 		Type:     "mysql",
 		URL:      "root:123456@localhost:3306/master?charset=utf8",

@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v3/internal/config"
 	"github.com/zgwit/iot-master/v3/model"
 	"net/http"
 )
@@ -63,6 +64,10 @@ func mustLogin(ctx *gin.Context) {
 func RegisterRoutes(app *gin.RouterGroup) {
 	//错误恢复，并返回至前端
 	app.Use(catchError)
+
+	app.GET("/oem", func(ctx *gin.Context) {
+		replyOk(ctx, &config.Config.Oem)
+	})
 
 	app.GET("/info", info)
 
