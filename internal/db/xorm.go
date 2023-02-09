@@ -47,7 +47,8 @@ func Close() error {
 func Sync() error {
 	return Engine.Sync2(
 		new(model.User), new(model.Password),
-		new(model.Server), new(model.Model),
-		new(model.Device), new(model.Plugin),
+		new(model.Server), new(model.Gateway),
+		new(model.Model), new(model.Device),
+		new(model.App), new(model.Plugin),
 	)
 }

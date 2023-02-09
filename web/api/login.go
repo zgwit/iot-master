@@ -42,7 +42,7 @@ func login(ctx *gin.Context) {
 		//管理员自动创建
 		if obj.Username == "admin" {
 			user.Username = obj.Username
-			user.Nickname = "管理员"
+			user.Name = "管理员"
 			_, err = db.Engine.InsertOne(&user)
 			if err != nil {
 				replyError(ctx, err)

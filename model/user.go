@@ -8,7 +8,7 @@ import (
 type User struct {
 	Id       int64     `json:"id"`
 	Username string    `json:"username" xorm:"unique"`
-	Nickname string    `json:"nickname,omitempty"`
+	Name     string    `json:"name,omitempty"`
 	Email    string    `json:"email,omitempty"`
 	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created" xorm:"created"`

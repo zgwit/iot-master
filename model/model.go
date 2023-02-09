@@ -1,46 +1,47 @@
 package model
 
+import "time"
+
 type Model struct {
-	ID         string
-	Name       string
-	Desc       string
-	Version    string
-	Author     string
-	Email      string
-	Properties []Property
-	Functions  []Function
-	Events     []Event
+	Id         string     `json:"id" xorm:"pk"`
+	Name       string     `json:"name"`
+	Desc       string     `json:"desc,omitempty"`
+	Version    string     `json:"version,omitempty"`
+	Properties []Property `json:"properties" xorm:"json"`
+	Functions  []Function `json:"functions" xorm:"json"`
+	Events     []Event    `json:"events" xorm:"json"`
+	Created    time.Time  `json:"created" xorm:"created"`
 }
 
 type Property struct {
-	ID   string
-	Name string
-	Desc string
-	Type string //int float ....
-	Unit string
-	Mode string //r w rw
+	Id   string `json:"id"`
+	Name string `json:"name"`
+	Desc string `json:"desc,omitempty"`
+	Type string `json:"type"` //int float ....
+	Unit string `json:"unit"`
+	Mode string `json:"mode"` //r w rw
 }
 
 type Function struct {
-	ID     string
-	Name   string
-	Desc   string
-	Async  bool
-	Input  []Argument
-	Output []Argument
+	Id     string     `json:"id"`
+	Name   string     `json:"name"`
+	Desc   string     `json:"desc,omitempty"`
+	Async  bool       `json:"async"`
+	Input  []Argument `json:"input"`
+	Output []Argument `json:"output"`
 }
 
 type Argument struct {
-	Name string
-	Desc string
-	Type string
-	Unit string
+	Name string `json:"name"`
+	Desc string `json:"desc,omitempty"`
+	Type string `json:"type"`
+	Unit string `json:"unit"`
 }
 
 type Event struct {
-	ID     string
-	Name   string
-	Desc   string
-	Type   string //info alert error
-	Output []Argument
+	Id     string     `json:"id"`
+	Name   string     `json:"name"`
+	Desc   string     `json:"desc,omitempty"`
+	Type   string     `json:"type"` //info alert error
+	Output []Argument `json:"output"`
 }

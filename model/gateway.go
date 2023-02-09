@@ -3,10 +3,9 @@ package model
 import "time"
 
 type Gateway struct {
-	Id       int64     `json:"id" xorm:"pk"`
+	Id       string    `json:"id" xorm:"pk"` //ClientID
 	Name     string    `json:"name"`
 	Desc     string    `json:"desc"`
-	ClientId string    `json:"client_id,omitempty"` //ClientID
 	Username string    `json:"username"`
 	Password string    `json:"password"`
 	Disabled bool      `json:"disabled"`
