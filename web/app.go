@@ -12,7 +12,7 @@ import (
 )
 
 func appProxy(ctx *gin.Context) {
-	svc := internal.Applications.Load(ctx.Param("name"))
+	svc := internal.Applications.Load(ctx.Param("id"))
 	if svc == nil {
 		_ = ctx.Error(errors.New("应用未注册"))
 		return

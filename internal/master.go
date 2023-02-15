@@ -17,13 +17,13 @@ func subscribeMaster() error {
 		if err != nil {
 			return
 		}
-		Applications.Store(svc.Name, &svc)
+		Applications.Store(svc.Id, &svc)
 	})
 
 	//反注册
 	MqttClient.Subscribe("master/unregister", 0, func(client paho.Client, message paho.Message) {
-		name := string(message.Payload())
-		Applications.Delete(name)
+		id := string(message.Payload())
+		Applications.Delete(id)
 	})
 
 	return nil
