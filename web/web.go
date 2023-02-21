@@ -56,7 +56,10 @@ func Serve(addr string) {
 	//注册前端接口
 	api.RegisterRoutes(app.Group("/api"))
 
-	app.Any("/app/:id/*path", appProxy)
+	//app.Any("/app/:id/*path", appProxy)
+
+	//使用$前缀区分插件
+	app.Any("/$:app/*path", appProxy)
 
 	//前端静态文件
 	//app.StaticFS("/www", http.FS(wwwFiles))
