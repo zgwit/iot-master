@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/zgwit/iot-master/v3/internal/args"
-	"github.com/zgwit/iot-master/v3/internal/db"
+	"github.com/zgwit/iot-master/v3/args"
+	"github.com/zgwit/iot-master/v3/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"gopkg.in/yaml.v3"
 	"os"

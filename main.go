@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"github.com/kardianos/service"
+	"github.com/zgwit/iot-master/v3/args"
+	"github.com/zgwit/iot-master/v3/config"
+	"github.com/zgwit/iot-master/v3/db"
 	"github.com/zgwit/iot-master/v3/internal"
-	"github.com/zgwit/iot-master/v3/internal/args"
-	"github.com/zgwit/iot-master/v3/internal/config"
-	"github.com/zgwit/iot-master/v3/internal/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/web"
 	"os"

@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/internal/db"
+	"github.com/zgwit/iot-master/v3/db"
 	"github.com/zgwit/iot-master/v3/model"
 )
 

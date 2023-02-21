@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/internal/config"
+	"github.com/zgwit/iot-master/v3/config"
 	"github.com/zgwit/iot-master/v3/model"
 	"net/http"
 )

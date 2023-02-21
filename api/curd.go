@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/zgwit/iot-master/v3/internal/db"
+	"github.com/zgwit/iot-master/v3/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"reflect"
 )

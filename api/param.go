@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/internal/db"
+	"github.com/zgwit/iot-master/v3/db"
 	"reflect"
 	"xorm.io/builder"
 	"xorm.io/xorm"

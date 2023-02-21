@@ -8,8 +8,8 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v3/api"
 	"github.com/zgwit/iot-master/v3/pkg/log"
-	"github.com/zgwit/iot-master/v3/web/api"
 	"mime"
 	"net/http"
 	"path"
@@ -24,7 +24,7 @@ func init() {
 	}
 }
 
-//go:embed all:www
+//--go:embed all:www
 var wwwFiles embed.FS
 
 var server *http.Server
