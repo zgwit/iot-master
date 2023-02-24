@@ -97,31 +97,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/user/:id/enable", parseParamId, createCurdApiDisable[model.User](false, nil, nil))
 	app.GET("/user/:id/disable", parseParamId, createCurdApiDisable[model.User](true, nil, nil))
 
-	//网关接口
-	app.POST("/gateway/search", createCurdApiSearch[model.Gateway]())
-	app.GET("/gateway/list", createCurdApiList[model.Gateway]())
-	app.POST("/gateway/create", createCurdApiCreate[model.Gateway](generateUUID, nil))
-	app.GET("/gateway/:id", parseParamStringId, createCurdApiGet[model.Gateway]())
-	app.POST("/gateway/:id", parseParamStringId, createCurdApiModify[model.Gateway](nil, nil,
-		"id", "name", "desc", "username", "password", "disabled"))
-	app.GET("/gateway/:id/delete", parseParamStringId, createCurdApiDelete[model.Gateway](afterDeviceDelete, nil))
-
-	app.GET("/gateway/:id/properties", parseParamStringId, gatewayProperties)
-
-	//设备接口
-	app.POST("/device/search", createCurdApiSearch[model.Device]())
-	app.GET("/device/list", createCurdApiList[model.Device]())
-	app.POST("/device/create", createCurdApiCreate[model.Device](generateUUID, afterDeviceCreate))
-	app.GET("/device/:id", parseParamStringId, createCurdApiGet[model.Device]())
-	app.POST("/device/:id", parseParamStringId, createCurdApiModify[model.Device](nil, afterDeviceUpdate,
-		"id", "name", "gateway_id", "model_id", "disabled"))
-	app.GET("/device/:id/delete", parseParamStringId, createCurdApiDelete[model.Device](afterDeviceDelete, nil))
-
-	app.GET("/device/:id/properties", parseParamStringId, deviceProperties)
-	//app.POST("/device/:id/assign", parseParamStringId, deviceAssign)
-	//app.GET("/device/:id/refresh", parseParamStringId, deviceRefresh)
-
-	//元件接口
+	//物模型接口
 	app.POST("/model/search", createCurdApiSearch[model.Model]())
 	app.GET("/model/list", createCurdApiList[model.Model]())
 	app.POST("/model/create", createCurdApiCreate[model.Model](generateUUID, nil))
@@ -129,6 +105,39 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/model/:id", parseParamStringId, createCurdApiModify[model.Model](nil, nil,
 		"id", "name", "desc", "version", "properties", "functions", "events", "disabled"))
 	app.GET("/model/:id/delete", parseParamStringId, createCurdApiDelete[model.Model](nil, nil))
+
+	//产品接口
+	app.POST("/product/search", createCurdApiSearch[model.Product]())
+	app.GET("/product/list", createCurdApiList[model.Product]())
+	app.POST("/product/create", createCurdApiCreate[model.Product](generateUUID, nil))
+	app.GET("/product/:id", parseParamStringId, createCurdApiGet[model.Product]())
+	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil,
+		"id", "name", "model_id", "desc", "username", "password", "disabled"))
+	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
+
+	//设备接口
+	app.POST("/device/search", createCurdApiSearch[model.Device]())
+	app.GET("/device/list", createCurdApiList[model.Device]())
+	app.POST("/device/create", createCurdApiCreate[model.Device](generateUUID, nil))
+	app.GET("/device/:id", parseParamStringId, createCurdApiGet[model.Device]())
+	app.POST("/device/:id", parseParamStringId, createCurdApiModify[model.Device](nil, nil,
+		"id", "name", "product_id", "desc", "username", "password", "disabled"))
+	app.GET("/device/:id/delete", parseParamStringId, createCurdApiDelete[model.Device](nil, nil))
+
+	app.GET("/device/:id/properties", parseParamStringId, deviceProperties)
+
+	//子设备接口
+	app.POST("/subset/search", createCurdApiSearch[model.Subset]())
+	app.GET("/subset/list", createCurdApiList[model.Subset]())
+	app.POST("/subset/create", createCurdApiCreate[model.Subset](generateUUID, nil))
+	app.GET("/subset/:id", parseParamStringId, createCurdApiGet[model.Subset]())
+	app.POST("/subset/:id", parseParamStringId, createCurdApiModify[model.Subset](nil, nil,
+		"id", "name", "device_id", "product_id", "disabled"))
+	app.GET("/subset/:id/delete", parseParamStringId, createCurdApiDelete[model.Subset](nil, nil))
+
+	app.GET("/subset/:id/properties", parseParamStringId, subsetProperties)
+	//app.POST("/subset/:id/assign", parseParamStringId, subsetAssign)
+	//app.GET("/subset/:id/refresh", parseParamStringId, subsetRefresh)
 
 	//服务器接口
 	app.POST("/server/search", createCurdApiSearch[model.Server]())

@@ -4,13 +4,33 @@ import (
 	"time"
 )
 
-// Device 设备
 type Device struct {
-	Id        string    `json:"id" xorm:"pk"`
-	GatewayId string    `json:"gateway_id" xorm:"index"`
-	ModelId   string    `json:"model_id"`
-	Name      string    `json:"name"`
-	Desc      string    `json:"desc"`
-	Disabled  bool      `json:"disabled"`
-	Created   time.Time `json:"created" xorm:"created"`
+	Id        string `json:"id" xorm:"pk"` //ClientID
+	ProductId string `json:"product_id"`
+	//ModelId   string    `json:"model_id"`
+	Name     string    `json:"name"`
+	Desc     string    `json:"desc"`
+	Username string    `json:"username"`
+	Password string    `json:"password"`
+	Disabled bool      `json:"disabled"`
+	Created  time.Time `json:"created" xorm:"created"`
+}
+
+type DeviceHistory struct {
+	Id       int64     `json:"id" xorm:"pk"`
+	DeviceId string    `json:"device_id" xorm:"index"`
+	Event    string    `json:"event"`
+	Created  time.Time `json:"created" xorm:"created"`
+}
+
+// Subset 设备
+type Subset struct {
+	Id        string `json:"id" xorm:"pk"`
+	DeviceId  string `json:"device_id" xorm:"index"`
+	ProductId string `json:"product_id"`
+	//ModelId  string    `json:"model_id"`
+	Name     string    `json:"name"`
+	Desc     string    `json:"desc"`
+	Disabled bool      `json:"disabled"`
+	Created  time.Time `json:"created" xorm:"created"`
 }

@@ -1,4 +1,4 @@
-package internal
+package mqtt
 
 import (
 	"context"
@@ -17,16 +17,16 @@ import (
 	"xorm.io/xorm"
 )
 
-var MqttServer *mqtt.Server
-var MqttClient paho.Client
+var Server *mqtt.Server
+var Client paho.Client
 
-func openMqttServer() error {
+func Open() error {
 
 	//创建内部Broker
-	MqttServer = mqtt.New(nil)
+	Server = mqtt.New(nil)
 
 	//TODO 鉴权
-	_ = MqttServer.AddHook(new(auth.AllowHook), nil)
+	_ = Server.AddHook(new(auth.AllowHook), nil)
 
 	err := mqttLoadListeners()
 	if err != nil {
@@ -38,7 +38,7 @@ func openMqttServer() error {
 		return err
 	}
 
-	err = MqttServer.Serve()
+	err = Server.Serve()
 	if err != nil {
 		return err
 	}
@@ -64,7 +64,7 @@ func mqttLoadListeners() error {
 		id := fmt.Sprintf("tcp-%d", e.Id)
 		port := fmt.Sprintf(":%d", e.Port)
 		l := listeners.NewTCP(id, port, nil)
-		err = MqttServer.AddListener(l)
+		err = Server.AddListener(l)
 		if err != nil {
 			//return err
 			log.Error(err)
@@ -76,11 +76,11 @@ func mqttLoadListeners() error {
 
 func mqttCreatePluginListener() error {
 	l := listeners.NewUnixSock("plugin", "iot-master.sock")
-	return MqttServer.AddListener(l)
+	return Server.AddListener(l)
 }
 
 func mqttCreateInternalClient() error {
-	//client := MqttServer.NewClient(nil, "internal", "internal", true)
+	//client := Server.NewClient(nil, "internal", "internal", true)
 	opts := paho.NewClientOptions()
 	opts.AddBroker(":1883")
 	opts.SetClientID("internal")
@@ -89,7 +89,7 @@ func mqttCreateInternalClient() error {
 		c1, c2 := vconn.New()
 		//EstablishConnection会读取connect，导致拥堵
 		go func() {
-			err := MqttServer.EstablishConnection("internal", c1)
+			err := Server.EstablishConnection("internal", c1)
 			if err != nil {
 				log.Error(err)
 			}
@@ -100,13 +100,13 @@ func mqttCreateInternalClient() error {
 	opts.SetDialer(&net.Dialer{
 		Resolver: &net.Resolver{Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
 			c1, c2 := vconn.New()
-			_ = MqttServer.EstablishConnection("internal", c1)
+			_ = Server.EstablishConnection("internal", c1)
 			return c2, nil
 		}},
 	})
 
-	MqttClient = paho.NewClient(opts)
-	token := MqttClient.Connect()
+	Client = paho.NewClient(opts)
+	token := Client.Connect()
 	token.Wait()
 	err := token.Error()
 	if err != nil {
@@ -116,17 +116,18 @@ func mqttCreateInternalClient() error {
 
 	//订阅消息
 	//subscribeTopics(MQTT)
+
 	return nil
 }
 
 func Publish(topic string, payload []byte) error {
-	return MqttServer.Publish(topic, payload, false, 0)
+	return Server.Publish(topic, payload, false, 0)
 }
 
-func PublishEx(topic string, payload any) error {
+func PublishJSON(topic string, payload any) error {
 	bytes, err := json.Marshal(payload)
 	if err != nil {
 		return err
 	}
-	return MqttServer.Publish(topic, bytes, false, 0)
+	return Server.Publish(topic, bytes, false, 0)
 }

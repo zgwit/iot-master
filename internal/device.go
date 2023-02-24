@@ -4,26 +4,21 @@ import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/mqtt"
+	"time"
 )
 
-var Gateways Map[Device]
 var Devices Map[Device]
-
-type Gateway struct {
-	Id         string
-	Online     bool
-	Properties map[string]any
-}
 
 type Device struct {
 	Id         string
+	Last       time.Time
 	Properties map[string]any
-	//Status map[string]any
 }
 
 func subscribeProperty() error {
-	MqttClient.Subscribe("up/gateway/+/property", 0, func(client paho.Client, message paho.Message) {
-		var prop model.PayloadPropertyUp
+	mqtt.Client.Subscribe("up/property/+/+", 0, func(client paho.Client, message paho.Message) {
+		var prop model.UpPropertyPayload
 		err := json.Unmarshal(message.Payload(), &prop)
 		if err != nil {
 			return
@@ -31,10 +26,10 @@ func subscribeProperty() error {
 
 		//属性值
 		if prop.Properties != nil {
-			gw := Gateways.Load(prop.Id)
-			if gw != nil {
+			dev := Devices.Load(prop.Id)
+			if dev != nil {
 				for _, p := range prop.Properties {
-					gw.Properties[p.Name] = p.Value
+					dev.Properties[p.Name] = p.Value
 				}
 			}
 		}

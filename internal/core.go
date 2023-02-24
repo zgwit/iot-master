@@ -1,7 +1,9 @@
 package internal
 
+import "github.com/zgwit/iot-master/v3/mqtt"
+
 func Open() error {
-	err := openMqttServer()
+	err := mqtt.Open()
 	if err != nil {
 		return err
 	}
@@ -21,12 +23,6 @@ func Open() error {
 }
 
 func Close() {
-	if MqttClient != nil {
-		MqttClient.Disconnect(0)
-	}
-	if MqttServer != nil {
-		_ = MqttServer.Close()
-	}
 	//TODO clear gateways devices cache
 
 }
