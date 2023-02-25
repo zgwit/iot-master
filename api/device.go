@@ -8,7 +8,7 @@ import (
 func deviceProperties(ctx *gin.Context) {
 	device := internal.Devices.Load(ctx.GetString("id"))
 	if device == nil {
-		replyFail(ctx, "找不到设备变量")
+		replyFail(ctx, "设备未上线")
 		return
 	}
 	replyOk(ctx, device.Properties)
@@ -17,7 +17,7 @@ func deviceProperties(ctx *gin.Context) {
 func subsetProperties(ctx *gin.Context) {
 	subset := internal.Subsets.Load(ctx.GetString("id"))
 	if subset == nil {
-		replyFail(ctx, "找不到子设备变量")
+		replyFail(ctx, "子设备未上线")
 		return
 	}
 	replyOk(ctx, subset.Properties)
