@@ -15,10 +15,10 @@ func deviceProperties(ctx *gin.Context) {
 }
 
 func subsetProperties(ctx *gin.Context) {
-	device := internal.Devices.Load(ctx.GetString("id"))
-	if device == nil {
+	subset := internal.Subsets.Load(ctx.GetString("id"))
+	if subset == nil {
 		replyFail(ctx, "找不到子设备变量")
 		return
 	}
-	replyOk(ctx, device.Properties)
+	replyOk(ctx, subset.Properties)
 }
