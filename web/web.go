@@ -24,7 +24,7 @@ func init() {
 	}
 }
 
-//--go:embed all:www
+//go:embed all:www
 var wwwFiles embed.FS
 
 var server *http.Server
