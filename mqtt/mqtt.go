@@ -114,9 +114,6 @@ func mqttCreateInternalClient() error {
 	}
 	//fmt.Println(token.Error())
 
-	//订阅消息
-	//subscribeTopics(MQTT)
-
 	return nil
 }
 

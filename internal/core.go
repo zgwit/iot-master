@@ -23,6 +23,6 @@ func Open() error {
 }
 
 func Close() {
-	//TODO clear gateways devices cache
+	//TODO clear gateways devices data
 
 }

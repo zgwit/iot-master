@@ -7,8 +7,6 @@ import (
 	"github.com/zgwit/iot-master/v3/mqtt"
 )
 
-var Applications Map[model.App]
-
 func subscribeMaster() error {
 
 	//注册应用
