@@ -14,6 +14,8 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/vconn"
 	"net"
 	"net/url"
+	"os"
+	"path"
 	"xorm.io/xorm"
 )
 
@@ -75,7 +77,8 @@ func mqttLoadListeners() error {
 }
 
 func mqttCreatePluginListener() error {
-	l := listeners.NewUnixSock("plugin", "iot-master.sock")
+	unixSock := path.Join(os.TempDir(), "iot-master.sock") //改为临时目录
+	l := listeners.NewUnixSock("Plugin", unixSock)
 	return Server.AddListener(l)
 }
 
@@ -84,6 +87,7 @@ func mqttCreateInternalClient() error {
 	opts := paho.NewClientOptions()
 	opts.AddBroker(":1883")
 	opts.SetClientID("internal")
+
 	//使用虚拟连接
 	opts.SetCustomOpenConnectionFn(func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
 		c1, c2 := vconn.New()
