@@ -5,6 +5,7 @@ import (
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/mqtt"
+	"github.com/zgwit/iot-master/v3/pkg/log"
 )
 
 func subscribeMaster() error {
@@ -14,8 +15,10 @@ func subscribeMaster() error {
 		var svc model.App
 		err := json.Unmarshal(message.Payload(), &svc)
 		if err != nil {
+			log.Error(err)
 			return
 		}
+		log.Info("app register ", svc.Id, " ", svc.Name, " ", svc.Type, " ", svc.Address)
 		Applications.Store(svc.Id, &svc)
 	})
 
