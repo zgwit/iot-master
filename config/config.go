@@ -11,8 +11,8 @@ import (
 
 // Configure 配置
 type Configure struct {
-	Web      Web          `yaml:"web" json:"web"`
 	Oem      OEM          `yaml:"oem" json:"oem"`
+	Web      Web          `yaml:"web" json:"web"`
 	Log      log.Options  `yaml:"log" json:"log"`
 	Mqtt     mqtt.Options `yaml:"mqtt" json:"mqtt"`
 	Database db.Options   `yaml:"database" json:"database"`
@@ -20,6 +20,12 @@ type Configure struct {
 
 // Config 全局配置
 var Config = Configure{
+	Oem: OEM{
+		Title:     "物联大师",
+		Logo:      "",
+		Company:   "无锡真格智能科技有限公司",
+		Copyright: "©2023",
+	},
 	Web: Web{
 		Addr: ":8888",
 	},
@@ -27,12 +33,6 @@ var Config = Configure{
 		Level:  "trace",
 		Caller: true,
 		Text:   true,
-	},
-	Oem: OEM{
-		Title:     "物联大师",
-		Logo:      "",
-		Company:   "无锡真格智能科技有限公司",
-		Copyright: "©2023",
 	},
 	Mqtt: mqtt.Options{
 		Listeners: []mqtt.MqttListener{

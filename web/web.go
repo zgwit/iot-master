@@ -9,6 +9,8 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/api"
+	"github.com/zgwit/iot-master/v3/args"
+	"github.com/zgwit/iot-master/v3/config"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"mime"
 	"net/http"
@@ -29,29 +31,35 @@ var wwwFiles embed.FS
 
 var server *http.Server
 
-func Serve(addr string) {
-	gin.SetMode(gin.ReleaseMode)
+func Serve(cfg config.Web) {
+	if !cfg.Debug {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
 	//GIN初始化
 	//app := gin.Default()
 	app := gin.New()
 	app.Use(gin.Recovery())
 
-	//if cfg.Debug {
-	app.Use(gin.Logger())
+	if cfg.Debug {
+		app.Use(gin.Logger())
+	}
 
 	//跨域问题
-	cfg := cors.DefaultConfig()
-	cfg.AllowAllOrigins = true
-	cfg.AllowCredentials = true
-	app.Use(cors.New(cfg))
+	if cfg.Cors {
+		c := cors.DefaultConfig()
+		c.AllowAllOrigins = true
+		c.AllowCredentials = true
+		app.Use(cors.New(c))
+	}
 
 	//启用session
 	app.Use(sessions.Sessions("iot-master", cookie.NewStore([]byte("iot-master"))))
 
 	//开启压缩
-	//if cfg.Compress {
-	app.Use(gzip.Gzip(gzip.DefaultCompression)) //gzip.WithExcludedPathsRegexs([]string{".*"})
+	if cfg.Gzip {
+		app.Use(gzip.Gzip(gzip.DefaultCompression)) //gzip.WithExcludedPathsRegexs([]string{".*"})
+	}
 
 	//注册前端接口
 	api.RegisterRoutes(app.Group("/api"))
@@ -66,7 +74,6 @@ func Serve(addr string) {
 
 	wwwFS := http.FS(wwwFiles)
 	app.Use(func(c *gin.Context) {
-
 		if c.Request.Method == http.MethodGet {
 			//支持前端框架的无“#”路由
 			fn := path.Join("www", c.Request.URL.Path) //删除查询参数
@@ -79,7 +86,7 @@ func Serve(addr string) {
 					return
 				}
 				if !stat.IsDir() {
-					http.ServeContent(c.Writer, c.Request, fn, stat.ModTime(), f)
+					http.ServeContent(c.Writer, c.Request, fn, args.Time, f)
 					return
 				}
 			}
@@ -93,7 +100,7 @@ func Serve(addr string) {
 			defer f.Close()
 
 			fn += ".html" //避免DetectContentType
-			http.ServeContent(c.Writer, c.Request, fn, time.Now(), f)
+			http.ServeContent(c.Writer, c.Request, fn, args.Time, f)
 		}
 	})
 
@@ -102,9 +109,9 @@ func Serve(addr string) {
 	//	log.Fatal("HTTP 服务启动错误", err)
 	//}
 
-	log.Println("Web服务启动", addr)
+	log.Println("Web服务启动", cfg.Addr)
 	server = &http.Server{
-		Addr:    resolvePort(addr),
+		Addr:    cfg.Addr,
 		Handler: app,
 	}
 

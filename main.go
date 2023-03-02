@@ -149,7 +149,7 @@ func originMain() {
 	defer internal.Close()
 
 	//判断是否开启Web
-	web.Serve(fmt.Sprintf(":%d", config.Config.Web))
+	web.Serve(config.Config.Web)
 }
 
 func shutdown() error {
