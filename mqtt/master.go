@@ -12,14 +12,14 @@ func subscribeMaster() error {
 
 	//注册应用
 	Client.Subscribe("master/register", 0, func(client paho.Client, message paho.Message) {
-		var svc model.App
-		err := json.Unmarshal(message.Payload(), &svc)
+		var app model.App
+		err := json.Unmarshal(message.Payload(), &app)
 		if err != nil {
 			log.Error(err)
 			return
 		}
-		log.Info("app register ", svc.Id, " ", svc.Name, " ", svc.Type, " ", svc.Address)
-		internal.Applications.Store(svc.Id, &svc)
+		log.Info("app register ", app.Id, " ", app.Name, " ", app.Type, " ", app.Address)
+		internal.Applications.Store(app.Id, &app)
 	})
 
 	//反注册

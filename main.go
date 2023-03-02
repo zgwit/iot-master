@@ -6,7 +6,6 @@ import (
 	"github.com/zgwit/iot-master/v3/args"
 	"github.com/zgwit/iot-master/v3/config"
 	"github.com/zgwit/iot-master/v3/db"
-	"github.com/zgwit/iot-master/v3/internal"
 	"github.com/zgwit/iot-master/v3/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/web"
@@ -146,7 +145,7 @@ func originMain() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer internal.Close()
+	defer mqtt.Close()
 
 	//判断是否开启Web
 	web.Serve(config.Config.Web)

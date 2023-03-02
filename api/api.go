@@ -4,6 +4,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/config"
+	"github.com/zgwit/iot-master/v3/internal"
 	"github.com/zgwit/iot-master/v3/model"
 	"net/http"
 )
@@ -79,6 +80,17 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	app.GET("/logout", logout)
 	app.POST("/password", password)
+
+	app.GET("/apps", func(ctx *gin.Context) {
+		apps := make([]*model.App, 0)
+		internal.Applications.Range(func(name string, app *model.App) bool {
+			if !app.Hidden {
+				apps = append(apps, app)
+			}
+			return true
+		})
+		replyOk(ctx, apps)
+	})
 
 	//修改配置
 	app.GET("/config", loadConfig)

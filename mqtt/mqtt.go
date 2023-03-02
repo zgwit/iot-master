@@ -19,6 +19,16 @@ import (
 var Server *mqtt.Server
 var Client paho.Client
 
+func Close() {
+	if Server != nil {
+		err := Server.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	Client.Disconnect(0)
+}
+
 func Open(cfg Options) error {
 
 	var err error

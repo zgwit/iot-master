@@ -25,6 +25,19 @@ func (c *Map[T]) Store(name string, value *T) {
 	c.container[name] = value
 }
 
+func (c *Map[T]) Range(iterator func(name string, item *T) bool) {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
+	if c.container == nil {
+		return
+	}
+	for k, v := range c.container {
+		if !iterator(k, v) {
+			break
+		}
+	}
+}
+
 func (c *Map[T]) Delete(name string) {
 	c.lock.Lock()
 	defer c.lock.Unlock()
