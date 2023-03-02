@@ -14,8 +14,6 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/vconn"
 	"net"
 	"net/url"
-	"os"
-	"path"
 	"xorm.io/xorm"
 )
 
@@ -30,12 +28,12 @@ func Open() error {
 	//TODO 鉴权
 	_ = Server.AddHook(new(auth.AllowHook), nil)
 
-	err := mqttLoadListeners()
+	err := mqttCreatePluginListener()
 	if err != nil {
 		return err
 	}
 
-	err = mqttCreatePluginListener()
+	err = mqttLoadListeners()
 	if err != nil {
 		return err
 	}
@@ -77,9 +75,15 @@ func mqttLoadListeners() error {
 }
 
 func mqttCreatePluginListener() error {
-	unixSock := path.Join(os.TempDir(), "iot-master.sock") //改为临时目录
-	l := listeners.NewUnixSock("Plugin", unixSock)
-	return Server.AddListener(l)
+	l := listeners.NewTCP("tcp", ":1843", nil)
+	err := Server.AddListener(l)
+	if err != nil {
+		return err
+	}
+
+	//unixSock := path.Join(os.TempDir(), "iot-master.sock") //改为临时目录，Windows下兼容性不好，url.Parse错误
+	ll := listeners.NewUnixSock("unix", "iot-master.sock")
+	return Server.AddListener(ll)
 }
 
 func mqttCreateInternalClient() error {
