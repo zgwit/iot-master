@@ -7,7 +7,8 @@ import (
 type Device struct {
 	Id        string    `json:"id" xorm:"pk"` //ClientID
 	ProductId string    `json:"product_id"`
-	Gateway   bool      `json:"gateway"` //网关类型，否为直连设备
+	DeviceId  string    `json:"device_id" xorm:"index"` //父设备
+	IsGateway string    `json:"is_gateway"`             //网关设备，有mqtt用户名，密码
 	Name      string    `json:"name"`
 	Desc      string    `json:"desc"`
 	Username  string    `json:"username"`

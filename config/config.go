@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/zgwit/iot-master/v3/args"
 	"github.com/zgwit/iot-master/v3/db"
+	"github.com/zgwit/iot-master/v3/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"gopkg.in/yaml.v3"
 	"os"
@@ -10,22 +11,34 @@ import (
 
 // Configure 配置
 type Configure struct {
-	Data     string      `yaml:"data" json:"data"`
-	Web      uint16      `yaml:"web" json:"web"`
-	Oem      OEM         `yaml:"oem" json:"oem"`
-	Database db.Options  `yaml:"database" json:"database"`
-	Log      log.Options `yaml:"log" json:"log"`
+	Web      Web          `yaml:"web" json:"web"`
+	Oem      OEM          `yaml:"oem" json:"oem"`
+	Log      log.Options  `yaml:"log" json:"log"`
+	Mqtt     mqtt.Options `yaml:"mqtt" json:"mqtt"`
+	Database db.Options   `yaml:"database" json:"database"`
 }
 
 // Config 全局配置
 var Config = Configure{
-	Data: "data",
-	Web:  8888,
+	Web: Web{
+		Addr: ":8888",
+	},
+	Log: log.Options{
+		Level:  "trace",
+		Caller: true,
+		Text:   true,
+	},
 	Oem: OEM{
 		Title:     "物联大师",
 		Logo:      "",
 		Company:   "无锡真格智能科技有限公司",
 		Copyright: "©2023",
+	},
+	Mqtt: mqtt.Options{
+		Listeners: []mqtt.MqttListener{
+			{Type: "tcp", Addr: ":1843"},
+			{Type: "unix", Addr: "iot-master.sock"},
+		},
 	},
 	Database: db.Options{
 		Type:     "mysql",
@@ -33,12 +46,6 @@ var Config = Configure{
 		Debug:    false,
 		LogLevel: 4,
 		Sync:     true,
-	},
-
-	Log: log.Options{
-		Level:  "trace",
-		Caller: true,
-		Text:   true,
 	},
 }
 

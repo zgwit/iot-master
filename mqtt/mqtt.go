@@ -1,7 +1,6 @@
 package mqtt
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	paho "github.com/eclipse/paho.mqtt.golang"
@@ -20,30 +19,35 @@ import (
 var Server *mqtt.Server
 var Client paho.Client
 
-func Open() error {
+func Open(cfg Options) error {
 
-	//创建内部Broker
-	Server = mqtt.New(nil)
+	var err error
+	if cfg.Url != "" {
+		//如果指定了外部Broker，则不再开启内置Server
+		err = createClient(&cfg)
+		if err != nil {
+			return err
+		}
+	} else {
+		err = createServer(cfg.Listeners)
+		if err != nil {
+			return err
+		}
+		//内部连接
+		err = createInternalClient()
+		if err != nil {
+			return err
+		}
+	}
 
-	//TODO 鉴权
-	_ = Server.AddHook(new(auth.AllowHook), nil)
-
-	err := mqttCreatePluginListener()
+	//监听属性
+	err = subscribeProperty()
 	if err != nil {
 		return err
 	}
 
-	err = mqttLoadListeners()
-	if err != nil {
-		return err
-	}
-
-	err = Server.Serve()
-	if err != nil {
-		return err
-	}
-
-	err = mqttCreateInternalClient()
+	//监听属性
+	err = subscribeMaster()
 	if err != nil {
 		return err
 	}
@@ -51,7 +55,28 @@ func Open() error {
 	return nil
 }
 
-func mqttLoadListeners() error {
+func createServer(ls []MqttListener) error {
+
+	//创建内部Broker
+	Server = mqtt.New(nil)
+
+	//TODO 鉴权
+	_ = Server.AddHook(new(auth.AllowHook), nil)
+
+	err := createListeners(ls)
+	if err != nil {
+		return err
+	}
+
+	err = loadListeners()
+	if err != nil {
+		return err
+	}
+
+	return Server.Serve()
+}
+
+func loadListeners() error {
 	//监听服务
 	//加载数据库中 entrypoint
 	var entries []model.Server
@@ -74,19 +99,41 @@ func mqttLoadListeners() error {
 	return nil
 }
 
-func mqttCreatePluginListener() error {
-	l := listeners.NewTCP("tcp", ":1843", nil)
-	err := Server.AddListener(l)
-	if err != nil {
-		return err
+func createListeners(ls []MqttListener) error {
+	for k, l := range ls {
+		var err error
+		id := fmt.Sprintf("embed-%s-%d", l.Type, k)
+		if l.Type == "tcp" {
+			err = Server.AddListener(listeners.NewTCP(id, l.Addr, nil))
+		} else if l.Type == "unix" {
+			err = Server.AddListener(listeners.NewUnixSock(id, l.Addr))
+		} else if l.Type == "ws" {
+			err = Server.AddListener(listeners.NewWebsocket(id, l.Addr, nil))
+		} else {
+			return fmt.Errorf("unsupport type %s", l.Type)
+		}
+		if err != nil {
+			return err
+		}
 	}
-
-	//unixSock := path.Join(os.TempDir(), "iot-master.sock") //改为临时目录，Windows下兼容性不好，url.Parse错误
-	ll := listeners.NewUnixSock("unix", "iot-master.sock")
-	return Server.AddListener(ll)
+	return nil
 }
 
-func mqttCreateInternalClient() error {
+func createClient(cfg *Options) error {
+	//client := Server.NewClient(nil, "internal", "internal", true)
+	opts := paho.NewClientOptions()
+	opts.AddBroker(cfg.Url)
+	opts.SetClientID(cfg.ClientId)
+	opts.SetUsername(cfg.Username)
+	opts.SetPassword(cfg.Password)
+
+	Client = paho.NewClient(opts)
+	token := Client.Connect()
+	token.Wait()
+	return token.Error()
+}
+
+func createInternalClient() error {
 	//client := Server.NewClient(nil, "internal", "internal", true)
 	opts := paho.NewClientOptions()
 	opts.AddBroker(":1883")
@@ -104,14 +151,6 @@ func mqttCreateInternalClient() error {
 		}()
 		return c2, nil
 	})
-	// 这里不生效，没搞懂为啥，所以使用SetCustomOpenConnectionFn
-	opts.SetDialer(&net.Dialer{
-		Resolver: &net.Resolver{Dial: func(ctx context.Context, network, address string) (net.Conn, error) {
-			c1, c2 := vconn.New()
-			_ = Server.EstablishConnection("internal", c1)
-			return c2, nil
-		}},
-	})
 
 	Client = paho.NewClient(opts)
 	token := Client.Connect()
@@ -125,14 +164,20 @@ func mqttCreateInternalClient() error {
 	return nil
 }
 
-func Publish(topic string, payload []byte) error {
-	return Server.Publish(topic, payload, false, 0)
+func Publish(topic string, payload []byte, retain bool, qos byte) error {
+	if Server != nil {
+		return Server.Publish(topic, payload, retain, qos)
+	}
+	//是否需要等待？
+	token := Client.Publish(topic, qos, retain, payload)
+	_ = token.Wait()
+	return token.Error()
 }
 
-func PublishJSON(topic string, payload any) error {
+func PublishJson(topic string, payload any) error {
 	bytes, err := json.Marshal(payload)
 	if err != nil {
 		return err
 	}
-	return Server.Publish(topic, bytes, false, 0)
+	return Publish(topic, bytes, false, 0)
 }

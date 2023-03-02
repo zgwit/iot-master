@@ -121,23 +121,10 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/device/create", createCurdApiCreate[model.Device](generateUUID, nil))
 	app.GET("/device/:id", parseParamStringId, createCurdApiGet[model.Device]())
 	app.POST("/device/:id", parseParamStringId, createCurdApiModify[model.Device](nil, nil,
-		"id", "name", "product_id", "desc", "username", "password", "disabled"))
+		"id", "device_id", "product_id", "is_gateway", "name", "desc", "username", "password", "disabled"))
 	app.GET("/device/:id/delete", parseParamStringId, createCurdApiDelete[model.Device](nil, nil))
 
 	app.GET("/device/:id/properties", parseParamStringId, deviceProperties)
-
-	//子设备接口
-	app.POST("/subset/search", createCurdApiSearch[model.Subset]())
-	app.GET("/subset/list", createCurdApiList[model.Subset]())
-	app.POST("/subset/create", createCurdApiCreate[model.Subset](generateUUID, nil))
-	app.GET("/subset/:id", parseParamStringId, createCurdApiGet[model.Subset]())
-	app.POST("/subset/:id", parseParamStringId, createCurdApiModify[model.Subset](nil, nil,
-		"id", "name", "device_id", "product_id", "disabled"))
-	app.GET("/subset/:id/delete", parseParamStringId, createCurdApiDelete[model.Subset](nil, nil))
-
-	app.GET("/subset/:id/properties", parseParamStringId, subsetProperties)
-	//app.POST("/subset/:id/assign", parseParamStringId, subsetAssign)
-	//app.GET("/subset/:id/refresh", parseParamStringId, subsetRefresh)
 
 	//服务器接口
 	app.POST("/server/search", createCurdApiSearch[model.Server]())

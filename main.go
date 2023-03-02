@@ -7,6 +7,7 @@ import (
 	"github.com/zgwit/iot-master/v3/config"
 	"github.com/zgwit/iot-master/v3/db"
 	"github.com/zgwit/iot-master/v3/internal"
+	"github.com/zgwit/iot-master/v3/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/web"
 	"os"
@@ -141,7 +142,7 @@ func originMain() {
 	//defer core.Stop()
 
 	//MQTT总线
-	err = internal.Open()
+	err = mqtt.Open(config.Config.Mqtt)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -13,12 +13,3 @@ func deviceProperties(ctx *gin.Context) {
 	}
 	replyOk(ctx, device.Properties)
 }
-
-func subsetProperties(ctx *gin.Context) {
-	subset := internal.Subsets.Load(ctx.GetString("id"))
-	if subset == nil {
-		replyFail(ctx, "子设备未上线")
-		return
-	}
-	replyOk(ctx, subset.Properties)
-}
