@@ -4,11 +4,26 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/zgwit/iot-master/v3/pkg/db"
+	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"reflect"
 )
 
 type hook func(value interface{}) error
+
+func generateKey(l int) hook {
+	return func(data interface{}) error {
+		value := reflect.ValueOf(data).Elem()
+		field := value.FieldByName("Id")
+		//使用UUId作为Id
+		//field.IsZero() 如果为空串时，生成UUID
+		if field.Len() == 0 {
+			field.SetString(lib.RandomString(l))
+		}
+		return nil
+	}
+
+}
 
 func generateUUID(data interface{}) error {
 	value := reflect.ValueOf(data).Elem()

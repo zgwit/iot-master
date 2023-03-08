@@ -112,7 +112,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	//产品接口
 	app.POST("/product/search", createCurdApiSearch[model.Product]())
 	app.GET("/product/list", createCurdApiList[model.Product]())
-	app.POST("/product/create", createCurdApiCreate[model.Product](generateUUID, nil))
+	app.POST("/product/create", createCurdApiCreate[model.Product](generateKey(8), nil))
 	app.GET("/product/:id", parseParamStringId, createCurdApiGet[model.Product]())
 	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil,
 		"id", "name", "model", "desc", "username", "password", "disabled"))
@@ -121,7 +121,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	//设备接口
 	app.POST("/device/search", createCurdApiSearch[model.Device]())
 	app.GET("/device/list", createCurdApiList[model.Device]())
-	app.POST("/device/create", createCurdApiCreate[model.Device](generateUUID, nil))
+	app.POST("/device/create", createCurdApiCreate[model.Device](generateKey(12), nil))
 	app.GET("/device/:id", parseParamStringId, createCurdApiGet[model.Device]())
 	app.POST("/device/:id", parseParamStringId, createCurdApiModify[model.Device](nil, nil,
 		"id", "device_id", "product_id", "is_gateway", "name", "desc", "username", "password", "disabled"))
