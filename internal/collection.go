@@ -1,7 +1,10 @@
 package internal
 
-import "github.com/zgwit/iot-master/v3/model"
+import (
+	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/pkg/lib"
+)
 
-var Devices Map[Device]
+var Devices lib.Map[Device]
 
-var Applications Map[model.App]
+var Applications lib.Map[model.App]

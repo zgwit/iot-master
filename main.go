@@ -5,8 +5,9 @@ import (
 	"github.com/kardianos/service"
 	"github.com/zgwit/iot-master/v3/args"
 	"github.com/zgwit/iot-master/v3/config"
-	"github.com/zgwit/iot-master/v3/db"
+	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/mqtt"
+	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/web"
 	"os"
@@ -132,6 +133,16 @@ func originMain() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+
+	//同步表结构
+	err = db.Engine.Sync2(
+		new(model.User), new(model.Password),
+		new(model.Server), new(model.Product), new(model.Device),
+		new(model.App), new(model.Plugin),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	//加载主程序
 	//err = core.Start()

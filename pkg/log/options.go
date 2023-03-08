@@ -15,3 +15,11 @@ type Options struct {
 	Format string `yaml:"format,omitempty" json:"format,omitempty"`
 	Output Output `yaml:"output" json:"output"`
 }
+
+func Default() Options {
+	return Options{
+		Level:  "trace",
+		Caller: true,
+		Text:   true,
+	}
+}

@@ -5,13 +5,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/syndtr/goleveldb/leveldb/errors"
 	"github.com/zgwit/iot-master/v3/internal"
+	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"net"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 )
 
-var proxies internal.Map[httputil.ReverseProxy]
+var proxies lib.Map[httputil.ReverseProxy]
 
 func appProxy(ctx *gin.Context) {
 	p := proxies.Load(ctx.Param("app"))

@@ -109,22 +109,13 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/user/:id/enable", parseParamId, createCurdApiDisable[model.User](false, nil, nil))
 	app.GET("/user/:id/disable", parseParamId, createCurdApiDisable[model.User](true, nil, nil))
 
-	//物模型接口
-	app.POST("/model/search", createCurdApiSearch[model.Model]())
-	app.GET("/model/list", createCurdApiList[model.Model]())
-	app.POST("/model/create", createCurdApiCreate[model.Model](generateUUID, nil))
-	app.GET("/model/:id", parseParamStringId, createCurdApiGet[model.Model]())
-	app.POST("/model/:id", parseParamStringId, createCurdApiModify[model.Model](nil, nil,
-		"id", "name", "desc", "version", "properties", "functions", "events", "disabled"))
-	app.GET("/model/:id/delete", parseParamStringId, createCurdApiDelete[model.Model](nil, nil))
-
 	//产品接口
 	app.POST("/product/search", createCurdApiSearch[model.Product]())
 	app.GET("/product/list", createCurdApiList[model.Product]())
 	app.POST("/product/create", createCurdApiCreate[model.Product](generateUUID, nil))
 	app.GET("/product/:id", parseParamStringId, createCurdApiGet[model.Product]())
 	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil,
-		"id", "name", "model_id", "desc", "username", "password", "disabled"))
+		"id", "name", "model", "desc", "username", "password", "disabled"))
 	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
 
 	//设备接口

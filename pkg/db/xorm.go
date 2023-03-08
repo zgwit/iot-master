@@ -1,14 +1,14 @@
 package db
 
 import (
-	"github.com/zgwit/iot-master/v3/model"
 	"xorm.io/xorm"
 	"xorm.io/xorm/log"
 
-	//加载数据库驱动
+	_ "github.com/go-sql-driver/mysql"
+
+	//按需加载数据库驱动
 	//_ "github.com/mattn/go-sqlite3" //CGO版本
 	//_ "github.com/glebarez/go-sqlite" //纯Go版本 使用ccgo翻译的，偶有文件锁问题
-	_ "github.com/go-sql-driver/mysql"
 	//_ "github.com/lib/pq" //PostgreSQL
 	//_ "github.com/mattn/go-oci8" //Oracle
 	// _ "github.com/denisenkom/go-mssqldb" //Sql Server
@@ -28,28 +28,9 @@ func Open(cfg Options) error {
 
 	Engine.SetLogLevel(log.LogLevel(cfg.LogLevel))
 	//Engine.SetLogger(logrus.StandardLogger())
-
-	//同步表
-	if cfg.Sync {
-		err = Sync()
-		if err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 
 func Close() error {
 	return Engine.Close()
-}
-
-func Sync() error {
-	return Engine.Sync2(
-		new(model.User), new(model.Password),
-		new(model.Server),
-		new(model.Model), new(model.Product),
-		new(model.Device), new(model.Subset),
-		new(model.App), new(model.Plugin),
-	)
 }

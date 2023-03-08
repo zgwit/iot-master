@@ -2,8 +2,8 @@ package config
 
 import (
 	"github.com/zgwit/iot-master/v3/args"
-	"github.com/zgwit/iot-master/v3/db"
 	"github.com/zgwit/iot-master/v3/mqtt"
+	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"gopkg.in/yaml.v3"
 	"os"
@@ -29,24 +29,14 @@ var Config = Configure{
 	Web: Web{
 		Addr: ":8888",
 	},
-	Log: log.Options{
-		Level:  "trace",
-		Caller: true,
-		Text:   true,
-	},
+	Log: log.Default(),
 	Mqtt: mqtt.Options{
 		Listeners: []mqtt.MqttListener{
 			{Type: "tcp", Addr: ":1843"},
 			{Type: "unix", Addr: "iot-master.sock"},
 		},
 	},
-	Database: db.Options{
-		Type:     "mysql",
-		URL:      "root:123456@localhost:3306/master?charset=utf8",
-		Debug:    false,
-		LogLevel: 4,
-		Sync:     true,
-	},
+	Database: db.Default(),
 }
 
 // Load 加载
