@@ -115,7 +115,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/product/create", createCurdApiCreate[model.Product](generateKey(8), nil))
 	app.GET("/product/:id", parseParamStringId, createCurdApiGet[model.Product]())
 	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil,
-		"id", "name", "model", "desc", "username", "password", "disabled"))
+		"id", "name", "version", "desc", "properties", "functions", "events"))
 	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
 
 	//设备接口
