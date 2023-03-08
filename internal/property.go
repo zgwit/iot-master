@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v3/model"
-	"github.com/zgwit/iot-master/v3/mqtt"
+	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 )
 
 func mergeProperties(id string, properties []model.ValuePayload) {

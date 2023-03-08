@@ -3,9 +3,9 @@ package config
 import (
 	"github.com/zgwit/iot-master/v3/args"
 	"github.com/zgwit/iot-master/v3/broker"
-	"github.com/zgwit/iot-master/v3/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 	"gopkg.in/yaml.v3"
 	"os"
 )
