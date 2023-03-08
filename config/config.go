@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/zgwit/iot-master/v3/args"
+	"github.com/zgwit/iot-master/v3/broker"
 	"github.com/zgwit/iot-master/v3/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
@@ -11,11 +12,12 @@ import (
 
 // Configure 配置
 type Configure struct {
-	Oem      OEM          `yaml:"oem" json:"oem"`
-	Web      Web          `yaml:"web" json:"web"`
-	Log      log.Options  `yaml:"log" json:"log"`
-	Mqtt     mqtt.Options `yaml:"mqtt" json:"mqtt"`
-	Database db.Options   `yaml:"database" json:"database"`
+	Oem      OEM            `json:"oem"`
+	Web      Web            `json:"web"`
+	Broker   broker.Options `json:"broker"`
+	Log      log.Options    `json:"log"`
+	Mqtt     mqtt.Options   `json:"mqtt"`
+	Database db.Options     `json:"database"`
 }
 
 // Config 全局配置
@@ -29,13 +31,9 @@ var Config = Configure{
 	Web: Web{
 		Addr: ":8888",
 	},
-	Log: log.Default(),
-	Mqtt: mqtt.Options{
-		Listeners: []mqtt.MqttListener{
-			{Type: "tcp", Addr: ":1843"},
-			{Type: "unix", Addr: "iot-master.sock"},
-		},
-	},
+	Log:      log.Default(),
+	Mqtt:     mqtt.Default(),
+	Broker:   broker.Default(),
 	Database: db.Default(),
 }
 

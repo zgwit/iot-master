@@ -2,14 +2,20 @@ package main
 
 import (
 	"fmt"
+	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/kardianos/service"
 	"github.com/zgwit/iot-master/v3/args"
+	"github.com/zgwit/iot-master/v3/broker"
 	"github.com/zgwit/iot-master/v3/config"
+	"github.com/zgwit/iot-master/v3/internal"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v3/pkg/vconn"
 	"github.com/zgwit/iot-master/v3/web"
+	"net"
+	"net/url"
 	"os"
 	"os/signal"
 	"syscall"
@@ -143,21 +149,45 @@ func originMain() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	err = broker.Open(config.Config.Broker)
+	if err != nil {
+		return
+	}
+	defer broker.Close()
+
+	if broker.Server != nil {
+		err := mqtt.OpenBy(
+			func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
+				c1, c2 := vconn.New()
+				//EstablishConnection会读取connect，导致拥堵
+				go func() {
+					err := broker.Server.EstablishConnection("internal", c1)
+					if err != nil {
+						log.Error(err)
+					}
+				}()
+				return c2, nil
+			})
+		if err != nil {
+			return
+		}
+
+	} else {
+		//MQTT总线
+		err = mqtt.Open(config.Config.Mqtt)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer mqtt.Close()
+	}
 
 	//加载主程序
-	//err = core.Start()
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//defer core.Stop()
-
-	//MQTT总线
-	err = mqtt.Open(config.Config.Mqtt)
+	err = internal.Open()
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer mqtt.Close()
-
+	defer internal.Close()
+	
 	//判断是否开启Web
 	web.Serve(config.Config.Web)
 }

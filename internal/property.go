@@ -1,17 +1,17 @@
-package mqtt
+package internal
 
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/v3/internal"
 	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/mqtt"
 )
 
 func mergeProperties(id string, properties []model.ValuePayload) {
-	dev := internal.Devices.Load(id)
+	dev := Devices.Load(id)
 	if dev == nil {
-		dev = internal.NewDevice(id)
-		internal.Devices.Store(id, dev)
+		dev = NewDevice(id)
+		Devices.Store(id, dev)
 	}
 	//合并数据
 	for _, p := range properties {
@@ -20,7 +20,7 @@ func mergeProperties(id string, properties []model.ValuePayload) {
 }
 
 func subscribeProperty() error {
-	Client.Subscribe("up/property/+/+", 0, func(client paho.Client, message paho.Message) {
+	mqtt.Client.Subscribe("up/property/+/+", 0, func(client paho.Client, message paho.Message) {
 		var payload model.UpPropertyPayload
 		err := json.Unmarshal(message.Payload(), &payload)
 		if err != nil {
