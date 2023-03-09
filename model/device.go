@@ -8,7 +8,7 @@ type Device struct {
 	Id        string    `json:"id" xorm:"pk"` //ClientID
 	ProductId string    `json:"product_id"`
 	DeviceId  string    `json:"device_id" xorm:"index"` //父设备
-	IsGateway string    `json:"is_gateway"`             //网关设备，有mqtt用户名，密码
+	Type      string    `json:"type"`                   //网关/设备/子设备
 	Name      string    `json:"name"`
 	Desc      string    `json:"desc"`
 	Username  string    `json:"username"`

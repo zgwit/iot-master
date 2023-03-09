@@ -124,7 +124,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/device/create", createCurdApiCreate[model.Device](generateKey(12), nil))
 	app.GET("/device/:id", parseParamStringId, createCurdApiGet[model.Device]())
 	app.POST("/device/:id", parseParamStringId, createCurdApiModify[model.Device](nil, nil,
-		"id", "device_id", "product_id", "is_gateway", "name", "desc", "username", "password", "disabled"))
+		"id", "device_id", "product_id", "type", "name", "desc", "username", "password", "disabled"))
 	app.GET("/device/:id/delete", parseParamStringId, createCurdApiDelete[model.Device](nil, nil))
 
 	app.GET("/device/:id/properties", parseParamStringId, deviceProperties)
