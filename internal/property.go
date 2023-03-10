@@ -7,7 +7,7 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 )
 
-func mergeProperties(id string, properties []model.ValuePayload) {
+func mergeProperties(id string, properties []model.PayloadValue) {
 	dev := Devices.Load(id)
 	if dev == nil {
 		dev = NewDevice(id)
@@ -21,7 +21,7 @@ func mergeProperties(id string, properties []model.ValuePayload) {
 
 func subscribeProperty() error {
 	mqtt.Client.Subscribe("up/property/+/+", 0, func(client paho.Client, message paho.Message) {
-		var payload model.UpPropertyPayload
+		var payload model.PayloadPropertyUp
 		err := json.Unmarshal(message.Payload(), &payload)
 		if err != nil {
 			return

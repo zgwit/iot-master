@@ -84,7 +84,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	//_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user.Id, Event: model.Event{Type: "登录"}})
+	//_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user.Id, ModEvent: model.ModEvent{Type: "登录"}})
 
 	//存入session
 	session.Set("user", user.Id)
@@ -102,7 +102,7 @@ func logout(ctx *gin.Context) {
 	}
 
 	//user := u.(int64)
-	//_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user, Event: model.Event{Type: "退出"}})
+	//_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user, ModEvent: model.ModEvent{Type: "退出"}})
 
 	session.Clear()
 	_ = session.Save()
