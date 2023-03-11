@@ -11,5 +11,5 @@ func deviceProperties(ctx *gin.Context) {
 		replyFail(ctx, "设备未上线")
 		return
 	}
-	replyOk(ctx, device.Properties)
+	replyOk(ctx, device.Values)
 }

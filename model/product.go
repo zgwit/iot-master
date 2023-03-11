@@ -17,7 +17,7 @@ type Product struct {
 }
 
 //type Model struct {
-//	Properties []ModProperty `json:"properties" xorm:"json"`
+//	Values []ModProperty `json:"properties" xorm:"json"`
 //	Functions  []ModFunction `json:"functions" xorm:"json"`
 //	Events     []ModEvent    `json:"events" xorm:"json"`
 //}

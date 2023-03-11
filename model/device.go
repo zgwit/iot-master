@@ -7,7 +7,7 @@ import (
 type Device struct {
 	Id         string             `json:"id" xorm:"pk"` //ClientID
 	ProductId  string             `json:"product_id" xorm:"index"`
-	DeviceId   string             `json:"device_id" xorm:"index"` //父设备
+	ParentId   string             `json:"parent_id" xorm:"index"` //父设备
 	Type       string             `json:"type"`                   //网关/设备/子设备 gateway device subset
 	Name       string             `json:"name"`
 	Desc       string             `json:"desc"`

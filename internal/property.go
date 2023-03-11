@@ -15,7 +15,7 @@ func mergeProperties(id string, properties []model.PayloadValue) {
 	}
 	//合并数据
 	for _, p := range properties {
-		dev.Properties[p.Name] = p.Value
+		dev.Values[p.Name] = p.Value
 	}
 }
 

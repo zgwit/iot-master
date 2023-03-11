@@ -16,24 +16,24 @@ type Product struct {
 	values map[string]float64
 }
 
-func Load(model *model.Product) error {
-	log.Info("load product", model.Id, model.Name)
-	pro := &Product{
-		model:  model,
+func LoadProduct(product *model.Product) error {
+	log.Info("load product", product.Id, product.Name)
+	p := &Product{
+		model:  product,
 		values: map[string]float64{},
 	}
-	for _, c := range model.Constraints {
+	for _, c := range product.Constraints {
 		eval, err := calc.New(c.Expression)
 		if err != nil {
 			return err
 		}
-		pro.eval = append(pro.eval, eval)
+		p.eval = append(p.eval, eval)
 	}
-	for _, p := range model.Parameters {
-		pro.values[p.Name] = p.Default
+	for _, param := range product.Parameters {
+		p.values[param.Name] = param.Default
 	}
 
-	Products.Store(model.Id, pro)
+	Products.Store(product.Id, p)
 
 	return nil
 }

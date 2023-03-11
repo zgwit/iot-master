@@ -16,34 +16,66 @@ import (
 var Devices lib.Map[Device]
 
 type Device struct {
-	Id         string
-	Online     bool
-	Last       time.Time
-	Properties map[string]any
-	Product    *Product
-	checkers   []*Constraint
+	Id          string
+	Online      bool
+	Last        time.Time
+	Values      map[string]any
+	product     *Product
+	constraints []*Constraint
 }
 
 type Constraint struct {
 	constraint *model.ModConstraint
 	eval       gval.Evaluable //当修改产品信息时，需要同步设备参数，用 重载？？？
-	again      bool
-	start      int64 //
-	total      uint
+	//again      bool
+	start int64 //开始时间s
+	total uint  //报警次数
 }
 
 func NewDevice(id string) *Device {
 	//time.Now().Unix()
 	return &Device{
-		Id:         id,
-		Properties: make(map[string]any),
-		checkers:   make([]*Constraint, 0),
+		Id:          id,
+		Values:      make(map[string]any),
+		constraints: make([]*Constraint, 0),
 	}
 }
 
+func LoadDevice(device *model.Device) error {
+	d := &Device{
+		Id:     device.Id,
+		Values: make(map[string]any),
+	}
+
+	p := Products.Load(device.ProductId)
+	if p == nil {
+		return nil
+	}
+	//复制基础变量
+	for k, v := range p.values {
+		d.Values[k] = v
+	}
+	//复制设备变量
+	for k, v := range device.Parameters {
+		d.Values[k] = v
+	}
+
+	//构建约束器
+	for k, v := range p.eval {
+		c := &Constraint{
+			constraint: &p.model.Constraints[k],
+			eval:       v,
+		}
+		d.constraints = append(d.constraints, c)
+	}
+
+	Devices.Store(device.Id, d)
+	return nil
+}
+
 func (d *Device) Constrain() {
-	for _, e := range d.checkers {
-		ret, err := e.eval.EvalBool(context.Background(), d.Properties)
+	for _, e := range d.constraints {
+		ret, err := e.eval.EvalBool(context.Background(), d.Values)
 		if err != nil {
 			log.Error(err)
 			continue
@@ -88,7 +120,7 @@ func (d *Device) Constrain() {
 		}
 
 		//mqtt广播
-		topic := fmt.Sprintf("alarm/%s/%s", d.Product.model.Id, d.Id)
+		topic := fmt.Sprintf("alarm/%s/%s", d.product.model.Id, d.Id)
 		payload, _ := json.Marshal(alarm)
 		err = mqtt.Publish(topic, payload, false, 0)
 		if err != nil {
