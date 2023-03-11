@@ -4,6 +4,7 @@ import (
 	"github.com/PaesslerAG/gval"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/calc"
+	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 )
@@ -17,7 +18,7 @@ type Product struct {
 }
 
 func LoadProduct(product *model.Product) error {
-	log.Info("load product", product.Id, product.Name)
+	//log.Info("load product", product.Id, product.Name)
 	p := &Product{
 		model:  product,
 		values: map[string]float64{},
@@ -39,7 +40,20 @@ func LoadProduct(product *model.Product) error {
 }
 
 func LoadProducts() error {
-	//开机加载所有产品，好像没有必要
+	//开机加载所有产品，好像没有必要???
+	var ps []*model.Product
+	err := db.Engine.Find(&ps)
+	if err != nil {
+		return err
+	}
+
+	for _, p := range ps {
+		err = LoadProduct(p)
+		if err != nil {
+			log.Error(err)
+			//return err
+		}
+	}
 
 	return nil
 }

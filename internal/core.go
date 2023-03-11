@@ -2,8 +2,13 @@ package internal
 
 func Open() error {
 
+	err := LoadProducts()
+	if err != nil {
+		return err
+	}
+
 	//webServe(fmt.Sprintf(":%d", config.Config.Web))
-	err := subscribeMaster()
+	err = subscribeMaster()
 	if err != nil {
 		return err
 	}

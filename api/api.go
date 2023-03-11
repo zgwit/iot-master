@@ -127,7 +127,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		"id", "parent_id", "product_id", "type", "name", "desc", "username", "password", "disabled"))
 	app.GET("/device/:id/delete", parseParamStringId, createCurdApiDelete[model.Device](nil, nil))
 
-	app.GET("/device/:id/properties", parseParamStringId, deviceProperties)
+	app.GET("/device/:id/values", parseParamStringId, deviceValues)
 
 	//报警日志
 	app.POST("/alarm/search", createCurdApiSearch[model.Alarm]())

@@ -21,12 +21,12 @@ type Device struct {
 	Last        time.Time
 	Values      map[string]any
 	product     *Product
-	constraints []*Constraint
+	constraints []*constraint
 }
 
-type Constraint struct {
-	constraint *model.ModConstraint
-	eval       gval.Evaluable //当修改产品信息时，需要同步设备参数，用 重载？？？
+type constraint struct {
+	model *model.ModConstraint
+	eval  gval.Evaluable //当修改产品信息时，需要同步设备参数，用 重载？？？
 	//again      bool
 	start int64 //开始时间s
 	total uint  //报警次数
@@ -37,7 +37,7 @@ func NewDevice(id string) *Device {
 	return &Device{
 		Id:          id,
 		Values:      make(map[string]any),
-		constraints: make([]*Constraint, 0),
+		constraints: make([]*constraint, 0),
 	}
 }
 
@@ -62,9 +62,9 @@ func LoadDevice(device *model.Device) error {
 
 	//构建约束器
 	for k, v := range p.eval {
-		c := &Constraint{
-			constraint: &p.model.Constraints[k],
-			eval:       v,
+		c := &constraint{
+			model: &p.model.Constraints[k],
+			eval:  v,
 		}
 		d.constraints = append(d.constraints, c)
 	}
@@ -87,7 +87,7 @@ func (d *Device) Constrain() {
 			continue
 		}
 
-		cs := e.constraint
+		cs := e.model
 
 		now := time.Now().Unix()
 		//延迟报警
