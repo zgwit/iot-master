@@ -14,6 +14,7 @@ type Alarm struct {
 
 type ModParameter struct {
 	Name    string  `json:"name"`
+	Label   string  `json:"label"`
 	Min     float64 `json:"min,omitempty"`
 	Max     float64 `json:"max,omitempty"`
 	Default float64 `json:"default"`

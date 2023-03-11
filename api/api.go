@@ -115,7 +115,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/product/create", createCurdApiCreate[model.Product](generateKey(8), nil))
 	app.GET("/product/:id", parseParamStringId, createCurdApiGet[model.Product]())
 	app.POST("/product/:id", parseParamStringId, createCurdApiModify[model.Product](nil, nil,
-		"id", "name", "version", "desc", "properties", "functions", "events"))
+		"id", "name", "version", "desc", "properties", "functions", "events", "parameters", "constraints"))
 	app.GET("/product/:id/delete", parseParamStringId, createCurdApiDelete[model.Product](nil, nil))
 
 	//设备接口
@@ -124,10 +124,11 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/device/create", createCurdApiCreate[model.Device](generateKey(12), nil))
 	app.GET("/device/:id", parseParamStringId, createCurdApiGet[model.Device]())
 	app.POST("/device/:id", parseParamStringId, createCurdApiModify[model.Device](nil, nil,
-		"id", "parent_id", "product_id", "type", "name", "desc", "username", "password", "disabled"))
+		"id", "parent_id", "product_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
 	app.GET("/device/:id/delete", parseParamStringId, createCurdApiDelete[model.Device](nil, nil))
 
 	app.GET("/device/:id/values", parseParamStringId, deviceValues)
+	app.POST("/device/:id/parameters", parseParamStringId, deviceParameters)
 
 	//报警日志
 	app.POST("/alarm/search", createCurdApiSearch[model.Alarm]())
