@@ -4,14 +4,21 @@ import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 )
 
 func mergeProperties(id string, properties []model.PayloadValue) {
 	dev := Devices.Load(id)
 	if dev == nil {
-		dev = NewDevice(id)
-		Devices.Store(id, dev)
+		//加载设备
+		err := LoadDeviceById(id)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+
+		dev = Devices.Load(id)
 	}
 	//合并数据
 	for _, p := range properties {

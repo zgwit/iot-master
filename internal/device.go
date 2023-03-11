@@ -41,6 +41,18 @@ func NewDevice(id string) *Device {
 	}
 }
 
+func LoadDeviceById(id string) error {
+	var dev model.Device
+	get, err := db.Engine.ID(id).Get(&dev)
+	if err != nil {
+		return err
+	}
+	if !get {
+		return fmt.Errorf("device %s not found", id)
+	}
+	return LoadDevice(&dev)
+}
+
 func LoadDevice(device *model.Device) error {
 	d := &Device{
 		Id:     device.Id,
@@ -49,8 +61,9 @@ func LoadDevice(device *model.Device) error {
 
 	p := Products.Load(device.ProductId)
 	if p == nil {
-		return nil
+		return fmt.Errorf("product %s not found", device.ProductId)
 	}
+
 	//复制基础变量
 	for k, v := range p.values {
 		d.Values[k] = v
