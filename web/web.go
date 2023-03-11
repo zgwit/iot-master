@@ -8,13 +8,13 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger"
 	"github.com/zgwit/iot-master/v3/api"
 	"github.com/zgwit/iot-master/v3/args"
 	"github.com/zgwit/iot-master/v3/config"
 	"github.com/zgwit/iot-master/v3/docs"
 	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/swagger-files"
 	"mime"
 	"net/http"
 	"path"
@@ -68,7 +68,7 @@ func Serve(cfg config.Web) {
 	api.RegisterRoutes(app.Group("/api"))
 
 	docs.SwaggerInfo.BasePath = "/api"
-	app.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	app.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//app.Any("/app/:id/*path", appProxy)
 

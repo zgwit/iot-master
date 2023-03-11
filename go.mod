@@ -17,10 +17,10 @@ require (
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/sirupsen/logrus v1.9.0
 	github.com/super-l/machine-code v0.0.0-20210720085303-62525d58dab0
-	github.com/swaggo/files v1.0.0
 	github.com/swaggo/gin-swagger v1.5.3
 	github.com/swaggo/swag v1.8.10
 	github.com/syndtr/goleveldb v1.0.0
+	github.com/zgwit/swagger-files v1.0.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1
 	xorm.io/builder v0.3.12
@@ -60,6 +60,7 @@ require (
 	github.com/rs/xid v1.4.0 // indirect
 	github.com/rs/zerolog v1.29.0 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
+	github.com/swaggo/files v1.0.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
