@@ -129,6 +129,13 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	app.GET("/device/:id/properties", parseParamStringId, deviceProperties)
 
+	//报警日志
+	app.POST("/alarm/search", createCurdApiSearch[model.Alarm]())
+	app.GET("/alarm/list", createCurdApiList[model.Alarm]())
+	app.GET("/alarm/:id", parseParamId, createCurdApiGet[model.Alarm]())
+	app.GET("/alarm/:id/delete", parseParamId, createCurdApiDelete[model.Alarm](nil, nil))
+	app.GET("/alarm/:id/read", parseParamId, alarmRead)
+
 	//服务器接口
 	app.POST("/server/search", createCurdApiSearch[model.Server]())
 	app.GET("/server/list", createCurdApiList[model.Server]())
