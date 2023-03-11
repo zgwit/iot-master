@@ -1,0 +1,8 @@
+basePath: /api/  基础路径
+info:
+  contact: {}
+  description: API文档
+  title: 物联大师接口文档
+  version: 1.0 版本
+paths: {}
+swagger: "2.0"
