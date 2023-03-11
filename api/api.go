@@ -124,11 +124,20 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.POST("/device/create", createCurdApiCreate[model.Device](generateKey(12), nil))
 	app.GET("/device/:id", parseParamStringId, createCurdApiGet[model.Device]())
 	app.POST("/device/:id", parseParamStringId, createCurdApiModify[model.Device](nil, nil,
-		"id", "parent_id", "product_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
+		"id", "gateway_id", "product_id", "group_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
 	app.GET("/device/:id/delete", parseParamStringId, createCurdApiDelete[model.Device](nil, nil))
 
 	app.GET("/device/:id/values", parseParamStringId, deviceValues)
 	app.POST("/device/:id/parameters", parseParamStringId, deviceParameters)
+
+	//设备分组接口
+	app.POST("/group/search", createCurdApiSearch[model.Group]())
+	app.GET("/group/list", createCurdApiList[model.Group]())
+	app.POST("/group/create", createCurdApiCreate[model.Group](nil, nil))
+	app.GET("/group/:id", parseParamId, createCurdApiGet[model.Group]())
+	app.POST("/group/:id", parseParamId, createCurdApiModify[model.Group](nil, nil,
+		"name", "desc"))
+	app.GET("/group/:id/delete", parseParamId, createCurdApiDelete[model.Group](nil, nil))
 
 	//报警日志
 	app.POST("/alarm/search", createCurdApiSearch[model.Alarm]())

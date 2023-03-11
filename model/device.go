@@ -5,10 +5,11 @@ import (
 )
 
 type Device struct {
-	Id         string             `json:"id" xorm:"pk"` //ClientID
+	Id         string             `json:"id" xorm:"pk"`            //ClientID
+	GatewayId  string             `json:"gateway_id" xorm:"index"` //父设备
 	ProductId  string             `json:"product_id" xorm:"index"`
-	ParentId   string             `json:"parent_id" xorm:"index"` //父设备
-	Type       string             `json:"type"`                   //网关/设备/子设备 gateway device subset
+	GroupId    int64              `json:"group_id" xorm:"index"` //分组
+	Type       string             `json:"type"`                  //网关/设备/子设备 gateway device subset
 	Name       string             `json:"name"`
 	Desc       string             `json:"desc"`
 	Username   string             `json:"username"`
