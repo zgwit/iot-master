@@ -18,12 +18,127 @@ definitions:
           type: integer
         type: object
     type: object
+  curd.ReplyData-model_Alarm:
+    properties:
+      data:
+        $ref: '#/definitions/model.Alarm'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_Device:
+    properties:
+      data:
+        $ref: '#/definitions/model.Device'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_Group:
+    properties:
+      data:
+        $ref: '#/definitions/model.Group'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_Plugin:
+    properties:
+      data:
+        $ref: '#/definitions/model.Plugin'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_Product:
+    properties:
+      data:
+        $ref: '#/definitions/model.Product'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_Server:
+    properties:
+      data:
+        $ref: '#/definitions/model.Server'
+      error:
+        type: string
+    type: object
   curd.ReplyData-model_User:
     properties:
       data:
         $ref: '#/definitions/model.User'
       error:
         type: string
+    type: object
+  curd.ReplyData-model_Variables:
+    properties:
+      data:
+        $ref: '#/definitions/model.Variables'
+      error:
+        type: string
+    type: object
+  curd.ReplyList-model_Alarm:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Alarm'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_Device:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Device'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_Group:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Group'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_Plugin:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Plugin'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_Product:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Product'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_Server:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Server'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
     type: object
   curd.ReplyList-model_User:
     properties:
@@ -34,6 +149,234 @@ definitions:
       error:
         type: string
       total:
+        type: integer
+    type: object
+  model.Alarm:
+    properties:
+      created:
+        type: string
+      device_id:
+        type: string
+      id:
+        type: integer
+      level:
+        type: integer
+      message:
+        type: string
+      read:
+        type: boolean
+      title:
+        type: string
+    type: object
+  model.Device:
+    properties:
+      created:
+        type: string
+      desc:
+        type: string
+      disabled:
+        type: boolean
+      gateway_id:
+        description: 父设备
+        type: string
+      group_id:
+        description: 分组
+        type: integer
+      id:
+        description: ClientID
+        type: string
+      name:
+        type: string
+      parameters:
+        additionalProperties:
+          type: number
+        description: 模型参数，用于报警检查
+        type: object
+      password:
+        type: string
+      product_id:
+        type: string
+      type:
+        description: 网关/设备/子设备 gateway device subset
+        type: string
+      username:
+        type: string
+    type: object
+  model.Group:
+    properties:
+      created:
+        type: string
+      desc:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.ModArgument:
+    properties:
+      desc:
+        type: string
+      label:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      unit:
+        type: string
+    type: object
+  model.ModConstraint:
+    properties:
+      again:
+        description: 再次提醒间隔s
+        type: integer
+      delay:
+        description: 延迟时间s
+        type: integer
+      expression:
+        type: string
+      level:
+        type: integer
+      template:
+        type: string
+      title:
+        type: string
+      total:
+        description: 总提醒次数
+        type: integer
+    type: object
+  model.ModEvent:
+    properties:
+      desc:
+        type: string
+      label:
+        type: string
+      name:
+        type: string
+      output:
+        items:
+          $ref: '#/definitions/model.ModArgument'
+        type: array
+      type:
+        description: info alert error //Level  uint8         `json:"level"`
+        type: string
+    type: object
+  model.ModFunction:
+    properties:
+      async:
+        type: boolean
+      desc:
+        type: string
+      input:
+        items:
+          $ref: '#/definitions/model.ModArgument'
+        type: array
+      label:
+        type: string
+      name:
+        type: string
+      output:
+        items:
+          $ref: '#/definitions/model.ModArgument'
+        type: array
+    type: object
+  model.ModParameter:
+    properties:
+      default:
+        type: number
+      label:
+        type: string
+      max:
+        type: number
+      min:
+        type: number
+      name:
+        type: string
+    type: object
+  model.ModProperty:
+    properties:
+      desc:
+        type: string
+      label:
+        type: string
+      mode:
+        description: r w rw
+        type: string
+      name:
+        type: string
+      type:
+        description: int float ....
+        type: string
+      unit:
+        type: string
+    type: object
+  model.Plugin:
+    properties:
+      command:
+        type: string
+      created:
+        type: string
+      dependencies:
+        additionalProperties:
+          type: string
+        type: object
+      disabled:
+        type: boolean
+      id:
+        type: string
+      name:
+        type: string
+      version:
+        type: string
+    type: object
+  model.Product:
+    properties:
+      constraints:
+        items:
+          $ref: '#/definitions/model.ModConstraint'
+        type: array
+      created:
+        type: string
+      desc:
+        type: string
+      events:
+        items:
+          $ref: '#/definitions/model.ModEvent'
+        type: array
+      functions:
+        items:
+          $ref: '#/definitions/model.ModFunction'
+        type: array
+      id:
+        type: string
+      name:
+        type: string
+      parameters:
+        items:
+          $ref: '#/definitions/model.ModParameter'
+        type: array
+      properties:
+        items:
+          $ref: '#/definitions/model.ModProperty'
+        type: array
+      version:
+        type: string
+    type: object
+  model.Server:
+    properties:
+      created:
+        type: string
+      desc:
+        type: string
+      disabled:
+        type: boolean
+      id:
+        type: integer
+      name:
+        type: string
+      port:
+        description: TODO 添加TLS证书
         type: integer
     type: object
   model.User:
@@ -51,12 +394,824 @@ definitions:
       username:
         type: string
     type: object
+  model.Variables:
+    additionalProperties: {}
+    type: object
 info:
   contact: {}
   description: API文档
   title: 物联大师接口文档
   version: 1.0 版本
 paths:
+  /alarm/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改报警
+      parameters:
+      - description: 报警ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 报警信息
+        in: body
+        name: alarm
+        required: true
+        schema:
+          $ref: '#/definitions/model.Alarm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Alarm'
+      summary: 修改报警
+      tags:
+      - alarm
+  /alarm/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除报警
+      parameters:
+      - description: 报警ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Alarm'
+      summary: 删除报警
+      tags:
+      - alarm
+  /alarm/{id}/read:
+    get:
+      consumes:
+      - application/json
+      description: 阅读报警
+      parameters:
+      - description: 报警ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Alarm'
+      summary: 阅读报警
+      tags:
+      - alarm
+  /alarm/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询报警
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Alarm'
+      summary: 查询报警
+      tags:
+      - alarm
+  /alarm/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询报警
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Alarm'
+      summary: 查询报警
+      tags:
+      - alarm
+  /device/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改设备
+      parameters:
+      - description: 设备ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 设备信息
+        in: body
+        name: device
+        required: true
+        schema:
+          $ref: '#/definitions/model.Device'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Device'
+      summary: 修改设备
+      tags:
+      - device
+  /device/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除设备
+      parameters:
+      - description: 设备ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Device'
+      summary: 删除设备
+      tags:
+      - device
+  /device/{id}/parameters:
+    post:
+      consumes:
+      - application/json
+      description: 修改设备参数
+      parameters:
+      - description: 设备ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Device'
+      summary: 修改设备参数
+      tags:
+      - device
+  /device/{id}/values:
+    get:
+      consumes:
+      - application/json
+      description: 设备变量
+      parameters:
+      - description: 设备ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Variables'
+      summary: 设备变量
+      tags:
+      - device
+  /device/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建设备
+      parameters:
+      - description: 设备信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Device'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Device'
+      summary: 创建设备
+      tags:
+      - device
+  /device/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询设备
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Device'
+      summary: 查询设备
+      tags:
+      - device
+  /device/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询设备
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Device'
+      summary: 查询设备
+      tags:
+      - device
+  /group/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改分组
+      parameters:
+      - description: 分组ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 分组信息
+        in: body
+        name: group
+        required: true
+        schema:
+          $ref: '#/definitions/model.Group'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Group'
+      summary: 修改分组
+      tags:
+      - group
+  /group/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除分组
+      parameters:
+      - description: 分组ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Group'
+      summary: 删除分组
+      tags:
+      - group
+  /group/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建分组
+      parameters:
+      - description: 分组信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Group'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Group'
+      summary: 创建分组
+      tags:
+      - group
+  /group/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询分组
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Group'
+      summary: 查询分组
+      tags:
+      - group
+  /group/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询分组
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Group'
+      summary: 查询分组
+      tags:
+      - group
+  /plugin/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改插件
+      parameters:
+      - description: 插件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 插件信息
+        in: body
+        name: plugin
+        required: true
+        schema:
+          $ref: '#/definitions/model.Plugin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+      summary: 修改插件
+      tags:
+      - plugin
+  /plugin/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除插件
+      parameters:
+      - description: 插件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+      summary: 删除插件
+      tags:
+      - plugin
+  /plugin/{id}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用插件
+      parameters:
+      - description: 插件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+      summary: 禁用插件
+      tags:
+      - plugin
+  /plugin/{id}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用插件
+      parameters:
+      - description: 插件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+      summary: 启用插件
+      tags:
+      - plugin
+  /plugin/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建插件
+      parameters:
+      - description: 插件信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Plugin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+      summary: 创建插件
+      tags:
+      - plugin
+  /plugin/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询插件
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Plugin'
+      summary: 查询插件
+      tags:
+      - plugin
+  /plugin/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询插件
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Plugin'
+      summary: 查询插件
+      tags:
+      - plugin
+  /product/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改产品
+      parameters:
+      - description: 产品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 产品信息
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/model.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Product'
+      summary: 修改产品
+      tags:
+      - product
+  /product/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除产品
+      parameters:
+      - description: 产品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Product'
+      summary: 删除产品
+      tags:
+      - product
+  /product/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建产品
+      parameters:
+      - description: 产品信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Product'
+      summary: 创建产品
+      tags:
+      - product
+  /product/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询产品
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Product'
+      summary: 查询产品
+      tags:
+      - product
+  /product/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询产品
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Product'
+      summary: 查询产品
+      tags:
+      - product
+  /server/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改服务器
+      parameters:
+      - description: 服务器ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 服务器信息
+        in: body
+        name: server
+        required: true
+        schema:
+          $ref: '#/definitions/model.Server'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Server'
+      summary: 修改服务器
+      tags:
+      - server
+  /server/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除服务器
+      parameters:
+      - description: 服务器ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Server'
+      summary: 删除服务器
+      tags:
+      - server
+  /server/{id}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用服务器
+      parameters:
+      - description: 服务器ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Server'
+      summary: 禁用服务器
+      tags:
+      - server
+  /server/{id}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用服务器
+      parameters:
+      - description: 服务器ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Server'
+      summary: 启用服务器
+      tags:
+      - server
+  /server/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建服务器
+      parameters:
+      - description: 服务器信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Server'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Server'
+      summary: 创建服务器
+      tags:
+      - server
+  /server/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询服务器
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Server'
+      summary: 查询服务器
+      tags:
+      - server
+  /server/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询服务器
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Server'
+      summary: 查询服务器
+      tags:
+      - server
   /user/{id}:
     post:
       consumes:

@@ -7,6 +7,62 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
+// @Summary 查询报警
+// @Schemes
+// @Description 查询报警
+// @Tags alarm
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyList[model.Alarm] 返回报警信息
+// @Router /alarm/search [post]
+func noopAlarmSearch() {}
+
+// @Summary 查询报警
+// @Schemes
+// @Description 查询报警
+// @Tags alarm
+// @Param search query curd.ParamList true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyList[model.Alarm] 返回报警信息
+// @Router /alarm/list [get]
+func noopAlarmList() {}
+
+// @Summary 修改报警
+// @Schemes
+// @Description 修改报警
+// @Tags alarm
+// @Param id path int true "报警ID"
+// @Param alarm body model.Alarm true "报警信息"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Alarm] 返回报警信息
+// @Router /alarm/{id} [post]
+func noopAlarmUpdate() {}
+
+// @Summary 删除报警
+// @Schemes
+// @Description 删除报警
+// @Tags alarm
+// @Param id path int true "报警ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Alarm] 返回报警信息
+// @Router /alarm/{id}/delete [get]
+func noopAlarmDelete() {}
+
+// @Summary 阅读报警
+// @Schemes
+// @Description 阅读报警
+// @Tags alarm
+// @Param id path int true "报警ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Alarm] 返回报警信息
+// @Router /alarm/{id}/read [get]
+func noopAlarmRead() {}
+
 func alarmRouter(app *gin.RouterGroup) {
 
 	app.POST("/search", curd.ApiSearch[model.Alarm]())
