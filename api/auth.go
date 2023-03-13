@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
@@ -13,24 +14,24 @@ func auth(ctx *gin.Context) {
 	var user model.User
 	has, err := db.Engine.Where("username=?", username).Get(&user)
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 
 	if !has {
-		replyFail(ctx, "找不到用户")
+		curd.Fail(ctx, "找不到用户")
 		return
 	}
 
 	if user.Disabled {
-		replyFail(ctx, "用户已禁用")
+		curd.Fail(ctx, "用户已禁用")
 		return
 	}
 
 	var obj model.Password
 	has, err = db.Engine.ID(user.Id).Get(&obj)
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 
@@ -41,7 +42,7 @@ func auth(ctx *gin.Context) {
 	}
 
 	if obj.Password != password {
-		replyFail(ctx, "密码错误")
+		curd.Fail(ctx, "密码错误")
 		return
 	}
 
@@ -51,7 +52,7 @@ func auth(ctx *gin.Context) {
 		return
 	}
 
-	replyOk(ctx, gin.H{
+	curd.OK(ctx, gin.H{
 		token: token,
 	})
 }

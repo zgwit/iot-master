@@ -1,4 +1,4 @@
-package api
+package curd
 
 import (
 	"github.com/gin-gonic/gin"
@@ -8,7 +8,7 @@ import (
 	"xorm.io/xorm"
 )
 
-type paramSearchEx struct {
+type ParamSearch struct {
 	Skip     int                    `form:"skip" json:"skip"`
 	Limit    int                    `form:"limit" json:"limit"`
 	Sort     map[string]int         `form:"sort" json:"sort"`
@@ -16,7 +16,7 @@ type paramSearchEx struct {
 	Keywords map[string]string      `form:"keyword" json:"keyword"`
 }
 
-func (body *paramSearchEx) toQuery() *xorm.Session {
+func (body *ParamSearch) ToQuery() *xorm.Session {
 	if body.Limit < 1 {
 		body.Limit = 20
 	}
@@ -68,18 +68,18 @@ func (body *paramSearchEx) toQuery() *xorm.Session {
 	return op
 }
 
-type paramId struct {
+type ParamId struct {
 	Id int64 `uri:"id"`
 }
-type paramStringId struct {
+type ParamStringId struct {
 	Id string `uri:"id"`
 }
 
-func parseParamId(ctx *gin.Context) {
-	var pid paramId
+func ParseParamId(ctx *gin.Context) {
+	var pid ParamId
 	err := ctx.ShouldBindUri(&pid)
 	if err != nil {
-		replyError(ctx, err)
+		Error(ctx, err)
 		ctx.Abort()
 		return
 	}
@@ -87,11 +87,11 @@ func parseParamId(ctx *gin.Context) {
 	ctx.Next()
 }
 
-func parseParamStringId(ctx *gin.Context) {
-	var pid paramStringId
+func ParseParamStringId(ctx *gin.Context) {
+	var pid ParamStringId
 	err := ctx.ShouldBindUri(&pid)
 	if err != nil {
-		replyError(ctx, err)
+		Error(ctx, err)
 		ctx.Abort()
 		return
 	}
@@ -99,12 +99,12 @@ func parseParamStringId(ctx *gin.Context) {
 	ctx.Next()
 }
 
-type paramList struct {
+type ParamList struct {
 	Skip  int `form:"skip" json:"skip"`
 	Limit int `form:"limit" json:"limit"`
 }
 
-func (body *paramList) toQuery() *xorm.Session {
+func (body *ParamList) ToQuery() *xorm.Session {
 	if body.Limit < 1 {
 		body.Limit = 20
 	}

@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
@@ -27,14 +28,14 @@ func login(ctx *gin.Context) {
 
 	var obj loginObj
 	if err := ctx.ShouldBindJSON(&obj); err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 
 	var user model.User
 	has, err := db.Engine.Where("username=?", obj.Username).Get(&user)
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 
@@ -45,24 +46,24 @@ func login(ctx *gin.Context) {
 			user.Name = "管理员"
 			_, err = db.Engine.InsertOne(&user)
 			if err != nil {
-				replyError(ctx, err)
+				curd.Error(ctx, err)
 				return
 			}
 		} else {
-			replyFail(ctx, "找不到用户")
+			curd.Fail(ctx, "找不到用户")
 			return
 		}
 	}
 
 	if user.Disabled {
-		replyFail(ctx, "用户已禁用")
+		curd.Fail(ctx, "用户已禁用")
 		return
 	}
 
 	var password model.Password
 	has, err = db.Engine.ID(user.Id).Get(&password)
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 
@@ -74,13 +75,13 @@ func login(ctx *gin.Context) {
 		password.Password = md5hash(dp)
 		_, err = db.Engine.InsertOne(&password)
 		if err != nil {
-			replyError(ctx, err)
+			curd.Error(ctx, err)
 			return
 		}
 	}
 
 	if password.Password != obj.Password {
-		replyFail(ctx, "密码错误")
+		curd.Fail(ctx, "密码错误")
 		return
 	}
 
@@ -90,14 +91,14 @@ func login(ctx *gin.Context) {
 	session.Set("user", user.Id)
 	_ = session.Save()
 
-	replyOk(ctx, user)
+	curd.OK(ctx, user)
 }
 
 func logout(ctx *gin.Context) {
 	session := sessions.Default(ctx)
 	u := session.Get("user")
 	if u == nil {
-		replyFail(ctx, "未登录")
+		curd.Fail(ctx, "未登录")
 		return
 	}
 
@@ -106,7 +107,7 @@ func logout(ctx *gin.Context) {
 
 	session.Clear()
 	_ = session.Save()
-	replyOk(ctx, nil)
+	curd.OK(ctx, nil)
 }
 
 type passwordObj struct {
@@ -118,31 +119,31 @@ func password(ctx *gin.Context) {
 
 	var obj passwordObj
 	if err := ctx.ShouldBindJSON(&obj); err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 
 	var pwd model.Password
 	has, err := db.Engine.ID(ctx.GetInt64("user")).Get(&pwd)
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 	if !has {
-		replyFail(ctx, "用户不存在")
+		curd.Fail(ctx, "用户不存在")
 		return
 	}
 	if obj.Old != pwd.Password {
-		replyFail(ctx, "密码错误")
+		curd.Fail(ctx, "密码错误")
 		return
 	}
 
 	pwd.Password = obj.New //前端已经加密过
 	_, err = db.Engine.Cols("password").Update(&pwd)
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 
-	replyOk(ctx, nil)
+	curd.OK(ctx, nil)
 }

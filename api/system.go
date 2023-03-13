@@ -6,47 +6,48 @@ import (
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/mem"
 	"github.com/super-l/machine-code/machine"
+	"github.com/zgwit/iot-master/v3/pkg/curd"
 )
 
 func memStats(ctx *gin.Context) {
 	stat, err := mem.VirtualMemory()
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
-	replyOk(ctx, stat)
+	curd.OK(ctx, stat)
 }
 
 func cpuInfo(ctx *gin.Context) {
 	info, err := cpu.Info()
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 	if len(info) == 0 {
-		replyFail(ctx, "查询失败")
+		curd.Fail(ctx, "查询失败")
 		return
 	}
-	replyOk(ctx, info[0])
+	curd.OK(ctx, info[0])
 }
 
 func cpuStats(ctx *gin.Context) {
 	times, err := cpu.Times(false)
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 	if len(times) == 0 {
-		replyFail(ctx, "查询失败")
+		curd.Fail(ctx, "查询失败")
 		return
 	}
-	replyOk(ctx, times[0])
+	curd.OK(ctx, times[0])
 }
 
 func diskStats(ctx *gin.Context) {
 	partitions, err := disk.Partitions(false)
 	if err != nil {
-		replyError(ctx, err)
+		curd.Error(ctx, err)
 		return
 	}
 
@@ -54,17 +55,17 @@ func diskStats(ctx *gin.Context) {
 	for _, p := range partitions {
 		usage, err := disk.Usage(p.Mountpoint)
 		if err != nil {
-			replyError(ctx, err)
+			curd.Error(ctx, err)
 			return
 		}
 		usages = append(usages, usage)
 	}
-	replyOk(ctx, usages)
+	curd.OK(ctx, usages)
 }
 
 func machineInfo(ctx *gin.Context) {
 	info := machine.GetMachineData()
-	replyOk(ctx, gin.H{
+	curd.OK(ctx, gin.H{
 		"sn":   info.SerialNumber,
 		"mac":  info.Mac,
 		"uuid": info.PlatformUUID,
