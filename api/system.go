@@ -9,6 +9,15 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 )
 
+func systemRouter(app *gin.RouterGroup) {
+
+	app.GET("/cpu-info", cpuInfo)
+	app.GET("/cpu", cpuStats)
+	app.GET("/memory", memStats)
+	app.GET("/disk", diskStats)
+	app.GET("/machine", machineInfo)
+}
+
 func memStats(ctx *gin.Context) {
 	stat, err := mem.VirtualMemory()
 	if err != nil {

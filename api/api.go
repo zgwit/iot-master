@@ -97,89 +97,16 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/config", loadConfig)
 	app.POST("/config", saveConfig)
 
-	//用户接口
-	app.GET("/user/me", userMe)
-	app.POST("/user/search", curd.ApiSearch[model.User]())
-	app.GET("/user/list", curd.ApiList[model.User]())
-	app.POST("/user/create", curd.ParseParamId, curd.ApiCreate[model.User](nil, nil))
-	app.GET("/user/:id", curd.ParseParamId, curd.ApiGet[model.User]())
-	app.POST("/user/:id", curd.ParseParamId, curd.ApiModify[model.User](nil, nil,
-		"username", "name", "email", "disabled"))
-	app.GET("/user/:id/delete", curd.ParseParamId, curd.ApiDelete[model.User](nil, nil))
-	app.GET("/user/:id/password", curd.ParseParamId, userPassword)
-	app.GET("/user/:id/enable", curd.ParseParamId, curd.ApiDisable[model.User](false, nil, nil))
-	app.GET("/user/:id/disable", curd.ParseParamId, curd.ApiDisable[model.User](true, nil, nil))
-
-	//产品接口
-	app.POST("/product/search", curd.ApiSearch[model.Product]())
-	app.GET("/product/list", curd.ApiList[model.Product]())
-	app.POST("/product/create", curd.ApiCreate[model.Product](curd.GenerateRandomKey(8), nil))
-	app.GET("/product/:id", curd.ParseParamStringId, curd.ApiGet[model.Product]())
-	app.POST("/product/:id", curd.ParseParamStringId, curd.ApiModify[model.Product](nil, nil,
-		"id", "name", "version", "desc", "properties", "functions", "events", "parameters", "constraints"))
-	app.GET("/product/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Product](nil, nil))
-
-	//设备接口
-	app.POST("/device/search", curd.ApiSearch[model.Device]())
-	app.GET("/device/list", curd.ApiList[model.Device]())
-	app.POST("/device/create", curd.ApiCreate[model.Device](curd.GenerateRandomKey(12), nil))
-	app.GET("/device/:id", curd.ParseParamStringId, curd.ApiGet[model.Device]())
-	app.POST("/device/:id", curd.ParseParamStringId, curd.ApiModify[model.Device](nil, nil,
-		"id", "gateway_id", "product_id", "group_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
-	app.GET("/device/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Device](nil, nil))
-
-	app.GET("/device/:id/values", curd.ParseParamStringId, deviceValues)
-	app.POST("/device/:id/parameters", curd.ParseParamStringId, deviceParameters)
-
-	//设备分组接口
-	app.POST("/group/search", curd.ApiSearch[model.Group]())
-	app.GET("/group/list", curd.ApiList[model.Group]())
-	app.POST("/group/create", curd.ApiCreate[model.Group](nil, nil))
-	app.GET("/group/:id", curd.ParseParamId, curd.ApiGet[model.Group]())
-	app.POST("/group/:id", curd.ParseParamId, curd.ApiModify[model.Group](nil, nil,
-		"name", "desc"))
-	app.GET("/group/:id/delete", curd.ParseParamId, curd.ApiDelete[model.Group](nil, nil))
-
-	//报警日志
-	app.POST("/alarm/search", curd.ApiSearch[model.Alarm]())
-	app.GET("/alarm/list", curd.ApiList[model.Alarm]())
-	app.GET("/alarm/:id", curd.ParseParamId, curd.ApiGet[model.Alarm]())
-	app.GET("/alarm/:id/delete", curd.ParseParamId, curd.ApiDelete[model.Alarm](nil, nil))
-	app.GET("/alarm/:id/read", curd.ParseParamId, alarmRead)
-
-	//服务器接口
-	app.POST("/server/search", curd.ApiSearch[model.Server]())
-	app.GET("/server/list", curd.ApiList[model.Server]())
-	app.POST("/server/create", curd.ApiCreate[model.Server](nil, nil))
-	app.GET("/server/:id", curd.ParseParamId, curd.ApiGet[model.Server]())
-	app.POST("/server/:id", curd.ParseParamId, curd.ApiModify[model.Server](nil, nil,
-		"name", "type", "port", "desc", "disabled"))
-	app.GET("/server/:id/delete", curd.ParseParamId, curd.ApiDelete[model.Server](nil, nil))
-
-	//应用接口
-	app.POST("/app/search", curd.ApiSearch[model.App]())
-	app.GET("/app/list", curd.ApiList[model.App]())
-	app.POST("/app/create", curd.ApiCreate[model.App](curd.GenerateUuidKey, nil))
-	app.GET("/app/:id", curd.ParseParamStringId, curd.ApiGet[model.App]())
-	app.POST("/app/:id", curd.ParseParamStringId, curd.ApiModify[model.App](nil,
-		nil, "id", "name", "type", "address", "desc", "disabled"))
-	app.GET("/app/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.App](nil, nil))
-
-	//插件接口
-	app.POST("/plugin/search", curd.ApiSearch[model.Plugin]())
-	app.GET("/plugin/list", curd.ApiList[model.Plugin]())
-	app.POST("/plugin/create", curd.ApiCreate[model.Plugin](curd.GenerateUuidKey, nil))
-	app.GET("/plugin/:id", curd.ParseParamStringId, curd.ApiGet[model.Plugin]())
-	app.POST("/plugin/:id", curd.ParseParamStringId, curd.ApiModify[model.Plugin](nil, nil,
-		"id", "name", "version", "command", "dependencies"))
-	app.GET("/plugin/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Plugin](nil, nil))
-
-	//系统接口
-	app.GET("/system/cpu-info", cpuInfo)
-	app.GET("/system/cpu", cpuStats)
-	app.GET("/system/memory", memStats)
-	app.GET("/system/disk", diskStats)
-	app.GET("/system/machine", machineInfo)
+	//注册子接口
+	userRouter(app.Group("/user"))
+	productRouter(app.Group("/product"))
+	deviceRouter(app.Group("/device"))
+	groupRouter(app.Group("/group"))
+	alarmRouter(app.Group("/alarm"))
+	serverRouter(app.Group("/server"))
+	appRouter(app.Group("/app"))
+	pluginRouter(app.Group("/plugin"))
+	systemRouter(app.Group("/system"))
 
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）
 	app.Use(func(ctx *gin.Context) {

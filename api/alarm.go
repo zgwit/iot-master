@@ -7,6 +7,19 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
+func alarmRouter(app *gin.RouterGroup) {
+
+	app.POST("/search", curd.ApiSearch[model.Alarm]())
+
+	app.GET("/list", curd.ApiList[model.Alarm]())
+
+	app.GET("/:id", curd.ParseParamId, curd.ApiGet[model.Alarm]())
+
+	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.Alarm](nil, nil))
+
+	app.GET("/:id/read", curd.ParseParamId, alarmRead)
+}
+
 func alarmRead(ctx *gin.Context) {
 	alarm := model.Alarm{
 		Read: true,

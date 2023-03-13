@@ -8,6 +8,20 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
+func deviceRouter(app *gin.RouterGroup) {
+
+	app.POST("/search", curd.ApiSearch[model.Device]())
+	app.GET("/list", curd.ApiList[model.Device]())
+	app.POST("/create", curd.ApiCreate[model.Device](curd.GenerateRandomKey(12), nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Device]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Device](nil, nil,
+		"id", "gateway_id", "product_id", "group_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Device](nil, nil))
+
+	app.GET("/:id/values", curd.ParseParamStringId, deviceValues)
+	app.POST("/:id/parameters", curd.ParseParamStringId, deviceParameters)
+}
+
 func deviceValues(ctx *gin.Context) {
 	device := internal.Devices.Load(ctx.GetString("id"))
 	if device == nil {

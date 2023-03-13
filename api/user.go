@@ -7,6 +7,31 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
+func userRouter(app *gin.RouterGroup) {
+
+	app.GET("/me", userMe)
+
+	app.POST("/search", curd.ApiSearch[model.User]())
+
+	app.GET("/list", curd.ApiList[model.User]())
+
+	app.POST("/create", curd.ParseParamId, curd.ApiCreate[model.User](nil, nil))
+
+	app.GET("/:id", curd.ParseParamId, curd.ApiGet[model.User]())
+
+	app.POST("/:id", curd.ParseParamId, curd.ApiModify[model.User](nil, nil,
+		"username", "name", "email", "disabled"))
+
+	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.User](nil, nil))
+
+	app.GET("/:id/password", curd.ParseParamId, userPassword)
+
+	app.GET("/:id/enable", curd.ParseParamId, curd.ApiDisable[model.User](false, nil, nil))
+
+	app.GET("/:id/disable", curd.ParseParamId, curd.ApiDisable[model.User](true, nil, nil))
+
+}
+
 func userMe(ctx *gin.Context) {
 	id := ctx.GetInt64("user")
 	var user model.User
