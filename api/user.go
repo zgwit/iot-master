@@ -7,6 +7,103 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
+// @Summary 获取用户信息
+// @Schemes
+// @Description 这里写描述 get users
+// @Tags user
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
+// @Router /user/me [get]
+func noopUserMe() {}
+
+// @Summary 查询用户
+// @Schemes
+// @Description 这里写描述 get users
+// @Tags user
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyList[model.User] 返回用户信息
+// @Router /user/search [post]
+func noopUserSearch() {}
+
+// @Summary 查询用户
+// @Schemes
+// @Description 查询用户
+// @Tags user
+// @Param search query curd.ParamList true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyList[model.User] 返回用户信息
+// @Router /user/list [get]
+func noopUserList() {}
+
+// @Summary 创建用户
+// @Schemes
+// @Description 创建用户
+// @Tags user
+// @Param search body model.User true "用户信息"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
+// @Router /user/create [post]
+func noopUserCreate() {}
+
+// @Summary 修改用户
+// @Schemes
+// @Description 修改用户
+// @Tags user
+// @Param id path int true "用户ID"
+// @Param user body model.User true "用户信息"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
+// @Router /user/{id} [post]
+func noopUserUpdate() {}
+
+// @Summary 删除用户
+// @Schemes
+// @Description 删除用户
+// @Tags user
+// @Param id path int true "用户ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
+// @Router /user/{id}/delete [get]
+func noopUserDelete() {}
+
+// @Summary 修改密码
+// @Schemes
+// @Description 修改密码
+// @Tags user
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
+// @Router /user/password [get]
+func noopUserPassword() {}
+
+// @Summary 启用用户
+// @Schemes
+// @Description 启用用户
+// @Tags user
+// @Param id path int true "用户ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
+// @Router /user/{id}/enable [get]
+func noopUserEnable() {}
+
+// @Summary 禁用用户
+// @Schemes
+// @Description 禁用用户
+// @Tags user
+// @Param id path int true "用户ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
+// @Router /user/{id}/disable [get]
+func noopUserDisable() {}
+
 func userRouter(app *gin.RouterGroup) {
 
 	app.GET("/me", userMe)

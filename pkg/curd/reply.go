@@ -5,6 +5,17 @@ import (
 	"net/http"
 )
 
+type ReplyData[T any] struct {
+	Data  T      `json:"data"`
+	Error string `json:"error,omitempty"`
+}
+
+type ReplyList[T any] struct {
+	Data  []T    `json:"data"`
+	Total int64  `json:"total"`
+	Error string `json:"error,omitempty"`
+}
+
 func List(ctx *gin.Context, data interface{}, total int64) {
 	ctx.JSON(http.StatusOK, gin.H{"data": data, "total": total})
 }

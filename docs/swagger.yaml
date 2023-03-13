@@ -1,8 +1,244 @@
-basePath: /api/  基础路径
+basePath: /api/
+definitions:
+  curd.ParamSearch:
+    properties:
+      filter:
+        additionalProperties: true
+        type: object
+      keyword:
+        additionalProperties:
+          type: string
+        type: object
+      limit:
+        type: integer
+      skip:
+        type: integer
+      sort:
+        additionalProperties:
+          type: integer
+        type: object
+    type: object
+  curd.ReplyData-model_User:
+    properties:
+      data:
+        $ref: '#/definitions/model.User'
+      error:
+        type: string
+    type: object
+  curd.ReplyList-model_User:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.User'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  model.User:
+    properties:
+      created:
+        type: string
+      disabled:
+        type: boolean
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
   description: API文档
   title: 物联大师接口文档
   version: 1.0 版本
-paths: {}
+paths:
+  /user/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改用户
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户信息
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_User'
+      summary: 修改用户
+      tags:
+      - user
+  /user/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除用户
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_User'
+      summary: 删除用户
+      tags:
+      - user
+  /user/{id}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用用户
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_User'
+      summary: 禁用用户
+      tags:
+      - user
+  /user/{id}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用用户
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_User'
+      summary: 启用用户
+      tags:
+      - user
+  /user/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建用户
+      parameters:
+      - description: 用户信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_User'
+      summary: 创建用户
+      tags:
+      - user
+  /user/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询用户
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_User'
+      summary: 查询用户
+      tags:
+      - user
+  /user/me:
+    get:
+      description: 这里写描述 get users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_User'
+      summary: 获取用户信息
+      tags:
+      - user
+  /user/password:
+    get:
+      consumes:
+      - application/json
+      description: 修改密码
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_User'
+      summary: 修改密码
+      tags:
+      - user
+  /user/search:
+    post:
+      consumes:
+      - application/json
+      description: 这里写描述 get users
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_User'
+      summary: 查询用户
+      tags:
+      - user
 swagger: "2.0"

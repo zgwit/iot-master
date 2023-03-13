@@ -12,7 +12,7 @@ import (
 	"github.com/zgwit/iot-master/v3/api"
 	"github.com/zgwit/iot-master/v3/args"
 	"github.com/zgwit/iot-master/v3/config"
-	"github.com/zgwit/iot-master/v3/docs"
+	_ "github.com/zgwit/iot-master/v3/docs"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/swagger-files"
 	"mime"
@@ -67,7 +67,6 @@ func Serve(cfg config.Web) {
 	//注册前端接口
 	api.RegisterRoutes(app.Group("/api"))
 
-	docs.SwaggerInfo.BasePath = "/api"
 	app.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//app.Any("/app/:id/*path", appProxy)

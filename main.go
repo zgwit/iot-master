@@ -42,7 +42,7 @@ var serviceConfig = &service.Config{
 // @title 物联大师接口文档
 // @version 1.0 版本
 // @description API文档
-// @BasePath /api/  基础路径
+// @BasePath /api/
 // @query.collection.format multi
 func main() {
 	args.Parse()
