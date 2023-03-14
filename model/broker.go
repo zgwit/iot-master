@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type Server struct {
+type Broker struct {
 	Id       int64     `json:"id"`
 	Name     string    `json:"name"`
 	Desc     string    `json:"desc"`
@@ -13,9 +13,9 @@ type Server struct {
 	Created  time.Time `json:"created" xorm:"created"`
 }
 
-type ServerHistory struct {
+type BrokerHistory struct {
 	Id       int64     `json:"id"`
-	ServerId int64     `json:"server_id" xorm:"index"`
+	BrokerId int64     `json:"broker_id" xorm:"index"`
 	Event    string    `json:"event"`
 	Created  time.Time `json:"created" xorm:"created"`
 }

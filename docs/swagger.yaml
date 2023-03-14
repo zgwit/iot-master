@@ -25,6 +25,13 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-model_Broker:
+    properties:
+      data:
+        $ref: '#/definitions/model.Broker'
+      error:
+        type: string
+    type: object
   curd.ReplyData-model_Device:
     properties:
       data:
@@ -53,13 +60,6 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-model_Server:
-    properties:
-      data:
-        $ref: '#/definitions/model.Server'
-      error:
-        type: string
-    type: object
   curd.ReplyData-model_User:
     properties:
       data:
@@ -79,6 +79,17 @@ definitions:
       data:
         items:
           $ref: '#/definitions/model.Alarm'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_Broker:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Broker'
         type: array
       error:
         type: string
@@ -129,17 +140,6 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Server:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/model.Server'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
   curd.ReplyList-model_User:
     properties:
       data:
@@ -167,6 +167,22 @@ definitions:
         type: boolean
       title:
         type: string
+    type: object
+  model.Broker:
+    properties:
+      created:
+        type: string
+      desc:
+        type: string
+      disabled:
+        type: boolean
+      id:
+        type: integer
+      name:
+        type: string
+      port:
+        description: TODO 添加TLS证书
+        type: integer
     type: object
   model.Device:
     properties:
@@ -363,22 +379,6 @@ definitions:
       version:
         type: string
     type: object
-  model.Server:
-    properties:
-      created:
-        type: string
-      desc:
-        type: string
-      disabled:
-        type: boolean
-      id:
-        type: integer
-      name:
-        type: string
-      port:
-        description: TODO 添加TLS证书
-        type: integer
-    type: object
   model.User:
     properties:
       created:
@@ -516,6 +516,162 @@ paths:
       summary: 查询报警
       tags:
       - alarm
+  /broker/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改总线
+      parameters:
+      - description: 总线ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 总线信息
+        in: body
+        name: broker
+        required: true
+        schema:
+          $ref: '#/definitions/model.Broker'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Broker'
+      summary: 修改总线
+      tags:
+      - broker
+  /broker/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除总线
+      parameters:
+      - description: 总线ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Broker'
+      summary: 删除总线
+      tags:
+      - broker
+  /broker/{id}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用总线
+      parameters:
+      - description: 总线ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Broker'
+      summary: 禁用总线
+      tags:
+      - broker
+  /broker/{id}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用总线
+      parameters:
+      - description: 总线ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Broker'
+      summary: 启用总线
+      tags:
+      - broker
+  /broker/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建总线
+      parameters:
+      - description: 总线信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Broker'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Broker'
+      summary: 创建总线
+      tags:
+      - broker
+  /broker/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询总线
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Broker'
+      summary: 查询总线
+      tags:
+      - broker
+  /broker/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询总线
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Broker'
+      summary: 查询总线
+      tags:
+      - broker
   /device/{id}:
     post:
       consumes:
@@ -1056,162 +1212,6 @@ paths:
       summary: 查询产品
       tags:
       - product
-  /server/{id}:
-    post:
-      consumes:
-      - application/json
-      description: 修改服务器
-      parameters:
-      - description: 服务器ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 服务器信息
-        in: body
-        name: server
-        required: true
-        schema:
-          $ref: '#/definitions/model.Server'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Server'
-      summary: 修改服务器
-      tags:
-      - server
-  /server/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除服务器
-      parameters:
-      - description: 服务器ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Server'
-      summary: 删除服务器
-      tags:
-      - server
-  /server/{id}/disable:
-    get:
-      consumes:
-      - application/json
-      description: 禁用服务器
-      parameters:
-      - description: 服务器ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Server'
-      summary: 禁用服务器
-      tags:
-      - server
-  /server/{id}/enable:
-    get:
-      consumes:
-      - application/json
-      description: 启用服务器
-      parameters:
-      - description: 服务器ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Server'
-      summary: 启用服务器
-      tags:
-      - server
-  /server/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建服务器
-      parameters:
-      - description: 服务器信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/model.Server'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Server'
-      summary: 创建服务器
-      tags:
-      - server
-  /server/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询服务器
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_Server'
-      summary: 查询服务器
-      tags:
-      - server
-  /server/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询服务器
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_Server'
-      summary: 查询服务器
-      tags:
-      - server
   /user/{id}:
     post:
       consumes:

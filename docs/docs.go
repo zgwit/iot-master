@@ -189,6 +189,246 @@ const docTemplate = `{
                 }
             }
         },
+        "/broker/create": {
+            "post": {
+                "description": "创建总线",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "broker"
+                ],
+                "summary": "创建总线",
+                "parameters": [
+                    {
+                        "description": "总线信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Broker"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                        }
+                    }
+                }
+            }
+        },
+        "/broker/list": {
+            "get": {
+                "description": "查询总线",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "broker"
+                ],
+                "summary": "查询总线",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Broker"
+                        }
+                    }
+                }
+            }
+        },
+        "/broker/search": {
+            "post": {
+                "description": "查询总线",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "broker"
+                ],
+                "summary": "查询总线",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Broker"
+                        }
+                    }
+                }
+            }
+        },
+        "/broker/{id}": {
+            "post": {
+                "description": "修改总线",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "broker"
+                ],
+                "summary": "修改总线",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "总线ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "总线信息",
+                        "name": "broker",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Broker"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                        }
+                    }
+                }
+            }
+        },
+        "/broker/{id}/delete": {
+            "get": {
+                "description": "删除总线",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "broker"
+                ],
+                "summary": "删除总线",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "总线ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                        }
+                    }
+                }
+            }
+        },
+        "/broker/{id}/disable": {
+            "get": {
+                "description": "禁用总线",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "broker"
+                ],
+                "summary": "禁用总线",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "总线ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                        }
+                    }
+                }
+            }
+        },
+        "/broker/{id}/enable": {
+            "get": {
+                "description": "启用总线",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "broker"
+                ],
+                "summary": "启用总线",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "总线ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                        }
+                    }
+                }
+            }
+        },
         "/device/create": {
             "post": {
                 "description": "创建设备",
@@ -1021,246 +1261,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/server/create": {
-            "post": {
-                "description": "创建服务器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "server"
-                ],
-                "summary": "创建服务器",
-                "parameters": [
-                    {
-                        "description": "服务器信息",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Server"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Server"
-                        }
-                    }
-                }
-            }
-        },
-        "/server/list": {
-            "get": {
-                "description": "查询服务器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "server"
-                ],
-                "summary": "查询服务器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Server"
-                        }
-                    }
-                }
-            }
-        },
-        "/server/search": {
-            "post": {
-                "description": "查询服务器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "server"
-                ],
-                "summary": "查询服务器",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Server"
-                        }
-                    }
-                }
-            }
-        },
-        "/server/{id}": {
-            "post": {
-                "description": "修改服务器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "server"
-                ],
-                "summary": "修改服务器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "服务器ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "服务器信息",
-                        "name": "server",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Server"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Server"
-                        }
-                    }
-                }
-            }
-        },
-        "/server/{id}/delete": {
-            "get": {
-                "description": "删除服务器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "server"
-                ],
-                "summary": "删除服务器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "服务器ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Server"
-                        }
-                    }
-                }
-            }
-        },
-        "/server/{id}/disable": {
-            "get": {
-                "description": "禁用服务器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "server"
-                ],
-                "summary": "禁用服务器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "服务器ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Server"
-                        }
-                    }
-                }
-            }
-        },
-        "/server/{id}/enable": {
-            "get": {
-                "description": "启用服务器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "server"
-                ],
-                "summary": "启用服务器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "服务器ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Server"
-                        }
-                    }
-                }
-            }
-        },
         "/user/create": {
             "post": {
                 "description": "创建用户",
@@ -1584,6 +1584,17 @@ const docTemplate = `{
                 }
             }
         },
+        "curd.ReplyData-model_Broker": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.Broker"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-model_Device": {
             "type": "object",
             "properties": {
@@ -1628,17 +1639,6 @@ const docTemplate = `{
                 }
             }
         },
-        "curd.ReplyData-model_Server": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/model.Server"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ReplyData-model_User": {
             "type": "object",
             "properties": {
@@ -1668,6 +1668,23 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Alarm"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-model_Broker": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Broker"
                     }
                 },
                 "error": {
@@ -1746,23 +1763,6 @@ const docTemplate = `{
                 }
             }
         },
-        "curd.ReplyList-model_Server": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.Server"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
         "curd.ReplyList-model_User": {
             "type": "object",
             "properties": {
@@ -1803,6 +1803,30 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                }
+            }
+        },
+        "model.Broker": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "port": {
+                    "description": "TODO 添加TLS证书",
+                    "type": "integer"
                 }
             }
         },
@@ -2095,30 +2119,6 @@ const docTemplate = `{
                 },
                 "version": {
                     "type": "string"
-                }
-            }
-        },
-        "model.Server": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "desc": {
-                    "type": "string"
-                },
-                "disabled": {
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "port": {
-                    "description": "TODO 添加TLS证书",
-                    "type": "integer"
                 }
             }
         },
