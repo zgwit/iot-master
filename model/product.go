@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 type Product struct {
 	Id          string          `json:"id" xorm:"pk"`
 	Name        string          `json:"name"`
@@ -13,7 +11,7 @@ type Product struct {
 	Parameters  []ModParameter  `json:"parameters,omitempty"`
 	Constraints []ModConstraint `json:"constraints,omitempty"`
 
-	Created time.Time `json:"created,omitempty" xorm:"created"`
+	Created Time `json:"created,omitempty" xorm:"created"`
 }
 
 //type Model struct {
