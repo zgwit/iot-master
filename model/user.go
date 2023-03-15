@@ -10,8 +10,8 @@ type User struct {
 	Username string    `json:"username" xorm:"unique"`
 	Name     string    `json:"name,omitempty"`
 	Email    string    `json:"email,omitempty"`
-	Disabled bool      `json:"disabled"`
-	Created  time.Time `json:"created" xorm:"created"`
+	Disabled bool      `json:"disabled,omitempty"`
+	Created  time.Time `json:"created,omitempty" xorm:"created"`
 }
 
 // Password 密码

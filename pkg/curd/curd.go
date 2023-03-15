@@ -20,7 +20,12 @@ func ApiSearch[T any](fields ...string) gin.HandlerFunc {
 		}
 
 		query := body.ToQuery()
-		if len(fields) > 0 {
+
+		//查询字段
+		fs := ctx.QueryArray("field")
+		if len(fs) > 0 {
+			query.Cols(fs...)
+		} else if len(fields) > 0 {
 			query.Cols(fields...)
 		}
 
@@ -46,7 +51,12 @@ func ApiListWithId[T any](field string, fields ...string) gin.HandlerFunc {
 		}
 
 		query := body.ToQuery()
-		if len(fields) > 0 {
+
+		//查询字段
+		fs := ctx.QueryArray("field")
+		if len(fs) > 0 {
+			query.Cols(fs...)
+		} else if len(fields) > 0 {
 			query.Cols(fields...)
 		}
 
@@ -76,7 +86,12 @@ func ApiList[T any](fields ...string) gin.HandlerFunc {
 		}
 
 		query := body.ToQuery()
-		if len(fields) > 0 {
+
+		//查询字段
+		fs := ctx.QueryArray("field")
+		if len(fs) > 0 {
+			query.Cols(fs...)
+		} else if len(fields) > 0 {
 			query.Cols(fields...)
 		}
 
@@ -199,8 +214,18 @@ func ApiDelete[T any](before, after Hook) gin.HandlerFunc {
 func ApiGet[T any](fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id := ctx.MustGet("id")
+
+		query := db.Engine.ID(id)
+		//查询字段
+		fs := ctx.QueryArray("field")
+		if len(fs) > 0 {
+			query.Cols(fs...)
+		} else if len(fields) > 0 {
+			query.Cols(fields...)
+		}
+
 		var data T
-		has, err := db.Engine.ID(id).Cols(fields...).Get(&data)
+		has, err := query.Get(&data)
 		if err != nil {
 			Error(ctx, err)
 			return

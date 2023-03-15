@@ -8,12 +8,12 @@ type Plugin struct {
 	Version      string            `json:"version"`
 	Command      string            `json:"command,omitempty"`
 	Dependencies map[string]string `json:"dependencies,omitempty" xorm:"json"`
-	Disabled     bool              `json:"disabled"`
-	Created      time.Time         `json:"created"`
+	Disabled     bool              `json:"disabled,omitempty"`
+	Created      time.Time         `json:"created,omitempty" xorm:"created"`
 }
 
 type License struct {
 	Id      string    `json:"id"`
 	Content string    `json:"content"`
-	Created time.Time `json:"created"`
+	Created time.Time `json:"created,omitempty" xorm:"created"`
 }

@@ -8,8 +8,8 @@ type Alarm struct {
 	Level    uint8     `json:"level"`
 	Title    string    `json:"title"`
 	Message  string    `json:"message,omitempty"`
-	Read     bool      `json:"read"`
-	Created  time.Time `json:"created" xorm:"created"`
+	Read     bool      `json:"read,omitempty"`
+	Created  time.Time `json:"created,omitempty" xorm:"created"`
 }
 
 type ModParameter struct {
@@ -17,7 +17,7 @@ type ModParameter struct {
 	Label   string  `json:"label"`
 	Min     float64 `json:"min,omitempty"`
 	Max     float64 `json:"max,omitempty"`
-	Default float64 `json:"default"`
+	Default float64 `json:"default,omitempty"`
 }
 
 type ModConstraint struct {
