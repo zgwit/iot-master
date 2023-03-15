@@ -1,9 +1,9 @@
 # 物联大师
 
-**注意，[V3.0]版本与[V2.0](https://github.com/zgwit/iot-master/tree/v1)
+**注意，[V3.0]版本与[V2.0](https://github.com/zgwit/iot-master/tree/v2)
 和[V1.0](https://github.com/zgwit/iot-master/tree/v1)有较大差异，不可以直接升级！！！**
 
-### [说明文档](https://iot-master.com/manual)  [演示demo](http://demo.iot-master.com:8080/) 账号密码 admin 123456
+### [说明文档](https://iot-master.com/manual)  [演示demo](http://demo.iot-master.com:8888/) 账号密码 admin 123456
 
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)

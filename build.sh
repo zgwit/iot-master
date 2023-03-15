@@ -6,7 +6,7 @@ go env -w GOSUMDB=off
 
 app="iot-master"
 pkg="github.com/zgwit/iot-master"
-version="1.0.0"
+version="3.0.0"
 
 read -t 5 -p "please input version(default:$version)" ver
 if [ -n "${ver}" ];then
