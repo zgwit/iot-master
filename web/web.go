@@ -72,7 +72,7 @@ func Serve(cfg config.Web) {
 	//app.Any("/app/:id/*path", appProxy)
 
 	//使用$前缀区分插件
-	app.Any("/$:app/*path", appProxy)
+	app.Any("/app/:app/*path", appProxy)
 
 	//前端静态文件
 	//app.StaticFS("/www", http.FS(wwwFiles))

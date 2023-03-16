@@ -17,6 +17,7 @@ func Open(cfg Options) error {
 	opts.SetClientID(cfg.ClientId)
 	opts.SetUsername(cfg.Username)
 	opts.SetPassword(cfg.Password)
+	opts.SetConnectRetry(true) //重试
 
 	Client = paho.NewClient(opts)
 	token := Client.Connect()
