@@ -1,13 +1,11 @@
 package model
 
-import "time"
-
 type Event struct {
 	Id       int64          `json:"id"`
 	DeviceId string         `json:"device_id" xorm:"index"`
 	Name     string         `json:"name"`
 	Output   map[string]any `json:"output"`
-	Created  time.Time      `json:"created" xorm:"created"`
+	Created  Time           `json:"created" xorm:"created"`
 }
 
 type ModEvent struct {

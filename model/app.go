@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 type AppEntry struct {
 	Path string `json:"path"`
 	Name string `json:"name"`
@@ -21,8 +19,8 @@ type App struct {
 }
 
 type AppHistory struct {
-	Id      int64     `json:"id"`
-	AppId   string    `json:"app_id"`
-	Event   string    `json:"event"`
-	Created time.Time `json:"created" xorm:"created"`
+	Id      int64  `json:"id"`
+	AppId   string `json:"app_id"`
+	Event   string `json:"event"`
+	Created Time   `json:"created" xorm:"created"`
 }

@@ -1,15 +1,13 @@
 package model
 
-import "time"
-
 type Alarm struct {
-	Id       int64     `json:"id"`
-	DeviceId string    `json:"device_id" xorm:"index"`
-	Level    uint8     `json:"level"`
-	Title    string    `json:"title"`
-	Message  string    `json:"message,omitempty"`
-	Read     bool      `json:"read"`
-	Created  time.Time `json:"created" xorm:"created"`
+	Id       int64  `json:"id"`
+	DeviceId string `json:"device_id" xorm:"index"`
+	Level    uint8  `json:"level"`
+	Title    string `json:"title"`
+	Message  string `json:"message,omitempty"`
+	Read     bool   `json:"read,omitempty"`
+	Created  Time   `json:"created,omitempty" xorm:"created"`
 }
 
 type ModParameter struct {
@@ -17,7 +15,7 @@ type ModParameter struct {
 	Label   string  `json:"label"`
 	Min     float64 `json:"min,omitempty"`
 	Max     float64 `json:"max,omitempty"`
-	Default float64 `json:"default"`
+	Default float64 `json:"default,omitempty"`
 }
 
 type ModConstraint struct {

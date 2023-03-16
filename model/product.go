@@ -1,19 +1,17 @@
 package model
 
-import "time"
-
 type Product struct {
 	Id          string          `json:"id" xorm:"pk"`
 	Name        string          `json:"name"`
 	Desc        string          `json:"desc,omitempty"`
-	Version     string          `json:"version"`
-	Properties  []ModProperty   `json:"properties" xorm:"json"`
-	Functions   []ModFunction   `json:"functions" xorm:"json"`
-	Events      []ModEvent      `json:"events" xorm:"json"`
-	Parameters  []ModParameter  `json:"parameters"`
-	Constraints []ModConstraint `json:"constraints"`
+	Version     string          `json:"version,omitempty"`
+	Properties  []ModProperty   `json:"properties,omitempty" xorm:"json"`
+	Functions   []ModFunction   `json:"functions,omitempty" xorm:"json"`
+	Events      []ModEvent      `json:"events,omitempty" xorm:"json"`
+	Parameters  []ModParameter  `json:"parameters,omitempty"`
+	Constraints []ModConstraint `json:"constraints,omitempty"`
 
-	Created time.Time `json:"created" xorm:"created"`
+	Created Time `json:"created,omitempty" xorm:"created"`
 }
 
 //type Model struct {
