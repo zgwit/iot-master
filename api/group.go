@@ -51,6 +51,17 @@ func noopGroupCreate() {}
 // @Router /group/{id} [post]
 func noopGroupUpdate() {}
 
+// @Summary 获取分组
+// @Schemes
+// @Description 获取分组
+// @Tags group
+// @Param id path int true "分组ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Group] 返回分组信息
+// @Router /group/{id} [get]
+func noopGroupGet() {}
+
 // @Summary 删除分组
 // @Schemes
 // @Description 删除分组

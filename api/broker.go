@@ -51,6 +51,17 @@ func noopServerCreate() {}
 // @Router /broker/{id} [post]
 func noopServerUpdate() {}
 
+// @Summary 获取总线
+// @Schemes
+// @Description 获取总线
+// @Tags broker
+// @Param id path int true "总线ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
+// @Router /broker/{id} [get]
+func noopServerGet() {}
+
 // @Summary 删除总线
 // @Schemes
 // @Description 删除总线

@@ -61,6 +61,17 @@ func noopUserCreate() {}
 // @Router /user/{id} [post]
 func noopUserUpdate() {}
 
+// @Summary 获取用户
+// @Schemes
+// @Description 获取用户
+// @Tags user
+// @Param id path int true "用户ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
+// @Router /user/{id} [get]
+func noopUserGet() {}
+
 // @Summary 删除用户
 // @Schemes
 // @Description 删除用户

@@ -41,6 +41,17 @@ func noopDeviceList() {}
 // @Router /device/create [post]
 func noopDeviceCreate() {}
 
+// @Summary 获取设备
+// @Schemes
+// @Description 获取设备
+// @Tags device
+// @Param id path int true "设备ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Device] 返回设备信息
+// @Router /device/{id} [get]
+func noopDeviceGet() {}
+
 // @Summary 修改设备
 // @Schemes
 // @Description 修改设备

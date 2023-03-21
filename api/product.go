@@ -51,6 +51,17 @@ func noopProductCreate() {}
 // @Router /product/{id} [post]
 func noopProductUpdate() {}
 
+// @Summary 获取产品
+// @Schemes
+// @Description 获取产品
+// @Tags product
+// @Param id path int true "产品ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Product] 返回产品信息
+// @Router /product/{id} [get]
+func noopProductGet() {}
+
 // @Summary 删除产品
 // @Schemes
 // @Description 删除产品

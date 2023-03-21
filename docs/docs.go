@@ -293,6 +293,36 @@ const docTemplate = `{
             }
         },
         "/broker/{id}": {
+            "get": {
+                "description": "获取总线",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "broker"
+                ],
+                "summary": "获取总线",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "总线ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "修改总线",
                 "consumes": [
@@ -533,6 +563,36 @@ const docTemplate = `{
             }
         },
         "/device/{id}": {
+            "get": {
+                "description": "获取设备",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "获取设备",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "设备ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Device"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "修改设备",
                 "consumes": [
@@ -773,6 +833,36 @@ const docTemplate = `{
             }
         },
         "/group/{id}": {
+            "get": {
+                "description": "获取分组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "获取分组",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "分组ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Group"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "修改分组",
                 "consumes": [
@@ -1085,43 +1175,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/privilege/create": {
-            "post": {
-                "description": "创建权限",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "privilege"
-                ],
-                "summary": "创建权限",
-                "parameters": [
-                    {
-                        "description": "权限信息",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Privilege"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Privilege"
-                        }
-                    }
-                }
-            }
-        },
-        "/privilege/list": {
+        "/privileges": {
             "get": {
-                "description": "查询权限",
+                "description": "查询所有权限",
                 "consumes": [
                     "application/json"
                 ],
@@ -1131,131 +1187,15 @@ const docTemplate = `{
                 "tags": [
                     "privilege"
                 ],
-                "summary": "查询权限",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
+                "summary": "查询所有权限",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Privilege"
-                        }
-                    }
-                }
-            }
-        },
-        "/privilege/search": {
-            "post": {
-                "description": "这里写描述 get privileges",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "privilege"
-                ],
-                "summary": "查询权限",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Privilege"
-                        }
-                    }
-                }
-            }
-        },
-        "/privilege/{id}": {
-            "post": {
-                "description": "修改权限",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "privilege"
-                ],
-                "summary": "修改权限",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "权限ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "权限信息",
-                        "name": "privilege",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Privilege"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Privilege"
-                        }
-                    }
-                }
-            }
-        },
-        "/privilege/{id}/delete": {
-            "get": {
-                "description": "删除权限",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "privilege"
-                ],
-                "summary": "删除权限",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "权限ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Privilege"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -1365,6 +1305,36 @@ const docTemplate = `{
             }
         },
         "/product/{id}": {
+            "get": {
+                "description": "获取产品",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "获取产品",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "产品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Product"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "修改产品",
                 "consumes": [
@@ -1541,6 +1511,36 @@ const docTemplate = `{
             }
         },
         "/role/{id}": {
+            "get": {
+                "description": "获取角色",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "role"
+                ],
+                "summary": "获取角色",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "角色ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Role"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "修改角色",
                 "consumes": [
@@ -1760,6 +1760,36 @@ const docTemplate = `{
             }
         },
         "/user/{id}": {
+            "get": {
+                "description": "获取用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获取用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_User"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "修改用户",
                 "consumes": [
@@ -1980,17 +2010,6 @@ const docTemplate = `{
                 }
             }
         },
-        "curd.ReplyData-model_Privilege": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/model.Privilege"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ReplyData-model_Product": {
             "type": "object",
             "properties": {
@@ -2110,23 +2129,6 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Plugin"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "curd.ReplyList-model_Privilege": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.Privilege"
                     }
                 },
                 "error": {
@@ -2476,20 +2478,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "version": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.Privilege": {
-            "type": "object",
-            "properties": {
-                "desc": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
                     "type": "string"
                 }
             }

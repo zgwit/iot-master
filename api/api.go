@@ -97,10 +97,13 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	app.GET("/config", loadConfig)
 	app.POST("/config", saveConfig)
 
+	app.GET("/privileges", func(ctx *gin.Context) {
+		curd.OK(ctx, model.PRIVILEGES)
+	})
+
 	//注册子接口
 	userRouter(app.Group("/user"))
 	roleRouter(app.Group("/role"))
-	privilegeRouter(app.Group("/privilege"))
 
 	productRouter(app.Group("/product"))
 	deviceRouter(app.Group("/device"))

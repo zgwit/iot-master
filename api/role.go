@@ -51,6 +51,17 @@ func noopRoleCreate() {}
 // @Router /role/{id} [post]
 func noopRoleUpdate() {}
 
+// @Summary 获取角色
+// @Schemes
+// @Description 获取角色
+// @Tags role
+// @Param id path string true "角色ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Role] 返回角色信息
+// @Router /role/{id} [get]
+func noopRoleGet() {}
+
 // @Summary 删除角色
 // @Schemes
 // @Description 删除角色
