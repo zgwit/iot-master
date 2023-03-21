@@ -22,43 +22,12 @@ ldflags="-X '$pkg/args.Version=$version' \
 -X '$pkg/args.gitHash=$gitHash' \
 -X '$pkg/args.buildTime=$buildTime'"
 
-#export CGO_ENABLED=1
-#CC=x86_64-w64-mingw32-gcc
 
 export GOARCH=amd64
 
 export GOOS=windows
-name="iot-master-windows-amd64.exe"
-go build -ldflags "$ldflags" -o iot-master-windows-amd64.exe main.go
-#tar -zvcf iot-master-windows-amd64.tar.gz iot-master-windows-amd64.exe
-#rm iot-master-windows-amd64.exe
+go build -ldflags "$ldflags" -o iot-master.exe main.go
 
 export GOOS=linux
 #CC=gcc
-name="iot-master-linux-amd64"
-go build -ldflags "$ldflags" -o iot-master-linux-amd64 main.go
-#tar -zvcf iot-master-linux-amd64.tar.gz iot-master-linux-amd64
-#rm iot-master-linux-amd64
-
-#export CC=arm-linux-gnueabihf-gcc
-
-export GOARCH=arm64
-name="iot-master-linux-arm64"
-go build -ldflags "$ldflags" -o iot-master-linux-arm64 main.go
-#tar -zvcf iot-master-linux-arm64.tar.gz iot-master-linux-arm64
-#rm iot-master-linux-arm64
-
-export GOARCH=arm
-
-export GOARM=6
-name="iot-master-linux-armv6l"
-go build -ldflags "$ldflags" -o iot-master-linux-armv6l main.go
-#tar -zvcf iot-master-linux-armv6l.tar.gz iot-master-linux-armv6l
-#rm iot-master-linux-armv6l
-
-export GOARM=7
-name="iot-master-linux-armv7l"
-go build -ldflags "$ldflags" -o iot-master-linux-armv7l main.go
-#tar -zvcf iot-master-linux-armv7l.tar.gz iot-master-linux-armv7l
-#rm iot-master-linux-armv7l
-
+go build -ldflags "$ldflags" -o iot-master main.go
