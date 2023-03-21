@@ -53,10 +53,24 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-model_Privilege:
+    properties:
+      data:
+        $ref: '#/definitions/model.Privilege'
+      error:
+        type: string
+    type: object
   curd.ReplyData-model_Product:
     properties:
       data:
         $ref: '#/definitions/model.Product'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_Role:
+    properties:
+      data:
+        $ref: '#/definitions/model.Role'
       error:
         type: string
     type: object
@@ -129,11 +143,33 @@ definitions:
       total:
         type: integer
     type: object
+  curd.ReplyList-model_Privilege:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Privilege'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
   curd.ReplyList-model_Product:
     properties:
       data:
         items:
           $ref: '#/definitions/model.Product'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_Role:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Role'
         type: array
       error:
         type: string
@@ -346,6 +382,15 @@ definitions:
       version:
         type: string
     type: object
+  model.Privilege:
+    properties:
+      desc:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
   model.Product:
     properties:
       constraints:
@@ -379,6 +424,19 @@ definitions:
       version:
         type: string
     type: object
+  model.Role:
+    properties:
+      created:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      privileges:
+        items:
+          type: string
+        type: array
+    type: object
   model.User:
     properties:
       created:
@@ -391,6 +449,10 @@ definitions:
         type: integer
       name:
         type: string
+      roles:
+        items:
+          type: string
+        type: array
       username:
         type: string
     type: object
@@ -1098,6 +1160,120 @@ paths:
       summary: 查询插件
       tags:
       - plugin
+  /privilege/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改权限
+      parameters:
+      - description: 权限ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 权限信息
+        in: body
+        name: privilege
+        required: true
+        schema:
+          $ref: '#/definitions/model.Privilege'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Privilege'
+      summary: 修改权限
+      tags:
+      - privilege
+  /privilege/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除权限
+      parameters:
+      - description: 权限ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Privilege'
+      summary: 删除权限
+      tags:
+      - privilege
+  /privilege/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建权限
+      parameters:
+      - description: 权限信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Privilege'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Privilege'
+      summary: 创建权限
+      tags:
+      - privilege
+  /privilege/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询权限
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Privilege'
+      summary: 查询权限
+      tags:
+      - privilege
+  /privilege/search:
+    post:
+      consumes:
+      - application/json
+      description: 这里写描述 get privileges
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Privilege'
+      summary: 查询权限
+      tags:
+      - privilege
   /product/{id}:
     post:
       consumes:
@@ -1212,6 +1388,120 @@ paths:
       summary: 查询产品
       tags:
       - product
+  /role/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改角色
+      parameters:
+      - description: 角色ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 角色信息
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/model.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Role'
+      summary: 修改角色
+      tags:
+      - role
+  /role/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除角色
+      parameters:
+      - description: 角色ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Role'
+      summary: 删除角色
+      tags:
+      - role
+  /role/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建角色
+      parameters:
+      - description: 角色信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Role'
+      summary: 创建角色
+      tags:
+      - role
+  /role/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询角色
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Role'
+      summary: 查询角色
+      tags:
+      - role
+  /role/search:
+    post:
+      consumes:
+      - application/json
+      description: 这里写描述 get roles
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Role'
+      summary: 查询角色
+      tags:
+      - role
   /user/{id}:
     post:
       consumes:

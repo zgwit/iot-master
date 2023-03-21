@@ -99,13 +99,19 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	//注册子接口
 	userRouter(app.Group("/user"))
+	roleRouter(app.Group("/role"))
+	privilegeRouter(app.Group("/privilege"))
+
 	productRouter(app.Group("/product"))
 	deviceRouter(app.Group("/device"))
 	groupRouter(app.Group("/group"))
+
 	alarmRouter(app.Group("/alarm"))
 	brokerRouter(app.Group("/broker"))
-	appRouter(app.Group("/app"))
+
 	pluginRouter(app.Group("/plugin"))
+	appRouter(app.Group("/app"))
+
 	systemRouter(app.Group("/system"))
 
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）

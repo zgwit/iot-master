@@ -2,12 +2,13 @@ package model
 
 // User 用户
 type User struct {
-	Id       int64  `json:"id"`
-	Username string `json:"username" xorm:"unique"`
-	Name     string `json:"name,omitempty"`
-	Email    string `json:"email,omitempty"`
-	Disabled bool   `json:"disabled,omitempty"`
-	Created  Time   `json:"created,omitempty" xorm:"created"`
+	Id       int64    `json:"id"`
+	Username string   `json:"username" xorm:"unique"`
+	Name     string   `json:"name,omitempty"`
+	Email    string   `json:"email,omitempty"`
+	Roles    []string `json:"roles,omitempty"`
+	Disabled bool     `json:"disabled,omitempty"`
+	Created  Time     `json:"created,omitempty" xorm:"created"`
 }
 
 // Password 密码
