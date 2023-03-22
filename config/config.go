@@ -6,6 +6,7 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
+	"github.com/zgwit/iot-master/v3/pkg/web"
 	"gopkg.in/yaml.v3"
 	"os"
 )
@@ -13,7 +14,7 @@ import (
 // Configure 配置
 type Configure struct {
 	Oem      OEM            `json:"oem"`
-	Web      Web            `json:"web"`
+	Web      web.Options    `json:"web"`
 	Broker   broker.Options `json:"broker"`
 	Log      log.Options    `json:"log"`
 	Mqtt     mqtt.Options   `json:"mqtt"`
@@ -28,9 +29,7 @@ var Config = Configure{
 		Company:   "无锡真格智能科技有限公司",
 		Copyright: "©2023",
 	},
-	Web: Web{
-		Addr: ":8888",
-	},
+	Web:      web.Default(),
 	Log:      log.Default(),
 	Mqtt:     mqtt.Default(),
 	Broker:   broker.Default(),

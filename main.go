@@ -1,9 +1,12 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/kardianos/service"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/zgwit/iot-master/v3/api"
 	"github.com/zgwit/iot-master/v3/args"
 	"github.com/zgwit/iot-master/v3/broker"
 	"github.com/zgwit/iot-master/v3/config"
@@ -13,8 +16,10 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/vconn"
-	"github.com/zgwit/iot-master/v3/web"
+	"github.com/zgwit/iot-master/v3/pkg/web"
+	swaggerFiles "github.com/zgwit/swagger-files"
 	"net"
+	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
@@ -31,6 +36,9 @@ const banner = `
 ###           #          #     # #    #  ####    #   ###### #    # 
 
 `
+
+//go:embed all:www
+var wwwFiles embed.FS
 
 var serviceConfig = &service.Config{
 	Name:        "iot-master",
@@ -194,8 +202,25 @@ func originMain() {
 	}
 	defer internal.Close()
 
-	//判断是否开启Web
-	web.Serve(config.Config.Web)
+	app := web.CreateEngine(config.Config.Web)
+
+	//注册前端接口
+	api.RegisterRoutes(app.Group("/api"))
+
+	//注册接口文档
+	app.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	//使用$前缀区分插件
+	app.Any("/app/:app/*path", internal.ProxyApp)
+
+	//前端静态文件
+	web.RegisterFS(app, http.FS(wwwFiles))
+
+	//监听HTTP
+	err = app.Run(config.Config.Web.Addr)
+	if err != nil {
+		log.Fatal("HTTP 服务启动错误", err)
+	}
 }
 
 func shutdown() error {
@@ -206,7 +231,6 @@ func shutdown() error {
 	//master.Close()
 
 	//只关闭Web就行了，其他通过defer关闭
-	_ = web.Close()
 
 	return nil
 }

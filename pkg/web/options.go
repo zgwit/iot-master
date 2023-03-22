@@ -1,9 +1,18 @@
-package config
+package web
 
-// Web 参数
-type Web struct {
+// Options 参数
+type Options struct {
 	Addr  string `yaml:"addr" json:"addr"`
 	Debug bool   `yaml:"debug,omitempty" json:"debug,omitempty"`
 	Cors  bool   `json:"cors,omitempty" json:"cors,omitempty"`
 	Gzip  bool   `json:"gzip,omitempty" json:"gzip,omitempty"`
+}
+
+func Default() Options {
+	return Options{
+		Addr:  ":8080",
+		Debug: false,
+		Cors:  false,
+		Gzip:  false,
+	}
 }
