@@ -9,6 +9,7 @@ import (
 	"github.com/zgwit/iot-master/v3/args"
 	"github.com/zgwit/iot-master/v3/broker"
 	"github.com/zgwit/iot-master/v3/config"
+	_ "github.com/zgwit/iot-master/v3/docs"
 	"github.com/zgwit/iot-master/v3/internal"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/db"
