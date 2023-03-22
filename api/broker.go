@@ -6,6 +6,17 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 )
 
+// @Summary 查询总线数量
+// @Schemes
+// @Description 查询总线数量
+// @Tags broker
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回总线数量
+// @Router /broker/count [post]
+func noopBrokerCount() {}
+
 // @Summary 查询总线
 // @Schemes
 // @Description 查询总线
@@ -15,7 +26,7 @@ import (
 // @Produce json
 // @Success 200 {object} curd.ReplyList[model.Broker] 返回总线信息
 // @Router /broker/search [post]
-func noopServerSearch() {}
+func noopBrokerSearch() {}
 
 // @Summary 查询总线
 // @Schemes
@@ -26,7 +37,7 @@ func noopServerSearch() {}
 // @Produce json
 // @Success 200 {object} curd.ReplyList[model.Broker] 返回总线信息
 // @Router /broker/list [get]
-func noopServerList() {}
+func noopBrokerList() {}
 
 // @Summary 创建总线
 // @Schemes
@@ -37,7 +48,7 @@ func noopServerList() {}
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
 // @Router /broker/create [post]
-func noopServerCreate() {}
+func noopBrokerCreate() {}
 
 // @Summary 修改总线
 // @Schemes
@@ -49,7 +60,7 @@ func noopServerCreate() {}
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
 // @Router /broker/{id} [post]
-func noopServerUpdate() {}
+func noopBrokerUpdate() {}
 
 // @Summary 获取总线
 // @Schemes
@@ -60,7 +71,7 @@ func noopServerUpdate() {}
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
 // @Router /broker/{id} [get]
-func noopServerGet() {}
+func noopBrokerGet() {}
 
 // @Summary 删除总线
 // @Schemes
@@ -71,7 +82,7 @@ func noopServerGet() {}
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
 // @Router /broker/{id}/delete [get]
-func noopServerDelete() {}
+func noopBrokerDelete() {}
 
 // @Summary 启用总线
 // @Schemes
@@ -82,7 +93,7 @@ func noopServerDelete() {}
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
 // @Router /broker/{id}/enable [get]
-func noopServerEnable() {}
+func noopBrokerEnable() {}
 
 // @Summary 禁用总线
 // @Schemes
@@ -93,10 +104,11 @@ func noopServerEnable() {}
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
 // @Router /broker/{id}/disable [get]
-func noopServerDisable() {}
+func noopBrokerDisable() {}
 
 func brokerRouter(app *gin.RouterGroup) {
 
+	app.POST("/count", curd.ApiCount[model.Broker]())
 	app.POST("/search", curd.ApiSearch[model.Broker]())
 	app.GET("/list", curd.ApiList[model.Broker]())
 	app.POST("/create", curd.ApiCreate[model.Broker](nil, nil))
@@ -106,21 +118,21 @@ func brokerRouter(app *gin.RouterGroup) {
 	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.Broker](nil, nil))
 }
 
-func afterServerCreate(data interface{}) error {
+func afterBrokerCreate(data interface{}) error {
 	//broker := data.(*model.Broker)
 
 	//TODO start broker
 	return nil
 }
 
-func afterServerUpdate(data interface{}) error {
+func afterBrokerUpdate(data interface{}) error {
 	//broker := data.(*model.Broker)
 
 	//TODO restart broker
 	return nil
 }
 
-func afterServerDelete(id interface{}) error {
+func afterBrokerDelete(id interface{}) error {
 	//gid := id.(string)
 
 	//todo stop broker

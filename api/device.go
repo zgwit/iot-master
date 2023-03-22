@@ -8,6 +8,17 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
+// @Summary 查询设备数量
+// @Schemes
+// @Description 查询设备数量
+// @Tags device
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回设备数量
+// @Router /device/count [post]
+func noopDeviceCount() {}
+
 // @Summary 查询设备
 // @Schemes
 // @Description 查询设备
@@ -99,6 +110,7 @@ func noopDeviceParameters() {}
 
 func deviceRouter(app *gin.RouterGroup) {
 
+	app.POST("/count", curd.ApiCount[model.Device]())
 	app.POST("/search", curd.ApiSearch[model.Device]())
 	app.GET("/list", curd.ApiList[model.Device]())
 	app.POST("/create", curd.ApiCreate[model.Device](curd.GenerateRandomKey(12), nil))

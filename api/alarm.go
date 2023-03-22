@@ -14,6 +14,17 @@ import (
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回报警信息
+// @Router /alarm/count [post]
+func noopAlarmCount() {}
+
+// @Summary 查询报警
+// @Schemes
+// @Description 查询报警
+// @Tags alarm
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
 // @Success 200 {object} curd.ReplyList[model.Alarm] 返回报警信息
 // @Router /alarm/search [post]
 func noopAlarmSearch() {}
@@ -64,6 +75,8 @@ func noopAlarmDelete() {}
 func noopAlarmRead() {}
 
 func alarmRouter(app *gin.RouterGroup) {
+
+	app.POST("/count", curd.ApiCount[model.Alarm]())
 
 	app.POST("/search", curd.ApiSearch[model.Alarm]())
 

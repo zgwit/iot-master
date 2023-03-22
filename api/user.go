@@ -16,9 +16,20 @@ import (
 // @Router /user/me [get]
 func noopUserMe() {}
 
+// @Summary 查询用户数量
+// @Schemes
+// @Description 查询用户数量
+// @Tags user
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回用户数量
+// @Router /user/count [post]
+func noopUserCount() {}
+
 // @Summary 查询用户
 // @Schemes
-// @Description 这里写描述 get users
+// @Description 查询用户
 // @Tags user
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json

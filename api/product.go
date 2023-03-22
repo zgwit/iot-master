@@ -6,6 +6,17 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 )
 
+// @Summary 查询产品数量
+// @Schemes
+// @Description 查询产品数量
+// @Tags product
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回产品数量
+// @Router /product/count [post]
+func noopProductCount() {}
+
 // @Summary 查询产品
 // @Schemes
 // @Description 查询产品
@@ -75,6 +86,7 @@ func noopProductDelete() {}
 
 func productRouter(app *gin.RouterGroup) {
 
+	app.POST("/count", curd.ApiCount[model.Product]())
 	app.POST("/search", curd.ApiSearch[model.Product]())
 	app.GET("/list", curd.ApiList[model.Product]())
 	app.POST("/create", curd.ApiCreate[model.Product](curd.GenerateRandomKey(8), nil))

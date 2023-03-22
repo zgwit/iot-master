@@ -6,6 +6,17 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 )
 
+// @Summary 查询角色数量
+// @Schemes
+// @Description 查询角色数量
+// @Tags role
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回角色数量
+// @Router /role/count [post]
+func noopRoleCount() {}
+
 // @Summary 查询角色
 // @Schemes
 // @Description 这里写描述 get roles
@@ -74,6 +85,9 @@ func noopRoleGet() {}
 func noopRoleDelete() {}
 
 func roleRouter(app *gin.RouterGroup) {
+
+	app.POST("/count", curd.ApiCount[model.Role]())
+
 	app.POST("/search", curd.ApiSearch[model.Role]())
 
 	app.GET("/list", curd.ApiList[model.Role]())

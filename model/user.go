@@ -11,6 +11,12 @@ type User struct {
 	Created  Time     `json:"created,omitempty" xorm:"created"`
 }
 
+type Me struct {
+	User       `xorm:"extends"`
+	Roles      []string `json:"roles"`
+	Privileges []string `json:"privileges"`
+}
+
 // Password 密码
 type Password struct {
 	Id       int64  `json:"id"`

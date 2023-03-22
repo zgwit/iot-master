@@ -6,6 +6,17 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 )
 
+// @Summary 查询分组数量
+// @Schemes
+// @Description 查询分组数量
+// @Tags group
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回分组数量
+// @Router /group/count [post]
+func noopGroupCount() {}
+
 // @Summary 查询分组
 // @Schemes
 // @Description 查询分组
@@ -75,6 +86,7 @@ func noopGroupDelete() {}
 
 func groupRouter(app *gin.RouterGroup) {
 
+	app.POST("/count", curd.ApiCount[model.Group]())
 	app.POST("/search", curd.ApiSearch[model.Group]())
 	app.GET("/list", curd.ApiList[model.Group]())
 	app.POST("/create", curd.ApiCreate[model.Group](nil, nil))
