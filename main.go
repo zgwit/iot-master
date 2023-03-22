@@ -5,7 +5,6 @@ import (
 	"fmt"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/kardianos/service"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/zgwit/iot-master/v3/api"
 	"github.com/zgwit/iot-master/v3/args"
 	"github.com/zgwit/iot-master/v3/broker"
@@ -17,7 +16,6 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/vconn"
 	"github.com/zgwit/iot-master/v3/pkg/web"
-	swaggerFiles "github.com/zgwit/swagger-files"
 	"net"
 	"net/http"
 	"net/url"
@@ -208,7 +206,7 @@ func originMain() {
 	api.RegisterRoutes(app.Group("/api"))
 
 	//注册接口文档
-	app.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	web.RegisterSwaggerDocs(app)
 
 	//使用$前缀区分插件
 	app.Any("/app/:app/*path", internal.ProxyApp)
