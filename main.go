@@ -154,9 +154,10 @@ func originMain() {
 
 	//同步表结构
 	err = db.Engine.Sync2(
-		new(model.User), new(model.Password),
+		new(model.User), new(model.Password), new(model.Role),
 		new(model.Broker), new(model.Product),
-		new(model.Device), new(model.Group), new(model.Alarm),
+		new(model.Device), new(model.Group),
+		new(model.Alarm),
 		new(model.App), new(model.Plugin),
 	)
 	if err != nil {
