@@ -527,6 +527,281 @@ const docTemplate = `{
                 }
             }
         },
+        "/config/db": {
+            "get": {
+                "description": "查询数据库配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "查询数据库配置",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-db_Options"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改数据库配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "修改数据库配置",
+                "parameters": [
+                    {
+                        "description": "数据库配置",
+                        "name": "cfg",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/db.Options"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/config/log": {
+            "get": {
+                "description": "查询日志配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "查询日志配置",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-log_Options"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改日志配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "修改日志配置",
+                "parameters": [
+                    {
+                        "description": "日志配置",
+                        "name": "cfg",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/log.Options"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/config/mqtt": {
+            "get": {
+                "description": "查询MQTT配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "查询MQTT配置",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-mqtt_Options"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改MQTT配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "修改MQTT配置",
+                "parameters": [
+                    {
+                        "description": "MQTT配置",
+                        "name": "cfg",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mqtt.Options"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/config/oem": {
+            "get": {
+                "description": "查询OEM配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "查询OEM配置",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-config_OEM"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改OEM配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "修改OEM配置",
+                "parameters": [
+                    {
+                        "description": "OEM配置",
+                        "name": "cfg",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/config.OEM"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/config/web": {
+            "get": {
+                "description": "查询WEB配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "查询WEB配置",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-web_Options"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改WEB配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "config"
+                ],
+                "summary": "修改WEB配置",
+                "parameters": [
+                    {
+                        "description": "WEB配置",
+                        "name": "cfg",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/web.Options"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
         "/device/count": {
             "post": {
                 "description": "查询设备数量",
@@ -2166,6 +2441,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "config.OEM": {
+            "type": "object",
+            "properties": {
+                "company": {
+                    "type": "string"
+                },
+                "copyright": {
+                    "type": "string"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ParamSearch": {
             "type": "object",
             "properties": {
@@ -2193,11 +2485,55 @@ const docTemplate = `{
                 }
             }
         },
+        "curd.ReplyData-config_OEM": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/config.OEM"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-db_Options": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/db.Options"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-int": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-int64": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "integer"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-log_Options": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/log.Options"
                 },
                 "error": {
                     "type": "string"
@@ -2297,6 +2633,28 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/model.Variables"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-mqtt_Options": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/mqtt.Options"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-web_Options": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/web.Options"
                 },
                 "error": {
                     "type": "string"
@@ -2435,6 +2793,60 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "db.Options": {
+            "type": "object",
+            "properties": {
+                "debug": {
+                    "type": "boolean"
+                },
+                "log_level": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "log.Options": {
+            "type": "object",
+            "properties": {
+                "caller": {
+                    "type": "boolean"
+                },
+                "format": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "string"
+                },
+                "output": {
+                    "$ref": "#/definitions/log.Output"
+                },
+                "text": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "log.Output": {
+            "type": "object",
+            "properties": {
+                "filename": {
+                    "type": "string"
+                },
+                "max_age": {
+                    "type": "integer"
+                },
+                "max_backups": {
+                    "type": "integer"
+                },
+                "max_size": {
                     "type": "integer"
                 }
             }
@@ -2833,6 +3245,40 @@ const docTemplate = `{
         "model.Variables": {
             "type": "object",
             "additionalProperties": {}
+        },
+        "mqtt.Options": {
+            "type": "object",
+            "properties": {
+                "clientId": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "web.Options": {
+            "type": "object",
+            "properties": {
+                "addr": {
+                    "type": "string"
+                },
+                "cors": {
+                    "type": "boolean"
+                },
+                "debug": {
+                    "type": "boolean"
+                },
+                "gzip": {
+                    "type": "boolean"
+                }
+            }
         }
     }
 }`

@@ -1,5 +1,16 @@
 basePath: /api/
 definitions:
+  config.OEM:
+    properties:
+      company:
+        type: string
+      copyright:
+        type: string
+      logo:
+        type: string
+      title:
+        type: string
+    type: object
   curd.ParamSearch:
     properties:
       filter:
@@ -18,10 +29,38 @@ definitions:
           type: integer
         type: object
     type: object
+  curd.ReplyData-config_OEM:
+    properties:
+      data:
+        $ref: '#/definitions/config.OEM'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-db_Options:
+    properties:
+      data:
+        $ref: '#/definitions/db.Options'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-int:
+    properties:
+      data:
+        type: integer
+      error:
+        type: string
+    type: object
   curd.ReplyData-int64:
     properties:
       data:
         type: integer
+      error:
+        type: string
+    type: object
+  curd.ReplyData-log_Options:
+    properties:
+      data:
+        $ref: '#/definitions/log.Options'
       error:
         type: string
     type: object
@@ -85,6 +124,20 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/model.Variables'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-mqtt_Options:
+    properties:
+      data:
+        $ref: '#/definitions/mqtt.Options'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-web_Options:
+    properties:
+      data:
+        $ref: '#/definitions/web.Options'
       error:
         type: string
     type: object
@@ -174,6 +227,41 @@ definitions:
       error:
         type: string
       total:
+        type: integer
+    type: object
+  db.Options:
+    properties:
+      debug:
+        type: boolean
+      log_level:
+        type: integer
+      type:
+        type: string
+      url:
+        type: string
+    type: object
+  log.Options:
+    properties:
+      caller:
+        type: boolean
+      format:
+        type: string
+      level:
+        type: string
+      output:
+        $ref: '#/definitions/log.Output'
+      text:
+        type: boolean
+    type: object
+  log.Output:
+    properties:
+      filename:
+        type: string
+      max_age:
+        type: integer
+      max_backups:
+        type: integer
+      max_size:
         type: integer
     type: object
   model.Alarm:
@@ -438,6 +526,28 @@ definitions:
     type: object
   model.Variables:
     additionalProperties: {}
+    type: object
+  mqtt.Options:
+    properties:
+      clientId:
+        type: string
+      password:
+        type: string
+      url:
+        type: string
+      username:
+        type: string
+    type: object
+  web.Options:
+    properties:
+      addr:
+        type: string
+      cors:
+        type: boolean
+      debug:
+        type: boolean
+      gzip:
+        type: boolean
     type: object
 info:
   contact: {}
@@ -778,6 +888,186 @@ paths:
       summary: 查询总线
       tags:
       - broker
+  /config/db:
+    get:
+      consumes:
+      - application/json
+      description: 查询数据库配置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-db_Options'
+      summary: 查询数据库配置
+      tags:
+      - config
+    post:
+      consumes:
+      - application/json
+      description: 修改数据库配置
+      parameters:
+      - description: 数据库配置
+        in: body
+        name: cfg
+        required: true
+        schema:
+          $ref: '#/definitions/db.Options'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改数据库配置
+      tags:
+      - config
+  /config/log:
+    get:
+      consumes:
+      - application/json
+      description: 查询日志配置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-log_Options'
+      summary: 查询日志配置
+      tags:
+      - config
+    post:
+      consumes:
+      - application/json
+      description: 修改日志配置
+      parameters:
+      - description: 日志配置
+        in: body
+        name: cfg
+        required: true
+        schema:
+          $ref: '#/definitions/log.Options'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改日志配置
+      tags:
+      - config
+  /config/mqtt:
+    get:
+      consumes:
+      - application/json
+      description: 查询MQTT配置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-mqtt_Options'
+      summary: 查询MQTT配置
+      tags:
+      - config
+    post:
+      consumes:
+      - application/json
+      description: 修改MQTT配置
+      parameters:
+      - description: MQTT配置
+        in: body
+        name: cfg
+        required: true
+        schema:
+          $ref: '#/definitions/mqtt.Options'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改MQTT配置
+      tags:
+      - config
+  /config/oem:
+    get:
+      consumes:
+      - application/json
+      description: 查询OEM配置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-config_OEM'
+      summary: 查询OEM配置
+      tags:
+      - config
+    post:
+      consumes:
+      - application/json
+      description: 修改OEM配置
+      parameters:
+      - description: OEM配置
+        in: body
+        name: cfg
+        required: true
+        schema:
+          $ref: '#/definitions/config.OEM'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改OEM配置
+      tags:
+      - config
+  /config/web:
+    get:
+      consumes:
+      - application/json
+      description: 查询WEB配置
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-web_Options'
+      summary: 查询WEB配置
+      tags:
+      - config
+    post:
+      consumes:
+      - application/json
+      description: 修改WEB配置
+      parameters:
+      - description: WEB配置
+        in: body
+        name: cfg
+        required: true
+        schema:
+          $ref: '#/definitions/web.Options'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改WEB配置
+      tags:
+      - config
   /device/{id}:
     get:
       consumes:

@@ -93,10 +93,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		curd.OK(ctx, apps)
 	})
 
-	//修改配置
-	app.GET("/config", loadConfig)
-	app.POST("/config", saveConfig)
-
 	app.GET("/privileges", func(ctx *gin.Context) {
 		curd.OK(ctx, model.PRIVILEGES)
 	})
@@ -116,6 +112,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	appRouter(app.Group("/app"))
 
 	systemRouter(app.Group("/system"))
+	configRouter(app.Group("/config"))
 
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）
 	app.Use(func(ctx *gin.Context) {

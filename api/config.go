@@ -4,25 +4,212 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/config"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
+	"github.com/zgwit/iot-master/v3/pkg/db"
+	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v3/pkg/mqtt"
+	"github.com/zgwit/iot-master/v3/pkg/web"
 )
 
-func loadConfig(ctx *gin.Context) {
-	curd.OK(ctx, &config.Config)
+// @Summary 查询WEB配置
+// @Schemes
+// @Description 查询WEB配置
+// @Tags config
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[web.Options] 返回WEB配置
+// @Router /config/web [get]
+func configGetWeb(ctx *gin.Context) {
+	curd.OK(ctx, &config.Config.Web)
 }
 
-func saveConfig(ctx *gin.Context) {
-	var conf config.Configure
+// @Summary 修改WEB配置
+// @Schemes
+// @Description 修改WEB配置
+// @Tags config
+// @Param cfg body web.Options true "WEB配置"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /config/web [post]
+func configSetWeb(ctx *gin.Context) {
+	var conf web.Options
 	err := ctx.BindJSON(&conf)
 	if err != nil {
 		curd.Error(ctx, err)
 		return
 	}
-	config.Config = conf
+	config.Config.Web = conf
 	err = config.Store()
 	if err != nil {
 		curd.Error(ctx, err)
 		return
 	}
-
 	curd.OK(ctx, nil)
+}
+
+// @Summary 查询OEM配置
+// @Schemes
+// @Description 查询OEM配置
+// @Tags config
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[config.OEM] 返回OEM配置
+// @Router /config/oem [get]
+func configGetOem(ctx *gin.Context) {
+	curd.OK(ctx, &config.Config.Oem)
+}
+
+// @Summary 修改OEM配置
+// @Schemes
+// @Description 修改OEM配置
+// @Tags config
+// @Param cfg body config.OEM true "OEM配置"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /config/oem [post]
+func configSetOem(ctx *gin.Context) {
+	var conf web.Options
+	err := ctx.BindJSON(&conf)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	config.Config.Web = conf
+	err = config.Store()
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
+
+// @Summary 查询日志配置
+// @Schemes
+// @Description 查询日志配置
+// @Tags config
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[log.Options] 返回日志配置
+// @Router /config/log [get]
+func configGetLog(ctx *gin.Context) {
+	curd.OK(ctx, &config.Config.Log)
+}
+
+// @Summary 修改日志配置
+// @Schemes
+// @Description 修改日志配置
+// @Tags config
+// @Param cfg body log.Options true "日志配置"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /config/log [post]
+func configSetLog(ctx *gin.Context) {
+	var conf log.Options
+	err := ctx.BindJSON(&conf)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	config.Config.Log = conf
+	err = config.Store()
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
+
+// @Summary 查询MQTT配置
+// @Schemes
+// @Description 查询MQTT配置
+// @Tags config
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[mqtt.Options] 返回MQTT配置
+// @Router /config/mqtt [get]
+func configGetMqtt(ctx *gin.Context) {
+	curd.OK(ctx, &config.Config.Mqtt)
+}
+
+// @Summary 修改MQTT配置
+// @Schemes
+// @Description 修改MQTT配置
+// @Tags config
+// @Param cfg body mqtt.Options true "MQTT配置"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /config/mqtt [post]
+func configSetMqtt(ctx *gin.Context) {
+	var conf mqtt.Options
+	err := ctx.BindJSON(&conf)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	config.Config.Mqtt = conf
+	err = config.Store()
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
+
+// @Summary 查询数据库配置
+// @Schemes
+// @Description 查询数据库配置
+// @Tags config
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[db.Options] 返回数据库配置
+// @Router /config/db [get]
+func configGetDatabase(ctx *gin.Context) {
+	curd.OK(ctx, &config.Config.Database)
+}
+
+// @Summary 修改数据库配置
+// @Schemes
+// @Description 修改数据库配置
+// @Tags config
+// @Param cfg body db.Options true "数据库配置"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /config/db [post]
+func configSetDatabase(ctx *gin.Context) {
+	var conf db.Options
+	err := ctx.BindJSON(&conf)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	config.Config.Database = conf
+	err = config.Store()
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
+
+func configRouter(app *gin.RouterGroup) {
+
+	app.POST("/web", configSetWeb)
+	app.GET("/web", configGetWeb)
+
+	app.POST("/oem", configSetOem)
+	app.GET("/oem", configGetOem)
+
+	app.POST("/log", configSetLog)
+	app.GET("/log", configGetLog)
+
+	app.POST("/mqtt", configSetMqtt)
+	app.GET("/mqtt", configGetMqtt)
+
+	app.POST("/database", configSetDatabase)
+	app.GET("/database", configGetDatabase)
+
 }
