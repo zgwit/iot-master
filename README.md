@@ -92,28 +92,27 @@
 |--------------------------------------|-----|-----|
 | ==通讯服务==                             |     |     |
 | MQTT Broker，支持MQTT 3.1.1和MQTT 5      | ✅   | ⬜   |
-| TCP Server，支持注册包和心跳包                 | ⬜   | ⬜   |
-| TCP Client                           | ⬜   | ⬜   |
+| TCP Server，支持注册包和心跳包                 | ✅   | ⬜   |
+| TCP Client                           | ✅   | ⬜   |
 | UDP Server，支持注册包前缀                   | ⬜   | ⬜   |
-| UDP Client                           | ⬜   | ⬜   |
-| Serial Port                          | ⬜   | ⬜   |
+| UDP Client                           | ✅   | ⬜   |
+| Serial Port                          | ✅   | ⬜   |
 | Coap Server                          | ⬜   | ⬜   |
 | ==协议解析==                             |     |     |
-| JSON Parser，支持阿里云，京东云等多个物联网平台格式      | ⬜   | ⬜   |
-| Modbus RTU                           | ⬜   | ⬜   |
-| Modbus TCP，支持并发读                     | ⬜   | ⬜   |
+| JSON Parser，支持阿里云，京东云等多个物联网平台格式      | ✅   | ⬜   |
+| Modbus RTU                           | ✅   | ⬜   |
+| Modbus TCP，支持并发读                     | ✅   | ⬜   |
 | DLT645-2007，电力规约                     | ⬜   | ⬜   |
-| 西门子PLC，S7系统，PPI，MPI，FetchWrite       | ⬜   | ⬜   |
-| 三菱PLC                                | ⬜   | ⬜   |
-| 欧姆龙PLC，Hostlink，Fins                 | ⬜   | ⬜   |
+| 西门子PLC，S7系统，PPI，MPI，FetchWrite       | ✅   | ⬜   |
+| 三菱PLC                                | ✅   | ⬜   |
+| 欧姆龙PLC，Hostlink，Fins                 | ✅   | ⬜   |
 | ==数据存储==                             |     |     |
-| Influx1                              | ⬜   | ⬜   |
-| Influx2                              | ⬜   | ⬜   |
+| InfluxDB2                              | ✅   | ⬜   |
 | TDEngine                             | ⬜   | ⬜   |
 | OpenTSDB                             | ⬜   | ⬜   |
 | ==数据处理==                             |     |     |
 | 流式计算                                 | ⬜   | ⬜   |
-| 异常报警，向MQTT总线发送报警，支持短信、语音、微信、Webhook等 | ⬜   | ⬜   |
+| 异常报警，向MQTT总线发送报警，支持短信、语音、微信、Webhook等 | ✅   | ⬜   |
 | 报表引擎                                 | ⬜   | ⬜   |
 | ==基础应用==                             |     |     |
 | Web组态                                | ⬜   | ⬜   |
