@@ -97,7 +97,7 @@ func roleRouter(app *gin.RouterGroup) {
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Role]())
 
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Role](nil, nil,
-		"name", "privileges"))
+		"id", "name", "privileges"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Role](nil, nil))
 

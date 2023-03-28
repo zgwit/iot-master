@@ -13,7 +13,6 @@ type User struct {
 
 type Me struct {
 	User       `xorm:"extends"`
-	Roles      []string `json:"roles"`
 	Privileges []string `json:"privileges"`
 }
 
