@@ -27,6 +27,7 @@ func (body *ParamSearch) ToQuery() *xorm.Session {
 			ll := len(v.([]interface{}))
 			if ll > 0 {
 				if ll == 1 {
+					k = db.Engine.Quote(k)
 					op.And(k+"=?", v.([]interface{})[0])
 				} else {
 					op.In(k, v)
@@ -34,6 +35,7 @@ func (body *ParamSearch) ToQuery() *xorm.Session {
 			}
 		} else {
 			if v != nil {
+				k = db.Engine.Quote(k)
 				op.And(k+"=?", v)
 			}
 		}
