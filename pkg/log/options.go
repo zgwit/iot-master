@@ -10,7 +10,7 @@ type Output struct {
 // Options 参数
 type Options struct {
 	Level  string `json:"level"`
-	Caller bool   `json:"caller,omitemptys"`
+	Caller bool   `json:"caller,omitempty"`
 	Text   bool   `json:"text,omitempty"`
 	Format string `json:"format,omitempty"`
 	Output Output `json:"output"`
