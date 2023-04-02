@@ -12,7 +12,7 @@ func appRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[model.App]())
 
-	app.POST("/create", curd.ApiCreate[model.App](curd.GenerateUuidKey, nil))
+	app.POST("/create", curd.ApiCreate[model.App](curd.GenerateRandomId[model.App](8), nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.App]())
 

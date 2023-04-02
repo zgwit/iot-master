@@ -88,7 +88,7 @@ func pluginRouter(app *gin.RouterGroup) {
 
 	app.POST("/search", curd.ApiSearch[model.Plugin]())
 	app.GET("/list", curd.ApiList[model.Plugin]())
-	app.POST("/create", curd.ApiCreate[model.Plugin](curd.GenerateUuidKey, nil))
+	app.POST("/create", curd.ApiCreate[model.Plugin](curd.GenerateRandomId[model.Plugin](8), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Plugin]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Plugin](nil, nil,
 		"id", "name", "version", "command", "dependencies"))

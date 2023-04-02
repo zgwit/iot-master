@@ -130,7 +130,7 @@ func ApiList[T any](fields ...string) gin.HandlerFunc {
 	}
 }
 
-func ApiCreate[T any](before, after Hook) gin.HandlerFunc {
+func ApiCreate[T any](before, after func(m *T) error) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var data T
 		err := ctx.ShouldBindJSON(&data)
@@ -165,7 +165,7 @@ func ApiCreate[T any](before, after Hook) gin.HandlerFunc {
 	}
 }
 
-func ApiModify[T any](before, after Hook, fields ...string) gin.HandlerFunc {
+func ApiModify[T any](before, after func(m *T) error, fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var data T
 		err := ctx.ShouldBindJSON(&data)
@@ -204,7 +204,7 @@ func ApiModify[T any](before, after Hook, fields ...string) gin.HandlerFunc {
 	}
 }
 
-func ApiDelete[T any](before, after Hook) gin.HandlerFunc {
+func ApiDelete[T any](before, after func(id any) error) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id := ctx.MustGet("id")
 		if before != nil {
@@ -260,7 +260,7 @@ func ApiGet[T any](fields ...string) gin.HandlerFunc {
 	}
 }
 
-func ApiDisable[T any](disable bool, before, after Hook) gin.HandlerFunc {
+func ApiDisable[T any](disable bool, before, after func(id any) error) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//id := ctx.GetInt64("id")
 		id := ctx.MustGet("id")
