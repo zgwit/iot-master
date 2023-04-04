@@ -7,6 +7,11 @@ func Open() error {
 		return err
 	}
 
+	//err = LoadDevices()
+	//if err != nil {
+	//	return err
+	//}
+
 	//webServe(fmt.Sprintf(":%d", config.Config.Web))
 	err = subscribeMaster()
 	if err != nil {

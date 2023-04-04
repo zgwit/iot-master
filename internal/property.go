@@ -16,9 +16,16 @@ func subscribeProperty() error {
 		id := topics[3]
 		dev := Devices.Load(id)
 		if dev == nil {
-			//TODO 自动创建设备？
-			log.Errorf("设备不存在 %s %s", pid, id)
-			return
+			log.Infof("加载设备 %s %s", pid, id)
+
+			//加载设备
+			err := LoadDeviceById(id)
+			if err != nil {
+				log.Error(err)
+				//TODO 自动创建设备？
+				return
+			}
+			dev = Devices.Load(id)
 		}
 
 		var payload map[string]interface{}
@@ -48,6 +55,7 @@ func mergeProperties(id string, properties []model.PayloadValue) {
 
 		dev = Devices.Load(id)
 	}
+
 	//合并数据
 	for _, p := range properties {
 		dev.Values[p.Name] = p.Value
