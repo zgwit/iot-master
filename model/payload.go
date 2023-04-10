@@ -2,6 +2,8 @@ package model
 
 import "time"
 
+type PayloadProperties map[string]any
+
 type PayloadPropertyUp struct {
 	PayloadDevice
 	//子设备

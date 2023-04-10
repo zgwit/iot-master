@@ -45,3 +45,11 @@ type ModArgument struct {
 	Type  string `json:"type"`
 	Unit  string `json:"unit"`
 }
+
+type ModEvent struct {
+	Name   string        `json:"name"`
+	Label  string        `json:"label"`
+	Desc   string        `json:"desc,omitempty"`
+	Type   string        `json:"type"` //info alert error //Level  uint8         `json:"level"`
+	Output []ModArgument `json:"output"`
+}
