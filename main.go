@@ -165,7 +165,7 @@ func originMain() {
 	}
 	err = broker.Open(config.Config.Broker)
 	if err != nil {
-		return
+		log.Fatal(err)
 	}
 	defer broker.Close()
 
