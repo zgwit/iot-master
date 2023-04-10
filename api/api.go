@@ -102,8 +102,11 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	roleRouter(app.Group("/role"))
 
 	productRouter(app.Group("/product"))
+	gatewayRouter(app.Group("/gateway"))
+	
 	deviceRouter(app.Group("/device"))
-	groupRouter(app.Group("/group"))
+	deviceTypeRouter(app.Group("/device/type"))
+	deviceGroupRouter(app.Group("/device/group"))
 
 	alarmRouter(app.Group("/alarm"))
 	brokerRouter(app.Group("/broker"))

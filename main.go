@@ -156,7 +156,7 @@ func originMain() {
 	err = db.Engine.Sync2(
 		new(model.User), new(model.Password), new(model.Role),
 		new(model.Broker), new(model.Product),
-		new(model.Device), new(model.Group),
+		new(model.Device), new(model.DeviceGroup), new(model.DeviceType),
 		new(model.Alarm),
 		new(model.App), new(model.Plugin),
 	)
