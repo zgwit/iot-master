@@ -4,6 +4,7 @@ type Alarm struct {
 	Id       int64  `json:"id"`
 	DeviceId string `json:"device_id" xorm:"index"`
 	Level    uint8  `json:"level"`
+	Type     string `json:"type"`
 	Title    string `json:"title"`
 	Message  string `json:"message,omitempty"`
 	Read     bool   `json:"read,omitempty"`
@@ -20,6 +21,7 @@ type ModParameter struct {
 
 type ModConstraint struct {
 	Level      uint8  `json:"level"`
+	Type       string `json:"type"`
 	Title      string `json:"title"`
 	Template   string `json:"template"`
 	Expression string `json:"expression"`

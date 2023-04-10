@@ -85,10 +85,24 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-model_Group:
+  curd.ReplyData-model_DeviceGroup:
     properties:
       data:
-        $ref: '#/definitions/model.Group'
+        $ref: '#/definitions/model.DeviceGroup'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_DeviceType:
+    properties:
+      data:
+        $ref: '#/definitions/model.DeviceType'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_Gateway:
+    properties:
+      data:
+        $ref: '#/definitions/model.Gateway'
       error:
         type: string
     type: object
@@ -174,11 +188,33 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Group:
+  curd.ReplyList-model_DeviceGroup:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Group'
+          $ref: '#/definitions/model.DeviceGroup'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_DeviceType:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.DeviceType'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_Gateway:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Gateway'
         type: array
       error:
         type: string
@@ -280,6 +316,8 @@ definitions:
         type: boolean
       title:
         type: string
+      type:
+        type: string
     type: object
   model.Broker:
     properties:
@@ -321,17 +359,12 @@ definitions:
           type: number
         description: 模型参数，用于报警检查
         type: object
-      password:
-        type: string
       product_id:
         type: string
-      type:
-        description: 网关/设备/子设备 gateway device subset
-        type: string
-      username:
-        type: string
+      type_id:
+        type: integer
     type: object
-  model.Group:
+  model.DeviceGroup:
     properties:
       created:
         type: string
@@ -340,6 +373,34 @@ definitions:
       id:
         type: integer
       name:
+        type: string
+    type: object
+  model.DeviceType:
+    properties:
+      created:
+        type: string
+      desc:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  model.Gateway:
+    properties:
+      created:
+        type: string
+      desc:
+        type: string
+      disabled:
+        type: boolean
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
         type: string
     type: object
   model.ModArgument:
@@ -374,6 +435,8 @@ definitions:
       total:
         description: 总提醒次数
         type: integer
+      type:
+        type: string
     type: object
   model.ModEvent:
     properties:
@@ -1222,6 +1285,162 @@ paths:
       summary: 创建设备
       tags:
       - device
+  /device/group/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取分组
+      parameters:
+      - description: 分组ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_DeviceGroup'
+      summary: 获取分组
+      tags:
+      - device-group
+    post:
+      consumes:
+      - application/json
+      description: 修改分组
+      parameters:
+      - description: 分组ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 分组信息
+        in: body
+        name: device-group
+        required: true
+        schema:
+          $ref: '#/definitions/model.DeviceGroup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_DeviceGroup'
+      summary: 修改分组
+      tags:
+      - device-group
+  /device/group/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除分组
+      parameters:
+      - description: 分组ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_DeviceGroup'
+      summary: 删除分组
+      tags:
+      - device-group
+  /device/group/count:
+    post:
+      consumes:
+      - application/json
+      description: 查询分组数量
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 查询分组数量
+      tags:
+      - device-group
+  /device/group/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建分组
+      parameters:
+      - description: 分组信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.DeviceGroup'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_DeviceGroup'
+      summary: 创建分组
+      tags:
+      - device-group
+  /device/group/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询分组
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_DeviceGroup'
+      summary: 查询分组
+      tags:
+      - device-group
+  /device/group/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询分组
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_DeviceGroup'
+      summary: 查询分组
+      tags:
+      - device-group
   /device/list:
     get:
       consumes:
@@ -1266,13 +1485,13 @@ paths:
       summary: 查询设备
       tags:
       - device
-  /group/{id}:
+  /device/type/{id}:
     get:
       consumes:
       - application/json
-      description: 获取分组
+      description: 获取设备类型
       parameters:
-      - description: 分组ID
+      - description: 设备类型ID
         in: path
         name: id
         required: true
@@ -1283,43 +1502,43 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Group'
-      summary: 获取分组
+            $ref: '#/definitions/curd.ReplyData-model_DeviceType'
+      summary: 获取设备类型
       tags:
-      - group
+      - device-type
     post:
       consumes:
       - application/json
-      description: 修改分组
+      description: 修改设备类型
       parameters:
-      - description: 分组ID
+      - description: 设备类型ID
         in: path
         name: id
         required: true
         type: integer
-      - description: 分组信息
+      - description: 设备类型信息
         in: body
-        name: group
+        name: device-type
         required: true
         schema:
-          $ref: '#/definitions/model.Group'
+          $ref: '#/definitions/model.DeviceType'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Group'
-      summary: 修改分组
+            $ref: '#/definitions/curd.ReplyData-model_DeviceType'
+      summary: 修改设备类型
       tags:
-      - group
-  /group/{id}/delete:
+      - device-type
+  /device/type/{id}/delete:
     get:
       consumes:
       - application/json
-      description: 删除分组
+      description: 删除设备类型
       parameters:
-      - description: 分组ID
+      - description: 设备类型ID
         in: path
         name: id
         required: true
@@ -1330,15 +1549,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Group'
-      summary: 删除分组
+            $ref: '#/definitions/curd.ReplyData-model_DeviceType'
+      summary: 删除设备类型
       tags:
-      - group
-  /group/count:
+      - device-type
+  /device/type/count:
     post:
       consumes:
       - application/json
-      description: 查询分组数量
+      description: 查询设备类型数量
       parameters:
       - description: 查询参数
         in: body
@@ -1353,36 +1572,36 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询分组数量
+      summary: 查询设备类型数量
       tags:
-      - group
-  /group/create:
+      - device-type
+  /device/type/create:
     post:
       consumes:
       - application/json
-      description: 创建分组
+      description: 创建设备类型
       parameters:
-      - description: 分组信息
+      - description: 设备类型信息
         in: body
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Group'
+          $ref: '#/definitions/model.DeviceType'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Group'
-      summary: 创建分组
+            $ref: '#/definitions/curd.ReplyData-model_DeviceType'
+      summary: 创建设备类型
       tags:
-      - group
-  /group/list:
+      - device-type
+  /device/type/list:
     get:
       consumes:
       - application/json
-      description: 查询分组
+      description: 查询设备类型
       parameters:
       - in: query
         name: limit
@@ -1396,15 +1615,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Group'
-      summary: 查询分组
+            $ref: '#/definitions/curd.ReplyList-model_DeviceType'
+      summary: 查询设备类型
       tags:
-      - group
-  /group/search:
+      - device-type
+  /device/type/search:
     post:
       consumes:
       - application/json
-      description: 查询分组
+      description: 查询设备类型
       parameters:
       - description: 查询参数
         in: body
@@ -1418,10 +1637,166 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Group'
-      summary: 查询分组
+            $ref: '#/definitions/curd.ReplyList-model_DeviceType'
+      summary: 查询设备类型
       tags:
-      - group
+      - device-type
+  /gateway/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改网关
+      parameters:
+      - description: 网关ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 网关信息
+        in: body
+        name: gateway
+        required: true
+        schema:
+          $ref: '#/definitions/model.Gateway'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+      summary: 修改网关
+      tags:
+      - gateway
+  /gateway/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除网关
+      parameters:
+      - description: 网关ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+      summary: 删除网关
+      tags:
+      - gateway
+  /gateway/{id}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用网关
+      parameters:
+      - description: 网关ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+      summary: 禁用网关
+      tags:
+      - gateway
+  /gateway/{id}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用网关
+      parameters:
+      - description: 网关ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+      summary: 启用网关
+      tags:
+      - gateway
+  /gateway/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建网关
+      parameters:
+      - description: 网关信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Gateway'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+      summary: 创建网关
+      tags:
+      - gateway
+  /gateway/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询网关
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Gateway'
+      summary: 查询网关
+      tags:
+      - gateway
+  /gateway/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询网关
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Gateway'
+      summary: 查询网关
+      tags:
+      - gateway
   /plugin/{id}:
     post:
       consumes:

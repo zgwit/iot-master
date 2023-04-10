@@ -870,6 +870,246 @@ const docTemplate = `{
                 }
             }
         },
+        "/device/group/count": {
+            "post": {
+                "description": "查询分组数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-group"
+                ],
+                "summary": "查询分组数量",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/group/create": {
+            "post": {
+                "description": "创建分组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-group"
+                ],
+                "summary": "创建分组",
+                "parameters": [
+                    {
+                        "description": "分组信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DeviceGroup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceGroup"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/group/list": {
+            "get": {
+                "description": "查询分组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-group"
+                ],
+                "summary": "查询分组",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_DeviceGroup"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/group/search": {
+            "post": {
+                "description": "查询分组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-group"
+                ],
+                "summary": "查询分组",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_DeviceGroup"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/group/{id}": {
+            "get": {
+                "description": "获取分组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-group"
+                ],
+                "summary": "获取分组",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "分组ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceGroup"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改分组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-group"
+                ],
+                "summary": "修改分组",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "分组ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "分组信息",
+                        "name": "device-group",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DeviceGroup"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceGroup"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/group/{id}/delete": {
+            "get": {
+                "description": "删除分组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-group"
+                ],
+                "summary": "删除分组",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "分组ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceGroup"
+                        }
+                    }
+                }
+            }
+        },
         "/device/list": {
             "get": {
                 "description": "查询设备",
@@ -934,6 +1174,246 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyList-model_Device"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/type/count": {
+            "post": {
+                "description": "查询设备类型数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-type"
+                ],
+                "summary": "查询设备类型数量",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/type/create": {
+            "post": {
+                "description": "创建设备类型",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-type"
+                ],
+                "summary": "创建设备类型",
+                "parameters": [
+                    {
+                        "description": "设备类型信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DeviceType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceType"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/type/list": {
+            "get": {
+                "description": "查询设备类型",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-type"
+                ],
+                "summary": "查询设备类型",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_DeviceType"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/type/search": {
+            "post": {
+                "description": "查询设备类型",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-type"
+                ],
+                "summary": "查询设备类型",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_DeviceType"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/type/{id}": {
+            "get": {
+                "description": "获取设备类型",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-type"
+                ],
+                "summary": "获取设备类型",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "设备类型ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceType"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改设备类型",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-type"
+                ],
+                "summary": "修改设备类型",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "设备类型ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "设备类型信息",
+                        "name": "device-type",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DeviceType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceType"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/type/{id}/delete": {
+            "get": {
+                "description": "删除设备类型",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-type"
+                ],
+                "summary": "删除设备类型",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "设备类型ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceType"
                         }
                     }
                 }
@@ -1106,9 +1586,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/group/count": {
+        "/gateway/create": {
             "post": {
-                "description": "查询分组数量",
+                "description": "创建网关",
                 "consumes": [
                     "application/json"
                 ],
@@ -1116,17 +1596,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "group"
+                    "gateway"
                 ],
-                "summary": "查询分组数量",
+                "summary": "创建网关",
                 "parameters": [
                     {
-                        "description": "查询参数",
+                        "description": "网关信息",
                         "name": "search",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
+                            "$ref": "#/definitions/model.Gateway"
                         }
                     }
                 ],
@@ -1134,49 +1614,15 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
+                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
                         }
                     }
                 }
             }
         },
-        "/group/create": {
-            "post": {
-                "description": "创建分组",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "group"
-                ],
-                "summary": "创建分组",
-                "parameters": [
-                    {
-                        "description": "分组信息",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/model.Group"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Group"
-                        }
-                    }
-                }
-            }
-        },
-        "/group/list": {
+        "/gateway/list": {
             "get": {
-                "description": "查询分组",
+                "description": "查询网关",
                 "consumes": [
                     "application/json"
                 ],
@@ -1184,9 +1630,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "group"
+                    "gateway"
                 ],
-                "summary": "查询分组",
+                "summary": "查询网关",
                 "parameters": [
                     {
                         "type": "integer",
@@ -1203,15 +1649,15 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Group"
+                            "$ref": "#/definitions/curd.ReplyList-model_Gateway"
                         }
                     }
                 }
             }
         },
-        "/group/search": {
+        "/gateway/search": {
             "post": {
-                "description": "查询分组",
+                "description": "查询网关",
                 "consumes": [
                     "application/json"
                 ],
@@ -1219,9 +1665,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "group"
+                    "gateway"
                 ],
-                "summary": "查询分组",
+                "summary": "查询网关",
                 "parameters": [
                     {
                         "description": "查询参数",
@@ -1237,45 +1683,15 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Group"
+                            "$ref": "#/definitions/curd.ReplyList-model_Gateway"
                         }
                     }
                 }
             }
         },
-        "/group/{id}": {
-            "get": {
-                "description": "获取分组",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "group"
-                ],
-                "summary": "获取分组",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "分组ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Group"
-                        }
-                    }
-                }
-            },
+        "/gateway/{id}": {
             "post": {
-                "description": "修改分组",
+                "description": "修改网关",
                 "consumes": [
                     "application/json"
                 ],
@@ -1283,24 +1699,24 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "group"
+                    "gateway"
                 ],
-                "summary": "修改分组",
+                "summary": "修改网关",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "分组ID",
+                        "description": "网关ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
-                        "description": "分组信息",
-                        "name": "group",
+                        "description": "网关信息",
+                        "name": "gateway",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Group"
+                            "$ref": "#/definitions/model.Gateway"
                         }
                     }
                 ],
@@ -1308,15 +1724,15 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Group"
+                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
                         }
                     }
                 }
             }
         },
-        "/group/{id}/delete": {
+        "/gateway/{id}/delete": {
             "get": {
-                "description": "删除分组",
+                "description": "删除网关",
                 "consumes": [
                     "application/json"
                 ],
@@ -1324,13 +1740,13 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "group"
+                    "gateway"
                 ],
-                "summary": "删除分组",
+                "summary": "删除网关",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "分组ID",
+                        "description": "网关ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1340,7 +1756,71 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Group"
+                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                        }
+                    }
+                }
+            }
+        },
+        "/gateway/{id}/disable": {
+            "get": {
+                "description": "禁用网关",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gateway"
+                ],
+                "summary": "禁用网关",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "网关ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                        }
+                    }
+                }
+            }
+        },
+        "/gateway/{id}/enable": {
+            "get": {
+                "description": "启用网关",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gateway"
+                ],
+                "summary": "启用网关",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "网关ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
                         }
                     }
                 }
@@ -2573,11 +3053,33 @@ const docTemplate = `{
                 }
             }
         },
-        "curd.ReplyData-model_Group": {
+        "curd.ReplyData-model_DeviceGroup": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Group"
+                    "$ref": "#/definitions/model.DeviceGroup"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-model_DeviceType": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.DeviceType"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-model_Gateway": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.Gateway"
                 },
                 "error": {
                     "type": "string"
@@ -2712,13 +3214,47 @@ const docTemplate = `{
                 }
             }
         },
-        "curd.ReplyList-model_Group": {
+        "curd.ReplyList-model_DeviceGroup": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Group"
+                        "$ref": "#/definitions/model.DeviceGroup"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-model_DeviceType": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.DeviceType"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-model_Gateway": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Gateway"
                     }
                 },
                 "error": {
@@ -2874,6 +3410,9 @@ const docTemplate = `{
                 },
                 "title": {
                     "type": "string"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         },
@@ -2935,22 +3474,15 @@ const docTemplate = `{
                         "type": "number"
                     }
                 },
-                "password": {
-                    "type": "string"
-                },
                 "product_id": {
                     "type": "string"
                 },
-                "type": {
-                    "description": "网关/设备/子设备 gateway device subset",
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
+                "type_id": {
+                    "type": "integer"
                 }
             }
         },
-        "model.Group": {
+        "model.DeviceGroup": {
             "type": "object",
             "properties": {
                 "created": {
@@ -2963,6 +3495,49 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.DeviceType": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Gateway": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
@@ -3013,6 +3588,9 @@ const docTemplate = `{
                 "total": {
                     "description": "总提醒次数",
                     "type": "integer"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         },
