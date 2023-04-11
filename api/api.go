@@ -103,7 +103,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	productRouter(app.Group("/product"))
 	gatewayRouter(app.Group("/gateway"))
-	
+
 	deviceRouter(app.Group("/device"))
 	deviceTypeRouter(app.Group("/device/type"))
 	deviceGroupRouter(app.Group("/device/group"))

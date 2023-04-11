@@ -1285,6 +1285,21 @@ paths:
       summary: 创建设备
       tags:
       - device
+  /device/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出设备
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Product'
+      summary: 导出设备
+      tags:
+      - product
   /device/group/{id}:
     get:
       consumes:
@@ -1397,6 +1412,38 @@ paths:
       summary: 创建分组
       tags:
       - device-group
+  /device/group/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出分组
+      produces:
+      - application/octet-stream
+      responses: {}
+      summary: 导出分组
+      tags:
+      - device-group
+  /device/group/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入分组
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入分组
+      tags:
+      - device-group
   /device/group/list:
     get:
       consumes:
@@ -1441,6 +1488,27 @@ paths:
       summary: 查询分组
       tags:
       - device-group
+  /device/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入设备
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入设备
+      tags:
+      - product
   /device/list:
     get:
       consumes:
@@ -1595,6 +1663,38 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-model_DeviceType'
       summary: 创建设备类型
+      tags:
+      - device-type
+  /device/type/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出设备类型
+      produces:
+      - application/octet-stream
+      responses: {}
+      summary: 导出设备类型
+      tags:
+      - device-type
+  /device/type/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入设备类型
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入设备类型
       tags:
       - device-type
   /device/type/list:
@@ -2082,6 +2182,38 @@ paths:
       summary: 创建产品
       tags:
       - product
+  /product/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出产品
+      produces:
+      - application/octet-stream
+      responses: {}
+      summary: 导出产品
+      tags:
+      - product
+  /product/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入产品
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入产品
+      tags:
+      - product
   /product/list:
     get:
       consumes:
@@ -2238,6 +2370,42 @@ paths:
       summary: 创建角色
       tags:
       - role
+  /role/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出设备
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Role'
+      summary: 导出设备
+      tags:
+      - product
+  /role/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入设备
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入设备
+      tags:
+      - product
   /role/list:
     get:
       consumes:

@@ -84,6 +84,26 @@ func noopDeviceGroupGet() {}
 // @Router /device/group/{id}/delete [get]
 func noopDeviceGroupDelete() {}
 
+// @Summary 导出分组
+// @Schemes
+// @Description 导出分组
+// @Tags device-group
+// @Accept json
+// @Produce octet-stream
+// @Router /device/group/export [get]
+func noopDeviceGroupExport() {}
+
+// @Summary 导入分组
+// @Schemes
+// @Description 导入分组
+// @Tags device-group
+// @Param file formData file true "压缩包"
+// @Accept mpfd
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回分组数量
+// @Router /device/group/import [post]
+func noopDeviceGroupImport() {}
+
 func deviceGroupRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[model.DeviceGroup]())
@@ -94,4 +114,6 @@ func deviceGroupRouter(app *gin.RouterGroup) {
 	app.POST("/:id", curd.ParseParamId, curd.ApiModify[model.DeviceGroup](nil, nil,
 		"name", "desc"))
 	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.DeviceGroup](nil, nil))
+	app.GET("/export", curd.ApiExport[model.DeviceGroup]("device-group"))
+	app.POST("/import", curd.ApiImport[model.DeviceGroup]())
 }

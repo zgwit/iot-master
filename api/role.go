@@ -84,6 +84,27 @@ func noopRoleGet() {}
 // @Router /role/{id}/delete [get]
 func noopRoleDelete() {}
 
+// @Summary 导出设备
+// @Schemes
+// @Description 导出设备
+// @Tags product
+// @Accept json
+// @Produce octet-stream
+// @Success 200 {object} curd.ReplyList[model.Role] 返回压缩包
+// @Router /role/export [get]
+func noopRoleExport() {}
+
+// @Summary 导入设备
+// @Schemes
+// @Description 导入设备
+// @Tags product
+// @Param file formData file true "压缩包"
+// @Accept mpfd
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回设备数量
+// @Router /role/import [post]
+func noopRoleImport() {}
+
 func roleRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[model.Role]())
@@ -100,5 +121,9 @@ func roleRouter(app *gin.RouterGroup) {
 		"id", "name", "privileges"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Role](nil, nil))
+
+	app.GET("/export", curd.ApiExport[model.Role]("role"))
+
+	app.POST("/import", curd.ApiImport[model.Role]())
 
 }

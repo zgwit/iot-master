@@ -84,6 +84,26 @@ func noopDeviceTypeGet() {}
 // @Router /device/type/{id}/delete [get]
 func noopDeviceTypeDelete() {}
 
+// @Summary 导出设备类型
+// @Schemes
+// @Description 导出设备类型
+// @Tags device-type
+// @Accept json
+// @Produce octet-stream
+// @Router /device/type/export [get]
+func noopDeviceTypeExport() {}
+
+// @Summary 导入设备类型
+// @Schemes
+// @Description 导入设备类型
+// @Tags device-type
+// @Param file formData file true "压缩包"
+// @Accept mpfd
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回设备类型数量
+// @Router /device/type/import [post]
+func noopDeviceTypeImport() {}
+
 func deviceTypeRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[model.DeviceType]())
@@ -94,4 +114,6 @@ func deviceTypeRouter(app *gin.RouterGroup) {
 	app.POST("/:id", curd.ParseParamId, curd.ApiModify[model.DeviceType](nil, nil,
 		"name", "desc"))
 	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.DeviceType](nil, nil))
+	app.GET("/export", curd.ApiExport[model.DeviceType]("device-type"))
+	app.POST("/import", curd.ApiImport[model.DeviceType]())
 }

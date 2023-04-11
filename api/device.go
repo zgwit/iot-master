@@ -86,6 +86,27 @@ func noopDeviceUpdate() {}
 // @Router /device/{id}/delete [get]
 func noopDeviceDelete() {}
 
+// @Summary 导出设备
+// @Schemes
+// @Description 导出设备
+// @Tags product
+// @Accept json
+// @Produce octet-stream
+// @Success 200 {object} curd.ReplyList[model.Product] 返回压缩包
+// @Router /device/export [get]
+func noopDeviceExport() {}
+
+// @Summary 导入设备
+// @Schemes
+// @Description 导入设备
+// @Tags product
+// @Param file formData file true "压缩包"
+// @Accept mpfd
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回设备数量
+// @Router /device/import [post]
+func noopDeviceImport() {}
+
 // @Summary 设备变量
 // @Schemes
 // @Description 设备变量
@@ -118,6 +139,11 @@ func deviceRouter(app *gin.RouterGroup) {
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Device](nil, nil,
 		"id", "gateway_id", "product_id", "group_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Device](nil, nil))
+	app.GET("/export", curd.ApiExport[model.Device]("device"))
+	app.POST("/import", curd.ApiImport[model.Device]())
+
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisable[model.Device](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisable[model.Device](false, nil, nil))
 
 	app.GET("/:id/values", curd.ParseParamStringId, deviceValues)
 	app.POST("/:id/parameters", curd.ParseParamStringId, deviceParameters)

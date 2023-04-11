@@ -93,4 +93,7 @@ func gatewayRouter(app *gin.RouterGroup) {
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Gateway](nil, nil,
 		"id", "name", "desc", "username", "password", "disabled"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Gateway](nil, nil))
+
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisable[model.Gateway](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisable[model.Gateway](false, nil, nil))
 }

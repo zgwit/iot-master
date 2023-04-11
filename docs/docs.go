@@ -870,6 +870,29 @@ const docTemplate = `{
                 }
             }
         },
+        "/device/export": {
+            "get": {
+                "description": "导出设备",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导出设备",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Product"
+                        }
+                    }
+                }
+            }
+        },
         "/device/group/count": {
             "post": {
                 "description": "查询分组数量",
@@ -933,6 +956,54 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-model_DeviceGroup"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/group/export": {
+            "get": {
+                "description": "导出分组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "device-group"
+                ],
+                "summary": "导出分组",
+                "responses": {}
+            }
+        },
+        "/device/group/import": {
+            "post": {
+                "description": "导入分组",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-group"
+                ],
+                "summary": "导入分组",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
                         }
                     }
                 }
@@ -1110,6 +1181,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/device/import": {
+            "post": {
+                "description": "导入设备",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导入设备",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
         "/device/list": {
             "get": {
                 "description": "查询设备",
@@ -1242,6 +1345,54 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-model_DeviceType"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/type/export": {
+            "get": {
+                "description": "导出设备类型",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "device-type"
+                ],
+                "summary": "导出设备类型",
+                "responses": {}
+            }
+        },
+        "/device/type/import": {
+            "post": {
+                "description": "导入设备类型",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-type"
+                ],
+                "summary": "导入设备类型",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
                         }
                     }
                 }
@@ -2160,6 +2311,54 @@ const docTemplate = `{
                 }
             }
         },
+        "/product/export": {
+            "get": {
+                "description": "导出产品",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导出产品",
+                "responses": {}
+            }
+        },
+        "/product/import": {
+            "post": {
+                "description": "导入产品",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导入产品",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
         "/product/list": {
             "get": {
                 "description": "查询产品",
@@ -2395,6 +2594,61 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-model_Role"
+                        }
+                    }
+                }
+            }
+        },
+        "/role/export": {
+            "get": {
+                "description": "导出设备",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导出设备",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Role"
+                        }
+                    }
+                }
+            }
+        },
+        "/role/import": {
+            "post": {
+                "description": "导入设备",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导入设备",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
                         }
                     }
                 }
