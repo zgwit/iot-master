@@ -1,7 +1,7 @@
 package model
 
 type Broker struct {
-	Id       int64  `json:"id"`
+	Id       string `json:"id" xorm:"pk"`
 	Name     string `json:"name"`
 	Desc     string `json:"desc,omitempty"`
 	Port     int    `json:"port,omitempty"` //TODO 添加TLS证书
@@ -11,7 +11,7 @@ type Broker struct {
 
 type BrokerHistory struct {
 	Id       int64  `json:"id"`
-	BrokerId int64  `json:"broker_id" xorm:"index"`
+	BrokerId string `json:"broker_id" xorm:"index"`
 	Event    string `json:"event"`
 	Created  Time   `json:"created,omitempty" xorm:"created"`
 }

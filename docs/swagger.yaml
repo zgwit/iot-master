@@ -328,7 +328,7 @@ definitions:
       disabled:
         type: boolean
       id:
-        type: integer
+        type: string
       name:
         type: string
       port:
@@ -763,7 +763,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -783,7 +783,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       - description: 总线信息
         in: body
         name: broker
@@ -810,7 +810,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -831,7 +831,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -852,7 +852,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -907,6 +907,42 @@ paths:
       summary: 创建总线
       tags:
       - broker
+  /broker/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出总线
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Broker'
+      summary: 导出总线
+      tags:
+      - product
+  /broker/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入总线
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入总线
+      tags:
+      - product
   /broker/list:
     get:
       consumes:
@@ -1292,11 +1328,7 @@ paths:
       description: 导出设备
       produces:
       - application/octet-stream
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_Product'
+      responses: {}
       summary: 导出设备
       tags:
       - product
@@ -2374,7 +2406,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: 导出设备
+      description: 导出角色
       produces:
       - application/octet-stream
       responses:
@@ -2382,14 +2414,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/curd.ReplyList-model_Role'
-      summary: 导出设备
+      summary: 导出角色
       tags:
       - product
   /role/import:
     post:
       consumes:
       - multipart/form-data
-      description: 导入设备
+      description: 导入角色
       parameters:
       - description: 压缩包
         in: formData
@@ -2403,7 +2435,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入设备
+      summary: 导入角色
       tags:
       - product
   /role/list:

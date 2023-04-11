@@ -84,9 +84,9 @@ func noopRoleGet() {}
 // @Router /role/{id}/delete [get]
 func noopRoleDelete() {}
 
-// @Summary 导出设备
+// @Summary 导出角色
 // @Schemes
-// @Description 导出设备
+// @Description 导出角色
 // @Tags product
 // @Accept json
 // @Produce octet-stream
@@ -94,14 +94,14 @@ func noopRoleDelete() {}
 // @Router /role/export [get]
 func noopRoleExport() {}
 
-// @Summary 导入设备
+// @Summary 导入角色
 // @Schemes
-// @Description 导入设备
+// @Description 导入角色
 // @Tags product
 // @Param file formData file true "压缩包"
 // @Accept mpfd
 // @Produce json
-// @Success 200 {object} curd.ReplyData[int64] 返回设备数量
+// @Success 200 {object} curd.ReplyData[int64] 返回角色数量
 // @Router /role/import [post]
 func noopRoleImport() {}
 

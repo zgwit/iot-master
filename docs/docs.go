@@ -291,6 +291,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/broker/export": {
+            "get": {
+                "description": "导出总线",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导出总线",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Broker"
+                        }
+                    }
+                }
+            }
+        },
+        "/broker/import": {
+            "post": {
+                "description": "导入总线",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导入总线",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
         "/broker/list": {
             "get": {
                 "description": "查询总线",
@@ -375,7 +430,7 @@ const docTemplate = `{
                 "summary": "获取总线",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "总线ID",
                         "name": "id",
                         "in": "path",
@@ -405,7 +460,7 @@ const docTemplate = `{
                 "summary": "修改总线",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "总线ID",
                         "name": "id",
                         "in": "path",
@@ -446,7 +501,7 @@ const docTemplate = `{
                 "summary": "删除总线",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "总线ID",
                         "name": "id",
                         "in": "path",
@@ -478,7 +533,7 @@ const docTemplate = `{
                 "summary": "禁用总线",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "总线ID",
                         "name": "id",
                         "in": "path",
@@ -510,7 +565,7 @@ const docTemplate = `{
                 "summary": "启用总线",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "总线ID",
                         "name": "id",
                         "in": "path",
@@ -883,14 +938,7 @@ const docTemplate = `{
                     "product"
                 ],
                 "summary": "导出设备",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Product"
-                        }
-                    }
-                }
+                "responses": {}
             }
         },
         "/device/group/count": {
@@ -2601,7 +2649,7 @@ const docTemplate = `{
         },
         "/role/export": {
             "get": {
-                "description": "导出设备",
+                "description": "导出角色",
                 "consumes": [
                     "application/json"
                 ],
@@ -2611,7 +2659,7 @@ const docTemplate = `{
                 "tags": [
                     "product"
                 ],
-                "summary": "导出设备",
+                "summary": "导出角色",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2624,7 +2672,7 @@ const docTemplate = `{
         },
         "/role/import": {
             "post": {
-                "description": "导入设备",
+                "description": "导入角色",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -2634,7 +2682,7 @@ const docTemplate = `{
                 "tags": [
                     "product"
                 ],
-                "summary": "导入设备",
+                "summary": "导入角色",
                 "parameters": [
                     {
                         "type": "file",
@@ -3683,7 +3731,7 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
