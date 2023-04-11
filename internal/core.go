@@ -18,7 +18,17 @@ func Open() error {
 		return err
 	}
 
+	err = subscribeEvent()
+	if err != nil {
+		return err
+	}
+
 	err = subscribeProperty()
+	if err != nil {
+		return err
+	}
+
+	err = subscribePropertyStrict()
 	if err != nil {
 		return err
 	}

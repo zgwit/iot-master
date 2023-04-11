@@ -7,29 +7,24 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 	"strings"
+	"time"
 )
 
 func subscribeProperty() error {
 	mqtt.Client.Subscribe("up/property/+/+", 0, func(client paho.Client, message paho.Message) {
 		topics := strings.Split(message.Topic(), "/")
-		pid := topics[2]
+		//pid := topics[2]
 		id := topics[3]
-		dev := Devices.Load(id)
-		if dev == nil {
-			log.Infof("加载设备 %s %s", pid, id)
 
-			//加载设备
-			err := LoadDeviceById(id)
-			if err != nil {
-				log.Error(err)
-				//TODO 自动创建设备？
-				return
-			}
-			dev = Devices.Load(id)
+		dev, err := GetDevice(id)
+		if err != nil {
+			log.Error(err)
+			//TODO 自动创建设备？
+			return
 		}
 
 		var payload map[string]interface{}
-		err := json.Unmarshal(message.Payload(), &payload)
+		err = json.Unmarshal(message.Payload(), &payload)
 		if err != nil {
 			return
 		}
@@ -44,26 +39,23 @@ func subscribeProperty() error {
 }
 
 func mergeProperties(id string, properties []model.PayloadValue) {
-	dev := Devices.Load(id)
-	if dev == nil {
-		//加载设备
-		err := LoadDeviceById(id)
-		if err != nil {
-			log.Error(err)
-			return
-		}
-
-		dev = Devices.Load(id)
+	dev, err := GetDevice(id)
+	if err != nil {
+		log.Error(err)
+		return
 	}
 
 	//合并数据
 	for _, p := range properties {
 		dev.Values[p.Name] = p.Value
 	}
+	dev.Values["$online"] = true
+	dev.Values["$update"] = model.Time(time.Now())
+
 }
 
-func subscribePropertyBak() error {
-	mqtt.Client.Subscribe("up/property/+/+", 0, func(client paho.Client, message paho.Message) {
+func subscribePropertyStrict() error {
+	mqtt.Client.Subscribe("up/property/+/+/strict", 0, func(client paho.Client, message paho.Message) {
 		var payload model.PayloadPropertyUp
 		err := json.Unmarshal(message.Payload(), &payload)
 		if err != nil {

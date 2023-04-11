@@ -92,7 +92,6 @@ func noopDeviceDelete() {}
 // @Tags product
 // @Accept json
 // @Produce octet-stream
-// @Success 200 {object} curd.ReplyList[model.Product] 返回压缩包
 // @Router /device/export [get]
 func noopDeviceExport() {}
 

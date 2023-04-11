@@ -41,6 +41,20 @@ func NewDevice(id string) *Device {
 	}
 }
 
+func GetDevice(id string) (*Device, error) {
+	dev := Devices.Load(id)
+	if dev == nil {
+		//log.Infof("加载设备 %s", id)
+		//加载设备
+		err := LoadDeviceById(id)
+		if err != nil {
+			return nil, err
+		}
+		dev = Devices.Load(id)
+	}
+	return dev, nil
+}
+
 func LoadDeviceById(id string) error {
 	var dev model.Device
 	get, err := db.Engine.ID(id).Get(&dev)
