@@ -1,9 +1,13 @@
 package curd
 
 import (
+	"archive/zip"
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
+	"io/ioutil"
 	"reflect"
 )
 
@@ -293,5 +297,109 @@ func ApiDisable[T any](disable bool, before, after func(id any) error) gin.Handl
 		}
 
 		OK(ctx, nil)
+	}
+}
+
+func ApiExport[T any](filename string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		//id := ctx.MustGet("id")
+		ids := ctx.QueryArray("id")
+
+		var data T
+		var datum []map[string]any
+
+		query := db.Engine.Table(data)
+		if ids != nil && len(ids) > 0 {
+			query = query.In("id", ids)
+		}
+		err := query.Find(&datum)
+		if err != nil {
+			Error(ctx, err)
+			return
+		}
+
+		//下载头
+		ctx.Header("Content-Type", "application/octet-stream")
+		ctx.Header("Content-Disposition", "attachment; filename="+filename+".zip") // 用来指定下载下来的文件名
+		ctx.Header("Content-Transfer-Encoding", "binary")
+
+		writer := zip.NewWriter(ctx.Writer)
+
+		for _, data := range datum {
+			id := data["id"]
+			fn := fmt.Sprintf("%v.json", id)
+			f, err := writer.Create(fn)
+			if err != nil {
+				return
+			}
+
+			buf, _ := json.Marshal(data)
+			_, err = f.Write(buf)
+			if err != nil {
+				return
+			}
+		}
+
+		err = writer.Close()
+		if err != nil {
+			return
+		}
+	}
+}
+
+func ApiImport[T any]() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		formFile, err := ctx.FormFile("formFile")
+		if err != nil {
+			Error(ctx, err)
+			return
+		}
+
+		file, err := formFile.Open()
+		if err != nil {
+			Error(ctx, err)
+			return
+		}
+		defer file.Close()
+
+		reader, err := zip.NewReader(file, formFile.Size)
+		if err != nil {
+			Error(ctx, err)
+			return
+		}
+
+		//数据解析
+		var datum []map[string]any
+		for _, file := range reader.File {
+			if file.FileInfo().IsDir() {
+				continue
+			}
+
+			reader, err := file.Open()
+			buf, err := ioutil.ReadAll(reader)
+			if err != nil {
+				Error(ctx, err)
+				return
+			}
+
+			var data map[string]any
+			err = json.Unmarshal(buf, &data)
+			if err != nil {
+				Error(ctx, err)
+				return
+			}
+
+			datum = append(datum, data)
+		}
+
+		//插入数据
+		var data T
+		n, err := db.Engine.Table(data).InsertMulti(datum)
+		if err != nil {
+			Error(ctx, err)
+			return
+		}
+
+		OK(ctx, n)
 	}
 }
