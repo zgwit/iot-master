@@ -1,8 +1,8 @@
 package model
 
 type Device struct {
-	Id        string `json:"id" xorm:"pk"`                      //ClientID
-	GatewayId string `json:"gateway_id,omitempty" xorm:"index"` //父设备
+	Id        string `json:"id" xorm:"pk"` //ClientID
+	GatewayId string `json:"gateway_id,omitempty" xorm:"index"`
 	ProductId string `json:"product_id,omitempty" xorm:"index"`
 
 	GroupId int64 `json:"group_id,omitempty" xorm:"index"` //分组

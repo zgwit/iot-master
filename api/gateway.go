@@ -6,6 +6,17 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 )
 
+// @Summary 查询网关数量
+// @Schemes
+// @Description 查询网关数量
+// @Tags gateway
+// @Param search body curd.ParamSearch true "查询参数"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回网关数量
+// @Router /gateway/count [post]
+func noopGatewayCount() {}
+
 // @Summary 查询网关
 // @Schemes
 // @Description 查询网关
@@ -51,6 +62,17 @@ func noopGatewayCreate() {}
 // @Router /gateway/{id} [post]
 func noopGatewayUpdate() {}
 
+// @Summary 获取网关
+// @Schemes
+// @Description 获取网关
+// @Tags gateway
+// @Param id path string true "网关ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Gateway] 返回网关信息
+// @Router /gateway/{id} [get]
+func noopGatewayGet() {}
+
 // @Summary 删除网关
 // @Schemes
 // @Description 删除网关
@@ -84,8 +106,30 @@ func noopGatewayEnable() {}
 // @Router /gateway/{id}/disable [get]
 func noopGatewayDisable() {}
 
+// @Summary 导出网关
+// @Schemes
+// @Description 导出网关
+// @Tags product
+// @Accept json
+// @Produce octet-stream
+// @Success 200 {object} curd.ReplyList[model.Gateway] 返回压缩包
+// @Router /gateway/export [get]
+func noopGatewayExport() {}
+
+// @Summary 导入网关
+// @Schemes
+// @Description 导入网关
+// @Tags product
+// @Param file formData file true "压缩包"
+// @Accept mpfd
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回网关数量
+// @Router /gateway/import [post]
+func noopGatewayImport() {}
+
 func gatewayRouter(app *gin.RouterGroup) {
 
+	app.POST("/count", curd.ApiCount[model.Gateway]())
 	app.POST("/search", curd.ApiSearch[model.Gateway]())
 	app.GET("/list", curd.ApiList[model.Gateway]())
 	app.POST("/create", curd.ApiCreate[model.Gateway](curd.GenerateRandomId[model.Gateway](8), nil))
@@ -96,4 +140,6 @@ func gatewayRouter(app *gin.RouterGroup) {
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisable[model.Gateway](true, nil, nil))
 	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisable[model.Gateway](false, nil, nil))
+	app.GET("/export", curd.ApiExport[model.Gateway]("gateway"))
+	app.POST("/import", curd.ApiImport[model.Gateway]())
 }

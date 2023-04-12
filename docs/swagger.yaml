@@ -344,7 +344,6 @@ definitions:
       disabled:
         type: boolean
       gateway_id:
-        description: 父设备
         type: string
       group_id:
         description: 分组
@@ -1774,6 +1773,26 @@ paths:
       tags:
       - device-type
   /gateway/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取网关
+      parameters:
+      - description: 网关ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+      summary: 获取网关
+      tags:
+      - gateway
     post:
       consumes:
       - application/json
@@ -1863,6 +1882,28 @@ paths:
       summary: 启用网关
       tags:
       - gateway
+  /gateway/count:
+    post:
+      consumes:
+      - application/json
+      description: 查询网关数量
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 查询网关数量
+      tags:
+      - gateway
   /gateway/create:
     post:
       consumes:
@@ -1885,6 +1926,42 @@ paths:
       summary: 创建网关
       tags:
       - gateway
+  /gateway/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出网关
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Gateway'
+      summary: 导出网关
+      tags:
+      - product
+  /gateway/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入网关
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入网关
+      tags:
+      - product
   /gateway/list:
     get:
       consumes:

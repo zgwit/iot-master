@@ -137,6 +137,9 @@ func brokerRouter(app *gin.RouterGroup) {
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Broker](nil, nil,
 		"id", "name", "type", "port", "desc", "disabled"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Broker](nil, nil))
+
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisable[model.Broker](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisable[model.Broker](false, nil, nil))
 	app.GET("/export", curd.ApiExport[model.Broker]("broker"))
 	app.POST("/import", curd.ApiImport[model.Broker]())
 }

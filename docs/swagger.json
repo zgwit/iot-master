@@ -1778,6 +1778,40 @@
                 }
             }
         },
+        "/gateway/count": {
+            "post": {
+                "description": "查询网关数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gateway"
+                ],
+                "summary": "查询网关数量",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
         "/gateway/create": {
             "post": {
                 "description": "创建网关",
@@ -1807,6 +1841,61 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                        }
+                    }
+                }
+            }
+        },
+        "/gateway/export": {
+            "get": {
+                "description": "导出网关",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导出网关",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Gateway"
+                        }
+                    }
+                }
+            }
+        },
+        "/gateway/import": {
+            "post": {
+                "description": "导入网关",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导入网关",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
                         }
                     }
                 }
@@ -1882,6 +1971,36 @@
             }
         },
         "/gateway/{id}": {
+            "get": {
+                "description": "获取网关",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "gateway"
+                ],
+                "summary": "获取网关",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "网关ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "修改网关",
                 "consumes": [
@@ -3748,7 +3867,6 @@
                     "type": "boolean"
                 },
                 "gateway_id": {
-                    "description": "父设备",
                     "type": "string"
                 },
                 "group_id": {
