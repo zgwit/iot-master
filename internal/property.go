@@ -33,6 +33,8 @@ func subscribeProperty() error {
 		for k, v := range payload {
 			dev.Values[k] = v
 		}
+		dev.Values["$online"] = true
+		dev.Values["$update"] = model.Time(time.Now())
 	})
 
 	return nil
