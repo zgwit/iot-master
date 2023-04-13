@@ -13,14 +13,14 @@ if [ -n "${ver}" ];then
 fi
 
 
-pkg="github.com/zgwit/iot-master/pkg/build"
+pkg="github.com/zgwit/iot-master/v3/pkg/build"
 gitHash=$(git show -s --format=%H)
 buildTime=$(date -d today +"%Y-%m-%d %H:%M:%S")
 
 # -w -s
-ldflags="-X '$pkg.Version=$version' \
--X '$pkg.GitHash=$gitHash' \
--X '$pkg.BuildTime=$buildTime'"
+ldflags="-X '${pkg}.Version=$version' \
+-X '${pkg}.GitHash=$gitHash' \
+-X '${pkg}.Build=$buildTime'"
 
 
 export GOARCH=amd64
@@ -29,5 +29,4 @@ export GOOS=windows
 go build -ldflags "$ldflags" -o iot-master.exe main.go
 
 export GOOS=linux
-#CC=gcc
 go build -ldflags "$ldflags" -o iot-master main.go

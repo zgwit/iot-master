@@ -10,6 +10,6 @@ var (
 
 func Print() {
 	fmt.Printf("Version: %s \n", Version)
+	fmt.Printf("Build Time: %s \n", Build)
 	fmt.Printf("Git Hash: %s \n", GitHash)
-	fmt.Printf("Build Build: %s \n", Build)
 }
