@@ -40,18 +40,6 @@ func noopAlarmSearch() {}
 // @Router /alarm/list [get]
 func noopAlarmList() {}
 
-// @Summary 修改报警
-// @Schemes
-// @Description 修改报警
-// @Tags alarm
-// @Param id path int true "报警ID"
-// @Param alarm body model.Alarm true "报警信息"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[model.Alarm] 返回报警信息
-// @Router /alarm/{id} [post]
-func noopAlarmUpdate() {}
-
 // @Summary 删除报警
 // @Schemes
 // @Description 删除报警

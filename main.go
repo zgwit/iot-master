@@ -157,7 +157,7 @@ func originMain() {
 		new(model.User), new(model.Password), new(model.Role),
 		new(model.Broker), new(model.Gateway), new(model.Product),
 		new(model.Device), new(model.DeviceGroup), new(model.DeviceType),
-		new(model.Alarm),
+		new(model.Alarm), new(model.History),
 		new(model.App), new(model.Plugin),
 	)
 	if err != nil {

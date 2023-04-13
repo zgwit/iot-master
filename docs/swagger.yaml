@@ -106,6 +106,13 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-model_History:
+    properties:
+      data:
+        $ref: '#/definitions/model.History'
+      error:
+        type: string
+    type: object
   curd.ReplyData-model_Plugin:
     properties:
       data:
@@ -215,6 +222,17 @@ definitions:
       data:
         items:
           $ref: '#/definitions/model.Gateway'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_History:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.History'
         type: array
       error:
         type: string
@@ -401,6 +419,19 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  model.History:
+    properties:
+      device_id:
+        type: string
+      id:
+        type: integer
+      point:
+        type: string
+      time:
+        type: string
+      value:
+        type: number
     type: object
   model.ModArgument:
     properties:
@@ -617,33 +648,6 @@ info:
   title: 物联大师接口文档
   version: 1.0 版本
 paths:
-  /alarm/{id}:
-    post:
-      consumes:
-      - application/json
-      description: 修改报警
-      parameters:
-      - description: 报警ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 报警信息
-        in: body
-        name: alarm
-        required: true
-        schema:
-          $ref: '#/definitions/model.Alarm'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Alarm'
-      summary: 修改报警
-      tags:
-      - alarm
   /alarm/{id}/delete:
     get:
       consumes:
@@ -2006,6 +2010,93 @@ paths:
       summary: 查询网关
       tags:
       - gateway
+  /history/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除历史
+      parameters:
+      - description: 历史ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_History'
+      summary: 删除历史
+      tags:
+      - history
+  /history/count:
+    post:
+      consumes:
+      - application/json
+      description: 查询历史
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 查询历史数量
+      tags:
+      - history
+  /history/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询历史
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_History'
+      summary: 查询历史
+      tags:
+      - history
+  /history/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询历史
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_History'
+      summary: 查询历史
+      tags:
+      - history
   /plugin/{id}:
     post:
       consumes:
