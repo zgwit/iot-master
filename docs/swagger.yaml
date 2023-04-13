@@ -85,6 +85,13 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-model_DeviceArea:
+    properties:
+      data:
+        $ref: '#/definitions/model.DeviceArea'
+      error:
+        type: string
+    type: object
   curd.ReplyData-model_DeviceGroup:
     properties:
       data:
@@ -182,6 +189,17 @@ definitions:
       data:
         items:
           $ref: '#/definitions/model.Device'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_DeviceArea:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.DeviceArea'
         type: array
       error:
         type: string
@@ -337,6 +355,9 @@ definitions:
     type: object
   model.Device:
     properties:
+      area_id:
+        description: 区域
+        type: integer
       created:
         type: string
       desc:
@@ -361,10 +382,24 @@ definitions:
       product_id:
         type: string
       type_id:
+        description: 类型
         type: integer
+    type: object
+  model.DeviceArea:
+    properties:
+      created:
+        type: string
+      desc:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
     type: object
   model.DeviceGroup:
     properties:
+      area_id:
+        type: integer
       created:
         type: string
       desc:
@@ -1252,6 +1287,194 @@ paths:
       summary: 设备变量
       tags:
       - device
+  /device/area/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取区域
+      parameters:
+      - description: 区域ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_DeviceArea'
+      summary: 获取区域
+      tags:
+      - device-area
+    post:
+      consumes:
+      - application/json
+      description: 修改区域
+      parameters:
+      - description: 区域ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 区域信息
+        in: body
+        name: device-area
+        required: true
+        schema:
+          $ref: '#/definitions/model.DeviceArea'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_DeviceArea'
+      summary: 修改区域
+      tags:
+      - device-area
+  /device/area/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除区域
+      parameters:
+      - description: 区域ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_DeviceArea'
+      summary: 删除区域
+      tags:
+      - device-area
+  /device/area/count:
+    post:
+      consumes:
+      - application/json
+      description: 查询区域数量
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 查询区域数量
+      tags:
+      - device-area
+  /device/area/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建区域
+      parameters:
+      - description: 区域信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.DeviceArea'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_DeviceArea'
+      summary: 创建区域
+      tags:
+      - device-area
+  /device/area/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出区域
+      produces:
+      - application/octet-stream
+      responses: {}
+      summary: 导出区域
+      tags:
+      - device-area
+  /device/area/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入区域
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入区域
+      tags:
+      - device-area
+  /device/area/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询区域
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_DeviceArea'
+      summary: 查询区域
+      tags:
+      - device-area
+  /device/area/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询区域
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_DeviceArea'
+      summary: 查询区域
+      tags:
+      - device-area
   /device/count:
     post:
       consumes:

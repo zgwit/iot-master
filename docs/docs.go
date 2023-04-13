@@ -816,6 +816,294 @@ const docTemplate = `{
                 }
             }
         },
+        "/device/area/count": {
+            "post": {
+                "description": "查询区域数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-area"
+                ],
+                "summary": "查询区域数量",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/area/create": {
+            "post": {
+                "description": "创建区域",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-area"
+                ],
+                "summary": "创建区域",
+                "parameters": [
+                    {
+                        "description": "区域信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DeviceArea"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceArea"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/area/export": {
+            "get": {
+                "description": "导出区域",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "device-area"
+                ],
+                "summary": "导出区域",
+                "responses": {}
+            }
+        },
+        "/device/area/import": {
+            "post": {
+                "description": "导入区域",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-area"
+                ],
+                "summary": "导入区域",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/area/list": {
+            "get": {
+                "description": "查询区域",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-area"
+                ],
+                "summary": "查询区域",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_DeviceArea"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/area/search": {
+            "post": {
+                "description": "查询区域",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-area"
+                ],
+                "summary": "查询区域",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_DeviceArea"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/area/{id}": {
+            "get": {
+                "description": "获取区域",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-area"
+                ],
+                "summary": "获取区域",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "区域ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceArea"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改区域",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-area"
+                ],
+                "summary": "修改区域",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "区域ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "区域信息",
+                        "name": "device-area",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DeviceArea"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceArea"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/area/{id}/delete": {
+            "get": {
+                "description": "删除区域",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device-area"
+                ],
+                "summary": "删除区域",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "区域ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_DeviceArea"
+                        }
+                    }
+                }
+            }
+        },
         "/device/count": {
             "post": {
                 "description": "查询设备数量",
@@ -3433,6 +3721,17 @@ const docTemplate = `{
                 }
             }
         },
+        "curd.ReplyData-model_DeviceArea": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.DeviceArea"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-model_DeviceGroup": {
             "type": "object",
             "properties": {
@@ -3584,6 +3883,23 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Device"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-model_DeviceArea": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.DeviceArea"
                     }
                 },
                 "error": {
@@ -3823,6 +4139,10 @@ const docTemplate = `{
         "model.Device": {
             "type": "object",
             "properties": {
+                "area_id": {
+                    "description": "区域",
+                    "type": "integer"
+                },
                 "created": {
                     "type": "string"
                 },
@@ -3857,13 +4177,34 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "type_id": {
+                    "description": "类型",
                     "type": "integer"
+                }
+            }
+        },
+        "model.DeviceArea": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
         "model.DeviceGroup": {
             "type": "object",
             "properties": {
+                "area_id": {
+                    "type": "integer"
+                },
                 "created": {
                     "type": "string"
                 },
