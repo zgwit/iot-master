@@ -2,13 +2,10 @@ package args
 
 import (
 	"flag"
-	"fmt"
-	"github.com/zgwit/iot-master/v3/pkg/log"
-	"net/http"
+	"github.com/zgwit/iot-master/v3/pkg/build"
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 var (
@@ -19,26 +16,7 @@ var (
 	Uninstall   bool
 )
 
-var (
-	Version   string
-	GitHash   string
-	BuildTime string
-	Time      time.Time
-)
-
 func init() {
-
-	//初始化编译时间
-	if BuildTime != "" {
-		var err error
-		Time, err = http.ParseTime(BuildTime)
-		if err != nil {
-			log.Fatal(err)
-		}
-	} else {
-		Time = time.Now()
-	}
-
 	//参数配置
 	app, _ := filepath.Abs(os.Args[0])
 	ext := filepath.Ext(os.Args[0])
@@ -60,9 +38,7 @@ func Parse() {
 		os.Exit(0)
 	}
 	if showVersion {
-		fmt.Printf("Version: %s \n", Version)
-		fmt.Printf("Git Hash: %s \n", GitHash)
-		fmt.Printf("Build Time: %s \n", BuildTime)
+		build.Print()
 		os.Exit(0)
 	}
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/kardianos/service"
 	"github.com/zgwit/iot-master/v3/api"
@@ -12,6 +11,8 @@ import (
 	_ "github.com/zgwit/iot-master/v3/docs"
 	"github.com/zgwit/iot-master/v3/internal"
 	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/pkg/banner"
+	"github.com/zgwit/iot-master/v3/pkg/build"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
@@ -24,17 +25,6 @@ import (
 	"os/signal"
 	"syscall"
 )
-
-const banner = `
-###        #######       #     #                                   
- #            #          ##   ##   ##    ####  ##### ###### #####  
- #    ####    #          # # # #  #  #  #        #   #      #    # 
- #   #    #   #   #####  #  #  # #    #  ####    #   #####  #    # 
- #   #    #   #          #     # ######      #   #   #      #####  
- #    ####    #          #     # #    # #    #   #   #      #   #  
-###           #          #     # #    #  ####    #   ###### #    # 
-
-`
 
 //go:embed all:www
 var wwwFiles embed.FS
@@ -133,7 +123,8 @@ func (p *Program) run() {
 }
 
 func originMain() {
-	fmt.Print(banner)
+	banner.Print()
+	build.Print()
 
 	err := config.Load()
 	if err != nil {
@@ -157,7 +148,7 @@ func originMain() {
 		new(model.User), new(model.Password), new(model.Role),
 		new(model.Broker), new(model.Gateway), new(model.Product),
 		new(model.Device), new(model.DeviceGroup), new(model.DeviceType),
-		new(model.Alarm), new(model.History),
+		new(model.Alarm),
 		new(model.App), new(model.Plugin),
 	)
 	if err != nil {
@@ -208,13 +199,13 @@ func originMain() {
 	api.RegisterRoutes(app.Group("/api"))
 
 	//注册接口文档
-	web.RegisterSwaggerDocs(app)
+	web.RegisterSwaggerDocs(&app.RouterGroup)
 
 	//使用$前缀区分插件
 	app.Any("/app/:app/*path", internal.ProxyApp)
 
 	//前端静态文件
-	web.RegisterFS(app, http.FS(wwwFiles))
+	web.RegisterFS(app, http.FS(wwwFiles), "www", "index.html")
 
 	//监听HTTP
 	err = app.Run(config.Config.Web.Addr)

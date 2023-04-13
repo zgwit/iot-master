@@ -55,12 +55,13 @@ func CreateEngine(cfg Options) *gin.Engine {
 	return app
 }
 
-func RegisterFS(app *gin.Engine, fs http.FileSystem) {
+func RegisterFS(app *gin.Engine, fs http.FileSystem, prefix, index string) {
 	tm := time.Now()
 	app.Use(func(c *gin.Context) {
 		if c.Request.Method == http.MethodGet {
 			//支持前端框架的无“#”路由
-			fn := path.Join("www", c.Request.URL.Path) //删除查询参数
+			fn := path.Join(prefix, c.Request.URL.Path) //删除查询参数
+			//fn := c.Request.URL.Path
 			f, err := fs.Open(fn)
 			if err == nil {
 				defer f.Close()
@@ -76,7 +77,8 @@ func RegisterFS(app *gin.Engine, fs http.FileSystem) {
 			}
 
 			//默认首页
-			f, err = fs.Open("www/index.html")
+			fn = path.Join(prefix, index) //删除查询参数
+			f, err = fs.Open(fn)
 			if err != nil {
 				c.Next()
 				return

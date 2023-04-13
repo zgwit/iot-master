@@ -6,7 +6,7 @@ import (
 	swaggerFiles "github.com/zgwit/swagger-files"
 )
 
-func RegisterSwaggerDocs(app *gin.Engine) {
+func RegisterSwaggerDocs(app *gin.RouterGroup) {
 	//注册接口文档
 	app.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }

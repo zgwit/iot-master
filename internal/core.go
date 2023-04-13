@@ -33,11 +33,6 @@ func Open() error {
 		return err
 	}
 
-	err = StartJobs()
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
