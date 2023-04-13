@@ -20,6 +20,7 @@ type Device struct {
 	Online      bool
 	Last        time.Time
 	Values      map[string]any
+	last        map[string]float64
 	product     *Product
 	constraints []*constraint
 }
@@ -37,6 +38,7 @@ func NewDevice(id string) *Device {
 	return &Device{
 		Id:          id,
 		Values:      make(map[string]any),
+		last:        make(map[string]float64),
 		constraints: make([]*constraint, 0),
 	}
 }

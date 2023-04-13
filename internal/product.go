@@ -15,6 +15,7 @@ type Product struct {
 	model  *model.Product
 	eval   []gval.Evaluable
 	values map[string]float64
+	stores map[string]string
 }
 
 func LoadProduct(product *model.Product) error {
@@ -22,6 +23,12 @@ func LoadProduct(product *model.Product) error {
 	p := &Product{
 		model:  product,
 		values: map[string]float64{},
+		stores: map[string]string{},
+	}
+	for _, c := range product.Properties {
+		if c.Store != "" {
+			p.stores[c.Name] = c.Store
+		}
 	}
 	for _, c := range product.Constraints {
 		eval, err := calc.New(c.Expression)

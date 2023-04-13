@@ -26,7 +26,8 @@ type ModProperty struct {
 	Desc  string `json:"desc,omitempty"`
 	Type  string `json:"type"` //int float ....
 	Unit  string `json:"unit"`
-	Mode  string `json:"mode"` //r w rw
+	Mode  string `json:"mode"`  //r w rw
+	Store string `json:"store"` // save diff
 }
 
 type ModFunction struct {

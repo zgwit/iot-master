@@ -1,5 +1,7 @@
 package internal
 
+import "github.com/robfig/cron/v3"
+
 func Open() error {
 
 	err := LoadProducts()
@@ -29,6 +31,12 @@ func Open() error {
 	}
 
 	err = subscribePropertyStrict()
+	if err != nil {
+		return err
+	}
+
+	c := cron.New()
+	_, err = c.AddFunc("@hourly", store)
 	if err != nil {
 		return err
 	}
