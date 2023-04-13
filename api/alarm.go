@@ -62,6 +62,18 @@ func noopAlarmDelete() {}
 // @Router /alarm/{id}/read [get]
 func noopAlarmRead() {}
 
+func alarmRead(ctx *gin.Context) {
+	alarm := model.Alarm{
+		Read: true,
+	}
+	cnt, err := db.Engine.ID(ctx.GetInt64("id")).Cols("read").Update(alarm)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, cnt)
+}
+
 func alarmRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[model.Alarm]())
@@ -75,16 +87,4 @@ func alarmRouter(app *gin.RouterGroup) {
 	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.Alarm](nil, nil))
 
 	app.GET("/:id/read", curd.ParseParamId, alarmRead)
-}
-
-func alarmRead(ctx *gin.Context) {
-	alarm := model.Alarm{
-		Read: true,
-	}
-	cnt, err := db.Engine.ID(ctx.GetInt64("id")).Cols("read").Update(alarm)
-	if err != nil {
-		curd.Error(ctx, err)
-		return
-	}
-	curd.OK(ctx, cnt)
 }

@@ -5,9 +5,9 @@ type Device struct {
 	GatewayId string `json:"gateway_id,omitempty" xorm:"index"`
 	ProductId string `json:"product_id,omitempty" xorm:"index"`
 
-	TypeId  int64 `json:"type_id,omitempty"`               //类型
-	AreaId  int64 `json:"area_id,omitempty" xorm:"index"`  //区域
-	GroupId int64 `json:"group_id,omitempty" xorm:"index"` //分组
+	TypeId  string `json:"type_id,omitempty" xorm:"index"`  //类型
+	AreaId  string `json:"area_id,omitempty" xorm:"index"`  //区域
+	GroupId string `json:"group_id,omitempty" xorm:"index"` //分组
 
 	Name       string             `json:"name"`
 	Desc       string             `json:"desc,omitempty"`
@@ -17,22 +17,22 @@ type Device struct {
 }
 
 type DeviceType struct {
-	Id      int64  `json:"id"`
+	Id      string `json:"id" xorm:"pk"`
 	Name    string `json:"name"`
 	Desc    string `json:"desc,omitempty"`
 	Created Time   `json:"created,omitempty" xorm:"created"`
 }
 
 type DeviceArea struct {
-	Id      int64  `json:"id"`
+	Id      string `json:"id" xorm:"pk"`
 	Name    string `json:"name"`
 	Desc    string `json:"desc,omitempty"`
 	Created Time   `json:"created" xorm:"created"`
 }
 
 type DeviceGroup struct {
-	Id      int64  `json:"id"`
-	AreaId  int64  `json:"area_id" xorm:"index"`
+	Id      string `json:"id" xorm:"pk"`
+	AreaId  string `json:"area_id" xorm:"index"`
 	Name    string `json:"name"`
 	Desc    string `json:"desc,omitempty"`
 	Created Time   `json:"created" xorm:"created"`

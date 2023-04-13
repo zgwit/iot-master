@@ -357,7 +357,7 @@ definitions:
     properties:
       area_id:
         description: 区域
-        type: integer
+        type: string
       created:
         type: string
       desc:
@@ -368,7 +368,7 @@ definitions:
         type: string
       group_id:
         description: 分组
-        type: integer
+        type: string
       id:
         description: ClientID
         type: string
@@ -383,7 +383,7 @@ definitions:
         type: string
       type_id:
         description: 类型
-        type: integer
+        type: string
     type: object
   model.DeviceArea:
     properties:
@@ -392,20 +392,20 @@ definitions:
       desc:
         type: string
       id:
-        type: integer
+        type: string
       name:
         type: string
     type: object
   model.DeviceGroup:
     properties:
       area_id:
-        type: integer
+        type: string
       created:
         type: string
       desc:
         type: string
       id:
-        type: integer
+        type: string
       name:
         type: string
     type: object
@@ -416,7 +416,7 @@ definitions:
       desc:
         type: string
       id:
-        type: integer
+        type: string
       name:
         type: string
     type: object
@@ -614,7 +614,7 @@ definitions:
       email:
         type: string
       id:
-        type: integer
+        type: string
       name:
         type: string
       roles:
@@ -1297,7 +1297,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -1317,7 +1317,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       - description: 区域信息
         in: body
         name: device-area
@@ -1344,7 +1344,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -1540,7 +1540,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -1560,7 +1560,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       - description: 分组信息
         in: body
         name: device-group
@@ -1587,7 +1587,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -1793,7 +1793,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -1813,7 +1813,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       - description: 设备类型信息
         in: body
         name: device-type
@@ -1840,7 +1840,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -2768,7 +2768,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -2788,7 +2788,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       - description: 用户信息
         in: body
         name: user
@@ -2815,7 +2815,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -2836,7 +2836,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
@@ -2857,7 +2857,7 @@ paths:
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:

@@ -1016,7 +1016,7 @@ const docTemplate = `{
                 "summary": "获取区域",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "区域ID",
                         "name": "id",
                         "in": "path",
@@ -1046,7 +1046,7 @@ const docTemplate = `{
                 "summary": "修改区域",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "区域ID",
                         "name": "id",
                         "in": "path",
@@ -1087,7 +1087,7 @@ const docTemplate = `{
                 "summary": "删除区域",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "区域ID",
                         "name": "id",
                         "in": "path",
@@ -1388,7 +1388,7 @@ const docTemplate = `{
                 "summary": "获取分组",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "分组ID",
                         "name": "id",
                         "in": "path",
@@ -1418,7 +1418,7 @@ const docTemplate = `{
                 "summary": "修改分组",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "分组ID",
                         "name": "id",
                         "in": "path",
@@ -1459,7 +1459,7 @@ const docTemplate = `{
                 "summary": "删除分组",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "分组ID",
                         "name": "id",
                         "in": "path",
@@ -1777,7 +1777,7 @@ const docTemplate = `{
                 "summary": "获取设备类型",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "设备类型ID",
                         "name": "id",
                         "in": "path",
@@ -1807,7 +1807,7 @@ const docTemplate = `{
                 "summary": "修改设备类型",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "设备类型ID",
                         "name": "id",
                         "in": "path",
@@ -1848,7 +1848,7 @@ const docTemplate = `{
                 "summary": "删除设备类型",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "设备类型ID",
                         "name": "id",
                         "in": "path",
@@ -3435,7 +3435,7 @@ const docTemplate = `{
                 "summary": "获取用户",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "用户ID",
                         "name": "id",
                         "in": "path",
@@ -3465,7 +3465,7 @@ const docTemplate = `{
                 "summary": "修改用户",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "用户ID",
                         "name": "id",
                         "in": "path",
@@ -3506,7 +3506,7 @@ const docTemplate = `{
                 "summary": "删除用户",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "用户ID",
                         "name": "id",
                         "in": "path",
@@ -3538,7 +3538,7 @@ const docTemplate = `{
                 "summary": "禁用用户",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "用户ID",
                         "name": "id",
                         "in": "path",
@@ -3570,7 +3570,7 @@ const docTemplate = `{
                 "summary": "启用用户",
                 "parameters": [
                     {
-                        "type": "integer",
+                        "type": "string",
                         "description": "用户ID",
                         "name": "id",
                         "in": "path",
@@ -4141,7 +4141,7 @@ const docTemplate = `{
             "properties": {
                 "area_id": {
                     "description": "区域",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "created": {
                     "type": "string"
@@ -4157,7 +4157,7 @@ const docTemplate = `{
                 },
                 "group_id": {
                     "description": "分组",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "id": {
                     "description": "ClientID",
@@ -4178,7 +4178,7 @@ const docTemplate = `{
                 },
                 "type_id": {
                     "description": "类型",
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -4192,7 +4192,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -4203,7 +4203,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "area_id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "created": {
                     "type": "string"
@@ -4212,7 +4212,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -4229,7 +4229,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -4528,7 +4528,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"

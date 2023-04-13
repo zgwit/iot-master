@@ -6,13 +6,13 @@ import (
 )
 
 type Claims struct {
-	Id int64 `json:"id"`
+	Id string `json:"id"`
 	jwt.RegisteredClaims
 }
 
 const key = "iot-master"
 
-func jwtGenerate(id int64) (string, error) {
+func jwtGenerate(id string) (string, error) {
 	var claims Claims
 	claims.Id = id
 	claims.ExpiresAt = jwt.NewNumericDate(time.Now().AddDate(0, 1, 0))

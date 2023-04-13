@@ -64,7 +64,7 @@ func noopUserCreate() {}
 // @Schemes
 // @Description 修改用户
 // @Tags user
-// @Param id path int true "用户ID"
+// @Param id path string true "用户ID"
 // @Param user body model.User true "用户信息"
 // @Accept json
 // @Produce json
@@ -76,7 +76,7 @@ func noopUserUpdate() {}
 // @Schemes
 // @Description 获取用户
 // @Tags user
-// @Param id path int true "用户ID"
+// @Param id path string true "用户ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
@@ -87,7 +87,7 @@ func noopUserGet() {}
 // @Schemes
 // @Description 删除用户
 // @Tags user
-// @Param id path int true "用户ID"
+// @Param id path string true "用户ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
@@ -108,7 +108,7 @@ func noopUserPassword() {}
 // @Schemes
 // @Description 启用用户
 // @Tags user
-// @Param id path int true "用户ID"
+// @Param id path string true "用户ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
@@ -119,7 +119,7 @@ func noopUserEnable() {}
 // @Schemes
 // @Description 禁用用户
 // @Tags user
-// @Param id path int true "用户ID"
+// @Param id path string true "用户ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.User] 返回用户信息
@@ -134,25 +134,25 @@ func userRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[model.User]())
 
-	app.POST("/create", curd.ParseParamId, curd.ApiCreate[model.User](nil, nil))
+	app.POST("/create", curd.ParseParamStringId, curd.ApiCreate[model.User](curd.GenerateRandomId[model.User](6), nil))
 
-	app.GET("/:id", curd.ParseParamId, curd.ApiGet[model.User]())
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.User]())
 
-	app.POST("/:id", curd.ParseParamId, curd.ApiModify[model.User](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.User](nil, nil,
 		"username", "name", "email", "roles", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.User](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.User](nil, nil))
 
-	app.GET("/:id/password", curd.ParseParamId, userPassword)
+	app.GET("/:id/password", curd.ParseParamStringId, userPassword)
 
-	app.GET("/:id/enable", curd.ParseParamId, curd.ApiDisable[model.User](false, nil, nil))
+	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisable[model.User](false, nil, nil))
 
-	app.GET("/:id/disable", curd.ParseParamId, curd.ApiDisable[model.User](true, nil, nil))
+	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisable[model.User](true, nil, nil))
 
 }
 
 func userMe(ctx *gin.Context) {
-	id := ctx.GetInt64("user")
+	id := ctx.GetString("user")
 	var user model.User
 	has, err := db.Engine.ID(id).Get(&user)
 	if err != nil {
@@ -168,7 +168,7 @@ func userMe(ctx *gin.Context) {
 
 func userPassword(ctx *gin.Context) {
 	var p model.Password
-	p.Id = ctx.GetInt64("id")
+	p.Id = ctx.GetString("id")
 	pwd := ctx.PostForm("password")
 
 	//p.Password = md5hash(pwd)

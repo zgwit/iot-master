@@ -42,6 +42,7 @@ func login(ctx *gin.Context) {
 	if !has {
 		//管理员自动创建
 		if obj.Username == "admin" {
+			user.Id = "admin"
 			user.Username = obj.Username
 			user.Name = "管理员"
 			_, err = db.Engine.InsertOne(&user)
@@ -124,7 +125,7 @@ func password(ctx *gin.Context) {
 	}
 
 	var pwd model.Password
-	has, err := db.Engine.ID(ctx.GetInt64("user")).Get(&pwd)
+	has, err := db.Engine.ID(ctx.GetString("user")).Get(&pwd)
 	if err != nil {
 		curd.Error(ctx, err)
 		return

@@ -54,7 +54,7 @@ func noopDeviceGroupCreate() {}
 // @Schemes
 // @Description 修改分组
 // @Tags device-group
-// @Param id path int true "分组ID"
+// @Param id path string true "分组ID"
 // @Param device-group body model.DeviceGroup true "分组信息"
 // @Accept json
 // @Produce json
@@ -66,7 +66,7 @@ func noopDeviceGroupUpdate() {}
 // @Schemes
 // @Description 获取分组
 // @Tags device-group
-// @Param id path int true "分组ID"
+// @Param id path string true "分组ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.DeviceGroup] 返回分组信息
@@ -77,7 +77,7 @@ func noopDeviceGroupGet() {}
 // @Schemes
 // @Description 删除分组
 // @Tags device-group
-// @Param id path int true "分组ID"
+// @Param id path string true "分组ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[model.DeviceGroup] 返回分组信息
@@ -109,11 +109,11 @@ func deviceGroupRouter(app *gin.RouterGroup) {
 	app.POST("/count", curd.ApiCount[model.DeviceGroup]())
 	app.POST("/search", curd.ApiSearch[model.DeviceGroup]())
 	app.GET("/list", curd.ApiList[model.DeviceGroup]())
-	app.POST("/create", curd.ApiCreate[model.DeviceGroup](nil, nil))
-	app.GET("/:id", curd.ParseParamId, curd.ApiGet[model.DeviceGroup]())
-	app.POST("/:id", curd.ParseParamId, curd.ApiModify[model.DeviceGroup](nil, nil,
+	app.POST("/create", curd.ApiCreate[model.DeviceGroup](curd.GenerateRandomId[model.DeviceGroup](8), nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.DeviceGroup]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.DeviceGroup](nil, nil,
 		"name", "desc", "area_id"))
-	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.DeviceGroup](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.DeviceGroup](nil, nil))
 	app.GET("/export", curd.ApiExport[model.DeviceGroup]("device-group"))
 	app.POST("/import", curd.ApiImport[model.DeviceGroup]())
 }
