@@ -106,13 +106,6 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-model_History:
-    properties:
-      data:
-        $ref: '#/definitions/model.History'
-      error:
-        type: string
-    type: object
   curd.ReplyData-model_Plugin:
     properties:
       data:
@@ -222,17 +215,6 @@ definitions:
       data:
         items:
           $ref: '#/definitions/model.Gateway'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-model_History:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/model.History'
         type: array
       error:
         type: string
@@ -420,19 +402,6 @@ definitions:
       username:
         type: string
     type: object
-  model.History:
-    properties:
-      device_id:
-        type: string
-      id:
-        type: integer
-      point:
-        type: string
-      time:
-        type: string
-      value:
-        type: number
-    type: object
   model.ModArgument:
     properties:
       desc:
@@ -526,6 +495,9 @@ definitions:
         description: r w rw
         type: string
       name:
+        type: string
+      store:
+        description: save diff
         type: string
       type:
         description: int float ....
@@ -2010,93 +1982,6 @@ paths:
       summary: 查询网关
       tags:
       - gateway
-  /history/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除历史
-      parameters:
-      - description: 历史ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_History'
-      summary: 删除历史
-      tags:
-      - history
-  /history/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询历史
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询历史数量
-      tags:
-      - history
-  /history/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询历史
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_History'
-      summary: 查询历史
-      tags:
-      - history
-  /history/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询历史
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_History'
-      summary: 查询历史
-      tags:
-      - history
   /plugin/{id}:
     post:
       consumes:

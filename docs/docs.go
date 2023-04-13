@@ -2103,141 +2103,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/history/count": {
-            "post": {
-                "description": "查询历史",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "history"
-                ],
-                "summary": "查询历史数量",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/history/list": {
-            "get": {
-                "description": "查询历史",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "history"
-                ],
-                "summary": "查询历史",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_History"
-                        }
-                    }
-                }
-            }
-        },
-        "/history/search": {
-            "post": {
-                "description": "查询历史",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "history"
-                ],
-                "summary": "查询历史",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_History"
-                        }
-                    }
-                }
-            }
-        },
-        "/history/{id}/delete": {
-            "get": {
-                "description": "删除历史",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "history"
-                ],
-                "summary": "删除历史",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "历史ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_History"
-                        }
-                    }
-                }
-            }
-        },
         "/plugin/create": {
             "post": {
                 "description": "创建插件",
@@ -3601,17 +3466,6 @@ const docTemplate = `{
                 }
             }
         },
-        "curd.ReplyData-model_History": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/model.History"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ReplyData-model_Plugin": {
             "type": "object",
             "properties": {
@@ -3781,23 +3635,6 @@ const docTemplate = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Gateway"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "curd.ReplyList-model_History": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.History"
                     }
                 },
                 "error": {
@@ -4084,26 +3921,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.History": {
-            "type": "object",
-            "properties": {
-                "device_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "point": {
-                    "type": "string"
-                },
-                "time": {
-                    "type": "string"
-                },
-                "value": {
-                    "type": "number"
-                }
-            }
-        },
         "model.ModArgument": {
             "type": "object",
             "properties": {
@@ -4243,6 +4060,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "store": {
+                    "description": "save diff",
                     "type": "string"
                 },
                 "type": {
