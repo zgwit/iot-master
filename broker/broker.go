@@ -21,7 +21,7 @@ func Open(cfg Options) error {
 	//TODO 鉴权
 	_ = Server.AddHook(new(auth.AllowHook), nil)
 
-	err := createListeners(cfg.Listeners)
+	err := createEmbedListener(cfg)
 	if err != nil {
 		return err
 	}
@@ -67,22 +67,14 @@ func loadListeners() error {
 	return nil
 }
 
-func createListeners(ls []Listener) error {
-	for k, l := range ls {
-		var err error
-		id := fmt.Sprintf("embed-%s-%d", l.Type, k)
-		if l.Type == "tcp" {
-			err = Server.AddListener(listeners.NewTCP(id, l.Addr, nil))
-		} else if l.Type == "unix" {
-			err = Server.AddListener(listeners.NewUnixSock(id, l.Addr))
-		} else if l.Type == "ws" {
-			err = Server.AddListener(listeners.NewWebsocket(id, l.Addr, nil))
-		} else {
-			return fmt.Errorf("unsupport type %s", l.Type)
-		}
-		if err != nil {
-			return err
-		}
+func createEmbedListener(opts Options) (err error) {
+	id := fmt.Sprintf("embed-%s", opts.Type)
+	if opts.Type == "tcp" {
+		err = Server.AddListener(listeners.NewTCP(id, opts.Addr, nil))
+	} else if opts.Type == "unix" {
+		err = Server.AddListener(listeners.NewUnixSock(id, opts.Addr))
+	} else {
+		err = fmt.Errorf("unsupport type %s", opts.Type)
 	}
-	return nil
+	return
 }

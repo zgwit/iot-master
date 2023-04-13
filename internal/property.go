@@ -32,13 +32,8 @@ func subscribeProperty() error {
 		//TODO 此处需要判断是 产品 的属性
 		for k, v := range payload {
 			dev.Values[k] = v
-
-			if s, ok := dev.product.stores[k]; ok {
-				if s == "save" {
-
-				}
-			}
 		}
+		dev.Online = true
 		dev.Values["$online"] = true
 		dev.Values["$update"] = model.Time(time.Now())
 	})

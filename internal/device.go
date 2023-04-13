@@ -73,12 +73,15 @@ func LoadDevice(device *model.Device) error {
 	d := &Device{
 		Id:     device.Id,
 		Values: make(map[string]any),
+		last:   make(map[string]float64),
 	}
 
+	//绑定产品
 	p := Products.Load(device.ProductId)
 	if p == nil {
 		return fmt.Errorf("product %s not found", device.ProductId)
 	}
+	d.product = p
 
 	//复制基础变量
 	for k, v := range p.values {
