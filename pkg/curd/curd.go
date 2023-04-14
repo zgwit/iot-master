@@ -351,7 +351,7 @@ func ApiExport[T any](filename string) gin.HandlerFunc {
 
 func ApiImport[T any]() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		formFile, err := ctx.FormFile("formFile")
+		formFile, err := ctx.FormFile("file")
 		if err != nil {
 			Error(ctx, err)
 			return
