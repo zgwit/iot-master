@@ -279,7 +279,9 @@ func ApiDisable[T any](disable bool, before, after func(id any) error) gin.Handl
 		//value.Elem().FieldByName("Disabled").SetBool(disable)
 		//data := value.Interface()
 		var data T
-		reflect.ValueOf(data).FieldByName("Disabled").SetBool(disable)
+		value := reflect.ValueOf(data).Elem()
+		field := value.FieldByName("Disabled")
+		field.SetBool(disable)
 
 		_, err := db.Engine.ID(id).Cols("disabled").Update(&data)
 		if err != nil {
