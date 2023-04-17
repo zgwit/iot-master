@@ -396,7 +396,7 @@ func ApiImport[T any]() gin.HandlerFunc {
 
 		//插入数据
 		var data T
-		n, err := db.Engine.Table(data).InsertMulti(datum)
+		n, err := db.Engine.Table(data).Insert(datum)
 		if err != nil {
 			Error(ctx, err)
 			return
