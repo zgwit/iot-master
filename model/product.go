@@ -1,17 +1,24 @@
 package model
 
 type Product struct {
-	Id          string          `json:"id" xorm:"pk"`
-	Name        string          `json:"name"`
-	Desc        string          `json:"desc,omitempty"`
-	Version     string          `json:"version,omitempty"`
-	Properties  []ModProperty   `json:"properties,omitempty" xorm:"json"`
-	Functions   []ModFunction   `json:"functions,omitempty" xorm:"json"`
-	Events      []ModEvent      `json:"events,omitempty" xorm:"json"`
-	Parameters  []ModParameter  `json:"parameters,omitempty"`
-	Constraints []ModConstraint `json:"constraints,omitempty"`
+	Id         string         `json:"id" xorm:"pk"`
+	Name       string         `json:"name"`
+	Desc       string         `json:"desc,omitempty"`
+	Version    string         `json:"version,omitempty"`
+	Properties []ModProperty  `json:"properties,omitempty" xorm:"json"`
+	Functions  []ModFunction  `json:"functions,omitempty" xorm:"json"`
+	Events     []ModEvent     `json:"events,omitempty" xorm:"json"`
+	Parameters []ModParameter `json:"parameters,omitempty" xorm:"json"`
 
 	Created Time `json:"created,omitempty" xorm:"created"`
+}
+
+type ModParameter struct {
+	Name    string  `json:"name"`
+	Label   string  `json:"label"`
+	Min     float64 `json:"min,omitempty"`
+	Max     float64 `json:"max,omitempty"`
+	Default float64 `json:"default,omitempty"`
 }
 
 //type Model struct {

@@ -15,173 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/alarm/count": {
-            "post": {
-                "description": "查询报警",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "alarm"
-                ],
-                "summary": "查询报警",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/alarm/list": {
-            "get": {
-                "description": "查询报警",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "alarm"
-                ],
-                "summary": "查询报警",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Alarm"
-                        }
-                    }
-                }
-            }
-        },
-        "/alarm/search": {
-            "post": {
-                "description": "查询报警",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "alarm"
-                ],
-                "summary": "查询报警",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Alarm"
-                        }
-                    }
-                }
-            }
-        },
-        "/alarm/{id}/delete": {
-            "get": {
-                "description": "删除报警",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "alarm"
-                ],
-                "summary": "删除报警",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "报警ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Alarm"
-                        }
-                    }
-                }
-            }
-        },
-        "/alarm/{id}/read": {
-            "get": {
-                "description": "阅读报警",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "alarm"
-                ],
-                "summary": "阅读报警",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "报警ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Alarm"
-                        }
-                    }
-                }
-            }
-        },
         "/broker/count": {
             "post": {
                 "description": "查询总线数量",
@@ -3688,17 +3521,6 @@ const docTemplate = `{
                 }
             }
         },
-        "curd.ReplyData-model_Alarm": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/model.Alarm"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ReplyData-model_Broker": {
             "type": "object",
             "properties": {
@@ -3839,23 +3661,6 @@ const docTemplate = `{
                 },
                 "error": {
                     "type": "string"
-                }
-            }
-        },
-        "curd.ReplyList-model_Alarm": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.Alarm"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
                 }
             }
         },
@@ -4083,35 +3888,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.Alarm": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "device_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "level": {
-                    "type": "integer"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "read": {
-                    "type": "boolean"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
         "model.Broker": {
             "type": "object",
             "properties": {
@@ -4282,38 +4058,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.ModConstraint": {
-            "type": "object",
-            "properties": {
-                "again": {
-                    "description": "再次提醒间隔s",
-                    "type": "integer"
-                },
-                "delay": {
-                    "description": "延迟时间s",
-                    "type": "integer"
-                },
-                "expression": {
-                    "type": "string"
-                },
-                "level": {
-                    "type": "integer"
-                },
-                "template": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "total": {
-                    "description": "总提醒次数",
-                    "type": "integer"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
         "model.ModEvent": {
             "type": "object",
             "properties": {
@@ -4448,12 +4192,6 @@ const docTemplate = `{
         "model.Product": {
             "type": "object",
             "properties": {
-                "constraints": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.ModConstraint"
-                    }
-                },
                 "created": {
                     "type": "string"
                 },

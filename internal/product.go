@@ -1,9 +1,7 @@
 package internal
 
 import (
-	"github.com/PaesslerAG/gval"
 	"github.com/zgwit/iot-master/v3/model"
-	"github.com/zgwit/iot-master/v3/pkg/calc"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"github.com/zgwit/iot-master/v3/pkg/log"
@@ -13,7 +11,6 @@ var Products lib.Map[Product]
 
 type Product struct {
 	model  *model.Product
-	eval   []gval.Evaluable
 	values map[string]float64
 }
 
@@ -22,13 +19,6 @@ func LoadProduct(product *model.Product) error {
 	p := &Product{
 		model:  product,
 		values: map[string]float64{},
-	}
-	for _, c := range product.Constraints {
-		eval, err := calc.New(c.Expression)
-		if err != nil {
-			return err
-		}
-		p.eval = append(p.eval, eval)
 	}
 	for _, param := range product.Parameters {
 		p.values[param.Name] = param.Default

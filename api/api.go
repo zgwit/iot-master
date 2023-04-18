@@ -109,8 +109,6 @@ func RegisterRoutes(app *gin.RouterGroup) {
 	deviceAreaRouter(app.Group("/device/area"))
 	deviceGroupRouter(app.Group("/device/group"))
 
-	alarmRouter(app.Group("/alarm"))
-
 	brokerRouter(app.Group("/broker"))
 
 	pluginRouter(app.Group("/plugin"))
