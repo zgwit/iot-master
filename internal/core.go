@@ -33,7 +33,7 @@ func Open() error {
 		return err
 	}
 
-	err = subscribeOffline()
+	err = subscribeOnline()
 	if err != nil {
 		return err
 	}
