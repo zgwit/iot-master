@@ -2258,6 +2258,54 @@ const docTemplate = `{
                 }
             }
         },
+        "/plugin/export": {
+            "get": {
+                "description": "导出插件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导出插件",
+                "responses": {}
+            }
+        },
+        "/plugin/import": {
+            "post": {
+                "description": "导入插件",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导入插件",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
         "/plugin/list": {
             "get": {
                 "description": "查询插件",
@@ -4178,10 +4226,22 @@ const docTemplate = `{
                 "disabled": {
                     "type": "boolean"
                 },
+                "external": {
+                    "type": "boolean"
+                },
                 "id": {
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "running": {
+                    "type": "boolean"
+                },
+                "username": {
                     "type": "string"
                 },
                 "version": {

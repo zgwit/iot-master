@@ -5,6 +5,10 @@ type Plugin struct {
 	Name         string            `json:"name"`
 	Version      string            `json:"version"`
 	Command      string            `json:"command,omitempty"`
+	Running      bool              `json:"running,omitempty" xorm:"-"`
+	Username     string            `json:"username,omitempty"`
+	Password     string            `json:"password,omitempty"`
+	External     bool              `json:"external,omitempty"`
 	Dependencies map[string]string `json:"dependencies,omitempty" xorm:"json"`
 	Disabled     bool              `json:"disabled,omitempty"`
 	Created      Time              `json:"created,omitempty" xorm:"created"`

@@ -62,6 +62,26 @@ func noopPluginUpdate() {}
 // @Router /plugin/{id}/delete [get]
 func noopPluginDelete() {}
 
+// @Summary 导出插件
+// @Schemes
+// @Description 导出插件
+// @Tags product
+// @Accept json
+// @Produce octet-stream
+// @Router /plugin/export [get]
+func noopPluginExport() {}
+
+// @Summary 导入插件
+// @Schemes
+// @Description 导入插件
+// @Tags product
+// @Param file formData file true "压缩包"
+// @Accept mpfd
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int64] 返回插件数量
+// @Router /plugin/import [post]
+func noopPluginImport() {}
+
 // @Summary 启用插件
 // @Schemes
 // @Description 启用插件
@@ -88,9 +108,16 @@ func pluginRouter(app *gin.RouterGroup) {
 
 	app.POST("/search", curd.ApiSearch[model.Plugin]())
 	app.GET("/list", curd.ApiList[model.Plugin]())
-	app.POST("/create", curd.ApiCreate[model.Plugin](curd.GenerateRandomId[model.Plugin](8), nil))
+	app.POST("/create", curd.ApiCreate[model.Plugin](curd.GenerateRandomId[model.Plugin](12), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Plugin]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Plugin](nil, nil,
-		"id", "name", "version", "command", "dependencies"))
+		"id", "name", "version", "command", "external", "username", "password", "disabled"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Plugin](nil, nil))
+
+	app.GET("/export", curd.ApiExport[model.Plugin]("plugin"))
+	app.POST("/import", curd.ApiImport[model.Plugin]())
+
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisable[model.Plugin](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisable[model.Plugin](false, nil, nil))
+
 }

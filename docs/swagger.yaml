@@ -493,9 +493,17 @@ definitions:
         type: object
       disabled:
         type: boolean
+      external:
+        type: boolean
       id:
         type: string
       name:
+        type: string
+      password:
+        type: string
+      running:
+        type: boolean
+      username:
         type: string
       version:
         type: string
@@ -2146,6 +2154,38 @@ paths:
       summary: 创建插件
       tags:
       - plugin
+  /plugin/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出插件
+      produces:
+      - application/octet-stream
+      responses: {}
+      summary: 导出插件
+      tags:
+      - product
+  /plugin/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入插件
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入插件
+      tags:
+      - product
   /plugin/list:
     get:
       consumes:
