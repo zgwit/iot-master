@@ -203,6 +203,9 @@ func originMain() {
 	//使用$前缀区分插件
 	app.Any("/app/:app/*path", internal.ProxyApp)
 
+	//监听Websocket
+	app.GET("/mqtt", broker.GinHandler)
+
 	//前端静态文件
 	web.RegisterFS(app, http.FS(wwwFiles), "www", "index.html")
 
