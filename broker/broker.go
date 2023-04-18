@@ -73,6 +73,8 @@ func createEmbedListener(opts Options) (err error) {
 		err = Server.AddListener(listeners.NewTCP(id, opts.Addr, nil))
 	} else if opts.Type == "unix" {
 		err = Server.AddListener(listeners.NewUnixSock(id, opts.Addr))
+	} else if opts.Type == "websocket" {
+		err = Server.AddListener(listeners.NewWebsocket(id, opts.Addr, nil))
 	} else {
 		err = fmt.Errorf("unsupport type %s", opts.Type)
 	}
