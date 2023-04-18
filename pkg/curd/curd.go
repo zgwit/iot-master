@@ -279,7 +279,9 @@ func ApiDisable[T any](disable bool, before, after func(id any) error) gin.Handl
 		//value.Elem().FieldByName("Disabled").SetBool(disable)
 		//data := value.Interface()
 		var data T
-		reflect.ValueOf(data).FieldByName("Disabled").SetBool(disable)
+		value := reflect.ValueOf(&data).Elem()
+		field := value.FieldByName("Disabled")
+		field.SetBool(disable)
 
 		_, err := db.Engine.ID(id).Cols("disabled").Update(&data)
 		if err != nil {
@@ -349,7 +351,7 @@ func ApiExport[T any](filename string) gin.HandlerFunc {
 
 func ApiImport[T any]() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		formFile, err := ctx.FormFile("formFile")
+		formFile, err := ctx.FormFile("file")
 		if err != nil {
 			Error(ctx, err)
 			return
@@ -394,7 +396,7 @@ func ApiImport[T any]() gin.HandlerFunc {
 
 		//插入数据
 		var data T
-		n, err := db.Engine.Table(data).InsertMulti(datum)
+		n, err := db.Engine.Table(data).Insert(datum)
 		if err != nil {
 			Error(ctx, err)
 			return

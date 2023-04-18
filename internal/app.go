@@ -25,7 +25,7 @@ func ProxyApp(ctx *gin.Context) {
 			_ = ctx.Error(err)
 			return
 		}
-
+		p = rp
 		proxies.Store(app.Id, rp)
 	}
 
