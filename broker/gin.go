@@ -31,6 +31,7 @@ func GinHandler(ctx *gin.Context) {
 	if err != nil {
 		log.Error(err)
 	}
+	ctx.Abort()
 }
 
 // wsConn is a websocket connection which satisfies the net.Conn interface.
