@@ -106,12 +106,29 @@ func noopPluginDisable() {}
 
 func pluginRouter(app *gin.RouterGroup) {
 
-	app.POST("/search", curd.ApiSearch[model.Plugin]())
-	app.GET("/list", curd.ApiList[model.Plugin]())
+	app.POST("/search", curd.ApiSearchAfter[model.Plugin](func(datum []model.Plugin) error {
+		for i := 0; i < len(datum); i++ {
+			datum[i].Running = true
+		}
+		return nil
+	}))
+
+	app.GET("/list", curd.ApiListAfter[model.Plugin](func(datum []model.Plugin) error {
+		for i := 0; i < len(datum); i++ {
+			datum[i].Running = true
+		}
+		return nil
+	}))
 	app.POST("/create", curd.ApiCreate[model.Plugin](curd.GenerateRandomId[model.Plugin](12), nil))
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Plugin]())
+
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetAfter[model.Plugin](func(m *model.Plugin) error {
+		m.Running = true
+		return nil
+	}))
+
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Plugin](nil, nil,
 		"id", "name", "version", "command", "external", "username", "password", "disabled"))
+
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Plugin](nil, nil))
 
 	app.GET("/export", curd.ApiExport[model.Plugin]("plugin"))

@@ -68,6 +68,45 @@ func ApiSearch[T any](fields ...string) gin.HandlerFunc {
 	}
 }
 
+func ApiSearchAfter[T any](after func(datum []T) error, fields ...string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		var body ParamSearch
+		err := ctx.ShouldBindJSON(&body)
+		if err != nil {
+			Error(ctx, err)
+			return
+		}
+
+		query := body.ToQuery()
+
+		//查询字段
+		fs := ctx.QueryArray("field")
+		if len(fs) > 0 {
+			query.Cols(fs...)
+		} else if len(fields) > 0 {
+			query.Cols(fields...)
+		}
+
+		var datum []T
+		cnt, err := query.FindAndCount(&datum)
+		if err != nil {
+			Error(ctx, err)
+			return
+		}
+
+		if after != nil {
+			if err := after(datum); err != nil {
+				Error(ctx, err)
+				return
+			}
+		}
+
+		//OK(ctx, cs)
+		List(ctx, datum, cnt)
+	}
+}
+
 func ApiListWithId[T any](field string, fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var body ParamList
@@ -127,6 +166,44 @@ func ApiList[T any](fields ...string) gin.HandlerFunc {
 		if err != nil {
 			Error(ctx, err)
 			return
+		}
+
+		//OK(ctx, cs)
+		List(ctx, datum, cnt)
+	}
+}
+
+func ApiListAfter[T any](after func(datum []T) error, fields ...string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var body ParamList
+		err := ctx.ShouldBindQuery(&body)
+		if err != nil {
+			Error(ctx, err)
+			return
+		}
+
+		query := body.ToQuery()
+
+		//查询字段
+		fs := ctx.QueryArray("field")
+		if len(fs) > 0 {
+			query.Cols(fs...)
+		} else if len(fields) > 0 {
+			query.Cols(fields...)
+		}
+
+		var datum []T
+		cnt, err := query.FindAndCount(&datum)
+		if err != nil {
+			Error(ctx, err)
+			return
+		}
+
+		if after != nil {
+			if err := after(datum); err != nil {
+				Error(ctx, err)
+				return
+			}
 		}
 
 		//OK(ctx, cs)
@@ -260,6 +337,39 @@ func ApiGet[T any](fields ...string) gin.HandlerFunc {
 			Fail(ctx, "记录不存在")
 			return
 		}
+		OK(ctx, &data)
+	}
+}
+
+func ApiGetAfter[T any](after func(m *T) error, fields ...string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		id := ctx.MustGet("id")
+
+		query := db.Engine.ID(id)
+		//查询字段
+		fs := ctx.QueryArray("field")
+		if len(fs) > 0 {
+			query.Cols(fs...)
+		} else if len(fields) > 0 {
+			query.Cols(fields...)
+		}
+
+		var data T
+		has, err := query.Get(&data)
+		if err != nil {
+			Error(ctx, err)
+			return
+		} else if !has {
+			Fail(ctx, "记录不存在")
+			return
+		}
+
+		if after != nil {
+			if err := after(&data); err != nil {
+				log.Error(err)
+			}
+		}
+
 		OK(ctx, &data)
 	}
 }
