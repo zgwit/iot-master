@@ -1,0 +1,102 @@
+<ng-template #extra>
+  <button nz-button  (click)="handleReturn()">
+    返回
+  </button>
+</ng-template>
+<nz-card nzTitle="设备【{{device.id}}】状态" [nzExtra]="extra">
+  <nz-row [nzGutter]="[10, 10]">
+    <nz-col [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4" *ngFor="let prop of product.properties">
+      <div class="prop">
+        <nz-statistic [nzTitle]="prop.label" [nzSuffix]="prop.unit" [nzValue]="values[prop.name] || '-'">
+        </nz-statistic>
+      </div>
+    </nz-col>
+  </nz-row>
+</nz-card>
+
+<nz-tabset nzType="card" style="margin-top: 10px; background-color: white">
+  <nz-tab nzTitle="设备信息">
+    <div style="padding: 20px;">
+
+      <nz-row [nzGutter]="[10, 10]">
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8" [nzLg]="6">
+          名称：{{device.name}}
+        </nz-col>
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8" [nzLg]="6">
+          产品：{{device.product_id}}
+        </nz-col>
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8" [nzLg]="6">
+          网关：{{device.gateway_id}}
+        </nz-col>
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8" [nzLg]="6">
+          分组：{{device.group_id}}
+        </nz-col>
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8" [nzLg]="6">
+          账号：{{device.username}}
+        </nz-col>
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8" [nzLg]="6">
+          密钥：{{device.password}}
+        </nz-col>
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8" [nzLg]="6">
+          上线时间：{{device.last | date}}
+        </nz-col>
+        <nz-col [nzXs]="24" [nzSm]="12" [nzMd]="8" [nzLg]="6">
+          创建时间：{{device.created | date}}
+        </nz-col>
+
+      </nz-row>
+
+    </div>
+
+  </nz-tab>
+
+  <nz-tab nzTitle="订阅topic">
+
+    <nz-table #topicTable [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>功能</th>
+          <th>主题</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>属性上传</td>
+          <td>up/property/{{device.product_id}}/{{device.id}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>属性设置</td>
+          <td>down/property/{{device.product_id}}/{{device.id}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>事件上传</td>
+          <td>up/event/{{device.product_id}}/{{device.id}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>指令下发</td>
+          <td>down/action/{{device.product_id}}/{{device.id}}</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>指令响应</td>
+          <td>up/action/{{device.product_id}}/{{device.id}}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </nz-tab>
+
+  <nz-tab nzTitle="设备日志">
+
+  </nz-tab>
+
+  <!-- 只有网关设备才会有子设备 -->
+  <nz-tab nzTitle="子设备管理" *ngIf="device.type=='gateway'">
+    <app-devices></app-devices>
+  </nz-tab>
+</nz-tabset>

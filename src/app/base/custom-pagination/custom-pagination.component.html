@@ -1,0 +1,7 @@
+<div class="custom-pagination">
+    <nz-pagination [nzShowSizeChanger]="true" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" [nzTotal]="total" 
+        [nzShowTotal]="totalTemplate" (nzPageIndexChange)="pageIndexChange.emit(pageIndex)" (nzPageSizeChange)="pageSizeChange.emit(pageSize)">
+    </nz-pagination>
+    <ng-template #totalTemplate let-total>总共{{ total }}条数据</ng-template>
+</div>
+

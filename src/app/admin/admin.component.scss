@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  padding: 0 20px;
+  color: white;
+}
+
+.logo {
+  img {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  padding: 0 10px;
+}
+
+.fill {
+  flex: 1;
+}
+.user{
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+}

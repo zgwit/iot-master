@@ -1,0 +1,31 @@
+<nz-table nzTemplateMode [formGroup]="group">
+    <thead>
+        <tr>
+            <th *ngFor="let item of constListData">{{item.title}}</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody cdkDropList (cdkDropListDropped)="drop($event)" formArrayName="keyName">
+        <tr *ngFor="let trData of aliases.controls; let i=index;" [formGroupName]="i" cdkDrag>
+            <td *ngFor="let item of constListData">
+                <nz-input-number *ngIf="item['type']==='number'" [formControlName]="item['keyName']">
+                </nz-input-number>
+                <nz-select *ngIf="item['type']==='select'" [formControlName]="item['keyName']">
+                    <nz-option *ngFor="let option of item['listOfOption']" [nzLabel]="option.label"
+                        [nzValue]="option.value"></nz-option>
+                </nz-select>
+                <input *ngIf="!item['type']" nz-input [formControlName]="item['keyName']" />
+            </td>
+            <td class="td-oper">
+                <nz-space>
+                    <span *nzSpaceItem nz-icon nzType="drag" nzTheme="outline" title="移动当前行" style="cursor:move;"
+                        cdkDragHandle></span>
+                    <span *nzSpaceItem nz-icon nzType="copy" nzTheme="outline" title="复制当前行" style="cursor:pointer;"
+                        (click)="handleCopyProperTy(i)"></span>
+                    <span *nzSpaceItem nz-icon nzType="delete" nzTheme="outline" title="删除" style="cursor:pointer;"
+                        (click)="propertyDel(i)"></span>
+                </nz-space>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

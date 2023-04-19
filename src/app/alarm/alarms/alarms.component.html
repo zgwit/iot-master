@@ -1,0 +1,85 @@
+<app-toolbar>
+  <nz-space>
+    <button *nzSpaceItem nz-button nzType="primary" (click)="reload()">
+      <i nz-icon nzType="reload" [nzSpin]="loading"></i>
+      刷新
+    </button>
+    <app-search-box *nzSpaceItem (onSearch)="search($event)"></app-search-box>
+    <button
+      *nzSpaceItem
+      nz-button
+      nzType="primary"
+      nzDanger
+      (click)="handleBatchDel()"
+    >
+      批量删除
+    </button>
+  </nz-space>
+</app-toolbar>
+
+<nz-table
+  #basicTable
+  [nzData]="datum"
+  [nzLoading]="loading"
+  [nzScroll]="getTableHeight()"
+  nzShowPagination
+  nzShowSizeChanger
+  [nzTotal]="total"
+  (nzPageSizeChange)="pageSizeChange($event)"
+  (nzPageIndexChange)="pageIndexChange($event)"
+  [nzPageSize]="pageSize"
+  [nzPageIndex]="pageIndex"
+  (nzQueryParams)="onQuery($event)"
+>
+  <thead>
+    <tr>
+      <th
+        [nzChecked]="checked"
+        [nzIndeterminate]="indeterminate"
+        (nzCheckedChange)="handleAllChecked($event)"
+      ></th>
+      <th nzColumnKey="id" [nzSortFn]="true">ID</th>
+      <th nzColumnKey="device_id">设备ID</th>
+      <th nzColumnKey="level" [nzFilters]="filterLevel" [nzFilterFn]="true">
+        等级
+      </th>
+      <th nzColumnKey="title">标题</th>
+      <th nzColumnKey="message">消息</th>
+      <th nzColumnKey="type">类型</th>
+      <th nzColumnKey="read" [nzFilters]="filterRead" [nzFilterFn]="true">
+        已读
+      </th>
+      <th nzColumnKey="created" [nzSortFn]="true">日期</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let data of basicTable.data; let i = index"
+      (dblclick)="read(data)"
+      [style]="{ fontWeight: data.read ? '' : 'bold' }"
+    >
+      <td
+        [nzChecked]="setOfCheckedId.has(data.id)"
+        (nzCheckedChange)="handleItemChecked(data.id, $event)"
+      ></td>
+      <td>{{ data.id }}</td>
+      <td>{{ data.device_id }}</td>
+      <td>{{ data.level }}</td>
+      <td>{{ data.title }}</td>
+      <td>{{ data.message }}</td>
+      <td>{{ data.type }}</td>
+      <td>{{ data.read }}</td>
+      <td>{{ data.created | date }}</td>
+      <td>
+        <a (click)="read(data)">
+          <i nz-icon nzType="eye"></i>
+        </a>
+        <nz-divider nzType="vertical"></nz-divider>
+        <a (click)="delete(data.id)">
+          <i nz-icon nzType="delete"></i>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

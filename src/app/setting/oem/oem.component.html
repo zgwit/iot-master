@@ -1,0 +1,68 @@
+<ng-template #extra>
+
+    <button nz-button nzType="primary" (click)="submit()">
+      <i nz-icon nzType="save" nzTheme="outline"></i>
+      保存
+    </button>
+  </ng-template>
+  
+  <nz-card nzTitle="OEM" [nzExtra]="extra">
+    <form nz-form [formGroup]="group"  >
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Title">标题</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="TitleErrorTpl">
+          <input nz-input name="Title"  formControlName="Title"/>
+          <ng-template #TitleErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">输入标题!</ng-container> 
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+       
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Company">公司</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="CompanyErrorTpl">
+          <input nz-input name="Company" formControlName="Company"/>
+          <ng-template #CompanyErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">输入公司名称!</ng-container> 
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+  
+       
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Copyright">版权</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="CopyrightErrorTpl">
+          <input nz-input name="Copyright"  formControlName="Copyright"/>
+          <ng-template #CopyrightErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">输入版权信息!</ng-container> 
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+  
+ 
+
+      <nz-form-item > 
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="Logo">图片上传</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="LogoErrorTpl"> 
+            <nz-upload    nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" [nzFileList]="fileList"   (nzChange)="handleChange($event)">
+                <button nz-button>
+                  <i nz-icon nzType="upload"></i>
+                  Upload
+                </button>
+              </nz-upload> 
+          <ng-template #LogoErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">Please input Logo!</ng-container> 
+          </ng-template>
+        </nz-form-control>
+
+
+           
+
+       
+    </nz-form-item>
+
+    </form>
+  </nz-card>
+  

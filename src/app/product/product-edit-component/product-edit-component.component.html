@@ -1,0 +1,91 @@
+<form nz-form [formGroup]="group" (ngSubmit)="submit()">
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="id">ID</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+      <input nz-input formControlName="id" placeholder="默认为随机生成" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">名称</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+      <input nz-input formControlName="name" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="version">版本</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+      <input nz-input formControlName="version" />
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="desc">说明</nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+      <textarea nz-input formControlName="desc"></textarea>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-collapse>
+    <!-- 属性start -->
+    <ng-template #propertyEx>
+      <button type="button" nz-button nzType="primary" (click)="propertyAdd($event)">
+        <i type="button" nz-icon nzType="plus"></i>
+        添加
+      </button>
+    </ng-template>
+    <nz-collapse-panel nzHeader="属性" [nzExtra]="propertyEx">
+      <!-- <app-product-edit-properties #propertyChild [data]="allData"></app-product-edit-properties> -->
+      <app-edit-table formControlName="properties" #propertyChild [listData]="listData"></app-edit-table>
+    </nz-collapse-panel>
+    <!-- 属性end -->
+
+    <ng-template #functionEx>
+      <button type="button" nz-button nzType="primary">
+        <i nz-icon nzType="plus"></i>
+        添加
+      </button>
+    </ng-template>
+    <nz-collapse-panel nzDisabled nzHeader="功能" [nzExtra]="functionEx">
+      暂不支持
+    </nz-collapse-panel>
+
+    <ng-template #eventEx>
+      <button type="button" nz-button nzType="primary">
+        <i nz-icon nzType="plus"></i>
+        添加
+      </button>
+    </ng-template>
+    <nz-collapse-panel nzDisabled nzHeader="事件" [nzExtra]="eventEx">
+      暂不支持
+    </nz-collapse-panel>
+
+
+    <ng-template #parameterEx>
+      <button type="button" nz-button nzType="primary" (click)="parameterAdd($event)">
+        <i type="button" nz-icon nzType="plus"></i>
+        添加
+      </button>
+    </ng-template>
+    <nz-collapse-panel nzHeader="变量" [nzExtra]="parameterEx">
+      <app-edit-table formControlName="parameters" #parametersChild [listData]="parameterslistData"></app-edit-table>
+    </nz-collapse-panel>
+
+
+    <ng-template #constraintEx>
+      <button type="button" nz-button nzType="primary" (click)="constraintAdd($event)">
+        <i type="button" nz-icon nzType="plus"></i>
+        添加
+      </button>
+    </ng-template>
+    <nz-collapse-panel nzHeader="约束" [nzExtra]="constraintEx">
+
+      <span nz-typography nzType="warning">表达式计算不成立时，产生报警信息</span>
+      <app-edit-table formControlName="constraints" #constraintsChild [listData]="constraintslistData"></app-edit-table>
+    </nz-collapse-panel>
+
+  </nz-collapse>
+
+</form>

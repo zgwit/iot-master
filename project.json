@@ -1,0 +1,88 @@
+{
+  "name": "iot-master-ui",
+  "projectType": "application",
+  "generators": {},
+  "sourceRoot": "apps/iot-master-ui/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "dist/apps/iot-master-ui",
+        "index": "apps/iot-master-ui/src/index.html",
+        "main": "apps/iot-master-ui/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/iot-master-ui/tsconfig.app.json",
+        "assets": [
+          "apps/iot-master-ui/src/favicon.ico",
+          "apps/iot-master-ui/src/assets"
+        ],
+        "styles": [
+          "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+          "apps/iot-master-ui/src/styles.css"
+        ],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "iot-master-ui:build:production"
+        },
+        "development": {
+          "browserTarget": "iot-master-ui:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "iot-master-ui:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "polyfills": ["zone.js", "zone.js/testing"],
+        "tsConfig": "apps/iot-master-ui/tsconfig.spec.json",
+        "assets": [
+          "apps/iot-master-ui/src/favicon.ico",
+          "apps/iot-master-ui/src/assets"
+        ],
+        "styles": [
+          "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
+          "apps/iot-master-ui/src/styles.css"
+        ],
+        "scripts": []
+      }
+    }
+  }
+}

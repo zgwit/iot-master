@@ -1,0 +1,36 @@
+<nz-layout class="layout">
+  <nz-header class="header">
+    <div class="system">
+      <img class="logo" [src]="os.oem.logo" alt="logo">
+      <span class="title">{{os.oem.title}}</span>
+    </div>
+    <!-- <a nz-button nzSize="small" routerLink="/admin" style="margin-right: 5px;">
+      <span nz-icon nzType="swap" nzTheme="outline"></span>
+      菜单模式
+    </a> -->
+    <img class="avatar" src="/assets/user.svg" alt="logo" (click)="drawVisible=!drawVisible">
+    <div class="user"></div>
+  </nz-header>
+  <nz-content class="content">
+    <nz-row [nzGutter]="[{ xs: 8, sm: 16, md: 24}, { xs: 8, sm: 16, md: 24}]">
+      <nz-col class="app" (click)="open(app)" *ngFor="let app of _as.apps" [nzXs]="8" [nzSm]="6" [nzMd]="4" [nzLg]="3">
+        <img class="icon" [src]="app.icon || '/assets/app.png'" alt="app">
+        <div class="name">
+          <span class="inner">
+            {{app.name}}
+          </span>
+        </div>
+      </nz-col>
+    </nz-row>
+
+  </nz-content>
+  <nz-footer class="footer">
+    {{os.oem.company}} {{os.oem.copyright}}
+  </nz-footer>
+</nz-layout>
+<nz-drawer nzTitle="个人中心" [nzVisible]="drawVisible" (nzOnClose)="drawVisible=false">
+  <ng-container *nzDrawerContent>
+    <p><a>用户中心</a></p>
+    <p><a routerLink="/admin">菜单模式</a></p>
+  </ng-container>
+</nz-drawer>
