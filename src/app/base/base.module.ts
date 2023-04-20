@@ -17,7 +17,6 @@ import { PageNotFoundComponent } from "./page-not-found/page-not-found.component
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
 import { DatePipe } from "./date.pipe";
-import { CustomPaginationComponent } from './custom-pagination/custom-pagination.component';
 import { EditTableComponent } from './edit-table/edit-table.component';
 import { ImportComponent } from './import/import.component';
 @NgModule({
@@ -26,7 +25,6 @@ import { ImportComponent } from './import/import.component';
     PageNotFoundComponent,
     ToolbarComponent,
     SearchBoxComponent,
-    CustomPaginationComponent,
     EditTableComponent,
     ImportComponent,
   ],
@@ -35,7 +33,6 @@ import { ImportComponent } from './import/import.component';
     PageNotFoundComponent,
     ToolbarComponent,
     SearchBoxComponent,
-    CustomPaginationComponent,
     EditTableComponent,
     ImportComponent,
   ],
