@@ -123,7 +123,7 @@ func (p *Program) run() {
 }
 
 func originMain() {
-	banner.Print()
+	banner.Print("iot-master")
 	build.Print()
 
 	err := config.Load()
@@ -210,6 +210,7 @@ func originMain() {
 	web.RegisterFS(app, http.FS(wwwFiles), "www", "index.html")
 
 	//监听HTTP
+	log.Info("Web服务启动 ", config.Config.Web.Addr)
 	err = app.Run(config.Config.Web.Addr)
 	if err != nil {
 		log.Fatal("HTTP 服务启动错误", err)

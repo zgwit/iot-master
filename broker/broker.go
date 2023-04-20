@@ -54,7 +54,7 @@ func loadListeners() error {
 	}
 
 	for _, e := range entries {
-		id := fmt.Sprintf("tcp-%d", e.Id)
+		id := fmt.Sprintf("tcp-%s", e.Id)
 		port := fmt.Sprintf(":%d", e.Port)
 		l := listeners.NewTCP(id, port, nil)
 		err = Server.AddListener(l)

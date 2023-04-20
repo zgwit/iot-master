@@ -1,8 +1,15 @@
 {
-  "/api": {
-    "target": "http://demo.iot-master.com:8888",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
-  }
+    "/mqtt": {
+        "target": "http://localhost:8080",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true,
+        "ws": true
+    },
+    "/api": {
+        "target": "http://localhost:8080",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
+    }
 }
