@@ -19,6 +19,10 @@ func Open(cfg Options) error {
 	opts.SetPassword(cfg.Password)
 	opts.SetConnectRetry(true) //重试
 
+	//重连时，恢复订阅
+	opts.SetCleanSession(false)
+	opts.SetResumeSubs(true)
+
 	Client = paho.NewClient(opts)
 	token := Client.Connect()
 	token.Wait()
@@ -30,6 +34,10 @@ func OpenBy(fn paho.OpenConnectionFunc) error {
 	opts := paho.NewClientOptions()
 	opts.AddBroker(":1883")
 	opts.SetClientID("internal")
+
+	//重连时，恢复订阅
+	opts.SetCleanSession(false)
+	opts.SetResumeSubs(true)
 
 	//使用虚拟连接
 	opts.SetCustomOpenConnectionFn(fn)
