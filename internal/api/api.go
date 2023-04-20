@@ -3,8 +3,8 @@ package api
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/config"
-	"github.com/zgwit/iot-master/v3/internal"
+	"github.com/zgwit/iot-master/v3/internal/config"
+	"github.com/zgwit/iot-master/v3/internal/core"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"net/http"
@@ -84,7 +84,7 @@ func RegisterRoutes(app *gin.RouterGroup) {
 
 	app.GET("/apps", func(ctx *gin.Context) {
 		apps := make([]*model.App, 0)
-		internal.Applications.Range(func(name string, app *model.App) bool {
+		core.Applications.Range(func(name string, app *model.App) bool {
 			if !app.Hidden {
 				apps = append(apps, app)
 			}

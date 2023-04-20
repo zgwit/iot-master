@@ -4,12 +4,12 @@ import (
 	"embed"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/kardianos/service"
-	"github.com/zgwit/iot-master/v3/api"
-	"github.com/zgwit/iot-master/v3/args"
-	"github.com/zgwit/iot-master/v3/broker"
-	"github.com/zgwit/iot-master/v3/config"
 	_ "github.com/zgwit/iot-master/v3/docs"
-	"github.com/zgwit/iot-master/v3/internal"
+	"github.com/zgwit/iot-master/v3/internal/api"
+	"github.com/zgwit/iot-master/v3/internal/args"
+	broker2 "github.com/zgwit/iot-master/v3/internal/broker"
+	"github.com/zgwit/iot-master/v3/internal/config"
+	"github.com/zgwit/iot-master/v3/internal/core"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/banner"
 	"github.com/zgwit/iot-master/v3/pkg/build"
@@ -153,19 +153,19 @@ func originMain() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = broker.Open(config.Config.Broker)
+	err = broker2.Open(config.Config.Broker)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer broker.Close()
+	defer broker2.Close()
 
-	if broker.Server != nil {
+	if broker2.Server != nil {
 		err := mqtt.OpenBy(
 			func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
 				c1, c2 := vconn.New()
 				//EstablishConnection会读取connect，导致拥堵
 				go func() {
-					err := broker.Server.EstablishConnection("internal", c1)
+					err := broker2.Server.EstablishConnection("internal", c1)
 					if err != nil {
 						log.Error(err)
 					}
@@ -186,11 +186,11 @@ func originMain() {
 	}
 
 	//加载主程序
-	err = internal.Open()
+	err = core.Open()
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer internal.Close()
+	defer core.Close()
 
 	app := web.CreateEngine(config.Config.Web)
 
@@ -201,10 +201,10 @@ func originMain() {
 	web.RegisterSwaggerDocs(&app.RouterGroup)
 
 	//使用$前缀区分插件
-	app.Any("/app/:app/*path", internal.ProxyApp)
+	app.Any("/app/:app/*path", core.ProxyApp)
 
 	//监听Websocket
-	app.GET("/mqtt", broker.GinHandler)
+	app.GET("/mqtt", broker2.GinHandler)
 
 	//前端静态文件
 	web.RegisterFS(app, http.FS(wwwFiles), "www", "index.html")

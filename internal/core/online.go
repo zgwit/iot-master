@@ -1,4 +1,4 @@
-package internal
+package core
 
 import (
 	paho "github.com/eclipse/paho.mqtt.golang"

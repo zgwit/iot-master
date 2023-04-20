@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/internal"
+	"github.com/zgwit/iot-master/v3/internal/core"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"github.com/zgwit/iot-master/v3/pkg/db"
@@ -149,7 +149,7 @@ func deviceRouter(app *gin.RouterGroup) {
 }
 
 func deviceValues(ctx *gin.Context) {
-	device := internal.Devices.Load(ctx.GetString("id"))
+	device := core.Devices.Load(ctx.GetString("id"))
 	if device == nil {
 		curd.Fail(ctx, "设备未上线")
 		return
@@ -172,7 +172,7 @@ func deviceParameters(ctx *gin.Context) {
 	}
 
 	//TODO 重置设备
-	internal.Devices.Delete(ctx.GetString("id"))
+	core.Devices.Delete(ctx.GetString("id"))
 
 	curd.OK(ctx, nil)
 }
