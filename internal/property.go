@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/payload"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 	"strings"
@@ -23,14 +24,14 @@ func subscribeProperty() error {
 			return
 		}
 
-		var payload map[string]interface{}
-		err = json.Unmarshal(message.Payload(), &payload)
+		var values map[string]interface{}
+		err = json.Unmarshal(message.Payload(), &values)
 		if err != nil {
 			return
 		}
 
 		//TODO 此处需要判断是 产品 的属性
-		for k, v := range payload {
+		for k, v := range values {
 			dev.Values[k] = v
 		}
 		dev.Online = true
@@ -41,7 +42,7 @@ func subscribeProperty() error {
 	return nil
 }
 
-func mergeProperties(id string, properties []model.PayloadValue) {
+func mergeProperties(id string, properties []payload.Property) {
 	dev, err := GetDevice(id)
 	if err != nil {
 		log.Error(err)
@@ -59,20 +60,20 @@ func mergeProperties(id string, properties []model.PayloadValue) {
 
 func subscribePropertyStrict() error {
 	mqtt.Client.Subscribe("up/property/+/+/strict", 0, func(client paho.Client, message paho.Message) {
-		var payload model.PayloadPropertyUp
-		err := json.Unmarshal(message.Payload(), &payload)
+		var up payload.DevicePropertyUp
+		err := json.Unmarshal(message.Payload(), &up)
 		if err != nil {
 			return
 		}
 
 		//属性值
-		if payload.Id != "" && payload.Properties != nil {
-			mergeProperties(payload.Id, payload.Properties)
+		if up.Id != "" && up.Properties != nil {
+			mergeProperties(up.Id, up.Properties)
 		}
 
 		//子设备属性
-		if payload.Devices != nil {
-			for _, d := range payload.Devices {
+		if up.Devices != nil {
+			for _, d := range up.Devices {
 				mergeProperties(d.Id, d.Properties)
 			}
 		}

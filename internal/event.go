@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/payload"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
@@ -22,8 +23,8 @@ func subscribeEvent() error {
 			return
 		}
 
-		var payload model.PayloadEvent
-		err = json.Unmarshal(message.Payload(), &payload)
+		var event payload.Event
+		err = json.Unmarshal(message.Payload(), &event)
 		if err != nil {
 			return
 		}
@@ -31,12 +32,12 @@ func subscribeEvent() error {
 		//保存数据库
 		_, _ = db.Engine.InsertOne(model.DeviceEvent{
 			DeviceId: id,
-			Name:     payload.Name,
-			Label:    payload.Title,
-			Output:   payload.Output,
+			Name:     event.Name,
+			Label:    event.Title,
+			Output:   event.Output,
 		})
 
-		switch payload.Name {
+		switch event.Name {
 		case "online":
 			dev.Values["$online"] = true
 		case "offline":
