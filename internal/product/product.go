@@ -1,4 +1,4 @@
-package core
+package product
 
 import (
 	"github.com/zgwit/iot-master/v3/model"
@@ -11,17 +11,17 @@ var Products lib.Map[Product]
 
 type Product struct {
 	model  *model.Product
-	values map[string]float64
+	Values map[string]float64
 }
 
 func LoadProduct(product *model.Product) error {
 	//log.Info("load product", product.Id, product.Name)
 	p := &Product{
 		model:  product,
-		values: map[string]float64{},
+		Values: map[string]float64{},
 	}
 	for _, param := range product.Parameters {
-		p.values[param.Name] = param.Default
+		p.Values[param.Name] = param.Default
 	}
 
 	Products.Store(product.Id, p)

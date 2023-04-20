@@ -2,26 +2,19 @@ package main
 
 import (
 	"embed"
-	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/kardianos/service"
 	_ "github.com/zgwit/iot-master/v3/docs"
+	"github.com/zgwit/iot-master/v3/internal"
 	"github.com/zgwit/iot-master/v3/internal/api"
 	"github.com/zgwit/iot-master/v3/internal/app"
 	"github.com/zgwit/iot-master/v3/internal/args"
-	broker2 "github.com/zgwit/iot-master/v3/internal/broker"
+	"github.com/zgwit/iot-master/v3/internal/broker"
 	"github.com/zgwit/iot-master/v3/internal/config"
-	"github.com/zgwit/iot-master/v3/internal/core"
-	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/banner"
 	"github.com/zgwit/iot-master/v3/pkg/build"
-	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
-	"github.com/zgwit/iot-master/v3/pkg/mqtt"
-	"github.com/zgwit/iot-master/v3/pkg/vconn"
 	"github.com/zgwit/iot-master/v3/pkg/web"
-	"net"
 	"net/http"
-	"net/url"
 	"os"
 	"os/signal"
 	"syscall"
@@ -127,72 +120,14 @@ func originMain() {
 	banner.Print("iot-master")
 	build.Print()
 
-	err := config.Load()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = log.Open(config.Config.Log)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//加载数据库
-	err = db.Open(config.Config.Database)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
-	//同步表结构
-	err = db.Engine.Sync2(
-		new(model.User), new(model.Password), new(model.Role),
-		new(model.Broker), new(model.Gateway), new(model.Product),
-		new(model.Device), new(model.DeviceArea), new(model.DeviceGroup), new(model.DeviceType),
-		new(model.App), new(model.Plugin),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = broker2.Open(config.Config.Broker)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer broker2.Close()
-
-	if broker2.Server != nil {
-		err := mqtt.OpenBy(
-			func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
-				c1, c2 := vconn.New()
-				//EstablishConnection会读取connect，导致拥堵
-				go func() {
-					err := broker2.Server.EstablishConnection("internal", c1)
-					if err != nil {
-						log.Error(err)
-					}
-				}()
-				return c2, nil
-			})
-		if err != nil {
-			return
-		}
-
-	} else {
-		//MQTT总线
-		err = mqtt.Open(config.Config.Mqtt)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer mqtt.Close()
-	}
-
 	//加载主程序
-	err = core.Open()
+	err := internal.Open()
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer core.Close()
+	defer internal.Close()
 
+	//Web服务
 	engine := web.CreateEngine(config.Config.Web)
 
 	//注册前端接口
@@ -205,7 +140,7 @@ func originMain() {
 	engine.Any("/app/:app/*path", app.ProxyApp)
 
 	//监听Websocket
-	engine.GET("/mqtt", broker2.GinHandler)
+	engine.GET("/mqtt", broker.GinHandler)
 
 	//前端静态文件
 	web.RegisterFS(engine, http.FS(wwwFiles), "www", "index.html")

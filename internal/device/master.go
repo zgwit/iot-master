@@ -1,4 +1,4 @@
-package core
+package device
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 )
 
-func subscribeMaster() error {
+func SubscribeMaster() error {
 
 	//注册应用
 	mqtt.Client.Subscribe("master/register", 0, func(client paho.Client, message paho.Message) {

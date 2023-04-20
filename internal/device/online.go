@@ -1,4 +1,4 @@
-package core
+package device
 
 import (
 	paho "github.com/eclipse/paho.mqtt.golang"
@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func subscribeOnline() error {
+func SubscribeOnline() error {
 	mqtt.Client.Subscribe("online/+/+", 0, func(client paho.Client, message paho.Message) {
 		topics := strings.Split(message.Topic(), "/")
 		//pid := topics[1]

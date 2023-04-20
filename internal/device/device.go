@@ -1,7 +1,8 @@
-package core
+package device
 
 import (
 	"fmt"
+	product2 "github.com/zgwit/iot-master/v3/internal/product"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/lib"
@@ -16,7 +17,7 @@ type Device struct {
 	Last    time.Time
 	Values  map[string]any
 	last    map[string]float64
-	product *Product
+	product *product2.Product
 }
 
 func NewDevice(id string) *Device {
@@ -62,14 +63,14 @@ func LoadDevice(device *model.Device) error {
 	}
 
 	//绑定产品
-	p := Products.Load(device.ProductId)
+	p := product2.Products.Load(device.ProductId)
 	if p == nil {
 		return fmt.Errorf("product %s not found", device.ProductId)
 	}
 	d.product = p
 
 	//复制基础变量
-	for k, v := range p.values {
+	for k, v := range p.Values {
 		d.Values[k] = v
 	}
 	//复制设备变量

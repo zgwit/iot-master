@@ -1,4 +1,4 @@
-package core
+package device
 
 import (
 	"encoding/json"

@@ -1,4 +1,4 @@
-package core
+package device
 
 import (
 	"encoding/json"
@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func subscribeProperty() error {
+func SubscribeProperty() error {
 	mqtt.Client.Subscribe("up/property/+/+", 0, func(client paho.Client, message paho.Message) {
 		topics := strings.Split(message.Topic(), "/")
 		//pid := topics[2]
@@ -58,7 +58,7 @@ func mergeProperties(id string, properties []payload.Property) {
 
 }
 
-func subscribePropertyStrict() error {
+func SubscribePropertyStrict() error {
 	mqtt.Client.Subscribe("up/property/+/+/strict", 0, func(client paho.Client, message paho.Message) {
 		var up payload.DevicePropertyUp
 		err := json.Unmarshal(message.Payload(), &up)
