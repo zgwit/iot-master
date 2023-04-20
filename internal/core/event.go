@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func subscribeEvent() error {
+func SubscribeEvent() error {
 	mqtt.Client.Subscribe("up/event/+/+", 0, func(client paho.Client, message paho.Message) {
 		topics := strings.Split(message.Topic(), "/")
 		//pid := topics[2]

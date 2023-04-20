@@ -3,6 +3,7 @@ package core
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
+	app2 "github.com/zgwit/iot-master/v3/internal/app"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
@@ -19,13 +20,13 @@ func subscribeMaster() error {
 			return
 		}
 		log.Info("app register ", app.Id, " ", app.Name, " ", app.Type, " ", app.Address)
-		Applications.Store(app.Id, &app)
+		app2.Applications.Store(app.Id, &app)
 	})
 
 	//反注册
 	mqtt.Client.Subscribe("master/unregister", 0, func(client paho.Client, message paho.Message) {
 		id := string(message.Payload())
-		Applications.Delete(id)
+		app2.Applications.Delete(id)
 	})
 
 	return nil

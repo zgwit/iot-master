@@ -18,7 +18,7 @@ func Open() error {
 		return err
 	}
 
-	err = subscribeEvent()
+	err = SubscribeEvent()
 	if err != nil {
 		return err
 	}

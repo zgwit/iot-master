@@ -6,6 +6,7 @@ import (
 	"github.com/kardianos/service"
 	_ "github.com/zgwit/iot-master/v3/docs"
 	"github.com/zgwit/iot-master/v3/internal/api"
+	"github.com/zgwit/iot-master/v3/internal/app"
 	"github.com/zgwit/iot-master/v3/internal/args"
 	broker2 "github.com/zgwit/iot-master/v3/internal/broker"
 	"github.com/zgwit/iot-master/v3/internal/config"
@@ -192,26 +193,26 @@ func originMain() {
 	}
 	defer core.Close()
 
-	app := web.CreateEngine(config.Config.Web)
+	engine := web.CreateEngine(config.Config.Web)
 
 	//注册前端接口
-	api.RegisterRoutes(app.Group("/api"))
+	api.RegisterRoutes(engine.Group("/api"))
 
 	//注册接口文档
-	web.RegisterSwaggerDocs(&app.RouterGroup)
+	web.RegisterSwaggerDocs(&engine.RouterGroup)
 
 	//使用$前缀区分插件
-	app.Any("/app/:app/*path", core.ProxyApp)
+	engine.Any("/app/:app/*path", app.ProxyApp)
 
 	//监听Websocket
-	app.GET("/mqtt", broker2.GinHandler)
+	engine.GET("/mqtt", broker2.GinHandler)
 
 	//前端静态文件
-	web.RegisterFS(app, http.FS(wwwFiles), "www", "index.html")
+	web.RegisterFS(engine, http.FS(wwwFiles), "www", "index.html")
 
 	//监听HTTP
 	log.Info("Web服务启动 ", config.Config.Web.Addr)
-	err = app.Run(config.Config.Web.Addr)
+	err = engine.Run(config.Config.Web.Addr)
 	if err != nil {
 		log.Fatal("HTTP 服务启动错误", err)
 	}

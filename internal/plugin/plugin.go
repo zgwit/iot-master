@@ -1,4 +1,4 @@
-package core
+package plugin
 
 import (
 	"github.com/zgwit/iot-master/v3/model"

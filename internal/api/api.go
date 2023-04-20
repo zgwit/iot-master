@@ -3,8 +3,8 @@ package api
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v3/internal/app"
 	"github.com/zgwit/iot-master/v3/internal/config"
-	"github.com/zgwit/iot-master/v3/internal/core"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"net/http"
@@ -63,28 +63,28 @@ func mustLogin(ctx *gin.Context) {
 	}
 }
 
-func RegisterRoutes(app *gin.RouterGroup) {
+func RegisterRoutes(router *gin.RouterGroup) {
 	//错误恢复，并返回至前端
-	app.Use(catchError)
+	router.Use(catchError)
 
-	app.GET("/oem", func(ctx *gin.Context) {
+	router.GET("/oem", func(ctx *gin.Context) {
 		curd.OK(ctx, &config.Config.Oem)
 	})
 
-	app.GET("/info", info)
+	router.GET("/info", info)
 
-	app.GET("/auth", auth)
-	app.POST("/login", login)
+	router.GET("/auth", auth)
+	router.POST("/login", login)
 
 	//检查 session，必须登录
-	app.Use(mustLogin)
+	router.Use(mustLogin)
 
-	app.GET("/logout", logout)
-	app.POST("/password", password)
+	router.GET("/logout", logout)
+	router.POST("/password", password)
 
-	app.GET("/apps", func(ctx *gin.Context) {
+	router.GET("/apps", func(ctx *gin.Context) {
 		apps := make([]*model.App, 0)
-		core.Applications.Range(func(name string, app *model.App) bool {
+		app.Applications.Range(func(name string, app *model.App) bool {
 			if !app.Hidden {
 				apps = append(apps, app)
 			}
@@ -93,32 +93,32 @@ func RegisterRoutes(app *gin.RouterGroup) {
 		curd.OK(ctx, apps)
 	})
 
-	app.GET("/privileges", func(ctx *gin.Context) {
+	router.GET("/privileges", func(ctx *gin.Context) {
 		curd.OK(ctx, model.PRIVILEGES)
 	})
 
 	//注册子接口
-	userRouter(app.Group("/user"))
-	roleRouter(app.Group("/role"))
+	userRouter(router.Group("/user"))
+	roleRouter(router.Group("/role"))
 
-	productRouter(app.Group("/product"))
-	gatewayRouter(app.Group("/gateway"))
+	productRouter(router.Group("/product"))
+	gatewayRouter(router.Group("/gateway"))
 
-	deviceRouter(app.Group("/device"))
-	deviceTypeRouter(app.Group("/device/type"))
-	deviceAreaRouter(app.Group("/device/area"))
-	deviceGroupRouter(app.Group("/device/group"))
+	deviceRouter(router.Group("/device"))
+	deviceTypeRouter(router.Group("/device/type"))
+	deviceAreaRouter(router.Group("/device/area"))
+	deviceGroupRouter(router.Group("/device/group"))
 
-	brokerRouter(app.Group("/broker"))
+	brokerRouter(router.Group("/broker"))
 
-	pluginRouter(app.Group("/plugin"))
-	appRouter(app.Group("/app"))
+	pluginRouter(router.Group("/plugin"))
+	appRouter(router.Group("/app"))
 
-	systemRouter(app.Group("/system"))
-	configRouter(app.Group("/config"))
+	systemRouter(router.Group("/system"))
+	configRouter(router.Group("/config"))
 
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）
-	app.Use(func(ctx *gin.Context) {
+	router.Use(func(ctx *gin.Context) {
 		curd.Fail(ctx, "Not found")
 		ctx.Abort()
 	})
