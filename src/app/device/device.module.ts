@@ -38,6 +38,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { DeviceAreaComponent } from './device-area/device-area.component';
 import { DeviceAreaEditComponent } from './device-area-edit/device-area-edit.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import {ProductModule} from "../product/product.module";
 @NgModule({
   declarations: [
     DevicesComponent,
@@ -52,35 +53,36 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     DeviceAreaComponent,
     DeviceAreaEditComponent
   ],
-  imports: [
-    CommonModule,
-    DeviceRoutingModule,
-    NzLayoutModule,
-    NzMenuModule,
-    NzTagModule,
-    NzIconModule,
-    NzDropDownModule,
-    FormsModule,
-    NzUploadModule,
-    NzFormModule,
-    NzInputModule,
-    NzButtonModule,
-    NzPopconfirmModule,
-    NzTableModule,
-    NzDividerModule,
-    BaseModule,
-    ReactiveFormsModule,
-    NzInputNumberModule,
-    NzCardModule,
-    NzSpaceModule,
-    NzStatisticModule,
-    NzCollapseModule,
-    NzTabsModule,
-    NzSwitchModule,
-    NzSelectModule,
-    NzModalModule,
-    NzSpinModule
-  ]
+    imports: [
+        CommonModule,
+        DeviceRoutingModule,
+        NzLayoutModule,
+        NzMenuModule,
+        NzTagModule,
+        NzIconModule,
+        NzDropDownModule,
+        FormsModule,
+        NzUploadModule,
+        NzFormModule,
+        NzInputModule,
+        NzButtonModule,
+        NzPopconfirmModule,
+        NzTableModule,
+        NzDividerModule,
+        BaseModule,
+        ReactiveFormsModule,
+        NzInputNumberModule,
+        NzCardModule,
+        NzSpaceModule,
+        NzStatisticModule,
+        NzCollapseModule,
+        NzTabsModule,
+        NzSwitchModule,
+        NzSelectModule,
+        NzModalModule,
+        NzSpinModule,
+        ProductModule
+    ]
 })
 export class DeviceModule {
 }

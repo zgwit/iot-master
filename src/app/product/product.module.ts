@@ -30,43 +30,48 @@ import { ProductEditFunctionsComponent } from './product-edit-functions/product-
 import { ProductEditEventsComponent } from './product-edit-events/product-edit-events.component';
 import { ProductEditParametersComponent } from './product-edit-parameters/product-edit-parameters.component';
 import { ProductEditArgumentsComponent } from './product-edit-arguments/product-edit-arguments.component';
-import { ProductEditComponentComponent } from './product-edit-component/product-edit-component.component'; 
+import { ProductEditComponentComponent } from './product-edit-component/product-edit-component.component';
+import { ProductSelectComponent } from './product-select/product-select.component';
 @NgModule({
-  declarations: [
-    ProductsComponent,
-    ProductEditComponent,
-    ProductDetailComponent,
-    ProductEditPropertiesComponent,
-    ProductEditConstraintsComponent,
-    ProductEditFunctionsComponent,
-    ProductEditEventsComponent,
-    ProductEditParametersComponent,
-    ProductEditArgumentsComponent,
-    ProductEditComponentComponent 
-  ],
-  imports: [
-    CommonModule,
-    ProductRoutingModule,
-    NzLayoutModule,
-    NzMenuModule,
-    NzIconModule,
-    NzFormModule,
-    NzInputModule,
-    NzButtonModule,
-    NzPopconfirmModule,
-    NzTableModule,
-    NzDividerModule,
-    BaseModule,
-    ReactiveFormsModule,
-    NzInputNumberModule,
-    NzCardModule,
-    NzSpaceModule,
-    NzCollapseModule,
-    NzSelectModule,
-    NzTypographyModule,
-    DragDropModule,
-    NzUploadModule,
-  ]
+    declarations: [
+        ProductsComponent,
+        ProductEditComponent,
+        ProductDetailComponent,
+        ProductEditPropertiesComponent,
+        ProductEditConstraintsComponent,
+        ProductEditFunctionsComponent,
+        ProductEditEventsComponent,
+        ProductEditParametersComponent,
+        ProductEditArgumentsComponent,
+        ProductEditComponentComponent,
+        ProductSelectComponent
+    ],
+    exports: [
+        ProductSelectComponent
+    ],
+    imports: [
+        CommonModule,
+        ProductRoutingModule,
+        NzLayoutModule,
+        NzMenuModule,
+        NzIconModule,
+        NzFormModule,
+        NzInputModule,
+        NzButtonModule,
+        NzPopconfirmModule,
+        NzTableModule,
+        NzDividerModule,
+        BaseModule,
+        ReactiveFormsModule,
+        NzInputNumberModule,
+        NzCardModule,
+        NzSpaceModule,
+        NzCollapseModule,
+        NzSelectModule,
+        NzTypographyModule,
+        DragDropModule,
+        NzUploadModule,
+    ]
 })
 export class ProductModule {
 }

@@ -27,6 +27,7 @@ export class ProductsComponent {
   indeterminate = false;
   setOfCheckedId = new Set<number>();
   delResData: any = [];
+
   constructor(
     private modal: NzModalService,
     @Optional() protected ref: NzModalRef,
@@ -111,9 +112,9 @@ export class ProductsComponent {
     this.msg.info('取消操作');
   }
   handleExport() {
-    this.href = `/api/product/export`; 
+    this.href = `/api/product/export`;
   }
-  
+
   getTableHeight() {
     return tableHeight(this);
   }

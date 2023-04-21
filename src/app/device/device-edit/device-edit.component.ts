@@ -93,7 +93,6 @@ export class DeviceEditComponent implements OnInit {
       const sendData = Object.assign({}, this.group.value, IdObj);
       let url = this.id ? `device/${this.id}` : `device/create`;
       this.rs.post(url, sendData).subscribe((res) => {
-       
         const path = `${isIncludeAdmin()}/device/list`;
         this.router.navigateByUrl(path);
         this.msg.success('保存成功');
