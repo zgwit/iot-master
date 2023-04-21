@@ -131,20 +131,34 @@ func noopDeviceParameters() {}
 func deviceRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[model.Device]())
-	app.POST("/search", curd.ApiSearch[model.Device]())
+
+	app.POST("/search2", curd.ApiSearch[model.Device]())
+
+	app.POST("/search", curd.ApiSearchWith[model.Device]("device", []curd.Join{
+		{"product", "product_id", "id", "name", "product"},
+	}))
+
 	app.GET("/list", curd.ApiList[model.Device]())
+
 	app.POST("/create", curd.ApiCreateHook[model.Device](curd.GenerateRandomId[model.Device](12), nil))
+
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Device]())
+
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Device](nil, nil,
 		"id", "gateway_id", "product_id", "group_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
+
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Device](nil, nil))
+
 	app.GET("/export", curd.ApiExport[model.Device]("device"))
+
 	app.POST("/import", curd.ApiImport[model.Device]())
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Device](true, nil, nil))
+
 	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Device](false, nil, nil))
 
 	app.GET("/:id/values", curd.ParseParamStringId, deviceValues)
+
 	app.POST("/:id/parameters", curd.ParseParamStringId, deviceParameters)
 }
 
