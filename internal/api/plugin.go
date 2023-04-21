@@ -106,35 +106,35 @@ func noopPluginDisable() {}
 
 func pluginRouter(app *gin.RouterGroup) {
 
-	app.POST("/search", curd.ApiSearchAfter[model.Plugin](func(datum []model.Plugin) error {
+	app.POST("/search", curd.ApiSearchHook[model.Plugin](func(datum []model.Plugin) error {
 		for i := 0; i < len(datum); i++ {
 			datum[i].Running = true
 		}
 		return nil
 	}))
 
-	app.GET("/list", curd.ApiListAfter[model.Plugin](func(datum []model.Plugin) error {
+	app.GET("/list", curd.ApiListHook[model.Plugin](func(datum []model.Plugin) error {
 		for i := 0; i < len(datum); i++ {
 			datum[i].Running = true
 		}
 		return nil
 	}))
-	app.POST("/create", curd.ApiCreate[model.Plugin](curd.GenerateRandomId[model.Plugin](12), nil))
+	app.POST("/create", curd.ApiCreateHook[model.Plugin](curd.GenerateRandomId[model.Plugin](12), nil))
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetAfter[model.Plugin](func(m *model.Plugin) error {
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetHook[model.Plugin](func(m *model.Plugin) error {
 		m.Running = true
 		return nil
 	}))
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Plugin](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Plugin](nil, nil,
 		"id", "name", "version", "command", "external", "username", "password", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Plugin](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Plugin](nil, nil))
 
 	app.GET("/export", curd.ApiExport[model.Plugin]("plugin"))
 	app.POST("/import", curd.ApiImport[model.Plugin]())
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisable[model.Plugin](true, nil, nil))
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisable[model.Plugin](false, nil, nil))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](false, nil, nil))
 
 }

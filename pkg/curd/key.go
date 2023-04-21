@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-func GenerateRandomKey(l int) Hook {
+func GenerateRandomKey(l int) func(value interface{}) error {
 	return func(data interface{}) error {
 		value := reflect.ValueOf(data).Elem()
 		field := value.FieldByName("Id")

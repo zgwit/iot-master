@@ -109,11 +109,11 @@ func deviceTypeRouter(app *gin.RouterGroup) {
 	app.POST("/count", curd.ApiCount[model.DeviceType]())
 	app.POST("/search", curd.ApiSearch[model.DeviceType]())
 	app.GET("/list", curd.ApiList[model.DeviceType]())
-	app.POST("/create", curd.ApiCreate[model.DeviceType](curd.GenerateRandomId[model.DeviceType](8), nil))
+	app.POST("/create", curd.ApiCreateHook[model.DeviceType](curd.GenerateRandomId[model.DeviceType](8), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.DeviceType]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.DeviceType](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.DeviceType](nil, nil,
 		"name", "desc"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.DeviceType](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.DeviceType](nil, nil))
 	app.GET("/export", curd.ApiExport[model.DeviceType]("device-type"))
 	app.POST("/import", curd.ApiImport[model.DeviceType]())
 }

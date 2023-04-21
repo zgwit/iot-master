@@ -132,14 +132,14 @@ func gatewayRouter(app *gin.RouterGroup) {
 	app.POST("/count", curd.ApiCount[model.Gateway]())
 	app.POST("/search", curd.ApiSearch[model.Gateway]())
 	app.GET("/list", curd.ApiList[model.Gateway]())
-	app.POST("/create", curd.ApiCreate[model.Gateway](curd.GenerateRandomId[model.Gateway](8), nil))
+	app.POST("/create", curd.ApiCreateHook[model.Gateway](curd.GenerateRandomId[model.Gateway](8), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Gateway]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Gateway](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Gateway](nil, nil,
 		"id", "name", "desc", "username", "password", "disabled"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Gateway](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Gateway](nil, nil))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisable[model.Gateway](true, nil, nil))
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisable[model.Gateway](false, nil, nil))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Gateway](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Gateway](false, nil, nil))
 	app.GET("/export", curd.ApiExport[model.Gateway]("gateway"))
 	app.POST("/import", curd.ApiImport[model.Gateway]())
 }

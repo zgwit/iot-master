@@ -132,14 +132,14 @@ func brokerRouter(app *gin.RouterGroup) {
 	app.POST("/count", curd.ApiCount[model.Broker]())
 	app.POST("/search", curd.ApiSearch[model.Broker]())
 	app.GET("/list", curd.ApiList[model.Broker]())
-	app.POST("/create", curd.ApiCreate[model.Broker](curd.GenerateRandomId[model.Broker](12), nil))
+	app.POST("/create", curd.ApiCreateHook[model.Broker](curd.GenerateRandomId[model.Broker](12), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Broker]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Broker](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Broker](nil, nil,
 		"id", "name", "type", "port", "desc", "disabled"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Broker](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Broker](nil, nil))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisable[model.Broker](true, nil, nil))
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisable[model.Broker](false, nil, nil))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Broker](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Broker](false, nil, nil))
 	app.GET("/export", curd.ApiExport[model.Broker]("broker"))
 	app.POST("/import", curd.ApiImport[model.Broker]())
 }

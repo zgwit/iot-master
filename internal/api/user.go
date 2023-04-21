@@ -134,20 +134,20 @@ func userRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[model.User]())
 
-	app.POST("/create", curd.ParseParamStringId, curd.ApiCreate[model.User](curd.GenerateRandomId[model.User](6), nil))
+	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[model.User](curd.GenerateRandomId[model.User](6), nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.User]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.User](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.User](nil, nil,
 		"username", "name", "email", "roles", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.User](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.User](nil, nil))
 
 	app.GET("/:id/password", curd.ParseParamStringId, userPassword)
 
-	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisable[model.User](false, nil, nil))
+	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.User](false, nil, nil))
 
-	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisable[model.User](true, nil, nil))
+	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.User](true, nil, nil))
 
 }
 

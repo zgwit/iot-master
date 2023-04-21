@@ -113,14 +113,14 @@ func roleRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[model.Role]())
 
-	app.POST("/create", curd.ParseParamStringId, curd.ApiCreate[model.Role](nil, nil))
+	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[model.Role](nil, nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Role]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiModify[model.Role](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Role](nil, nil,
 		"id", "name", "privileges"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDelete[model.Role](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Role](nil, nil))
 
 	app.GET("/export", curd.ApiExport[model.Role]("role"))
 
