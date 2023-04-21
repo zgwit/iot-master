@@ -8,6 +8,7 @@ import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 })
 export class WindowComponent {
   tabData: any;
+
   @Input() set entries(arr: any) {
     arr.forEach((item: { url: SafeResourceUrl; path: string; }) => {
       item.url = this.san.bypassSecurityTrustResourceUrl(item.path);
