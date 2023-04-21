@@ -138,25 +138,32 @@ func ApiSearchWith[T any](table string, join []Join, fields ...string) gin.Handl
 
 		query := body.ToQuery()
 
+		var s []string
 		//查询字段
 		fs := ctx.QueryArray("field")
 		if len(fs) > 0 {
-			query.Cols(fs...)
+			for _, f := range fs {
+				s = append(s, table+"."+f)
+			}
 		} else if len(fields) > 0 {
-			query.Cols(fields...)
+			for _, f := range fields {
+				s = append(s, table+"."+f)
+			}
+		} else {
+			s = append(s, table+".*")
 		}
 
 		//var data T
 		var datum []map[string]any
 		session := query.Table(table)
 
-		//字段
-		s := []string{table + ".*"}
+		//补充字段
 		for _, j := range join {
 			s = append(s, j.Table+"."+j.Field+" as "+j.As)
 		}
 		session.Select(strings.Join(s, ","))
 
+		//连接查询
 		for _, j := range join {
 			session.Join("LEFT OUTER", j.Table, j.Table+"."+j.ForeignField+"="+table+"."+j.LocaleField)
 		}
