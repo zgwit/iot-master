@@ -2,48 +2,48 @@ package device
 
 import (
 	"fmt"
-	product2 "github.com/zgwit/iot-master/v3/internal/product"
+	"github.com/zgwit/iot-master/v3/internal/product"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"time"
 )
 
-var Devices lib.Map[Device]
+var devices lib.Map[Device]
 
 type Device struct {
 	Id      string
 	Online  bool
 	Last    time.Time
 	Values  map[string]any
-	last    map[string]float64
-	product *product2.Product
+	product *product.Product
 }
 
-func NewDevice(id string) *Device {
+func New(id string) *Device {
 	//time.Now().Unix()
 	return &Device{
 		Id:     id,
 		Values: make(map[string]any),
-		last:   make(map[string]float64),
 	}
 }
 
-func GetDevice(id string) (*Device, error) {
-	dev := Devices.Load(id)
+func Ensure(id string) (*Device, error) {
+	dev := devices.Load(id)
 	if dev == nil {
-		//log.Infof("加载设备 %s", id)
-		//加载设备
-		err := LoadDeviceById(id)
+		err := Load(id)
 		if err != nil {
 			return nil, err
 		}
-		dev = Devices.Load(id)
+		dev = devices.Load(id)
 	}
 	return dev, nil
 }
 
-func LoadDeviceById(id string) error {
+func Get(id string) *Device {
+	return devices.Load(id)
+}
+
+func Load(id string) error {
 	var dev model.Device
 	get, err := db.Engine.ID(id).Get(&dev)
 	if err != nil {
@@ -52,32 +52,29 @@ func LoadDeviceById(id string) error {
 	if !get {
 		return fmt.Errorf("device %s not found", id)
 	}
-	return LoadDevice(&dev)
+	return From(&dev)
 }
 
-func LoadDevice(device *model.Device) error {
-	d := &Device{
-		Id:     device.Id,
-		Values: make(map[string]any),
-		last:   make(map[string]float64),
-	}
+func From(device *model.Device) error {
+	d := New(device.Id)
 
 	//绑定产品
-	p := product2.Products.Load(device.ProductId)
-	if p == nil {
-		return fmt.Errorf("product %s not found", device.ProductId)
+	p, err := product.Ensure(device.ProductId)
+	if err != nil {
+		return err
 	}
 	d.product = p
 
-	//复制基础变量
-	for k, v := range p.Values {
-		d.Values[k] = v
+	//复制基础参数
+	for _, v := range p.Parameters {
+		d.Values[v.Name] = v.Default
 	}
-	//复制设备变量
+
+	//复制设备参数
 	for k, v := range device.Parameters {
 		d.Values[k] = v
 	}
 
-	Devices.Store(device.Id, d)
+	devices.Store(device.Id, d)
 	return nil
 }

@@ -13,7 +13,7 @@ func SubscribeOnline() error {
 		//pid := topics[1]
 		id := topics[2]
 
-		dev, err := GetDevice(id)
+		dev, err := Ensure(id)
 		if err != nil {
 			log.Error(err)
 			return
@@ -27,7 +27,7 @@ func SubscribeOnline() error {
 		//pid := topics[1]
 		id := topics[2]
 
-		dev, err := GetDevice(id)
+		dev, err := Ensure(id)
 		if err != nil {
 			log.Error(err)
 			return

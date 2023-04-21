@@ -149,12 +149,12 @@ func deviceRouter(app *gin.RouterGroup) {
 }
 
 func deviceValues(ctx *gin.Context) {
-	device := device.Devices.Load(ctx.GetString("id"))
-	if device == nil {
+	dev := device.Get(ctx.GetString("id"))
+	if dev == nil {
 		curd.Fail(ctx, "设备未上线")
 		return
 	}
-	curd.OK(ctx, device.Values)
+	curd.OK(ctx, dev.Values)
 }
 
 func deviceParameters(ctx *gin.Context) {
@@ -172,7 +172,7 @@ func deviceParameters(ctx *gin.Context) {
 	}
 
 	//TODO 重置设备
-	device.Devices.Delete(ctx.GetString("id"))
+	//device.devices.Delete(ctx.GetString("id"))
 
 	curd.OK(ctx, nil)
 }

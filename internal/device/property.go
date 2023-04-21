@@ -17,7 +17,7 @@ func SubscribeProperty() error {
 		//pid := topics[2]
 		id := topics[3]
 
-		dev, err := GetDevice(id)
+		dev, err := Ensure(id)
 		if err != nil {
 			log.Error(err)
 			//TODO 自动创建设备？
@@ -43,7 +43,7 @@ func SubscribeProperty() error {
 }
 
 func mergeProperties(id string, properties []payload.Property) {
-	dev, err := GetDevice(id)
+	dev, err := Ensure(id)
 	if err != nil {
 		log.Error(err)
 		return

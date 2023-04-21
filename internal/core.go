@@ -72,7 +72,7 @@ func Open() error {
 		}
 	}
 
-	err = product.LoadProducts()
+	err = product.LoadAll()
 	if err != nil {
 		return err
 	}
