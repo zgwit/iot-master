@@ -6,19 +6,10 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/pkg/log"
-	"mime"
 	"net/http"
 	"path"
 	"time"
 )
-
-func init() {
-	err := mime.AddExtensionType(".js", "application/javascript")
-	if err != nil {
-		log.Error(err)
-	}
-}
 
 func CreateEngine(cfg Options) *gin.Engine {
 	if !cfg.Debug {
