@@ -46,6 +46,7 @@ func (body *ParamSearch) ToQuery() *xorm.Session {
 		likes := make([]builder.Cond, 0)
 		for k, v := range body.Keywords {
 			if v != "" {
+				k = db.Engine.Quote(k)
 				//op.And(k+" like ?", "%"+v+"%")
 				likes = append(likes, &builder.Like{k, v})
 			}
@@ -57,6 +58,7 @@ func (body *ParamSearch) ToQuery() *xorm.Session {
 
 	if len(body.Sort) > 0 {
 		for k, v := range body.Sort {
+			k = db.Engine.Quote(k)
 			if v > 0 {
 				op.Asc(k)
 			} else {
@@ -65,6 +67,62 @@ func (body *ParamSearch) ToQuery() *xorm.Session {
 		}
 	} else {
 		op.Desc("id")
+	}
+
+	return op
+}
+
+func (body *ParamSearch) ToJoinQuery(table string) *xorm.Session {
+	if body.Limit < 1 {
+		body.Limit = 20
+	}
+	op := db.Engine.Limit(body.Limit, body.Skip)
+
+	for k, v := range body.Filters {
+		if reflect.TypeOf(v).Kind() == reflect.Slice {
+			ll := len(v.([]interface{}))
+			if ll > 0 {
+				if ll == 1 {
+					k = db.Engine.Quote(k)
+					op.And(table+"."+k+"=?", v.([]interface{})[0])
+				} else {
+					op.In(table+"."+k, v)
+				}
+			}
+		} else {
+			if v != nil {
+				k = db.Engine.Quote(k)
+				op.And(table+"."+k+"=?", v)
+			}
+		}
+	}
+
+	//builder.Or(builder.Like{})
+	if len(body.Keywords) > 0 {
+		likes := make([]builder.Cond, 0)
+		for k, v := range body.Keywords {
+			if v != "" {
+				//op.And(k+" like ?", "%"+v+"%")
+				k = db.Engine.Quote(k)
+				likes = append(likes, &builder.Like{table + "." + k, v})
+			}
+		}
+		if len(likes) > 0 {
+			op.And(builder.Or(likes...))
+		}
+	}
+
+	if len(body.Sort) > 0 {
+		for k, v := range body.Sort {
+			k = db.Engine.Quote(k)
+			if v > 0 {
+				op.Asc(table + "." + k)
+			} else {
+				op.Desc(table + "." + k)
+			}
+		}
+	} else {
+		op.Desc(table + "." + "id")
 	}
 
 	return op

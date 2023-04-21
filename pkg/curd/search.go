@@ -136,7 +136,7 @@ func ApiSearchWith[T any](table string, join []Join, fields ...string) gin.Handl
 			return
 		}
 
-		query := body.ToQuery()
+		query := body.ToJoinQuery(table)
 
 		var s []string
 		//查询字段
@@ -189,7 +189,7 @@ func ApiSearchWithHook[T any](table string, join []Join, after func(datum []map[
 			return
 		}
 
-		query := body.ToQuery()
+		query := body.ToJoinQuery(table)
 
 		var s []string
 		//查询字段
