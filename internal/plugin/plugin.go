@@ -75,6 +75,7 @@ func (p *Plugin) Start() error {
 		if p.stop {
 			return
 		}
+		
 		err = p.Start()
 		if err != nil {
 			log.Error(err)
