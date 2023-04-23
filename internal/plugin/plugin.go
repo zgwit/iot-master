@@ -15,6 +15,7 @@ import (
 type Plugin struct {
 	*model.Plugin
 
+	stop    bool
 	Process *os.Process
 }
 
@@ -68,17 +69,24 @@ func (p *Plugin) Start() error {
 	go func() {
 		state, err := p.Process.Wait()
 		p.Running = false
+		log.Info(state.ExitCode(), err)
+
+		//异常退出，重新启动
+		if p.stop {
+			return
+		}
+		err = p.Start()
 		if err != nil {
 			log.Error(err)
 			return
 		}
-		log.Info(state.ExitCode())
 	}()
 
 	return nil
 }
 
 func (p *Plugin) Close() error {
+	p.stop = true
 	return p.Process.Kill()
 }
 
@@ -153,4 +161,11 @@ func LoadAll() error {
 	}
 
 	return nil
+}
+
+func Close() {
+	plugins.Range(func(id string, plugin *Plugin) bool {
+		_ = plugin.Close()
+		return true
+	})
 }

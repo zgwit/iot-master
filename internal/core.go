@@ -75,10 +75,12 @@ func Open() error {
 		return err
 	}
 
-	err = plugin.LoadAll()
-	if err != nil {
-		return err
-	}
+	go func() {
+		err = plugin.LoadAll()
+		if err != nil {
+			log.Error(err)
+		}
+	}()
 
 	//err = LoadDevices()
 	//if err != nil {
@@ -115,8 +117,8 @@ func Open() error {
 }
 
 func Close() {
-	//TODO clear gateways devices data
 	_ = db.Close()
 	broker.Close()
 	mqtt.Close()
+	plugin.Close()
 }
