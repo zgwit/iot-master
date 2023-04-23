@@ -6,13 +6,18 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v3/pkg/log"
 	"net/http"
 	"path"
 	"time"
 )
 
-func CreateEngine(cfg Options) *gin.Engine {
-	if !cfg.Debug {
+type Engine struct {
+	*gin.Engine
+}
+
+func CreateEngine() *Engine {
+	if !options.Debug {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
@@ -21,12 +26,12 @@ func CreateEngine(cfg Options) *gin.Engine {
 	app := gin.New()
 	app.Use(gin.Recovery())
 
-	if cfg.Debug {
+	if options.Debug {
 		app.Use(gin.Logger())
 	}
 
 	//跨域问题
-	if cfg.Cors {
+	if options.Cors {
 		c := cors.DefaultConfig()
 		c.AllowAllOrigins = true
 		c.AllowCredentials = true
@@ -37,16 +42,16 @@ func CreateEngine(cfg Options) *gin.Engine {
 	app.Use(sessions.Sessions("iot-master", cookie.NewStore([]byte("iot-master"))))
 
 	//开启压缩
-	if cfg.Gzip {
+	if options.Gzip {
 		app.Use(gzip.Gzip(gzip.DefaultCompression)) //gzip.WithExcludedPathsRegexs([]string{".*"})
 	}
 
 	//app.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	return app
+	return &Engine{app}
 }
 
-func RegisterFS(app *gin.Engine, fs http.FileSystem, prefix, index string) {
+func (app *Engine) RegisterFS(fs http.FileSystem, prefix, index string) {
 	tm := time.Now()
 	app.Use(func(c *gin.Context) {
 		if c.Request.Method == http.MethodGet {
@@ -80,5 +85,12 @@ func RegisterFS(app *gin.Engine, fs http.FileSystem, prefix, index string) {
 			http.ServeContent(c.Writer, c.Request, fn, tm, f)
 		}
 	})
+}
 
+func (app *Engine) Serve() {
+	log.Info("Web服务启动 ", options.Addr)
+	err := app.Run(options.Addr)
+	if err != nil {
+		log.Fatal("HTTP 服务启动错误", err)
+	}
 }

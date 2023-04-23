@@ -6,34 +6,34 @@ import (
 	"os"
 )
 
-func Open(opts Options) error {
+func Open() error {
 
-	if opts.Caller {
+	if options.Caller {
 		logrus.SetReportCaller(true)
 	}
 
-	if opts.Text {
-		logrus.SetFormatter(&logrus.TextFormatter{TimestampFormat: opts.Format})
+	if options.Text {
+		logrus.SetFormatter(&logrus.TextFormatter{TimestampFormat: options.Format})
 	} else {
-		logrus.SetFormatter(&logrus.JSONFormatter{TimestampFormat: opts.Format})
+		logrus.SetFormatter(&logrus.JSONFormatter{TimestampFormat: options.Format})
 	}
 
 	// Output to stdout instead of the default stderr
 	// Can be any io.Writer, see below for File example
-	if opts.Output.Filename == "" {
+	if options.Output.Filename == "" {
 		logrus.SetOutput(os.Stdout)
 	} else {
 		logrus.SetOutput(&lumberjack.Logger{
-			Filename:   opts.Output.Filename,
-			MaxSize:    opts.Output.MaxSize,
-			MaxAge:     opts.Output.MaxAge,
-			MaxBackups: opts.Output.MaxBackups,
+			Filename:   options.Output.Filename,
+			MaxSize:    options.Output.MaxSize,
+			MaxAge:     options.Output.MaxAge,
+			MaxBackups: options.Output.MaxBackups,
 			LocalTime:  true,
 		})
 	}
 
 	// Only log the warning severity or above.
-	level, err := logrus.ParseLevel(opts.Level)
+	level, err := logrus.ParseLevel(options.Level)
 	if err != nil {
 		return err
 	}

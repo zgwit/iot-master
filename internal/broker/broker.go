@@ -13,7 +13,7 @@ import (
 
 var Server *mqtt.Server
 
-func Open(cfg Options) error {
+func Open() error {
 
 	//创建内部Broker
 	Server = mqtt.New(nil)
@@ -21,7 +21,7 @@ func Open(cfg Options) error {
 	//TODO 鉴权
 	_ = Server.AddHook(new(auth.AllowHook), nil)
 
-	err := createEmbedListener(cfg)
+	err := createEmbedListener(options)
 	if err != nil {
 		return err
 	}

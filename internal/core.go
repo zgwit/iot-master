@@ -17,18 +17,15 @@ import (
 
 func Open() error {
 
-	err := config.Load()
-	if err != nil {
-		return err
-	}
+	config.Load()
 
-	err = log.Open(config.Config.Log)
+	err := log.Open()
 	if err != nil {
 		return err
 	}
 
 	//加载数据库
-	err = db.Open(config.Config.Database)
+	err = db.Open()
 	if err != nil {
 		return err
 	}
@@ -43,7 +40,7 @@ func Open() error {
 	if err != nil {
 		return err
 	}
-	err = broker.Open(config.Config.Broker)
+	err = broker.Open()
 	if err != nil {
 		return err
 	}
@@ -66,7 +63,7 @@ func Open() error {
 		}
 	} else {
 		//MQTT总线
-		err = mqtt.Open(config.Config.Mqtt)
+		err = mqtt.Open()
 		if err != nil {
 			return err
 		}

@@ -5,7 +5,6 @@ import (
 	"xorm.io/xorm/log"
 
 	_ "github.com/go-sql-driver/mysql"
-
 	//按需加载数据库驱动
 	//_ "github.com/mattn/go-sqlite3" //CGO版本
 	//_ "github.com/glebarez/go-sqlite" //纯Go版本 使用ccgo翻译的，偶有文件锁问题
@@ -16,17 +15,17 @@ import (
 
 var Engine *xorm.Engine
 
-func Open(cfg Options) error {
+func Open() error {
 	var err error
-	Engine, err = xorm.NewEngine(cfg.Type, cfg.URL)
+	Engine, err = xorm.NewEngine(options.Type, options.URL)
 	if err != nil {
 		return err
 	}
-	if cfg.Debug {
+	if options.Debug {
 		Engine.ShowSQL(true)
 	}
 
-	Engine.SetLogLevel(log.LogLevel(cfg.LogLevel))
+	Engine.SetLogLevel(log.LogLevel(options.LogLevel))
 	//Engine.SetLogger(logrus.StandardLogger())
 	return nil
 }

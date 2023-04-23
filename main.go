@@ -9,7 +9,6 @@ import (
 	"github.com/zgwit/iot-master/v3/internal/app"
 	"github.com/zgwit/iot-master/v3/internal/args"
 	"github.com/zgwit/iot-master/v3/internal/broker"
-	"github.com/zgwit/iot-master/v3/internal/config"
 	"github.com/zgwit/iot-master/v3/pkg/banner"
 	"github.com/zgwit/iot-master/v3/pkg/build"
 	"github.com/zgwit/iot-master/v3/pkg/log"
@@ -128,7 +127,7 @@ func originMain() {
 	defer internal.Close()
 
 	//Web服务
-	engine := web.CreateEngine(config.Config.Web)
+	engine := web.CreateEngine()
 
 	//注册前端接口
 	api.RegisterRoutes(engine.Group("/api"))
@@ -143,14 +142,10 @@ func originMain() {
 	engine.GET("/mqtt", broker.GinHandler)
 
 	//前端静态文件
-	web.RegisterFS(engine, http.FS(wwwFiles), "www", "index.html")
+	engine.RegisterFS(http.FS(wwwFiles), "www", "index.html")
 
 	//监听HTTP
-	log.Info("Web服务启动 ", config.Config.Web.Addr)
-	err = engine.Run(config.Config.Web.Addr)
-	if err != nil {
-		log.Fatal("HTTP 服务启动错误", err)
-	}
+	engine.Serve()
 }
 
 func shutdown() error {

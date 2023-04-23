@@ -2,11 +2,11 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/internal/config"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
+	"github.com/zgwit/iot-master/v3/pkg/oem"
 	"github.com/zgwit/iot-master/v3/pkg/web"
 )
 
@@ -19,7 +19,7 @@ import (
 // @Success 200 {object} curd.ReplyData[web.Options] 返回WEB配置
 // @Router /config/web [get]
 func configGetWeb(ctx *gin.Context) {
-	curd.OK(ctx, &config.Config.Web)
+	curd.OK(ctx, web.GetOptions())
 }
 
 // @Summary 修改WEB配置
@@ -38,8 +38,8 @@ func configSetWeb(ctx *gin.Context) {
 		curd.Error(ctx, err)
 		return
 	}
-	config.Config.Web = conf
-	err = config.Store()
+	web.SetOptions(conf)
+	err = web.Store()
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -56,7 +56,7 @@ func configSetWeb(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[config.OEM] 返回OEM配置
 // @Router /config/oem [get]
 func configGetOem(ctx *gin.Context) {
-	curd.OK(ctx, &config.Config.Oem)
+	curd.OK(ctx, oem.GetOptions())
 }
 
 // @Summary 修改OEM配置
@@ -69,14 +69,14 @@ func configGetOem(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /config/oem [post]
 func configSetOem(ctx *gin.Context) {
-	var conf web.Options
+	var conf oem.Options
 	err := ctx.BindJSON(&conf)
 	if err != nil {
 		curd.Error(ctx, err)
 		return
 	}
-	config.Config.Web = conf
-	err = config.Store()
+	oem.SetOptions(conf)
+	err = oem.Store()
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -93,7 +93,7 @@ func configSetOem(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[log.Options] 返回日志配置
 // @Router /config/log [get]
 func configGetLog(ctx *gin.Context) {
-	curd.OK(ctx, &config.Config.Log)
+	curd.OK(ctx, log.GetOptions())
 }
 
 // @Summary 修改日志配置
@@ -112,8 +112,8 @@ func configSetLog(ctx *gin.Context) {
 		curd.Error(ctx, err)
 		return
 	}
-	config.Config.Log = conf
-	err = config.Store()
+	log.SetOptions(conf)
+	err = log.Store()
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -130,7 +130,7 @@ func configSetLog(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[mqtt.Options] 返回MQTT配置
 // @Router /config/mqtt [get]
 func configGetMqtt(ctx *gin.Context) {
-	curd.OK(ctx, &config.Config.Mqtt)
+	curd.OK(ctx, mqtt.GetOptions())
 }
 
 // @Summary 修改MQTT配置
@@ -149,8 +149,8 @@ func configSetMqtt(ctx *gin.Context) {
 		curd.Error(ctx, err)
 		return
 	}
-	config.Config.Mqtt = conf
-	err = config.Store()
+	mqtt.SetOptions(conf)
+	err = mqtt.Store()
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -167,7 +167,7 @@ func configSetMqtt(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[db.Options] 返回数据库配置
 // @Router /config/db [get]
 func configGetDatabase(ctx *gin.Context) {
-	curd.OK(ctx, &config.Config.Database)
+	curd.OK(ctx, db.GetOptions())
 }
 
 // @Summary 修改数据库配置
@@ -186,8 +186,9 @@ func configSetDatabase(ctx *gin.Context) {
 		curd.Error(ctx, err)
 		return
 	}
-	config.Config.Database = conf
-	err = config.Store()
+
+	db.SetOptions(conf)
+	err = db.Store()
 	if err != nil {
 		curd.Error(ctx, err)
 		return

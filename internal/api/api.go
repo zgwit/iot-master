@@ -4,9 +4,9 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/internal/app"
-	"github.com/zgwit/iot-master/v3/internal/config"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
+	"github.com/zgwit/iot-master/v3/pkg/oem"
 	"net/http"
 )
 
@@ -68,7 +68,7 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	router.Use(catchError)
 
 	router.GET("/oem", func(ctx *gin.Context) {
-		curd.OK(ctx, &config.Config.Oem)
+		curd.OK(ctx, oem.GetOptions())
 	})
 
 	router.GET("/info", info)

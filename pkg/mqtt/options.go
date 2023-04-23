@@ -1,9 +1,8 @@
 package mqtt
 
 import (
-	"encoding/json"
 	"github.com/zgwit/iot-master/v3/pkg/config"
-	"os"
+	"github.com/zgwit/iot-master/v3/pkg/env"
 )
 
 type Options struct {
@@ -16,7 +15,7 @@ type Options struct {
 var options Options = Default()
 var configure = config.AppName() + ".mqtt.yaml"
 
-const ENV = "iot-master-options-mqtt"
+const ENV = "IOT_MASTER_MQTT_"
 
 func GetOptions() Options {
 	return options
@@ -28,23 +27,22 @@ func SetOptions(opts Options) {
 
 func init() {
 	//首先加载环境变量
-	_ = LoadEnv()
+	FromEnv()
 }
 
-func LoadEnv() error {
-	env := os.Getenv(ENV)
-	if env != "" {
-		return json.Unmarshal([]byte(env), &options)
-	}
-	return nil
+func FromEnv() {
+	options.Url = env.Get(ENV+"URL", options.Url)
+	options.ClientId = env.Get(ENV+"CLIENT_ID", options.ClientId)
+	options.Username = env.Get(ENV+"USERNAME", options.Username)
+	options.Password = env.Get(ENV+"PASSWORD", options.Password)
 }
 
-func StoreEnv() error {
-	cfg, err := json.Marshal(&options)
-	if err != nil {
-		return err
-	}
-	return os.Setenv(ENV, string(cfg))
+func ToEnv() []string {
+	return []string{
+		ENV + "URL=" + options.Url,
+		ENV + "CLIENT_ID=" + options.ClientId,
+		ENV + "USERNAME=" + options.Username,
+		ENV + "PASSWORD=" + options.Password}
 }
 
 func Load() error {
@@ -52,5 +50,5 @@ func Load() error {
 }
 
 func Store() error {
-	return config.Load(configure, &options)
+	return config.Store(configure, &options)
 }
