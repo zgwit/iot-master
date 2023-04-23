@@ -22,7 +22,6 @@ require (
 	github.com/swaggo/swag v1.16.1
 	github.com/syndtr/goleveldb v1.0.0
 	github.com/zgwit/swagger-files v1.0.0
-	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1
 	xorm.io/builder v0.3.12
 	xorm.io/xorm v1.3.2
@@ -57,11 +56,9 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
-	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/xid v1.5.0 // indirect
 	github.com/rs/zerolog v1.29.1 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
-	github.com/swaggo/files v1.0.1 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect

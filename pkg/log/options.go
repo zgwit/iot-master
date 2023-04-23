@@ -5,20 +5,11 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/env"
 )
 
-type Output struct {
-	Filename   string `json:"filename"`
-	MaxSize    int    `json:"max_size,omitempty"`
-	MaxAge     int    `json:"max_age,omitempty"`
-	MaxBackups int    `json:"max_backups,omitempty"`
-}
-
 // Options 参数
 type Options struct {
 	Level  string `json:"level"`
 	Caller bool   `json:"caller,omitempty"`
 	Text   bool   `json:"text,omitempty"`
-	Format string `json:"format,omitempty"`
-	Output Output `json:"output"`
 }
 
 func Default() Options {
@@ -51,7 +42,6 @@ func (options *Options) FromEnv() {
 	options.Level = env.Get(ENV+"LEVEL", options.Level)
 	options.Caller = env.GetBool(ENV+"CALLER", options.Caller)
 	options.Text = env.GetBool(ENV+"TEXT", options.Text)
-	options.Format = env.Get(ENV+"FORMAT", options.Format)
 }
 
 func (options *Options) ToEnv() []string {
@@ -64,9 +54,6 @@ func (options *Options) ToEnv() []string {
 	}
 	if options.Text {
 		ret = append(ret, ENV+"TEXT=TRUE")
-	}
-	if options.Format != "" {
-		ret = append(ret, ENV+"FORMAT="+options.Format)
 	}
 	return ret
 }
