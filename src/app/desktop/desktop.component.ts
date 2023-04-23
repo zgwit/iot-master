@@ -40,7 +40,7 @@ export class DesktopComponent {
       //nzStyle: {height: "90%"},
       nzBodyStyle: { padding: "0", overflow: "hidden" },
       nzContent: WindowComponent,
-      nzData: {
+      nzComponentParams: {
         entries: app.entries || []
       }
     })
