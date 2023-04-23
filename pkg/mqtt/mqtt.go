@@ -11,12 +11,12 @@ func Close() {
 	Client.Disconnect(0)
 }
 
-func Open(cfg Options) error {
+func Open() error {
 	opts := paho.NewClientOptions()
-	opts.AddBroker(cfg.Url)
-	opts.SetClientID(cfg.ClientId)
-	opts.SetUsername(cfg.Username)
-	opts.SetPassword(cfg.Password)
+	opts.AddBroker(options.Url)
+	opts.SetClientID(options.ClientId)
+	opts.SetUsername(options.Username)
+	opts.SetPassword(options.Password)
 	opts.SetConnectRetry(true) //重试
 
 	//重连时，恢复订阅
