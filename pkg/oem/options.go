@@ -36,17 +36,17 @@ func SetOptions(opts Options) {
 
 func init() {
 	//首先加载环境变量
-	FromEnv()
+	options.FromEnv()
 }
 
-func FromEnv() {
+func (options *Options) FromEnv() {
 	options.Title = env.Get(ENV+"ADDR", options.Title)
 	options.Logo = env.Get(ENV+"DEBUG", options.Logo)
 	options.Company = env.Get(ENV+"CORS", options.Company)
 	options.Copyright = env.Get(ENV+"GZIP", options.Copyright)
 }
 
-func ToEnv() []string {
+func (options *Options) ToEnv() []string {
 	return []string{
 		ENV + "ADDR=" + options.Title,
 		ENV + "DEBUG=" + options.Logo,

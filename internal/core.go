@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/v3/internal/broker"
 	"github.com/zgwit/iot-master/v3/internal/config"
 	"github.com/zgwit/iot-master/v3/internal/device"
+	"github.com/zgwit/iot-master/v3/internal/plugin"
 	"github.com/zgwit/iot-master/v3/internal/product"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/db"
@@ -70,6 +71,11 @@ func Open() error {
 	}
 
 	err = product.LoadAll()
+	if err != nil {
+		return err
+	}
+
+	err = plugin.LoadAll()
 	if err != nil {
 		return err
 	}

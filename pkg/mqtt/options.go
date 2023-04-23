@@ -27,17 +27,17 @@ func SetOptions(opts Options) {
 
 func init() {
 	//首先加载环境变量
-	FromEnv()
+	options.FromEnv()
 }
 
-func FromEnv() {
+func (options *Options) FromEnv() {
 	options.Url = env.Get(ENV+"URL", options.Url)
 	options.ClientId = env.Get(ENV+"CLIENT_ID", options.ClientId)
 	options.Username = env.Get(ENV+"USERNAME", options.Username)
 	options.Password = env.Get(ENV+"PASSWORD", options.Password)
 }
 
-func ToEnv() []string {
+func (options *Options) ToEnv() []string {
 	return []string{
 		ENV + "URL=" + options.Url,
 		ENV + "CLIENT_ID=" + options.ClientId,

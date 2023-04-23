@@ -37,17 +37,17 @@ func SetOptions(opts Options) {
 
 func init() {
 	//首先加载环境变量
-	FromEnv()
+	options.FromEnv()
 }
 
-func FromEnv() {
+func (options *Options) FromEnv() {
 	options.Addr = env.Get(ENV+"ADDR", options.Addr)
 	options.Debug = env.GetBool(ENV+"DEBUG", options.Debug)
 	options.Cors = env.GetBool(ENV+"CORS", options.Cors)
 	options.Gzip = env.GetBool(ENV+"GZIP", options.Gzip)
 }
 
-func ToEnv() []string {
+func (options *Options) ToEnv() []string {
 	ret := []string{ENV + "ADDR=" + options.Addr}
 	if options.Debug {
 		ret = append(ret, ENV+"DEBUG=TRUE")

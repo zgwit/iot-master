@@ -44,17 +44,17 @@ func SetOptions(opts Options) {
 
 func init() {
 	//首先加载环境变量
-	FromEnv()
+	options.FromEnv()
 }
 
-func FromEnv() {
+func (options *Options) FromEnv() {
 	options.Level = env.Get(ENV+"LEVEL", options.Level)
 	options.Caller = env.GetBool(ENV+"CALLER", options.Caller)
 	options.Text = env.GetBool(ENV+"TEXT", options.Text)
 	options.Format = env.Get(ENV+"FORMAT", options.Format)
 }
 
-func ToEnv() []string {
+func (options *Options) ToEnv() []string {
 	var ret []string
 	if options.Level != "" {
 		ret = append(ret, ENV+"LEVEL="+options.Level)

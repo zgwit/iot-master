@@ -38,17 +38,17 @@ func SetOptions(opts Options) {
 
 func init() {
 	//首先加载环境变量
-	FromEnv()
+	options.FromEnv()
 }
 
-func FromEnv() {
+func (options *Options) FromEnv() {
 	options.Type = env.Get(ENV+"TYPE", options.Type)
 	options.URL = env.Get(ENV+"URL", options.URL)
 	options.Debug = env.GetBool(ENV+"DEBUG", options.Debug)
 	options.LogLevel = env.GetInt(ENV+"LOG_LEVEL", options.LogLevel)
 }
 
-func ToEnv() []string {
+func (options *Options) ToEnv() []string {
 	ret := []string{ENV + "TYPE=" + options.Type, ENV + "URL=" + options.URL}
 	if options.Debug {
 		ret = append(ret, ENV+"DEBUG=TRUE")

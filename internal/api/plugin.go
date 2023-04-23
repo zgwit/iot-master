@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v3/internal/plugin"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 )
@@ -132,9 +133,39 @@ func pluginRouter(app *gin.RouterGroup) {
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Plugin](nil, nil))
 
 	app.GET("/export", curd.ApiExport[model.Plugin]("plugin"))
+
 	app.POST("/import", curd.ApiImport[model.Plugin]())
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](true, nil, nil))
+
 	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](false, nil, nil))
+
+	app.GET(":id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
+		p := plugin.Get(ctx.GetString("id"))
+		if p == nil {
+			curd.Fail(ctx, "插件未加载")
+			return
+		}
+		err := p.Start()
+		if err != nil {
+			curd.Error(ctx, err)
+			return
+		}
+		curd.OK(ctx, nil)
+	})
+
+	app.GET(":id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
+		p := plugin.Get(ctx.GetString("id"))
+		if p == nil {
+			curd.Fail(ctx, "插件未加载")
+			return
+		}
+		err := p.Close()
+		if err != nil {
+			curd.Error(ctx, err)
+			return
+		}
+		curd.OK(ctx, nil)
+	})
 
 }

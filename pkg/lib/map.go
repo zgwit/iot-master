@@ -46,3 +46,7 @@ func (c *Map[T]) Delete(name string) {
 	}
 	delete(c.container, name)
 }
+
+func (c *Map[T]) Len() int {
+	return len(c.container)
+}

@@ -6,6 +6,9 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v3/pkg/mqtt"
+	"github.com/zgwit/iot-master/v3/pkg/oem"
+	"github.com/zgwit/iot-master/v3/pkg/web"
 	"os"
 )
 
@@ -15,14 +18,45 @@ type Plugin struct {
 	Process *os.Process
 }
 
+func (p *Plugin) generateEnv(addr string) []string {
+	ret := os.Environ()
+
+	l := log.GetOptions()
+	s := l.ToEnv()
+	ret = append(ret, s...)
+
+	d := db.GetOptions()
+	s = d.ToEnv()
+	ret = append(ret, s...)
+
+	o := oem.GetOptions()
+	s = o.ToEnv()
+	ret = append(ret, s...)
+
+	m := mqtt.GetOptions()
+	m.ClientId = p.Id
+	m.Username = p.Username
+	m.Password = p.Password
+	s = m.ToEnv()
+	ret = append(ret, s...)
+
+	w := web.GetOptions()
+	w.Addr = addr
+
+	s = w.ToEnv()
+	ret = append(ret, s...)
+
+	return ret
+}
+
 func (p *Plugin) Start() error {
 	var err error
 
-	env := os.Environ()
-	//TODO 加入初始化配置，日志等级，端口号等
+	addr := fmt.Sprintf(":%d", 40000+plugins.Len())
+	env := p.generateEnv(addr)
 
 	p.Process, err = os.StartProcess(p.Command, nil, &os.ProcAttr{
-		Files: nil, //TODO 输出到日志文件
+		Files: []*os.File{nil, os.Stdout, os.Stderr}, //可以输出到日志文件
 		Env:   env,
 	})
 	if err != nil {
@@ -89,13 +123,18 @@ func Load(id string) error {
 func From(model *model.Plugin) error {
 	p := New(model)
 
+	err := p.Start()
+	if err != nil {
+		return err
+	}
+
 	plugins.Store(model.Id, p)
 
 	return nil
 }
 
 func LoadAll() error {
-	//开机加载所有插件，好像没有必要???
+	//开机加载所有插件
 	var ps []*model.Plugin
 	err := db.Engine.Find(&ps)
 	if err != nil {
@@ -103,6 +142,9 @@ func LoadAll() error {
 	}
 
 	for _, p := range ps {
+		if p.Disabled || p.External {
+			continue
+		}
 		err = From(p)
 		if err != nil {
 			log.Error(err)

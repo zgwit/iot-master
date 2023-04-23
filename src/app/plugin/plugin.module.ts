@@ -20,30 +20,36 @@ import {NzDividerModule} from "ng-zorro-antd/divider";
 import { PluginDetailComponent } from './plugin-detail/plugin-detail.component';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import {NzSwitchModule} from "ng-zorro-antd/switch";
+import {NzRadioModule} from "ng-zorro-antd/radio";
+import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 @NgModule({
   declarations: [
     PluginsComponent,
     PluginEditComponent,
     PluginDetailComponent,
   ],
-  imports: [
-    CommonModule,
-    PluginRoutingModule,
-    NzLayoutModule,
-    NzMenuModule,
-    NzIconModule,
-    NzCardModule,
-    NzFormModule,
-    NzPopconfirmModule,
-    NzTagModule ,
-    ReactiveFormsModule,
-    NzInputModule,
-    NzInputNumberModule,
-    NzButtonModule,
-    BaseModule,
-    NzSpaceModule,
-    NzTableModule,
-    NzDividerModule
-  ]
+    imports: [
+        CommonModule,
+        PluginRoutingModule,
+        NzLayoutModule,
+        NzMenuModule,
+        NzIconModule,
+        NzCardModule,
+        NzFormModule,
+        NzPopconfirmModule,
+        NzTagModule,
+        ReactiveFormsModule,
+        NzInputModule,
+        NzInputNumberModule,
+        NzButtonModule,
+        BaseModule,
+        NzSpaceModule,
+        NzTableModule,
+        NzDividerModule,
+        NzSwitchModule,
+        NzRadioModule,
+        NzCheckboxModule
+    ]
 })
 export class PluginModule { }
