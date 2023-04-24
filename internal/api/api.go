@@ -105,9 +105,6 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	gatewayRouter(router.Group("/gateway"))
 
 	deviceRouter(router.Group("/device"))
-	deviceTypeRouter(router.Group("/device/type"))
-	deviceAreaRouter(router.Group("/device/area"))
-	deviceGroupRouter(router.Group("/device/group"))
 
 	brokerRouter(router.Group("/broker"))
 

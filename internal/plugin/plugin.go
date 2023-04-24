@@ -56,7 +56,7 @@ func (p *Plugin) Start() error {
 	addr := fmt.Sprintf(":%d", 40000+plugins.Len())
 	env := p.generateEnv(addr)
 
-	p.Process, err = os.StartProcess(p.Command, nil, &os.ProcAttr{
+	p.Process, err = os.StartProcess(p.Command, []string{p.Id}, &os.ProcAttr{
 		Files: []*os.File{nil, os.Stdout, os.Stderr}, //可以输出到日志文件
 		Env:   env,
 	})
@@ -75,7 +75,7 @@ func (p *Plugin) Start() error {
 		if p.stop {
 			return
 		}
-		
+
 		err = p.Start()
 		if err != nil {
 			log.Error(err)
