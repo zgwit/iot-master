@@ -19,9 +19,9 @@ const internals: any[] = [{
         {name: '所有设备', path: '/device/list'},
         {name: '创建设备', path: '/device/create'},
         {name: '批量创建', path: '/device/batch'},
-        {name: '设备分组', path: '/device/group'},
-        {name: '设备类型', path: '/device/type'},
-        {name: '设备区域', path: '/device/area'}
+        // {name: '设备分组', path: '/device/group'},
+        // {name: '设备类型', path: '/device/type'},
+        // {name: '设备区域', path: '/device/area'}
     ]
 },
     {
