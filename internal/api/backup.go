@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v3/pkg/build"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"time"
@@ -17,9 +18,10 @@ import (
 // @Router /backup/export [get]
 func backupExport(ctx *gin.Context) {
 	tm := time.Now().Format("2006-01-02-15-04-05")
+	fn := "iot-master-" + build.Version + "-" + tm + ".sql"
 	//下载头
 	ctx.Header("Content-Type", "application/octet-stream")
-	ctx.Header("Content-Disposition", "attachment; filename=iot-master-"+tm+".sql") // 用来指定下载下来的文件名
+	ctx.Header("Content-Disposition", "attachment; filename="+fn) // 用来指定下载下来的文件名
 	ctx.Header("Content-Transfer-Encoding", "binary")
 
 	err := db.Engine.DumpAll(ctx.Writer)
@@ -31,7 +33,7 @@ func backupExport(ctx *gin.Context) {
 
 // @Summary 导入所有数据
 // @Schemes
-// @Description 导入所有数据
+// @Description 导入所有数据，文件内容为SQL文本，
 // @Tags product
 // @Param file formData file true "SQL"
 // @Accept mpfd
