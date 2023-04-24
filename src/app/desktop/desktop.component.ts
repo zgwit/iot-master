@@ -26,7 +26,11 @@ export class DesktopComponent {
     protected _as: AppService) {
     this.userInfo = us && us.user;
   }
-
+  handlePassword() {
+    this.open({
+      entries: [{ name: '修改密码', path: '/user/password' }]
+    })
+  }
   open(app: any) {
     if (window.innerWidth < 800) {
       this.router.navigate([app.entries[0].path])
