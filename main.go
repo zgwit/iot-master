@@ -116,8 +116,8 @@ func (p *Program) run() {
 }
 
 func originMain() {
-	banner.Print("iot-master")
-	build.Print()
+	banner.Print()
+	build.Println()
 
 	//加载主程序
 	err := internal.Open()

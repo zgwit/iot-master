@@ -53,7 +53,7 @@ func configSetWeb(ctx *gin.Context) {
 // @Tags config
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[config.OEM] 返回OEM配置
+// @Success 200 {object} curd.ReplyData[oem.Options] 返回OEM配置
 // @Router /config/oem [get]
 func configGetOem(ctx *gin.Context) {
 	curd.OK(ctx, oem.GetOptions())
@@ -63,7 +63,7 @@ func configGetOem(ctx *gin.Context) {
 // @Schemes
 // @Description 修改OEM配置
 // @Tags config
-// @Param cfg body config.OEM true "OEM配置"
+// @Param cfg body oem.Options true "OEM配置"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[int]

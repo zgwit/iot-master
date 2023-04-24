@@ -1,16 +1,5 @@
 basePath: /api/
 definitions:
-  config.OEM:
-    properties:
-      company:
-        type: string
-      copyright:
-        type: string
-      logo:
-        type: string
-      title:
-        type: string
-    type: object
   curd.ParamSearch:
     properties:
       filter:
@@ -28,13 +17,6 @@ definitions:
         additionalProperties:
           type: integer
         type: object
-    type: object
-  curd.ReplyData-config_OEM:
-    properties:
-      data:
-        $ref: '#/definitions/config.OEM'
-      error:
-        type: string
     type: object
   curd.ReplyData-db_Options:
     properties:
@@ -145,6 +127,13 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/mqtt.Options'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-oem_Options:
+    properties:
+      data:
+        $ref: '#/definitions/oem.Options'
       error:
         type: string
     type: object
@@ -280,25 +269,10 @@ definitions:
     properties:
       caller:
         type: boolean
-      format:
-        type: string
       level:
         type: string
-      output:
-        $ref: '#/definitions/log.Output'
       text:
         type: boolean
-    type: object
-  log.Output:
-    properties:
-      filename:
-        type: string
-      max_age:
-        type: integer
-      max_backups:
-        type: integer
-      max_size:
-        type: integer
     type: object
   model.Broker:
     properties:
@@ -583,6 +557,17 @@ definitions:
       username:
         type: string
     type: object
+  oem.Options:
+    properties:
+      company:
+        type: string
+      copyright:
+        type: string
+      logo:
+        type: string
+      title:
+        type: string
+    type: object
   web.Options:
     properties:
       addr:
@@ -600,6 +585,42 @@ info:
   title: 物联大师接口文档
   version: 1.0 版本
 paths:
+  /backup/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出所有数据
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 导出所有数据
+      tags:
+      - product
+  /backup/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入所有数据
+      parameters:
+      - description: SQL
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入所有数据
+      tags:
+      - product
   /broker/{id}:
     get:
       consumes:
@@ -953,7 +974,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-config_OEM'
+            $ref: '#/definitions/curd.ReplyData-oem_Options'
       summary: 查询OEM配置
       tags:
       - config
@@ -967,7 +988,7 @@ paths:
         name: cfg
         required: true
         schema:
-          $ref: '#/definitions/config.OEM'
+          $ref: '#/definitions/oem.Options'
       produces:
       - application/json
       responses:

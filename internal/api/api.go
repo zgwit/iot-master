@@ -114,6 +114,8 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	pluginRouter(router.Group("/plugin"))
 	appRouter(router.Group("/app"))
 
+	backupRouter(router.Group("/backup"))
+
 	systemRouter(router.Group("/system"))
 	configRouter(router.Group("/config"))
 

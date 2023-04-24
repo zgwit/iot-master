@@ -15,6 +15,61 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/backup/export": {
+            "get": {
+                "description": "导出所有数据",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导出所有数据",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/backup/import": {
+            "post": {
+                "description": "导入所有数据",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导入所有数据",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "SQL",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
         "/broker/count": {
             "post": {
                 "description": "查询总线数量",
@@ -556,7 +611,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-config_OEM"
+                            "$ref": "#/definitions/curd.ReplyData-oem_Options"
                         }
                     }
                 }
@@ -580,7 +635,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/config.OEM"
+                            "$ref": "#/definitions/oem.Options"
                         }
                     }
                 ],
@@ -3470,23 +3525,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "config.OEM": {
-            "type": "object",
-            "properties": {
-                "company": {
-                    "type": "string"
-                },
-                "copyright": {
-                    "type": "string"
-                },
-                "logo": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ParamSearch": {
             "type": "object",
             "properties": {
@@ -3511,17 +3549,6 @@ const docTemplate = `{
                     "additionalProperties": {
                         "type": "integer"
                     }
-                }
-            }
-        },
-        "curd.ReplyData-config_OEM": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/config.OEM"
-                },
-                "error": {
-                    "type": "string"
                 }
             }
         },
@@ -3695,6 +3722,17 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/mqtt.Options"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-oem_Options": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/oem.Options"
                 },
                 "error": {
                     "type": "string"
@@ -3905,34 +3943,11 @@ const docTemplate = `{
                 "caller": {
                     "type": "boolean"
                 },
-                "format": {
-                    "type": "string"
-                },
                 "level": {
                     "type": "string"
                 },
-                "output": {
-                    "$ref": "#/definitions/log.Output"
-                },
                 "text": {
                     "type": "boolean"
-                }
-            }
-        },
-        "log.Output": {
-            "type": "object",
-            "properties": {
-                "filename": {
-                    "type": "string"
-                },
-                "max_age": {
-                    "type": "integer"
-                },
-                "max_backups": {
-                    "type": "integer"
-                },
-                "max_size": {
-                    "type": "integer"
                 }
             }
         },
@@ -4359,6 +4374,23 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "oem.Options": {
+            "type": "object",
+            "properties": {
+                "company": {
+                    "type": "string"
+                },
+                "copyright": {
+                    "type": "string"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "title": {
                     "type": "string"
                 }
             }
