@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/internal/plugin"
 	"github.com/zgwit/iot-master/v3/model"
@@ -105,19 +106,42 @@ func noopPluginEnable() {}
 // @Router /plugin/{id}/disable [get]
 func noopPluginDisable() {}
 
+// @Summary 启动插件
+// @Schemes
+// @Description 启动插件
+// @Tags plugin
+// @Param id path int true "插件ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Plugin] 返回插件信息
+// @Router /plugin/{id}/start [get]
+func noopPluginStart() {}
+
+// @Summary 停止插件
+// @Schemes
+// @Description 停止插件
+// @Tags plugin
+// @Param id path int true "插件ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[model.Plugin] 返回插件信息
+// @Router /plugin/{id}/stop [get]
+func noopPluginStop() {}
+
 func pluginRouter(app *gin.RouterGroup) {
 
 	app.POST("/search", curd.ApiSearchHook[model.Plugin](func(datum []model.Plugin) error {
-		for i := 0; i < len(datum); i++ {
-			datum[i].Running = true
+		for k, v := range datum {
+			p := plugin.Get(v.Id)
+			if p != nil {
+				datum[k].Running = p.Running
+			}
 		}
 		return nil
 	}))
 
 	app.GET("/list", curd.ApiListHook[model.Plugin](func(datum []model.Plugin) error {
-		for i := 0; i < len(datum); i++ {
-			datum[i].Running = true
-		}
+
 		return nil
 	}))
 	app.POST("/create", curd.ApiCreateHook[model.Plugin](curd.GenerateRandomId[model.Plugin](12), nil))
@@ -136,17 +160,24 @@ func pluginRouter(app *gin.RouterGroup) {
 
 	app.POST("/import", curd.ApiImport[model.Plugin]())
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](true, nil, nil))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](true, nil, func(id any) error {
+		p := plugin.Get(id.(string))
+		if p == nil {
+			return errors.New("插件未加载")
+		}
+		err := p.Close()
+		if err != nil {
+			return err
+		}
+		return nil
+	}))
 
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](false, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](false, nil, func(id any) error {
+		return plugin.Load(id.(string))
+	}))
 
 	app.GET(":id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
-		p := plugin.Get(ctx.GetString("id"))
-		if p == nil {
-			curd.Fail(ctx, "插件未加载")
-			return
-		}
-		err := p.Start()
+		err := plugin.Load(ctx.GetString("id"))
 		if err != nil {
 			curd.Error(ctx, err)
 			return

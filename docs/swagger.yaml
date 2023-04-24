@@ -60,27 +60,6 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-model_DeviceArea:
-    properties:
-      data:
-        $ref: '#/definitions/model.DeviceArea'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-model_DeviceGroup:
-    properties:
-      data:
-        $ref: '#/definitions/model.DeviceGroup'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-model_DeviceType:
-    properties:
-      data:
-        $ref: '#/definitions/model.DeviceType'
-      error:
-        type: string
-    type: object
   curd.ReplyData-model_Gateway:
     properties:
       data:
@@ -160,39 +139,6 @@ definitions:
       data:
         items:
           $ref: '#/definitions/model.Device'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-model_DeviceArea:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/model.DeviceArea'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-model_DeviceGroup:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/model.DeviceGroup'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-model_DeviceType:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/model.DeviceType'
         type: array
       error:
         type: string
@@ -292,9 +238,6 @@ definitions:
     type: object
   model.Device:
     properties:
-      area_id:
-        description: 区域
-        type: string
       created:
         type: string
       desc:
@@ -302,9 +245,6 @@ definitions:
       disabled:
         type: boolean
       gateway_id:
-        type: string
-      group_id:
-        description: 分组
         type: string
       id:
         description: ClientID
@@ -317,44 +257,6 @@ definitions:
         description: 模型参数，用于报警检查
         type: object
       product_id:
-        type: string
-      type_id:
-        description: 类型
-        type: string
-    type: object
-  model.DeviceArea:
-    properties:
-      created:
-        type: string
-      desc:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  model.DeviceGroup:
-    properties:
-      area_id:
-        type: string
-      created:
-        type: string
-      desc:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  model.DeviceType:
-    properties:
-      created:
-        type: string
-      desc:
-        type: string
-      id:
-        type: string
-      name:
         type: string
     type: object
   model.Gateway:
@@ -604,7 +506,7 @@ paths:
     post:
       consumes:
       - multipart/form-data
-      description: 导入所有数据
+      description: 导入所有数据，文件内容为SQL文本，
       parameters:
       - description: SQL
         in: formData
@@ -1145,194 +1047,6 @@ paths:
       summary: 设备变量
       tags:
       - device
-  /device/area/{id}:
-    get:
-      consumes:
-      - application/json
-      description: 获取区域
-      parameters:
-      - description: 区域ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceArea'
-      summary: 获取区域
-      tags:
-      - device-area
-    post:
-      consumes:
-      - application/json
-      description: 修改区域
-      parameters:
-      - description: 区域ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: 区域信息
-        in: body
-        name: device-area
-        required: true
-        schema:
-          $ref: '#/definitions/model.DeviceArea'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceArea'
-      summary: 修改区域
-      tags:
-      - device-area
-  /device/area/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除区域
-      parameters:
-      - description: 区域ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceArea'
-      summary: 删除区域
-      tags:
-      - device-area
-  /device/area/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询区域数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询区域数量
-      tags:
-      - device-area
-  /device/area/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建区域
-      parameters:
-      - description: 区域信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/model.DeviceArea'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceArea'
-      summary: 创建区域
-      tags:
-      - device-area
-  /device/area/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出区域
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出区域
-      tags:
-      - device-area
-  /device/area/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入区域
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入区域
-      tags:
-      - device-area
-  /device/area/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询区域
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_DeviceArea'
-      summary: 查询区域
-      tags:
-      - device-area
-  /device/area/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询区域
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_DeviceArea'
-      summary: 查询区域
-      tags:
-      - device-area
   /device/count:
     post:
       consumes:
@@ -1388,194 +1102,6 @@ paths:
       summary: 导出设备
       tags:
       - product
-  /device/group/{id}:
-    get:
-      consumes:
-      - application/json
-      description: 获取分组
-      parameters:
-      - description: 分组ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceGroup'
-      summary: 获取分组
-      tags:
-      - device-group
-    post:
-      consumes:
-      - application/json
-      description: 修改分组
-      parameters:
-      - description: 分组ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: 分组信息
-        in: body
-        name: device-group
-        required: true
-        schema:
-          $ref: '#/definitions/model.DeviceGroup'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceGroup'
-      summary: 修改分组
-      tags:
-      - device-group
-  /device/group/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除分组
-      parameters:
-      - description: 分组ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceGroup'
-      summary: 删除分组
-      tags:
-      - device-group
-  /device/group/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询分组数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询分组数量
-      tags:
-      - device-group
-  /device/group/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建分组
-      parameters:
-      - description: 分组信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/model.DeviceGroup'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceGroup'
-      summary: 创建分组
-      tags:
-      - device-group
-  /device/group/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出分组
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出分组
-      tags:
-      - device-group
-  /device/group/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入分组
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入分组
-      tags:
-      - device-group
-  /device/group/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询分组
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_DeviceGroup'
-      summary: 查询分组
-      tags:
-      - device-group
-  /device/group/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询分组
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_DeviceGroup'
-      summary: 查询分组
-      tags:
-      - device-group
   /device/import:
     post:
       consumes:
@@ -1641,194 +1167,6 @@ paths:
       summary: 查询设备
       tags:
       - device
-  /device/type/{id}:
-    get:
-      consumes:
-      - application/json
-      description: 获取设备类型
-      parameters:
-      - description: 设备类型ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceType'
-      summary: 获取设备类型
-      tags:
-      - device-type
-    post:
-      consumes:
-      - application/json
-      description: 修改设备类型
-      parameters:
-      - description: 设备类型ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: 设备类型信息
-        in: body
-        name: device-type
-        required: true
-        schema:
-          $ref: '#/definitions/model.DeviceType'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceType'
-      summary: 修改设备类型
-      tags:
-      - device-type
-  /device/type/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除设备类型
-      parameters:
-      - description: 设备类型ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceType'
-      summary: 删除设备类型
-      tags:
-      - device-type
-  /device/type/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询设备类型数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询设备类型数量
-      tags:
-      - device-type
-  /device/type/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建设备类型
-      parameters:
-      - description: 设备类型信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/model.DeviceType'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_DeviceType'
-      summary: 创建设备类型
-      tags:
-      - device-type
-  /device/type/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出设备类型
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出设备类型
-      tags:
-      - device-type
-  /device/type/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入设备类型
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入设备类型
-      tags:
-      - device-type
-  /device/type/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询设备类型
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_DeviceType'
-      summary: 查询设备类型
-      tags:
-      - device-type
-  /device/type/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询设备类型
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_DeviceType'
-      summary: 查询设备类型
-      tags:
-      - device-type
   /gateway/{id}:
     get:
       consumes:
@@ -2151,6 +1489,48 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-model_Plugin'
       summary: 启用插件
+      tags:
+      - plugin
+  /plugin/{id}/start:
+    get:
+      consumes:
+      - application/json
+      description: 启动插件
+      parameters:
+      - description: 插件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+      summary: 启动插件
+      tags:
+      - plugin
+  /plugin/{id}/stop:
+    get:
+      consumes:
+      - application/json
+      description: 停止插件
+      parameters:
+      - description: 插件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+      summary: 停止插件
       tags:
       - plugin
   /plugin/create:
