@@ -1,15 +1,14 @@
 <app-toolbar>
   <nz-space>
-    <button nz-button nzType="primary" *nzSpaceItem class="btn">
-      <span nz-icon nzType="cloud-download" nzTheme="outline"></span>
-      <a (click)="handleExport()" download="filename" [href]="href">导出</a>
-    </button>
-
-    <app-import *nzSpaceItem [url]="'plugin/export'"></app-import>
+    <a *nzSpaceItem download="filename" class="fileButton" href="/api/backup/export">
+      <i nz-icon nzType="cloud-download"></i>
+      导出
+    </a>
+    <app-import *nzSpaceItem url="/api/backup/import"></app-import>
   </nz-space>
 </app-toolbar>
 
-<nz-table #basicTable [nzData]="listOfData">
+<!-- <nz-table #basicTable [nzData]="listOfData">
     <thead>
       <tr>
         <th *ngFor="let item of list">{{item}}</th> 
@@ -23,4 +22,4 @@
         <td>{{ data.action }}</td>
       </tr>
     </tbody>
-  </nz-table>
+  </nz-table> -->

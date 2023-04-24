@@ -19,6 +19,7 @@ import { SearchBoxComponent } from './search-box/search-box.component';
 import { DatePipe } from "./date.pipe";
 import { EditTableComponent } from './edit-table/edit-table.component';
 import { ImportComponent } from './import/import.component';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 @NgModule({
   declarations: [
     DatePipe,
@@ -49,7 +50,8 @@ import { ImportComponent } from './import/import.component';
     NzTableModule,
     NzIconModule,
     NzSpaceModule,
-    NzInputNumberModule
+    NzInputNumberModule,
+    NzUploadModule
   ],
   providers: [
 
