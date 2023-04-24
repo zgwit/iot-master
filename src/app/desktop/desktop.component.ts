@@ -5,6 +5,7 @@ import { NzModalService } from "ng-zorro-antd/modal";
 import { WindowComponent } from "../window/window.component";
 import { OemService } from "../oem.service";
 import { AppService } from "../app.service";
+import { UserService } from "../user.service";
 
 declare var window: any;
 
@@ -15,14 +16,15 @@ declare var window: any;
 })
 export class DesktopComponent {
 
-  drawVisible: any;
+  userInfo: any;
   constructor(
     private router: Router,
     private rs: RequestService,
     private ms: NzModalService,
+    private us: UserService,
     protected os: OemService,
     protected _as: AppService) {
-    localStorage.setItem("main", "/desktop")
+    this.userInfo = us && us.user;
   }
 
   open(app: any) {
@@ -44,5 +46,9 @@ export class DesktopComponent {
         entries: app.entries || []
       }
     })
+  }
+
+  logout() {
+    this.rs.get("logout").subscribe(res => { }).add(() => this.router.navigateByUrl("/login"))
   }
 }

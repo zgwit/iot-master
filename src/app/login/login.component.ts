@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {RequestService} from '../request.service';
-import {UserService} from "../user.service";
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RequestService } from '../request.service';
+import { UserService } from "../user.service";
+import { Router } from '@angular/router';
 
-import {Md5} from 'ts-md5';
-import {OemService} from "../oem.service";
+import { Md5 } from 'ts-md5';
+import { OemService } from "../oem.service";
 
 @Component({
   selector: 'app-login',
@@ -17,10 +17,10 @@ export class LoginComponent implements OnInit {
   oem: any;
 
   constructor(private fb: FormBuilder,
-              private rs: RequestService,
-              private us: UserService,
-              private router: Router,
-              private os: OemService) {
+    private rs: RequestService,
+    private us: UserService,
+    private router: Router,
+    private os: OemService) {
     this.oem = os.oem;
   }
 
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
     const password = Md5.hashStr(this.validateForm.value.password);
 
-    this.rs.post('login', {username: this.validateForm.value.username, password}).subscribe(res => {
+    this.rs.post('login', { username: this.validateForm.value.username, password }).subscribe(res => {
       console.log('res:', res);
       //this.us.setUser(res.data);
 
@@ -46,8 +46,9 @@ export class LoginComponent implements OnInit {
       this.us.setUser(res.data);
 
       //TODO 缓存用户喜好
-      let main = localStorage.getItem("main") || "/admin"
-      this.router.navigate([main]).then(r => {});
+      // let main = localStorage.getItem("main") || "/admin"
+      let main = "/desktop";
+      this.router.navigate([main]).then(r => { });
 
     }, err => {
       console.log('err:', err);

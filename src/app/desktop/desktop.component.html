@@ -8,8 +8,16 @@
       <span nz-icon nzType="swap" nzTheme="outline"></span>
       菜单模式
     </a> -->
-    <img class="avatar" src="/assets/user.svg" alt="logo" (click)="drawVisible=!drawVisible">
-    <div class="user"></div>
+    <div nzTrigger="click" nz-dropdown [nzDropdownMenu]="menu">
+      <img class="avatar" src="/assets/user.svg" alt="logo">
+      {{userInfo.name}}
+    </div>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item routerLink="/admin/user/password">修改密码</li>
+        <li nz-menu-item (click)="logout()">退出登录</li>
+      </ul>
+    </nz-dropdown-menu>
   </nz-header>
   <nz-content class="content">
     <nz-row [nzGutter]="[{ xs: 8, sm: 16, md: 24}, { xs: 8, sm: 16, md: 24}]">
@@ -28,9 +36,3 @@
     {{os.oem.company}} {{os.oem.copyright}}
   </nz-footer>
 </nz-layout>
-<nz-drawer nzTitle="个人中心" [nzVisible]="drawVisible" (nzOnClose)="drawVisible=false">
-  <ng-container *nzDrawerContent>
-    <p><a>用户中心</a></p>
-    <p><a routerLink="/admin">菜单模式</a></p>
-  </ng-container>
-</nz-drawer>
