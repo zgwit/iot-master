@@ -71,7 +71,7 @@ export class DeviceEditComponent implements OnInit {
         );
         this.groupID = data;
       })
-      .add(() => {});
+      .add(() => { });
   }
   build(obj?: any) {
     obj = obj || {};

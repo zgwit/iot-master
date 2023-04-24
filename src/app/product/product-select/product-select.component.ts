@@ -1,8 +1,8 @@
-import {Component, forwardRef, HostBinding, Input, OnInit} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {RequestService} from "../../request.service";
-import {ProductsComponent} from "../products/products.component";
-import {NzModalService} from "ng-zorro-antd/modal";
+import { Component, forwardRef, HostBinding, Input, OnInit } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { RequestService } from "../../request.service";
+import { ProductsComponent } from "../products/products.component";
+import { NzModalService } from "ng-zorro-antd/modal";
 
 @Component({
   selector: 'app-product-select',
@@ -69,13 +69,13 @@ export class ProductSelectComponent implements OnInit, ControlValueAccessor {
         },
         nzFooter: null,
       })
-      .afterClose.subscribe(({id, name}) => {
-      this._id = id;
-      this.name = name
-      this.load();
-      this.onChanged(id);
-      this.onTouched();
-    });
+      .afterClose.subscribe(({ id, name }) => {
+        this._id = id;
+        this.name = name
+        this.load();
+        this.onChanged(id);
+        this.onTouched();
+      });
   }
 
   clear() {

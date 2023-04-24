@@ -74,8 +74,8 @@ export class DevicesComponent {
         this.datum = res.data || [];
         this.datum.filter(
           (item) =>
-            (item.disabled =
-              item.disabled === undefined ? false : item.disabled)
+          (item.disabled =
+            item.disabled === undefined ? false : item.disabled)
         );
         this.total = res.total;
         this.setOfCheckedId.clear();
@@ -94,7 +94,7 @@ export class DevicesComponent {
 
   delete(id: number, size?: number) {
     this.rs.get(`device/${id}/delete`).subscribe((res) => {
-      if (!size  ) {
+      if (!size) {
         this.msg.success('删除成功');
         this.datum = this.datum.filter((d) => d.id !== id);
       } else if (size) {
@@ -153,7 +153,7 @@ export class DevicesComponent {
   handleExport() {
     this.href = `/api/device/export`;
   }
-   
+
   getTableHeight() {
     return tableHeight(this);
   }
