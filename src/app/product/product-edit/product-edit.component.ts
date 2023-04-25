@@ -1,9 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RequestService } from '../../request.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { isIncludeAdmin } from '../../../public';
 
 @Component({
@@ -13,19 +9,12 @@ import { isIncludeAdmin } from '../../../public';
 })
 export class ProductEditComponent implements OnInit {
   @ViewChild('componentChild') componentChild: any;
-  id: any = 0;
-  constructor(private router: Router, private route: ActivatedRoute) {}
-
-  ngOnInit(): void {
-    if (this.route.snapshot.paramMap.has('id')) {
-      this.id = this.route.snapshot.paramMap.get('id');
-    }
-  }
-
+  @Input() id: any = ''
+  constructor(private router: Router, private route: ActivatedRoute) { }
+  ngOnInit(): void { }
   submit() {
-    this.componentChild.submit();
+    this.componentChild.submit()
   }
-
   handleCancel() {
     const path = `${isIncludeAdmin()}/product/list`;
     this.router.navigateByUrl(path);

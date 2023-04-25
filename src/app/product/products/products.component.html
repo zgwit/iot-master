@@ -6,7 +6,7 @@
     </button>
     <app-search-box *nzSpaceItem (onSearch)="search($event)"></app-search-box>
     <ng-template [ngIf]="showAddBtn">
-      <button *nzSpaceItem nz-button nzType="primary" (click)="handleNew()">
+      <button *nzSpaceItem nz-button nzType="primary" (click)="handleEdit()">
         <i nz-icon nzType="plus"></i>
         创建产品
       </button>
@@ -73,7 +73,7 @@
       <td>{{ data.desc }}</td>
       <td>{{ data.created | date }}</td>
       <td *ngIf="!ref">
-        <a (click)="edit(data.id)">
+        <a (click)="handleEdit(data.id)">
           <i nz-icon nzType="edit"></i>
         </a>
         <nz-divider nzType="vertical"></nz-divider>

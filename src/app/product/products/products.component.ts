@@ -5,6 +5,7 @@ import { RequestService } from "../../request.service";
 import { NzMessageService } from "ng-zorro-antd/message";
 import { NzTableQueryParams } from "ng-zorro-antd/table";
 import { ParseTableQuery } from "../../base/table";
+import { ProductEditComponentComponent } from "../product-edit-component/product-edit-component.component"
 import { isIncludeAdmin, readCsv, tableHeight, onAllChecked, onItemChecked, batchdel, refreshCheckedStatus } from "../../../public";
 @Component({
   selector: 'app-products',
@@ -13,7 +14,7 @@ import { isIncludeAdmin, readCsv, tableHeight, onAllChecked, onItemChecked, batc
 })
 
 export class ProductsComponent {
-  href!:string
+  href!: string
   loading = true
   datum: any[] = []
   total = 1;
@@ -63,7 +64,7 @@ export class ProductsComponent {
 
   delete(id: number, size?: number) {
     this.rs.get(`product/${id}/delete`).subscribe(res => {
-      if (!size  ) {
+      if (!size) {
         this.msg.success("删除成功");
         this.datum = this.datum.filter(d => d.id !== id);
       } else if (size) {
@@ -103,6 +104,35 @@ export class ProductsComponent {
   handleNew() {
     const path = `${isIncludeAdmin()}/product/create`;
     this.router.navigateByUrl(path);
+  }
+
+  handleEdit(id?: string) {
+    const nzTitle = id ? "编辑产品" : "创建产品";
+    const modal: NzModalRef = this.modal.create({
+      nzTitle,
+      nzStyle: { top: '20px' },
+      nzWidth: '80%',
+      nzContent: ProductEditComponentComponent,
+      nzComponentParams: { id },
+      nzFooter: [
+        {
+          label: '取消',
+          onClick: () => {
+            modal.destroy();
+          }
+        },
+        {
+          label: '保存',
+          type: 'primary',
+          onClick: componentInstance => {
+            componentInstance!.submit().then(() => {
+              modal.destroy();
+              this.load();
+            }, () => { })
+          }
+        }
+      ]
+    });
   }
 
   select(obj: object) {

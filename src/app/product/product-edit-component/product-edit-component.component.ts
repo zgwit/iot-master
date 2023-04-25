@@ -155,23 +155,21 @@ export class ProductEditComponentComponent implements OnInit {
   }
 
   submit() {
-
-    if (this.group.valid) {
-      let url = this.id ? `product/${this.id}` : `product/create`
-      const sendData = JSON.parse(JSON.stringify(this.group.value));
-      // 属性组件
-      const { propertys, parameters, constraints } = this.getValueData();
-      sendData.properties = propertys;
-      sendData.parameters = parameters;
-      sendData.constraints = constraints;
-      this.rs.post(url, sendData).subscribe(res => {
-        let path = "/product/list"
-        if (location.pathname.startsWith("/admin"))
-          path = "/admin" + path
-        this.router.navigateByUrl(path)
-        this.msg.success("保存成功")
-      })
-    }
+    return new Promise((resolve, reject) => {
+      if (this.group.valid) {
+        let url = this.id ? `product/${this.id}` : `product/create`
+        const sendData = JSON.parse(JSON.stringify(this.group.value));
+        // 属性组件
+        const { propertys, parameters, constraints } = this.getValueData();
+        sendData.properties = propertys;
+        sendData.parameters = parameters;
+        sendData.constraints = constraints;
+        this.rs.post(url, sendData).subscribe(res => {
+          this.msg.success("保存成功");
+          resolve(true);
+        })
+      }
+    })
 
   }
   getValueData() {
