@@ -12,8 +12,6 @@ import { DevicesComponent } from '../devices/devices.component';
 export class DeviceEditComponent implements OnInit {
   group!: FormGroup;
   // id: any = 0;
-  typeID: any[] = [];
-  groupID: any[] = [];
   @Input() id = '';
   constructor(
     private fb: FormBuilder,
@@ -28,34 +26,9 @@ export class DeviceEditComponent implements OnInit {
         this.build(res.data);
       });
     }
-
     this.build();
-    this.selectId();
   }
-  selectId() {
-    this.rs.get('device/type/list').subscribe((res) => {
-      const data: any[] = [];
-      Array.isArray(res.data) && res.data.filter((item: { name: any; desc: any; id: any }) =>
-        data.push({
-          value: item.id,
-          label: item.id + ' / ' + item.name,
-        })
-      );
-      this.typeID = data;
-    });
 
-    this.rs
-      .post('device/group/search', {})
-      .subscribe((res) => {
-        const data: any[] = [];
-
-        res.data.filter((item: { id: string; name: string }) =>
-          data.push({ label: item.id + ' / ' + item.name, value: item.id })
-        );
-        this.groupID = data;
-      })
-      .add(() => { });
-  }
   build(obj?: any) {
     obj = obj || {};
     this.group = this.fb.group({

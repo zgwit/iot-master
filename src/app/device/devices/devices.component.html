@@ -54,7 +54,6 @@
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="product_id">产品ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
-      <th nzColumnKey="desc">说明</th>
       <th nzColumnKey="disabled">状态</th>
       <th nzColumnKey="created" [nzSortFn]="true">日期</th>
 
@@ -73,10 +72,9 @@
       <td>{{ data.id }}</td>
       <td>{{ data.product_id }}</td>
       <td>{{ data.name }}</td>
-      <td>{{ data.desc }}</td>
       <td>
-        <nz-tag nzColor="success" *ngIf="data.disabled"> 启用 </nz-tag>
-        <nz-tag nzColor="error" *ngIf="!data.disabled"> 禁用 </nz-tag>
+        <nz-tag nzColor="success" *ngIf="!data.disabled"> 启用 </nz-tag>
+        <nz-tag nzColor="error" *ngIf="data.disabled"> 禁用 </nz-tag>
       </td>
       <td>{{ data.created | date }}</td>
 
@@ -100,8 +98,8 @@
         </a>
         <nz-divider nzType="vertical"></nz-divider>
 
-        <a *ngIf="!data.disabled" (click)="disable(1, data.id)"> 启用 </a>
-        <a *ngIf="data.disabled" (click)="disable(0, data.id)"> 禁用 </a>
+        <a *ngIf="!data.disabled" (click)="disable(1, data.id)"> 禁用</a>
+        <a *ngIf="data.disabled" (click)="disable(0, data.id)"> 启用 </a>
       </td>
       <td *ngIf="ref">
         <a (click)="select(data.id)"> 选择 </a>

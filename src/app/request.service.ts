@@ -22,9 +22,6 @@ export class RequestService {
     // 携带Cookie，保持session会话
     options.withCredentials = true;
     let sendUrl = this.base + uri;
-    if (/^(device)/.test(uri)) {
-      sendUrl = `/app/classify/api/${uri}`;
-    }
     return this.http.request<any>(method, sendUrl, options).pipe(
       // 捕捉异常，数据转换
       catchError(err => {
