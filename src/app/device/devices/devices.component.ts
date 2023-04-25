@@ -1,10 +1,9 @@
 import { Component, Input, Optional } from '@angular/core';
-import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Router } from '@angular/router';
 import { RequestService } from '../../request.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { NzModalService } from 'ng-zorro-antd/modal';
 import { ParseTableQuery } from '../../base/table';
 import { DeviceEditComponent } from "../device-edit/device-edit.component"
 import {

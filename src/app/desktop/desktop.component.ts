@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from "@angular/router";
 import { RequestService } from "../request.service";
-import { NzModalService } from "ng-zorro-antd/modal";
+import { NzModalRef, NzModalService } from "ng-zorro-antd/modal";
 import { WindowComponent } from "../window/window.component";
 import { OemService } from "../oem.service";
 import { AppService } from "../app.service";
 import { UserService } from "../user.service";
-
+import { PasswordComponent } from "../user/password/password.component"
 declare var window: any;
 
 @Component({
@@ -27,9 +27,28 @@ export class DesktopComponent {
     this.userInfo = us && us.user;
   }
   handlePassword() {
-    this.open({
-      entries: [{ name: '修改密码', path: '/user/password' }]
-    })
+    const modal: NzModalRef = this.ms.create({
+      nzTitle: '修改密码',
+      nzCentered: true,
+      nzContent: PasswordComponent,
+      nzFooter: [
+        {
+          label: '取消',
+          onClick: () => {
+            modal.destroy();
+          }
+        },
+        {
+          label: '保存',
+          type: 'primary',
+          onClick: componentInstance => {
+            componentInstance!.submit().then(() => {
+              modal.destroy();
+            }, () => { })
+          }
+        }
+      ]
+    });
   }
   open(app: any) {
     if (window.innerWidth < 800) {

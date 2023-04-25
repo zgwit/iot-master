@@ -77,7 +77,6 @@ export class DeviceEditComponent implements OnInit {
           resolve(true);
         });
       } else {
-        console.log(this.group.controls)
         Object.values(this.group.controls).forEach((control) => {
           if (control.invalid) {
             control.markAsDirty();
