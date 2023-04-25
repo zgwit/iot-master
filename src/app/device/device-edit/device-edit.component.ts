@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RequestService } from '../../request.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -15,7 +15,6 @@ export class DeviceEditComponent implements OnInit {
   typeID: any[] = [];
   groupID: any[] = [];
   @Input() id = '';
-  @ViewChild('childTag') childTag: any;
   constructor(
     private fb: FormBuilder,
     private rs: RequestService,
@@ -26,16 +25,6 @@ export class DeviceEditComponent implements OnInit {
   ngOnInit(): void {
     if (this.id) {
       this.rs.get(`device/${this.id}`).subscribe((res) => {
-        //let data = res.data;
-        if (this.childTag) {
-          // 给子组件设值
-          const { product_id, group_id } = res.data || {};
-          const IdObj = {
-            product_id: product_id || '',
-            group_id: group_id || '',
-          };
-          this.childTag.IdObj = JSON.parse(JSON.stringify(IdObj));
-        }
         this.build(res.data);
       });
     }
@@ -73,8 +62,6 @@ export class DeviceEditComponent implements OnInit {
       id: [obj.id || '', []],
       product_id: [obj.product_id || '', []],
       gateway_id: [obj.gateway_id || '', []],
-      group_id: [obj.group_id || '', []],
-      type_id: [obj.type_id || '', []],
       name: [obj.name || '', [Validators.required]],
       desc: [obj.desc || '', []],
       // disabled: [obj.disabled || false, []],
@@ -84,14 +71,13 @@ export class DeviceEditComponent implements OnInit {
   submit() {
     return new Promise((resolve, reject) => {
       if (this.group.valid) {
-        const { IdObj } = this.childTag;
-        const sendData = Object.assign({}, this.group.value, IdObj);
         let url = this.id ? `device/${this.id}` : `device/create`;
-        this.rs.post(url, sendData).subscribe((res) => {
+        this.rs.post(url, this.group.value).subscribe((res) => {
           this.msg.success('保存成功');
           resolve(true);
         });
       } else {
+        console.log(this.group.controls)
         Object.values(this.group.controls).forEach((control) => {
           if (control.invalid) {
             control.markAsDirty();

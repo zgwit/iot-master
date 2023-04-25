@@ -17,11 +17,8 @@ import { NzModalService } from "ng-zorro-antd/modal";
   ]
 })
 export class ProductSelectComponent implements OnInit, ControlValueAccessor {
-  onChanged: any = () => {
-  }
-  onTouched: any = () => {
-  }
-
+  onChanged: any = () => { }
+  onTouched: any = () => { }
   //内容
   @HostBinding('attr.title')
 
@@ -59,23 +56,22 @@ export class ProductSelectComponent implements OnInit, ControlValueAccessor {
   }
 
   choose() {
-    this.ms
-      .create({
-        nzTitle: '选择产品',
-        nzWidth: '700px',
-        nzContent: ProductsComponent,
-        nzComponentParams: {
-          showAddBtn: false,
-        },
-        nzFooter: null,
-      })
-      .afterClose.subscribe(({ id, name }) => {
-        this._id = id;
-        this.name = name
-        this.load();
-        this.onChanged(id);
-        this.onTouched();
-      });
+    this.ms.create({
+      nzTitle: '选择产品',
+      nzWidth: '700px',
+      nzContent: ProductsComponent,
+      nzComponentParams: {
+        showAddBtn: false,
+      },
+      nzFooter: null,
+    }).afterClose.subscribe((obj) => {
+      const { id, name } = obj || {};
+      this._id = id;
+      this.name = name
+      this.load();
+      this.onChanged(id);
+      this.onTouched();
+    });
   }
 
   clear() {

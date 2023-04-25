@@ -105,8 +105,8 @@ export class ProductsComponent {
     this.router.navigateByUrl(path);
   }
 
-  select(id: any) {
-    this.ref && this.ref.close(id)
+  select(obj: object) {
+    this.ref && this.ref.close(obj)
   }
   cancel() {
     this.msg.info('取消操作');

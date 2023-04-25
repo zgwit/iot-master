@@ -62,7 +62,7 @@
   <tbody>
     <tr
       *ngFor="let data of basicTable.data; let i = index"
-      (dblclick)="select(data.id)"
+      (dblclick)="select(data)"
     >
       <td
         [nzChecked]="setOfCheckedId.has(data.id)"
@@ -88,7 +88,7 @@
         </a>
       </td>
       <td *ngIf="ref">
-        <a (click)="select(data.id)"> 选择 </a>
+        <a (click)="select(data)"> 选择 </a>
       </td>
     </tr>
   </tbody>
