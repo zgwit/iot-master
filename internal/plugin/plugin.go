@@ -10,7 +10,18 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/oem"
 	"github.com/zgwit/iot-master/v3/pkg/web"
 	"os"
+	"runtime"
 )
+
+var port = 40000
+
+func getPort() int {
+	port++
+	if port >= 65535 {
+		port = 40000
+	}
+	return port
+}
 
 type Plugin struct {
 	*model.Plugin
@@ -53,10 +64,20 @@ func (p *Plugin) generateEnv(addr string) []string {
 func (p *Plugin) Start() error {
 	var err error
 
-	addr := fmt.Sprintf(":%d", 40000+plugins.Len())
+	//TODO linux下使用unix-sock
+	addr := fmt.Sprintf(":%d", getPort())
 	env := p.generateEnv(addr)
 
-	p.Process, err = os.StartProcess(p.Command, []string{p.Id}, &os.ProcAttr{
+	cmd := p.Command
+
+	//TODO 指定plugins目录，例如：plugins/alarm/alarm.exe
+	if runtime.GOOS == "windows" {
+		cmd = ".\\" + cmd
+	} else {
+		cmd = "./" + cmd
+	}
+
+	p.Process, err = os.StartProcess(cmd, []string{p.Id}, &os.ProcAttr{
 		Files: []*os.File{nil, os.Stdout, os.Stderr}, //可以输出到日志文件
 		Env:   env,
 	})
