@@ -12,6 +12,7 @@ import { NzTableModule } from "ng-zorro-antd/table";
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzDividerModule } from "ng-zorro-antd/divider";
 
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -20,6 +21,7 @@ import { DatePipe } from "./date.pipe";
 import { EditTableComponent } from './edit-table/edit-table.component';
 import { ImportComponent } from './import/import.component';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { TableOperComponent } from './table-oper/table-oper.component';
 @NgModule({
   declarations: [
     DatePipe,
@@ -28,6 +30,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     SearchBoxComponent,
     EditTableComponent,
     ImportComponent,
+    TableOperComponent,
   ],
   exports: [
     DatePipe,
@@ -36,6 +39,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     SearchBoxComponent,
     EditTableComponent,
     ImportComponent,
+    TableOperComponent
   ],
   imports: [
     CommonModule,
@@ -51,7 +55,8 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzIconModule,
     NzSpaceModule,
     NzInputNumberModule,
-    NzUploadModule
+    NzUploadModule,
+    NzDividerModule
   ],
   providers: [
 

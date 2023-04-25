@@ -18,40 +18,20 @@
 
       <app-import *nzSpaceItem [url]="'product/import'"></app-import>
 
-      <button
-        *nzSpaceItem
-        nz-button
-        nzType="primary"
-        nzDanger
-        (click)="handleBatchDel()"
-      >
+      <button *nzSpaceItem nz-button nzType="primary" nzDanger (click)="handleBatchDel()">
         批量删除
       </button>
     </ng-template>
   </nz-space>
 </app-toolbar>
 
-<nz-table
-  #basicTable
-  [nzData]="datum"
-  [nzLoading]="loading"
-  [nzScroll]="getTableHeight()"
-  nzShowPagination
-  nzShowSizeChanger
-  [nzTotal]="total"
-  (nzPageSizeChange)="pageSizeChange($event)"
-  (nzPageIndexChange)="pageIndexChange($event)"
-  [nzPageSize]="pageSize"
-  [nzPageIndex]="pageIndex"
-  (nzQueryParams)="onQuery($event)"
->
+<nz-table #basicTable [nzData]="datum" [nzLoading]="loading" [nzScroll]="getTableHeight()" nzShowPagination
+  nzShowSizeChanger [nzTotal]="total" (nzPageSizeChange)="pageSizeChange($event)"
+  (nzPageIndexChange)="pageIndexChange($event)" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex"
+  (nzQueryParams)="onQuery($event)">
   <thead>
     <tr>
-      <th
-        [nzChecked]="checked"
-        [nzIndeterminate]="indeterminate"
-        (nzCheckedChange)="handleAllChecked($event)"
-      ></th>
+      <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="handleAllChecked($event)"></th>
       <th nzColumnKey="id" [nzSortFn]="true">ID</th>
       <th nzColumnKey="name" [nzSortFn]="true">名称</th>
       <th nzColumnKey="desc">说明</th>
@@ -60,32 +40,14 @@
     </tr>
   </thead>
   <tbody>
-    <tr
-      *ngFor="let data of basicTable.data; let i = index"
-      (dblclick)="select(data)"
-    >
-      <td
-        [nzChecked]="setOfCheckedId.has(data.id)"
-        (nzCheckedChange)="handleItemChecked(data.id, $event)"
-      ></td>
+    <tr *ngFor="let data of basicTable.data; let i = index" (dblclick)="select(data)">
+      <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="handleItemChecked(data.id, $event)"></td>
       <td>{{ data.id }}</td>
       <td>{{ data.name }}</td>
       <td>{{ data.desc }}</td>
       <td>{{ data.created | date }}</td>
       <td *ngIf="!ref">
-        <a (click)="handleEdit(data.id)">
-          <i nz-icon nzType="edit"></i>
-        </a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <a
-          nz-popconfirm
-          nzPopconfirmTitle="确定删除?"
-          (nzOnConfirm)="delete(data.id)"
-          (nzOnCancel)="cancel()"
-          nzPopconfirmPlacement="topLeft"
-        >
-          <i nz-icon nzType="delete"></i>
-        </a>
+        <app-table-oper [data]="data" (edit)="handleEdit($event)" (delete)="delete($event)"></app-table-oper>
       </td>
       <td *ngIf="ref">
         <a (click)="select(data)"> 选择 </a>
