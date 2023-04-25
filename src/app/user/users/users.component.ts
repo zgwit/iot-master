@@ -97,7 +97,7 @@ export class UsersComponent {
     this.query.skip = 0;
     this.load();
   }
-  handleUser(id?: string) {
+  handleEdit(id?: string) {
     const nzTitle = id ? "编辑用户" : "新增用户";
     const modal: NzModalRef = this.modal.create({
       nzTitle,

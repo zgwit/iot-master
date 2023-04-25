@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { NzModalService } from "ng-zorro-antd/modal";
+import { NzModalRef, NzModalService } from "ng-zorro-antd/modal";
 import { Router } from "@angular/router";
 import { RequestService } from "../../request.service";
 import { NzMessageService } from "ng-zorro-antd/message";
 import { NzTableQueryParams } from "ng-zorro-antd/table";
 import { ParseTableQuery } from "../../base/table";
-import { isIncludeAdmin,readCsv, tableHeight, onAllChecked, onItemChecked, refreshCheckedStatus, batchdel } from "../../../public";
+import { isIncludeAdmin, tableHeight, onAllChecked, onItemChecked, refreshCheckedStatus, batchdel } from "../../../public";
+import { BrokerEditComponent } from "../broker-edit/broker-edit.component";
 @Component({
   selector: 'app-brokers',
   templateUrl: './brokers.component.html',
@@ -41,7 +42,7 @@ export class BrokersComponent {
   load() {
     this.loading = true
     this.rs.post("broker/search", this.query).subscribe(res => {
-      this.datum = res.data||[];
+      this.datum = res.data || [];
       this.total = res.total;
       this.setOfCheckedId.clear();
       refreshCheckedStatus(this);
@@ -59,7 +60,7 @@ export class BrokersComponent {
 
   delete(id: number, size?: number) {
     this.rs.get(`broker/${id}/delete`).subscribe(res => {
-      if (!size  ) {
+      if (!size) {
         this.msg.success("删除成功");
         this.datum = this.datum.filter(d => d.id !== id);
         this.load();
@@ -72,18 +73,18 @@ export class BrokersComponent {
       }
     })
   }
-  handleExport(){ 
+  handleExport() {
     this.href = `/api/broker/export`;
   }
-   
-  onQuery($event: NzTableQueryParams) { 
+
+  onQuery($event: NzTableQueryParams) {
     ParseTableQuery($event, this.query)
     this.load();
   }
   pageIndexChange(pageIndex: number) {
     console.log("pageIndex:", pageIndex)
   }
-  pageSizeChange(pageSize: number) {  
+  pageSizeChange(pageSize: number) {
     this.query.limit = pageSize;
     this.load();
   }
@@ -95,13 +96,32 @@ export class BrokersComponent {
     this.load();
   }
 
-  edit(id: any) {
-    const path = `${isIncludeAdmin()}/broker/edit/${id}`;
-    this.router.navigateByUrl(path);
-  }
-  handleNew() {
-    const path = `${isIncludeAdmin()}/broker/create`;
-    this.router.navigateByUrl(path);
+  handleEdit(id?: string) {
+    const nzTitle = id ? "编辑总线" : "创建总线";
+    const modal: NzModalRef = this.modal.create({
+      nzTitle,
+      nzStyle: { top: '20px' },
+      nzContent: BrokerEditComponent,
+      nzComponentParams: { id },
+      nzFooter: [
+        {
+          label: '取消',
+          onClick: () => {
+            modal.destroy();
+          }
+        },
+        {
+          label: '保存',
+          type: 'primary',
+          onClick: componentInstance => {
+            componentInstance!.submit().then(() => {
+              modal.destroy();
+              this.load();
+            }, () => { })
+          }
+        }
+      ]
+    });
   }
   cancel() {
     this.msg.info('取消操作');

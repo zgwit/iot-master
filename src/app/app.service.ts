@@ -41,7 +41,7 @@ const internals: any[] = [{
         internal: true,
         entries: [
             {name: '所有总线', path: '/broker/list'},
-            {name: '创建总线', path: '/broker/create'},
+            // {name: '创建总线', path: '/broker/create'},
         ]
     }, {
         icon: '/assets/gateway.png',

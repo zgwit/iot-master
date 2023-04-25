@@ -5,7 +5,7 @@
       刷新
     </button>
     <app-search-box *nzSpaceItem (onSearch)="search($event)"></app-search-box>
-    <button *nzSpaceItem nz-button nzType="primary" (click)="handleRoleEdit()">
+    <button *nzSpaceItem nz-button nzType="primary" (click)="handleEdit()">
       <i nz-icon nzType="plus"></i>
       新增
     </button>
@@ -43,7 +43,7 @@
       <td>{{ data.privileges | handlePrivileges }}</td>
       <td>{{ data.created | date }}</td>
       <td>
-        <a (click)="handleRoleEdit(data.id)">
+        <a (click)="handleEdit(data.id)">
           <i nz-icon nzType="edit"></i>
         </a>
         <nz-divider nzType="vertical"></nz-divider>

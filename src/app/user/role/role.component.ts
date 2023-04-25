@@ -93,7 +93,7 @@ export class RoleComponent {
     this.load();
   }
 
-  handleRoleEdit(id?: string) {
+  handleEdit(id?: string) {
     const nzTitle = id ? "编辑角色" : "新增角色";
     const modal: NzModalRef = this.modal.create({
       nzTitle,
