@@ -132,7 +132,7 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[model.Device]())
 
-	app.POST("/search", curd.ApiSearchWithHook[model.Device]("device", []curd.Join{
+	app.POST("/search", curd.ApiSearchWithHook[model.Device]("device", []*curd.Join{
 		{"product", "product_id", "id", "name", "product"},
 	}, nil, "id", "name", "product_id", "disabled", "created"))
 

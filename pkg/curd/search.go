@@ -25,7 +25,7 @@ func ApiSearch[T any](fields ...string) gin.HandlerFunc {
 			query.Cols(fields...)
 		}
 
-		var datum []T
+		var datum []*T
 		cnt, err := query.FindAndCount(&datum)
 		if err != nil {
 			Error(ctx, err)
@@ -37,7 +37,7 @@ func ApiSearch[T any](fields ...string) gin.HandlerFunc {
 	}
 }
 
-func ApiSearchHook[T any](after func(datum []T) error, fields ...string) gin.HandlerFunc {
+func ApiSearchHook[T any](after func(datum []*T) error, fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var body ParamSearch
@@ -57,7 +57,7 @@ func ApiSearchHook[T any](after func(datum []T) error, fields ...string) gin.Han
 			query.Cols(fields...)
 		}
 
-		var datum []T
+		var datum []*T
 		cnt, err := query.FindAndCount(&datum)
 		if err != nil {
 			Error(ctx, err)
@@ -126,7 +126,7 @@ type Join struct {
 	As           string
 }
 
-func ApiSearchWith[T any](table string, join []Join, fields ...string) gin.HandlerFunc {
+func ApiSearchWith[T any](table string, join []*Join, fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var body ParamSearch
@@ -179,7 +179,7 @@ func ApiSearchWith[T any](table string, join []Join, fields ...string) gin.Handl
 	}
 }
 
-func ApiSearchWithHook[T any](table string, join []Join, after func(datum []map[string]any) error, fields ...string) gin.HandlerFunc {
+func ApiSearchWithHook[T any](table string, join []*Join, after func(datum []map[string]any) error, fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var body ParamSearch

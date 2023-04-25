@@ -130,24 +130,32 @@ func noopPluginStop() {}
 
 func pluginRouter(app *gin.RouterGroup) {
 
-	app.POST("/search", curd.ApiSearchHook[model.Plugin](func(datum []model.Plugin) error {
-		for k, v := range datum {
+	app.POST("/search", curd.ApiSearchHook[model.Plugin](func(datum []*model.Plugin) error {
+		for _, v := range datum {
 			p := plugin.Get(v.Id)
 			if p != nil {
-				datum[k].Running = p.Running
+				v.Running = p.Running
 			}
 		}
 		return nil
 	}))
 
-	app.GET("/list", curd.ApiListHook[model.Plugin](func(datum []model.Plugin) error {
-
+	app.GET("/list", curd.ApiListHook[model.Plugin](func(datum []*model.Plugin) error {
+		for _, v := range datum {
+			p := plugin.Get(v.Id)
+			if p != nil {
+				v.Running = p.Running
+			}
+		}
 		return nil
 	}))
 	app.POST("/create", curd.ApiCreateHook[model.Plugin](curd.GenerateRandomId[model.Plugin](12), nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetHook[model.Plugin](func(m *model.Plugin) error {
-		m.Running = true
+		p := plugin.Get(m.Id)
+		if p != nil {
+			m.Running = p.Running
+		}
 		return nil
 	}))
 

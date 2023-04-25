@@ -68,7 +68,7 @@ func ApiList[T any](fields ...string) gin.HandlerFunc {
 	}
 }
 
-func ApiListHook[T any](after func(datum []T) error, fields ...string) gin.HandlerFunc {
+func ApiListHook[T any](after func(datum []*T) error, fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var body ParamList
 		err := ctx.ShouldBindQuery(&body)
@@ -87,7 +87,7 @@ func ApiListHook[T any](after func(datum []T) error, fields ...string) gin.Handl
 			query.Cols(fields...)
 		}
 
-		var datum []T
+		var datum []*T
 		cnt, err := query.FindAndCount(&datum)
 		if err != nil {
 			Error(ctx, err)
