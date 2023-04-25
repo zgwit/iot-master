@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Router } from '@angular/router';
 import { RequestService } from '../../request.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { ParseTableQuery } from '../../base/table';
 import { isIncludeAdmin, tableHeight, onAllChecked, onItemChecked, batchdel, refreshCheckedStatus, readCsv } from "../../../public";
-
+import { UserEditComponent } from "../user-edit/user-edit.component";
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent {
-  href!:string
+  href!: string
   loading = true;
   uploading: Boolean = false;
   datum: any[] = [];
@@ -62,7 +62,7 @@ export class UsersComponent {
 
   delete(id: number, size?: number) {
     this.rs.get(`user/${id}/delete`).subscribe((res) => {
-      if (!size  ) {
+      if (!size) {
         this.msg.success("删除成功");
         this.datum = this.datum.filter(d => d.id !== id);
       } else if (size) {
@@ -74,10 +74,10 @@ export class UsersComponent {
       }
     });
   }
-  handleExport(){
-    this.href = `/api/user/export`;  
+  handleExport() {
+    this.href = `/api/user/export`;
   }
-   
+
   onQuery($event: NzTableQueryParams) {
     ParseTableQuery($event, this.query);
     this.load();
@@ -97,13 +97,32 @@ export class UsersComponent {
     this.query.skip = 0;
     this.load();
   }
-
-  edit(id: any) {
-    const path = `${isIncludeAdmin()}/user/edit/${id}`;
-    this.router.navigateByUrl(path);
-  }
-  add() {
-    this.router.navigateByUrl(`${isIncludeAdmin()}/user/create`);
+  handleUser(id?: string) {
+    const nzTitle = id ? "编辑用户" : "新增用户";
+    const modal: NzModalRef = this.modal.create({
+      nzTitle,
+      nzStyle: { top: '20px' },
+      nzContent: UserEditComponent,
+      nzComponentParams: { id },
+      nzFooter: [
+        {
+          label: '取消',
+          onClick: () => {
+            modal.destroy();
+          }
+        },
+        {
+          label: '保存',
+          type: 'primary',
+          onClick: componentInstance => {
+            componentInstance!.submit().then(() => {
+              modal.destroy();
+              this.load();
+            }, () => { })
+          }
+        }
+      ]
+    });
   }
   cancel() {
     this.msg.info('取消操作');

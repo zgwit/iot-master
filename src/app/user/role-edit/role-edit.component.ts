@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +14,8 @@ import { isIncludeAdmin } from "../../../public";
 })
 export class RoleEditComponent implements OnInit {
   group!: FormGroup;
-  id: any = 0;
+  // id: any = 0;
+  @Input() id: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -30,8 +31,7 @@ export class RoleEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.build();
-    if (this.route.snapshot.paramMap.has('id')) {
-      this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) {
       this.rs.get(`role/${this.id}`).subscribe((res) => {
         this.build(res.data);
       });
@@ -63,24 +63,26 @@ export class RoleEditComponent implements OnInit {
         this.listOfOption = listData;
       })
 
-     
+
   }
   submit() {
-    if (this.group.valid) {
-      let url = this.id ? `role/${this.id}` : `role/create`
-      this.rs.post(url, this.group.value).subscribe(res => {
-        const path = `${isIncludeAdmin()}/user/role`;
-        this.router.navigateByUrl(path);
-        this.msg.success("保存成功");
-      })
-    } else {
-      Object.values(this.group.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
-    }
+    return new Promise((resolve, reject) => {
+      if (this.group.valid) {
+        let url = this.id ? `role/${this.id}` : `role/create`
+        this.rs.post(url, this.group.value).subscribe(res => {
+          this.msg.success("保存成功");
+          resolve(true);
+        })
+      } else {
+        Object.values(this.group.controls).forEach((control) => {
+          if (control.invalid) {
+            control.markAsDirty();
+            control.updateValueAndValidity({ onlySelf: true });
+            reject();
+          }
+        });
+      }
+    })
   }
   handleCancel() {
     const path = `${isIncludeAdmin()}/user/role`;

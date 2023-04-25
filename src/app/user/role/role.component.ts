@@ -3,17 +3,17 @@ import { Router } from '@angular/router';
 import { RequestService } from '../../request.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { NzModalService } from "ng-zorro-antd/modal";
+import { NzModalRef, NzModalService } from "ng-zorro-antd/modal";
 import { ParseTableQuery } from '../../base/table';
 import { tableHeight, onAllChecked, onItemChecked, batchdel, refreshCheckedStatus, readCsv } from "../../../public";
-
+import { RoleEditComponent } from "../role-edit/role-edit.component";
 @Component({
   selector: 'app-role',
   templateUrl: './role.component.html',
   styleUrls: ['./role.component.scss'],
 })
 export class RoleComponent {
-  href!:string
+  href!: string
   loading = true;
   uploading: Boolean = false;
   datum: any[] = [];
@@ -46,7 +46,7 @@ export class RoleComponent {
     this.rs
       .post('role/search', this.query)
       .subscribe((res) => {
-        this.datum = res.data||[];
+        this.datum = res.data || [];
         this.total = res.total;
         this.setOfCheckedId.clear();
         refreshCheckedStatus(this);
@@ -56,15 +56,9 @@ export class RoleComponent {
       });
   }
 
-  create() {
-    let path = '/user/create';
-    if (location.pathname.startsWith('/admin')) path = '/admin' + path;
-    this.router.navigateByUrl(path);
-  }
-
   delete(id: number, size?: number) {
     this.rs.get(`role/${id}/delete`).subscribe((res) => {
-      if (!size  ) {
+      if (!size) {
         this.msg.success("删除成功");
         this.datum = this.datum.filter(d => d.id !== id);
       } else if (size) {
@@ -76,10 +70,10 @@ export class RoleComponent {
       }
     });
   }
-  handleExport(){
-    this.href = `/api/role/export`;  
+  handleExport() {
+    this.href = `/api/role/export`;
   }
-   
+
   onQuery($event: NzTableQueryParams) {
     ParseTableQuery($event, this.query);
     this.load();
@@ -99,13 +93,32 @@ export class RoleComponent {
     this.load();
   }
 
-  edit(id: any) {
-    let path = '/user/privillege/' + id;
-    if (location.pathname.startsWith('/admin')) path = '/admin' + path;
-    this.router.navigateByUrl(path);
-  }
-  add() {
-    this.router.navigateByUrl('/admin/user/role/create');
+  handleRoleEdit(id?: string) {
+    const nzTitle = id ? "编辑角色" : "新增角色";
+    const modal: NzModalRef = this.modal.create({
+      nzTitle,
+      nzStyle: { top: '20px' },
+      nzContent: RoleEditComponent,
+      nzComponentParams: { id },
+      nzFooter: [
+        {
+          label: '取消',
+          onClick: () => {
+            modal.destroy();
+          }
+        },
+        {
+          label: '保存',
+          type: 'primary',
+          onClick: componentInstance => {
+            componentInstance!.submit().then(() => {
+              modal.destroy();
+              this.load();
+            }, () => { })
+          }
+        }
+      ]
+    });
   }
   cancel() {
     this.msg.info('点击取消');
