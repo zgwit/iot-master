@@ -60,7 +60,7 @@ const internals: any[] = [{
         internal: true,
         entries: [
             {name: '所有插件', path: '/plugin/list'},
-            {name: '创建插件', path: '/plugin/create'},
+            // {name: '创建插件', path: '/plugin/create'},
         ]
     }, {
         icon: '/assets/setting.png',

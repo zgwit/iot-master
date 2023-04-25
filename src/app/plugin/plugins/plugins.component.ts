@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
-import {NzModalService} from 'ng-zorro-antd/modal';
-import {Router} from '@angular/router';
-import {RequestService} from '../../request.service';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {NzTableQueryParams} from 'ng-zorro-antd/table';
-import {ParseTableQuery} from '../../base/table';
+import { Component } from '@angular/core';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { Router } from '@angular/router';
+import { RequestService } from '../../request.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
+import { ParseTableQuery } from '../../base/table';
+import { PluginEditComponent } from "../plugin-edit/plugin-edit.component"
 import {
     isIncludeAdmin,
     tableHeight,
@@ -157,6 +158,34 @@ export class PluginsComponent {
     handleNew() {
         const path = `${isIncludeAdmin()}/plugin/create`;
         this.router.navigateByUrl(path);
+    }
+
+    handleEdit(id?: string) {
+        const nzTitle = id ? "编辑插件" : "创建插件";
+        const modal: NzModalRef = this.modal.create({
+            nzTitle,
+            nzStyle: { top: '20px' },
+            nzContent: PluginEditComponent,
+            nzComponentParams: { id },
+            nzFooter: [
+                {
+                    label: '取消',
+                    onClick: () => {
+                        modal.destroy();
+                    }
+                },
+                {
+                    label: '保存',
+                    type: 'primary',
+                    onClick: componentInstance => {
+                        componentInstance!.submit().then(() => {
+                            modal.destroy();
+                            this.load();
+                        }, () => { })
+                    }
+                }
+            ]
+        });
     }
 
     getTableHeight() {
