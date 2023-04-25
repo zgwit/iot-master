@@ -51,7 +51,7 @@ const internals: any[] = [{
         entries: [
             {name: '所有网关', path: '/gateway/list'},
             {name: '批量创建', path: '/gateway/batch'},
-            {name: '创建网关', path: '/gateway/create'},
+            // {name: '创建网关', path: '/gateway/create'},
         ]
     }, {
         icon: '/assets/plugin.png',

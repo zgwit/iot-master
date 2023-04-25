@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { Router } from '@angular/router';
 import { RequestService } from '../../request.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { ParseTableQuery } from '../../base/table';
+import { GatewayEditComponent } from "../gateway-edit/gateway-edit.component";
 import {
-  isIncludeAdmin,
   tableHeight,
   onAllChecked,
   onItemChecked,
@@ -36,7 +36,7 @@ export class GatewaysComponent {
     private router: Router,
     private rs: RequestService,
     private msg: NzMessageService
-  ) {}
+  ) { }
 
   reload() {
     this.datum = [];
@@ -68,15 +68,9 @@ export class GatewaysComponent {
       });
   }
 
-  create() {
-    let path = '/gateway/create';
-    if (location.pathname.startsWith('/admin')) path = '/admin' + path;
-    this.router.navigateByUrl(path);
-  }
-
   delete(id: number, size?: number) {
     this.rs.get(`gateway/${id}/delete`).subscribe((res) => {
-      if (!size  ) {
+      if (!size) {
         this.msg.success('删除成功');
         this.datum = this.datum.filter((d) => d.id !== id);
       } else if (size) {
@@ -108,17 +102,36 @@ export class GatewaysComponent {
     this.load();
   }
 
-  edit(id: any) {
-    const path = `${isIncludeAdmin()}/gateway/edit/${id}`;
-    this.router.navigateByUrl(path);
-  }
   cancel() {
     this.msg.info('取消操作');
   }
 
-  handleNew() {
-    const path = `${isIncludeAdmin()}/gateway/create`;
-    this.router.navigateByUrl(path);
+  handleEdit(id?: string) {
+    const nzTitle = id ? "编辑网关" : "创建网关";
+    const modal: NzModalRef = this.modal.create({
+      nzTitle,
+      nzStyle: { top: '20px' },
+      nzContent: GatewayEditComponent,
+      nzComponentParams: { id },
+      nzFooter: [
+        {
+          label: '取消',
+          onClick: () => {
+            modal.destroy();
+          }
+        },
+        {
+          label: '保存',
+          type: 'primary',
+          onClick: componentInstance => {
+            componentInstance!.submit().then(() => {
+              modal.destroy();
+              this.load();
+            }, () => { })
+          }
+        }
+      ]
+    });
   }
   getTableHeight() {
     return tableHeight(this);
