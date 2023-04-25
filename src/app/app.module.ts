@@ -87,15 +87,15 @@ const pages: Routes = [
 const routes: Routes = [
     { path: '', redirectTo: 'desktop', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    {
-        path: 'admin',
-        component: AdminComponent,
-        canActivate: [authGuard],
-        children: [
-            { path: '', pathMatch: "full", redirectTo: "device" },
-            ...pages
-        ]
-    },
+    // {
+    //     path: 'admin',
+    //     component: AdminComponent,
+    //     canActivate: [authGuard],
+    //     children: [
+    //         { path: '', pathMatch: "full", redirectTo: "device" },
+    //         ...pages
+    //     ]
+    // },
     { path: 'desktop', component: DesktopComponent, canActivate: [authGuard] },
     ...pages,
     { path: '**', component: PageNotFoundComponent }
