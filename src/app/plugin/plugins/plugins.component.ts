@@ -146,18 +146,8 @@ export class PluginsComponent {
         this.load();
     }
 
-    edit(id: any) {
-        const path = `${isIncludeAdmin()}/plugin/edit/${id}`;
-        this.router.navigateByUrl(path);
-    }
-
     cancel() {
         this.msg.info('取消操作');
-    }
-
-    handleNew() {
-        const path = `${isIncludeAdmin()}/plugin/create`;
-        this.router.navigateByUrl(path);
     }
 
     handleEdit(id?: string) {

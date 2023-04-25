@@ -6,6 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ParseTableQuery } from '../../base/table';
+import { DeviceEditComponent } from "../device-edit/device-edit.component"
 import {
   isIncludeAdmin,
   readCsv,
@@ -135,14 +136,32 @@ export class DevicesComponent {
     const path = `${isIncludeAdmin()}/device/detail/${id}`;
     this.router.navigateByUrl(path);
   }
-
-  edit(id: any) {
-    const path = `${isIncludeAdmin()}/device/edit/${id}`;
-    this.router.navigateByUrl(path);
-  }
-  handleNew() {
-    const path = `${isIncludeAdmin()}/device/create`;
-    this.router.navigateByUrl(path);
+  handleEdit(id?: string) {
+    const nzTitle = id ? "编辑设备" : "创建设备";
+    const modal: NzModalRef = this.modal.create({
+      nzTitle,
+      nzStyle: { top: '20px' },
+      nzContent: DeviceEditComponent,
+      nzComponentParams: { id },
+      nzFooter: [
+        {
+          label: '取消',
+          onClick: () => {
+            modal.destroy();
+          }
+        },
+        {
+          label: '保存',
+          type: 'primary',
+          onClick: componentInstance => {
+            componentInstance!.submit().then(() => {
+              modal.destroy();
+              this.load();
+            }, () => { })
+          }
+        }
+      ]
+    });
   }
   select(id: any) {
     this.ref && this.ref.close(id);
