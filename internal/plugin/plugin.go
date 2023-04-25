@@ -72,7 +72,7 @@ func (p *Plugin) Start() error {
 
 	//TODO 指定plugins目录，例如：plugins/alarm/alarm.exe
 	if runtime.GOOS == "windows" {
-		cmd = ".\\" + cmd
+		cmd = cmd + ".exe"
 	} else {
 		cmd = "./" + cmd
 	}
