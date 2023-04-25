@@ -7,8 +7,6 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { ParseTableQuery } from '../../base/table';
 import { PluginEditComponent } from "../plugin-edit/plugin-edit.component"
 import {
-    isIncludeAdmin,
-    tableHeight,
     onAllChecked,
     onItemChecked,
     batchdel,
@@ -78,19 +76,19 @@ export class PluginsComponent {
         switch (num) {
             case 0: {
                 this.rs.get(`plugin/${id}/start`).subscribe((res) => {
-                    this.reload();
+                    this.load();
                 });
             }
                 break;
             case 1: {
                 this.rs.get(`plugin/${id}/stop`).subscribe((res) => {
-                    this.reload();
+                    this.load();
                 });
             }
                 break;
             case 2: {
                 this.rs.get(`plugin/${id}/restart`).subscribe((res) => {
-                    this.reload();
+                    this.load();
                 });
             }
                 break;
@@ -176,10 +174,6 @@ export class PluginsComponent {
                 }
             ]
         });
-    }
-
-    getTableHeight() {
-        return tableHeight(this);
     }
 
     handleBatchDel() {

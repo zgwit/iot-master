@@ -31,7 +31,6 @@
     #basicTable
     [nzData]="datum"
     [nzLoading]="loading"
-    [nzScroll]="getTableHeight()"
     nzShowPagination
     nzShowSizeChanger
     [nzTotal]="total"
@@ -74,8 +73,8 @@
         <td>{{ data.version }}</td>
         <td>{{ data.command }}</td>
         <td>
-            <nz-tag nzColor="success" *ngIf="!data.disabled"> 启用</nz-tag>
-            <nz-tag nzColor="error" *ngIf="data.disabled"> 禁用</nz-tag>
+            <nz-tag nzColor="success" *ngIf="data.running"> 启用</nz-tag>
+            <nz-tag nzColor="error" *ngIf="!data.running"> 禁用</nz-tag>
         </td>
         <td>{{ data.created | date }}</td>
         <td>
@@ -91,13 +90,8 @@
                 <i nz-icon nzType="delete"></i>
             </a>
             <nz-divider nzType="vertical"></nz-divider>
-
-            <a *ngIf="data.disabled" (click)="enable(data.id)"> 启用 </a>
-            <a *ngIf="!data.disabled" (click)="disable(data.id)"> 禁用 </a>
-            <nz-divider nzType="vertical"></nz-divider>
-            <a (click)="plugin(0, data.id)"> 启动 </a>
-            <nz-divider nzType="vertical"></nz-divider>
-            <a (click)="plugin(1, data.id)"> 停止 </a>
+            <a *ngIf="!data.running" (click)="plugin(0, data.id)"> 启动 </a>
+            <a *ngIf="data.running" (click)="plugin(1, data.id)"> 停止 </a>
             <nz-divider nzType="vertical"></nz-divider>
             <a (click)="plugin(2, data.id)"> 重启 </a>
         </td>
