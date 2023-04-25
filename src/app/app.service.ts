@@ -8,7 +8,7 @@ const internals: any[] = [{
     internal: true,
     entries: [
         {name: '所有产品', path: '/product/list'},
-        {name: '创建产品', path: '/product/create'},
+        // {name: '创建产品', path: '/product/create'},
     ]
 }, {
     icon: '/assets/gateway.png',
