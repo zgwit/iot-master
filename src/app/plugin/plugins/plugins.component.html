@@ -73,8 +73,8 @@
         <td>{{ data.version }}</td>
         <td>{{ data.command }}</td>
         <td>
-            <nz-tag nzColor="success" *ngIf="data.running"> 启用</nz-tag>
-            <nz-tag nzColor="error" *ngIf="!data.running"> 禁用</nz-tag>
+            <nz-tag nzColor="success" *ngIf="data.running"> 启动</nz-tag>
+            <nz-tag nzColor="error" *ngIf="!data.running"> 停止</nz-tag>
         </td>
         <td>{{ data.created | date }}</td>
         <td>

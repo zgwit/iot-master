@@ -59,10 +59,10 @@
       <td>{{ data.desc }}</td>
       <td >
         <nz-tag nzColor="success" *ngIf="data.disabled">
-         启用
+         禁用
         </nz-tag>
         <nz-tag nzColor="error" *ngIf="!data.disabled">
-          禁用
+          启用
         </nz-tag>
         </td>
      
@@ -84,10 +84,10 @@
         <nz-divider nzType="vertical"></nz-divider>
        
           <a *ngIf="!data.disabled" (click)="disable(1,data.id)">
-           启用
+           禁用
           </a>
           <a   *ngIf="data.disabled" (click)="disable(0,data.id)">
-            禁用
+            启用
           </a>
           
       </td>
