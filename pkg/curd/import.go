@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 )
 
-func ApiImport[T any]() gin.HandlerFunc {
+func ApiImport(table string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		formFile, err := ctx.FormFile("file")
 		if err != nil {
@@ -54,8 +54,7 @@ func ApiImport[T any]() gin.HandlerFunc {
 		}
 
 		//插入数据
-		var data T
-		n, err := db.Engine.Table(data).Insert(datum)
+		n, err := db.Engine.Table(table).Insert(datum)
 		if err != nil {
 			Error(ctx, err)
 			return

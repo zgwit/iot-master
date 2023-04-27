@@ -8,15 +8,14 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
-func ApiExport[T any](filename string) gin.HandlerFunc {
+func ApiExport(table, filename string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//id := ctx.MustGet("id")
 		ids := ctx.QueryArray("id")
 
-		var data T
 		var datum []map[string]any
 
-		query := db.Engine.Table(data)
+		query := db.Engine.Table(table)
 		if ids != nil && len(ids) > 0 {
 			query = query.In("id", ids)
 		}

@@ -147,9 +147,9 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Device](nil, nil))
 
-	app.GET("/export", curd.ApiExport[model.Device]("device"))
+	app.GET("/export", curd.ApiExport("device", "设备"))
 
-	app.POST("/import", curd.ApiImport[model.Device]())
+	app.POST("/import", curd.ApiImport("device"))
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Device](true, nil, nil))
 
