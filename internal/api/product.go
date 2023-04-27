@@ -114,6 +114,6 @@ func productRouter(app *gin.RouterGroup) {
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Product](nil, nil,
 		"id", "name", "version", "desc", "properties", "functions", "events", "parameters", "constraints"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Product](nil, nil))
-	app.GET("/export", curd.ApiExport[model.Product]("product"))
-	app.POST("/import", curd.ApiImport[model.Product]())
+	app.GET("/export", curd.ApiExport("product", "产品"))
+	app.POST("/import", curd.ApiImport("product"))
 }

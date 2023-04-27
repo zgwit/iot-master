@@ -164,9 +164,9 @@ func pluginRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Plugin](nil, nil))
 
-	app.GET("/export", curd.ApiExport[model.Plugin]("plugin"))
+	app.GET("/export", curd.ApiExport("plugin", "插件"))
 
-	app.POST("/import", curd.ApiImport[model.Plugin]())
+	app.POST("/import", curd.ApiImport("plugin"))
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](true, nil, func(id any) error {
 		p := plugin.Get(id.(string))

@@ -140,6 +140,6 @@ func gatewayRouter(app *gin.RouterGroup) {
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Gateway](true, nil, nil))
 	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Gateway](false, nil, nil))
-	app.GET("/export", curd.ApiExport[model.Gateway]("gateway"))
-	app.POST("/import", curd.ApiImport[model.Gateway]())
+	app.GET("/export", curd.ApiExport("gateway", "网关"))
+	app.POST("/import", curd.ApiImport("gateway"))
 }

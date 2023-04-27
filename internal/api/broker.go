@@ -140,8 +140,8 @@ func brokerRouter(app *gin.RouterGroup) {
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Broker](true, nil, nil))
 	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Broker](false, nil, nil))
-	app.GET("/export", curd.ApiExport[model.Broker]("broker"))
-	app.POST("/import", curd.ApiImport[model.Broker]())
+	app.GET("/export", curd.ApiExport("broker", "总线"))
+	app.POST("/import", curd.ApiImport("broker"))
 }
 
 func afterBrokerCreate(data interface{}) error {

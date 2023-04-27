@@ -122,8 +122,8 @@ func roleRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Role](nil, nil))
 
-	app.GET("/export", curd.ApiExport[model.Role]("role"))
+	app.GET("/export", curd.ApiExport("role", "角色"))
 
-	app.POST("/import", curd.ApiImport[model.Role]())
+	app.POST("/import", curd.ApiImport("role"))
 
 }

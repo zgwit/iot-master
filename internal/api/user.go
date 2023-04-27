@@ -149,6 +149,10 @@ func userRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.User](true, nil, nil))
 
+	app.GET("/export", curd.ApiExport("user", "用户"))
+
+	app.POST("/import", curd.ApiImport("user"))
+
 }
 
 func userMe(ctx *gin.Context) {
