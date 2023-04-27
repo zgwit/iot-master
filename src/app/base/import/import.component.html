@@ -1,4 +1,4 @@
-<nz-upload [nzAction]="url" [nzHeaders]="{ authorization: 'authorization-text' }"
+<nz-upload [nzAction]="'/api/'+url" [nzHeaders]="{ authorization: 'authorization-text' }"
   [nzShowUploadList]="false" (nzChange)="handleChange($event)">
   <button nz-button nzType="primary">
     <span nz-icon nzType="cloud-upload"></span>

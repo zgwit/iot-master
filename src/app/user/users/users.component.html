@@ -48,8 +48,8 @@
       <td>{{ data.email }}</td>
       <td>{{ data.roles }}</td>
       <td>
-        <nz-tag nzColor="success" *ngIf="data.disabled"> 禁用 </nz-tag>
-        <nz-tag nzColor="error" *ngIf="!data.disabled"> 启用 </nz-tag>
+        <nz-tag nzColor="error" *ngIf="data.disabled"> 禁用 </nz-tag>
+        <nz-tag nzColor="success" *ngIf="!data.disabled"> 启用 </nz-tag>
       </td>
       <td>{{ data.created | date }}</td>
       <td>
