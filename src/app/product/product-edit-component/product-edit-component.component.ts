@@ -1,7 +1,7 @@
 
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { RequestService } from "../../request.service";
 import { NzMessageService } from "ng-zorro-antd/message";
 import { isIncludeAdmin } from "../../../public";
@@ -24,6 +24,7 @@ export class ProductEditComponentComponent implements OnInit {
     title: '类型',
     keyName: 'type',
     type: 'select',
+    defaultValue: 'int',
     listOfOption: [{
       label: '整数',
       value: 'int'
@@ -53,6 +54,7 @@ export class ProductEditComponentComponent implements OnInit {
     title: '模式',
     keyName: 'mode',
     type: 'select',
+    defaultValue: 'rw',
     listOfOption: [{
       label: '只读',
       value: 'r'
@@ -118,15 +120,11 @@ export class ProductEditComponentComponent implements OnInit {
       type: 'number'
     }
   ]
-  @ViewChild('propertyChild') propertyChild: any;
-  @ViewChild('parametersChild') parametersChild: any;
-  @ViewChild('constraintsChild') constraintsChild: any;
 
   @Input() id!: any;
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute,
     private rs: RequestService,
     private msg: NzMessageService
   ) { }
@@ -155,79 +153,17 @@ export class ProductEditComponentComponent implements OnInit {
   }
 
   submit() {
-    return new Promise((resolve, reject) => {
+    console.log(this.group.value)
+    return new Promise((resolve) => {
       if (this.group.valid) {
         let url = this.id ? `product/${this.id}` : `product/create`
-        const sendData = JSON.parse(JSON.stringify(this.group.value));
-        // 属性组件
-        const { propertys, parameters, constraints } = this.getValueData();
-        sendData.properties = propertys;
-        sendData.parameters = parameters;
-        sendData.constraints = constraints;
-        this.rs.post(url, sendData).subscribe(res => {
+        this.rs.post(url, this.group.value).subscribe(res => {
           this.msg.success("保存成功");
           resolve(true);
         })
       }
     })
 
-  }
-  getValueData() {
-    const propertyGroup = this.propertyChild.group;
-    const propertys = propertyGroup.get('keyName').controls.map((item: { value: any; }) => item.value);
-    const parametersGroup = this.parametersChild.group;
-    const parameters = parametersGroup.get('keyName').controls.map((item: { value: any; }) => item.value);
-    const constraintsGroup = this.constraintsChild.group;
-    const constraints = constraintsGroup.get('keyName').controls.map((item: { value: any; }) => item.value);
-
-    return { propertys, parameters, constraints };
-  }
-  propertyAdd($event: any) {
-    $event.stopPropagation();
-    if (this.propertyChild) {
-      this.propertyChild.group.get('keyName').controls.unshift(
-        this.fb.group({
-          name: ['', []],
-          label: ['', []],
-          type: ['int', []],
-          unit: ['', []],
-          mode: ['rw', []],
-        })
-      )
-    }
-
-  }
-
-  parameterAdd($event: any) {
-    $event.stopPropagation()
-    if (this.parametersChild) {
-      this.parametersChild.group.get('keyName').controls.unshift(
-        this.fb.group({
-          name: ['', []],
-          label: ['', []],
-          min: [0, []],
-          max: [0, []],
-          default: [0, []],
-        })
-      )
-    }
-  }
-
-  constraintAdd($event: any) {
-    $event.stopPropagation();
-    if (this.constraintsChild) {
-      this.constraintsChild.group.get('keyName').controls.unshift(
-        this.fb.group({
-          level: [1, []],
-          title: ['', []],
-          template: ['', []],
-          expression: ['', []],
-          delay: [0, []],
-          again: [0, []],
-          total: [0, []],
-        })
-      )
-    }
   }
 
   handleCancel() {

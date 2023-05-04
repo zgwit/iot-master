@@ -34,7 +34,6 @@ import { authGuard } from "./auth.guard";
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
-
 registerLocaleData(zh);
 
 //declare var window: Window;
