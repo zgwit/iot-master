@@ -14,7 +14,7 @@ export class GatewayBatchComponent implements OnInit {
   group!: FormGroup;
   id: any = 0;
   datum: any[] = [];
-  nzTitle = '创建';
+  nzTitle = '保存';
   nzLoading = false;
   constructor(
     private fb: FormBuilder,
@@ -22,7 +22,7 @@ export class GatewayBatchComponent implements OnInit {
     private route: ActivatedRoute,
     private rs: RequestService,
     private msg: NzMessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.route.snapshot.paramMap.has('id')) {
@@ -81,17 +81,17 @@ export class GatewayBatchComponent implements OnInit {
   submit() {
     if (this.group.valid) {
       let url = `gateway/create`;
-      this.nzTitle="创建中..."
-      this.nzLoading=true;
-      const resData:any[]=[]
+      this.nzTitle = "创建中..."
+      this.nzLoading = true;
+      const resData: any[] = []
       for (let i = 0; i < this.group.value.amount; i++) {
         this.rs.post(url, this.group.value).subscribe((res) => {
           resData.push(res.data)
-          if (resData.length === this.group.value.amount  ) {
+          if (resData.length === this.group.value.amount) {
             this.msg.success('创建成功');
-            this.nzTitle="创建"
-            this.nzLoading=false
-            this.datum=resData
+            this.nzTitle = "保存"
+            this.nzLoading = false
+            this.datum = resData
           }
         });
       }

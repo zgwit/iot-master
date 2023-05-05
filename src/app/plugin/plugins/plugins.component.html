@@ -27,6 +27,7 @@
     </nz-space>
 </app-toolbar>
 
+<ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
 <nz-table
     #basicTable
     [nzData]="datum"
@@ -34,6 +35,7 @@
     nzShowPagination
     nzShowSizeChanger
     [nzTotal]="total"
+    [nzShowTotal]="totalTemplate"
     (nzPageSizeChange)="pageSizeChange($event)"
     (nzPageIndexChange)="pageIndexChange($event)"
     [nzPageSize]="pageSize"

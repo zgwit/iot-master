@@ -7,7 +7,7 @@
   <nz-row [nzGutter]="[10, 10]">
     <nz-col [nzXs]="12" [nzSm]="8" [nzMd]="6" [nzLg]="4" *ngFor="let prop of product.properties">
       <div class="prop">
-        <nz-statistic [nzTitle]="prop.label" [nzSuffix]="prop.unit" [nzValue]="values[prop.name] || '-'">
+        <nz-statistic [nzTitle]="prop.label" [nzSuffix]="prop.unit" [nzValue]="values[prop.name] || 0">
         </nz-statistic>
       </div>
     </nz-col>

@@ -6,7 +6,7 @@ import { NzMessageService } from "ng-zorro-antd/message";
 import { NzTableQueryParams } from "ng-zorro-antd/table";
 import { ParseTableQuery } from "../../base/table";
 import { ProductEditComponentComponent } from "../product-edit-component/product-edit-component.component"
-import { isIncludeAdmin, readCsv, tableHeight, onAllChecked, onItemChecked, batchdel, refreshCheckedStatus } from "../../../public";
+import { isIncludeAdmin, tableHeight, onAllChecked, onItemChecked, batchdel, refreshCheckedStatus } from "../../../public";
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -82,11 +82,10 @@ export class ProductsComponent {
     this.load();
   }
   pageIndexChange(pageIndex: number) {
-    console.log("pageIndex:", pageIndex)
+    this.query.skip = pageIndex - 1;
   }
   pageSizeChange(pageSize: number) {
     this.query.limit = pageSize;
-    this.load();
   }
   search($event: string) {
     this.query.keyword = {

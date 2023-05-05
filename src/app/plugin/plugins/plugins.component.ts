@@ -128,12 +128,11 @@ export class PluginsComponent {
     }
 
     pageIndexChange(pageIndex: number) {
-        console.log('pageIndex:', pageIndex);
+        this.query.skip = pageIndex - 1;
     }
 
     pageSizeChange(pageSize: number) {
         this.query.limit = pageSize;
-        this.load();
     }
 
     search($event: string) {
