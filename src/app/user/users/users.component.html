@@ -24,9 +24,9 @@
 
 <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
 <nz-table #basicTable [nzData]="datum" [nzLoading]="loading" [nzScroll]="getTableHeight()" nzShowPagination
-  nzShowSizeChanger [nzTotal]="total" [nzShowTotal]="totalTemplate" (nzPageSizeChange)="pageSizeChange($event)"
-  (nzPageIndexChange)="pageIndexChange($event)" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex"
-  (nzQueryParams)="onQuery($event)">
+  [nzFrontPagination]="false" nzShowSizeChanger [nzTotal]="total" [nzShowTotal]="totalTemplate"
+  (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)" [nzPageSize]="pageSize"
+  [nzPageIndex]="pageIndex" (nzQueryParams)="onQuery($event)">
   <thead>
     <tr>
       <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="handleAllChecked($event)"></th>
