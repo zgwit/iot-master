@@ -15,7 +15,9 @@ declare var window: any;
   styleUrls: ['./desktop.component.scss']
 })
 export class DesktopComponent {
-
+title:any
+show:any
+entries:any=[]
   userInfo: any;
   constructor(
     private router: Router,
@@ -50,12 +52,13 @@ export class DesktopComponent {
       ]
     });
   }
-  open(app: any) {
+  open(app: any) {  
     if (window.innerWidth < 800) {
       this.router.navigate([app.entries[0].path])
       return;
     }
-
+    // this.show=true
+    // this.entries=app.entries
     this.ms.create({
       nzTitle: app.name,
       nzFooter: null,

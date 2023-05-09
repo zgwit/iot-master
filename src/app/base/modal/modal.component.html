@@ -1,0 +1,57 @@
+<div *ngIf="show"> 
+<div class="modal show-mask" style="z-index: 100">
+    <div class="modal-mask" id="modal-mask"></div>
+    <div class="modal-container modal-center">
+        <div class="modal-content">
+            <div class="modal-main">
+                <div class="modal-top">
+                    <div class="modal-title">{{ title }}</div> 
+                    <div nz-space>
+                        <button
+                            *nzSpaceItem
+                            nz-button
+                            nzType="default"
+                            nzSize="small"
+                        >
+                            <i nz-icon nzType="minus" nzTheme="outline"></i>
+                        </button>
+                        <button
+                            *nzSpaceItem
+                            nz-button
+                            nzType="default"
+                            nzSize="small"
+                        >
+                            <i nz-icon nzType="border" nzTheme="outline"></i>
+                        </button>
+                        <button
+                            *nzSpaceItem
+                            nz-button
+                            nzType="default"
+                            nzSize="small"
+                            (click)="cancel()"
+                        >
+                            <i nz-icon nzType="close" nzTheme="outline"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-alert">
+                    <div class="modal-detail-content">
+                        <div class="modal-details">
+                         
+                            <iframe *ngIf="tabData.length===1" [src]="tabData[0].url"></iframe> 
+
+                            <nz-tabset nzType="card" *ngIf="tabData.length!==1">
+                              <nz-tab *ngFor="let tab of tabData" [nzTitle]="tab.name">
+                                <iframe [src]="tab.url"></iframe>
+                              </nz-tab>
+                            </nz-tabset>  
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

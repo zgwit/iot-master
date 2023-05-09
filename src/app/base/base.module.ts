@@ -12,8 +12,7 @@ import { NzTableModule } from "ng-zorro-antd/table";
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { NzDividerModule } from "ng-zorro-antd/divider";
-
+import { NzDividerModule } from "ng-zorro-antd/divider"; 
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
@@ -22,6 +21,8 @@ import { EditTableComponent } from './edit-table/edit-table.component';
 import { ImportComponent } from './import/import.component';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { TableOperComponent } from './table-oper/table-oper.component';
+import { ModalComponent } from './modal/modal.component';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 @NgModule({
   declarations: [
     DatePipe,
@@ -31,6 +32,7 @@ import { TableOperComponent } from './table-oper/table-oper.component';
     EditTableComponent,
     ImportComponent,
     TableOperComponent,
+    ModalComponent,
   ],
   exports: [
     DatePipe,
@@ -39,12 +41,14 @@ import { TableOperComponent } from './table-oper/table-oper.component';
     SearchBoxComponent,
     EditTableComponent,
     ImportComponent,
-    TableOperComponent
+    TableOperComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,
     NzInputModule,
     NzButtonModule,
+    NzTabsModule,
     NzPaginationModule,
     FormsModule,
     ReactiveFormsModule,

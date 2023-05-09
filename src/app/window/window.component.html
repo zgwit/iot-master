@@ -1,4 +1,4 @@
-<iframe *ngIf="tabData.length===1" [src]="tabData[0].url"></iframe>
+<iframe *ngIf="tabData.length===1" [src]="tabData[0].url"></iframe> 
 
 <nz-tabset nzType="card" *ngIf="tabData.length!==1">
   <nz-tab *ngFor="let tab of tabData" [nzTitle]="tab.name">

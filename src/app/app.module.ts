@@ -1,3 +1,4 @@
+import { BaseModule } from './base/base.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -33,7 +34,7 @@ import { NzNotificationModule } from "ng-zorro-antd/notification";
 import { authGuard } from "./auth.guard";
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt'; 
 registerLocaleData(zh);
 
 //declare var window: Window;
@@ -115,6 +116,7 @@ const routes: Routes = [
         NzInputModule,
         NzSwitchModule,
         NzButtonModule,
+        BaseModule,
         NzSelectModule,
         NzCheckboxModule,
         NzMessageModule,
