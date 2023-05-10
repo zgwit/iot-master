@@ -23,6 +23,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { TableOperComponent } from './table-oper/table-oper.component';
 import { ModalComponent } from './modal/modal.component';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { FullscreamDirective } from './fullscream.directive';
 @NgModule({
   declarations: [
     DatePipe,
@@ -33,6 +34,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
     ImportComponent,
     TableOperComponent,
     ModalComponent,
+    FullscreamDirective 
   ],
   exports: [
     DatePipe,

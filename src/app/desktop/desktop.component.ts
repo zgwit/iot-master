@@ -52,26 +52,31 @@ entries:any=[]
       ]
     });
   }
+  hide(){
+    this.show=false
+  }
   open(app: any) {  
     if (window.innerWidth < 800) {
       this.router.navigate([app.entries[0].path])
       return;
     }
-    // this.show=true
-    // this.entries=app.entries
-    this.ms.create({
-      nzTitle: app.name,
-      nzFooter: null,
-      //nzMask: false,
-      nzMaskClosable: false,
-      nzWidth: "90%",
-      //nzStyle: {height: "90%"},
-      nzBodyStyle: { padding: "0", overflow: "hidden" },
-      nzContent: WindowComponent,
-      nzComponentParams: {
-        entries: app.entries || []
-      }
-    })
+
+    this.show=true
+    this.entries=app.entries
+    this.title=app.name
+    // this.ms.create({
+    //   nzTitle: app.name,
+    //   nzFooter: null,
+    //   //nzMask: false,
+    //   nzMaskClosable: false,
+    //   nzWidth: "90%",
+    //   //nzStyle: {height: "90%"},
+    //   nzBodyStyle: { padding: "0", overflow: "hidden" },
+    //   nzContent: WindowComponent,
+    //   nzComponentParams: {
+    //     entries: app.entries || []
+    //   }
+    // })
   }
 
   logout() {

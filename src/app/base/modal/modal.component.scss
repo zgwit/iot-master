@@ -6,148 +6,161 @@
     bottom: 0;
     z-index: 100;
     pointer-events: none;
-  
+
     &.show-mask {
-      pointer-events: auto;
-      .modal-mask {
-        display: block;
-      }
+        pointer-events: auto;
+        .modal-mask {
+            display: block;
+        }
     }
     .modal-mask,
     .modal-container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
     .modal-mask {
-      display: none;
-      overflow: hidden;
-      background-color: #25262d;
-      opacity: 0.4;
-      pointer-events: auto;
+        display: none;
+        overflow: hidden;
+        background-color: #25262d;
+        opacity: 0.4;
+        pointer-events: auto;
     }
-  
+
     .modal-container {
-      transform: translate(100%, 100%);
+        transform: translate(100%, 100%);
     }
-  
+
     .modal-center {
-      .modal-content {
-        transform: translate(-50%, -50%);
-        top: -50%;
-        left: -50%;
-        width: auto;
-        max-width: 100%;
-        position: absolute;
-  
-        .modal-main {
-          border-radius: 5px;
-          width: 95vw;
-          padding: 0;
-          text-align: center;
-          overflow: hidden;
-          background-color: #fff;
-  
-          .modal-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            text-align: left;
-            padding:0 0.5rem;
-            border-bottom: 1px solid #E5E5E5;
-            height: 40px;
-            
-  
-            .modal-title {
-              color: #333;
-              font-size: 0.426667rem;
-               
-            } 
-            
-          }
-  
-          .modal-alert {
-            position: relative;
-            overflow: hidden;
-  
-            .modal-title {
-              color: #333;
-              font-size: 0.426667rem;
-              line-height: 1;
-  
-              p {
-                margin: 0.8rem 0.426667rem 0;
-                overflow: hidden;
-                white-space: nowrap;
-              }
-            }
-  
-            .modal-detail-content {
-              max-height: 60vh;
-              overflow-y: scroll;
-              margin: 0.426667rem 0;
-              text-align: left;
-              color: #666;
-              font-size: 0.373333rem;
-              line-height: 0.586667rem;
-  
-              .modal-details {
-                padding: 0 0.426667rem;
-  
-                .cube-input {
-                  margin-bottom: 8px;
-                }
-  
-                .cube-textarea {
-                  padding-left: 0.133333rem;
-                }
-  
-                .cube-input-field {
-                  padding: 5px;
-  
-                  &::-webkit-input-placeholder {
-                    color: #ccc;
-                    text-overflow: ellipsis;
-                    font-weight: 100;
-                    font-family: monospace;
-                  }
-                }
-  
-                label {
-                  color: #333;
-                }
-              }
-            }
-  
-            .modal-btns {
-              border-top: 1px solid #E5E5E5;
-              height: 50px;
-              line-height: 50px;
-              overflow: hidden;
-              width: 100%;
-              display: flex;
-              flex-direction: row-reverse;
-              font-size: 0;
-  
-              button {
-                width: 60px;
-                height: 30px;
-                line-height: 1;
-                border: 1px solid #CECECE;
-                margin: 10px 5px 0;
+        .modal-content {
+            transform: translate(-50%, -50%);
+            top: -50%;
+            left: -50%;
+            width: auto;
+            max-width: 100%;
+            position: absolute;
+
+            .modal-main {
+                display: flex;
+                flex-direction: column;
                 border-radius: 5px;
-                color: #fff;
-  
-                &:focus {
-                  outline: none;
+                padding: 0;
+                text-align: center;
+                overflow: hidden;
+                background-color: #fff;
+                position: relative;
+                // .modal-right-bottom {
+                //     position: absolute;
+                //     bottom: 0;
+                //     right: 0;
+                //     width: 30px;
+                //     height: 30px;
+                //     background-color: red;
+                //     &:hover{
+                //       cursor: move;
+                //     }
+                // }
+                .modal-top {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    text-align: left;
+                    padding: 0 0.5rem;
+                    border-bottom: 1px solid #e5e5e5;
+                    height: 40px;
+                    &:hover {
+                        cursor: move;
+                    }
+                    .modal-title {
+                        color: #333;
+                        font-size: 0.426667rem;
+                        font-weight: bold;
+                    }
                 }
-              }
+
+                .modal-alert {
+                    position: relative;
+                    overflow: hidden;
+                    height: 100%;
+
+                    .modal-detail-content {
+                        margin: 0.426667rem 0;
+                        text-align: left;
+                        color: #666;
+                        font-size: 0.373333rem;
+                        line-height: 0.586667rem;
+                        height: 100%;
+
+                        .modal-details {
+                            padding: 0 0.426667rem;
+                            height: 100%;
+
+                            .modal-tab {
+                                height: 100%;
+                            }
+                            .modal-tab
+                                ::ng-deep
+                                > .ant-tabs-card
+                                .ant-tabs-content {
+                                height: 100%;
+                            }
+
+                            iframe {
+                                width: 100%;
+                                height: 100%;
+                                border: none;
+                            }
+                            .cube-input {
+                                margin-bottom: 8px;
+                            }
+
+                            .cube-textarea {
+                                padding-left: 0.133333rem;
+                            }
+
+                            .cube-input-field {
+                                padding: 5px;
+
+                                &::-webkit-input-placeholder {
+                                    color: #ccc;
+                                    text-overflow: ellipsis;
+                                    font-weight: 100;
+                                    font-family: monospace;
+                                }
+                            }
+
+                            label {
+                                color: #333;
+                            }
+                        }
+                    }
+
+                    .modal-btns {
+                        border-top: 1px solid #e5e5e5;
+                        height: 50px;
+                        line-height: 50px;
+                        overflow: hidden;
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row-reverse;
+                        font-size: 0;
+
+                        button {
+                            width: 60px;
+                            height: 30px;
+                            line-height: 1;
+                            border: 1px solid #cecece;
+                            margin: 10px 5px 0;
+                            border-radius: 5px;
+                            color: #fff;
+
+                            &:focus {
+                                outline: none;
+                            }
+                        }
+                    }
+                }
             }
-          }
-  
         }
-      }
     }
-  
-  }
-  
+}
