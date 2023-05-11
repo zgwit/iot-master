@@ -1,94 +1,74 @@
-// import { Directive, HostListener } from '@angular/core';
-// import screenfull from 'screenfull';
-// @Directive({
-//   selector: '[appFullscream]',
-// })
-// export class FullscreamDirective {
-//   @HostListener('click') onClick() { 
-//     if (screenfull.isEnabled) {
-//       if (screenfull.isFullscreen) {
-//         screenfull.toggle(); 
-//       } else screenfull.toggle();
-//     }
-//   }
-// }
-
-
-import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core'; 
+import {
+    Directive,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+} from '@angular/core';
 @Directive({
-  selector: '[appFullscream]',
+    selector: '[appFullscream]',
 })
 export class FullscreamDirective implements OnInit {
-  private isDown = false;
-  private disX = 0;
-  private disY = 0;
-  private dom: any;
-   
-  @Input('appDrag') className!: string;
- 
-  constructor(private el: ElementRef) {
-  }
-  ngOnInit(): void {
-    
-  }
-  
-  @HostListener('drag' ,['event'])
-  dragEvent(  ) {
-     
-  }
+    @Output() mes = new EventEmitter();
+    private isDown = false;
+    shiftPosition = { x: 0, y: 0 };
+    element: any = null;
+    num = 0;
+    constructor(private el: ElementRef) {
+        this.element = this.el.nativeElement;
+    }
+    ngOnInit(): void {}
 
-  @HostListener('mousedown' ) onMousedown(event:any) { 
-     
-    // if (!this.isDown) {
-    // //  this.dom = this.getParentRecurse(this.el.nativeElement, this.className);
-    //   // 移动区域
-    //   this.isDown = true;
-    //   this.disX = event.clientX - this.dom.offsetLeft;
-    //   this.disY = event.clientY - this.dom.offsetTop;
-   
-    // }
-     
-  }
-  
- 
- 
-  @HostListener('mousemove' , ['$event']) onMousemove(event:any) {
-     
-    // if (this.isDown) {
-    //   const cw = document.documentElement.clientWidth;
-    //   const cy = document.documentElement.clientHeight;
-    //   const dw = this.dom.offsetWidth;
-    //   const dh = this.dom.offsetHeight;
- 
-    //   let oLeft = event.clientX - this.disX;
-    //   let oTop = event.clientY - this.disY;
- 
-    //   if (oTop < 0) {
-    //     oTop = 0;
-    //   } else if (oTop > cy - dh) {
-    //     oTop = cy - dh;
-    //   }
- 
-    //   if (oLeft < 0) {
-    //     oLeft = 0;
-    //   } else if (oLeft > cw - dw) {
-    //     oLeft = cw - dw;
-    //   }
- 
-    //   this.dom.style.left = oLeft + 'px';
-    //   this.dom.style.top = oTop + 'px';
-    //   this.dom.style.position = 'fixed';
-    //  // this.el.nativeElement.style.cursor = 'move';
-    // }
-  }
-  
-  @HostListener('mouseup', ['$event'] ) onMouseup(event:any) {
-    // if (this.isDown) {
-    //   document.onmousemove = null;
-    //   document.onmouseup = null;
-    //   this.isDown = false;
-    // }
-   
-  }
- 
+    @HostListener('document:click', ['$event']) onClick(event: any) {
+        if (this.num === 1) {
+            const elementRect = this.element.getBoundingClientRect();
+            const x = event.clientX;
+            const y = event.clientY;
+            if (
+                x < elementRect.left - 10 ||
+                x > elementRect.right + 10 ||
+                y < elementRect.top - 10 ||
+                y > elementRect.bottom + 10
+            )
+                this.mes.emit();
+        }
+        this.num = 1;
+    }
+
+    @HostListener('mousedown', ['$event']) onMousedown(event: any) {
+        const elementRect = this.element.getBoundingClientRect();
+
+        if (
+            !this.isDown &&
+            event.clientX > elementRect.right - 10 &&
+            event.clientX < elementRect.right &&
+            event.clientY > elementRect.bottom - 10 &&
+            event.clientY < elementRect.bottom
+        ) {
+            this.isDown = true;
+        }
+    }
+
+    @HostListener('document: mousemove', ['$event']) onMousemove(event: any) {
+        if (this.isDown) {
+            const elementRect = this.element.getBoundingClientRect();
+
+            this.shiftPosition.x = elementRect.right - event.clientX;
+
+            this.shiftPosition.y = elementRect.bottom - event.clientY;
+
+            this.element.style.width =
+                elementRect.width - this.shiftPosition.x + 'px';
+            this.element.style.height =
+                elementRect.height - this.shiftPosition.y + 'px';
+        }
+    }
+
+    @HostListener('document:mouseup', ['$event']) onMouseup(event: any) {
+        if (this.isDown) {
+            this.isDown = false;
+        }
+    }
 }

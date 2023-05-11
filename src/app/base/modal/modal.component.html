@@ -1,69 +1,69 @@
 <div *ngIf="show">
-    <div class="modal show-mask" style="z-index: 100">
+    <div class="modal show-mask">
         <div class="modal-mask"></div>
         <div class="modal-container modal-center">
-            <div class="modal-content">
-                <div class="modal-main"    [ngStyle]="{'height': height,'width':width}">
-                 
-                    <div class="modal-top"   appFullscream    >
-                        <div class="modal-title">{{ title }}</div>
-                        <div nz-space>
-                            <button
-                                *nzSpaceItem
-                                nz-button
-                                nzType="default"
-                                nzSize="small"
-                                (click)="cancel()"
-                            >
-                                <i nz-icon nzType="minus" nzTheme="outline"></i>
-                            </button>
-                            <button
-                                *nzSpaceItem
-                                nz-button
-                                nzType="default"
-                                (click)="fullscrean()"
-                                nzSize="small"
-                            >
-                                <i
-                                    nz-icon
-                                    nzType="border"
-                                    nzTheme="outline"
-                                ></i>
-                            </button>
-                            <button
-                                *nzSpaceItem
-                                nz-button
-                                nzType="default"
-                                nzSize="small"
-                                (click)="cancel()"
-                            >
-                                <i nz-icon nzType="close" nzTheme="outline"></i>
-                            </button>
-                        </div>
+            <div
+                class="modal-main"
+                appFullscream
+                (mes)="cancel()"
+                cdkDrag
+                [ngClass]="{ 'modal-dynamic': dynamic }"
+                [ngStyle]="{ height: height, width: width }"
+            >
+                <div class="modal-right-bottom"></div>
+                <div class="modal-top" cdkDragHandle>
+                    <div class="modal-title">{{ title }}</div>
+                    <div nz-space>
+                        <button
+                            *nzSpaceItem
+                            nz-button
+                            nzType="default"
+                            nzSize="small"
+                            (click)="cancel()"
+                        >
+                            <i nz-icon nzType="minus" nzTheme="outline"></i>
+                        </button>
+                        <button
+                            *nzSpaceItem
+                            nz-button
+                            nzType="default"
+                            (click)="fullscrean()"
+                            nzSize="small"
+                        >
+                            <i nz-icon nzType="border" nzTheme="outline"></i>
+                        </button>
+                        <button
+                            *nzSpaceItem
+                            nz-button
+                            nzType="default"
+                            nzSize="small"
+                            (click)="cancel()"
+                        >
+                            <i nz-icon nzType="close" nzTheme="outline"></i>
+                        </button>
                     </div>
+                </div>
 
-                    <div class="modal-alert">
-                        
-                        <div class="modal-detail-content">
-                            <div class="modal-details">
-                                <iframe  
-                                    *ngIf="tabData.length === 1"
-                                    [src]="tabData[0].url"
-                                ></iframe>
-                                <div class="modal-tab"  >
-                                    <nz-tabset
-                                        style="height: 100%"
-                                        nzType="card"
-                                        *ngIf="tabData.length !== 1"
+                <div class="modal-alert">
+                    <div class="modal-detail-content">
+                        <div class="modal-details">
+                            <iframe
+                                *ngIf="tabData.length === 1"
+                                [src]="tabData[0].url"
+                            ></iframe>
+                            <div class="modal-tab">
+                                <nz-tabset
+                                    style="height: 100%"
+                                    nzType="card"
+                                    *ngIf="tabData.length !== 1"
+                                >
+                                    <nz-tab
+                                        *ngFor="let tab of tabData"
+                                        [nzTitle]="tab.name"
                                     >
-                                        <nz-tab
-                                            *ngFor="let tab of tabData"
-                                            [nzTitle]="tab.name"
-                                        >
-                                            <iframe [src]="tab.url"  ></iframe>
-                                        </nz-tab>
-                                    </nz-tabset>
-                                </div>
+                                        <iframe [src]="tab.url"></iframe>
+                                    </nz-tab>
+                                </nz-tabset>
                             </div>
                         </div>
                     </div>
