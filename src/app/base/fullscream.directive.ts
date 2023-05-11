@@ -26,13 +26,13 @@ export class FullscreamDirective implements OnInit {
             const elementRect = this.element.getBoundingClientRect();
             const x = event.clientX;
             const y = event.clientY;
-            if (
-                x < elementRect.left - 10 ||
-                x > elementRect.right + 10 ||
-                y < elementRect.top - 10 ||
-                y > elementRect.bottom + 10
-            )
-                this.mes.emit();
+            // if (
+            //     x < elementRect.left - 10 ||
+            //     x > elementRect.right + 10 ||
+            //     y < elementRect.top - 10 ||
+            //     y > elementRect.bottom + 10
+            // )
+            //     this.mes.emit();
         }
         this.num = 1;
     }
