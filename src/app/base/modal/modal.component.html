@@ -1,14 +1,15 @@
-<div *ngIf="show">
-    <div class="modal show-mask">
-        <div class="modal-mask"></div>
-        <div class="modal-container modal-center">
+  <div *ngIf="show">
+    <div 
+        cdkDrag
+        [ngClass]="{ 'modal': true    }"
+        [ngStyle]="{'width': width,'height':height}"
+        appFullscream
+    >
+        <div class="modal-center">
             <div
                 class="modal-main"
-                appFullscream
                 (mes)="cancel()"
-                cdkDrag
                 [ngClass]="{ 'modal-dynamic': dynamic }"
-                [ngStyle]="{ height: height, width: width }"
             >
                 <div class="modal-right-bottom"></div>
                 <div class="modal-top" cdkDragHandle>
@@ -19,7 +20,7 @@
                             nz-button
                             nzType="default"
                             nzSize="small"
-                            (click)="cancel()"
+                            (click)="addTab()"
                         >
                             <i nz-icon nzType="minus" nzTheme="outline"></i>
                         </button>
@@ -48,6 +49,7 @@
                     <div class="modal-detail-content">
                         <div class="modal-details">
                             <iframe
+                                style="position: relative"
                                 *ngIf="tabData.length === 1"
                                 [src]="tabData[0].url"
                             ></iframe>
@@ -61,7 +63,10 @@
                                         *ngFor="let tab of tabData"
                                         [nzTitle]="tab.name"
                                     >
-                                        <iframe [src]="tab.url"></iframe>
+                                        <iframe
+                                            style="position: relative"
+                                            [src]="tab.url"
+                                        ></iframe>
                                     </nz-tab>
                                 </nz-tabset>
                             </div>
@@ -71,4 +76,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>  
+
+ 
+ 

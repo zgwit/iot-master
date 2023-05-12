@@ -13,7 +13,10 @@ export class ModalComponent implements OnInit {
     width: any = '60vw';
     height: any = '50vh';
     dynamic = false;
+    items: any[] = [];
+    @Output() close = new EventEmitter();
     @Output() hide = new EventEmitter();
+    
     constructor(private msg: NzMessageService, private san: DomSanitizer) {}
 
     ngOnInit(): void {}
@@ -26,16 +29,28 @@ export class ModalComponent implements OnInit {
         this.tabData = arr;
     }
     cancel() {
-        this.hide.emit(); 
+        this.close.emit(this.title); 
         this.width = '60vw';
         this.height = '50vh';
     }
-
-    fullscrean() {
+    // close() {
+    //     this.items.filter((item: any, index: any) => {
+    //         if (item === this.title) this.items.splice(index, 1);
+    //     });
+    // }
+    addTab() {
+       // this.items.push(this.title);
+        this.hide.emit(this.title);
+    }
+    showTab() {}
+    fullscrean() {this.dynamic=!this.dynamic
+       
         if (this.width === '100vw') {
+            this.dynamic = false;
             this.width = '60vw';
             this.height = '50vh';
         } else {
+            this.dynamic = true;
             this.width = '100vw';
             this.height = '100vh';
         }
