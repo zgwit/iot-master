@@ -15,26 +15,25 @@ export class FullscreamDirective implements OnInit {
     private isDown = false;
     shiftPosition = { x: 0, y: 0 };
     element: any = null;
-    num = 0;
+    
     constructor(private el: ElementRef) {
         this.element = this.el.nativeElement;
     }
     ngOnInit(): void {}
 
-    @HostListener('document:click', ['$event']) onClick(event: any) {
-        if (this.num === 1) {
+    @HostListener('document:dblclick', ['$event']) ondblClick(event: any) {
+        
             const elementRect = this.element.getBoundingClientRect();
             const x = event.clientX;
-            const y = event.clientY;
-            // if (
-            //     x < elementRect.left - 10 ||
-            //     x > elementRect.right + 10 ||
-            //     y < elementRect.top - 10 ||
-            //     y > elementRect.bottom + 10
-            // )
-            //     this.mes.emit();
-        }
-        this.num = 1;
+            const y = event.clientY; 
+            if (
+                x < elementRect.left - 10 ||
+                x > elementRect.right + 10 ||
+                y < elementRect.top - 10 ||
+                y > elementRect.bottom + 10
+            )
+                this.mes.emit();
+       
     }
 
     @HostListener('mousedown', ['$event']) onMousedown(event: any) {
