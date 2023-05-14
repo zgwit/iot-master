@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -8,20 +8,26 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
     styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements OnInit {
+    index = 0;
+
     @Input() title: any;
     @Input() show: any;
     width: any = '60vw';
     height: any = '50vh';
+    dragPosition = { x: 0, y: 0 };
     dynamic = false;
     items: any[] = [];
     @Output() close = new EventEmitter();
     @Output() hide = new EventEmitter();
-    
-    constructor(private msg: NzMessageService, private san: DomSanitizer) {}
 
-    ngOnInit(): void {}
+    constructor(private msg: NzMessageService, private san: DomSanitizer) { }
+
+    ngOnInit(): void { }
     tabData: any;
-
+    zindex() {
+         
+        this.index = 9999
+    }
     @Input() set entries(arr: any) {
         arr.forEach((item: { url: SafeResourceUrl; path: string }) => {
             item.url = this.san.bypassSecurityTrustResourceUrl(item.path);
@@ -29,30 +35,26 @@ export class ModalComponent implements OnInit {
         this.tabData = arr;
     }
     cancel() {
-        this.close.emit(this.title); 
+        this.close.emit(this.title);
         this.width = '60vw';
         this.height = '50vh';
     }
-    // close() {
-    //     this.items.filter((item: any, index: any) => {
-    //         if (item === this.title) this.items.splice(index, 1);
-    //     });
-    // }
+
     addTab() {
-       // this.items.push(this.title);
+
         this.hide.emit(this.title);
     }
-    showTab() {}
-    fullscrean() {this.dynamic=!this.dynamic
-       
-        if (this.width === '100vw') {
-            this.dynamic = false;
-            this.width = '60vw';
-            this.height = '50vh';
-        } else {
-            this.dynamic = true;
+    showTab() { }
+    fullscreen() {
+        this.dynamic = !this.dynamic
+        this.dragPosition = { x: 0, y: 0 };
+        if (this.dynamic) {
             this.width = '100vw';
             this.height = '100vh';
+        } else {
+            this.width = '60vw';
+            this.height = '50vh';
+
         }
     }
 }

@@ -84,7 +84,13 @@ export class DesktopComponent {
             }
         });
     }
-
+zindex(mes:any){ 
+    this.items.filter((item: any, index: any) => {  item.index = 0;
+    if (item.title === mes) {
+        item.index = 9999;
+    }
+    console.log(this.items)
+});}
     open(app: any) {
         if (window.innerWidth < 800) {
             this.router.navigate([app.entries[0].path]);
@@ -100,6 +106,7 @@ export class DesktopComponent {
                 show: true,
                 entries: app.entries,
                 title: app.name,
+                index:0
             });
 
         //   this.items.filter((item: any, index: any) => {console.log(1)
