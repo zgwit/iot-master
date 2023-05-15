@@ -1,5 +1,5 @@
  <div *ngIf="show" class="modal" [ngStyle]="{'width': width,'height':height,'z-index':index}"  cdkDrag [cdkDragFreeDragPosition]="dragPosition">
-     <div class="modal-center" appFullscream [ngStyle]="{'width': width,'height':height}">
+     <div class="modal-center" appFullscream (setIndex)="zindex()" [ngStyle]="{'width': width,'height':height}">
          <div class="modal-main" (mes)="cancel()">
              <div class="modal-right-bottom"></div>
              <div class="modal-top" cdkDragHandle  (click)="zindex()">

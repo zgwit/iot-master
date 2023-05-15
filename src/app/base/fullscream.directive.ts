@@ -11,8 +11,10 @@ import {
     selector: '[appFullscream]',
 })
 export class FullscreamDirective implements OnInit {
-    @Output() mes = new EventEmitter();
+    @Output() setIndex = new EventEmitter();
     private isDown = false;
+    private dragDown = false;
+    num = 1;
     shiftPosition = { x: 0, y: 0 };
     element: any = null;
 
@@ -21,29 +23,26 @@ export class FullscreamDirective implements OnInit {
     }
     ngOnInit(): void {}
 
-    @HostListener('document:dblclick', ['$event']) ondblClick(event: any) {
-        const elementRect = this.element.getBoundingClientRect();
-        const x = event.clientX;
-        const y = event.clientY;
-        if (
-            x < elementRect.left - 10 ||
-            x > elementRect.right + 10 ||
-            y < elementRect.top - 10 ||
-            y > elementRect.bottom + 10
-        )
-            this.mes.emit();
-    }
-
     @HostListener('mousedown', ['$event']) onMousedown(event: any) {
         const elementRect = this.element.getBoundingClientRect();
-
-        if (
+        const draw =
+            !this.dragDown &&
+            event.clientX > elementRect.left &&
+            event.clientX < elementRect.right - 120 &&
+            event.clientY > elementRect.top &&
+            event.clientY < elementRect.top + 37;
+        const resize =
             !this.isDown &&
             event.clientX > elementRect.right - 10 &&
             event.clientX < elementRect.right &&
             event.clientY > elementRect.bottom - 10 &&
-            event.clientY < elementRect.bottom
-        ) {
+            event.clientY < elementRect.bottom;
+
+        if (draw) {
+            this.dragDown = true;
+            this.num = 1;
+        }
+        if (resize) {
             this.isDown = true;
 
             const mask = document.createElement('div');
@@ -55,7 +54,15 @@ export class FullscreamDirective implements OnInit {
     }
 
     @HostListener('document: mousemove', ['$event']) onMousemove(event: any) {
-        //console.log(1)
+        if (this.dragDown && this.num) {
+            const mask = document.createElement('div');
+            mask.style.cssText =
+                'position: absolute;top: 0;left: 0;width: 100vw;height: 100vh;z-index: 9999;';
+            mask.setAttribute('id', 'mask');
+            document.body.append(mask);
+            this.num = 0;
+            this.setIndex.emit();
+        }
         if (this.isDown) {
             const elementRect = this.element.getBoundingClientRect();
 
@@ -71,8 +78,9 @@ export class FullscreamDirective implements OnInit {
     }
 
     @HostListener('document:mouseup', ['$event']) onMouseup(event: any) {
-        if (this.isDown) {
+        if (this.isDown || this.dragDown) {
             this.isDown = false;
+            this.dragDown = false;
             const mask = document.getElementById('mask');
             mask && mask.remove();
         }

@@ -1,74 +1,85 @@
-<nz-layout class="layout" >
-  <nz-header class="header">
-    <div class="system">
-      <img class="logo" [src]="os.oem.logo" alt="logo">
-      <span class="title">{{os.oem.title}}</span>
-    </div>
-    <!-- <a nz-button nzSize="small" routerLink="/admin" style="margin-right: 5px;">
+<nz-layout class="layout">
+    <nz-header class="header">
+        <div class="system">
+            <img class="logo" [src]="os.oem.logo" alt="logo" />
+            <span class="title">{{ os.oem.title }}</span>
+        </div>
+        <!-- <a nz-button nzSize="small" routerLink="/admin" style="margin-right: 5px;">
       <span nz-icon nzType="swap" nzTheme="outline"></span>
       菜单模式
     </a> -->
-    <div nzTrigger="click" nz-dropdown [nzDropdownMenu]="menu">
-      <img class="avatar" src="/assets/user.svg" alt="logo">
-      {{userInfo.name}}
-    </div>
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu>
-        <li nz-menu-item (click)="handlePassword()">修改密码</li>
-        <li nz-menu-item (click)="logout()">退出登录</li>
-      </ul>
-    </nz-dropdown-menu>
-  </nz-header>
-  <nz-content class="content">
-    <nz-row [nzGutter]="[{ xs: 8, sm: 16, md: 24}, { xs: 8, sm: 16, md: 24}]">
-      <nz-col class="app" (click)="open(app)" *ngFor="let app of _as.apps" [nzXs]="8" [nzSm]="6" [nzMd]="4" [nzLg]="3">
-        <img class="icon" [src]="app.icon || '/assets/app.png'" alt="app">
-        <div class="name">
-          <span class="inner">
-            {{app.name}}
-          </span>
+        <div nzTrigger="click" nz-dropdown [nzDropdownMenu]="menu">
+            <img class="avatar" src="/assets/user.svg" alt="logo" />
+            {{ userInfo.name }}
         </div>
-      </nz-col>
-    </nz-row>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+                <li nz-menu-item (click)="handlePassword()">修改密码</li>
+                <li nz-menu-item (click)="logout()">退出登录</li>
+            </ul>
+        </nz-dropdown-menu>
+    </nz-header>
+    <nz-content class="content">
+        <nz-row
+            [nzGutter]="[
+                { xs: 8, sm: 16, md: 24 },
+                { xs: 8, sm: 16, md: 24 }
+            ]"
+        >
+            <nz-col
+                class="app"
+                (click)="open(app)"
+                *ngFor="let app of _as.apps"
+                [nzXs]="8"
+                [nzSm]="6"
+                [nzMd]="4"
+                [nzLg]="3"
+            >
+                <img
+                    class="icon"
+                    [src]="app.icon || '/assets/app.png'"
+                    alt="app"
+                />
+                <div class="name">
+                    <span class="inner">
+                        {{ app.name }}
+                    </span>
+                </div>
+            </nz-col>
+        </nz-row>
+    </nz-content>
 
-  </nz-content>
- 
-  <nz-footer class="footer">
-    {{os.oem.company}} {{os.oem.copyright}}
-  </nz-footer>
+    <nz-footer class="footer">
+        {{ os.oem.company }} {{ os.oem.copyright }}
+    </nz-footer>
 </nz-layout>
 
-<div class="tab"  >
+<div class="tab">
+    <ng-container *ngFor="let item of items">
+        <!-- *ngIf="item.tab" -->
+        <div class="tab-btn"  *ngIf="item.tab">
+            <a (click)="showTab(item.title)"> {{ item.title }} </a>
+            <a style="margin-left: 5px"
+                ><i
+                    nz-icon
+                    nzType="close"
+                    nzTheme="outline"
+                    (click)="close(item.title)"
+                ></i
+            ></a>
+        </div>
+    </ng-container>
+</div>
 
 <ng-container *ngFor="let item of items">
- 
-  <!-- *ngIf="item.tab" -->
-  <div class="tab-btn"  >
-    <a (click)="showTab(item.title)"> {{ item.title }} </a>
-    <a style="margin-left: 5px"
-        ><i
-            nz-icon
-            nzType="close"
-            nzTheme="outline"
-            (click)="close(item.title )"
-        ></i
-    ></a>
-</div>
-
-
+    <app-modal
+    [index]="item.index"
+        [title]="item.title"
+        [show]="item.show"
+        [entries]="item.entries"
+        (hide)="hide($event)"
+        (close)="close($event)"
+        (setIndex)="setIndex($event)"
+    >
+    </app-modal>
 </ng-container>
-
-
-  
-</div>
-
-
- <ng-container *ngFor="let item of items">
-   
-  <app-modal   [title]="item.title" [show]="item.show" [entries]="item.entries"  (hide)="hide($event)" (close)="close($event)"  >  </app-modal>
-
-</ng-container>
- 
-  
-
- 

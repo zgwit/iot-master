@@ -20,7 +20,7 @@ export class DesktopComponent {
     entries: any = [];
     items: any[] = [];
     userInfo: any;
-    
+
     constructor(
         private router: Router,
         private rs: RequestService,
@@ -63,12 +63,18 @@ export class DesktopComponent {
         this.items.filter((item: any, index: any) => {
             if (item.title === mes) {
                 item.show = false;
-                item.tab=true
+                item.tab = true;
             }
         });
-        //this.show=false
     }
- 
+    setIndex(mes: any) {
+        this.items.filter((item: any, index: any) => {
+            item.index = 0;
+            if (item.title === mes) {
+                item.index = 9999;
+            }
+        });
+    }
     close(mes: any) {
         this.items.filter((item: any, index: any) => {
             if (item.title === mes) {
@@ -84,13 +90,7 @@ export class DesktopComponent {
             }
         });
     }
-zindex(mes:any){ 
-    this.items.filter((item: any, index: any) => {  item.index = 0;
-    if (item.title === mes) {
-        item.index = 9999;
-    }
-    console.log(this.items)
-});}
+
     open(app: any) {
         if (window.innerWidth < 800) {
             this.router.navigate([app.entries[0].path]);
@@ -106,37 +106,11 @@ zindex(mes:any){
                 show: true,
                 entries: app.entries,
                 title: app.name,
-                index:0
+                index: 0,
             });
-
-        //   this.items.filter((item: any, index: any) => {console.log(1)
-        //     if (item.title === app.name)    return
-        //     console.log(index)
-        //     console.log(this.items.length)
-        //     if(index+1===this.items.length)
-        //     this.items.push({
-        //       show: true,
-        //       entries: app.entries,
-        //       title: app.name,
-        //   });
-        // });
-
-        // this.show=true
-        // this.entries=app.entries
-        // this.title=app.name
-        // this.ms.create({
-        //   nzTitle: app.name,
-        //   nzFooter: null,
-        //   //nzMask: false,
-        //   nzMaskClosable: false,
-        //   nzWidth: "90%",
-        //   //nzStyle: {height: "90%"},
-        //   nzBodyStyle: { padding: "0", overflow: "hidden" },
-        //   nzContent: WindowComponent,
-        //   nzComponentParams: {
-        //     entries: app.entries || []
-        //   }
-        // })
+        else {
+            this.showTab(app.name);
+        }
     }
 
     logout() {

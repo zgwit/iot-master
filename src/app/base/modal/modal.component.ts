@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    Output,
+    EventEmitter,
+    ViewChild,
+} from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -8,8 +15,8 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
     styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements OnInit {
-    index = 0;
-
+    // index = 0;
+    @Input() index: any;
     @Input() title: any;
     @Input() show: any;
     width: any = '60vw';
@@ -19,14 +26,14 @@ export class ModalComponent implements OnInit {
     items: any[] = [];
     @Output() close = new EventEmitter();
     @Output() hide = new EventEmitter();
+    @Output() setIndex = new EventEmitter();
+    constructor(private msg: NzMessageService, private san: DomSanitizer) {}
 
-    constructor(private msg: NzMessageService, private san: DomSanitizer) { }
-
-    ngOnInit(): void { }
+    ngOnInit(): void {}
     tabData: any;
     zindex() {
-         
-        this.index = 9999
+        
+        this.setIndex.emit(this.title);
     }
     @Input() set entries(arr: any) {
         arr.forEach((item: { url: SafeResourceUrl; path: string }) => {
@@ -41,12 +48,11 @@ export class ModalComponent implements OnInit {
     }
 
     addTab() {
-
         this.hide.emit(this.title);
     }
-    showTab() { }
+    showTab() {}
     fullscreen() {
-        this.dynamic = !this.dynamic
+        this.dynamic = !this.dynamic;
         this.dragPosition = { x: 0, y: 0 };
         if (this.dynamic) {
             this.width = '100vw';
@@ -54,7 +60,6 @@ export class ModalComponent implements OnInit {
         } else {
             this.width = '60vw';
             this.height = '50vh';
-
         }
     }
 }
