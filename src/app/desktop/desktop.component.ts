@@ -87,8 +87,11 @@ export class DesktopComponent {
         this.items.filter((item: any, index: any) => {
             if (item.title === mes) {
                 item.show = true;
+                item.tab = false;
             }
         });
+        this.setIndex(mes)
+        
     }
 
     open(app: any) {
@@ -108,9 +111,9 @@ export class DesktopComponent {
                 title: app.name,
                 index: 0,
             });
-        else {
-            this.showTab(app.name);
-        }
+      
+            this.setIndex(app.name);
+        
     }
 
     logout() {
