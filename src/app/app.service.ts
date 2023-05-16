@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RequestService } from "./request.service";
 
 const internals: any[] = [{
-    icon: '/assets/product.svg',
+    icon: '/assets/product.png',
     nzIcon: 'appstore',
     name: '产品管理',
     internal: true,
@@ -11,7 +11,7 @@ const internals: any[] = [{
         // {name: '创建产品', path: '/product/create'},
     ]
 }, {
-    icon: '/assets/device.svg',
+    icon: '/assets/device.png',
     nzIcon: 'block',
     name: '设备管理',
     internal: true,
@@ -25,7 +25,7 @@ const internals: any[] = [{
     ]
 },
 {
-    icon: '/assets/user.svg',
+    icon: '/assets/user.png',
     nzIcon: 'user',
     name: '用户管理',
     internal: true,
@@ -35,7 +35,7 @@ const internals: any[] = [{
         { name: '角色权限', path: '/user/role' },
     ]
 }, {
-    icon: '/assets/server.svg',
+    icon: '/assets/server.png',
     nzIcon: 'database',
     name: '数据总线',
     internal: true,
@@ -44,7 +44,7 @@ const internals: any[] = [{
         // {name: '创建总线', path: '/broker/create'},
     ]
 }, {
-    icon: '/assets/gateway.svg',
+    icon: '/assets/gateway.png',
     nzIcon: 'partition',
     name: '网关管理',
     internal: true,
@@ -54,7 +54,7 @@ const internals: any[] = [{
         // {name: '创建网关', path: '/gateway/create'},
     ]
 }, {
-    icon: '/assets/plugin.svg',
+    icon: '/assets/plugin.png',
     nzIcon: 'appstore-add',
     name: '插件管理',
     internal: true,
@@ -63,7 +63,7 @@ const internals: any[] = [{
         // {name: '创建插件', path: '/plugin/create'},
     ]
 }, {
-    icon: '/assets/setting.svg',
+    icon: '/assets/setting.png',
     nzIcon: 'setting',
     name: '系统设置',
     internal: true,
