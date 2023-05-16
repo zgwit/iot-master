@@ -20,7 +20,9 @@ import {
 })
 export class PluginsComponent {
     href!: string;
+    isVisible=false
     loading = true;
+    chooseData:any={}
     datum: any[] = [];
     total = 1;
     pageSize = 20;
@@ -37,12 +39,30 @@ export class PluginsComponent {
         private rs: RequestService,
         private msg: NzMessageService
     ) {
-        //this.load();
+        this.load();
     }
 
     reload() {
         this.datum = [];
         this.load();
+    }
+    close() {
+        this.isVisible = false;
+    }
+    informate(mes: any) {
+        this.isVisible = true;
+ 
+        this.rs
+            .get(`plugin/${mes.id}`, this.query)
+            .subscribe((res) => {
+               // console.log(res.data)
+                this.chooseData=res.data
+            })
+            .add(() => {
+                this.loading = false;
+            });
+
+     
     }
 
     load() {
@@ -148,6 +168,7 @@ export class PluginsComponent {
     }
 
     handleEdit(id?: string) {
+        this.isVisible=false
         const nzTitle = id ? "编辑插件" : "创建插件";
         const modal: NzModalRef = this.modal.create({
             nzTitle,

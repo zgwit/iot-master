@@ -1,0 +1,50 @@
+<nz-modal
+    [(nzVisible)]="isVisible"
+    [nzTitle]="modalTitle"
+    [nzContent]="modalContent"
+    [nzFooter]="modalFooter"
+    (nzOnCancel)="handleClose()"
+>
+    <ng-template #modalTitle>{{title}}详情</ng-template>
+
+    <ng-template #modalContent>
+        <div *ngIf="title==='插件'"> 
+        <p>插件id：{{ chooseData.id }}</p>
+        <p>名称：{{ chooseData.name }}</p>
+        <p>用户名：{{ chooseData.username }}</p>
+        <p>密码：{{ chooseData.password }}</p>
+        <p>外置：{{ chooseData.external }}</p>
+        <p>版本：{{ chooseData.version }}</p>
+        <p>命令：{{ chooseData.command }}</p>
+        <p>状态：{{ chooseData.running }}</p>
+        <p>日期：{{ chooseData.created }}</p>
+    </div>
+    <div *ngIf="title==='产品'"> 
+        <p>产品id：{{ chooseData.id }}</p>
+        <p>名称：{{ chooseData.name }}</p>
+        <p>说明：{{ chooseData.desc }}</p>
+        <p>日期：{{ chooseData.created }}</p>
+    </div>
+    <div *ngIf="title==='总线'"> 
+        <p>总线id：{{ chooseData.id }}</p>
+        <p>名称：{{ chooseData.name }}</p>
+        <p>说明：{{ chooseData.desc }}</p>
+        <p>端口：{{ chooseData.port }}</p>
+        <p>日期：{{ chooseData.created }}</p>
+    </div>
+    </ng-template>
+
+    <ng-template #modalFooter>
+        <button
+            nz-button
+            nzType="primary"
+            (click)="handleEdit(chooseData.id)"
+        >
+            编辑
+        </button>
+        <button nz-button nzType="primary" (click)="handleDelete(chooseData.id)">
+            删除
+        </button>
+        <button nz-button nzType="primary" (click)="handleClose()">关闭</button>
+    </ng-template>
+</nz-modal>

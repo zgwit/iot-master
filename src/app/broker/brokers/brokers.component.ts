@@ -15,11 +15,13 @@ import { BrokerEditComponent } from "../broker-edit/broker-edit.component";
 export class BrokersComponent {
   uploading: Boolean = false;
   loading = true
+  isVisible=false
   datum: any[] = []
   total = 1;
   pageSize = 20;
   pageIndex = 1;
   query: any = {}
+  chooseData:any={}
   checked = false;
   indeterminate = false;
   setOfCheckedId = new Set<number>();
@@ -31,7 +33,7 @@ export class BrokersComponent {
     private rs: RequestService,
     private msg: NzMessageService
   ) {
-    //this.load();
+     this.load();
   }
 
   reload() {
@@ -50,6 +52,26 @@ export class BrokersComponent {
       this.loading = false;
     })
   }
+
+  close() {
+    this.isVisible = false;
+}
+
+  informate(mes: any) {
+    this.isVisible = true;
+
+    this.rs
+        .get(`broker/${mes.id}`, this.query)
+        .subscribe((res) => {
+           // console.log(res.data)
+            this.chooseData=res.data
+        })
+        .add(() => {
+            this.loading = false;
+        });
+
+ 
+}
 
   create() {
     let path = "/broker/create"
@@ -96,6 +118,7 @@ export class BrokersComponent {
   }
 
   handleEdit(id?: string) {
+    this.isVisible=false
     const nzTitle = id ? "编辑总线" : "创建总线";
     const modal: NzModalRef = this.modal.create({
       nzTitle,

@@ -27,7 +27,19 @@
     </nz-space>
 </app-toolbar>
 
-<ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
+
+<div nz-row [nzGutter]="16" class="card">
+    <div
+        nz-col
+        *ngFor="let item of datum"
+        class="card-item"
+        (click)="informate(item)"
+    >
+        <app-card [id]="item.id" [name]="item.name" [title]="'插件'"></app-card>
+    </div>
+</div>
+
+<!-- <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
 <nz-table
     #basicTable
     [nzData]="datum"
@@ -98,5 +110,16 @@
         </td>
     </tr>
     </tbody>
-</nz-table>
+</nz-table> -->
 
+
+<app-detail
+    [isVisible]="isVisible"
+    [title]="'插件'"
+    [chooseData]="chooseData"
+    (edit)="handleEdit($event)"
+    (delete)="delete($event)"
+    (close)="close()"
+></app-detail>
+
+ 

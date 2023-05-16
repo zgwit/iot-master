@@ -24,6 +24,10 @@ import { TableOperComponent } from './table-oper/table-oper.component';
 import { ModalComponent } from './modal/modal.component';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { FullscreamDirective } from './fullscream.directive';
+import { CardComponent } from './card/card.component';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { DetailComponent } from './detail/detail.component';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 @NgModule({
   declarations: [
     DatePipe,
@@ -34,7 +38,9 @@ import { FullscreamDirective } from './fullscream.directive';
     ImportComponent,
     TableOperComponent,
     ModalComponent,
-    FullscreamDirective 
+    FullscreamDirective,
+    CardComponent,
+    DetailComponent 
   ],
   exports: [
     DatePipe,
@@ -44,14 +50,18 @@ import { FullscreamDirective } from './fullscream.directive';
     EditTableComponent,
     ImportComponent,
     TableOperComponent,
-    ModalComponent
+    ModalComponent,
+    CardComponent ,
+    DetailComponent 
   ],
   imports: [
     CommonModule,
     NzInputModule,
+    NzModalModule,
     NzButtonModule,
     NzTabsModule,
     NzPaginationModule,
+    NzTagModule,
     FormsModule,
     ReactiveFormsModule,
     NzFormModule,

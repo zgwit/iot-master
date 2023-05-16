@@ -19,6 +19,7 @@ import { NzSpaceModule } from "ng-zorro-antd/space";
 import { BrokerRoutingModule } from "./broker-routing.module";
 import { BrokerDetailComponent } from './broker-detail/broker-detail.component';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 @NgModule({
   declarations: [
     BrokersComponent,
@@ -33,6 +34,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     NzIconModule,
     NzPopconfirmModule,
     NzFormModule,
+    NzModalModule,
     NzInputModule,
     NzButtonModule,
     NzTableModule,

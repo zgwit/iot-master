@@ -12,3 +12,14 @@
       font-size: 14px;
     }
   }
+  .card {
+    box-sizing: border-box;
+    padding:10px 20px;
+    .card-item {
+        box-sizing: border-box;
+        padding: 5px;
+        &:hover{
+          cursor: pointer;
+        }
+    }
+}

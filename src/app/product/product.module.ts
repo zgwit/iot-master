@@ -32,6 +32,7 @@ import { ProductEditParametersComponent } from './product-edit-parameters/produc
 import { ProductEditArgumentsComponent } from './product-edit-arguments/product-edit-arguments.component';
 import { ProductEditComponentComponent } from './product-edit-component/product-edit-component.component';
 import { ProductSelectComponent } from './product-select/product-select.component';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 @NgModule({
     declarations: [
         ProductsComponent,
@@ -54,6 +55,7 @@ import { ProductSelectComponent } from './product-select/product-select.componen
         ProductRoutingModule,
         NzLayoutModule,
         NzMenuModule,
+        NzModalModule,
         NzIconModule,
         NzFormModule,
         NzInputModule,
