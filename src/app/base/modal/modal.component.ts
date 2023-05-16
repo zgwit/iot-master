@@ -31,8 +31,7 @@ export class ModalComponent implements OnInit {
 
     ngOnInit(): void {}
     tabData: any;
-    zindex() {
-        
+    zindex() { 
         this.setIndex.emit(this.title);
     }
     @Input() set entries(arr: any) {
@@ -41,6 +40,7 @@ export class ModalComponent implements OnInit {
         });
         this.tabData = arr;
     }
+    
     cancel() {
         this.close.emit(this.title);
         this.width = '60vw';

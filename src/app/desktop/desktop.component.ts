@@ -111,7 +111,7 @@ export class DesktopComponent {
                 title: app.name,
                 index: 0,
             });
-      
+            this.showTab(app.name)
             this.setIndex(app.name);
         
     }
