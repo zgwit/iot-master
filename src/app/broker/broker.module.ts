@@ -20,6 +20,7 @@ import { BrokerRoutingModule } from "./broker-routing.module";
 import { BrokerDetailComponent } from './broker-detail/broker-detail.component';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 @NgModule({
   declarations: [
     BrokersComponent,
@@ -35,6 +36,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzPopconfirmModule,
     NzFormModule,
     NzModalModule,
+    NzPaginationModule,
     NzInputModule,
     NzButtonModule,
     NzTableModule,

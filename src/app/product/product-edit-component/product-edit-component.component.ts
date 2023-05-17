@@ -153,7 +153,7 @@ export class ProductEditComponentComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.group.value)
+   // console.log(this.group.value)
     return new Promise((resolve) => {
       if (this.group.valid) {
         let url = this.id ? `product/${this.id}` : `product/create`

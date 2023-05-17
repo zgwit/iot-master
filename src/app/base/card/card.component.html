@@ -1,17 +1,9 @@
 <div class="card">
     <div class="card-img">
-        <img src="assets/app.png" style="width: 100%; height: 100%" />
+        <img [src]="'assets/' + img" style="width: 100%; height: 100%" />
     </div>
     <div class="card-inf">
-        <div style="margin-bottom: 5px">
-            <!-- <nz-tag nzColor="cyan" style="width: 100%"> -->
-                {{title}}id: {{ id }}
-            <!-- </nz-tag> -->
-        </div>
-        <div>
-            <!-- <nz-tag nzColor="cyan" style="width: 100%; overflow: hidden"  > -->
-                {{title}}名称: {{ name }}
-                <!-- </nz-tag  > -->
-        </div>
+        <div style="margin-bottom: 5px">{{ title }}id: {{ id }}</div>
+        <div>{{ title }}名称: {{ name }}</div>
     </div>
 </div>

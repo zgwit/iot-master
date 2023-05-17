@@ -21,7 +21,7 @@ import {
 })
 export class ProductsComponent {
     isVisible = false;
-    chooseData:any={}
+    chooseData: any = {};
     href!: string;
     loading = false;
     datum: any[] = [];
@@ -39,12 +39,13 @@ export class ProductsComponent {
 
     constructor(
         private modal: NzModalService,
-      //  @Optional() protected ref: NzModalRef,
+        @Optional() protected ref: NzModalRef,
         private router: Router,
         private rs: RequestService,
         private msg: NzMessageService
     ) {
-        this.load();
+        this.pageSizeChange(this.pageSize);
+        //this.load();
     }
 
     reload() {
@@ -53,18 +54,15 @@ export class ProductsComponent {
     }
     informate(mes: any) {
         this.isVisible = true;
- 
+
         this.rs
             .get(`product/${mes.id}`, this.query)
             .subscribe((res) => {
-               // console.log(res.data)
-                this.chooseData=res.data
+                this.chooseData = res.data;
             })
             .add(() => {
                 this.loading = false;
             });
-
-     
     }
     load() {
         this.loading = true;
@@ -73,8 +71,9 @@ export class ProductsComponent {
             .subscribe((res) => {
                 this.datum = res.data;
                 this.total = res.total;
-              //  this.setOfCheckedId.clear();
-              //  refreshCheckedStatus(this);
+
+                //  this.setOfCheckedId.clear();
+                //  refreshCheckedStatus(this);
             })
             .add(() => {
                 this.loading = false;
@@ -110,9 +109,11 @@ export class ProductsComponent {
     }
     pageIndexChange(pageIndex: number) {
         this.query.skip = pageIndex - 1;
+        this.load();
     }
     pageSizeChange(pageSize: number) {
         this.query.limit = pageSize;
+        this.load();
     }
     search($event: string) {
         this.query.keyword = {
@@ -133,7 +134,7 @@ export class ProductsComponent {
     }
 
     handleEdit(id?: string) {
-      this.isVisible=false
+        this.isVisible = false;
         const nzTitle = id ? '编辑产品' : '创建产品';
         const modal: NzModalRef = this.modal.create({
             nzTitle,
@@ -166,7 +167,7 @@ export class ProductsComponent {
     }
 
     select(obj: object) {
-      //  this.ref && this.ref.close(obj);
+        this.ref && this.ref.close(obj);
     }
     cancel() {
         this.msg.info('取消操作');

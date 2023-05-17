@@ -39,7 +39,7 @@ export class PluginsComponent {
         private rs: RequestService,
         private msg: NzMessageService
     ) {
-        this.load();
+        this.pageSizeChange(this.pageSize);
     }
 
     reload() {
@@ -72,8 +72,8 @@ export class PluginsComponent {
             .subscribe((res) => {
                 this.datum = res.data || [];
                 this.total = res.total;
-                this.setOfCheckedId.clear();
-                refreshCheckedStatus(this);
+                // this.setOfCheckedId.clear();
+                // refreshCheckedStatus(this);
             })
             .add(() => {
                 this.loading = false;
@@ -149,10 +149,12 @@ export class PluginsComponent {
 
     pageIndexChange(pageIndex: number) {
         this.query.skip = pageIndex - 1;
+        this.load();
     }
 
     pageSizeChange(pageSize: number) {
         this.query.limit = pageSize;
+        this.load();
     }
 
     search($event: string) {

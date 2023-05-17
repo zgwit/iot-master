@@ -39,7 +39,12 @@
         class="card-item"
         (click)="informate(item)"
     >
-        <app-card [id]="item.id" [name]="item.name" [title]="'总线'"></app-card>
+        <app-card
+            [img]="'server.png'"
+            [id]="item.id"
+            [name]="item.name"
+            [title]="'总线'"
+        ></app-card>
     </div>
 </div>
 
@@ -113,4 +118,13 @@
     (delete)="delete($event)"
     (close)="close()"
 ></app-detail>
- 
+
+<nz-pagination
+    style="position: fixed;  bottom: 0; right: 10px ; "
+    [nzPageIndex]="pageIndex"
+    [nzTotal]="total"
+    nzShowSizeChanger
+    [nzPageSize]="pageSize"
+    (nzPageSizeChange)="pageSizeChange($event)"
+    (nzPageIndexChange)="pageIndexChange($event)"
+></nz-pagination>

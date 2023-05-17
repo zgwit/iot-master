@@ -28,6 +28,7 @@ import { CardComponent } from './card/card.component';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { DetailComponent } from './detail/detail.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 @NgModule({
   declarations: [
     DatePipe,
@@ -58,6 +59,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     CommonModule,
     NzInputModule,
     NzModalModule,
+    NzPopconfirmModule,
     NzButtonModule,
     NzTabsModule,
     NzPaginationModule,

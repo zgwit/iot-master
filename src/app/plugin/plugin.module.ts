@@ -24,6 +24,7 @@ import {NzSwitchModule} from "ng-zorro-antd/switch";
 import {NzRadioModule} from "ng-zorro-antd/radio";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 @NgModule({
   declarations: [
     PluginsComponent,
@@ -37,6 +38,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
         NzMenuModule,
         NzIconModule,
         NzCardModule,
+        NzPaginationModule,
         NzModalModule,
         NzFormModule,
         NzPopconfirmModule,

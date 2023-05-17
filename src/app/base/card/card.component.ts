@@ -9,4 +9,6 @@ export class CardComponent {
 @Input()id:any
 @Input()name:any
 @Input()title:any
+@Input()img:any
+//img='app.png'
 }
