@@ -14,7 +14,7 @@
     >
         <div class="modal-main" (mes)="cancel()">
             <div class="modal-right-bottom"></div>
-            <div class="modal-top" cdkDragHandle>
+            <div class="modal-top" cdkDragHandle (click)="zindex()">
                 <div class="modal-title">{{ title }}</div>
                 <div nz-space>
                     <button
