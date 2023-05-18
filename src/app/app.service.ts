@@ -90,7 +90,10 @@ export class AppService {
 
     load() {
         this.rs.get("apps").subscribe(res => {
-            this.apps = internals.concat(res.data)
+            const arr = res.data.sort((a: { id: string; }, b: { id: string; }) => {
+                return a.id.length - b.id.length;
+            })
+            this.apps = internals.concat(arr)
         })
     }
 }
