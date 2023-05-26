@@ -23,7 +23,7 @@ ldflags="-X '${pkg}.Version=$gitTag' \
 export GOARCH=amd64
 
 export GOOS=windows
-go build -ldflags "$ldflags" -o iot-master.exe main.go
+go build -ldflags "$ldflags" -o iot-master.exe cmd/prod/main.go
 
 export GOOS=linux
-go build -ldflags "$ldflags" -o iot-master main.go
+go build -ldflags "$ldflags" -o iot-master cmd/prod/main.go
