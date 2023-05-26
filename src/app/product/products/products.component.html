@@ -41,81 +41,84 @@
     </nz-space>
 </app-toolbar>
 
-<div nz-row [nzGutter]="16" class="card">
-    <div
-        nz-col
-        *ngFor="let item of datum"
-        class="card-item"
-        (click)="informate(item)"
+ 
+ <ng-container *ngIf="ref">
+
+    <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
+    <nz-table
+        #basicTable
+        [nzData]="datum"
+        [nzFrontPagination]="false"
+        [nzLoading]="loading"
+        [nzScroll]="getTableHeight()"
+        nzShowPagination
+        [nzShowTotal]="totalTemplate"
+        nzShowSizeChanger
+        [nzTotal]="total"
+        (nzPageSizeChange)="pageSizeChange($event)"
+        (nzPageIndexChange)="pageIndexChange($event)"
+        [nzPageSize]="pageSize"
+        [nzPageIndex]="pageIndex"
+        (nzQueryParams)="onQuery($event)"
     >
-        <app-card
-            [img]="'product.png'"
-            [id]="item.id"
-            [name]="item.name"
-            [title]="'产品'"
-        ></app-card>
-    </div>
-</div>
+        <thead>
+            <tr>
+                <th
+                    [nzChecked]="checked"
+                    [nzIndeterminate]="indeterminate"
+                    (nzCheckedChange)="handleAllChecked($event)"
+                ></th>
+                <th nzColumnKey="id" [nzSortFn]="true">ID</th>
+                <th nzColumnKey="name" [nzSortFn]="true">名称</th>
+                <th nzColumnKey="desc">说明</th>
+                <th nzColumnKey="created" [nzSortFn]="true">日期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr
+                *ngFor="let data of basicTable.data; let i = index"
+                (dblclick)="select(data)"
+            >
+                <td
+                    [nzChecked]="setOfCheckedId.has(data.id)"
+                    (nzCheckedChange)="handleItemChecked(data.id, $event)"
+                ></td>
+                <td>{{ data.id }}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.desc }}</td>
+                <td>{{ data.created | date }}</td>
+              
+                <td >
+                    <a (click)="select(data)"> 选择 </a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
 
-<!-- <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template> -->
-<!-- <nz-table
-    #basicTable
-    [nzData]="datum"
-    [nzFrontPagination]="false"
-    [nzLoading]="loading"
-    [nzScroll]="getTableHeight()"
-    nzShowPagination
-    [nzShowTotal]="totalTemplate"
-    nzShowSizeChanger
-    [nzTotal]="total"
-    (nzPageSizeChange)="pageSizeChange($event)"
-    (nzPageIndexChange)="pageIndexChange($event)"
-    [nzPageSize]="pageSize"
-    [nzPageIndex]="pageIndex"
-    (nzQueryParams)="onQuery($event)"
->
-    <thead>
-        <tr>
-            <th
-                [nzChecked]="checked"
-                [nzIndeterminate]="indeterminate"
-                (nzCheckedChange)="handleAllChecked($event)"
-            ></th>
-            <th nzColumnKey="id" [nzSortFn]="true">ID</th>
-            <th nzColumnKey="name" [nzSortFn]="true">名称</th>
-            <th nzColumnKey="desc">说明</th>
-            <th nzColumnKey="created" [nzSortFn]="true">日期</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr
-            *ngFor="let data of basicTable.data; let i = index"
-            (dblclick)="select(data)"
+ </ng-container>
+ 
+ 
+ 
+<ng-container *ngIf="!ref">
+
+    <div nz-row [nzGutter]="16" class="card">
+        <div
+            nz-col
+            *ngFor="let item of datum"
+            class="card-item"
+            (click)="informate(item)"
         >
-            <td
-                [nzChecked]="setOfCheckedId.has(data.id)"
-                (nzCheckedChange)="handleItemChecked(data.id, $event)"
-            ></td>
-            <td>{{ data.id }}</td>
-            <td>{{ data.name }}</td>
-            <td>{{ data.desc }}</td>
-            <td>{{ data.created | date }}</td>
-            <td *ngIf="!ref">
-                <app-table-oper
-                    [data]="data"
-                    (edit)="handleEdit($event)"
-                    (delete)="delete($event)"
-                ></app-table-oper>
-            </td>
-            <td *ngIf="ref">
-                <a (click)="select(data)"> 选择 </a>
-            </td>
-        </tr>
-    </tbody>
-</nz-table> -->
+            <app-card
+                [img]="'product.png'"
+                [id]="item.id"
+                [name]="item.name"
+                [title]="'产品'"
+            ></app-card>
+        </div>
+    </div>
 
-<app-detail
+    <app-detail
     [isVisible]="isVisible"
     [title]="'产品'"
     [chooseData]="chooseData"
@@ -133,3 +136,8 @@
     (nzPageSizeChange)="pageSizeChange($event)"
     (nzPageIndexChange)="pageIndexChange($event)"
 ></nz-pagination>
+
+
+</ng-container>
+
+ 
