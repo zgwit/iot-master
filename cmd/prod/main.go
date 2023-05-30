@@ -23,6 +23,7 @@ var serviceConfig = &service.Config{
 // @version 1.0 版本
 // @description API文档
 // @BasePath /api/
+// @InfoInstanceName master
 // @query.collection.format multi
 func main() {
 	args.Parse()

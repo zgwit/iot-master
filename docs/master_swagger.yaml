@@ -1,5 +1,14 @@
 basePath: /api/
 definitions:
+  api.deviceStatisticObj:
+    properties:
+      offline:
+        type: integer
+      online:
+        type: integer
+      total:
+        type: integer
+    type: object
   curd.ParamSearch:
     properties:
       filter:
@@ -17,6 +26,13 @@ definitions:
         additionalProperties:
           type: integer
         type: object
+    type: object
+  curd.ReplyData-api_deviceStatisticObj:
+    properties:
+      data:
+        $ref: '#/definitions/api.deviceStatisticObj'
+      error:
+        type: string
     type: object
   curd.ReplyData-db_Options:
     properties:
@@ -485,7 +501,7 @@ info:
   contact: {}
   description: API文档
   title: 物联大师接口文档
-  version: 1.0 版本
+  version: 3.2 版本
 paths:
   /backup/export:
     get:
@@ -1024,6 +1040,27 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-model_Device'
       summary: 修改设备参数
+      tags:
+      - device
+  /device/{id}/statistic:
+    get:
+      consumes:
+      - application/json
+      description: 设备统计
+      parameters:
+      - description: 设备ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_deviceStatisticObj'
+      summary: 设备统计
       tags:
       - device
   /device/{id}/values:

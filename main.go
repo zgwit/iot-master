@@ -16,6 +16,14 @@ import (
 //go:embed all:www
 var wwwFiles embed.FS
 
+// @title 物联大师接口文档
+// @version 3.2 版本
+// @description API文档
+// @BasePath /api/
+// @InstanceName master
+// @query.collection.format multi
+func main() {}
+
 func Startup(engine *web.Engine) error {
 	banner.Print()
 	build.Println()

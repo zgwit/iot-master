@@ -62,3 +62,4 @@ Thumbs.db
 /test
 /iot-master
 /*.yaml
+/*.db

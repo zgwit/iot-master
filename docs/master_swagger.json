@@ -4,7 +4,7 @@
         "description": "API文档",
         "title": "物联大师接口文档",
         "contact": {},
-        "version": "1.0 版本"
+        "version": "3.2 版本"
     },
     "basePath": "/api/",
     "paths": {
@@ -1012,6 +1012,38 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-model_Device"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/{id}/statistic": {
+            "get": {
+                "description": "设备统计",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "设备统计",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "设备ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_deviceStatisticObj"
                         }
                     }
                 }
@@ -2718,6 +2750,20 @@
         }
     },
     "definitions": {
+        "api.deviceStatisticObj": {
+            "type": "object",
+            "properties": {
+                "offline": {
+                    "type": "integer"
+                },
+                "online": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "curd.ParamSearch": {
             "type": "object",
             "properties": {
@@ -2742,6 +2788,17 @@
                     "additionalProperties": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "curd.ReplyData-api_deviceStatisticObj": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/api.deviceStatisticObj"
+                },
+                "error": {
+                    "type": "string"
                 }
             }
         },

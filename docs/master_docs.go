@@ -3,7 +3,7 @@ package docs
 
 import "github.com/swaggo/swag"
 
-const docTemplate = `{
+const docTemplateMaster = `{
     "schemes": {{ marshal .Schemes }},
     "swagger": "2.0",
     "info": {
@@ -1019,6 +1019,38 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-model_Device"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/{id}/statistic": {
+            "get": {
+                "description": "设备统计",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "设备统计",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "设备ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_deviceStatisticObj"
                         }
                     }
                 }
@@ -2725,6 +2757,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "api.deviceStatisticObj": {
+            "type": "object",
+            "properties": {
+                "offline": {
+                    "type": "integer"
+                },
+                "online": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "curd.ParamSearch": {
             "type": "object",
             "properties": {
@@ -2749,6 +2795,17 @@ const docTemplate = `{
                     "additionalProperties": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "curd.ReplyData-api_deviceStatisticObj": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/api.deviceStatisticObj"
+                },
+                "error": {
+                    "type": "string"
                 }
             }
         },
@@ -3465,18 +3522,18 @@ const docTemplate = `{
     }
 }`
 
-// SwaggerInfo holds exported Swagger Info so clients can modify it
-var SwaggerInfo = &swag.Spec{
-	Version:          "1.0 版本",
+// SwaggerInfoMaster holds exported Swagger Info so clients can modify it
+var SwaggerInfoMaster = &swag.Spec{
+	Version:          "3.2 版本",
 	Host:             "",
 	BasePath:         "/api/",
 	Schemes:          []string{},
 	Title:            "物联大师接口文档",
 	Description:      "API文档",
-	InfoInstanceName: "swagger",
-	SwaggerTemplate:  docTemplate,
+	InfoInstanceName: "Master",
+	SwaggerTemplate:  docTemplateMaster,
 }
 
 func init() {
-	swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
+	swag.Register(SwaggerInfoMaster.InstanceName(), SwaggerInfoMaster)
 }
