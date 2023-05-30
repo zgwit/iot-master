@@ -2,13 +2,19 @@ package master
 
 import (
 	"embed"
+	"encoding/json"
+	paho "github.com/eclipse/paho.mqtt.golang"
+	"github.com/gin-gonic/gin"
 	_ "github.com/zgwit/iot-master/v3/docs"
 	"github.com/zgwit/iot-master/v3/internal"
 	"github.com/zgwit/iot-master/v3/internal/api"
 	"github.com/zgwit/iot-master/v3/internal/app"
 	"github.com/zgwit/iot-master/v3/internal/broker"
+	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/banner"
 	"github.com/zgwit/iot-master/v3/pkg/build"
+	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/web"
 	"net/http"
 )
@@ -41,11 +47,31 @@ func Startup(engine *web.Engine) error {
 	//注册接口文档
 	web.RegisterSwaggerDocs(&engine.RouterGroup)
 
-	//使用$前缀区分插件
-	engine.Any("/app/:app/*path", app.ProxyApp)
-
 	//监听Websocket
 	engine.GET("/mqtt", broker.GinHandler)
+
+	//监听插件
+	mqtt.Client.Subscribe("master/register", 0, func(client paho.Client, message paho.Message) {
+		var a model.App
+		err := json.Unmarshal(message.Payload(), &a)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+		log.Info("app register ", a.Id, " ", a.Name, " ", a.Type, " ", a.Address)
+		app.Applications.Store(a.Id, &a)
+
+		//插件反向代理
+		engine.Any("/app/"+a.Id+"/*path", func(ctx *gin.Context) {
+			rp, err := web.CreateReverseProxy(a.Type, a.Address)
+			if err != nil {
+				_ = ctx.Error(err)
+				return
+			}
+			rp.ServeHTTP(ctx.Writer, ctx.Request)
+			ctx.Abort()
+		})
+	})
 
 	return nil
 }

@@ -10,32 +10,28 @@ import (
 func main() {
 
 	//原本的Main函数
-	app := web.CreateEngine()
+	engine := web.CreateEngine()
 
 	//启动
-	err := master.Startup(app)
+	err := master.Startup(engine)
 	if err != nil {
 		log.Fatal(err)
 		//return
 	}
 
-	err = alarm.Startup(app)
+	err = alarm.Startup(engine)
 	if err != nil {
 		log.Fatal(err)
 		//return
 	}
 
 	//注册静态页面
-	fs := app.FileSystem()
+	fs := engine.FileSystem()
 
 	master.Static(fs)
 	alarm.Static(fs)
 
 	//启动
-	app.Serve()
-
-	//TODO 引入主程序
-
-	//TODO 引入插件
+	engine.Serve()
 
 }
