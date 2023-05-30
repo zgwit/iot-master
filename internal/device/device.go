@@ -78,3 +78,12 @@ func From(device *model.Device) error {
 	devices.Store(device.Id, d)
 	return nil
 }
+
+func GetOnlineCount() int64 {
+	var count int64 = 0
+	devices.Range(func(_ string, dev *Device) bool {
+		count++
+		return true
+	})
+	return count
+}

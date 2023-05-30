@@ -128,6 +128,34 @@ func noopDeviceValues() {}
 // @Router /device/{id}/parameters [post]
 func noopDeviceParameters() {}
 
+type deviceStatisticObj struct {
+	Online  int64 `json:"online,omitempty"`
+	Offline int64 `json:"offline,omitempty"`
+	Total   int64 `json:"total,omitempty"`
+}
+
+// @Summary 设备统计
+// @Schemes
+// @Description 设备统计
+// @Tags device
+// @Param id path int true "设备ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[deviceStatisticObj] 返回设备信息
+// @Router /device/{id}/statistic [get]
+func deviceStatistic(ctx *gin.Context) {
+	var obj deviceStatisticObj
+	var err error
+	obj.Total, err = db.Engine.Count(model.Device{})
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	obj.Online = device.GetOnlineCount()
+	obj.Offline = obj.Total - obj.Offline
+	curd.OK(ctx, &obj)
+}
+
 func deviceRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[model.Device]())
@@ -158,6 +186,8 @@ func deviceRouter(app *gin.RouterGroup) {
 	app.GET("/:id/values", curd.ParseParamStringId, deviceValues)
 
 	app.POST("/:id/parameters", curd.ParseParamStringId, deviceParameters)
+
+	app.GET("/:id/statistic", curd.ParseParamStringId, deviceStatistic)
 }
 
 func deviceValues(ctx *gin.Context) {
