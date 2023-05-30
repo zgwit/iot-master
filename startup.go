@@ -16,7 +16,7 @@ import (
 //go:embed all:www
 var wwwFiles embed.FS
 
-func Startup() error {
+func Startup(engine *web.Engine) error {
 	banner.Print()
 	build.Println()
 
@@ -26,9 +26,6 @@ func Startup() error {
 		return err
 	}
 	defer internal.Close()
-
-	//Web服务
-	engine := web.CreateEngine()
 
 	//注册前端接口
 	api.RegisterRoutes(engine.Group("/api"))
@@ -42,13 +39,12 @@ func Startup() error {
 	//监听Websocket
 	engine.GET("/mqtt", broker.GinHandler)
 
-	//前端静态文件
-	engine.RegisterFS(http.FS(wwwFiles), "www", "index.html")
-
-	//监听HTTP
-	engine.Serve()
-
 	return nil
+}
+
+func Static(fs *web.FileSystem) {
+	//前端静态文件
+	fs.Put("", http.FS(wwwFiles), "www", "index.html")
 }
 
 func Shutdown() error {

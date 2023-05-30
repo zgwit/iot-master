@@ -6,6 +6,7 @@ import (
 	_ "github.com/zgwit/iot-master/v3/docs"
 	"github.com/zgwit/iot-master/v3/internal/args"
 	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v3/pkg/web"
 	"os"
 	"os/signal"
 	"syscall"
@@ -101,5 +102,15 @@ func (p *Program) run() {
 	}()
 
 	//原本的Main函数
-	_ = master.Startup()
+	app := web.CreateEngine()
+
+	//启动
+	_ = master.Startup(app)
+
+	//注册静态页面
+	fs := app.FileSystem()
+	master.Static(fs)
+
+	//启动
+	app.Serve()
 }

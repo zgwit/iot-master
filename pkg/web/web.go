@@ -51,6 +51,30 @@ func CreateEngine() *Engine {
 	return &Engine{app}
 }
 
+func (app *Engine) FileSystem() *FileSystem {
+	var fs FileSystem
+	tm := time.Now()
+	app.Use(func(c *gin.Context) {
+		if c.Request.Method == http.MethodGet {
+			f, err := fs.Open(c.Request.URL.Path)
+			if err == nil {
+				defer f.Close()
+				stat, err := f.Stat()
+				if err != nil {
+					c.Next() //500错误
+					return
+				}
+				if !stat.IsDir() {
+					fn := c.Request.URL.Path + ".html" //避免DetectContentType
+					http.ServeContent(c.Writer, c.Request, fn, tm, f)
+					return
+				}
+			}
+		}
+	})
+	return &fs
+}
+
 func (app *Engine) RegisterFS(fs http.FileSystem, prefix, index string) {
 	tm := time.Now()
 	app.Use(func(c *gin.Context) {
