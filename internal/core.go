@@ -88,10 +88,10 @@ func Open() error {
 	//}
 
 	//webServe(fmt.Sprintf(":%d", config.Config.Web))
-	err = device.SubscribeMaster()
-	if err != nil {
-		return err
-	}
+	//err = SubscribeMaster()
+	//if err != nil {
+	//	return err
+	//}
 
 	err = device.SubscribeEvent()
 	if err != nil {

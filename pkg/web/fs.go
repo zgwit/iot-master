@@ -28,12 +28,24 @@ func (f *FileSystem) Open(name string) (file http.File, err error) {
 		//fn := path.Join(ff.prefix, name)
 		if ff.path == "" && !strings.HasPrefix(name, "/app/") ||
 			ff.path != "" && strings.HasPrefix(name, ff.path) {
+
 			file, err = ff.fs.Open(path.Join(ff.prefix, name))
-			if err != nil {
-				//尝试默认页
-				file, err = ff.fs.Open(path.Join(ff.prefix, ff.index))
+			if file != nil {
+				fi, _ := file.Stat()
+				if !fi.IsDir() {
+					return
+				}
 			}
-			return
+
+			//尝试默认页
+			file, err = ff.fs.Open(path.Join(ff.prefix, ff.index))
+			if file != nil {
+				fi, _ := file.Stat()
+				if !fi.IsDir() {
+					return
+				}
+			}
+			return nil, errors.New("not found")
 		}
 	}
 	return nil, errors.New("not found")
