@@ -105,7 +105,11 @@ func (p *Program) run() {
 	app := web.CreateEngine()
 
 	//启动
-	_ = master.Startup(app)
+	err := master.Startup(app)
+	if err != nil {
+		log.Fatal(err)
+		//return
+	}
 
 	//注册静态页面
 	fs := app.FileSystem()

@@ -65,7 +65,8 @@ func (app *Engine) FileSystem() *FileSystem {
 					return
 				}
 				if !stat.IsDir() {
-					fn := c.Request.URL.Path + ".html" //避免DetectContentType
+					fn := c.Request.URL.Path
+					//fn := c.Request.URL.Path + ".html" //避免DetectContentType
 					http.ServeContent(c.Writer, c.Request, fn, tm, f)
 					return
 				}

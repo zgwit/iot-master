@@ -16,9 +16,12 @@ func Get(key string, def string) string {
 func GetBool(key string, def bool) bool {
 	val := os.Getenv(key)
 	if val == "TRUE" || val == "1" {
-		return def
+		return true
 	}
-	return false
+	if val == "FALSE" || val == "0" {
+		return false
+	}
+	return def
 }
 
 func GetInt(key string, def int) int {

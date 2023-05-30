@@ -25,7 +25,7 @@ func Startup(engine *web.Engine) error {
 	if err != nil {
 		return err
 	}
-	defer internal.Close()
+	//defer internal.Close()
 
 	//注册前端接口
 	api.RegisterRoutes(engine.Group("/api"))

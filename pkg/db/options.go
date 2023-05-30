@@ -16,7 +16,7 @@ type Options struct {
 
 func Default() Options {
 	return Options{
-		Type:     "sqlite",                 //"mysql",
+		Type:     "sqlite3",                //"mysql",
 		URL:      config.AppName() + ".db", //"root:root@tcp(localhost:3306)/master?charset=utf8",
 		Debug:    false,
 		LogLevel: 2,
