@@ -66,6 +66,9 @@ function tableHeight(that: any) {
     return { y: `${height}px` };
 }
 function onAllChecked(checked: boolean, that: any): void {
+    if (!that.datum) {
+        return;
+    }
     that.datum.forEach((item: any) => updateCheckedSet(item.id, checked, that));
     refreshCheckedStatus(that);
 }
@@ -82,6 +85,9 @@ function updateCheckedSet(id: number, checked: boolean, that: any) {
     }
 }
 function refreshCheckedStatus(that: any) {
+    if (!that.datum) {
+        return
+    }
     that.checked = that.datum.every((item: { id: any; }) => that.setOfCheckedId.has(item.id));
     that.indeterminate = that.datum.some((item: { id: any; }) => that.setOfCheckedId.has(item.id)) && !that.checked;
 }

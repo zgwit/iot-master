@@ -69,7 +69,7 @@ export class ProductsComponent {
         this.rs
             .post('product/search', this.query)
             .subscribe((res) => {
-                this.datum = res.data;
+                this.datum = res.data || [];
                 this.total = res.total;
 
                 //  this.setOfCheckedId.clear();
@@ -158,7 +158,7 @@ export class ProductsComponent {
                                 modal.destroy();
                                 this.load();
                             },
-                            () => {}
+                            () => { }
                         );
                     },
                 },

@@ -44,7 +44,7 @@ export class UsersComponent {
     this.rs
       .post('user/search', this.query)
       .subscribe((res) => {
-        this.datum = res.data;
+        this.datum = res.data || [];
         this.total = res.total;
         this.setOfCheckedId.clear();
         refreshCheckedStatus(this);
