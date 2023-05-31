@@ -45,7 +45,7 @@ func Startup(engine *web.Engine) error {
 	api.RegisterRoutes(engine.Group("/api"))
 
 	//注册接口文档
-	web.RegisterSwaggerDocs(&engine.RouterGroup)
+	web.RegisterSwaggerDocs(&engine.RouterGroup, "Master")
 
 	//监听Websocket
 	engine.GET("/mqtt", broker.GinHandler)
