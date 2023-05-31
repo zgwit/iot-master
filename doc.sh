@@ -1,1 +1,1 @@
-swag init --instanceName Master
+swag init --instanceName master
