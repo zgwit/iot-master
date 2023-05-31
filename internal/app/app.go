@@ -36,3 +36,7 @@ func ProxyApp(ctx *gin.Context) {
 }
 
 var Applications lib.Map[model.App]
+
+func Register(app *model.App) {
+	Applications.Store(app.Id, app)
+}

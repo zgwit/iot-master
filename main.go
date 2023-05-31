@@ -11,8 +11,6 @@ import (
 	"github.com/zgwit/iot-master/v3/internal/app"
 	"github.com/zgwit/iot-master/v3/internal/broker"
 	"github.com/zgwit/iot-master/v3/model"
-	"github.com/zgwit/iot-master/v3/pkg/banner"
-	"github.com/zgwit/iot-master/v3/pkg/build"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/web"
@@ -31,8 +29,6 @@ var wwwFiles embed.FS
 func main() {}
 
 func Startup(engine *web.Engine) error {
-	banner.Print()
-	build.Println()
 
 	//加载主程序
 	err := internal.Open()

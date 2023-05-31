@@ -5,6 +5,8 @@ import (
 	master "github.com/zgwit/iot-master/v3"
 	_ "github.com/zgwit/iot-master/v3/docs"
 	"github.com/zgwit/iot-master/v3/internal/args"
+	"github.com/zgwit/iot-master/v3/pkg/banner"
+	"github.com/zgwit/iot-master/v3/pkg/build"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/web"
 	"os"
@@ -26,6 +28,9 @@ var serviceConfig = &service.Config{
 // @InfoInstanceName master
 // @query.collection.format multi
 func main() {
+	banner.Print()
+	build.Println()
+
 	args.Parse()
 
 	//传递参数到服务
