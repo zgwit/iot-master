@@ -10,7 +10,7 @@ import (
 	"github.com/iot-master-contrib/scada"
 	"github.com/iot-master-contrib/sms"
 	"github.com/zgwit/iot-master/v3"
-	"github.com/zgwit/iot-master/v3/internal/app"
+	"github.com/zgwit/iot-master/v3/app"
 	"github.com/zgwit/iot-master/v3/pkg/banner"
 	"github.com/zgwit/iot-master/v3/pkg/build"
 	"github.com/zgwit/iot-master/v3/pkg/log"

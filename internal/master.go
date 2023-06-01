@@ -3,7 +3,7 @@ package internal
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
-	app2 "github.com/zgwit/iot-master/v3/internal/app"
+	app2 "github.com/zgwit/iot-master/v3/app"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
