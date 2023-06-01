@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type Product struct {
 	Id         string         `json:"id" xorm:"pk"`
 	Name       string         `json:"name"`
@@ -10,7 +12,7 @@ type Product struct {
 	Events     []ModEvent     `json:"events,omitempty" xorm:"json"`
 	Parameters []ModParameter `json:"parameters,omitempty" xorm:"json"`
 
-	Created Time `json:"created,omitempty" xorm:"created"`
+	Created time.Time `json:"created,omitempty" xorm:"created"`
 }
 
 type ModParameter struct {

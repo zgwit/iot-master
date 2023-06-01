@@ -1,10 +1,12 @@
 package model
 
+import "time"
+
 type Role struct {
-	Id         string   `json:"id" xorm:"pk"`
-	Name       string   `json:"name"`
-	Privileges []string `json:"privileges"`
-	Created    Time     `json:"created,omitempty" xorm:"created"`
+	Id         string    `json:"id" xorm:"pk"`
+	Name       string    `json:"name"`
+	Privileges []string  `json:"privileges"`
+	Created    time.Time `json:"created,omitempty" xorm:"created"`
 }
 
 type Privilege struct {

@@ -1,9 +1,5 @@
 package payload
 
-import (
-	"github.com/zgwit/iot-master/v3/model"
-)
-
 type Hash map[string]any
 
 type DevicePropertyUp struct {
@@ -13,15 +9,13 @@ type DevicePropertyUp struct {
 }
 
 type Property struct {
-	Name      string     `json:"name"`
-	Time      model.Time `json:"time,omitempty"`
-	Timestamp int64      `json:"ts,omitempty"`
-	Value     any        `json:"value"`
+	Name  string `json:"name"`
+	Time  int64  `json:"time,omitempty"`
+	Value any    `json:"value"`
 }
 
 type DeviceProperties struct {
 	Id         string     `json:"id"`
-	Time       model.Time `json:"time,omitempty"`
-	Timestamp  int64      `json:"ts,omitempty"`
+	Time       int64      `json:"time,omitempty"`
 	Properties []Property `json:"properties"`
 }

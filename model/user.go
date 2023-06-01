@@ -25,8 +25,8 @@ type Password struct {
 }
 
 type UserHistory struct {
-	Id      int64  `json:"id"`
-	UserId  string `json:"user_id"`
-	Event   string `json:"event"`
-	Created Time   `json:"created" xorm:"created"`
+	Id      int64     `json:"id"`
+	UserId  string    `json:"user_id"`
+	Event   string    `json:"event"`
+	Created time.Time `json:"created" xorm:"created"`
 }

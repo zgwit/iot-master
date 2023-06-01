@@ -3,7 +3,6 @@ package device
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/payload"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
@@ -36,7 +35,7 @@ func SubscribeProperty() error {
 		}
 		dev.Online = true
 		dev.Values["$online"] = true
-		dev.Values["$update"] = model.Time(time.Now())
+		dev.Values["$update"] = time.Now()
 	})
 
 	return nil
@@ -54,7 +53,7 @@ func mergeProperties(id string, properties []payload.Property) {
 		dev.Values[p.Name] = p.Value
 	}
 	dev.Values["$online"] = true
-	dev.Values["$update"] = model.Time(time.Now())
+	dev.Values["$update"] = time.Now()
 
 }
 
