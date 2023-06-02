@@ -3,14 +3,18 @@ package model
 import "time"
 
 type Product struct {
-	Id         string         `json:"id" xorm:"pk"`
-	Name       string         `json:"name"`
-	Desc       string         `json:"desc,omitempty"`
-	Version    string         `json:"version,omitempty"`
+	Id      string `json:"id" xorm:"pk"`
+	Name    string `json:"name"`
+	Desc    string `json:"desc,omitempty"`
+	Version string `json:"version,omitempty"`
+
 	Properties []ModProperty  `json:"properties,omitempty" xorm:"json"`
 	Functions  []ModFunction  `json:"functions,omitempty" xorm:"json"`
 	Events     []ModEvent     `json:"events,omitempty" xorm:"json"`
 	Parameters []ModParameter `json:"parameters,omitempty" xorm:"json"`
+
+	Validators  []ModValidator  `json:"validators,omitempty" xorm:"json"`
+	Aggregators []ModAggregator `json:"aggregators,omitempty" xorm:"json"`
 
 	Created time.Time `json:"created,omitempty" xorm:"created"`
 }

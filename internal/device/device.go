@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/zgwit/iot-master/v3/internal/aggregator"
 	"github.com/zgwit/iot-master/v3/internal/product"
+	"github.com/zgwit/iot-master/v3/internal/validator"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/payload"
 	"github.com/zgwit/iot-master/v3/pkg/db"
@@ -22,8 +24,98 @@ type Device struct {
 	Last   time.Time
 	Values map[string]any
 
-	product    *product.Product
-	validators []product.Validator
+	product *product.Product
+
+	validators  []*validator.Validator
+	aggregators []aggregator.Aggregator
+}
+
+func (d *Device) createValidator(m *model.ModValidator) error {
+	v, err := validator.New(m)
+	if err != nil {
+		return err
+	}
+	d.validators = append(d.validators, v)
+	return nil
+}
+
+func (d *Device) createAggregator(m *model.ModAggregator) error {
+	a, err := aggregator.New(m)
+	if err != nil {
+		return err
+	}
+	d.aggregators = append(d.aggregators, a)
+	return nil
+}
+
+func (d *Device) Build() {
+	for _, v := range d.product.Validators {
+		err := d.createValidator(&v)
+		if err != nil {
+			log.Error(err)
+		}
+	}
+	for _, v := range d.product.ExternalValidators {
+		err := d.createValidator(&v.ModValidator)
+		if err != nil {
+			log.Error(err)
+		}
+	}
+
+	var validators []*model.Validator
+	err := db.Engine.Where("device_id = ?", d.Id).And("disabled = ?", false).Find(&validators)
+	if err != nil {
+		log.Error(err)
+	}
+	for _, v := range validators {
+		err := d.createValidator(&v.ModValidator)
+		if err != nil {
+			log.Error(err)
+		}
+	}
+
+	for _, v := range d.product.Aggregators {
+		err := d.createAggregator(&v)
+		if err != nil {
+			log.Error(err)
+		}
+	}
+	for _, v := range d.product.ExternalAggregators {
+		err := d.createAggregator(&v.ModAggregator)
+		if err != nil {
+			log.Error(err)
+		}
+	}
+
+	var aggregators []*model.Aggregator
+	err = db.Engine.Where("device_id = ?", d.Id).And("disabled = ?", false).Find(&aggregators)
+	if err != nil {
+		log.Error(err)
+	}
+	for _, v := range aggregators {
+		err := d.createAggregator(&v.ModAggregator)
+		if err != nil {
+			log.Error(err)
+		}
+	}
+
+}
+
+func (d *Device) Push(values map[string]any) {
+	for k, v := range values {
+		d.Values[k] = v
+	}
+
+	//数据聚合
+	for _, a := range d.aggregators {
+		err := a.Push(values)
+		if err != nil {
+			log.Error(err)
+		}
+	}
+
+	//检查数据
+	d.Validate()
 }
 
 func (d *Device) Validate() {
@@ -156,8 +248,8 @@ func From(device *model.Device) error {
 		d.Values[k] = v
 	}
 
-	//复制验证器
-	d.validators = append(d.validators, p.Validators...)
+	//构建
+	d.Build()
 
 	devices.Store(device.Id, d)
 	return nil

@@ -30,9 +30,11 @@ func SubscribeProperty() error {
 		}
 
 		//TODO 此处需要判断是 产品 的属性
-		for k, v := range values {
-			dev.Values[k] = v
-		}
+		//for k, v := range values {
+		//	dev.Values[k] = v
+		//}
+		dev.Push(values)
+
 		dev.Online = true
 		dev.Values["$online"] = true
 		dev.Values["$update"] = time.Now()

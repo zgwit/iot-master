@@ -108,6 +108,11 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	alarmRouter(router.Group("/alarm"))
 	validatorRouter(router.Group("/validator"))
 
+	aggregatorRouter(router.Group("/aggregator"))
+
+	historyRouter(router.Group("/history"))
+	groupRouter(router.Group("/history/group"))
+
 	brokerRouter(router.Group("/broker"))
 
 	pluginRouter(router.Group("/plugin"))

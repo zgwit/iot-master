@@ -3,7 +3,6 @@ package product
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/v3/model"
-	"github.com/zgwit/iot-master/v3/pkg/calc"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"github.com/zgwit/iot-master/v3/pkg/log"
@@ -14,7 +13,8 @@ var products lib.Map[Product]
 type Product struct {
 	*model.Product
 
-	Validators []Validator
+	ExternalValidators  []*model.Validator
+	ExternalAggregators []*model.Aggregator
 }
 
 func New(model *model.Product) *Product {
@@ -58,23 +58,14 @@ func From(product *model.Product) error {
 
 	products.Store(product.Id, p)
 
-	//加载验证器
-	var validators []*model.Validator
-	err := db.Engine.Find(&validators)
+	err := db.Engine.Where("product_id = ?", product.Id).And("disabled = ?", false).Find(&p.ExternalValidators)
 	if err != nil {
 		return err
 	}
 
-	//编译表达式
-	for _, v := range validators {
-		vv := Validator{Validator: v}
-		eval, err := calc.New(v.Expression)
-		if err != nil {
-			log.Error(err)
-			continue
-		}
-		vv.Expression = eval
-		p.Validators = append(p.Validators, vv)
+	err = db.Engine.Where("product_id = ?", product.Id).And("disabled = ?", false).Find(&p.ExternalAggregators)
+	if err != nil {
+		return err
 	}
 
 	return nil
