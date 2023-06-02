@@ -190,6 +190,7 @@ github.com/gogo/googleapis v1.1.0/go.mod h1:gf4bu3Q80BeJ6H1S1vYPm8/ELATdvryBaNFG
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.2.0/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.2.1/go.mod h1:hp+jE20tsWTFYpLwKvXlhS1hjn+gTNwPg2I6zVXpSg4=
+github.com/golang-jwt/jwt v3.2.2+incompatible h1:IfV12K8xAKAnZqdXVzCZ+TOjboZ2keLg81eXfW3O+oY=
 github.com/golang-jwt/jwt/v4 v4.5.0 h1:7cYmW1XlMY7h7ii7UhUyChSgS5wUJEnm9uZVTGqOWzg=
 github.com/golang-jwt/jwt/v4 v4.5.0/go.mod h1:m21LjoU+eqJr34lmDMbreY2eSTRJ1cv77w39/MY0Ch0=
 github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe/go.mod h1:8vg3r2VgvsThLBIFL93Qb5yWzgyZWhEmBwUJWevAkK0=
@@ -284,6 +285,8 @@ github.com/iot-master-contrib/ipc v1.0.1 h1:ZWLBZFHZx+gJysd7L/tlbyP8R2Baa3AHCBfM
 github.com/iot-master-contrib/ipc v1.0.1/go.mod h1:z2HmxSWcEGj7w/DjydAdpPNkybeG+hh3F6KxcNk5Wlg=
 github.com/iot-master-contrib/modbus v1.0.1 h1:Wk8eWNgb7eXss61qE4hOoMfEdVsLP6GJh39u/2WkQqQ=
 github.com/iot-master-contrib/modbus v1.0.1/go.mod h1:vuMERHZ4GSfPoowW+HVM49CdzqNvETPS1hAYjLfn6ec=
+github.com/iot-master-contrib/modbus v1.0.2 h1:eqD9eCzE9Tja5Dhe2DWYYGZOknDxs17d0MjNsr0QNos=
+github.com/iot-master-contrib/modbus v1.0.2/go.mod h1:vuMERHZ4GSfPoowW+HVM49CdzqNvETPS1hAYjLfn6ec=
 github.com/iot-master-contrib/scada v1.0.3 h1:AfL3oMKU3UBKNdrfzufSYA7FDQ+0HFW3u2g4lRHdiV8=
 github.com/iot-master-contrib/scada v1.0.3/go.mod h1:F2czRGbvWv2O3qb0RZgqF5rrO7q7u1OeQXyim1F+zhE=
 github.com/jackc/chunkreader v1.0.0/go.mod h1:RT6O25fNZIuasFJRyZ4R/Y2BbhasbmZXF9QQ7T3kePo=
@@ -793,6 +796,8 @@ golang.org/x/tools v0.1.12/go.mod h1:hNGJHUnrk76NpqgfD5Aqm5Crs+Hm0VOH/i9J2+nxYbc
 golang.org/x/tools v0.6.0/go.mod h1:Xwgl3UAJ/d3gWutnCtw505GrjyAbvKui8lOU390QaIU=
 golang.org/x/tools v0.9.2 h1:UXbndbirwCAx6TULftIfie/ygDNCwxEie+IiNP1IcNc=
 golang.org/x/tools v0.9.2/go.mod h1:owI94Op576fPu3cIGQeHs3joujW/2Oc6MtlxbF5dfNc=
+golang.org/x/tools v0.9.3 h1:Gn1I8+64MsuTb/HpH+LmQtNas23LhUVr3rYZ0eKuaMM=
+golang.org/x/tools v0.9.3/go.mod h1:owI94Op576fPu3cIGQeHs3joujW/2Oc6MtlxbF5dfNc=
 golang.org/x/xerrors v0.0.0-20190410155217-1f06c39b4373/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
 golang.org/x/xerrors v0.0.0-20190513163551-3ee3066db522/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
 golang.org/x/xerrors v0.0.0-20190717185122-a985d3407aa7/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=

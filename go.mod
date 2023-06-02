@@ -21,7 +21,7 @@ require (
 	github.com/iot-master-contrib/history v1.0.5
 	github.com/iot-master-contrib/influxdb v1.0.4
 	github.com/iot-master-contrib/ipc v1.0.1
-	github.com/iot-master-contrib/modbus v1.0.1
+	github.com/iot-master-contrib/modbus v1.0.2
 	github.com/iot-master-contrib/scada v1.0.3
 	github.com/kardianos/service v1.2.2
 	github.com/lib/pq v1.10.9
@@ -113,7 +113,7 @@ require (
 	golang.org/x/sync v0.2.0 // indirect
 	golang.org/x/sys v0.8.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
-	golang.org/x/tools v0.9.2 // indirect
+	golang.org/x/tools v0.9.3 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	lukechampine.com/uint128 v1.3.0 // indirect
