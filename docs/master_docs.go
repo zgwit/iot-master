@@ -3,7 +3,7 @@ package docs
 
 import "github.com/swaggo/swag"
 
-const docTemplateMaster = `{
+const docTemplatemaster = `{
     "schemes": {{ marshal .Schemes }},
     "swagger": "2.0",
     "info": {
@@ -3522,18 +3522,18 @@ const docTemplateMaster = `{
     }
 }`
 
-// SwaggerInfoMaster holds exported Swagger Info so clients can modify it
-var SwaggerInfoMaster = &swag.Spec{
+// SwaggerInfomaster holds exported Swagger Info so clients can modify it
+var SwaggerInfomaster = &swag.Spec{
 	Version:          "3.2 版本",
 	Host:             "",
 	BasePath:         "/api/",
 	Schemes:          []string{},
 	Title:            "物联大师接口文档",
 	Description:      "API文档",
-	InfoInstanceName: "Master",
-	SwaggerTemplate:  docTemplateMaster,
+	InfoInstanceName: "master",
+	SwaggerTemplate:  docTemplatemaster,
 }
 
 func init() {
-	swag.Register(SwaggerInfoMaster.InstanceName(), SwaggerInfoMaster)
+	swag.Register(SwaggerInfomaster.InstanceName(), SwaggerInfomaster)
 }
