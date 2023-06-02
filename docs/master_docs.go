@@ -15,6 +15,164 @@ const docTemplatemaster = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/alarm/count": {
+            "post": {
+                "description": "查询报警",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "查询报警",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/alarm/list": {
+            "get": {
+                "description": "查询报警",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "查询报警",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Alarm"
+                        }
+                    }
+                }
+            }
+        },
+        "/alarm/search": {
+            "post": {
+                "description": "查询报警",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "查询报警",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Alarm"
+                        }
+                    }
+                }
+            }
+        },
+        "/alarm/{id}/delete": {
+            "get": {
+                "description": "删除报警",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "删除报警",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "报警ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Alarm"
+                        }
+                    }
+                }
+            }
+        },
+        "/alarm/{id}/read": {
+            "get": {
+                "description": "阅读报警",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "阅读报警",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "报警ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Alarm"
+                        }
+                    }
+                }
+            }
+        },
         "/backup/export": {
             "get": {
                 "description": "导出所有数据",
@@ -2754,6 +2912,358 @@ const docTemplatemaster = `{
                     }
                 }
             }
+        },
+        "/validator/count": {
+            "post": {
+                "description": "查询检查数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "validator"
+                ],
+                "summary": "查询检查数量",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/validator/create": {
+            "post": {
+                "description": "创建检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "validator"
+                ],
+                "summary": "创建检查",
+                "parameters": [
+                    {
+                        "description": "检查信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Validator"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
+                        }
+                    }
+                }
+            }
+        },
+        "/validator/export": {
+            "get": {
+                "description": "导出检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导出检查",
+                "responses": {}
+            }
+        },
+        "/validator/import": {
+            "post": {
+                "description": "导入检查",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导入检查",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/validator/list": {
+            "get": {
+                "description": "查询检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "validator"
+                ],
+                "summary": "查询检查",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Validator"
+                        }
+                    }
+                }
+            }
+        },
+        "/validator/search": {
+            "post": {
+                "description": "查询检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "validator"
+                ],
+                "summary": "查询检查",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Validator"
+                        }
+                    }
+                }
+            }
+        },
+        "/validator/{id}": {
+            "get": {
+                "description": "获取检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "validator"
+                ],
+                "summary": "获取检查",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "检查ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "validator"
+                ],
+                "summary": "修改检查",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "检查ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "检查信息",
+                        "name": "validator",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Validator"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
+                        }
+                    }
+                }
+            }
+        },
+        "/validator/{id}/delete": {
+            "get": {
+                "description": "删除检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "validator"
+                ],
+                "summary": "删除检查",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "检查ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
+                        }
+                    }
+                }
+            }
+        },
+        "/validator/{id}/disable": {
+            "get": {
+                "description": "禁用检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "validator"
+                ],
+                "summary": "禁用检查",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "检查ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
+                        }
+                    }
+                }
+            }
+        },
+        "/validator/{id}/enable": {
+            "get": {
+                "description": "启用检查",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "validator"
+                ],
+                "summary": "启用检查",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "检查ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -2853,6 +3363,17 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyData-model_Alarm": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.Alarm"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-model_Broker": {
             "type": "object",
             "properties": {
@@ -2930,6 +3451,17 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyData-model_Validator": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.Validator"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-model_Variables": {
             "type": "object",
             "properties": {
@@ -2971,6 +3503,23 @@ const docTemplatemaster = `{
                 },
                 "error": {
                     "type": "string"
+                }
+            }
+        },
+        "curd.ReplyList-model_Alarm": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Alarm"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },
@@ -3093,6 +3642,23 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyList-model_Validator": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Validator"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "db.Options": {
             "type": "object",
             "properties": {
@@ -3121,6 +3687,38 @@ const docTemplatemaster = `{
                 },
                 "text": {
                     "type": "boolean"
+                }
+            }
+        },
+        "model.Alarm": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "device": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "read": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         },
@@ -3169,6 +3767,9 @@ const docTemplatemaster = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "online": {
+                    "type": "boolean"
                 },
                 "parameters": {
                     "description": "模型参数，用于报警检查",
@@ -3460,6 +4061,50 @@ const docTemplatemaster = `{
                     }
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Validator": {
+            "type": "object",
+            "properties": {
+                "again": {
+                    "description": "再次提醒间隔s",
+                    "type": "integer"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "delay": {
+                    "description": "延迟时间s",
+                    "type": "integer"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "expression": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "template": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "total": {
+                    "description": "总提醒次数",
+                    "type": "integer"
+                },
+                "type": {
                     "type": "string"
                 }
             }

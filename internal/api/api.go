@@ -105,6 +105,8 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	gatewayRouter(router.Group("/gateway"))
 
 	deviceRouter(router.Group("/device"))
+	alarmRouter(router.Group("/alarm"))
+	validatorRouter(router.Group("/validator"))
 
 	brokerRouter(router.Group("/broker"))
 
