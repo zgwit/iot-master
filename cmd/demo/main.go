@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/iot-master-contrib/alarm"
 	"github.com/iot-master-contrib/aliyun"
 	"github.com/iot-master-contrib/classify"
 	"github.com/iot-master-contrib/history"
@@ -26,12 +25,6 @@ func main() {
 
 	//启动
 	err := master.Startup(engine)
-	if err != nil {
-		log.Fatal(err)
-		//return
-	}
-
-	err = alarm.Startup(engine)
 	if err != nil {
 		log.Fatal(err)
 		//return
@@ -83,7 +76,6 @@ func main() {
 	fs := engine.FileSystem()
 
 	master.Static(fs)
-	alarm.Static(fs)
 	classify.Static(fs)
 	history.Static(fs)
 	influxdb.Static(fs)
@@ -92,7 +84,6 @@ func main() {
 	scada.Static(fs)
 	aliyun.Static(fs)
 
-	app.Register(alarm.App())
 	app.Register(classify.App())
 	app.Register(history.App())
 	app.Register(influxdb.App())

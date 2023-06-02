@@ -12,12 +12,13 @@ import { NzTableModule } from "ng-zorro-antd/table";
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
-import { NzDividerModule } from "ng-zorro-antd/divider"; 
+import { NzDividerModule } from "ng-zorro-antd/divider";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
 import { DatePipe } from "./date.pipe";
 import { EditTableComponent } from './edit-table/edit-table.component';
+import { ExportComponent } from './export/export.component';
 import { ImportComponent } from './import/import.component';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { TableOperComponent } from './table-oper/table-oper.component';
@@ -36,25 +37,27 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     ToolbarComponent,
     SearchBoxComponent,
     EditTableComponent,
+    ExportComponent,
     ImportComponent,
     TableOperComponent,
     ModalComponent,
     FullscreamDirective,
     CardComponent,
-    DetailComponent 
+    DetailComponent
   ],
-  exports: [
-    DatePipe,
-    PageNotFoundComponent,
-    ToolbarComponent,
-    SearchBoxComponent,
-    EditTableComponent,
-    ImportComponent,
-    TableOperComponent,
-    ModalComponent,
-    CardComponent ,
-    DetailComponent 
-  ],
+    exports: [
+        DatePipe,
+        PageNotFoundComponent,
+        ToolbarComponent,
+        SearchBoxComponent,
+        EditTableComponent,
+        ImportComponent,
+        TableOperComponent,
+        ModalComponent,
+        CardComponent,
+        DetailComponent,
+        ExportComponent
+    ],
   imports: [
     CommonModule,
     NzInputModule,

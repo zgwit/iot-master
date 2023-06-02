@@ -6,6 +6,7 @@ import { NzTableQueryParams } from "ng-zorro-antd/table";
 import { NzModalService } from "ng-zorro-antd/modal";
 import { ParseTableQuery } from "../../base/table";
 import { tableHeight, onAllChecked, onItemChecked, batchdel, refreshCheckedStatus } from "../../../public";
+
 @Component({
   selector: 'app-alarms',
   templateUrl: './alarms.component.html',
@@ -61,7 +62,7 @@ export class AlarmsComponent {
 
   delete(id: number, size?: number) {
     this.rs.get(`alarm/${id}/delete`).subscribe(res => {
-      if (!size ) {
+      if (!size) {
         this.msg.success("删除成功");
         this.datum = this.datum.filter(d => d.id !== id);
       } else if (size) {
@@ -80,10 +81,10 @@ export class AlarmsComponent {
   }
   pageIndexChange(pageIndex: number) {
     console.log("pageIndex:", pageIndex)
+    this.query.skip = pageIndex - 1;
   }
   pageSizeChange(pageSize: number) {
     this.query.limit = pageSize;
-    this.load();
   }
 
   search($event: string) {
@@ -99,7 +100,7 @@ export class AlarmsComponent {
   read(data: any) {
     this.rs.get(`alarm/${data.id}/read`).subscribe(res => {
       data.read = true;
-      //this.msg.success("删除成功")
+
     })
   }
 

@@ -34,7 +34,7 @@ import { NzNotificationModule } from "ng-zorro-antd/notification";
 import { authGuard } from "./auth.guard";
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt'; 
+import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 registerLocaleData(zh);
 
 //declare var window: Window;
@@ -55,11 +55,16 @@ const pages: Routes = [
         canActivate: [authGuard],
         loadChildren: () => import('./device/device.module').then(m => m.DeviceModule)
     },
-    // {
-    //   path: 'alarm',
-    //   canActivate: [authGuard],
-    //   loadChildren: () => import('./alarm/alarm.module').then(m => m.AlarmModule)
-    // },
+    {
+      path: 'alarm',
+      canActivate: [authGuard],
+      loadChildren: () => import('./alarm/alarm.module').then(m => m.AlarmModule)
+    },
+    {
+        path: 'validator',
+        canActivate: [authGuard],
+        loadChildren: () => import('./validator/validator.module').then(m => m.ValidatorModule)
+    },
     {
         path: 'setting',
         canActivate: [authGuard],
