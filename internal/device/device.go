@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/iot-master-contrib/history/types"
 	"github.com/zgwit/iot-master/v3/internal/aggregator"
 	"github.com/zgwit/iot-master/v3/internal/product"
 	"github.com/zgwit/iot-master/v3/internal/validator"
@@ -40,7 +41,22 @@ func (d *Device) createValidator(m *model.ModValidator) error {
 }
 
 func (d *Device) createAggregator(m *model.ModAggregator) error {
-	a, err := aggregator.New(m)
+	a, err := aggregator.New(m, func(val float64, err error) {
+		if err != nil {
+			log.Error(err)
+			return
+		}
+		his := types.History{
+			DeviceId: d.Id,
+			Point:    m.Assign,
+			Value:    val,
+			Time:     time.Now(),
+		}
+		_, err = db.Engine.InsertOne(&his)
+		if err != nil {
+			log.Error(err)
+		}
+	})
 	if err != nil {
 		return err
 	}

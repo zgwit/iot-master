@@ -12,7 +12,7 @@ type Aggregator interface {
 }
 
 // New 新建
-func New(m *model.ModAggregator) (agg Aggregator, err error) {
+func New(m *model.ModAggregator, pop func(float64, error)) (agg Aggregator, err error) {
 	switch m.Type {
 	case "inc", "increase":
 		agg = &incAggregator{}
@@ -38,5 +38,15 @@ func New(m *model.ModAggregator) (agg Aggregator, err error) {
 	}
 	//agg.expression, err = calc.New(a.Expression)
 	err = agg.Compile(m.Expression)
+
+	_, err = _cron.AddFunc(m.Crontab, func() {
+		//并发处理，如果设备太多就完蛋了
+		go pop(agg.Pop())
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
 	return
 }

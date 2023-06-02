@@ -2,6 +2,7 @@ package internal
 
 import (
 	paho "github.com/eclipse/paho.mqtt.golang"
+	"github.com/zgwit/iot-master/v3/internal/aggregator"
 	"github.com/zgwit/iot-master/v3/internal/broker"
 	"github.com/zgwit/iot-master/v3/internal/config"
 	"github.com/zgwit/iot-master/v3/internal/device"
@@ -30,6 +31,9 @@ func Open() error {
 	if err != nil {
 		return err
 	}
+
+	//启动计划任务
+	aggregator.Start()
 
 	//同步表结构
 	err = db.Engine.Sync2(
