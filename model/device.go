@@ -12,6 +12,8 @@ type Device struct {
 	Parameters map[string]float64 `json:"parameters,omitempty"` //模型参数，用于报警检查
 	Disabled   bool               `json:"disabled,omitempty"`
 	Created    time.Time          `json:"created,omitempty" xorm:"created"`
+
+	Online bool `json:"online,omitempty" xorm:"-"`
 }
 
 type DeviceHistory struct {

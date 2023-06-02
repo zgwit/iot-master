@@ -3,6 +3,7 @@ package product
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/pkg/calc"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"github.com/zgwit/iot-master/v3/pkg/log"
@@ -12,7 +13,8 @@ var products lib.Map[Product]
 
 type Product struct {
 	*model.Product
-	//Values map[string]float64
+
+	Validators []Validator
 }
 
 func New(model *model.Product) *Product {
@@ -51,10 +53,29 @@ func Load(id string) error {
 	return From(&p)
 }
 
-func From(model *model.Product) error {
-	p := New(model)
-	
-	products.Store(model.Id, p)
+func From(product *model.Product) error {
+	p := New(product)
+
+	products.Store(product.Id, p)
+
+	//加载验证器
+	var validators []*model.Validator
+	err := db.Engine.Find(&validators)
+	if err != nil {
+		return err
+	}
+
+	//编译表达式
+	for _, v := range validators {
+		vv := Validator{Validator: v}
+		eval, err := calc.New(v.Expression)
+		if err != nil {
+			log.Error(err)
+			continue
+		}
+		vv.Expression = eval
+		p.Validators = append(p.Validators, vv)
+	}
 
 	return nil
 }
