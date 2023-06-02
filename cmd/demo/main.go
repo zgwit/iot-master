@@ -2,13 +2,13 @@ package main
 
 import (
 	"github.com/iot-master-contrib/alarm"
+	"github.com/iot-master-contrib/aliyun"
 	"github.com/iot-master-contrib/classify"
 	"github.com/iot-master-contrib/history"
 	"github.com/iot-master-contrib/influxdb"
 	"github.com/iot-master-contrib/ipc"
 	"github.com/iot-master-contrib/modbus"
 	"github.com/iot-master-contrib/scada"
-	"github.com/iot-master-contrib/sms"
 	"github.com/zgwit/iot-master/v3"
 	"github.com/zgwit/iot-master/v3/app"
 	"github.com/zgwit/iot-master/v3/pkg/banner"
@@ -73,7 +73,7 @@ func main() {
 		//return
 	}
 
-	err = sms.Startup(engine)
+	err = aliyun.Startup(engine)
 	if err != nil {
 		log.Fatal(err)
 		//return
@@ -90,7 +90,7 @@ func main() {
 	ipc.Static(fs)
 	modbus.Static(fs)
 	scada.Static(fs)
-	sms.Static(fs)
+	aliyun.Static(fs)
 
 	app.Register(alarm.App())
 	app.Register(classify.App())
@@ -99,7 +99,7 @@ func main() {
 	app.Register(ipc.App())
 	app.Register(modbus.App())
 	app.Register(scada.App())
-	app.Register(sms.App())
+	app.Register(aliyun.App())
 
 	//启动
 	engine.Serve()
