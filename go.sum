@@ -270,8 +270,8 @@ github.com/influxdata/influxdb-client-go/v2 v2.12.3/go.mod h1:IrrLUbCjjfkmRuaCiG
 github.com/influxdata/influxdb1-client v0.0.0-20191209144304-8bf82d3c094d/go.mod h1:qj24IKcXYK6Iy9ceXlo3Tc+vtHo9lIhSX5JddghvEPo=
 github.com/influxdata/line-protocol v0.0.0-20210922203350-b1ad95c89adf h1:7JTmneyiNEwVBOHSjoMxiWAqB992atOeepeFYegn5RU=
 github.com/influxdata/line-protocol v0.0.0-20210922203350-b1ad95c89adf/go.mod h1:xaLFMmpvUxqXtVkUJfg9QmT88cDaCJ3ZKgdZ78oO8Qo=
-github.com/iot-master-contrib/aliyun v1.0.1 h1:EbtC8DFsKfLhZYUt6C3muj2V30U81It4jIX00rwVmY4=
-github.com/iot-master-contrib/aliyun v1.0.1/go.mod h1:bintcsAaAa7zbVgbzzW1rKK27kjrung0b9c1IaZfEzQ=
+github.com/iot-master-contrib/aliyun v1.0.2 h1:zvBEMtlqMbbGH8oN2iIaTkx2iOU+MAf0SG89JMQU9Gc=
+github.com/iot-master-contrib/aliyun v1.0.2/go.mod h1:bintcsAaAa7zbVgbzzW1rKK27kjrung0b9c1IaZfEzQ=
 github.com/iot-master-contrib/classify v1.0.6 h1:BOfQKAfdfX7nnBIpXKEzOv7eqGzbRQKX08MayVVcN2w=
 github.com/iot-master-contrib/classify v1.0.6/go.mod h1:nDSM5yol3qzHrWLUQri3+1MR//q9XBFAQUXsRfLXtNo=
 github.com/iot-master-contrib/history v1.0.5 h1:KjO+T0Ac2pQHqfe22cWv3BSpQ7AC5ws6aWgsW4cuZIA=
@@ -280,8 +280,8 @@ github.com/iot-master-contrib/influxdb v1.0.4 h1:jo8VOEuTKHMhqL/PkeV9E/4uKVWRQNU
 github.com/iot-master-contrib/influxdb v1.0.4/go.mod h1:jK5hvODhE3y6du98YJLCu0iiDEhTRGU65+B7Vm1NUWs=
 github.com/iot-master-contrib/ipc v1.0.1 h1:ZWLBZFHZx+gJysd7L/tlbyP8R2Baa3AHCBfMi+Prq3E=
 github.com/iot-master-contrib/ipc v1.0.1/go.mod h1:z2HmxSWcEGj7w/DjydAdpPNkybeG+hh3F6KxcNk5Wlg=
-github.com/iot-master-contrib/modbus v1.0.2 h1:eqD9eCzE9Tja5Dhe2DWYYGZOknDxs17d0MjNsr0QNos=
-github.com/iot-master-contrib/modbus v1.0.2/go.mod h1:vuMERHZ4GSfPoowW+HVM49CdzqNvETPS1hAYjLfn6ec=
+github.com/iot-master-contrib/modbus v1.0.3 h1:68cNohFyqDwSEPPgKIAWEiTsMSkj7COcA1z4ch1+9Kw=
+github.com/iot-master-contrib/modbus v1.0.3/go.mod h1:vuMERHZ4GSfPoowW+HVM49CdzqNvETPS1hAYjLfn6ec=
 github.com/iot-master-contrib/scada v1.0.3 h1:AfL3oMKU3UBKNdrfzufSYA7FDQ+0HFW3u2g4lRHdiV8=
 github.com/iot-master-contrib/scada v1.0.3/go.mod h1:F2czRGbvWv2O3qb0RZgqF5rrO7q7u1OeQXyim1F+zhE=
 github.com/jackc/chunkreader v1.0.0/go.mod h1:RT6O25fNZIuasFJRyZ4R/Y2BbhasbmZXF9QQ7T3kePo=

@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/iot-master-contrib/aliyun"
 	"github.com/iot-master-contrib/classify"
-	"github.com/iot-master-contrib/history"
 	"github.com/iot-master-contrib/influxdb"
 	"github.com/iot-master-contrib/ipc"
 	"github.com/iot-master-contrib/modbus"
@@ -31,12 +30,6 @@ func main() {
 	}
 
 	err = classify.Startup(engine)
-	if err != nil {
-		log.Fatal(err)
-		//return
-	}
-
-	err = history.Startup(engine)
 	if err != nil {
 		log.Fatal(err)
 		//return
@@ -77,7 +70,6 @@ func main() {
 
 	master.Static(fs)
 	classify.Static(fs)
-	history.Static(fs)
 	influxdb.Static(fs)
 	ipc.Static(fs)
 	modbus.Static(fs)
@@ -85,7 +77,6 @@ func main() {
 	aliyun.Static(fs)
 
 	app.Register(classify.App())
-	app.Register(history.App())
 	app.Register(influxdb.App())
 	app.Register(ipc.App())
 	app.Register(modbus.App())

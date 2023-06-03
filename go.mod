@@ -15,16 +15,17 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/websocket v1.5.0
-	github.com/iot-master-contrib/aliyun v1.0.1
+	github.com/iot-master-contrib/aliyun v1.0.2
 	github.com/iot-master-contrib/classify v1.0.6
 	github.com/iot-master-contrib/history v1.0.5
 	github.com/iot-master-contrib/influxdb v1.0.4
 	github.com/iot-master-contrib/ipc v1.0.1
-	github.com/iot-master-contrib/modbus v1.0.2
+	github.com/iot-master-contrib/modbus v1.0.3
 	github.com/iot-master-contrib/scada v1.0.3
 	github.com/kardianos/service v1.2.2
 	github.com/lib/pq v1.10.9
 	github.com/mochi-co/mqtt/v2 v2.2.11
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/sirupsen/logrus v1.9.2
 	github.com/super-l/machine-code v0.0.0-20210720085303-62525d58dab0
@@ -92,7 +93,6 @@ require (
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/richardlehane/mscfb v1.0.4 // indirect
 	github.com/richardlehane/msoleps v1.0.3 // indirect
-	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/xid v1.5.0 // indirect
 	github.com/rs/zerolog v1.29.1 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
