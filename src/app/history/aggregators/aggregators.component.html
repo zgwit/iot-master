@@ -17,7 +17,7 @@
         <button nz-button nzType="primary" *nzSpaceItem class="btn">
             <span nz-icon nzType="cloud-download" nzTheme="outline"></span>
             <a (click)="handleExport()" download="filename" [href]="href"
-                >导出</a
+            >导出</a
             >
         </button>
         <div *nzSpaceItem style="position: relative">
@@ -56,77 +56,80 @@
 </app-toolbar>
 <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
 <nz-table
-  #basicTable
-  [nzData]="datum"
-  [nzLoading]="loading" 
-  nzShowPagination
-  nzShowSizeChanger
-  [nzFrontPagination]="false"
-  [nzTotal]="total"
-  [nzShowTotal]="totalTemplate"
-  (nzPageSizeChange)="pageSizeChange($event)"
-  (nzPageIndexChange)="pageIndexChange($event)"
-  [nzPageSize]="pageSize"
-  [nzPageIndex]="pageIndex"
-  (nzQueryParams)="onQuery($event)"
+    #basicTable
+    [nzData]="datum"
+    [nzLoading]="loading"
+    nzShowPagination
+    nzShowSizeChanger
+    [nzFrontPagination]="false"
+    [nzTotal]="total"
+    [nzShowTotal]="totalTemplate"
+    (nzPageSizeChange)="pageSizeChange($event)"
+    (nzPageIndexChange)="pageIndexChange($event)"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="pageIndex"
+    (nzQueryParams)="onQuery($event)"
 >
     <thead>
-        <tr>
-            <th
-                [nzChecked]="checked"
-                [nzIndeterminate]="indeterminate"
-                (nzCheckedChange)="handleAllChecked($event)"
-            ></th>
-            <th nzColumnKey="id" [nzSortFn]="true">ID</th>
-            <th nzColumnKey="product_id">产品id</th>
-            <th nzColumnKey="aggregators">集合</th>
-            <th nzColumnKey="crontab">定时</th>
-            <th nzColumnKey="desc">说明</th>
-            <th nzColumnKey="name">名称</th> 
-            <th nzColumnKey="disabled">状态</th>
-            <th nzColumnKey="created" [nzSortFn]="true">日期</th>
-            <th>操作</th>
-        </tr>
+    <tr>
+        <th
+            [nzChecked]="checked"
+            [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="handleAllChecked($event)"
+        ></th>
+        <th nzColumnKey="id" [nzSortFn]="true">ID</th>
+        <th nzColumnKey="product_id">产品id</th>
+        <th nzColumnKey="name">名称</th>
+        <th nzColumnKey="desc">说明</th>
+        <th nzColumnKey="crontab">定时</th>
+        <th nzColumnKey="expression">表达式</th>
+        <th nzColumnKey="type">类型</th>
+        <th nzColumnKey="assign">赋值</th>
+        <th nzColumnKey="disabled">状态</th>
+        <th nzColumnKey="created" [nzSortFn]="true">日期</th>
+        <th>操作</th>
+    </tr>
     </thead>
     <tbody>
-        <tr
-            *ngFor="let data of basicTable.data; let i = index"
-            (dblclick)="read(data)"
-            [style]="{ fontWeight: data.read ? '' : 'bold' }"
-        >
-            <td
-                [nzChecked]="setOfCheckedId.has(data.id)"
-                (nzCheckedChange)="handleItemChecked(data.id, $event)"
-            ></td>
-            <td>{{ data.id }}</td>
-            <td>{{ data.product_id }}</td>
-            <td> {{data.aggregators.assign||''}}</td>
-            <!-- {{'分配:'+ data.aggregators.assign +' '+'表示:'+ data.aggregators.expression +' '+'类型:'+ data.aggregators.type  }} -->
-            <td>{{ data.crontab }}</td>
-            <td>{{ data.desc }}</td>
-            <td>{{ data.name }}</td>  
-            <td>
-                <nz-tag nzColor="error" *ngIf="data.disabled"> 禁用 </nz-tag>
-                <nz-tag nzColor="success" *ngIf="!data.disabled"> 启用 </nz-tag>
-            </td>
+    <tr
+        *ngFor="let data of basicTable.data; let i = index"
+        (dblclick)="read(data)"
+        [style]="{ fontWeight: data.read ? '' : 'bold' }"
+    >
+        <td
+            [nzChecked]="setOfCheckedId.has(data.id)"
+            (nzCheckedChange)="handleItemChecked(data.id, $event)"
+        ></td>
+        <td>{{ data.id }}</td>
+        <td>{{ data.product_id }}</td>
+        <td>{{ data.name }}</td>
+        <td>{{ data.desc }}</td>
+        <td>{{ data.crontab }}</td>
+        <td>{{ data.expression }}</td>
+        <td>{{ data.type }}</td>
+        <td>{{ data.assign }}</td>
+        <td>
+            <nz-tag nzColor="error" *ngIf="data.disabled"> 禁用</nz-tag>
+            <nz-tag nzColor="success" *ngIf="!data.disabled"> 启用</nz-tag>
+        </td>
 
-            <td>{{ data.created | date }}</td>
-            <td>
-                <a (click)="edit(data.id)">
-                    <i nz-icon nzType="edit"></i>
-                </a>
-                <nz-divider nzType="vertical"></nz-divider>
-                <a (click)="delete(data.id)">
-                    <i nz-icon nzType="delete"></i>
-                </a>
-                <nz-divider nzType="vertical"></nz-divider>
-                <a *ngIf="!data.disabled" (click)="disable(1, data.id)">
-                    禁用
-                </a>
-                <a *ngIf="data.disabled" (click)="disable(0, data.id)">
-                    启用
-                </a>
-            </td>
-        </tr>
+        <td>{{ data.created | date }}</td>
+        <td>
+            <a (click)="edit(data.id)">
+                <i nz-icon nzType="edit"></i>
+            </a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="delete(data.id)">
+                <i nz-icon nzType="delete"></i>
+            </a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a *ngIf="!data.disabled" (click)="disable(1, data.id)">
+                禁用
+            </a>
+            <a *ngIf="data.disabled" (click)="disable(0, data.id)">
+                启用
+            </a>
+        </td>
+    </tr>
     </tbody>
 </nz-table>

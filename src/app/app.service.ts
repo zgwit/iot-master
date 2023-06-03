@@ -40,7 +40,7 @@ const internals: any[] = [{
     internal: true,
     entries: [
         {name: '历史数据', path: '/history/list'},
-        {name: '数据聚合', path: '/history/validators'},
+        {name: '数据聚合', path: '/history/aggregators'},
         // {name: '创建插件', path: '/plugin/create'},
     ]
 }, {

@@ -10,114 +10,57 @@
 
 <nz-card [nzTitle]="id ? '编辑计划任务' : '创建计划任务'" [nzExtra]="extra">
     <form nz-form [formGroup]="group" (ngSubmit)="submit()">
-        <!-- <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="aggregators"
-                >集合</nz-form-label
-            >
-            <nz-form-control [nzSm]="14" [nzXs]="24">
-                <input nz-input formControlName="aggregators" />
-            </nz-form-control>
-        </nz-form-item> -->
 
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="product_id"
-                >产品id</nz-form-label
-            >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="product_id">产品id</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-                <nz-select
-                    formControlName="product_id"
-                    [nzOptions]="productList"
-                >
+                <nz-select formControlName="product_id" [nzOptions]="productList">
                 </nz-select>
             </nz-form-control>
         </nz-form-item>
 
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name"
-                >名称</nz-form-label
-            >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name">名称</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
-                <input nz-input formControlName="name" />
+                <input nz-input formControlName="name"/>
             </nz-form-control>
         </nz-form-item>
 
-        <!-- <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="assign"
-                >分配</nz-form-label
-            >
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="desc">说明</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
-                <input nz-input formControlName="assign" />
+                <input nz-input formControlName="desc"/>
             </nz-form-control>
         </nz-form-item>
 
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="expression"
-                >表示</nz-form-label
-            >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="crontab">定时任务</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
-                <input nz-input formControlName="expression" />
+                <input nz-input formControlName="crontab"/>
             </nz-form-control>
         </nz-form-item>
 
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="type"
-                >类型</nz-form-label
-            >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="expression">表达式</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
-                <input nz-input formControlName="type" />
-            </nz-form-control>
-        </nz-form-item> -->
-
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="desc"
-                >说明</nz-form-label
-            >
-            <nz-form-control [nzSm]="14" [nzXs]="24">
-                <input nz-input formControlName="desc" />
+                <input nz-input formControlName="expression"/>
             </nz-form-control>
         </nz-form-item>
 
-        <!-- assign	string
-            expression	string
-            type	string -->
-
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="crontab"
-                >定时任务</nz-form-label
-            >
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="type">类型</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24">
-
-
-                <input nz-input  formControlName="crontab" />
-
-
-
+                <nz-select formControlName="type" [nzOptions]="types"></nz-select>
             </nz-form-control>
         </nz-form-item>
 
-        <nz-collapse>
-
-            <ng-template #parameterEx>
-              <button type="button" nz-button nzType="primary" (click)="parameterAdd($event)">
-                <i type="button" nz-icon nzType="plus"></i>
-                添加
-              </button>
-            </ng-template>
-            <nz-collapse-panel nzHeader="聚合器" [nzExtra]="parameterEx">
-              <app-edit-table formControlName="aggregators" #parametersChild [listData]="parameterslistData"></app-edit-table>
-            </nz-collapse-panel>
-
-          </nz-collapse>
-
-
+        <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="assign">分配</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24">
+                <input nz-input formControlName="assign"/>
+            </nz-form-control>
+        </nz-form-item>
 
     </form>
-    <ng-template #addOnAfterTemplate>
-        <nz-select [ngModel]="add" style="width: 60px">
-          <nz-option nzLabel="秒" nzValue="s"></nz-option>
-          <nz-option nzLabel="分" nzValue="m"></nz-option>
-          <nz-option nzLabel="时" nzValue="h"></nz-option>
-          <nz-option nzLabel="天" nzValue="d"></nz-option>
-        </nz-select>
-      </ng-template>
 </nz-card>
