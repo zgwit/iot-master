@@ -66,6 +66,11 @@ const pages: Routes = [
         loadChildren: () => import('./validator/validator.module').then(m => m.ValidatorModule)
     },
     {
+        path: 'history',
+        canActivate: [authGuard],
+        loadChildren: () => import('./history/history.module').then(m => m.HistoryModule)
+    },
+    {
         path: 'setting',
         canActivate: [authGuard],
         loadChildren: () => import('./setting/setting.module').then(m => m.SettingModule)

@@ -15,51 +15,144 @@ const docTemplatemaster = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/aggregate": {
-            "get": {
-                "description": "原始数据按时间统计",
+        "/aggregator/count": {
+            "post": {
+                "description": "查询聚合器数量",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "aggregate"
+                    "aggregator"
                 ],
-                "summary": "原始数据按时间统计",
+                "summary": "查询聚合器数量",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "设备区域",
-                        "name": "area",
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/aggregator/create": {
+            "post": {
+                "description": "创建聚合器",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "aggregator"
+                ],
+                "summary": "创建聚合器",
+                "parameters": [
+                    {
+                        "description": "聚合器信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Aggregator"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
+                        }
+                    }
+                }
+            }
+        },
+        "/aggregator/export": {
+            "get": {
+                "description": "导出聚合器",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导出聚合器",
+                "responses": {}
+            }
+        },
+        "/aggregator/import": {
+            "post": {
+                "description": "导入聚合器",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "导入聚合器",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/aggregator/list": {
+            "get": {
+                "description": "查询聚合器",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "aggregator"
+                ],
+                "summary": "查询聚合器",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备分组",
-                        "name": "group",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "数据点位",
-                        "name": "point",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备类型",
-                        "name": "type",
+                        "type": "integer",
+                        "name": "skip",
                         "in": "query"
                     }
                 ],
@@ -67,420 +160,208 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_Result"
+                            "$ref": "#/definitions/curd.ReplyList-model_Aggregator"
                         }
                     }
                 }
             }
         },
-        "/aggregate/area": {
-            "get": {
-                "description": "按区域统计",
+        "/aggregator/search": {
+            "post": {
+                "description": "查询聚合器",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "aggregate"
+                    "aggregator"
                 ],
-                "summary": "按区域统计",
+                "summary": "查询聚合器",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "数据点",
-                        "name": "point",
-                        "in": "query",
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Aggregator"
+                        }
+                    }
+                }
+            }
+        },
+        "/aggregator/{id}": {
+            "get": {
+                "description": "获取聚合器",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "aggregator"
+                ],
+                "summary": "获取聚合器",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "聚合器ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改聚合器",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "aggregator"
+                ],
+                "summary": "修改聚合器",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "聚合器ID",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
+                        "description": "聚合器信息",
+                        "name": "aggregator",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Aggregator"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_Result"
+                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
                         }
                     }
                 }
             }
         },
-        "/aggregate/day": {
+        "/aggregator/{id}/delete": {
             "get": {
-                "description": "按日统计",
+                "description": "删除聚合器",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "aggregate"
+                    "aggregator"
                 ],
-                "summary": "按日统计",
+                "summary": "删除聚合器",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "设备区域",
-                        "name": "area",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备分组",
-                        "name": "group",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "数据点位",
-                        "name": "point",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备类型",
-                        "name": "type",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_Result"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregate/group": {
-            "get": {
-                "description": "按分组统计",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregate"
-                ],
-                "summary": "按分组统计",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "数据点",
-                        "name": "point",
-                        "in": "query",
+                        "type": "integer",
+                        "description": "聚合器ID",
+                        "name": "id",
+                        "in": "path",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_Result"
+                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
                         }
                     }
                 }
             }
         },
-        "/aggregate/hour": {
+        "/aggregator/{id}/disable": {
             "get": {
-                "description": "按小时统计",
+                "description": "禁用聚合器",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "aggregate"
+                    "aggregator"
                 ],
-                "summary": "按小时统计",
+                "summary": "禁用聚合器",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "设备区域",
-                        "name": "area",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备分组",
-                        "name": "group",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "数据点位",
-                        "name": "point",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备类型",
-                        "name": "type",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_Result"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregate/minute": {
-            "get": {
-                "description": "按分钟统计",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregate"
-                ],
-                "summary": "按分钟统计",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "设备区域",
-                        "name": "area",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备分组",
-                        "name": "group",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "数据点位",
-                        "name": "point",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备类型",
-                        "name": "type",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_Result"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregate/month": {
-            "get": {
-                "description": "按月统计",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregate"
-                ],
-                "summary": "按月统计",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "设备区域",
-                        "name": "area",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备分组",
-                        "name": "group",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "数据点位",
-                        "name": "point",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备类型",
-                        "name": "type",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_Result"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregate/type": {
-            "get": {
-                "description": "按类型统计",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregate"
-                ],
-                "summary": "按类型统计",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "数据点",
-                        "name": "point",
-                        "in": "query",
+                        "type": "integer",
+                        "description": "聚合器ID",
+                        "name": "id",
+                        "in": "path",
                         "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_Result"
+                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
                         }
                     }
                 }
             }
         },
-        "/aggregate/year": {
+        "/aggregator/{id}/enable": {
             "get": {
-                "description": "按年统计",
+                "description": "启用聚合器",
+                "consumes": [
+                    "application/json"
+                ],
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "aggregate"
+                    "aggregator"
                 ],
-                "summary": "按年统计",
+                "summary": "启用聚合器",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "设备区域",
-                        "name": "area",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备分组",
-                        "name": "group",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "数据点位",
-                        "name": "point",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备类型",
-                        "name": "type",
-                        "in": "query"
+                        "type": "integer",
+                        "description": "聚合器ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_Result"
+                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
                         }
                     }
                 }
@@ -2110,6 +1991,511 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "/history/group": {
+            "get": {
+                "description": "原始数据按时间统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "原始数据按时间统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "设备区域",
+                        "name": "area",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备分组",
+                        "name": "group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "数据点位",
+                        "name": "point",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备类型",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/group/area": {
+            "get": {
+                "description": "按区域统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "按区域统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "数据点",
+                        "name": "point",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/group/day": {
+            "get": {
+                "description": "按日统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "按日统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "设备区域",
+                        "name": "area",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备分组",
+                        "name": "group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "数据点位",
+                        "name": "point",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备类型",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/group/history/group": {
+            "get": {
+                "description": "按分组统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "按分组统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "数据点",
+                        "name": "point",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/group/hour": {
+            "get": {
+                "description": "按小时统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "按小时统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "设备区域",
+                        "name": "area",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备分组",
+                        "name": "group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "数据点位",
+                        "name": "point",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备类型",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/group/minute": {
+            "get": {
+                "description": "按分钟统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "按分钟统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "设备区域",
+                        "name": "area",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备分组",
+                        "name": "group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "数据点位",
+                        "name": "point",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备类型",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/group/month": {
+            "get": {
+                "description": "按月统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "按月统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "设备区域",
+                        "name": "area",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备分组",
+                        "name": "group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "数据点位",
+                        "name": "point",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备类型",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/group/point": {
+            "get": {
+                "description": "按数据点统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "按数据点统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/group/type": {
+            "get": {
+                "description": "按类型统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "按类型统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "数据点",
+                        "name": "point",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/group/year": {
+            "get": {
+                "description": "按年统计",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "group"
+                ],
+                "summary": "按年统计",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "设备区域",
+                        "name": "area",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备分组",
+                        "name": "group",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "数据点位",
+                        "name": "point",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备类型",
+                        "name": "type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
+                        }
+                    }
+                }
+            }
+        },
         "/history/list": {
             "get": {
                 "description": "查询历史",
@@ -2139,7 +2525,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_History"
+                            "$ref": "#/definitions/curd.ReplyList-model_History"
                         }
                     }
                 }
@@ -2173,7 +2559,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_History"
+                            "$ref": "#/definitions/curd.ReplyList-model_History"
                         }
                     }
                 }
@@ -2205,359 +2591,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_History"
-                        }
-                    }
-                }
-            }
-        },
-        "/job/count": {
-            "post": {
-                "description": "查询计划任务数量",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "job"
-                ],
-                "summary": "查询计划任务数量",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/job/create": {
-            "post": {
-                "description": "创建计划任务",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "job"
-                ],
-                "summary": "创建计划任务",
-                "parameters": [
-                    {
-                        "description": "计划任务信息",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.Job"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Job"
-                        }
-                    }
-                }
-            }
-        },
-        "/job/export": {
-            "get": {
-                "description": "导出计划任务",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "product"
-                ],
-                "summary": "导出计划任务",
-                "responses": {}
-            }
-        },
-        "/job/import": {
-            "post": {
-                "description": "导入计划任务",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "product"
-                ],
-                "summary": "导入计划任务",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "压缩包",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/job/list": {
-            "get": {
-                "description": "查询计划任务",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "job"
-                ],
-                "summary": "查询计划任务",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Job"
-                        }
-                    }
-                }
-            }
-        },
-        "/job/search": {
-            "post": {
-                "description": "查询计划任务",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "job"
-                ],
-                "summary": "查询计划任务",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Job"
-                        }
-                    }
-                }
-            }
-        },
-        "/job/{id}": {
-            "get": {
-                "description": "获取计划任务",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "job"
-                ],
-                "summary": "获取计划任务",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "计划任务ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Job"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改计划任务",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "job"
-                ],
-                "summary": "修改计划任务",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "计划任务ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "计划任务信息",
-                        "name": "job",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.Job"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Job"
-                        }
-                    }
-                }
-            }
-        },
-        "/job/{id}/delete": {
-            "get": {
-                "description": "删除计划任务",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "job"
-                ],
-                "summary": "删除计划任务",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "计划任务ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Job"
-                        }
-                    }
-                }
-            }
-        },
-        "/job/{id}/disable": {
-            "get": {
-                "description": "禁用计划任务",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "job"
-                ],
-                "summary": "禁用计划任务",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "计划任务ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Job"
-                        }
-                    }
-                }
-            }
-        },
-        "/job/{id}/enable": {
-            "get": {
-                "description": "启用计划任务",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "job"
-                ],
-                "summary": "启用计划任务",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "计划任务ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Job"
+                            "$ref": "#/definitions/curd.ReplyData-model_History"
                         }
                     }
                 }
@@ -4225,7 +4259,7 @@ const docTemplatemaster = `{
         }
     },
     "definitions": {
-        "api.Result": {
+        "api.GroupResult": {
             "type": "object",
             "properties": {
                 "id": {
@@ -4280,11 +4314,11 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-api_Result": {
+        "curd.ReplyData-api_GroupResult": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/api.Result"
+                    "$ref": "#/definitions/api.GroupResult"
                 },
                 "error": {
                     "type": "string"
@@ -4346,6 +4380,17 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyData-model_Aggregator": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.Aggregator"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-model_Alarm": {
             "type": "object",
             "properties": {
@@ -4384,6 +4429,17 @@ const docTemplatemaster = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/model.Gateway"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-model_History": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.History"
                 },
                 "error": {
                     "type": "string"
@@ -4478,28 +4534,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-types_History": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/types.History"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyData-types_Job": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/types.Job"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ReplyData-web_Options": {
             "type": "object",
             "properties": {
@@ -4508,6 +4542,23 @@ const docTemplatemaster = `{
                 },
                 "error": {
                     "type": "string"
+                }
+            }
+        },
+        "curd.ReplyList-model_Aggregator": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Aggregator"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },
@@ -4569,6 +4620,23 @@ const docTemplatemaster = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Gateway"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-model_History": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.History"
                     }
                 },
                 "error": {
@@ -4664,40 +4732,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-types_History": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.History"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "curd.ReplyList-types_Job": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Job"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
         "db.Options": {
             "type": "object",
             "properties": {
@@ -4726,6 +4760,51 @@ const docTemplatemaster = `{
                 },
                 "text": {
                     "type": "boolean"
+                }
+            }
+        },
+        "model.Aggregator": {
+            "type": "object",
+            "properties": {
+                "assign": {
+                    "description": "赋值",
+                    "type": "string"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "crontab": {
+                    "description": "定时计划",
+                    "type": "string"
+                },
+                "desc": {
+                    "description": "说明",
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "description": "禁用",
+                    "type": "boolean"
+                },
+                "expression": {
+                    "description": "表达式",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "type": {
+                    "description": "聚合算法 inc dec avg count min max sum last first",
+                    "type": "string"
                 }
             }
         },
@@ -4844,6 +4923,52 @@ const docTemplatemaster = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.History": {
+            "type": "object",
+            "properties": {
+                "device": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "point": {
+                    "description": "数据点",
+                    "type": "string"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "value": {
+                    "description": "值",
+                    "type": "number"
+                }
+            }
+        },
+        "model.ModAggregator": {
+            "type": "object",
+            "properties": {
+                "assign": {
+                    "description": "赋值",
+                    "type": "string"
+                },
+                "crontab": {
+                    "description": "定时计划",
+                    "type": "string"
+                },
+                "expression": {
+                    "description": "表达式",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "聚合算法 inc dec avg count min max sum last first",
                     "type": "string"
                 }
             }
@@ -4970,6 +5095,38 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "model.ModValidator": {
+            "type": "object",
+            "properties": {
+                "again": {
+                    "description": "再次提醒间隔s",
+                    "type": "integer"
+                },
+                "delay": {
+                    "description": "延迟时间s",
+                    "type": "integer"
+                },
+                "expression": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "template": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "total": {
+                    "description": "总提醒次数",
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Plugin": {
             "type": "object",
             "properties": {
@@ -5014,6 +5171,12 @@ const docTemplatemaster = `{
         "model.Product": {
             "type": "object",
             "properties": {
+                "aggregators": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ModAggregator"
+                    }
+                },
                 "created": {
                     "type": "string"
                 },
@@ -5048,6 +5211,12 @@ const docTemplatemaster = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.ModProperty"
+                    }
+                },
+                "validators": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ModValidator"
                     }
                 },
                 "version": {
@@ -5118,6 +5287,9 @@ const docTemplatemaster = `{
                     "description": "延迟时间s",
                     "type": "integer"
                 },
+                "device_id": {
+                    "type": "string"
+                },
                 "disabled": {
                     "type": "boolean"
                 },
@@ -5182,85 +5354,6 @@ const docTemplatemaster = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "types.Aggregator": {
-            "type": "object",
-            "properties": {
-                "assign": {
-                    "description": "赋值",
-                    "type": "string"
-                },
-                "expression": {
-                    "description": "表达式",
-                    "type": "string"
-                },
-                "type": {
-                    "description": "聚合算法 inc dec avg count min max sum last first",
-                    "type": "string"
-                }
-            }
-        },
-        "types.History": {
-            "type": "object",
-            "properties": {
-                "device": {
-                    "type": "string"
-                },
-                "device_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "point": {
-                    "description": "数据点",
-                    "type": "string"
-                },
-                "time": {
-                    "type": "string"
-                },
-                "value": {
-                    "description": "值",
-                    "type": "number"
-                }
-            }
-        },
-        "types.Job": {
-            "type": "object",
-            "properties": {
-                "aggregators": {
-                    "description": "聚合器",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Aggregator"
-                    }
-                },
-                "created": {
-                    "type": "string"
-                },
-                "crontab": {
-                    "description": "定时计划",
-                    "type": "string"
-                },
-                "desc": {
-                    "description": "说明",
-                    "type": "string"
-                },
-                "disabled": {
-                    "description": "禁用",
-                    "type": "boolean"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "product_id": {
                     "type": "string"
                 }
             }

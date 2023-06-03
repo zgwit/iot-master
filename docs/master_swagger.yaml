@@ -1,6 +1,6 @@
 basePath: /api/
 definitions:
-  api.Result:
+  api.GroupResult:
     properties:
       id:
         type: string
@@ -36,10 +36,10 @@ definitions:
           type: integer
         type: object
     type: object
-  curd.ReplyData-api_Result:
+  curd.ReplyData-api_GroupResult:
     properties:
       data:
-        $ref: '#/definitions/api.Result'
+        $ref: '#/definitions/api.GroupResult'
       error:
         type: string
     type: object
@@ -78,6 +78,13 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-model_Aggregator:
+    properties:
+      data:
+        $ref: '#/definitions/model.Aggregator'
+      error:
+        type: string
+    type: object
   curd.ReplyData-model_Alarm:
     properties:
       data:
@@ -103,6 +110,13 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/model.Gateway'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_History:
+    properties:
+      data:
+        $ref: '#/definitions/model.History'
       error:
         type: string
     type: object
@@ -162,26 +176,23 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-types_History:
-    properties:
-      data:
-        $ref: '#/definitions/types.History'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_Job:
-    properties:
-      data:
-        $ref: '#/definitions/types.Job'
-      error:
-        type: string
-    type: object
   curd.ReplyData-web_Options:
     properties:
       data:
         $ref: '#/definitions/web.Options'
       error:
         type: string
+    type: object
+  curd.ReplyList-model_Aggregator:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Aggregator'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
     type: object
   curd.ReplyList-model_Alarm:
     properties:
@@ -221,6 +232,17 @@ definitions:
       data:
         items:
           $ref: '#/definitions/model.Gateway'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_History:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.History'
         type: array
       error:
         type: string
@@ -282,28 +304,6 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-types_History:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.History'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-types_Job:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.Job'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
   db.Options:
     properties:
       debug:
@@ -323,6 +323,38 @@ definitions:
         type: string
       text:
         type: boolean
+    type: object
+  model.Aggregator:
+    properties:
+      assign:
+        description: 赋值
+        type: string
+      created:
+        type: string
+      crontab:
+        description: 定时计划
+        type: string
+      desc:
+        description: 说明
+        type: string
+      device_id:
+        type: string
+      disabled:
+        description: 禁用
+        type: boolean
+      expression:
+        description: 表达式
+        type: string
+      id:
+        type: string
+      name:
+        description: 名称
+        type: string
+      product_id:
+        type: string
+      type:
+        description: 聚合算法 inc dec avg count min max sum last first
+        type: string
     type: object
   model.Alarm:
     properties:
@@ -401,6 +433,38 @@ definitions:
       password:
         type: string
       username:
+        type: string
+    type: object
+  model.History:
+    properties:
+      device:
+        type: string
+      device_id:
+        type: string
+      id:
+        type: integer
+      point:
+        description: 数据点
+        type: string
+      time:
+        type: string
+      value:
+        description: 值
+        type: number
+    type: object
+  model.ModAggregator:
+    properties:
+      assign:
+        description: 赋值
+        type: string
+      crontab:
+        description: 定时计划
+        type: string
+      expression:
+        description: 表达式
+        type: string
+      type:
+        description: 聚合算法 inc dec avg count min max sum last first
         type: string
     type: object
   model.ModArgument:
@@ -484,6 +548,28 @@ definitions:
       unit:
         type: string
     type: object
+  model.ModValidator:
+    properties:
+      again:
+        description: 再次提醒间隔s
+        type: integer
+      delay:
+        description: 延迟时间s
+        type: integer
+      expression:
+        type: string
+      level:
+        type: integer
+      template:
+        type: string
+      title:
+        type: string
+      total:
+        description: 总提醒次数
+        type: integer
+      type:
+        type: string
+    type: object
   model.Plugin:
     properties:
       command:
@@ -513,6 +599,10 @@ definitions:
     type: object
   model.Product:
     properties:
+      aggregators:
+        items:
+          $ref: '#/definitions/model.ModAggregator'
+        type: array
       created:
         type: string
       desc:
@@ -536,6 +626,10 @@ definitions:
       properties:
         items:
           $ref: '#/definitions/model.ModProperty'
+        type: array
+      validators:
+        items:
+          $ref: '#/definitions/model.ModValidator'
         type: array
       version:
         type: string
@@ -582,6 +676,8 @@ definitions:
       delay:
         description: 延迟时间s
         type: integer
+      device_id:
+        type: string
       disabled:
         type: boolean
       expression:
@@ -627,61 +723,6 @@ definitions:
       title:
         type: string
     type: object
-  types.Aggregator:
-    properties:
-      assign:
-        description: 赋值
-        type: string
-      expression:
-        description: 表达式
-        type: string
-      type:
-        description: 聚合算法 inc dec avg count min max sum last first
-        type: string
-    type: object
-  types.History:
-    properties:
-      device:
-        type: string
-      device_id:
-        type: string
-      id:
-        type: integer
-      point:
-        description: 数据点
-        type: string
-      time:
-        type: string
-      value:
-        description: 值
-        type: number
-    type: object
-  types.Job:
-    properties:
-      aggregators:
-        description: 聚合器
-        items:
-          $ref: '#/definitions/types.Aggregator'
-        type: array
-      created:
-        type: string
-      crontab:
-        description: 定时计划
-        type: string
-      desc:
-        description: 说明
-        type: string
-      disabled:
-        description: 禁用
-        type: boolean
-      id:
-        type: string
-      name:
-        description: 名称
-        type: string
-      product_id:
-        type: string
-    type: object
   web.Options:
     properties:
       addr:
@@ -699,315 +740,236 @@ info:
   title: 物联大师接口文档
   version: 3.2 版本
 paths:
-  /aggregate:
+  /aggregator/{id}:
     get:
-      description: 原始数据按时间统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
+      consumes:
       - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_Result'
-      summary: 原始数据按时间统计
-      tags:
-      - aggregate
-  /aggregate/area:
-    get:
-      description: 按区域统计
+      description: 获取聚合器
       parameters:
-      - description: 数据点
-        in: query
-        name: point
+      - description: 聚合器ID
+        in: path
+        name: id
         required: true
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-api_Result'
-      summary: 按区域统计
+            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
+      summary: 获取聚合器
       tags:
-      - aggregate
-  /aggregate/day:
-    get:
-      description: 按日统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
+      - aggregator
+    post:
+      consumes:
       - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_Result'
-      summary: 按日统计
-      tags:
-      - aggregate
-  /aggregate/group:
-    get:
-      description: 按分组统计
+      description: 修改聚合器
       parameters:
-      - description: 数据点
-        in: query
-        name: point
+      - description: 聚合器ID
+        in: path
+        name: id
         required: true
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_Result'
-      summary: 按分组统计
-      tags:
-      - aggregate
-  /aggregate/hour:
-    get:
-      description: 按小时统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_Result'
-      summary: 按小时统计
-      tags:
-      - aggregate
-  /aggregate/minute:
-    get:
-      description: 按分钟统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_Result'
-      summary: 按分钟统计
-      tags:
-      - aggregate
-  /aggregate/month:
-    get:
-      description: 按月统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_Result'
-      summary: 按月统计
-      tags:
-      - aggregate
-  /aggregate/type:
-    get:
-      description: 按类型统计
-      parameters:
-      - description: 数据点
-        in: query
-        name: point
+        type: integer
+      - description: 聚合器信息
+        in: body
+        name: aggregator
         required: true
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
+        schema:
+          $ref: '#/definitions/model.Aggregator'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-api_Result'
-      summary: 按类型统计
+            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
+      summary: 修改聚合器
       tags:
-      - aggregate
-  /aggregate/year:
+      - aggregator
+  /aggregator/{id}/delete:
     get:
-      description: 按年统计
+      consumes:
+      - application/json
+      description: 删除聚合器
       parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
+      - description: 聚合器ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-api_Result'
-      summary: 按年统计
+            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
+      summary: 删除聚合器
       tags:
-      - aggregate
+      - aggregator
+  /aggregator/{id}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用聚合器
+      parameters:
+      - description: 聚合器ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
+      summary: 禁用聚合器
+      tags:
+      - aggregator
+  /aggregator/{id}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用聚合器
+      parameters:
+      - description: 聚合器ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
+      summary: 启用聚合器
+      tags:
+      - aggregator
+  /aggregator/count:
+    post:
+      consumes:
+      - application/json
+      description: 查询聚合器数量
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 查询聚合器数量
+      tags:
+      - aggregator
+  /aggregator/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建聚合器
+      parameters:
+      - description: 聚合器信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Aggregator'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
+      summary: 创建聚合器
+      tags:
+      - aggregator
+  /aggregator/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出聚合器
+      produces:
+      - application/octet-stream
+      responses: {}
+      summary: 导出聚合器
+      tags:
+      - product
+  /aggregator/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入聚合器
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入聚合器
+      tags:
+      - product
+  /aggregator/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询聚合器
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Aggregator'
+      summary: 查询聚合器
+      tags:
+      - aggregator
+  /aggregator/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询聚合器
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Aggregator'
+      summary: 查询聚合器
+      tags:
+      - aggregator
   /alarm/{id}/delete:
     get:
       description: 删除报警
@@ -2062,7 +2024,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_History'
+            $ref: '#/definitions/curd.ReplyData-model_History'
       summary: 删除历史
       tags:
       - history
@@ -2088,6 +2050,337 @@ paths:
       summary: 查询历史数量
       tags:
       - history
+  /history/group:
+    get:
+      description: 原始数据按时间统计
+      parameters:
+      - description: 设备区域
+        in: query
+        name: area
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      - description: 设备分组
+        in: query
+        name: group
+        type: string
+      - description: 数据点位
+        in: query
+        name: point
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 设备类型
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 原始数据按时间统计
+      tags:
+      - group
+  /history/group/area:
+    get:
+      description: 按区域统计
+      parameters:
+      - description: 数据点
+        in: query
+        name: point
+        required: true
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 按区域统计
+      tags:
+      - group
+  /history/group/day:
+    get:
+      description: 按日统计
+      parameters:
+      - description: 设备区域
+        in: query
+        name: area
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      - description: 设备分组
+        in: query
+        name: group
+        type: string
+      - description: 数据点位
+        in: query
+        name: point
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 设备类型
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 按日统计
+      tags:
+      - group
+  /history/group/history/group:
+    get:
+      description: 按分组统计
+      parameters:
+      - description: 数据点
+        in: query
+        name: point
+        required: true
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 按分组统计
+      tags:
+      - group
+  /history/group/hour:
+    get:
+      description: 按小时统计
+      parameters:
+      - description: 设备区域
+        in: query
+        name: area
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      - description: 设备分组
+        in: query
+        name: group
+        type: string
+      - description: 数据点位
+        in: query
+        name: point
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 设备类型
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 按小时统计
+      tags:
+      - group
+  /history/group/minute:
+    get:
+      description: 按分钟统计
+      parameters:
+      - description: 设备区域
+        in: query
+        name: area
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      - description: 设备分组
+        in: query
+        name: group
+        type: string
+      - description: 数据点位
+        in: query
+        name: point
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 设备类型
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 按分钟统计
+      tags:
+      - group
+  /history/group/month:
+    get:
+      description: 按月统计
+      parameters:
+      - description: 设备区域
+        in: query
+        name: area
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      - description: 设备分组
+        in: query
+        name: group
+        type: string
+      - description: 数据点位
+        in: query
+        name: point
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 设备类型
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 按月统计
+      tags:
+      - group
+  /history/group/point:
+    get:
+      description: 按数据点统计
+      parameters:
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 按数据点统计
+      tags:
+      - group
+  /history/group/type:
+    get:
+      description: 按类型统计
+      parameters:
+      - description: 数据点
+        in: query
+        name: point
+        required: true
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 按类型统计
+      tags:
+      - group
+  /history/group/year:
+    get:
+      description: 按年统计
+      parameters:
+      - description: 设备区域
+        in: query
+        name: area
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      - description: 设备分组
+        in: query
+        name: group
+        type: string
+      - description: 数据点位
+        in: query
+        name: point
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 设备类型
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
+      summary: 按年统计
+      tags:
+      - group
   /history/list:
     get:
       consumes:
@@ -2106,7 +2399,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_History'
+            $ref: '#/definitions/curd.ReplyList-model_History'
       summary: 查询历史
       tags:
       - history
@@ -2128,240 +2421,10 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_History'
+            $ref: '#/definitions/curd.ReplyList-model_History'
       summary: 查询历史
       tags:
       - history
-  /job/{id}:
-    get:
-      consumes:
-      - application/json
-      description: 获取计划任务
-      parameters:
-      - description: 计划任务ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Job'
-      summary: 获取计划任务
-      tags:
-      - job
-    post:
-      consumes:
-      - application/json
-      description: 修改计划任务
-      parameters:
-      - description: 计划任务ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 计划任务信息
-        in: body
-        name: job
-        required: true
-        schema:
-          $ref: '#/definitions/types.Job'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Job'
-      summary: 修改计划任务
-      tags:
-      - job
-  /job/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除计划任务
-      parameters:
-      - description: 计划任务ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Job'
-      summary: 删除计划任务
-      tags:
-      - job
-  /job/{id}/disable:
-    get:
-      consumes:
-      - application/json
-      description: 禁用计划任务
-      parameters:
-      - description: 计划任务ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Job'
-      summary: 禁用计划任务
-      tags:
-      - job
-  /job/{id}/enable:
-    get:
-      consumes:
-      - application/json
-      description: 启用计划任务
-      parameters:
-      - description: 计划任务ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Job'
-      summary: 启用计划任务
-      tags:
-      - job
-  /job/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询计划任务数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询计划任务数量
-      tags:
-      - job
-  /job/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建计划任务
-      parameters:
-      - description: 计划任务信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/types.Job'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Job'
-      summary: 创建计划任务
-      tags:
-      - job
-  /job/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出计划任务
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出计划任务
-      tags:
-      - product
-  /job/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入计划任务
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入计划任务
-      tags:
-      - product
-  /job/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询计划任务
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Job'
-      summary: 查询计划任务
-      tags:
-      - job
-  /job/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询计划任务
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Job'
-      summary: 查询计划任务
-      tags:
-      - job
   /plugin/{id}:
     post:
       consumes:

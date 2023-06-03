@@ -34,6 +34,16 @@ const internals: any[] = [{
         // {name: '创建插件', path: '/plugin/create'},
     ]
 }, {
+    icon: '/assets/history.png',
+    nzIcon: 'appstore-add',
+    name: '历史数据',
+    internal: true,
+    entries: [
+        {name: '历史数据', path: '/history/list'},
+        {name: '数据聚合', path: '/history/validators'},
+        // {name: '创建插件', path: '/plugin/create'},
+    ]
+}, {
     icon: '/assets/user.png',
     nzIcon: 'user',
     name: '用户管理',
