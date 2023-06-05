@@ -41,6 +41,8 @@ func Open() error {
 		new(model.Broker), new(model.Gateway), new(model.Product),
 		new(model.Device),
 		new(model.App), new(model.Plugin),
+		new(model.Alarm), new(model.Validator),
+		new(model.History), new(model.Aggregator),
 	)
 	if err != nil {
 		return err
