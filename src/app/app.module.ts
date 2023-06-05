@@ -92,6 +92,11 @@ const pages: Routes = [
         canActivate: [authGuard],
         loadChildren: () => import('./gateway/gateway.module').then(m => m.GatewayModule)
     },
+    {
+        path: 'attachment',
+        canActivate: [authGuard],
+        loadChildren: () => import('./attach/attachment.module').then(m => m.AttachmentModule)
+    },
 ]
 
 const routes: Routes = [

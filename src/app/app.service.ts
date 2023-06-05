@@ -82,6 +82,14 @@ const internals: any[] = [{
         // {name: '创建插件', path: '/plugin/create'},
     ]
 }, {
+    icon: '/assets/plugin.png',
+    nzIcon: 'appstore-add',
+    name: '附件管理',
+    internal: true,
+    entries: [
+        {name: '所有附件', path: '/attachment/list'},
+    ]
+}, {
     icon: '/assets/setting.png',
     nzIcon: 'setting',
     name: '系统设置',
