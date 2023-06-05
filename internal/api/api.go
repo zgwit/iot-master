@@ -120,6 +120,8 @@ func RegisterRoutes(router *gin.RouterGroup) {
 
 	backupRouter(router.Group("/backup"))
 
+	attachRouter(router.Group("/attach"))
+
 	systemRouter(router.Group("/system"))
 	configRouter(router.Group("/config"))
 

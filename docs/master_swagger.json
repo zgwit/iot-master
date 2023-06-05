@@ -518,6 +518,214 @@
                 }
             }
         },
+        "/attach/list/{name}": {
+            "get": {
+                "description": "查询附件",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "查询附件",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "路径",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-api_attachInfo"
+                        }
+                    }
+                }
+            }
+        },
+        "/attach/mkdir/{name}": {
+            "get": {
+                "description": "创建目录",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "创建目录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "路径",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/attach/move/{name}": {
+            "post": {
+                "description": "移动附件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "移动附件",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "路径",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "新路径",
+                        "name": "b",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.moveBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/attach/remove/{name}": {
+            "get": {
+                "description": "删除附件",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "删除附件",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "路径",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/attach/rename/{name}": {
+            "post": {
+                "description": "重命名附件",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "alarm"
+                ],
+                "summary": "重命名附件",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "路径",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "新名称",
+                        "name": "b",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.renameBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/attach/upload/{name}": {
+            "post": {
+                "description": "上传附件",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "上传附件",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "附件",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "路径",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-any"
+                        }
+                    }
+                }
+            }
+        },
         "/backup/export": {
             "get": {
                 "description": "导出所有数据",
@@ -4266,6 +4474,23 @@
                 }
             }
         },
+        "api.attachInfo": {
+            "type": "object",
+            "properties": {
+                "folder": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "time": {
+                    "type": "string"
+                }
+            }
+        },
         "api.deviceStatisticObj": {
             "type": "object",
             "properties": {
@@ -4277,6 +4502,22 @@
                 },
                 "total": {
                     "type": "integer"
+                }
+            }
+        },
+        "api.moveBody": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "api.renameBody": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -4304,6 +4545,15 @@
                     "additionalProperties": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "curd.ReplyData-any": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {
+                    "type": "string"
                 }
             }
         },
@@ -4535,6 +4785,23 @@
                 },
                 "error": {
                     "type": "string"
+                }
+            }
+        },
+        "curd.ReplyList-api_attachInfo": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/api.attachInfo"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },

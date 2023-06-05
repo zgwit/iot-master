@@ -9,6 +9,17 @@ definitions:
       total:
         type: number
     type: object
+  api.attachInfo:
+    properties:
+      folder:
+        type: boolean
+      name:
+        type: string
+      size:
+        type: integer
+      time:
+        type: string
+    type: object
   api.deviceStatisticObj:
     properties:
       offline:
@@ -17,6 +28,16 @@ definitions:
         type: integer
       total:
         type: integer
+    type: object
+  api.moveBody:
+    properties:
+      path:
+        type: string
+    type: object
+  api.renameBody:
+    properties:
+      name:
+        type: string
     type: object
   curd.ParamSearch:
     properties:
@@ -35,6 +56,12 @@ definitions:
         additionalProperties:
           type: integer
         type: object
+    type: object
+  curd.ReplyData-any:
+    properties:
+      data: {}
+      error:
+        type: string
     type: object
   curd.ReplyData-api_GroupResult:
     properties:
@@ -182,6 +209,17 @@ definitions:
         $ref: '#/definitions/web.Options'
       error:
         type: string
+    type: object
+  curd.ReplyList-api_attachInfo:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/api.attachInfo'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
     type: object
   curd.ReplyList-model_Aggregator:
     properties:
@@ -1072,6 +1110,143 @@ paths:
       summary: 查询报警
       tags:
       - alarm
+  /attach/list/{name}:
+    get:
+      description: 查询附件
+      parameters:
+      - description: 路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-api_attachInfo'
+      summary: 查询附件
+      tags:
+      - alarm
+  /attach/mkdir/{name}:
+    get:
+      description: 创建目录
+      parameters:
+      - description: 路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-any'
+      summary: 创建目录
+      tags:
+      - alarm
+  /attach/move/{name}:
+    post:
+      consumes:
+      - application/json
+      description: 移动附件
+      parameters:
+      - description: 路径
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: 新路径
+        in: body
+        name: b
+        required: true
+        schema:
+          $ref: '#/definitions/api.moveBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-any'
+      summary: 移动附件
+      tags:
+      - alarm
+  /attach/remove/{name}:
+    get:
+      description: 删除附件
+      parameters:
+      - description: 路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-any'
+      summary: 删除附件
+      tags:
+      - alarm
+  /attach/rename/{name}:
+    post:
+      consumes:
+      - application/json
+      description: 重命名附件
+      parameters:
+      - description: 路径
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: 新名称
+        in: body
+        name: b
+        required: true
+        schema:
+          $ref: '#/definitions/api.renameBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-any'
+      summary: 重命名附件
+      tags:
+      - alarm
+  /attach/upload/{name}:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 上传附件
+      parameters:
+      - description: 附件
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: 路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-any'
+      summary: 上传附件
+      tags:
+      - product
   /backup/export:
     get:
       consumes:

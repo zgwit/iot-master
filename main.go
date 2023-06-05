@@ -43,6 +43,9 @@ func Startup(engine *web.Engine) error {
 	//注册接口文档
 	web.RegisterSwaggerDocs(&engine.RouterGroup, "master")
 
+	//附件
+	engine.Static("/attach", "/attach")
+
 	//监听Websocket
 	engine.GET("/mqtt", broker.GinHandler)
 
