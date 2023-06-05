@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"io"
 	"io/ioutil"
+	"mime"
 	"os"
 	"path/filepath"
 	"time"
@@ -14,6 +15,7 @@ const AttachRoot = "attach"
 
 type attachInfo struct {
 	Name   string    `json:"name,omitempty"`
+	Mime   string    `json:"mime,omitempty"`
 	Time   time.Time `json:"time"`
 	Size   int64     `json:"size,omitempty"`
 	Folder bool      `json:"folder,omitempty"`
@@ -36,22 +38,8 @@ type moveBody struct {
 // @Success 200 {object} curd.ReplyList[attachInfo]
 // @Router /attach/list/{name} [get]
 func attachList(ctx *gin.Context) {
-	filename := filepath.Join(AttachRoot, ctx.Param("name"))
-	stat, err := os.Stat(filename)
-	if err != nil {
-		curd.Error(ctx, err)
-		return
-	}
-	if !stat.IsDir() {
-		curd.OK(ctx, &attachInfo{
-			Name:   stat.Name(),
-			Time:   stat.ModTime(),
-			Size:   stat.Size(),
-			Folder: stat.IsDir(),
-		})
-		return
-	}
 	//列出目录
+	filename := filepath.Join(AttachRoot, ctx.Param("name"))
 	files, err := ioutil.ReadDir(filename)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -62,6 +50,7 @@ func attachList(ctx *gin.Context) {
 	for _, stat := range files {
 		item := &attachInfo{
 			Name:   stat.Name(),
+			Mime:   mime.TypeByExtension(filepath.Ext(stat.Name())),
 			Time:   stat.ModTime(),
 			Size:   stat.Size(),
 			Folder: stat.IsDir(),
@@ -207,6 +196,7 @@ func attachMkDir(ctx *gin.Context) {
 func attachRouter(app *gin.RouterGroup) {
 
 	app.GET("/list/*name", attachList)
+	//app.GET("/info/*name", attachInfo)
 
 	app.POST("/upload/*name", attachUpload)
 
