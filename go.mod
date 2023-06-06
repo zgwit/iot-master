@@ -21,13 +21,13 @@ require (
 	github.com/iot-master-contrib/influxdb v1.0.4
 	github.com/iot-master-contrib/ipc v1.0.1
 	github.com/iot-master-contrib/modbus v1.0.3
-	github.com/iot-master-contrib/scada v1.0.3
+	github.com/iot-master-contrib/scada v1.0.4
 	github.com/kardianos/service v1.2.2
 	github.com/lib/pq v1.10.9
-	github.com/mochi-co/mqtt/v2 v2.2.11
+	github.com/mochi-co/mqtt/v2 v2.2.12
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shirou/gopsutil v3.21.11+incompatible
-	github.com/sirupsen/logrus v1.9.2
+	github.com/sirupsen/logrus v1.9.3
 	github.com/super-l/machine-code v0.0.0-20210720085303-62525d58dab0
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.1
@@ -67,7 +67,7 @@ require (
 	github.com/go-openapi/swag v0.22.3 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/go-playground/validator/v10 v10.14.0 // indirect
+	github.com/go-playground/validator/v10 v10.14.1 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
 	github.com/golang-sql/sqlexp v0.1.0 // indirect
@@ -119,6 +119,6 @@ require (
 	modernc.org/libc v1.22.6 // indirect
 	modernc.org/mathutil v1.5.0 // indirect
 	modernc.org/memory v1.5.0 // indirect
-	modernc.org/sqlite v1.22.1 // indirect
+	modernc.org/sqlite v1.23.0 // indirect
 	modernc.org/token v1.1.0 // indirect
 )
