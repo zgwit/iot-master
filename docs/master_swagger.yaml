@@ -13,6 +13,8 @@ definitions:
     properties:
       folder:
         type: boolean
+      mime:
+        type: string
       name:
         type: string
       size:
@@ -942,7 +944,7 @@ paths:
       responses: {}
       summary: 导出聚合器
       tags:
-      - product
+      - aggregator
   /aggregator/import:
     post:
       consumes:
@@ -963,7 +965,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-int64'
       summary: 导入聚合器
       tags:
-      - product
+      - aggregator
   /aggregator/list:
     get:
       consumes:
@@ -1128,7 +1130,7 @@ paths:
             $ref: '#/definitions/curd.ReplyList-api_attachInfo'
       summary: 查询附件
       tags:
-      - alarm
+      - attach
   /attach/mkdir/{name}:
     get:
       description: 创建目录
@@ -1147,7 +1149,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-any'
       summary: 创建目录
       tags:
-      - alarm
+      - attach
   /attach/move/{name}:
     post:
       consumes:
@@ -1174,7 +1176,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-any'
       summary: 移动附件
       tags:
-      - alarm
+      - attach
   /attach/remove/{name}:
     get:
       description: 删除附件
@@ -1193,7 +1195,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-any'
       summary: 删除附件
       tags:
-      - alarm
+      - attach
   /attach/rename/{name}:
     post:
       consumes:
@@ -1220,7 +1222,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-any'
       summary: 重命名附件
       tags:
-      - alarm
+      - attach
   /attach/upload/{name}:
     post:
       consumes:
@@ -1246,7 +1248,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-any'
       summary: 上传附件
       tags:
-      - product
+      - attach
   /backup/export:
     get:
       consumes:
@@ -1261,7 +1263,7 @@ paths:
             type: string
       summary: 导出所有数据
       tags:
-      - product
+      - backup
   /backup/import:
     post:
       consumes:
@@ -1282,7 +1284,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-int64'
       summary: 导入所有数据
       tags:
-      - product
+      - backup
   /broker/{id}:
     get:
       consumes:
@@ -1451,7 +1453,7 @@ paths:
             $ref: '#/definitions/curd.ReplyList-model_Broker'
       summary: 导出总线
       tags:
-      - product
+      - broker
   /broker/import:
     post:
       consumes:
@@ -1472,7 +1474,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-int64'
       summary: 导入总线
       tags:
-      - product
+      - broker
   /broker/list:
     get:
       consumes:
@@ -1882,7 +1884,7 @@ paths:
       responses: {}
       summary: 导出设备
       tags:
-      - product
+      - device
   /device/import:
     post:
       consumes:
@@ -1903,7 +1905,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-int64'
       summary: 导入设备
       tags:
-      - product
+      - device
   /device/list:
     get:
       consumes:
@@ -2116,7 +2118,7 @@ paths:
             $ref: '#/definitions/curd.ReplyList-model_Gateway'
       summary: 导出网关
       tags:
-      - product
+      - gateway
   /gateway/import:
     post:
       consumes:
@@ -2137,7 +2139,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-int64'
       summary: 导入网关
       tags:
-      - product
+      - gateway
   /gateway/list:
     get:
       consumes:
@@ -2764,7 +2766,7 @@ paths:
       responses: {}
       summary: 导出插件
       tags:
-      - product
+      - plugin
   /plugin/import:
     post:
       consumes:
@@ -2785,7 +2787,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-int64'
       summary: 导入插件
       tags:
-      - product
+      - plugin
   /plugin/list:
     get:
       consumes:
@@ -3161,7 +3163,7 @@ paths:
             $ref: '#/definitions/curd.ReplyList-model_Role'
       summary: 导出角色
       tags:
-      - product
+      - role
   /role/import:
     post:
       consumes:
@@ -3182,7 +3184,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-int64'
       summary: 导入角色
       tags:
-      - product
+      - role
   /role/list:
     get:
       consumes:
@@ -3617,7 +3619,7 @@ paths:
       responses: {}
       summary: 导出检查
       tags:
-      - product
+      - validator
   /validator/import:
     post:
       consumes:
@@ -3638,7 +3640,7 @@ paths:
             $ref: '#/definitions/curd.ReplyData-int64'
       summary: 导入检查
       tags:
-      - product
+      - validator
   /validator/list:
     get:
       consumes:

@@ -109,7 +109,7 @@ func noopValidatorDisable() {}
 // @Summary 导出检查
 // @Schemes
 // @Description 导出检查
-// @Tags product
+// @Tags validator
 // @Accept json
 // @Produce octet-stream
 // @Router /validator/export [get]
@@ -118,7 +118,7 @@ func noopValidatorExport() {}
 // @Summary 导入检查
 // @Schemes
 // @Description 导入检查
-// @Tags product
+// @Tags validator
 // @Param file formData file true "压缩包"
 // @Accept mpfd
 // @Produce json

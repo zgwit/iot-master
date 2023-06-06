@@ -67,7 +67,7 @@ func noopPluginDelete() {}
 // @Summary 导出插件
 // @Schemes
 // @Description 导出插件
-// @Tags product
+// @Tags plugin
 // @Accept json
 // @Produce octet-stream
 // @Router /plugin/export [get]
@@ -76,7 +76,7 @@ func noopPluginExport() {}
 // @Summary 导入插件
 // @Schemes
 // @Description 导入插件
-// @Tags product
+// @Tags plugin
 // @Param file formData file true "压缩包"
 // @Accept mpfd
 // @Produce json

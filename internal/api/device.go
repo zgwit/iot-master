@@ -89,7 +89,7 @@ func noopDeviceDelete() {}
 // @Summary 导出设备
 // @Schemes
 // @Description 导出设备
-// @Tags product
+// @Tags device
 // @Accept json
 // @Produce octet-stream
 // @Router /device/export [get]
@@ -98,7 +98,7 @@ func noopDeviceExport() {}
 // @Summary 导入设备
 // @Schemes
 // @Description 导入设备
-// @Tags product
+// @Tags device
 // @Param file formData file true "压缩包"
 // @Accept mpfd
 // @Produce json

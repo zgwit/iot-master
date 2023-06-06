@@ -109,7 +109,7 @@ func noopAggregatorDisable() {}
 // @Summary 导出聚合器
 // @Schemes
 // @Description 导出聚合器
-// @Tags product
+// @Tags aggregator
 // @Accept json
 // @Produce octet-stream
 // @Router /aggregator/export [get]
@@ -118,7 +118,7 @@ func noopAggregatorExport() {}
 // @Summary 导入聚合器
 // @Schemes
 // @Description 导入聚合器
-// @Tags product
+// @Tags aggregator
 // @Param file formData file true "压缩包"
 // @Accept mpfd
 // @Produce json

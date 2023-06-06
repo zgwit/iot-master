@@ -87,7 +87,7 @@ func noopRoleDelete() {}
 // @Summary 导出角色
 // @Schemes
 // @Description 导出角色
-// @Tags product
+// @Tags role
 // @Accept json
 // @Produce octet-stream
 // @Success 200 {object} curd.ReplyList[model.Role] 返回压缩包
@@ -97,7 +97,7 @@ func noopRoleExport() {}
 // @Summary 导入角色
 // @Schemes
 // @Description 导入角色
-// @Tags product
+// @Tags role
 // @Param file formData file true "压缩包"
 // @Accept mpfd
 // @Produce json

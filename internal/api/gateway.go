@@ -109,7 +109,7 @@ func noopGatewayDisable() {}
 // @Summary 导出网关
 // @Schemes
 // @Description 导出网关
-// @Tags product
+// @Tags gateway
 // @Accept json
 // @Produce octet-stream
 // @Success 200 {object} curd.ReplyList[model.Gateway] 返回压缩包
@@ -119,7 +119,7 @@ func noopGatewayExport() {}
 // @Summary 导入网关
 // @Schemes
 // @Description 导入网关
-// @Tags product
+// @Tags gateway
 // @Param file formData file true "压缩包"
 // @Accept mpfd
 // @Produce json

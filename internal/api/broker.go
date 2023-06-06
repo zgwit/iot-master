@@ -109,7 +109,7 @@ func noopBrokerDisable() {}
 // @Summary 导出总线
 // @Schemes
 // @Description 导出总线
-// @Tags product
+// @Tags broker
 // @Accept json
 // @Produce octet-stream
 // @Success 200 {object} curd.ReplyList[model.Broker] 返回压缩包
@@ -119,7 +119,7 @@ func noopBrokerExport() {}
 // @Summary 导入总线
 // @Schemes
 // @Description 导入总线
-// @Tags product
+// @Tags broker
 // @Param file formData file true "压缩包"
 // @Accept mpfd
 // @Produce json

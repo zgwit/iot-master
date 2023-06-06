@@ -93,7 +93,7 @@ const docTemplatemaster = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "product"
+                    "aggregator"
                 ],
                 "summary": "导出聚合器",
                 "responses": {}
@@ -109,7 +109,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "aggregator"
                 ],
                 "summary": "导入聚合器",
                 "parameters": [
@@ -532,7 +532,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "alarm"
+                    "attach"
                 ],
                 "summary": "查询附件",
                 "parameters": [
@@ -561,7 +561,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "alarm"
+                    "attach"
                 ],
                 "summary": "创建目录",
                 "parameters": [
@@ -593,7 +593,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "alarm"
+                    "attach"
                 ],
                 "summary": "移动附件",
                 "parameters": [
@@ -631,7 +631,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "alarm"
+                    "attach"
                 ],
                 "summary": "删除附件",
                 "parameters": [
@@ -663,7 +663,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "alarm"
+                    "attach"
                 ],
                 "summary": "重命名附件",
                 "parameters": [
@@ -704,7 +704,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "attach"
                 ],
                 "summary": "上传附件",
                 "parameters": [
@@ -743,7 +743,7 @@ const docTemplatemaster = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "product"
+                    "backup"
                 ],
                 "summary": "导出所有数据",
                 "responses": {
@@ -766,7 +766,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "backup"
                 ],
                 "summary": "导入所有数据",
                 "parameters": [
@@ -866,7 +866,7 @@ const docTemplatemaster = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "product"
+                    "broker"
                 ],
                 "summary": "导出总线",
                 "responses": {
@@ -889,7 +889,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "broker"
                 ],
                 "summary": "导入总线",
                 "parameters": [
@@ -1500,7 +1500,7 @@ const docTemplatemaster = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "product"
+                    "device"
                 ],
                 "summary": "导出设备",
                 "responses": {}
@@ -1516,7 +1516,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "device"
                 ],
                 "summary": "导入设备",
                 "parameters": [
@@ -1884,7 +1884,7 @@ const docTemplatemaster = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "product"
+                    "gateway"
                 ],
                 "summary": "导出网关",
                 "responses": {
@@ -1907,7 +1907,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "gateway"
                 ],
                 "summary": "导入网关",
                 "parameters": [
@@ -2849,7 +2849,7 @@ const docTemplatemaster = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "product"
+                    "plugin"
                 ],
                 "summary": "导出插件",
                 "responses": {}
@@ -2865,7 +2865,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "plugin"
                 ],
                 "summary": "导入插件",
                 "parameters": [
@@ -3549,7 +3549,7 @@ const docTemplatemaster = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "product"
+                    "role"
                 ],
                 "summary": "导出角色",
                 "responses": {
@@ -3572,7 +3572,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "role"
                 ],
                 "summary": "导入角色",
                 "parameters": [
@@ -4191,7 +4191,7 @@ const docTemplatemaster = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "product"
+                    "validator"
                 ],
                 "summary": "导出检查",
                 "responses": {}
@@ -4207,7 +4207,7 @@ const docTemplatemaster = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product"
+                    "validator"
                 ],
                 "summary": "导入检查",
                 "parameters": [
@@ -4486,6 +4486,9 @@ const docTemplatemaster = `{
             "properties": {
                 "folder": {
                     "type": "boolean"
+                },
+                "mime": {
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"

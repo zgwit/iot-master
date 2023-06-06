@@ -11,7 +11,7 @@ import (
 // @Summary 导出所有数据
 // @Schemes
 // @Description 导出所有数据
-// @Tags product
+// @Tags backup
 // @Accept json
 // @Produce octet-stream
 // @Success 200 {object} string 返回SQL文件
@@ -34,7 +34,7 @@ func backupExport(ctx *gin.Context) {
 // @Summary 导入所有数据
 // @Schemes
 // @Description 导入所有数据，文件内容为SQL文本，
-// @Tags product
+// @Tags backup
 // @Param file formData file true "SQL"
 // @Accept mpfd
 // @Produce json

@@ -32,7 +32,7 @@ type moveBody struct {
 // @Summary 查询附件
 // @Schemes
 // @Description 查询附件
-// @Tags alarm
+// @Tags attach
 // @Param name path string true "路径"
 // @Produce json
 // @Success 200 {object} curd.ReplyList[attachInfo]
@@ -63,7 +63,7 @@ func attachList(ctx *gin.Context) {
 // @Summary 上传附件
 // @Schemes
 // @Description 上传附件
-// @Tags product
+// @Tags attach
 // @Param file formData file true "附件"
 // @Param name path string true "路径"
 // @Accept mpfd
@@ -102,7 +102,7 @@ func attachUpload(ctx *gin.Context) {
 // @Summary 重命名附件
 // @Schemes
 // @Description 重命名附件
-// @Tags alarm
+// @Tags attach
 // @Param name path string true "路径"
 // @Param b body renameBody true "新名称"
 // @Accept json
@@ -131,7 +131,7 @@ func attachRename(ctx *gin.Context) {
 // @Summary 删除附件
 // @Schemes
 // @Description 删除附件
-// @Tags alarm
+// @Tags attach
 // @Param name path string true "路径"
 // @Produce json
 // @Success 200 {object} curd.ReplyData[any]
@@ -149,7 +149,7 @@ func attachRemove(ctx *gin.Context) {
 // @Summary 移动附件
 // @Schemes
 // @Description 移动附件
-// @Tags alarm
+// @Tags attach
 // @Param name path string true "路径"
 // @Param b body moveBody true "新路径"
 // @Accept json
@@ -178,7 +178,7 @@ func attachMove(ctx *gin.Context) {
 // @Summary 创建目录
 // @Schemes
 // @Description 创建目录
-// @Tags alarm
+// @Tags attach
 // @Param name path string true "路径"
 // @Produce json
 // @Success 200 {object} curd.ReplyData[any]
