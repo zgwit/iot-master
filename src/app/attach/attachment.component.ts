@@ -103,12 +103,12 @@ export class AttachmentComponent {
     this.inputValue = this.inputValue ? `${this.inputValue}/${url}` : url;
     this.search();
   }
-  handleRename(name: string) {
+  handleRename(currentName: string) {
     const modal: NzModalRef = this.modal.create({
       nzTitle: '重命名',
       nzContent: RenameComponent,
       nzComponentParams: {
-        currentName: name
+        currentName
       },
       nzViewContainerRef: this.viewContainerRef,
       nzFooter: [
@@ -121,8 +121,9 @@ export class AttachmentComponent {
           type: 'primary',
           onClick: () => {
             const comp = modal.getContentComponent();
-            this.rs.get(`attach/rename/${this.inputValue ? this.inputValue + '/' : ''}${comp.name}`).subscribe(res => {
+            this.rs.post(`attach/rename/${this.inputValue ? this.inputValue + '/' : ''}${currentName}`, { name: comp.name }).subscribe(res => {
               this.msg.success("保存成功");
+              modal.destroy();
               this.load();
             })
           }
