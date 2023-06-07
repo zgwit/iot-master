@@ -74,6 +74,8 @@ func attachUpload(ctx *gin.Context) {
 	dir := filepath.Join(AttachRoot, ctx.Param("name"))
 	_ = os.MkdirAll(dir, os.ModePerm) //创建目录
 
+	//for _, f := range ctx.Request.MultipartForm.File {
+
 	//解析Body
 	file, header, err := ctx.Request.FormFile("file")
 	if err != nil {
@@ -84,7 +86,7 @@ func attachUpload(ctx *gin.Context) {
 
 	//创建写入文件
 	filename := filepath.Join(dir, header.Filename)
-	writer, err := os.OpenFile(filename, os.O_CREATE, os.ModePerm)
+	writer, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 	if err != nil {
 		curd.Error(ctx, err)
 		return
