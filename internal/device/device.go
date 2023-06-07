@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/iot-master-contrib/history/types"
 	"github.com/zgwit/iot-master/v3/internal/aggregator"
 	"github.com/zgwit/iot-master/v3/internal/product"
 	"github.com/zgwit/iot-master/v3/internal/validator"
@@ -46,7 +45,7 @@ func (d *Device) createAggregator(m *model.ModAggregator) error {
 			log.Error(err)
 			return
 		}
-		his := types.History{
+		his := model.History{
 			DeviceId: d.Id,
 			Point:    m.Assign,
 			Value:    val,
