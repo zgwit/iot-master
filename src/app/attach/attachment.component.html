@@ -36,7 +36,7 @@
             <td>
                 <img width="40px" *ngIf="data.folder;else tpw " src="/assets/fold.svg" alt="logo" />
                 <ng-template #tpw>
-                    <img nz-image width="50px" *ngIf="!data.folder; " [nzSrc]="'/attach/'+data.name" alt="" />
+                    <img nz-image width="50px" *ngIf="!data.folder; " [nzSrc]="'/api/attach/'+(inputValue?inputValue+'/':'')+data.name" alt="" />
                 </ng-template>
             </td>
             <td>
@@ -44,7 +44,7 @@
                         (click)="handleRedictTo(data.name)">{{data.name}}</a></span>
                 <ng-template #tpl>{{data.name}}</ng-template>
             </td>
-            <td>{{data.mime}}</td>
+            <td>{{data.mime || '文件夹'}}</td>
             <td>{{data.time | date}}</td>
             <td>
                 <a nz-popconfirm nzPopconfirmTitle="确定删除?" (nzOnConfirm)="delete(data.name)" (nzOnCancel)="cancel()"

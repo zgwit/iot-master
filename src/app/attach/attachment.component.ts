@@ -8,6 +8,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { UploadComponent } from './upload/upload.component';
+import { RenameComponent } from './rename/rename.component';
 @Component({
   selector: 'app-attachment',
   templateUrl: './attachment.component.html',
@@ -98,6 +99,30 @@ export class AttachmentComponent {
     this.search();
   }
   handleRename(name: string) {
-
+    const modal: NzModalRef = this.modal.create({
+      nzTitle: '重命名',
+      nzContent: RenameComponent,
+      nzComponentParams: {
+        currentName: name
+      },
+      nzViewContainerRef: this.viewContainerRef,
+      nzFooter: [
+        {
+          label: '取消',
+          onClick: () => modal.destroy()
+        },
+        {
+          label: '保存',
+          type: 'primary',
+          onClick: () => {
+            const comp = modal.getContentComponent();
+            this.rs.get(`attach/rename/${this.inputValue ? this.inputValue + '/' : ''}${comp.name}`).subscribe(res => {
+              this.msg.success("保存成功");
+              this.load();
+            })
+          }
+        },
+      ]
+    });
   }
 }

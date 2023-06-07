@@ -17,5 +17,11 @@
         "secure": false,
         "logLevel": "debug",
         "changeOrigin": true
+    },
+    "/api/attach": {
+        "target": "http://demo.iot-master.com:8080/attach/",
+        "secure": false,
+        "logLevel": "debug",
+        "changeOrigin": true
     }
 }

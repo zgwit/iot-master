@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-rename',
@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./rename.component.scss']
 })
 export class RenameComponent {
-
+  @Input() currentName: string = '';
+  name: string = ''
 }
