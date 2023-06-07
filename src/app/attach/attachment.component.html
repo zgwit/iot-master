@@ -36,7 +36,7 @@
                 <img width="40px" *ngIf="data.folder;else tpw " src="/assets/fold.svg" alt="logo" />
                 <ng-template #tpw>
                     <img nz-image width="50px" *ngIf="!data.folder; "
-                        [nzSrc]="'/api/attach/'+(inputValue?inputValue+'/':'')+data.name" alt="" />
+                        [nzSrc]="'/attach'+(inputValue?inputValue+'/':'')+data.name" alt="" />
                 </ng-template>
             </td>
             <td>
