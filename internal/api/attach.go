@@ -64,7 +64,7 @@ func attachList(ctx *gin.Context) {
 
 // @Summary 上传附件
 // @Schemes
-// @Description 上传附件
+// @Description 上传附件（支持多文件，不用特定为file）
 // @Tags attach
 // @Param file formData file true "附件"
 // @Param name path string true "路径"

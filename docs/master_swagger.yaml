@@ -1227,7 +1227,7 @@ paths:
     post:
       consumes:
       - multipart/form-data
-      description: 上传附件
+      description: 上传附件（支持多文件，不用特定为file）
       parameters:
       - description: 附件
         in: formData
@@ -1788,27 +1788,6 @@ paths:
       summary: 修改设备参数
       tags:
       - device
-  /device/{id}/statistic:
-    get:
-      consumes:
-      - application/json
-      description: 设备统计
-      parameters:
-      - description: 设备ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_deviceStatisticObj'
-      summary: 设备统计
-      tags:
-      - device
   /device/{id}/values:
     get:
       consumes:
@@ -1948,6 +1927,27 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyList-model_Device'
       summary: 查询设备
+      tags:
+      - device
+  /device/statistic:
+    get:
+      consumes:
+      - application/json
+      description: 设备统计
+      parameters:
+      - description: 设备ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_deviceStatisticObj'
+      summary: 设备统计
       tags:
       - device
   /gateway/{id}:

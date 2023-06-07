@@ -696,7 +696,7 @@ const docTemplatemaster = `{
         },
         "/attach/upload/{name}": {
             "post": {
-                "description": "上传附件",
+                "description": "上传附件（支持多文件，不用特定为file）",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -1607,6 +1607,38 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "/device/statistic": {
+            "get": {
+                "description": "设备统计",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "设备统计",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "设备ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-api_deviceStatisticObj"
+                        }
+                    }
+                }
+            }
+        },
         "/device/{id}": {
             "get": {
                 "description": "获取设备",
@@ -1737,38 +1769,6 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-model_Device"
-                        }
-                    }
-                }
-            }
-        },
-        "/device/{id}/statistic": {
-            "get": {
-                "description": "设备统计",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "device"
-                ],
-                "summary": "设备统计",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "设备ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_deviceStatisticObj"
                         }
                     }
                 }
