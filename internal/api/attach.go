@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
-	"io"
 	"io/ioutil"
 	"mime"
 	"os"
@@ -74,30 +73,23 @@ func attachUpload(ctx *gin.Context) {
 	dir := filepath.Join(AttachRoot, ctx.Param("name"))
 	_ = os.MkdirAll(dir, os.ModePerm) //创建目录
 
-	//for _, f := range ctx.Request.MultipartForm.File {
-
-	//解析Body
-	file, header, err := ctx.Request.FormFile("file")
+	form, err := ctx.MultipartForm()
 	if err != nil {
 		curd.Error(ctx, err)
 		return
 	}
-	defer file.Close()
 
-	//创建写入文件
-	filename := filepath.Join(dir, header.Filename)
-	writer, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, os.ModePerm)
-	if err != nil {
-		curd.Error(ctx, err)
-		return
+	//接收所有附件
+	for _, files := range form.File {
+		for _, header := range files {
+			filename := filepath.Join(dir, header.Filename)
+			err := ctx.SaveUploadedFile(header, filename)
+			if err != nil {
+				return
+			}
+		}
 	}
-	defer writer.Close()
 
-	_, err = io.Copy(writer, file)
-	if err != nil {
-		curd.Error(ctx, err)
-		return
-	}
 	curd.OK(ctx, nil)
 }
 
