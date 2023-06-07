@@ -112,6 +112,8 @@ MIT
 ng-zorro-antd
 MIT
 
+ng2-file-upload
+
 ngx-mqtt
 MIT
 The MIT License
