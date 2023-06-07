@@ -37,7 +37,12 @@ export class AttachmentComponent {
       nzTitle: '上传文件',
       nzContent: UploadComponent,
       nzViewContainerRef: this.viewContainerRef,
-      nzFooter: null
+      nzFooter: null,
+      nzOnCancel: ({ isSuccess }) => {
+        if (isSuccess) {
+          this.load();
+        }
+      }
     });
   }
 

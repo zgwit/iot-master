@@ -13,6 +13,7 @@ export class UploadComponent {
   group!: FormGroup;
   name!: '';
   uploader: FileUploader;
+  isSuccess: boolean = false
   @Output() load = new EventEmitter<number>();
 
   constructor(
@@ -23,6 +24,7 @@ export class UploadComponent {
       method: "POST",  //上传方式
       autoUpload: true
     });
+    this.isSuccess = false;
     this.uploader.onAfterAddingFile = this.onAfterAddingFile.bind(this);
     this.uploader.onSuccessItem = this.onSuccessItem.bind(this);
   }
@@ -38,6 +40,7 @@ export class UploadComponent {
       this.uploader.clearQueue();
     } else {
       this.msg.success('上传成功!');
+      this.isSuccess = true;
       this.load.emit();
     }
   }
