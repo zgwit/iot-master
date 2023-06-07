@@ -49,10 +49,13 @@ func attachList(ctx *gin.Context) {
 	for _, stat := range files {
 		item := &attachInfo{
 			Name:   stat.Name(),
-			Mime:   mime.TypeByExtension(filepath.Ext(stat.Name())),
 			Time:   stat.ModTime(),
 			Size:   stat.Size(),
 			Folder: stat.IsDir(),
+		}
+		//识别类型
+		if !stat.IsDir() {
+			item.Mime = mime.TypeByExtension(filepath.Ext(stat.Name()))
 		}
 		items = append(items, item)
 	}
