@@ -54,7 +54,8 @@ func main() {
 	}
 
 	scada.Route(engine)
-
+	scada.Sync()
+	
 	err = aliyun.Startup(engine)
 	if err != nil {
 		log.Fatal(err)
