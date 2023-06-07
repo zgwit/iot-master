@@ -142,7 +142,7 @@ type deviceStatisticObj struct {
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[deviceStatisticObj] 返回设备信息
-// @Router /device/{id}/statistic [get]
+// @Router /device/statistic [get]
 func deviceStatistic(ctx *gin.Context) {
 	var obj deviceStatisticObj
 	var err error
@@ -187,7 +187,7 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	app.POST("/:id/parameters", curd.ParseParamStringId, deviceParameters)
 
-	app.GET("/:id/statistic", curd.ParseParamStringId, deviceStatistic)
+	app.GET("/statistic", deviceStatistic)
 }
 
 func deviceValues(ctx *gin.Context) {
