@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
@@ -14,6 +14,9 @@ export class UploadComponent {
   name!: '';
   uploader: FileUploader;
   isSuccess: boolean = false
+  @Input() set inputValue(value: any){
+    this.name = value || '';
+  }
   @Output() load = new EventEmitter<number>();
 
   constructor(

@@ -95,7 +95,6 @@ export class DesktopComponent {
     }
 
     open(app: any) {
-        console.log("🚀 ~ file: desktop.component.ts:98 ~ DesktopComponent ~ open ~ app:", app)
         if (window.innerWidth < 800) {
             this.router.navigate([app.entries[0].path]);
             return;
