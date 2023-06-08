@@ -123,4 +123,11 @@ export class AttachmentComponent {
     this.inputValue = arr.join('/');
     this.search();
   }
+  handleDownLoad(name: string) {
+    const a = document.createElement('a');
+    const event = new MouseEvent('click');
+    a.download = name;
+    a.href = this.handleSrc(name);
+    a.dispatchEvent(event)
+  }
 }

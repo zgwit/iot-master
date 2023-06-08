@@ -60,12 +60,20 @@
                     nzPopconfirmPlacement="topLeft">
                     删除
                 </a>
+                <nz-divider nzType="vertical"></nz-divider>
                 <a (click)="handleRename(data.name)">
                     重命名
                 </a>
+                <nz-divider nzType="vertical"></nz-divider>
                 <a (click)="handleCopy(data.name)">
                     复制链接
                 </a>
+                <ng-template [ngIf]="!data.folder">
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="handleDownLoad(data.name)">
+                        下载
+                    </a>
+                </ng-template>
             </td>
         </tr>
     </tbody>
