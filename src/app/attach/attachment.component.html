@@ -9,12 +9,12 @@
         <button *nzSpaceItem nz-button nzType="primary" (click)="handleUpload()">
             <i nz-icon nzType="plus"></i>上传
         </button>
-        <button *nzSpaceItem nz-button nzType="primary" (click)="reload()">
+        <button *nzSpaceItem nz-button nzType="primary" (click)="load()">
             <i nz-icon nzType="reload" [nzSpin]="loading"></i>
             刷新
         </button>
         <ng-container *ngIf="inputValue">
-            <button *nzSpaceItem nz-button  (click)="handlePre()">
+            <button *nzSpaceItem nz-button (click)="handlePre()">
                 <span nz-icon nzType="rollback" nzTheme="outline"></span>
                 返回上一级目录
             </button>
@@ -24,9 +24,7 @@
 
 <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
 <nz-table #basicTable [nzData]="datum" [nzLoading]="loading" nzShowPagination [nzTotal]="total" nzShowSizeChanger
-    [nzShowTotal]="totalTemplate" (nzPageSizeChange)="pageSizeChange($event)"
-    (nzPageIndexChange)="pageIndexChange($event)" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex"
-    (nzQueryParams)="onQuery($event)">
+    [nzShowTotal]="totalTemplate" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex">
     <thead>
         <tr>
             <th nzColumnKey="pre">预览</th>

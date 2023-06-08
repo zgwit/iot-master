@@ -12,7 +12,7 @@ import { RenameComponent } from './rename/rename.component';
   styleUrls: ['./attachment.component.scss']
 })
 export class AttachmentComponent {
-  loading = true;
+  loading = false;
   inputValue = '';
   datum: any[] = []
   total = 1;
@@ -24,11 +24,8 @@ export class AttachmentComponent {
     private modal: NzModalService,
     private msg: NzMessageService,
     private viewContainerRef: ViewContainerRef,
-  ) { }
-
-  reload() {
-    this.datum = [];
-    this.load()
+  ) {
+    this.load();
   }
 
   load() {
@@ -49,17 +46,6 @@ export class AttachmentComponent {
     })
   }
   cancel() { }
-  onQuery($event: NzTableQueryParams) {
-    ParseTableQuery($event, this.query)
-    this.search();
-  }
-  pageIndexChange(pageIndex: number) {
-    console.log("pageIndex:", pageIndex)
-    this.query.skip = pageIndex - 1;
-  }
-  pageSizeChange(pageSize: number) {
-    this.query.limit = pageSize;
-  }
   search() {
     this.query.keyword = {};
     this.query.skip = 0;
