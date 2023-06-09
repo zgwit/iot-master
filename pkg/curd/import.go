@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/pkg/db"
-	"io/ioutil"
+	"io"
 )
 
 func ApiImport(table string) gin.HandlerFunc {
@@ -30,14 +30,14 @@ func ApiImport(table string) gin.HandlerFunc {
 		}
 
 		//数据解析
-		var datum []map[string]any
+		//var datum []map[string]any
 		for _, file := range reader.File {
 			if file.FileInfo().IsDir() {
 				continue
 			}
 
 			reader, err := file.Open()
-			buf, err := ioutil.ReadAll(reader)
+			buf, err := io.ReadAll(reader)
 			if err != nil {
 				Error(ctx, err)
 				return
@@ -50,16 +50,24 @@ func ApiImport(table string) gin.HandlerFunc {
 				return
 			}
 
-			datum = append(datum, data)
+			has, err := db.Engine.Table(table).ID(data["id"]).Exist()
+			if err != nil {
+				Error(ctx, err)
+				return
+			}
+			if has {
+				_, _ = db.Engine.Table(table).ID(data["id"]).Delete()
+			}
+
+			//插入数据
+			_, err = db.Engine.Table(table).Insert(data)
+			if err != nil {
+				Error(ctx, err)
+				return
+			}
+
 		}
 
-		//插入数据
-		n, err := db.Engine.Table(table).Insert(datum)
-		if err != nil {
-			Error(ctx, err)
-			return
-		}
-
-		OK(ctx, n)
+		OK(ctx, nil)
 	}
 }
