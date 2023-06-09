@@ -12,7 +12,7 @@ type App struct {
 	Id      string     `json:"id" xorm:"pk"`
 	Name    string     `json:"name"`
 	Icon    string     `json:"icon,omitempty"`
-	Entries []AppEntry `json:"entries"`
+	Entries []AppEntry `json:"entries" xorm:"json"`
 	Desc    string     `json:"desc,omitempty"`
 	Type    string     `json:"type"` //tcp unix
 	Address string     `json:"address"`

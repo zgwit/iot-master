@@ -5,7 +5,7 @@ import "time"
 type Role struct {
 	Id         string    `json:"id" xorm:"pk"`
 	Name       string    `json:"name"`
-	Privileges []string  `json:"privileges"`
+	Privileges []string  `json:"privileges" xorm:"json"`
 	Created    time.Time `json:"created,omitempty" xorm:"created"`
 }
 

@@ -8,7 +8,7 @@ type User struct {
 	Username string    `json:"username" xorm:"unique"`
 	Name     string    `json:"name,omitempty"`
 	Email    string    `json:"email,omitempty"`
-	Roles    []string  `json:"roles,omitempty"`
+	Roles    []string  `json:"roles,omitempty" xorm:"json"`
 	Disabled bool      `json:"disabled,omitempty"`
 	Created  time.Time `json:"created,omitempty" xorm:"created"`
 }

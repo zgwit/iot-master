@@ -7,6 +7,6 @@ type DeviceEvent struct {
 	DeviceId string         `json:"device_id" xorm:"index"`
 	Name     string         `json:"name"`
 	Label    string         `json:"label"`
-	Output   map[string]any `json:"output"`
+	Output   map[string]any `json:"output" xorm:"json"`
 	Created  time.Time      `json:"created" xorm:"created"`
 }
