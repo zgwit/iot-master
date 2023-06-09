@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"github.com/zgwit/iot-master/v3/pkg/db"
+	"strings"
 )
 
 func groupRouter(app *gin.RouterGroup) {
@@ -254,9 +255,17 @@ func createGroupByDate(format string) gin.HandlerFunc {
 			return
 		}
 
+		//日期格式化函数
+		fn := "date_format"
+		if db.Engine.DriverName() == "sqlite" {
+			fn = "strftime"
+			format = strings.ReplaceAll(format, "%i", "%M") //分钟表示不一致
+			//format = strings.Replace(format, "%i", "%M", 0)
+		}
+
 		var results []GroupResultTime
 		query := db.Engine.Table([]string{"history", "h"}).
-			Select("date_format(h.time, '" + format + "') as date, sum(h.value) as total")
+			Select(fn + "(h.time, '" + format + "') as date, sum(h.value) as total")
 		if param.Type != "" || param.Area != "" || param.Group != "" {
 			query.Join("INNER", []string{"device", "d"}, "d.id = h.device_id")
 
