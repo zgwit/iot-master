@@ -17,6 +17,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     NzIconModule,
     NzTableModule,
     NzImageModule,
-    NzPopconfirmModule
+    NzPopconfirmModule,
+    NzDividerModule
   ]
 })
 export class AttachmentModule { }

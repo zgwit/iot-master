@@ -1,9 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ParseTableQuery } from 'src/app/base/table';
 import { RequestService } from 'src/app/request.service';
-import { batchdel, onAllChecked, onItemChecked, refreshCheckedStatus, tableHeight } from 'src/public';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -15,40 +12,20 @@ import { RenameComponent } from './rename/rename.component';
   styleUrls: ['./attachment.component.scss']
 })
 export class AttachmentComponent {
-  loading = true;
+  loading = false;
   inputValue = '';
   datum: any[] = []
   total = 1;
   pageSize = 20;
   pageIndex = 1;
   query: any = {}
-  checked = false;
-  indeterminate = false;
-  setOfCheckedId = new Set<number>();
-  delResData: any = [];
   constructor(
     private rs: RequestService,
     private modal: NzModalService,
     private msg: NzMessageService,
     private viewContainerRef: ViewContainerRef,
-  ) { }
-  handleUpload() {
-    this.modal.create({
-      nzTitle: '上传文件',
-      nzContent: UploadComponent,
-      nzViewContainerRef: this.viewContainerRef,
-      nzFooter: null,
-      nzOnCancel: ({ isSuccess }) => {
-        if (isSuccess) {
-          this.load();
-        }
-      }
-    });
-  }
-
-  reload() {
-    this.datum = [];
-    this.load()
+  ) {
+    this.load();
   }
 
   load() {
@@ -57,8 +34,6 @@ export class AttachmentComponent {
       const { data, total } = res;
       this.datum = data || [];
       this.total = total || 0;
-      this.setOfCheckedId.clear();
-      refreshCheckedStatus(this);
     }).add(() => {
       this.loading = false;
     })
@@ -71,37 +46,31 @@ export class AttachmentComponent {
     })
   }
   cancel() { }
-  onQuery($event: NzTableQueryParams) {
-    ParseTableQuery($event, this.query)
-    this.search();
-  }
-  pageIndexChange(pageIndex: number) {
-    console.log("pageIndex:", pageIndex)
-    this.query.skip = pageIndex - 1;
-  }
-  pageSizeChange(pageSize: number) {
-    this.query.limit = pageSize;
-  }
   search() {
     this.query.keyword = {};
     this.query.skip = 0;
+    this.datum = [];
     this.load();
-  }
-  getTableHeight() {
-    return tableHeight(this);
-  }
-  handleBatchDel() {
-    batchdel(this);
-  }
-  handleAllChecked(id: any) {
-    onAllChecked(id, this);
-  }
-  handleItemChecked(id: number, checked: boolean) {
-    onItemChecked(id, checked, this);
   }
   handleRedictTo(url: string) {
     this.inputValue = this.inputValue ? `${this.inputValue}/${url}` : url;
     this.search();
+  }
+  handleUpload() {
+    this.modal.create({
+      nzTitle: '上传文件',
+      nzContent: UploadComponent,
+      nzViewContainerRef: this.viewContainerRef,
+      nzComponentParams: {
+        inputValue: this.inputValue,
+      },
+      nzFooter: null,
+      nzOnCancel: ({ isSuccess }) => {
+        if (isSuccess) {
+          this.load();
+        }
+      }
+    });
   }
   handleRename(currentName: string) {
     const modal: NzModalRef = this.modal.create({
@@ -130,5 +99,35 @@ export class AttachmentComponent {
         },
       ]
     });
+  }
+  handleSrc(name: string) {
+    const link = this.inputValue ? `${this.inputValue}/` : '';
+    return `/attach/${link}${name}`;
+  }
+  handleOpenLink(name: string) {
+    window.open(this.handleSrc(name))
+  }
+  getMatched(mime: string) {
+    const reg = mime.match(/image|video|word|powerpoint|excel|text|zip|pdf|html|flash|exe|xml|psd/g)
+    return reg ? reg[0] : 'unknown';
+  }
+  handleCopy(name: string) {
+    navigator && navigator.clipboard && navigator.clipboard.writeText(this.handleSrc(name)).then(res => {
+      console.log(res);
+      this.msg.success('复制成功');
+    }).catch(err => { })
+  }
+  handlePre() {
+    const arr = this.inputValue.split('/');
+    arr.pop();
+    this.inputValue = arr.join('/');
+    this.search();
+  }
+  handleDownLoad(name: string) {
+    const a = document.createElement('a');
+    const event = new MouseEvent('click');
+    a.download = name;
+    a.href = this.handleSrc(name);
+    a.dispatchEvent(event)
   }
 }

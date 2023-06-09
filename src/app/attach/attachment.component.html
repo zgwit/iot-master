@@ -9,18 +9,22 @@
         <button *nzSpaceItem nz-button nzType="primary" (click)="handleUpload()">
             <i nz-icon nzType="plus"></i>上传
         </button>
-        <button *nzSpaceItem nz-button nzType="primary" (click)="reload()">
+        <button *nzSpaceItem nz-button nzType="primary" (click)="load()">
             <i nz-icon nzType="reload" [nzSpin]="loading"></i>
             刷新
         </button>
+        <ng-container *ngIf="inputValue">
+            <button *nzSpaceItem nz-button (click)="handlePre()">
+                <span nz-icon nzType="rollback" nzTheme="outline"></span>
+                返回上一级目录
+            </button>
+        </ng-container>
     </nz-space>
 </app-toolbar>
 
 <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
 <nz-table #basicTable [nzData]="datum" [nzLoading]="loading" nzShowPagination [nzTotal]="total" nzShowSizeChanger
-    [nzShowTotal]="totalTemplate" (nzPageSizeChange)="pageSizeChange($event)"
-    (nzPageIndexChange)="pageIndexChange($event)" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex"
-    (nzQueryParams)="onQuery($event)">
+    [nzShowTotal]="totalTemplate" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex">
     <thead>
         <tr>
             <th nzColumnKey="pre">预览</th>
@@ -35,8 +39,13 @@
             <td>
                 <img width="40px" *ngIf="data.folder;else tpw " src="/assets/fold.svg" alt="logo" />
                 <ng-template #tpw>
-                    <img nz-image width="50px" *ngIf="!data.folder; "
-                        [nzSrc]="'/attach/'+(inputValue?inputValue+'/':'')+data.name" alt="" />
+                    <div [ngSwitch]="getMatched(data.mime)">
+                        <img nz-image width="50px" *ngSwitchCase="'image'" [nzSrc]="handleSrc(data.name)" />
+                        <video width="50px" *ngSwitchCase="'video'" [src]="handleSrc(data.name)"
+                            (click)="handleOpenLink(data.name)"></video>
+                        <img width="50px" *ngSwitchDefault [src]="'/assets/attach_icon/'+getMatched(data.mime)+'.svg'"
+                            (click)="handleOpenLink(data.name)" />
+                    </div>
                 </ng-template>
             </td>
             <td>
@@ -51,9 +60,20 @@
                     nzPopconfirmPlacement="topLeft">
                     删除
                 </a>
+                <nz-divider nzType="vertical"></nz-divider>
                 <a (click)="handleRename(data.name)">
                     重命名
                 </a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="handleCopy(data.name)">
+                    复制链接
+                </a>
+                <ng-template [ngIf]="!data.folder">
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="handleDownLoad(data.name)">
+                        下载
+                    </a>
+                </ng-template>
             </td>
         </tr>
     </tbody>
