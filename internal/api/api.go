@@ -23,6 +23,7 @@ func catchError(ctx *gin.Context) {
 			default:
 				ctx.JSON(http.StatusOK, gin.H{"error": err})
 			}
+			//TODO 这里好像又继续了
 		}
 	}()
 	ctx.Next()

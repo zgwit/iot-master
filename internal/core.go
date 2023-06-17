@@ -32,9 +32,6 @@ func Open() error {
 		return err
 	}
 
-	//启动计划任务
-	aggregator.Start()
-
 	//同步表结构
 	err = db.Engine.Sync2(
 		new(model.User), new(model.Password), new(model.Role),
@@ -47,6 +44,10 @@ func Open() error {
 	if err != nil {
 		return err
 	}
+
+	//启动计划任务
+	aggregator.Start()
+
 	err = broker.Open()
 	if err != nil {
 		return err
