@@ -3,7 +3,7 @@
 **注意，[V3.0]版本与[V2.0](https://github.com/zgwit/iot-master/tree/v2)
 和[V1.0](https://github.com/zgwit/iot-master/tree/v1)有较大差异，不可以直接升级！！！**
 
-### [说明文档](https://iot-master.com/manual)  [演示demo](http://demo.iot-master.com:8888/) 账号密码 admin 123456
+### [说明文档](https://iot-master.com/manual)  [演示demo](http://demo.iot-master.com:8080/) 账号密码 admin 123456
 
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
@@ -12,9 +12,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
 
 物联大师是[无锡真格智能科技有限公司](https://labs.zgwit.com)
-推出的开源且免费的物联网中台系统，内置MQTT、TCP Server/Client、UDP Server/Client、串口等接入服务，
+推出的开源且免费的物联网操作系统，内置MQTT、TCP Server/Client、UDP Server/Client、串口等接入服务，
 系统集成标准Modbus，水务（SL651、SZY206），电力（DL/T645、IEC101、102、103、104、61850）以及一些主流PLC协议，
-系统可以通过插件支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控、远程调试等功能，
+系统可以通过插件支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控、远程调试、Web组态等功能，
 适用于大部分物联网或工业互联网应用场景。
 系统采用Golang编程实现，支持多种操作系统和CPU架构，可以运行在智能网关上，也可以安装在现场的电脑或工控机上，还能部署到云端服务器。
 
@@ -25,35 +25,17 @@
 ## 项目的优势
 
 - 开源免费，商业应用也不限制
-- 单一程序文件，不需要配置环境，不依赖第三方服务，放服务器上就能跑
+- 单一程序文件，不需要配置运行环境，不依赖第三方服务，放服务器上就能跑
 - 极小内存占用，对于一百节点以内的物联网项目，只需要几十兆内存足够了，~~比起隔壁Java动辄大几百兆内存简直太省了~~
 - 支持工控机和智能网关，边缘计算也没问题
-- 支持二维组态，可视化，大屏展示，3D数据孪生 ~~毕竟很多物联网项目都是面子工程~~
-- 在线产品库、模板库、组态库，小白也能分分钟搞得有模有样【还在努力建设中】
+- 支持大屏展示，Web组态，3D数据孪生 ~~毕竟很多物联网项目都是面子工程~~
+- 在线产品库、模板库、组件库，小白也能分分钟搞得有模有样【还在努力建设中】
 
-## 项目架构图
-
-![结构图](https://iot-master.com/frame.jpg)
-
-物联大师3.0采用模块化设计，基于MQTT消息总线实现数据交换，通过插件机制实现系统的灵活扩展
-
-## 项目前端
-
-### H5&APP版，基于uniapp框架
-
-[github.com/zgwit/iot-master-uniapp](https://github.com/zgwit/iot-master-uniapp)
-
-|                                         |                                         |
-|-----------------------------------------|-----------------------------------------|
-| ![app](https://iot-master.com/app1.png) | ![app](https://iot-master.com/app2.png) |
-| ![app](https://iot-master.com/app3.png) | ![app](https://iot-master.com/app4.png) |
-
-### PC版，基于NG-ZORRO框架
-
-[github.com/zgwit/iot-master-ui](https://github.com/zgwit/iot-master-ui)
+## 项目示例
 
 ![web](https://iot-master.com/web1.jpg)
 ![scada](https://iot-master.com/hmi-editor.png)
+
 
 ## 咨询服务
 
@@ -87,34 +69,24 @@
 
 
 ### 官方插件
+[插件库](https://github.com/orgs/iot-master-contrib/repositories)
 
-| 插件                                   | 完成  | 测试  |
+| 插件                                   | 完成  | 正式版  |
 |--------------------------------------|-----|-----|
-| ==通讯服务==                             |     |     |
-| MQTT Broker，支持MQTT 3.1.1和MQTT 5      | ✅   | ⬜   |
-| TCP Server，支持注册包和心跳包                 | ✅   | ⬜   |
-| TCP Client                           | ✅   | ⬜   |
-| UDP Server，支持注册包前缀                   | ⬜   | ⬜   |
-| UDP Client                           | ✅   | ⬜   |
-| Serial Port                          | ✅   | ⬜   |
-| Coap Server                          | ⬜   | ⬜   |
-| ==协议解析==                             |     |     |
-| JSON Parser，支持阿里云，京东云等多个物联网平台格式      | ✅   | ⬜   |
-| Modbus RTU                           | ✅   | ⬜   |
-| Modbus TCP，支持并发读                     | ✅   | ⬜   |
-| DLT645-2007，电力规约                     | ⬜   | ⬜   |
-| 西门子PLC，S7系统，PPI，MPI，FetchWrite       | ✅   | ⬜   |
-| 三菱PLC                                | ✅   | ⬜   |
-| 欧姆龙PLC，Hostlink，Fins                 | ✅   | ⬜   |
-| ==数据存储==                             |     |     |
-| InfluxDB2                              | ✅   | ⬜   |
-| TDEngine                             | ⬜   | ⬜   |
-| OpenTSDB                             | ⬜   | ⬜   |
-| ==数据处理==                             |     |     |
-| 流式计算                                 | ⬜   | ⬜   |
-| 异常报警，向MQTT总线发送报警，支持短信、语音、微信、Webhook等 | ✅   | ⬜   |
-| 报表引擎                                 | ⬜   | ⬜   |
-| ==基础应用==                             |     |     |
-| Web组态                                | ⬜   | ⬜   |
-| 3D数据孪生                               | ⬜   | ⬜   |
+| 历史统计【内置】                           | ✅   | ⬜   |
+| 异常报警【内置】                           | ✅   | ⬜   |
+| Influxdb 时序数据库                        | ✅   | ⬜   |
+| Modbus通讯协议                             | ✅   | ⬜   |
+| WebRTC接入摄像头                           | ✅   | ⬜   |
+| Web组态                                    | ✅   | ⬜   |
+| 3D数据孪生                                 | ⬜   | ⬜   |
+| 阿里云通知                                 | ✅   | ⬜   |
+| DLT645-2007，电力规约                      | ⬜   | ⬜   |
+| 西门子PLC，S7系统，PPI，MPI，FetchWrite     | ✅   | ⬜   |
+| 三菱PLC                                    | ✅   | ⬜   |
+| 欧姆龙PLC，Hostlink，Fins                  | ✅   | ⬜   |
+| TDEngine                                   | ⬜   | ⬜   |
+| OpenTSDB                                   | ⬜   | ⬜   |
+| 流式计算                                   | ⬜   | ⬜   |
+| 报表引擎                                   | ⬜   | ⬜   |
 
