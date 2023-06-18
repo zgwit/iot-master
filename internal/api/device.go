@@ -152,7 +152,7 @@ func deviceStatistic(ctx *gin.Context) {
 		return
 	}
 	obj.Online = device.GetOnlineCount()
-	obj.Offline = obj.Total - obj.Offline
+	obj.Offline = obj.Total - obj.Online
 	curd.OK(ctx, &obj)
 }
 
