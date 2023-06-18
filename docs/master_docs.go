@@ -2356,7 +2356,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/history/group/history/group": {
+        "/history/group/group": {
             "get": {
                 "description": "按分组统计",
                 "produces": [

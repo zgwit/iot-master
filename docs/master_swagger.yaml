@@ -2330,7 +2330,7 @@ paths:
       summary: 按日统计
       tags:
       - group
-  /history/group/history/group:
+  /history/group/group:
     get:
       description: 按分组统计
       parameters:
