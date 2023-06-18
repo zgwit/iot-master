@@ -129,9 +129,9 @@ func noopDeviceValues() {}
 func noopDeviceParameters() {}
 
 type deviceStatisticObj struct {
-	Online  int64 `json:"online,omitempty"`
-	Offline int64 `json:"offline,omitempty"`
-	Total   int64 `json:"total,omitempty"`
+	Online  int64 `json:"online"`
+	Offline int64 `json:"offline"`
+	Total   int64 `json:"total"`
 }
 
 // @Summary 设备统计
