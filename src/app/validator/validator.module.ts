@@ -16,6 +16,7 @@ import {NzInputNumberModule} from "ng-zorro-antd/input-number";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzCardModule} from "ng-zorro-antd/card";
 import {ReactiveFormsModule} from "@angular/forms";
+import {NzPopconfirmModule} from "ng-zorro-antd/popconfirm";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {ReactiveFormsModule} from "@angular/forms";
         NzInputNumberModule,
         NzSelectModule,
         NzCardModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NzPopconfirmModule
     ]
 })
 export class ValidatorModule { }
