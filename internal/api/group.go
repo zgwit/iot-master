@@ -25,7 +25,7 @@ func groupRouter(app *gin.RouterGroup) {
 
 	app.GET("/area", groupByArea)
 
-	app.GET("/history/group", groupByGroup)
+	app.GET("/group", groupByGroup)
 
 	app.GET("/point", groupByPoint)
 
@@ -83,7 +83,7 @@ func groupByArea(ctx *gin.Context) {
 // @Param end query string false "结束时间"
 // @Produce json
 // @Success 200 {object} curd.ReplyData[GroupResult] 返回统计数据
-// @Router /history/group/history/group [get]
+// @Router /history/group/group [get]
 func groupByGroup(ctx *gin.Context) {
 	point := ctx.Query("point")
 	start := ctx.Query("start")
