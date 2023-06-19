@@ -112,11 +112,20 @@ export class AttachmentComponent {
     return reg ? reg[0] : 'unknown';
   }
   handleCopy(name: string) {
-    navigator && navigator.clipboard && navigator.clipboard.writeText(this.handleSrc(name)).then(res => {
-      console.log(res);
-      this.msg.success('复制成功');
-    }).catch(err => { })
+    const url = this.handleSrc(name);
+    // navigator && navigator.clipboard && navigator.clipboard.writeText(url).then(res => {
+    //   this.msg.success('复制成功');
+    // }).catch(err => { })
+    this.msg.success('复制成功');
+    const inputEle = document.createElement('input');
+    inputEle.value = url;
+    inputEle.setAttribute('readonly', '');
+    document.body.appendChild(inputEle);
+    inputEle.select();
+    document.execCommand('copy');
+    document.body.removeChild(inputEle);
   }
+
   handlePre() {
     const arr = this.inputValue.split('/');
     arr.pop();

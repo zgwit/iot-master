@@ -6,7 +6,7 @@ import { RequestService } from "../../request.service";
 import { NzMessageService } from "ng-zorro-antd/message";
 import { isIncludeAdmin } from "../../../public";
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
-import {EditTableItem} from "../../base/edit-table/edit-table.component";
+import { EditTableItem } from "../../base/edit-table/edit-table.component";
 
 @Component({
   selector: 'app-product-edit-component',
@@ -66,7 +66,7 @@ export class ProductEditComponentComponent implements OnInit {
     }]
   }]
 
-  parameterslistData : EditTableItem[] = [
+  parameterslistData: EditTableItem[] = [
     {
       label: '名称(ID)',
       name: 'name'
@@ -125,7 +125,91 @@ export class ProductEditComponentComponent implements OnInit {
     }
   ]
 
-
+  validatorsListData: EditTableItem[] = [
+    {
+      label: '标题',
+      name: 'title'
+    },
+    {
+      label: '等级',
+      name: 'level',
+      type: 'number',
+      default: 0
+    },
+    {
+      label: '模板',
+      name: 'template'
+    },
+    {
+      label: '表达式',
+      name: 'expression'
+    },
+    {
+      label: '延迟',
+      name: 'delay',
+      type: 'number',
+      default: 0
+    },
+    {
+      label: '再次提醒',
+      name: 'again',
+      type: 'number',
+      default: 0
+    },
+    {
+      label: '总提醒次数',
+      name: 'total',
+      type: 'number',
+      default: 0
+    }
+  ]
+  aggregatorsListData: EditTableItem[] = [
+    {
+      label: '定时计划',
+      name: 'crontab'
+    },
+    {
+      label: '表达式',
+      name: 'expression'
+    },
+    {
+      label: '类型',
+      name: 'type',
+      type: 'select',
+      default: 'inc',
+      options: [{
+        label: 'inc',
+        value: 'inc'
+      }, {
+        label: 'dec',
+        value: 'dec'
+      }, {
+        label: 'avg',
+        value: 'avg'
+      }, {
+        label: 'count',
+        value: 'count'
+      }, {
+        label: 'min',
+        value: 'min'
+      }, {
+        label: 'max',
+        value: 'max'
+      }, {
+        label: 'sum',
+        value: 'sum'
+      }, {
+        label: 'last',
+        value: 'last'
+      }, {
+        label: 'first',
+        value: 'first'
+      }]
+    }, {
+      label: '赋值',
+      name: 'assign'
+    }
+  ]
   @Input() id!: any;
   constructor(
     private fb: FormBuilder,
@@ -154,11 +238,13 @@ export class ProductEditComponentComponent implements OnInit {
       properties: [obj.properties || [], []],
       parameters: [obj.parameters || [], []],
       constraints: [obj.constraints || [], []],
+      validators: [obj.validators || [], []],
+      aggregators: [obj.aggregators || [], []],
     })
   }
 
   submit() {
-   // console.log(this.group.value)
+    // console.log(this.group.value)
     return new Promise((resolve) => {
       if (this.group.valid) {
         let url = this.id ? `product/${this.id}` : `product/create`

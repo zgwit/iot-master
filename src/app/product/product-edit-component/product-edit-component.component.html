@@ -1,4 +1,4 @@
-<form nz-form [formGroup]="group" >
+<form nz-form [formGroup]="group">
 
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="id">ID</nz-form-label>
@@ -29,16 +29,15 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" >图片上传</nz-form-label>
+    <nz-form-label [nzSm]="6" [nzXs]="24">图片上传</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
-      <nz-upload nzAction="/" [nzHeaders]="{ authorization: 'authorization-text' }"
-          (nzChange)="handleChange($event)">
-          <button nz-button>
-              <span nz-icon nzType="upload"></span>
-              点击上传
-          </button>
+      <nz-upload nzAction="/" [nzHeaders]="{ authorization: 'authorization-text' }" (nzChange)="handleChange($event)">
+        <button nz-button>
+          <span nz-icon nzType="upload"></span>
+          点击上传
+        </button>
       </nz-upload>
-  </nz-form-control>
+    </nz-form-control>
   </nz-form-item>
 
   <nz-collapse>
@@ -72,6 +71,12 @@
       <app-edit-table formControlName="parameters" [items]="parameterslistData"></app-edit-table>
     </nz-collapse-panel>
 
-      
+    <nz-collapse-panel nzHeader="数据检查">
+      <app-edit-table formControlName="validators" [items]="validatorsListData"></app-edit-table>
+    </nz-collapse-panel>
+
+    <nz-collapse-panel nzHeader="数据聚合">
+      <app-edit-table formControlName="aggregators" [items]="aggregatorsListData"></app-edit-table>
+    </nz-collapse-panel>
   </nz-collapse>
 </form>
