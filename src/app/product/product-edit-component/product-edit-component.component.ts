@@ -6,6 +6,7 @@ import { RequestService } from "../../request.service";
 import { NzMessageService } from "ng-zorro-antd/message";
 import { isIncludeAdmin } from "../../../public";
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import {EditTableItem} from "../../base/edit-table/edit-table.component";
 
 @Component({
   selector: 'app-product-edit-component',
@@ -15,18 +16,18 @@ import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 export class ProductEditComponentComponent implements OnInit {
   group!: any;
   allData: { properties: Array<object> } = { properties: [] };
-  listData = [{
-    title: '名称(ID)',
-    keyName: 'name'
+  listData: EditTableItem[] = [{
+    label: '名称(ID)',
+    name: 'name'
   }, {
-    title: '显示',
-    keyName: 'label'
+    label: '显示',
+    name: 'label'
   }, {
-    title: '类型',
-    keyName: 'type',
+    label: '类型',
+    name: 'type',
     type: 'select',
-    defaultValue: 'int',
-    listOfOption: [{
+    default: 'int',
+    options: [{
       label: '整数',
       value: 'int'
     }, {
@@ -49,14 +50,14 @@ export class ProductEditComponentComponent implements OnInit {
       value: 'object'
     }]
   }, {
-    title: '单位',
-    keyName: 'unit'
+    label: '单位',
+    name: 'unit'
   }, {
-    title: '模式',
-    keyName: 'mode',
+    label: '模式',
+    name: 'mode',
     type: 'select',
-    defaultValue: 'rw',
-    listOfOption: [{
+    default: 'rw',
+    options: [{
       label: '只读',
       value: 'r'
     }, {
@@ -64,63 +65,66 @@ export class ProductEditComponentComponent implements OnInit {
       value: 'rw'
     }]
   }]
-  parameterslistData = [
+
+  parameterslistData : EditTableItem[] = [
     {
-      title: '名称(ID)',
-      keyName: 'name'
+      label: '名称(ID)',
+      name: 'name'
     }, {
-      title: '显示',
-      keyName: 'label'
+      label: '显示',
+      name: 'label'
     }, {
-      title: '最大值',
-      keyName: 'max',
+      label: '最大值',
+      name: 'max',
       type: 'number',
-      defaultValue: 0
+      default: 0
     }, {
-      title: '最小值',
-      keyName: 'min',
+      label: '最小值',
+      name: 'min',
       type: 'number',
-      defaultValue: 0
+      default: 0
     }, {
-      title: '默认值',
-      keyName: 'default',
+      label: '默认值',
+      name: 'default',
       type: 'number',
-      defaultValue: 0
+      default: 0
     }
   ]
-  constraintslistData = [
+
+  constraintslistData: EditTableItem[] = [
     {
-      title: '等级',
-      keyName: 'level'
+      label: '等级',
+      name: 'level'
     },
     {
-      title: '标题',
-      keyName: 'title'
+      label: '标题',
+      name: 'label'
     },
     {
-      title: '模板',
-      keyName: 'template'
+      label: '模板',
+      name: 'template'
     },
     {
-      title: '表达式',
-      keyName: 'expression'
+      label: '表达式',
+      name: 'expression'
     },
     {
-      title: '延迟',
-      keyName: 'delay',
+      label: '延迟',
+      name: 'delay',
       type: 'number'
     },
     {
-      title: '再次提醒',
-      keyName: 'again',
+      label: '再次提醒',
+      name: 'again',
       type: 'number'
     },
     {
-      title: '总提醒次数',
-      keyName: 'total',
+      label: '总提醒次数',
+      name: 'total',
       type: 'number'
     }
   ]
+
 
   @Input() id!: any;
   constructor(

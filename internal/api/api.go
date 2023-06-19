@@ -23,6 +23,7 @@ func catchError(ctx *gin.Context) {
 			default:
 				ctx.JSON(http.StatusOK, gin.H{"error": err})
 			}
+			//TODO 这里好像又继续了
 		}
 	}()
 	ctx.Next()
@@ -107,6 +108,8 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	deviceRouter(router.Group("/device"))
 	alarmRouter(router.Group("/alarm"))
 	validatorRouter(router.Group("/validator"))
+	subscriptionRouter(router.Group("/subscription"))
+	notificationRouter(router.Group("/notification"))
 
 	aggregatorRouter(router.Group("/aggregator"))
 

@@ -289,7 +289,7 @@ func ExpandBool(buf []byte, count int) []byte {
 	}
 	b := make([]byte, count)
 
-	for i := 0; i < length; i++ {
+	for i := 0; i < count; i++ {
 		//b[i] = buf[i/8] & (1 << (i % 8))
 		if buf[i>>3]&(1<<(i&0x07)) > 0 {
 			b[i] = 1
