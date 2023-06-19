@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RequestService } from '../request.service';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { WindowComponent } from '../window/window.component';
-import { OemService } from '../oem.service';
+import { WindowComponent } from '../window/window.component'; 
 import { AppService } from '../app.service';
 import { UserService } from '../user.service';
 import { PasswordComponent } from '../user/password/password.component';
@@ -20,16 +19,21 @@ export class DesktopComponent {
     entries: any = [];
     items: any[] = [];
     userInfo: any;
-
+    oem: any = {
+        title: '物联大师',
+        logo: '/assets/logo.png',
+        company: '无锡真格智能科技有限公司',
+        copyright: '©2016-2023'
+      }
     constructor(
         private router: Router,
         private rs: RequestService,
         private ms: NzModalService,
-        private us: UserService,
-        protected os: OemService,
+        private us: UserService, 
         protected _as: AppService
     ) {
         this.userInfo = us && us.user;
+          
     }
     handlePassword() {
         const modal: NzModalRef = this.ms.create({
@@ -75,12 +79,14 @@ export class DesktopComponent {
             }
         });
     }
-    close(mes: any) {
+    close(mes: any) {  
         this.items.filter((item: any, index: any) => {
-            if (item.title === mes) {
+            if (item.title === mes) { 
+                localStorage.setItem("window", JSON.stringify(item)); 
                 this.items.splice(index, 1);
             }
         });
+         window.open('window')
     }
 
     showTab(mes: any) {
@@ -94,7 +100,7 @@ export class DesktopComponent {
         
     }
 
-    open(app: any) {
+    open(app: any) { 
         if (window.innerWidth < 800) {
             this.router.navigate([app.entries[0].path]);
             return;

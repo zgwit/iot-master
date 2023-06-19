@@ -98,8 +98,7 @@ const internals: any[] = [{
         {name: '数据备份', path: '/setting/backup'},
         {name: 'Web服务', path: '/setting/web'},
         {name: '数据库', path: '/setting/database'},
-        {name: '日志', path: '/setting/log'},
-        {name: 'OEM', path: '/setting/oem'},
+        {name: '日志', path: '/setting/log'}, 
         {name: 'MQTT', path: '/setting/mqtt'},
     ]
 }];
@@ -108,7 +107,7 @@ const internals: any[] = [{
     providedIn: 'root'
 })
 export class AppService {
-
+ 
     apps: any[] = internals;
 
     constructor(private rs: RequestService) {

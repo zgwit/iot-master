@@ -34,14 +34,14 @@ export class ModalComponent implements OnInit {
     zindex() { 
         this.setIndex.emit(this.title);
     }
-    @Input() set entries(arr: any) {
+    @Input() set entries(arr: any) { 
         arr.forEach((item: { url: SafeResourceUrl; path: string }) => {
             item.url = this.san.bypassSecurityTrustResourceUrl(item.path);
         });
         this.tabData = arr;
     }
     
-    cancel() {
+    cancel() {  
         this.close.emit(this.title);
         this.width = '60vw';
         this.height = '50vh';

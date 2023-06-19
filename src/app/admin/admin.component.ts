@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {AppService} from "../app.service";
-import {OemService} from "../oem.service";
+import {AppService} from "../app.service"; 
 import {Router} from "@angular/router";
 import {UserService} from "../user.service";
 import {RequestService} from "../request.service";
@@ -14,8 +13,7 @@ export class AdminComponent {
     userInfo: any;
 
     constructor(
-        protected _as: AppService,
-        protected os: OemService,
+        protected _as: AppService, 
         private router: Router,
         private us: UserService,
         private rs: RequestService

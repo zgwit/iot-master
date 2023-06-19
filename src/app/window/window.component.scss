@@ -1,5 +1,34 @@
-iframe{
-  border: none;
-  width: 100%;
-  height: 60vh;
+// iframe{
+//   border: none;
+//   width: 100%;
+//   height: 60vh;
+// }
+.modal-detail-content {
+  box-sizing: border-box;
+  //padding:  0.426667rem   ;
+  //background-color: rgb(36, 144, 201);
+    text-align: left;
+    color: #666;
+    font-size: 0.373333rem;
+    line-height: 0.586667rem;
+    height: 100%;
+
+    .modal-details {
+        // padding: 0 0.426667rem;
+        height: 100%;
+
+        .modal-tab {
+            height: 100%;
+        }
+
+        .modal-tab ::ng-deep>.ant-tabs-card .ant-tabs-content {
+            height: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    }
 }

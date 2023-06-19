@@ -102,6 +102,7 @@ const pages: Routes = [
 const routes: Routes = [
     { path: '', redirectTo: 'desktop', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
+    { path: 'window', component: WindowComponent },
     // {
     //     path: 'admin',
     //     component: AdminComponent,

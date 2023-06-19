@@ -18,6 +18,7 @@
               height: 100%;
               display: flex;
               flex-direction: column;
+              border: 2px solid rgba(0,0,0,0.3);
               //border-radius: 5px;
               padding: 0;
               text-align: center;
@@ -67,7 +68,7 @@
                   
                   .modal-detail-content {
                     box-sizing: border-box;
-                    padding:  0.426667rem   ;
+                    //padding:  0.426667rem   ;
                     //background-color: rgb(36, 144, 201);
                       text-align: left;
                       color: #666;

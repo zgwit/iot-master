@@ -16,7 +16,7 @@ const routes: Routes = [
   {path: 'backup', component: BackupComponent},
   {path: 'reboot', component: RebootComponent},
   {path: 'mqtt', component: MqttComponent},
-  {path: 'oem', component: OemComponent},
+  // {path: 'oem', component: OemComponent},
   {path: '**', component: PageNotFoundComponent}
 ];
 
