@@ -29,7 +29,7 @@
   </nz-form-item>
 
   <nz-form-item>
-    <nz-form-label [nzSm]="6" [nzXs]="24" >图片上传</nz-form-label> 
+    <nz-form-label [nzSm]="6" [nzXs]="24" >图片上传</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24">
       <nz-upload nzAction="/" [nzHeaders]="{ authorization: 'authorization-text' }"
           (nzChange)="handleChange($event)">
@@ -44,7 +44,7 @@
   <nz-collapse>
     <!-- 属性start -->
     <nz-collapse-panel nzHeader="属性" nzActive>
-      <app-edit-table formControlName="properties" [listData]="listData"></app-edit-table>
+      <app-edit-table formControlName="properties" [items]="listData"></app-edit-table>
     </nz-collapse-panel>
     <!-- 属性end -->
 
@@ -69,12 +69,9 @@
     </nz-collapse-panel>
 
     <nz-collapse-panel nzHeader="变量">
-      <app-edit-table formControlName="parameters" [listData]="parameterslistData"></app-edit-table>
+      <app-edit-table formControlName="parameters" [items]="parameterslistData"></app-edit-table>
     </nz-collapse-panel>
 
-    <nz-collapse-panel nzHeader="约束">
-      <span nz-typography nzType="warning">表达式计算不成立时，产生报警信息</span>
-      <app-edit-table formControlName="constraints" [listData]="constraintslistData"></app-edit-table>
-    </nz-collapse-panel>
+      
   </nz-collapse>
 </form>

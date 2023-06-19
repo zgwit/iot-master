@@ -40,6 +40,7 @@ func Open() error {
 		new(model.App), new(model.Plugin),
 		new(model.Alarm), new(model.Validator),
 		new(model.History), new(model.Aggregator),
+		new(model.Subscription), new(model.Notification),
 	)
 	if err != nil {
 		return err
