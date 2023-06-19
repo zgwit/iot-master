@@ -29,8 +29,6 @@ type Subscription struct {
 	Device      string    `json:"device,omitempty" xorm:"-"`
 	Level       uint      `json:"level"`
 	Channels    []string  `json:"channels" xorm:"json"`
-	Sms         bool      `json:"sms,omitempty"`
-	Voice       bool      `json:"voice,omitempty"`
 	Disabled    bool      `json:"disabled"` //禁用
 	Created     time.Time `json:"created" xorm:"created"`
 }

@@ -2805,6 +2805,135 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "/notification/count": {
+            "post": {
+                "description": "查询通知",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notification"
+                ],
+                "summary": "查询通知",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/notification/list": {
+            "get": {
+                "description": "查询通知",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notification"
+                ],
+                "summary": "查询通知",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Notification"
+                        }
+                    }
+                }
+            }
+        },
+        "/notification/search": {
+            "post": {
+                "description": "查询通知",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notification"
+                ],
+                "summary": "查询通知",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Notification"
+                        }
+                    }
+                }
+            }
+        },
+        "/notification/{id}/delete": {
+            "get": {
+                "description": "删除通知",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "notification"
+                ],
+                "summary": "删除通知",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "通知ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Notification"
+                        }
+                    }
+                }
+            }
+        },
         "/plugin/create": {
             "post": {
                 "description": "创建插件",
@@ -3766,6 +3895,358 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "/subscription/count": {
+            "post": {
+                "description": "查询订阅数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "查询订阅数量",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/create": {
+            "post": {
+                "description": "创建订阅",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "创建订阅",
+                "parameters": [
+                    {
+                        "description": "订阅信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Subscription"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/export": {
+            "get": {
+                "description": "导出订阅",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "导出订阅",
+                "responses": {}
+            }
+        },
+        "/subscription/import": {
+            "post": {
+                "description": "导入订阅",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "导入订阅",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/list": {
+            "get": {
+                "description": "查询订阅",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "查询订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Subscription"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/search": {
+            "post": {
+                "description": "查询订阅",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "查询订阅",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-model_Subscription"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/{id}": {
+            "get": {
+                "description": "获取订阅",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "获取订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订阅ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改订阅",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "修改订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订阅ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "订阅信息",
+                        "name": "subscription",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Subscription"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/{id}/delete": {
+            "get": {
+                "description": "删除订阅",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "删除订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订阅ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/{id}/disable": {
+            "get": {
+                "description": "禁用订阅",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "禁用订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订阅ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscription/{id}/enable": {
+            "get": {
+                "description": "启用订阅",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "subscription"
+                ],
+                "summary": "启用订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订阅ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                        }
+                    }
+                }
+            }
+        },
         "/user/count": {
             "post": {
                 "description": "查询用户数量",
@@ -4699,6 +5180,17 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyData-model_Notification": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.Notification"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-model_Plugin": {
             "type": "object",
             "properties": {
@@ -4726,6 +5218,17 @@ const docTemplatemaster = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/model.Role"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-model_Subscription": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/model.Subscription"
                 },
                 "error": {
                     "type": "string"
@@ -4917,6 +5420,23 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyList-model_Notification": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Notification"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "curd.ReplyList-model_Plugin": {
             "type": "object",
             "properties": {
@@ -4958,6 +5478,23 @@ const docTemplatemaster = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/model.Role"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-model_Subscription": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Subscription"
                     }
                 },
                 "error": {
@@ -5099,6 +5636,12 @@ const docTemplatemaster = `{
                 "message": {
                     "type": "string"
                 },
+                "product": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
                 "read": {
                     "type": "boolean"
                 },
@@ -5106,6 +5649,9 @@ const docTemplatemaster = `{
                     "type": "string"
                 },
                 "type": {
+                    "type": "string"
+                },
+                "validator_id": {
                     "type": "string"
                 }
             }
@@ -5397,6 +5943,29 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "model.Notification": {
+            "type": "object",
+            "properties": {
+                "alarm_id": {
+                    "type": "string"
+                },
+                "channels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "created": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
         "model.Plugin": {
             "type": "object",
             "properties": {
@@ -5511,6 +6080,48 @@ const docTemplatemaster = `{
                     "items": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "model.Subscription": {
+            "type": "object",
+            "properties": {
+                "channels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "created": {
+                    "type": "string"
+                },
+                "device": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "description": "禁用",
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "product": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                },
+                "validator_id": {
+                    "type": "string"
                 }
             }
         },

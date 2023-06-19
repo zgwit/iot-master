@@ -149,6 +149,13 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-model_Notification:
+    properties:
+      data:
+        $ref: '#/definitions/model.Notification'
+      error:
+        type: string
+    type: object
   curd.ReplyData-model_Plugin:
     properties:
       data:
@@ -167,6 +174,13 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/model.Role'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-model_Subscription:
+    properties:
+      data:
+        $ref: '#/definitions/model.Subscription'
       error:
         type: string
     type: object
@@ -289,6 +303,17 @@ definitions:
       total:
         type: integer
     type: object
+  curd.ReplyList-model_Notification:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Notification'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
   curd.ReplyList-model_Plugin:
     properties:
       data:
@@ -316,6 +341,17 @@ definitions:
       data:
         items:
           $ref: '#/definitions/model.Role'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-model_Subscription:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/model.Subscription'
         type: array
       error:
         type: string
@@ -410,11 +446,17 @@ definitions:
         type: integer
       message:
         type: string
+      product:
+        type: string
+      product_id:
+        type: string
       read:
         type: boolean
       title:
         type: string
       type:
+        type: string
+      validator_id:
         type: string
     type: object
   model.Broker:
@@ -610,6 +652,21 @@ definitions:
       type:
         type: string
     type: object
+  model.Notification:
+    properties:
+      alarm_id:
+        type: string
+      channels:
+        items:
+          type: string
+        type: array
+      created:
+        type: string
+      id:
+        type: integer
+      user_id:
+        type: string
+    type: object
   model.Plugin:
     properties:
       command:
@@ -686,6 +743,34 @@ definitions:
         items:
           type: string
         type: array
+    type: object
+  model.Subscription:
+    properties:
+      channels:
+        items:
+          type: string
+        type: array
+      created:
+        type: string
+      device:
+        type: string
+      device_id:
+        type: string
+      disabled:
+        description: 禁用
+        type: boolean
+      id:
+        type: integer
+      level:
+        type: integer
+      product:
+        type: string
+      product_id:
+        type: string
+      user_id:
+        type: string
+      validator_id:
+        type: string
     type: object
   model.User:
     properties:
@@ -2602,6 +2687,89 @@ paths:
       summary: 查询历史
       tags:
       - history
+  /notification/{id}/delete:
+    get:
+      description: 删除通知
+      parameters:
+      - description: 通知ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Notification'
+      summary: 删除通知
+      tags:
+      - notification
+  /notification/count:
+    post:
+      consumes:
+      - application/json
+      description: 查询通知
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 查询通知
+      tags:
+      - notification
+  /notification/list:
+    get:
+      description: 查询通知
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Notification'
+      summary: 查询通知
+      tags:
+      - notification
+  /notification/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询通知
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Notification'
+      summary: 查询通知
+      tags:
+      - notification
   /plugin/{id}:
     post:
       consumes:
@@ -3229,6 +3397,236 @@ paths:
       summary: 查询角色
       tags:
       - role
+  /subscription/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取订阅
+      parameters:
+      - description: 订阅ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+      summary: 获取订阅
+      tags:
+      - subscription
+    post:
+      consumes:
+      - application/json
+      description: 修改订阅
+      parameters:
+      - description: 订阅ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 订阅信息
+        in: body
+        name: subscription
+        required: true
+        schema:
+          $ref: '#/definitions/model.Subscription'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+      summary: 修改订阅
+      tags:
+      - subscription
+  /subscription/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除订阅
+      parameters:
+      - description: 订阅ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+      summary: 删除订阅
+      tags:
+      - subscription
+  /subscription/{id}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用订阅
+      parameters:
+      - description: 订阅ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+      summary: 禁用订阅
+      tags:
+      - subscription
+  /subscription/{id}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用订阅
+      parameters:
+      - description: 订阅ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+      summary: 启用订阅
+      tags:
+      - subscription
+  /subscription/count:
+    post:
+      consumes:
+      - application/json
+      description: 查询订阅数量
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 查询订阅数量
+      tags:
+      - subscription
+  /subscription/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建订阅
+      parameters:
+      - description: 订阅信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Subscription'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+      summary: 创建订阅
+      tags:
+      - subscription
+  /subscription/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出订阅
+      produces:
+      - application/octet-stream
+      responses: {}
+      summary: 导出订阅
+      tags:
+      - subscription
+  /subscription/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入订阅
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入订阅
+      tags:
+      - subscription
+  /subscription/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询订阅
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Subscription'
+      summary: 查询订阅
+      tags:
+      - subscription
+  /subscription/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询订阅
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-model_Subscription'
+      summary: 查询订阅
+      tags:
+      - subscription
   /user/{id}:
     get:
       consumes:
