@@ -31,6 +31,8 @@ const internals: any[] = [{
     entries: [
         {name: '报警日志', path: '/alarm/list'},
         {name: '报警规则', path: '/validator/list'},
+        {name: '订阅管理', path: '/subscription/list'},
+        {name: '通知记录', path: '/notification'},
         // {name: '创建插件', path: '/plugin/create'},
     ]
 }, {
