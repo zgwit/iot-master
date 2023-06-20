@@ -1,0 +1,73 @@
+<app-toolbar>
+    <nz-space>
+        <button *nzSpaceItem nz-button nzType="primary" (click)="reload()">
+            <i nz-icon nzType="reload" [nzSpin]="loading"></i>
+            刷新
+        </button>
+        <app-search-box
+            *nzSpaceItem
+            (onSearch)="search($event)"
+        ></app-search-box>
+        <button
+            *nzSpaceItem
+            nz-button
+            nzType="primary"
+            nzDanger
+            (click)="handleBatchDel()"
+        >
+            批量删除
+        </button>
+    </nz-space>
+</app-toolbar>
+
+<ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
+<nz-table
+    #basicTable
+    [nzData]="datum"
+    [nzFrontPagination]="false"
+    [nzLoading]="loading"
+    nzShowPagination
+    [nzTotal]="total"
+    nzShowSizeChanger
+    [nzShowTotal]="totalTemplate"
+    (nzPageSizeChange)="pageSizeChange($event)"
+    (nzPageIndexChange)="pageIndexChange($event)"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="pageIndex"
+    (nzQueryParams)="onQuery($event)"
+>
+    <thead>
+        <tr>
+            <th
+                [nzChecked]="checked"
+                [nzIndeterminate]="indeterminate"
+                (nzCheckedChange)="handleAllChecked($event)"
+            ></th>
+            <th nzColumnKey="id" [nzSortFn]="true">ID</th>
+            <th nzColumnKey="alarm_id">报警ID</th>
+            <th nzColumnKey="user_id">用户ID</th>
+            <th nzColumnKey="channels">通道</th>
+            <th nzColumnKey="created" [nzSortFn]="true">日期</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr
+            *ngFor="let data of basicTable.data; let i = index"    >
+            <td
+                [nzChecked]="setOfCheckedId.has(data.id)"
+                (nzCheckedChange)="handleItemChecked(data.id, $event)"
+            ></td>
+            <td>{{ data.id }}</td>
+            <td>{{ data.alarm_id }}</td>
+            <td>{{ data.user_id }}</td>
+            <td>{{ data.channels }}</td> 
+            <td>{{ data.created | date }}</td>
+            <td> 
+                <a (click)="delete(data.id)">
+                    <i nz-icon nzType="delete"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

@@ -26,7 +26,7 @@ import { NzDividerModule } from "ng-zorro-antd/divider";
 import { NzModalModule } from "ng-zorro-antd/modal";
 import { DesktopComponent } from './desktop/desktop.component';
 import { NzDrawerModule } from "ng-zorro-antd/drawer";
-import { WindowComponent } from './window/window.component';
+import { NotificationComponent } from './notification/notification.component';
 import { AdminComponent } from './admin/admin.component';
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzDropDownModule } from "ng-zorro-antd/dropdown";
@@ -35,6 +35,7 @@ import { authGuard } from "./auth.guard";
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+import { NzSpaceModule } from 'ng-zorro-antd/space'; 
 registerLocaleData(zh);
 
 //declare var window: Window;
@@ -97,12 +98,22 @@ const pages: Routes = [
         canActivate: [authGuard],
         loadChildren: () => import('./attach/attachment.module').then(m => m.AttachmentModule)
     },
+    {
+        path: 'notification',
+        canActivate: [authGuard],
+        component: NotificationComponent
+    },
+    {
+        path: 'subscription',
+        canActivate: [authGuard],
+        loadChildren: () => import('./subscription/subscription.module').then(m => m.SubscriptionModule)
+    },
 ]
 
 const routes: Routes = [
     { path: '', redirectTo: 'desktop', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    { path: 'window', component: WindowComponent },
+    
     // {
     //     path: 'admin',
     //     component: AdminComponent,
@@ -118,7 +129,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, DesktopComponent, WindowComponent, AdminComponent],
+    declarations: [AppComponent, LoginComponent, DesktopComponent,  AdminComponent ,NotificationComponent],
     imports: [
         RouterModule.forRoot(routes),
         BrowserModule,
@@ -127,6 +138,7 @@ const routes: Routes = [
         BrowserAnimationsModule,
         RouterOutlet,
         NzTabsModule,
+        NzSpaceModule,
         ReactiveFormsModule,
         NzFormModule,
         NzInputModule,

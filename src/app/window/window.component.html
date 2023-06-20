@@ -1,35 +1,9 @@
-<!-- <iframe *ngIf="tabData.length===1" [src]="tabData.url"></iframe> 
+<iframe *ngIf="tabData.length===1" [src]="tabData.url"></iframe> 
 
 <nz-tabset nzType="card" *ngIf="tabData.length!==1">
   <nz-tab *ngFor="let tab of tabData" [nzTitle]="tab.name">
     <iframe [src]="tab.url"></iframe>
   </nz-tab>
-</nz-tabset>     -->
+</nz-tabset>    
  
-
-<div class="modal-detail-content">
-  <div class="modal-details">
-      <iframe
-          style="position: relative"
-          *ngIf="tabData.length === 1"
-          [src]="tabData[0].url"
-      ></iframe>
-      <div class="modal-tab">
-          <nz-tabset
-              style="height: 100%"
-              nzType="card"
-              *ngIf="tabData.length !== 1"
-          >
-              <nz-tab
-                  *ngFor="let tab of tabData"
-                  [nzTitle]="tab.name"
-              >
-                  <iframe
-                      style="position: relative"
-                      [src]="tab.url"
-                  ></iframe>
-              </nz-tab>
-          </nz-tabset>
-      </div>
-  </div>
-</div>  
+ 

@@ -52,15 +52,7 @@ func notificationRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[model.Notification]())
 
-	app.POST("/search", curd.ApiSearchWith[model.Notification](
-		"notification", []*curd.Join{{
-			Table:        "device",
-			LocaleField:  "device_id",
-			ForeignField: "id",
-			Field:        "name",
-			As:           "device",
-		}},
-	))
+	app.POST("/search", curd.ApiSearch[model.Notification]())
 
 	app.GET("/list", curd.ApiList[model.Notification]())
 

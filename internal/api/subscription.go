@@ -131,7 +131,7 @@ func subscriptionRouter(app *gin.RouterGroup) {
 	app.POST("/count", curd.ApiCount[model.Subscription]())
 	app.POST("/search", curd.ApiSearch[model.Subscription]())
 	app.GET("/list", curd.ApiList[model.Subscription]())
-	app.POST("/create", curd.ApiCreateHook[model.Subscription](curd.GenerateRandomId[model.Subscription](8), nil))
+	app.POST("/create", curd.ApiCreateHook[model.Subscription](nil, nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Subscription]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Subscription](nil, nil,
 		"user_id", "product_id", "device_id", "validator_id", "level", "channels", "disabled"))

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RequestService } from '../request.service';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { WindowComponent } from '../window/window.component'; 
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal'; 
 import { AppService } from '../app.service';
 import { UserService } from '../user.service';
 import { PasswordComponent } from '../user/password/password.component';
@@ -81,12 +80,10 @@ export class DesktopComponent {
     }
     close(mes: any) {  
         this.items.filter((item: any, index: any) => {
-            if (item.title === mes) { 
-                localStorage.setItem("window", JSON.stringify(item)); 
+            if (item.title === mes) {  
                 this.items.splice(index, 1);
             }
-        });
-         window.open('window')
+        }); 
     }
 
     showTab(mes: any) {
