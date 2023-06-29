@@ -48,10 +48,28 @@ func notify(alarm *model.Alarm) error {
 		return err
 	}
 
-	//TODO 去除重复的？？？
+	//去除重复
+	subs := map[string]sub{}
+	for _, u := range us {
+		if s, ok := subs[u.Id]; ok {
+			for _, v := range u.Channels {
+				found := false
+				for _, vv := range s.Channels {
+					if vv == v {
+						found = true
+					}
+				}
+				if !found {
+					s.Channels = append(s.Channels, v)
+				}
+			}
+		} else {
+			subs[u.Id] = u
+		}
+	}
 
 	//依次通知
-	for _, u := range us {
+	for _, u := range subs {
 		n := model.Notification{
 			AlarmId:  alarm.Id,
 			UserId:   u.Id,
