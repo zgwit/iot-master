@@ -40,9 +40,9 @@ func notify(alarm *model.Alarm) error {
 	err = db.Engine.Table("subscription").
 		Select("user.id, user.name, user.email, user.cellphone, subscription.channels").
 		Join("INNER", "user", "user.id = subscription.user_id").
-		Where("level<=?", alarm.Level).And("disabled<>1").
-		And("( product_id IS NULL OR product_id=`` OR product_id=?)", alarm.ProductId).
-		And("( device_id IS NULL OR device_id=`` OR device_id=?)", alarm.DeviceId).
+		Where("level<=?", alarm.Level).And("subscription.disabled!=1").
+		And("product_id IS NULL OR product_id=\"\" OR product_id=?", alarm.ProductId).
+		And("device_id IS NULL OR device_id=\"\" OR device_id=?", alarm.DeviceId).
 		Find(&us)
 	if err != nil {
 		return err
