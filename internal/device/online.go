@@ -41,6 +41,8 @@ func SubscribeOnline() error {
 		alarm := model.Alarm{
 			ProductId: pid,
 			DeviceId:  id,
+			Product:   dev.product.Name,
+			Device:    dev.Name,
 			Type:      "离线", //TODO 在 产品和设备 中配置
 			Title:     "离线",
 			Level:     3,

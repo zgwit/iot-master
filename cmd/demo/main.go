@@ -3,14 +3,15 @@ package main
 import (
 	"github.com/iot-master-contrib/aliyun"
 	"github.com/iot-master-contrib/classify"
-	"github.com/iot-master-contrib/influxdb"
 	"github.com/iot-master-contrib/ipc"
 	"github.com/iot-master-contrib/modbus"
 	"github.com/iot-master-contrib/scada"
+	"github.com/iot-master-contrib/tsdb"
 	"github.com/zgwit/iot-master/v3"
 	"github.com/zgwit/iot-master/v3/app"
 	"github.com/zgwit/iot-master/v3/pkg/banner"
 	"github.com/zgwit/iot-master/v3/pkg/build"
+	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/web"
 )
@@ -35,7 +36,7 @@ func main() {
 		//return
 	}
 
-	err = influxdb.Startup(engine)
+	err = tsdb.Startup(engine)
 	if err != nil {
 		log.Fatal(err)
 		//return
@@ -64,20 +65,21 @@ func main() {
 		log.Fatal(err)
 		//return
 	}
+	_ = db.Engine.Sync2(aliyun.Models()...)
 
 	//注册静态页面
 	fs := engine.FileSystem()
 
 	master.Static(fs)
 	classify.Static(fs)
-	influxdb.Static(fs)
+	tsdb.Static(fs)
 	ipc.Static(fs)
 	modbus.Static(fs)
 	scada.Static(fs)
 	aliyun.Static(fs)
 
 	app.Register(classify.App())
-	app.Register(influxdb.App())
+	app.Register(tsdb.App())
 	app.Register(ipc.App())
 	app.Register(modbus.App())
 	app.Register(scada.App())
