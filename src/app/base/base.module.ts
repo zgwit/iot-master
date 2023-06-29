@@ -30,6 +30,8 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { DetailComponent } from './detail/detail.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { TableViewComponent } from './table-view/table-view.component';
+import { TableEditComponent } from './table-edit/table-edit.component';
 @NgModule({
   declarations: [
     DatePipe,
@@ -43,7 +45,9 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
     ModalComponent,
     FullscreamDirective,
     CardComponent,
-    DetailComponent
+    DetailComponent,
+    TableViewComponent,
+    TableEditComponent
   ],
     exports: [
         DatePipe,
