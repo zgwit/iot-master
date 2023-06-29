@@ -92,7 +92,7 @@
       }
     }
     handleCancel() {
-      const path = `/validator`;
+      const path = `/alarm/validator`;
       this.router.navigateByUrl(path);
     }
 

@@ -26,7 +26,7 @@ import { NzDividerModule } from "ng-zorro-antd/divider";
 import { NzModalModule } from "ng-zorro-antd/modal";
 import { DesktopComponent } from './desktop/desktop.component';
 import { NzDrawerModule } from "ng-zorro-antd/drawer";
-import { NotificationComponent } from './notification/notification.component';
+import { NotificationComponent } from './alarm/notification/notification.component';
 import { AdminComponent } from './admin/admin.component';
 import { NzIconModule } from "ng-zorro-antd/icon";
 import { NzDropDownModule } from "ng-zorro-antd/dropdown";
@@ -35,7 +35,8 @@ import { authGuard } from "./auth.guard";
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
-import { NzSpaceModule } from 'ng-zorro-antd/space'; 
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+
 registerLocaleData(zh);
 
 //declare var window: Window;
@@ -60,11 +61,6 @@ const pages: Routes = [
       path: 'alarm',
       canActivate: [authGuard],
       loadChildren: () => import('./alarm/alarm.module').then(m => m.AlarmModule)
-    },
-    {
-        path: 'validator',
-        canActivate: [authGuard],
-        loadChildren: () => import('./validator/validator.module').then(m => m.ValidatorModule)
     },
     {
         path: 'history',
@@ -98,22 +94,12 @@ const pages: Routes = [
         canActivate: [authGuard],
         loadChildren: () => import('./attach/attachment.module').then(m => m.AttachmentModule)
     },
-    {
-        path: 'notification',
-        canActivate: [authGuard],
-        component: NotificationComponent
-    },
-    {
-        path: 'subscription',
-        canActivate: [authGuard],
-        loadChildren: () => import('./subscription/subscription.module').then(m => m.SubscriptionModule)
-    },
 ]
 
 const routes: Routes = [
     { path: '', redirectTo: 'desktop', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    
+
     // {
     //     path: 'admin',
     //     component: AdminComponent,
@@ -129,7 +115,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-    declarations: [AppComponent, LoginComponent, DesktopComponent,  AdminComponent ,NotificationComponent],
+    declarations: [AppComponent, LoginComponent, DesktopComponent,  AdminComponent],
     imports: [
         RouterModule.forRoot(routes),
         BrowserModule,

@@ -6,19 +6,17 @@ import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ParseTableQuery } from '../../base/table';
 import {
-    tableHeight,
     onAllChecked,
     onItemChecked,
     batchdel,
     refreshCheckedStatus,
-} from '../../../public';
-
+} from 'src/public';
 @Component({
-    selector: 'app-validators',
-    templateUrl: './validators.component.html',
-    styleUrls: ['./validators.component.scss'],
+  selector: 'app-subscription',
+  templateUrl: './subscription.component.html',
+  styleUrls: ['./subscription.component.scss']
 })
-export class ValidatorsComponent {
+export class SubscriptionComponent {
     loading = true;
     datum: any[] = [];
     total = 1;
@@ -26,7 +24,7 @@ export class ValidatorsComponent {
     uploading: Boolean = false;
     pageIndex = 1;
     query: any = {};
-    url = '';
+
     href!: string;
     filterLevel = [
         { text: '1', value: 1 },
@@ -55,7 +53,7 @@ export class ValidatorsComponent {
     load() {
         this.loading = true;
         this.rs
-            .post('validator/search', this.query)
+            .post(   'subscription/search', this.query)
             .subscribe((res) => {
                 const { data, total } = res;
                 this.datum = data || [];
@@ -69,16 +67,16 @@ export class ValidatorsComponent {
     }
 
     edit(id: any) {
-        const path = `/validator/edit/${id}`;
+        const path = `/alarm/subscription/edit/${id}`;
         this.router.navigateByUrl(path);
     }
     handleNew() {
-        const path = `/validator/create`;
+        const path = `/alarm/subscription/create`;
         this.router.navigateByUrl(path);
     }
 
     delete(id: number, size?: number) {
-        this.rs.get(`validator/${id}/delete`).subscribe((res) => {
+        this.rs.get(  `subscription/${id}/delete`).subscribe((res) => {
             if (!size) {
                 this.msg.success('删除成功');
                 this.datum = this.datum.filter((d) => d.id !== id);
@@ -109,7 +107,7 @@ export class ValidatorsComponent {
     search($event: string) {
         console.log()
         this.query.keyword = {
-            title: $event,
+            id: $event,
             //   Message: $event,
         };
 
@@ -122,7 +120,7 @@ export class ValidatorsComponent {
         const formData = new FormData();
         formData.append('file', file);
         this.rs
-            .post(`validator/import`, formData)
+            .post(  `subscription/import`, formData)
             .subscribe((res) => {
                 console.log(res);
             });
@@ -137,13 +135,13 @@ export class ValidatorsComponent {
     disable(mess: number, id: any) {
         if (mess)
             this.rs
-                .get(`validator/${id}/disable`)
+                .get(  `subscription/${id}/disable`)
                 .subscribe((res) => {
                     this.reload();
                 });
         else
             this.rs
-                .get(`validator/${id}/enable`)
+                .get(  `subscription/${id}/enable`)
                 .subscribe((res) => {
                     this.reload();
                 });
@@ -152,9 +150,7 @@ export class ValidatorsComponent {
         this.msg.info('取消操作');
     }
 
-    getTableHeight() {
-        return tableHeight(this);
-    }
+
 
     handleBatchDel() {
         batchdel(this);

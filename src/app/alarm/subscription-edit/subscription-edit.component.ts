@@ -127,7 +127,7 @@ export class SubscriptionEditComponent implements OnInit {
         }
     }
     handleCancel() {
-        const path = `/subscription`;
+        const path = `/alarm/subscription`;
         this.router.navigateByUrl(path);
     }
 }

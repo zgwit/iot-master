@@ -1,22 +1,24 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { RequestService } from '../request.service';
+import { RequestService } from '../../request.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
-import { NzModalService } from 'ng-zorro-antd/modal'; 
-import { ParseTableQuery } from '../base/table';
-import { 
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { ParseTableQuery } from '../../base/table';
+import {
+    tableHeight,
     onAllChecked,
     onItemChecked,
     batchdel,
     refreshCheckedStatus,
-} from 'src/public'; 
+} from '../../../public';
+
 @Component({
-  selector: 'app-subscription',
-  templateUrl: './subscription.component.html',
-  styleUrls: ['./subscription.component.scss']
+    selector: 'app-validators',
+    templateUrl: './validators.component.html',
+    styleUrls: ['./validators.component.scss'],
 })
-export class SubscriptionComponent {
+export class ValidatorsComponent {
     loading = true;
     datum: any[] = [];
     total = 1;
@@ -24,7 +26,7 @@ export class SubscriptionComponent {
     uploading: Boolean = false;
     pageIndex = 1;
     query: any = {};
-    
+    url = '';
     href!: string;
     filterLevel = [
         { text: '1', value: 1 },
@@ -53,7 +55,7 @@ export class SubscriptionComponent {
     load() {
         this.loading = true;
         this.rs
-            .post(   'subscription/search', this.query)
+            .post('validator/search', this.query)
             .subscribe((res) => {
                 const { data, total } = res;
                 this.datum = data || [];
@@ -67,16 +69,16 @@ export class SubscriptionComponent {
     }
 
     edit(id: any) {
-        const path = `/subscription/edit/${id}`;
+        const path = `/alarm/validator/edit/${id}`;
         this.router.navigateByUrl(path);
     }
     handleNew() {
-        const path = `/subscription/create`;
+        const path = `/alarm/validator/create`;
         this.router.navigateByUrl(path);
     }
 
     delete(id: number, size?: number) {
-        this.rs.get(  `subscription/${id}/delete`).subscribe((res) => {
+        this.rs.get(`validator/${id}/delete`).subscribe((res) => {
             if (!size) {
                 this.msg.success('删除成功');
                 this.datum = this.datum.filter((d) => d.id !== id);
@@ -107,7 +109,7 @@ export class SubscriptionComponent {
     search($event: string) {
         console.log()
         this.query.keyword = {
-            id: $event,
+            title: $event,
             //   Message: $event,
         };
 
@@ -120,7 +122,7 @@ export class SubscriptionComponent {
         const formData = new FormData();
         formData.append('file', file);
         this.rs
-            .post(  `subscription/import`, formData)
+            .post(`validator/import`, formData)
             .subscribe((res) => {
                 console.log(res);
             });
@@ -135,13 +137,13 @@ export class SubscriptionComponent {
     disable(mess: number, id: any) {
         if (mess)
             this.rs
-                .get(  `subscription/${id}/disable`)
+                .get(`validator/${id}/disable`)
                 .subscribe((res) => {
                     this.reload();
                 });
         else
             this.rs
-                .get(  `subscription/${id}/enable`)
+                .get(`validator/${id}/enable`)
                 .subscribe((res) => {
                     this.reload();
                 });
@@ -150,7 +152,9 @@ export class SubscriptionComponent {
         this.msg.info('取消操作');
     }
 
-     
+    getTableHeight() {
+        return tableHeight(this);
+    }
 
     handleBatchDel() {
         batchdel(this);

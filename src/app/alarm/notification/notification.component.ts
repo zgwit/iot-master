@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from "@angular/router";
-import { RequestService } from '../request.service';
+import { RequestService } from '../../request.service';
 import { NzMessageService } from "ng-zorro-antd/message";
 import { NzTableQueryParams } from "ng-zorro-antd/table";
 import { NzModalService } from "ng-zorro-antd/modal";
-import { ParseTableQuery } from "../base/table";
+import { ParseTableQuery } from "../../base/table";
 import {  onAllChecked, onItemChecked, batchdel, refreshCheckedStatus } from 'src/public';
 @Component({
   selector: 'app-notification',

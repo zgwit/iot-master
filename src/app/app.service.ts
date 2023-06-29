@@ -30,9 +30,9 @@ const internals: any[] = [{
     internal: true,
     entries: [
         {name: '报警日志', path: '/alarm/list'},
-        {name: '报警规则', path: '/validator/list'},
-        {name: '订阅管理', path: '/subscription/list'},
-        {name: '通知记录', path: '/notification'},
+        {name: '报警规则', path: '/alarm/validator'},
+        {name: '订阅管理', path: '/alarm/subscription'},
+        {name: '通知记录', path: '/alarm/notification'},
         // {name: '创建插件', path: '/plugin/create'},
     ]
 }, {
@@ -100,7 +100,7 @@ const internals: any[] = [{
         {name: '数据备份', path: '/setting/backup'},
         {name: 'Web服务', path: '/setting/web'},
         {name: '数据库', path: '/setting/database'},
-        {name: '日志', path: '/setting/log'}, 
+        {name: '日志', path: '/setting/log'},
         {name: 'MQTT', path: '/setting/mqtt'},
     ]
 }];
@@ -109,7 +109,7 @@ const internals: any[] = [{
     providedIn: 'root'
 })
 export class AppService {
- 
+
     apps: any[] = internals;
 
     constructor(private rs: RequestService) {
