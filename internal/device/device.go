@@ -189,6 +189,13 @@ func (d *Device) Validate() {
 			log.Error(err)
 			//continue
 		}
+		
+		//通知
+		err = notify(&alarm)
+		if err != nil {
+			log.Error(err)
+			//continue
+		}
 
 		//报警
 		topic := fmt.Sprintf("alarm/%s/%s", d.ProductId, d.Id)

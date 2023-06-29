@@ -53,6 +53,13 @@ func SubscribeOnline() error {
 			//continue
 		}
 
+		//通知
+		err = notify(&alarm)
+		if err != nil {
+			log.Error(err)
+			//continue
+		}
+
 		//广播报警内容
 		topic := fmt.Sprintf("alarm/%s/%s", pid, id)
 		data, _ := json.Marshal(&payload.Alarm{
