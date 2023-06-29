@@ -34,7 +34,7 @@ type Subscription struct {
 // 通知
 type Notification struct {
 	Id       int64     `json:"id,omitempty"`
-	AlarmId  string    `json:"alarm_id,omitempty" xorm:"index"`
+	AlarmId  int64     `json:"alarm_id,omitempty" xorm:"index"`
 	UserId   string    `json:"user_id,omitempty" xorm:"index"`
 	Channels []string  `json:"channels" xorm:"json"`
 	Created  time.Time `json:"created" xorm:"created"`
