@@ -134,7 +134,7 @@ func subscriptionRouter(app *gin.RouterGroup) {
 	app.POST("/create", curd.ApiCreateHook[model.Subscription](nil, nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Subscription]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Subscription](nil, nil,
-		"user_id", "product_id", "device_id", "validator_id", "level", "channels", "disabled"))
+		"user_id", "product_id", "device_id", "level", "channels", "disabled"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Subscription](nil, nil))
 	app.GET("/export", curd.ApiExport("subscription", "subscription"))
 	app.POST("/import", curd.ApiImport("subscription"))

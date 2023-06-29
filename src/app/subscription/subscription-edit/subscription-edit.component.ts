@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RequestService } from 'src/app/request.service';
-import { NzMessageService } from 'ng-zorro-antd/message'; 
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { isIncludeAdmin } from 'src/public';
 @Component({
     selector: 'app-subscription-edit',
@@ -19,7 +19,7 @@ export class SubscriptionEditComponent implements OnInit {
     userList: any[] = [];
     deviceList: any[] = [];
     productList: any[] = [];
-    
+
     checkOptionsThree: any = [
         { label: 'sms', value: 'sms', checked: false },
         { label: 'voice', value: 'voice', checked: false },
@@ -75,21 +75,6 @@ export class SubscriptionEditComponent implements OnInit {
             .add(() => {});
 
         this.rs
-            .post('validator/search', {})
-            .subscribe((res) => {
-                const data: any[] = [];
-
-                res.data.filter((item: { id: string; name: string }) =>
-                    data.push({
-                        label: item.id  ,
-                        value: item.id,
-                    })
-                );
-                this.validatorList = data;
-            })
-            .add(() => {});
-
-        this.rs
             .post('user/search', {})
             .subscribe((res) => {
                 const data: any[] = [];
@@ -107,11 +92,8 @@ export class SubscriptionEditComponent implements OnInit {
         this.group = this.fb.group({
             // id: [obj.id || '', []],
             product_id: [obj.product_id || '', []],
-            product: [obj.product || '', []],
             device_id: [obj.device_id || '', []],
-            device: [obj.device || '', []],
-            user_id: [obj.device_id || '', []],
-            validator_id: [obj.device_id || '', []],
+            user_id: [obj.user_id || '', []],
             level: [obj.level || 0, []],
             channels: [this.checkOptionsThree, []],
         });

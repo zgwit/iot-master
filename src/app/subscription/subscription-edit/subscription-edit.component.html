@@ -31,15 +31,6 @@
         </nz-form-item>
 
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="product"
-                >产品名称</nz-form-label
-            >
-            <nz-form-control [nzSm]="14" [nzXs]="24">
-                <input nz-input formControlName="product" />
-            </nz-form-control>
-        </nz-form-item>
-
-        <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="device_id"
                 >设备id</nz-form-label
             >
@@ -50,33 +41,11 @@
         </nz-form-item>
 
         <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="device"
-                >设备名称</nz-form-label
-            >
-            <nz-form-control [nzSm]="14" [nzXs]="24">
-                <input nz-input formControlName="device" />
-            </nz-form-control>
-        </nz-form-item>
-
-        <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="user_id"
                 >用户id</nz-form-label
             >
             <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
                 <nz-select formControlName="user_id" [nzOptions]="userList">
-                </nz-select>
-            </nz-form-control>
-        </nz-form-item>
-
-        <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="validator_id"
-                >验证器id</nz-form-label
-            >
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-                <nz-select
-                    formControlName="validator_id"
-                    [nzOptions]="validatorList"
-                >
                 </nz-select>
             </nz-form-control>
         </nz-form-item>

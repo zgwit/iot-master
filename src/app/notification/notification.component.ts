@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from "@angular/router";
-import { RequestService } from '../request.service'; 
+import { RequestService } from '../request.service';
 import { NzMessageService } from "ng-zorro-antd/message";
 import { NzTableQueryParams } from "ng-zorro-antd/table";
 import { NzModalService } from "ng-zorro-antd/modal";
-import { ParseTableQuery } from "../base/table";  
+import { ParseTableQuery } from "../base/table";
 import {  onAllChecked, onItemChecked, batchdel, refreshCheckedStatus } from 'src/public';
 @Component({
   selector: 'app-notification',
@@ -12,13 +12,13 @@ import {  onAllChecked, onItemChecked, batchdel, refreshCheckedStatus } from 'sr
   styleUrls: ['./notification.component.scss']
 })
 export class NotificationComponent {
- 
+
   loading = true
   datum: any[] = []
   total = 1;
   pageSize = 20;
   pageIndex = 1;
-  query: any = {} 
+  query: any = {}
   checked = false;
   indeterminate = false;
   setOfCheckedId = new Set<number>();
@@ -68,28 +68,32 @@ export class NotificationComponent {
     ParseTableQuery($event, this.query)
     this.load();
   }
+
   pageIndexChange(pageIndex: number) {
     console.log("pageIndex:", pageIndex)
     this.query.skip = pageIndex - 1;
   }
+
   pageSizeChange(pageSize: number) {
     this.query.limit = pageSize;
   }
 
   search($event: string) {
     this.query.keyword = {
-      id: $event 
+      id: $event
     };
     this.query.skip = 0;
     this.load();
-  } 
- 
+  }
+
   handleBatchDel() {
     batchdel(this);
   }
+
   handleAllChecked(id: any) {
     onAllChecked(id, this);
   }
+
   handleItemChecked(id: number, checked: boolean) {
     onItemChecked(id, checked, this);
   }
