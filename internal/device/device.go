@@ -2,17 +2,14 @@ package device
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/zgwit/iot-master/v3/internal/aggregator"
 	"github.com/zgwit/iot-master/v3/internal/product"
 	"github.com/zgwit/iot-master/v3/internal/validator"
 	"github.com/zgwit/iot-master/v3/model"
-	"github.com/zgwit/iot-master/v3/payload"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"github.com/zgwit/iot-master/v3/pkg/log"
-	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 	"time"
 )
 
@@ -178,38 +175,26 @@ func (d *Device) Validate() {
 
 		//入库
 		alarm := model.Alarm{
-			DeviceId: d.Id,
-			Type:     v.Type,
-			Title:    v.Title,
-			Level:    v.Level,
-			Message:  v.Template, //TODO 模板格式化
+			ProductId: d.product.Id,
+			Product:   d.product.Name,
+			DeviceId:  d.Id,
+			Device:    d.Name,
+			Type:      v.Type,
+			Title:     v.Title,
+			Level:     v.Level,
+			Message:   v.Template, //TODO 模板格式化
 		}
 		_, err = db.Engine.Insert(&alarm)
 		if err != nil {
 			log.Error(err)
 			//continue
 		}
-		
+
 		//通知
 		err = notify(&alarm)
 		if err != nil {
 			log.Error(err)
 			//continue
-		}
-
-		//报警
-		topic := fmt.Sprintf("alarm/%s/%s", d.ProductId, d.Id)
-		data, _ := json.Marshal(&payload.Alarm{
-			Product: d.product.Name,
-			Device:  d.Name,
-			Type:    alarm.Type,
-			Title:   alarm.Title,
-			Level:   alarm.Level,
-			Message: alarm.Message,
-		})
-		err = mqtt.Publish(topic, data, false, 0)
-		if err != nil {
-			log.Error(err)
 		}
 	}
 }
