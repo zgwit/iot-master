@@ -35,6 +35,7 @@ export class UserEditComponent implements OnInit {
     this.group = this.fb.group({
       username: [obj.username || '', [Validators.required]],
       name: [obj.name || '', []],
+      cellphone: [obj.cellphone || '', []],
       email: [obj.email || '', []],
       roles: [obj.roles || [], []],
       disabled: [obj.disabled || false, []],

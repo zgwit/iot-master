@@ -19,6 +19,16 @@
     </nz-form-control>
   </nz-form-item>
 
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="cellphone">手机</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="emailErrorTpl">
+            <input nz-input formControlName="cellphone" />
+            <ng-template #emailErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">请输入手机!</ng-container>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">邮箱</nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="emailErrorTpl">
