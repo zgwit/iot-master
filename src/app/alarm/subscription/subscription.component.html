@@ -60,17 +60,14 @@
                 (nzCheckedChange)="handleAllChecked($event)"
             ></th>
             <th nzColumnKey="id" [nzSortFn]="true">ID</th>
-            <th nzColumnKey="device_id">设备ID</th>
-            <th nzColumnKey="device">设备名称</th>
+            <th nzColumnKey="user_id">用户</th>
+            <th nzColumnKey="product_id">产品</th>
+            <th nzColumnKey="device_id">设备</th>
             <th nzColumnKey="channels">通道</th>
             <th nzColumnKey="level">等级</th>
-            <th nzColumnKey="product_id">产品ID</th>
-            <th nzColumnKey="product">产品名称</th>
-            <th nzColumnKey="user_id">用户ID</th> 
-            <th nzColumnKey="validator_id">验证ID</th>
             <th nzColumnKey="disabled">状态</th>
             <th nzColumnKey="created" [nzSortFn]="true">日期</th>
-            <th>操作</th> 
+            <th>操作</th>
         </tr>
     </thead>
     <tbody>
@@ -82,14 +79,11 @@
                 (nzCheckedChange)="handleItemChecked(data.id, $event)"
             ></td>
             <td>{{ data.id }}</td>
-            <td>{{ data.device_id }}</td>
-            <td>{{ data.device }}</td>
+            <td>{{ data.user || data.user_id }}</td>
+            <td>{{ data.product || data.product_id }}</td>
+            <td>{{ data.device || data.device_id }}</td>
             <td>{{ data.channels }}</td>
             <td>{{ data.level }}</td>
-            <td>{{ data.product_id }}</td>
-            <td>{{ data.product }}</td>
-            <td>{{ data.user_id }}</td>
-            <td>{{ data.validator_id }}</td> 
             <td>
                 <nz-tag nzColor="success" *ngIf="data.disabled"> 启用 </nz-tag>
                 <nz-tag nzColor="error" *ngIf="!data.disabled"> 禁用 </nz-tag>

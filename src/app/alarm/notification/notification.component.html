@@ -45,7 +45,7 @@
             ></th>
             <th nzColumnKey="id" [nzSortFn]="true">ID</th>
             <th nzColumnKey="alarm_id">报警ID</th>
-            <th nzColumnKey="user_id">用户ID</th>
+            <th nzColumnKey="user_id">用户</th>
             <th nzColumnKey="channels">通道</th>
             <th nzColumnKey="created" [nzSortFn]="true">日期</th>
             <th>操作</th>
@@ -60,10 +60,10 @@
             ></td>
             <td>{{ data.id }}</td>
             <td>{{ data.alarm_id }}</td>
-            <td>{{ data.user_id }}</td>
-            <td>{{ data.channels }}</td> 
+            <td>{{ data.user || data.user_id }}</td>
+            <td>{{ data.channels }}</td>
             <td>{{ data.created | date }}</td>
-            <td> 
+            <td>
                 <a (click)="delete(data.id)">
                     <i nz-icon nzType="delete"></i>
                 </a>
