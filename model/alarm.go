@@ -8,8 +8,8 @@ type Alarm struct {
 	Id        int64     `json:"id"`
 	ProductId string    `json:"product_id,omitempty" xorm:"index"`
 	DeviceId  string    `json:"device_id,omitempty" xorm:"index"`
-	Product   string    `json:"product,omitempty" xorm:"-"`
-	Device    string    `json:"device,omitempty" xorm:"-"`
+	Product   string    `json:"product,omitempty" xorm:"<-"`
+	Device    string    `json:"device,omitempty" xorm:"<-"`
 	Type      string    `json:"type,omitempty"`
 	Title     string    `json:"title"`
 	Message   string    `json:"message,omitempty"`
@@ -23,8 +23,8 @@ type Subscription struct {
 	UserId    string    `json:"user_id" xorm:"index"`
 	ProductId string    `json:"product_id,omitempty" xorm:"index"`
 	DeviceId  string    `json:"device_id,omitempty" xorm:"index"`
-	Product   string    `json:"product,omitempty" xorm:"-"`
-	Device    string    `json:"device,omitempty" xorm:"-"`
+	Product   string    `json:"product,omitempty" xorm:"<-"`
+	Device    string    `json:"device,omitempty" xorm:"<-"`
 	Level     uint      `json:"level"`
 	Channels  []string  `json:"channels" xorm:"json"`
 	Disabled  bool      `json:"disabled"` //禁用
