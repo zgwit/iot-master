@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/kardianos/service"
 	master "github.com/zgwit/iot-master/v3"
+	"github.com/zgwit/iot-master/v3/args"
 	_ "github.com/zgwit/iot-master/v3/docs"
-	"github.com/zgwit/iot-master/v3/internal/args"
 	"github.com/zgwit/iot-master/v3/pkg/banner"
 	"github.com/zgwit/iot-master/v3/pkg/build"
 	"github.com/zgwit/iot-master/v3/pkg/log"

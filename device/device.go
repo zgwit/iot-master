@@ -3,13 +3,13 @@ package device
 import (
 	"context"
 	"fmt"
-	"github.com/zgwit/iot-master/v3/internal/aggregator"
-	"github.com/zgwit/iot-master/v3/internal/product"
-	"github.com/zgwit/iot-master/v3/internal/validator"
+	"github.com/zgwit/iot-master/v3/aggregator"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v3/product"
+	"github.com/zgwit/iot-master/v3/validator"
 	"time"
 )
 

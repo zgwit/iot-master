@@ -2,17 +2,17 @@ package internal
 
 import (
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/v3/internal/aggregator"
-	"github.com/zgwit/iot-master/v3/internal/broker"
-	"github.com/zgwit/iot-master/v3/internal/config"
-	"github.com/zgwit/iot-master/v3/internal/device"
-	"github.com/zgwit/iot-master/v3/internal/plugin"
-	"github.com/zgwit/iot-master/v3/internal/product"
+	"github.com/zgwit/iot-master/v3/aggregator"
+	"github.com/zgwit/iot-master/v3/broker"
+	"github.com/zgwit/iot-master/v3/config"
+	"github.com/zgwit/iot-master/v3/device"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 	"github.com/zgwit/iot-master/v3/pkg/vconn"
+	"github.com/zgwit/iot-master/v3/plugin"
+	"github.com/zgwit/iot-master/v3/product"
 	"net"
 	"net/url"
 )

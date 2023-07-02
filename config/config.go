@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/zgwit/iot-master/v3/internal/broker"
+	"github.com/zgwit/iot-master/v3/broker"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"

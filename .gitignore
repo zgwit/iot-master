@@ -62,3 +62,4 @@ Thumbs.db
 /iot-master
 /*.yaml
 /*.db
+/tstorage
