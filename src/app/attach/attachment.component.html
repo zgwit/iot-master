@@ -74,6 +74,10 @@
                         下载
                     </a>
                 </ng-template>
+                <ng-template [ngIf]="!data.folder && fromIframe">
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="handleSelect(data.name)"> 选择</a>
+                </ng-template>
             </td>
         </tr>
     </tbody>

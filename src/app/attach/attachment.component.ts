@@ -19,6 +19,7 @@ export class AttachmentComponent {
   pageSize = 20;
   pageIndex = 1;
   query: any = {}
+  fromIframe = true;
   constructor(
     private rs: RequestService,
     private modal: NzModalService,
@@ -138,5 +139,10 @@ export class AttachmentComponent {
     a.download = name;
     a.href = this.handleSrc(name);
     a.dispatchEvent(event)
+  }
+  handleSelect(name: string) {
+    const url = this.handleSrc(name);
+    console.log("🚀 ~ file: attachment.component.ts:145 ~ AttachmentComponent ~ handleSelect ~ url:", url)
+    window.top?.postMessage(url);
   }
 }
