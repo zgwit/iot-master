@@ -141,7 +141,7 @@ func (d *Device) Validate() {
 			continue
 		}
 
-		if ret {
+		if !ret {
 			//约束OK，检查下一个
 			v.Total = 0
 			v.Start = 0
