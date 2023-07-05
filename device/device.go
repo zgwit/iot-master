@@ -1,7 +1,6 @@
 package device
 
 import (
-	"context"
 	"fmt"
 	"github.com/zgwit/iot-master/v3/aggregator"
 	"github.com/zgwit/iot-master/v3/model"
@@ -131,59 +130,12 @@ func (d *Device) Push(values map[string]any) {
 }
 
 func (d *Device) Validate() {
-
-	now := time.Now().Unix()
-
 	for _, v := range d.validators {
-		ret, err := v.Expression.EvalBool(context.Background(), d.Values)
-		if err != nil {
-			log.Error(err)
-			continue
-		}
-
+		ret := v.Validate(d.Values)
 		if !ret {
-			//约束OK，检查下一个
-			v.Total = 0
-			v.Start = 0
-			v.Reported = false
+			//检查结果为真时，才产生报警
 			continue
 		}
-
-		//now := time.Now().Unix()
-		if v.Start == 0 {
-			v.Start = now
-		}
-
-		//cs := v.Validator
-
-		//延迟报警
-		if v.Delay > 0 {
-			if now < v.Start+int64(v.Delay) {
-				continue
-			}
-		}
-
-		//重复报警逻辑
-		if v.Reported {
-			if v.Again == 0 {
-				continue
-			}
-
-			//最大次数
-			if v.Total > 0 && v.Count > v.Total {
-				continue
-			}
-
-			//没到时间
-			if now < v.Start+int64(v.Again) {
-				continue
-			}
-
-			//重置开始时间
-			v.Start = now // + int64(cs.Delay)
-			v.Count++
-		}
-		v.Reported = true
 
 		//入库
 		alarm := model.Alarm{
@@ -196,7 +148,7 @@ func (d *Device) Validate() {
 			Level:     v.Level,
 			Message:   v.Template, //TODO 模板格式化
 		}
-		_, err = db.Engine.Insert(&alarm)
+		_, err := db.Engine.Insert(&alarm)
 		if err != nil {
 			log.Error(err)
 			//continue
