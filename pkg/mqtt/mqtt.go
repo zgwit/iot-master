@@ -64,22 +64,24 @@ type Handler func(topic string, payload []byte)
 
 var subs = map[string][]Handler{}
 
-func _subscribeHandlers(client paho.Client, message paho.Message) {
-	//依次处理回调
-	if cbs, ok := subs[message.Topic()]; ok {
-		for _, cb := range cbs {
-			cb(message.Topic(), message.Payload())
-		}
-	}
-}
-
 func Subscribe(topic string, cb Handler) paho.Token {
 	if cbs, ok := subs[topic]; !ok {
 		subs[topic] = []Handler{cb}
+
+		//统一回调
+		Client.Subscribe(topic, 0, func(client paho.Client, message paho.Message) {
+			//依次处理回调
+			if cbs, ok := subs[topic]; ok {
+				for _, cb := range cbs {
+					cb(message.Topic(), message.Payload())
+				}
+			}
+		})
 	} else {
 		subs[topic] = append(cbs, cb)
+		//不再重复订阅
 	}
-	return Client.Subscribe(topic, 0, _subscribeHandlers)
+	return nil
 }
 
 func SubscribeJson(topic string, cb func(topic string, data map[string]any)) paho.Token {
