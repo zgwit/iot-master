@@ -145,6 +145,7 @@ func (d *Device) Validate() {
 			//约束OK，检查下一个
 			v.Total = 0
 			v.Start = 0
+			v.Reported = false
 			continue
 		}
 
@@ -162,8 +163,18 @@ func (d *Device) Validate() {
 			}
 		}
 
-		//重复报警
-		if v.Again > 0 && v.Count < v.Total {
+		//重复报警逻辑
+		if v.Reported {
+			if v.Again == 0 {
+				continue
+			}
+
+			//最大次数
+			if v.Total > 0 && v.Count > v.Total {
+				continue
+			}
+
+			//没到时间
 			if now < v.Start+int64(v.Again) {
 				continue
 			}
@@ -172,6 +183,7 @@ func (d *Device) Validate() {
 			v.Start = now // + int64(cs.Delay)
 			v.Count++
 		}
+		v.Reported = true
 
 		//入库
 		alarm := model.Alarm{

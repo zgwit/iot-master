@@ -12,8 +12,9 @@ type Validator struct {
 	Expression gval.Evaluable
 
 	//again      bool
-	Start int64 //开始时间s
-	Count uint  //报警次数
+	Start    int64 //开始时间s
+	Count    uint  //报警次数
+	Reported bool
 }
 
 // New 新建
