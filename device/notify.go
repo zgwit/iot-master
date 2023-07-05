@@ -6,7 +6,6 @@ import (
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/payload"
 	"github.com/zgwit/iot-master/v3/pkg/db"
-	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 )
 
@@ -30,14 +29,11 @@ func notify(alarm *model.Alarm) error {
 	}
 	topic := fmt.Sprintf("alarm/%s/%s", alarm.ProductId, alarm.DeviceId)
 	data, _ := json.Marshal(&pa)
-	err := mqtt.Publish(topic, data, false, 0)
-	if err != nil {
-		log.Error(err)
-	}
+	mqtt.Publish(topic, data)
 
 	//找到订阅人
 	var us []sub
-	err = db.Engine.Table("subscription").
+	err := db.Engine.Table("subscription").
 		Select("user.id, user.name, user.email, user.cellphone, subscription.channels").
 		Join("INNER", "user", "user.id = subscription.user_id").
 		Where("level<=?", alarm.Level).And("subscription.disabled!=1").
@@ -86,10 +82,7 @@ func notify(alarm *model.Alarm) error {
 		//topic := fmt.Sprintf("notify/%s", u.Id)
 		topic := fmt.Sprintf("notify/%s/%s", alarm.ProductId, alarm.DeviceId)
 		data, _ := json.Marshal(&n)
-		err = mqtt.Publish(topic, data, false, 0)
-		if err != nil {
-			log.Error(err)
-		}
+		mqtt.Publish(topic, data)
 
 		//不需要再广播了
 		//nn := payload.Notify{

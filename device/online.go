@@ -1,7 +1,6 @@
 package device
 
 import (
-	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
@@ -10,8 +9,8 @@ import (
 )
 
 func SubscribeOnline() error {
-	mqtt.Client.Subscribe("online/+/+", 0, func(client paho.Client, message paho.Message) {
-		topics := strings.Split(message.Topic(), "/")
+	mqtt.Subscribe("online/+/+", func(topic string, payload []byte) {
+		topics := strings.Split(topic, "/")
 		//pid := topics[1]
 		id := topics[2]
 
@@ -24,8 +23,8 @@ func SubscribeOnline() error {
 		dev.Values["$online"] = true
 	})
 
-	mqtt.Client.Subscribe("offline/+/+", 0, func(client paho.Client, message paho.Message) {
-		topics := strings.Split(message.Topic(), "/")
+	mqtt.Subscribe("offline/+/+", func(topic string, payload []byte) {
+		topics := strings.Split(topic, "/")
 		pid := topics[1]
 		id := topics[2]
 

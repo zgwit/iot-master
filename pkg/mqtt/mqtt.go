@@ -48,20 +48,58 @@ func OpenBy(fn paho.OpenConnectionFunc) error {
 	return token.Error()
 }
 
-func Publish(topic string, payload []byte, retain bool, qos byte) error {
-	//if broker.Server != nil {
-	//	return broker.Server.Publish(topic, payload, retain, qos)
-	//}
+func PublishRaw(topic string, payload []byte, retain bool, qos byte) error {
 	//是否需要等待？
 	token := Client.Publish(topic, qos, retain, payload)
 	_ = token.Wait()
 	return token.Error()
 }
 
-func PublishJson(topic string, payload any) error {
-	bytes, err := json.Marshal(payload)
-	if err != nil {
-		return err
+func Publish(topic string, payload any) paho.Token {
+	bytes, _ := json.Marshal(payload)
+	return Client.Publish(topic, 0, false, bytes)
+}
+
+type Handler func(topic string, payload []byte)
+
+var subs = map[string][]Handler{}
+
+func _subscribeHandlers(client paho.Client, message paho.Message) {
+	//依次处理回调
+	if cbs, ok := subs[message.Topic()]; ok {
+		for _, cb := range cbs {
+			cb(message.Topic(), message.Payload())
+		}
 	}
-	return Publish(topic, bytes, false, 0)
+}
+
+func Subscribe(topic string, cb Handler) paho.Token {
+	if cbs, ok := subs[topic]; !ok {
+		subs[topic] = []Handler{cb}
+	} else {
+		subs[topic] = append(cbs, cb)
+	}
+	return Client.Subscribe(topic, 0, _subscribeHandlers)
+}
+
+func SubscribeJson(topic string, cb func(topic string, data map[string]any)) paho.Token {
+	return Subscribe(topic, func(topic string, payload []byte) {
+		var data map[string]any
+		err := json.Unmarshal(payload, &data)
+		if err != nil {
+			return
+		}
+		cb(topic, data)
+	})
+}
+
+func SubscribeStruct[T any](topic string, cb func(topic string, data *T)) paho.Token {
+	return Subscribe(topic, func(topic string, payload []byte) {
+		var data T
+		err := json.Unmarshal(payload, &data)
+		if err != nil {
+			return
+		}
+		cb(topic, &data)
+	})
 }

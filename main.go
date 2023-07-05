@@ -2,8 +2,6 @@ package master
 
 import (
 	"embed"
-	"encoding/json"
-	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/api"
 	"github.com/zgwit/iot-master/v3/app"
@@ -50,15 +48,9 @@ func Startup(engine *web.Engine) error {
 	engine.GET("/mqtt", broker.GinHandler)
 
 	//监听插件
-	mqtt.Client.Subscribe("master/register", 0, func(client paho.Client, message paho.Message) {
-		var a model.App
-		err := json.Unmarshal(message.Payload(), &a)
-		if err != nil {
-			log.Error(err)
-			return
-		}
+	mqtt.SubscribeStruct[model.App]("master/register", func(topic string, a *model.App) {
 		log.Info("app register ", a.Id, " ", a.Name, " ", a.Type, " ", a.Address)
-		app.Applications.Store(a.Id, &a)
+		app.Applications.Store(a.Id, a)
 
 		//插件反向代理
 		engine.Any("/app/"+a.Id+"/*path", func(ctx *gin.Context) {

@@ -111,10 +111,10 @@ func Open() error {
 		return err
 	}
 
-	err = device.SubscribePropertyStrict()
-	if err != nil {
-		return err
-	}
+	//err = device.SubscribePropertyStrict()
+	//if err != nil {
+	//	return err
+	//}
 
 	err = device.SubscribeOnline()
 	if err != nil {

@@ -11,8 +11,8 @@ import (
 )
 
 func SubscribeProperty() error {
-	mqtt.Client.Subscribe("up/property/+/+", 0, func(client paho.Client, message paho.Message) {
-		topics := strings.Split(message.Topic(), "/")
+	mqtt.SubscribeJson("up/property/+/+", func(topic string, values map[string]any) {
+		topics := strings.Split(topic, "/")
 		//pid := topics[2]
 		id := topics[3]
 
@@ -20,12 +20,6 @@ func SubscribeProperty() error {
 		if err != nil {
 			log.Error(err)
 			//TODO 自动创建设备？
-			return
-		}
-
-		var values map[string]interface{}
-		err = json.Unmarshal(message.Payload(), &values)
-		if err != nil {
 			return
 		}
 

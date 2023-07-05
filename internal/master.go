@@ -1,8 +1,6 @@
 package internal
 
 import (
-	"encoding/json"
-	paho "github.com/eclipse/paho.mqtt.golang"
 	app2 "github.com/zgwit/iot-master/v3/app"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/log"
@@ -10,22 +8,15 @@ import (
 )
 
 func SubscribeMaster() error {
-
 	//注册应用
-	mqtt.Client.Subscribe("master/register", 0, func(client paho.Client, message paho.Message) {
-		var app model.App
-		err := json.Unmarshal(message.Payload(), &app)
-		if err != nil {
-			log.Error(err)
-			return
-		}
+	mqtt.SubscribeStruct[model.App]("master/register", func(topic string, app *model.App) {
 		log.Info("app register ", app.Id, " ", app.Name, " ", app.Type, " ", app.Address)
-		app2.Applications.Store(app.Id, &app)
+		app2.Applications.Store(app.Id, app)
 	})
 
 	//反注册
-	mqtt.Client.Subscribe("master/unregister", 0, func(client paho.Client, message paho.Message) {
-		id := string(message.Payload())
+	mqtt.Subscribe("master/unregister", func(topic string, payload []byte) {
+		id := string(payload)
 		app2.Applications.Delete(id)
 	})
 

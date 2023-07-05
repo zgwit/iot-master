@@ -1,8 +1,6 @@
 package device
 
 import (
-	"encoding/json"
-	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/payload"
 	"github.com/zgwit/iot-master/v3/pkg/db"
@@ -12,20 +10,14 @@ import (
 )
 
 func SubscribeEvent() error {
-	mqtt.Client.Subscribe("up/event/+/+", 0, func(client paho.Client, message paho.Message) {
-		topics := strings.Split(message.Topic(), "/")
+	mqtt.SubscribeStruct[payload.Event]("up/event/+/+", func(topic string, event *payload.Event) {
+		topics := strings.Split(topic, "/")
 		//pid := topics[2]
 		id := topics[3]
 
 		dev, err := Ensure(id)
 		if err != nil {
 			log.Error(err)
-			return
-		}
-
-		var event payload.Event
-		err = json.Unmarshal(message.Payload(), &event)
-		if err != nil {
 			return
 		}
 
