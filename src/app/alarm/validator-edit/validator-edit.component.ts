@@ -1,100 +1,103 @@
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, Validators, FormGroup} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {RequestService} from "src/app/request.service";
+import {NzMessageService} from "ng-zorro-antd/message";
 
-  import { Component, OnInit } from '@angular/core';
-  import { FormBuilder, Validators, FormGroup } from "@angular/forms";
-  import { ActivatedRoute, Router } from "@angular/router";
-  import { RequestService } from "src/app/request.service";
-  import { NzMessageService } from "ng-zorro-antd/message";
-  @Component({
+@Component({
     selector: 'app-validator-edit',
     templateUrl: './validator-edit.component.html',
     styleUrls: ['./validator-edit.component.scss']
-  })
-  export class ValidatorEditComponent  implements OnInit {
+})
+export class ValidatorEditComponent implements OnInit {
     group!: FormGroup;
-    again='s'
-    delay='s'
+    again = 's'
+    delay = 's'
     id: any = 0
-    listOfOption:any[]=[ ]
-    productList:any[]=[ ]
+    listOfOption: any[] = []
+    productList: any[] = []
     url = '';
+
     constructor(private fb: FormBuilder,
-      private router: Router,
-      private route: ActivatedRoute,
-      private rs: RequestService,
-      private msg: NzMessageService) {
+                private router: Router,
+                private route: ActivatedRoute,
+                private rs: RequestService,
+                private msg: NzMessageService) {
     }
 
 
     ngOnInit(): void {
-      if (this.route.snapshot.paramMap.has("id")) {
-        this.id = this.route.snapshot.paramMap.get("id");
-        this.rs.get(`validator/${this.id}`).subscribe(res => {
-          //let data = res.data;
-          this.build(res.data)
-        })
+        if (this.route.snapshot.paramMap.has("id")) {
+            this.id = this.route.snapshot.paramMap.get("id");
+            this.rs.get(`validator/${this.id}`).subscribe(res => {
+                //let data = res.data;
+                this.build(res.data)
+            })
 
-      }
+        }
 
-      this.build()
+        this.build()
 
-      this.rs
-      .post('product/search', {})
-      .subscribe((res) => {
-        const data: any[] = [];
+        this.rs
+            .post('product/search', {})
+            .subscribe((res) => {
+                const data: any[] = [];
 
-        res.data.filter((item: { id: string; name: string }) =>
-          data.push({ label: item.id + ' / ' + item.name, value: item.id })
-        );
-        this.productList = data;
-      })
-      .add(() => {});
+                res.data.filter((item: { id: string; name: string }) =>
+                    data.push({label: item.id + ' / ' + item.name, value: item.id})
+                );
+                this.productList = data;
+            })
+            .add(() => {
+            });
 
 
     }
 
     build(obj?: any) {
-      obj = obj || {}
-      this.group = this.fb.group({
-        again: [obj.again || 0 ,[]],
-        delay: [obj.delay || 0, []],
-        expression: [obj.expression || '' ,[]],
-        id: [obj.id || '', []],
-        product_id: [obj.product_id || '' ,[]],
-        template: [obj.template || '', []],
-        level: [obj.level || 0 ,[]],
-        total: [obj.total || 0 ,[]],
-        type: [obj.type || '', []],
-        title: [obj.title|| '', []],
-      })
+        obj = obj || {}
+        this.group = this.fb.group({
+            id: [obj.id || '', []],
+            title: [obj.title || '', []],
+            expression: [obj.expression || '', []],
+            product_id: [obj.product_id || '', []],
+            template: [obj.template || '', []],
+            level: [obj.level || 0, []],
+            type: [obj.type || '', []],
+            delay: [obj.delay || 0, []],
+            repeat: [obj.repeat || false, []],
+            repeat_delay: [obj.repeat_delay || 0, []],
+            repeat_total: [obj.repeat_total || 0, []],
+        })
     }
 
     submit() {
 
-      if (this.group.valid) {
-        let value=this.group.value
+        if (this.group.valid) {
+            let value = this.group.value
 
-        let url = this.id ? `validator/${this.id}` : `validator/create`;
-        this.rs.post(url, this.group.value).subscribe(res => {
-          this.handleCancel()
-          this.msg.success("保存成功")
-        })
+            let url = this.id ? `validator/${this.id}` : `validator/create`;
+            this.rs.post(url, this.group.value).subscribe(res => {
+                this.handleCancel()
+                this.msg.success("保存成功")
+            })
 
-        return;
-      }
-      else {
-        Object.values(this.group.controls).forEach(control => {
-          if (control.invalid) {
-            control.markAsDirty();
-            control.updateValueAndValidity({ onlySelf: true });
-          }
-        });
+            return;
+        } else {
+            Object.values(this.group.controls).forEach(control => {
+                if (control.invalid) {
+                    control.markAsDirty();
+                    control.updateValueAndValidity({onlySelf: true});
+                }
+            });
 
-      }
+        }
     }
+
     handleCancel() {
-      const path = `/alarm/validator`;
-      this.router.navigateByUrl(path);
+        const path = `/alarm/validator`;
+        this.router.navigateByUrl(path);
     }
 
-  }
+}
 

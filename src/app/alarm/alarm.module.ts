@@ -23,6 +23,7 @@ import {NzFormModule} from "ng-zorro-antd/form";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
+import {NzSwitchModule} from "ng-zorro-antd/switch";
 
 @NgModule({
     declarations: [
@@ -50,7 +51,8 @@ import {NzCheckboxModule} from "ng-zorro-antd/checkbox";
         NzFormModule,
         NzSelectModule,
         NzInputModule,
-        NzCheckboxModule
+        NzCheckboxModule,
+        NzSwitchModule
     ]
 })
 export class AlarmModule {

@@ -109,18 +109,23 @@ export class ProductEditComponentComponent implements OnInit {
       name: 'expression'
     },
     {
-      label: '延迟',
+      label: '报警延迟s',
       name: 'delay',
       type: 'number'
     },
+      {
+          label: '再次提醒',
+          name: 'repeat',
+          type: 'bool'
+      },
     {
-      label: '再次提醒',
-      name: 'again',
+      label: '再次提醒延迟s',
+      name: 'repeat_delay',
       type: 'number'
     },
     {
       label: '总提醒次数',
-      name: 'total',
+      name: 'repeat_total',
       type: 'number'
     }
   ]
