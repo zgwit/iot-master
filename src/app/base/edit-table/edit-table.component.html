@@ -24,8 +24,8 @@
                            [nzPlaceHolder]="item.placeholder"
                            [nzOptions]="item.options">
                 </nz-select>
-                <nz-switch *ngSwitchCase="'switch'"
-                           [formControlName]="item.name"></nz-switch>
+                <nz-switch *ngSwitchCase="'switch'" [formControlName]="item.name"></nz-switch>
+                <nz-switch *ngSwitchCase="'bool'" [formControlName]="item.name"></nz-switch>
                 <input *ngSwitchDefault nz-input
                        [placeholder]="item.placeholder || ''"
                        [formControlName]="item.name"

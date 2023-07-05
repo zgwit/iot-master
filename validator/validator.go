@@ -69,6 +69,8 @@ func (v *Validator) Validate(values map[string]any) bool {
 		if now < v.start+int64(v.RepeatDelay) {
 			return false
 		}
+
+		v.start = now
 	}
 
 	v.count++

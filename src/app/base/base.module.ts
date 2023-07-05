@@ -32,6 +32,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { TableViewComponent } from './table-view/table-view.component';
 import { TableEditComponent } from './table-edit/table-edit.component';
+import {NzSwitchModule} from "ng-zorro-antd/switch";
 @NgModule({
   declarations: [
     DatePipe,
@@ -62,27 +63,28 @@ import { TableEditComponent } from './table-edit/table-edit.component';
         DetailComponent,
         ExportComponent
     ],
-  imports: [
-    CommonModule,
-    NzInputModule,
-    NzModalModule,
-    NzPopconfirmModule,
-    NzButtonModule,
-    NzTabsModule,
-    NzPaginationModule,
-    NzTagModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NzFormModule,
-    DragDropModule,
-    NzSelectModule,
-    NzTableModule,
-    NzIconModule,
-    NzSpaceModule,
-    NzInputNumberModule,
-    NzUploadModule,
-    NzDividerModule
-  ],
+    imports: [
+        CommonModule,
+        NzInputModule,
+        NzModalModule,
+        NzPopconfirmModule,
+        NzButtonModule,
+        NzTabsModule,
+        NzPaginationModule,
+        NzTagModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NzFormModule,
+        DragDropModule,
+        NzSelectModule,
+        NzTableModule,
+        NzIconModule,
+        NzSpaceModule,
+        NzInputNumberModule,
+        NzUploadModule,
+        NzDividerModule,
+        NzSwitchModule
+    ],
   providers: [
 
   ]
