@@ -1,7 +1,6 @@
 package device
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/payload"
@@ -28,8 +27,7 @@ func notify(alarm *model.Alarm) error {
 		Message: alarm.Message,
 	}
 	topic := fmt.Sprintf("alarm/%s/%s", alarm.ProductId, alarm.DeviceId)
-	data, _ := json.Marshal(&pa)
-	mqtt.Publish(topic, data)
+	mqtt.Publish(topic, &pa)
 
 	//找到订阅人
 	var us []sub
@@ -81,8 +79,7 @@ func notify(alarm *model.Alarm) error {
 		//MQTT通知，第三方插件来发送
 		//topic := fmt.Sprintf("notify/%s", u.Id)
 		topic := fmt.Sprintf("notify/%s/%s", alarm.ProductId, alarm.DeviceId)
-		data, _ := json.Marshal(&n)
-		mqtt.Publish(topic, data)
+		mqtt.Publish(topic, &n)
 
 		//不需要再广播了
 		//nn := payload.Notify{
