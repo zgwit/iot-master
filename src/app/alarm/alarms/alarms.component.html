@@ -9,7 +9,6 @@
   </nz-space>
 
 </app-toolbar>
-
 <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
 <nz-table #basicTable [nzData]="datum" [nzFrontPagination]="false" [nzLoading]="loading" nzShowPagination
   [nzTotal]="total" nzShowSizeChanger [nzShowTotal]="totalTemplate" (nzPageSizeChange)="pageSizeChange($event)"
