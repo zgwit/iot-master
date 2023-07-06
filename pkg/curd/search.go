@@ -2,6 +2,7 @@ package curd
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v3/pkg/db"
 	"strings"
 )
 
@@ -126,7 +127,7 @@ type Join struct {
 	As           string
 }
 
-func ApiSearchWith[T any](table string, join []*Join, fields ...string) gin.HandlerFunc {
+func ApiSearchWith[T any](join []*Join, fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var body ParamSearch
@@ -136,6 +137,8 @@ func ApiSearchWith[T any](table string, join []*Join, fields ...string) gin.Hand
 			return
 		}
 
+		var data *T
+		table := db.Engine.TableName(data)
 		query := body.ToJoinQuery(table)
 
 		var s []string
@@ -153,22 +156,22 @@ func ApiSearchWith[T any](table string, join []*Join, fields ...string) gin.Hand
 			s = append(s, table+".*")
 		}
 
-		//var data T
-		var datum []map[string]any
-		session := query.Table(table)
+		var datum []*T
+		//var datum []map[string]any
+		//session := query.Table(table)
 
 		//补充字段
 		for _, j := range join {
 			s = append(s, j.Table+"."+j.Field+" as "+j.As)
 		}
-		session.Select(strings.Join(s, ","))
+		query.Select(strings.Join(s, ","))
 
 		//连接查询
 		for _, j := range join {
-			session.Join("LEFT OUTER", j.Table, j.Table+"."+j.ForeignField+"="+table+"."+j.LocaleField)
+			query.Join("LEFT OUTER", j.Table, j.Table+"."+j.ForeignField+"="+table+"."+j.LocaleField)
 		}
 
-		cnt, err := session.FindAndCount(&datum)
+		cnt, err := query.FindAndCount(&datum)
 		if err != nil {
 			Error(ctx, err)
 			return
@@ -179,7 +182,7 @@ func ApiSearchWith[T any](table string, join []*Join, fields ...string) gin.Hand
 	}
 }
 
-func ApiSearchWithHook[T any](table string, join []*Join, after func(datum []map[string]any) error, fields ...string) gin.HandlerFunc {
+func ApiSearchWithHook[T any](join []*Join, after func(datum []*T) error, fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var body ParamSearch
@@ -189,6 +192,8 @@ func ApiSearchWithHook[T any](table string, join []*Join, after func(datum []map
 			return
 		}
 
+		var data *T
+		table := db.Engine.TableName(data)
 		query := body.ToJoinQuery(table)
 
 		var s []string
@@ -197,6 +202,7 @@ func ApiSearchWithHook[T any](table string, join []*Join, after func(datum []map
 		if len(fs) > 0 {
 			for _, f := range fs {
 				s = append(s, table+"."+f)
+
 			}
 		} else if len(fields) > 0 {
 			for _, f := range fields {
@@ -206,22 +212,22 @@ func ApiSearchWithHook[T any](table string, join []*Join, after func(datum []map
 			s = append(s, table+".*")
 		}
 
-		//var data T
-		var datum []map[string]any
-		session := query.Table(table)
+		var datum []*T
+		//var datum []map[string]any
+		//session := query.Table(table)
 
 		//补充字段
 		for _, j := range join {
 			s = append(s, j.Table+"."+j.Field+" as "+j.As)
 		}
-		session.Select(strings.Join(s, ","))
+		query.Select(strings.Join(s, ","))
 
 		//连接查询
 		for _, j := range join {
-			session.Join("LEFT OUTER", j.Table, j.Table+"."+j.ForeignField+"="+table+"."+j.LocaleField)
+			query.Join("LEFT OUTER", j.Table, j.Table+"."+j.ForeignField+"="+table+"."+j.LocaleField)
 		}
 
-		cnt, err := session.FindAndCount(&datum)
+		cnt, err := query.FindAndCount(&datum)
 		if err != nil {
 			Error(ctx, err)
 			return

@@ -6,6 +6,8 @@ type Device struct {
 	Id        string `json:"id" xorm:"pk"` //ClientID
 	GatewayId string `json:"gateway_id,omitempty" xorm:"index"`
 	ProductId string `json:"product_id,omitempty" xorm:"index"`
+	Gateway   string `json:"gateway,omitempty" xorm:"<-"`
+	Product   string `json:"product,omitempty" xorm:"<-"`
 
 	Name       string             `json:"name"`
 	Desc       string             `json:"desc,omitempty"`
