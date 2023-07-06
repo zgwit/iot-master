@@ -16,7 +16,7 @@ type sub struct {
 	Channels  []string `json:"channels" xorm:"json"`
 }
 
-func notify(alarm *model.Alarm) error {
+func notify(alarm *model.AlarmEx) error {
 	//报警
 	pa := payload.Alarm{
 		Product: alarm.Product,

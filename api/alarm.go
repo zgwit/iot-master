@@ -75,14 +75,10 @@ func alarmRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[model.Alarm]())
 
-	app.POST("/search", curd.ApiSearchWith[model.Alarm]([]*curd.Join{{
-		Table:        "device",
-		LocaleField:  "device_id",
-		ForeignField: "id",
-		Field:        "name",
-		As:           "device",
-	}},
-	))
+	app.POST("/search", curd.ApiSearchWith[model.AlarmEx]([]*curd.Join{
+		{"product", "product_id", "id", "name", "product"},
+		{"device", "device_id", "id", "name", "device"},
+	}))
 
 	app.GET("/list", curd.ApiList[model.Alarm]())
 

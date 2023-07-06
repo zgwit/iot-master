@@ -8,14 +8,22 @@ type Alarm struct {
 	Id        int64     `json:"id"`
 	ProductId string    `json:"product_id,omitempty" xorm:"index"`
 	DeviceId  string    `json:"device_id,omitempty" xorm:"index"`
-	Product   string    `json:"product,omitempty" xorm:"<-"`
-	Device    string    `json:"device,omitempty" xorm:"<-"`
 	Type      string    `json:"type,omitempty"`
 	Title     string    `json:"title"`
 	Message   string    `json:"message,omitempty"`
 	Level     uint      `json:"level"`
 	Read      bool      `json:"read,omitempty"`
 	Created   time.Time `json:"created,omitempty" xorm:"created"`
+}
+
+type AlarmEx struct {
+	Alarm   `xorm:"extends"`
+	Product string `json:"product,omitempty"`
+	Device  string `json:"device,omitempty"`
+}
+
+func (a *AlarmEx) TableName() string {
+	return "alarm"
 }
 
 type Subscription struct {

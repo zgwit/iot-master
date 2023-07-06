@@ -138,17 +138,19 @@ func (d *Device) Validate() {
 		}
 
 		//入库
-		alarm := model.Alarm{
-			ProductId: d.product.Id,
-			Product:   d.product.Name,
-			DeviceId:  d.Id,
-			Device:    d.Name,
-			Type:      v.Type,
-			Title:     v.Title,
-			Level:     v.Level,
-			Message:   v.Template, //TODO 模板格式化
+		alarm := model.AlarmEx{
+			Alarm: model.Alarm{
+				ProductId: d.product.Id,
+				DeviceId:  d.Id,
+				Type:      v.Type,
+				Title:     v.Title,
+				Level:     v.Level,
+				Message:   v.Template, //TODO 模板格式化
+			},
+			Product: d.product.Name,
+			Device:  d.Name,
 		}
-		_, err := db.Engine.Insert(&alarm)
+		_, err := db.Engine.Insert(&alarm.Alarm)
 		if err != nil {
 			log.Error(err)
 			//continue

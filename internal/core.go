@@ -46,6 +46,9 @@ func Open() error {
 		return err
 	}
 
+	db.Engine.SetLogLevel(0)
+	db.Engine.ShowSQL(true)
+
 	//启动计划任务
 	aggregator.Start()
 
