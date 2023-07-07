@@ -140,7 +140,7 @@ func password(ctx *gin.Context) {
 	}
 
 	pwd.Password = obj.New //前端已经加密过
-	_, err = db.Engine.Cols("password").Update(&pwd)
+	_, err = db.Engine.ID(ctx.GetString("user")).Cols("password").Update(&pwd)
 	if err != nil {
 		curd.Error(ctx, err)
 		return
