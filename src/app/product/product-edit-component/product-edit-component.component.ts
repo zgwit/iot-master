@@ -1,11 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {Router} from "@angular/router";
-import {RequestService} from "../../request.service";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {isIncludeAdmin} from "../../../public";
-import {NzUploadChangeParam} from 'ng-zorro-antd/upload';
-import {EditTableItem} from "../../base/edit-table/edit-table.component";
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { RequestService } from "../../request.service";
+import { NzMessageService } from "ng-zorro-antd/message";
+import { isIncludeAdmin } from "../../../public";
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { EditTableItem } from "../../base/edit-table/edit-table.component";
 
 @Component({
     selector: 'app-product-edit-component',
@@ -14,7 +14,7 @@ import {EditTableItem} from "../../base/edit-table/edit-table.component";
 })
 export class ProductEditComponentComponent implements OnInit {
     group!: any;
-    allData: { properties: Array<object> } = {properties: []};
+    allData: { properties: Array<object> } = { properties: [] };
     listData: EditTableItem[] = [{
         label: '名称(ID)',
         name: 'name'
@@ -259,7 +259,12 @@ export class ProductEditComponentComponent implements OnInit {
         // console.log(this.group.value)
         return new Promise((resolve) => {
             if (this.group.valid) {
-                let url = this.id ? `product/${this.id}` : `product/create`
+                let url = this.id ? `product/${this.id}` : `product/create`;
+                const { desc } = this.group.value;
+                if (desc.length > 200) {
+                    this.msg.warning("【说明】字数过长");
+                    return;
+                }
                 this.rs.post(url, this.group.value).subscribe(res => {
                     this.msg.success("保存成功");
                     resolve(true);
