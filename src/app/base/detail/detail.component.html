@@ -17,20 +17,20 @@
         <p>版本：{{ chooseData.version }}</p>
         <p>命令：{{ chooseData.command }}</p>
         <p>状态：{{ chooseData.running }}</p>
-        <p>日期：{{ chooseData.created }}</p>
+        <p>日期：{{ chooseData.created | date }}</p>
     </div>
     <div *ngIf="title==='产品'"> 
         <p>产品id：{{ chooseData.id }}</p>
         <p>名称：{{ chooseData.name }}</p>
         <p>说明：{{ chooseData.desc }}</p>
-        <p>日期：{{ chooseData.created }}</p>
+        <p>日期：{{ chooseData.created | date }}</p>
     </div>
     <div *ngIf="title==='总线'"> 
         <p>总线id：{{ chooseData.id }}</p>
         <p>名称：{{ chooseData.name }}</p>
         <p>说明：{{ chooseData.desc }}</p>
         <p>端口：{{ chooseData.port }}</p>
-        <p>日期：{{ chooseData.created }}</p>
+        <p>日期：{{ chooseData.created | date }}</p>
     </div>
     </ng-template>
 

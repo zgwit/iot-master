@@ -18,7 +18,6 @@ import { NzInputNumberModule } from "ng-zorro-antd/input-number";
 import { BaseModule } from "../base/base.module";
 import { NzInputModule } from "ng-zorro-antd/input";
 import { NzSpaceModule } from "ng-zorro-antd/space";
-import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { NzCollapseModule } from "ng-zorro-antd/collapse";
 import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzTypographyModule } from "ng-zorro-antd/typography";
@@ -38,7 +37,6 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
     declarations: [
         ProductsComponent,
         ProductEditComponent,
-        ProductDetailComponent,
         ProductEditPropertiesComponent,
         ProductEditConstraintsComponent,
         ProductEditFunctionsComponent,
