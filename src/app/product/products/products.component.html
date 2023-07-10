@@ -6,6 +6,7 @@
         </button>
         <app-search-box
             *nzSpaceItem
+            placeholder="请输入产品名称"
             (onSearch)="search($event)"
         ></app-search-box>
         <ng-template [ngIf]="showAddBtn">

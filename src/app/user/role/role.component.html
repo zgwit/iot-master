@@ -4,7 +4,7 @@
       <i nz-icon nzType="reload" [nzSpin]="loading"></i>
       刷新
     </button>
-    <app-search-box *nzSpaceItem (onSearch)="search($event)"></app-search-box>
+    <app-search-box *nzSpaceItem placeholder="请输入名称" (onSearch)="search($event)"></app-search-box>
     <button *nzSpaceItem nz-button nzType="primary" (click)="handleEdit()">
       <i nz-icon nzType="plus"></i>
       新增
