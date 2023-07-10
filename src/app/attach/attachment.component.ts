@@ -1,8 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { ParseTableQuery } from 'src/app/base/table';
 import { RequestService } from 'src/app/request.service';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { UploadComponent } from './upload/upload.component';
 import { RenameComponent } from './rename/rename.component';
@@ -14,6 +12,7 @@ import { RenameComponent } from './rename/rename.component';
 export class AttachmentComponent {
   loading = false;
   inputValue = '';
+  queryName = '';
   datum: any[] = []
   total = 1;
   pageSize = 20;
@@ -31,7 +30,7 @@ export class AttachmentComponent {
 
   load() {
     this.loading = true
-    this.rs.get(`attach/list/${this.inputValue || ''}`).subscribe(res => {
+    this.rs.get(`attach/list/${this.queryName || ''}`).subscribe(res => {
       const { data, total } = res;
       this.datum = data || [];
       this.total = total || 0;
@@ -41,7 +40,7 @@ export class AttachmentComponent {
   }
 
   delete(name: number, size?: number) {
-    this.rs.get(`attach/remove/${this.inputValue}/${name}`).subscribe(res => {
+    this.rs.get(`attach/remove/${this.queryName}/${name}`).subscribe(res => {
       this.msg.success("删除成功");
       this.load();
     })
@@ -51,10 +50,11 @@ export class AttachmentComponent {
     this.query.keyword = {};
     this.query.skip = 0;
     this.datum = [];
+    this.inputValue = this.queryName;
     this.load();
   }
   handleRedictTo(url: string) {
-    this.inputValue = this.inputValue ? `${this.inputValue}/${url}` : url;
+    this.queryName = this.queryName ? `${this.queryName}/${url}` : url;
     this.search();
   }
   handleUpload() {
@@ -63,7 +63,7 @@ export class AttachmentComponent {
       nzContent: UploadComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
-        inputValue: this.inputValue,
+        inputValue: this.queryName,
       },
       nzFooter: null,
       nzOnCancel: ({ isSuccess }) => {
@@ -91,7 +91,7 @@ export class AttachmentComponent {
           type: 'primary',
           onClick: () => {
             const comp = modal.getContentComponent();
-            this.rs.post(`attach/rename/${this.inputValue ? this.inputValue + '/' : ''}${currentName}`, { name: comp.name }).subscribe(res => {
+            this.rs.post(`attach/rename/${this.queryName ? this.queryName + '/' : ''}${currentName}`, { name: comp.name }).subscribe(res => {
               this.msg.success("保存成功");
               modal.destroy();
               this.load();
@@ -128,9 +128,9 @@ export class AttachmentComponent {
   }
 
   handlePre() {
-    const arr = this.inputValue.split('/');
+    const arr = this.queryName.split('/');
     arr.pop();
-    this.inputValue = arr.join('/');
+    this.queryName = arr.join('/');
     this.search();
   }
   handleDownLoad(name: string) {
