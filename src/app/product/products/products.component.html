@@ -4,27 +4,16 @@
             <i nz-icon nzType="reload" [nzSpin]="loading"></i>
             刷新
         </button>
-        <app-search-box
-            *nzSpaceItem
-            placeholder="请输入产品名称"
-            (onSearch)="search($event)"
-        ></app-search-box>
+        <app-search-box *nzSpaceItem placeholder="请输入产品名称" (onSearch)="search($event)"></app-search-box>
         <ng-template [ngIf]="showAddBtn">
-            <button
-                *nzSpaceItem
-                nz-button
-                nzType="primary"
-                (click)="handleEdit()"
-            >
+            <button *nzSpaceItem nz-button nzType="primary" (click)="handleEdit()">
                 <i nz-icon nzType="plus"></i>
                 创建产品
             </button>
 
             <button nz-button nzType="primary" *nzSpaceItem class="btn">
                 <span nz-icon nzType="cloud-download" nzTheme="outline"></span>
-                <a (click)="handleExport()" download="filename" [href]="href"
-                    >导出</a
-                >
+                <a (click)="handleExport()" download="filename" [href]="href">导出</a>
             </button>
 
             <app-import *nzSpaceItem [url]="'product/import'"></app-import>
@@ -42,33 +31,14 @@
     </nz-space>
 </app-toolbar>
 
- 
- <ng-container *ngIf="ref">
+
+<ng-container *ngIf="ref">
 
     <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
-    <nz-table
-        #basicTable
-        [nzData]="datum"
-        [nzFrontPagination]="false"
-        [nzLoading]="loading"
-        [nzScroll]="getTableHeight()"
-        nzShowPagination
-        [nzShowTotal]="totalTemplate"
-        nzShowSizeChanger
-        [nzTotal]="total"
-        (nzPageSizeChange)="pageSizeChange($event)"
-        (nzPageIndexChange)="pageIndexChange($event)"
-        [nzPageSize]="pageSize"
-        [nzPageIndex]="pageIndex"
-        (nzQueryParams)="onQuery($event)"
-    >
+    <nz-table #basicTable [nzData]="datum" [nzFrontPagination]="false" [nzLoading]="loading" [nzScroll]="getTableHeight()" nzShowPagination [nzShowTotal]="totalTemplate" nzShowSizeChanger [nzTotal]="total" (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" (nzQueryParams)="onQuery($event)">
         <thead>
             <tr>
-                <th
-                    [nzChecked]="checked"
-                    [nzIndeterminate]="indeterminate"
-                    (nzCheckedChange)="handleAllChecked($event)"
-                ></th>
+                <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="handleAllChecked($event)" *ngIf="showAddBtn"></th>
                 <th nzColumnKey="id" [nzSortFn]="true">ID</th>
                 <th nzColumnKey="name" [nzSortFn]="true">名称</th>
                 <th nzColumnKey="desc">说明</th>
@@ -77,68 +47,35 @@
             </tr>
         </thead>
         <tbody>
-            <tr
-                *ngFor="let data of basicTable.data; let i = index"
-                (dblclick)="select(data)"
-            >
-                <td
-                    [nzChecked]="setOfCheckedId.has(data.id)"
-                    (nzCheckedChange)="handleItemChecked(data.id, $event)"
-                ></td>
+            <tr *ngFor="let data of basicTable.data; let i = index" (dblclick)="select(data)">
+                <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="handleItemChecked(data.id, $event)" *ngIf="showAddBtn"></td>
                 <td>{{ data.id }}</td>
                 <td>{{ data.name }}</td>
                 <td>{{ data.desc }}</td>
                 <td>{{ data.created | date }}</td>
-              
-                <td >
+
+                <td>
                     <a (click)="select(data)"> 选择 </a>
                 </td>
             </tr>
         </tbody>
     </nz-table>
 
- </ng-container>
- 
- 
- 
+</ng-container>
+
+
+
 <ng-container *ngIf="!ref">
 
     <div nz-row [nzGutter]="16" class="card">
-        <div
-            nz-col
-            *ngFor="let item of datum"
-            class="card-item"
-            (click)="informate(item)"
-        >
-            <app-card
-                [img]="'product.png'"
-                [id]="item.id"
-                [name]="item.name"
-                [title]="'产品'"
-            ></app-card>
+        <div nz-col *ngFor="let item of datum" class="card-item" (click)="informate(item)">
+            <app-card [img]="'product.png'" [id]="item.id" [name]="item.name" [title]="'产品'"></app-card>
         </div>
     </div>
 
-    <app-detail
-    [isVisible]="isVisible"
-    [title]="'产品'"
-    [chooseData]="chooseData"
-    (edit)="handleEdit($event)"
-    (delete)="delete($event)"
-    (close)="close()"
-></app-detail>
+    <app-detail [isVisible]="isVisible" [title]="'产品'" [chooseData]="chooseData" (edit)="handleEdit($event)" (delete)="delete($event)" (close)="close()"></app-detail>
 
-<nz-pagination
-    style="position: fixed;  bottom: 0; right: 10px ; "
-    [nzPageIndex]="pageIndex"
-    [nzTotal]="total"
-    nzShowSizeChanger
-    [nzPageSize]="pageSize"
-    (nzPageSizeChange)="pageSizeChange($event)"
-    (nzPageIndexChange)="pageIndexChange($event)"
-></nz-pagination>
+    <nz-pagination style="position: fixed;  bottom: 0; right: 10px ; " [nzPageIndex]="pageIndex" [nzTotal]="total" nzShowSizeChanger [nzPageSize]="pageSize" (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"></nz-pagination>
 
 
 </ng-container>
-
- 

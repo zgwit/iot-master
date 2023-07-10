@@ -65,6 +65,9 @@ export class ProductSelectComponent implements OnInit, ControlValueAccessor {
       },
       nzFooter: null,
     }).afterClose.subscribe((obj) => {
+      if (!obj) {
+        return
+      }
       const { id, name } = obj || {};
       this._id = id;
       this.name = name

@@ -1,48 +1,41 @@
-
-  <form nz-form [formGroup]="group">
+<form nz-form [formGroup]="group">
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="id">ID</nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-        <input nz-input formControlName="id" placeholder="默认为随机生成" />
-      </nz-form-control>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="id">ID</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="id" placeholder="默认为随机生成" />
+        </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="product_id">产品</nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-        <app-product-select formControlName="product_id"></app-product-select>
-      </nz-form-control>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="product_id">产品</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+            <app-product-select formControlName="product_id"></app-product-select>
+        </nz-form-control>
     </nz-form-item>
 
     <nz-form-item *ngIf="group.value.type == 'subset'">
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="gateway_id"
-        >网关ID</nz-form-label
-      >
-      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-        <input nz-input formControlName="gateway_id" />
-        <a (click)="chooseGateway()">选择</a>
-      </nz-form-control>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="gateway_id">网关ID</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+            <input nz-input formControlName="gateway_id" />
+            <a (click)="chooseGateway()">选择</a>
+        </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name"
-        >名称</nz-form-label
-      >
-      <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="nameErrorTpl">
-        <input nz-input formControlName="name" />
-        <ng-template #nameErrorTpl let-control>
-          <ng-container *ngIf="control.hasError('required')"
-            >请输入名称!</ng-container
-          >
-        </ng-template>
-      </nz-form-control>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">名称</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzErrorTip]="nameErrorTpl">
+            <input nz-input formControlName="name" />
+            <ng-template #nameErrorTpl let-control>
+                <ng-container *ngIf="control.hasError('required')">请输入名称!</ng-container>
+            </ng-template>
+        </nz-form-control>
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="desc">说明</nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
-        <textarea nz-input formControlName="desc"></textarea>
-      </nz-form-control>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="desc">说明</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="">
+            <textarea nz-input formControlName="desc"></textarea>
+        </nz-form-control>
     </nz-form-item>
 
     <!-- <nz-form-item>
@@ -58,4 +51,4 @@
         ></nz-switch>
       </nz-form-control>
     </nz-form-item> -->
-  </form>
+</form>
