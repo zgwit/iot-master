@@ -65,12 +65,12 @@ export class AlarmsComponent {
       if (!size) {
         this.msg.success("删除成功");
         this.datum = this.datum.filter(d => d.id !== id);
-      } else if (size) {
-        this.delResData.push(res);
-        if (size === this.delResData.length) {
-          this.msg.success("删除成功");
-          this.load();
-        }
+        return;
+      }
+      this.delResData.push(res);
+      if (size === this.delResData.length) {
+        this.msg.success("删除成功");
+        this.load();
       }
     })
   }
