@@ -14,7 +14,6 @@ import { EditTableItem } from "../../base/edit-table/edit-table.component";
 })
 export class ProductEditComponentComponent implements OnInit {
     group!: any;
-    allData: { properties: Array<object> } = { properties: [] };
     listData: EditTableItem[] = [{
         label: '名称(ID)',
         name: 'name'
@@ -233,13 +232,20 @@ export class ProductEditComponentComponent implements OnInit {
     ngOnInit(): void {
         if (this.id) {
             this.rs.get(`product/${this.id}`).subscribe(res => {
-                this.allData = res.data || {};
-                this.build(res.data)
+                this.setData(res.data || {});
             })
         }
         this.build()
     }
-
+    setData(resData: any) {
+        const odata = this.group.value;
+        for (const key in odata) {
+            if (resData[key]) {
+                odata[key] = resData[key];
+            }
+        }
+        this.group.setValue(odata);
+    }
     build(obj?: any) {
         obj = obj || {}
         this.group = this.fb.group({

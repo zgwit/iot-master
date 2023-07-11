@@ -33,7 +33,7 @@ export class DeviceEditComponent implements OnInit {
     obj = obj || {};
     this.group = this.fb.group({
       id: [obj.id || '', []],
-      product_id: [obj.product_id || '', []],
+      product_id: [obj.product_id || '', [Validators.required]],
       gateway_id: [obj.gateway_id || '', []],
       name: [obj.name || '', [Validators.required]],
       desc: [obj.desc || '', []],
