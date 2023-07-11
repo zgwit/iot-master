@@ -23,12 +23,6 @@ import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzTypographyModule } from "ng-zorro-antd/typography";
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
-import { ProductEditPropertiesComponent } from './product-edit-properties/product-edit-properties.component';
-import { ProductEditConstraintsComponent } from './product-edit-constraints/product-edit-constraints.component';
-import { ProductEditFunctionsComponent } from './product-edit-functions/product-edit-functions.component';
-import { ProductEditEventsComponent } from './product-edit-events/product-edit-events.component';
-import { ProductEditParametersComponent } from './product-edit-parameters/product-edit-parameters.component';
-import { ProductEditArgumentsComponent } from './product-edit-arguments/product-edit-arguments.component';
 import { ProductEditComponentComponent } from './product-edit-component/product-edit-component.component';
 import { ProductSelectComponent } from './product-select/product-select.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -37,12 +31,6 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
     declarations: [
         ProductsComponent,
         ProductEditComponent,
-        ProductEditPropertiesComponent,
-        ProductEditConstraintsComponent,
-        ProductEditFunctionsComponent,
-        ProductEditEventsComponent,
-        ProductEditParametersComponent,
-        ProductEditArgumentsComponent,
         ProductEditComponentComponent,
         ProductSelectComponent
     ],
