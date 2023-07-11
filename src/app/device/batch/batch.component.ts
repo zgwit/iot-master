@@ -13,7 +13,6 @@ export class BatchComponent implements OnInit {
   isSpinning = false;
   btnTitle = '提交';
   datum: any[] = []
-  @ViewChild('childTag') childTag: any;
   constructor(
     private fb: FormBuilder,
     private msg: NzMessageService,
@@ -34,17 +33,7 @@ export class BatchComponent implements OnInit {
   }
   handleSubmit() {
     if (this.group.valid) {
-      const { IdObj } = this.childTag;
-      const { group_id, product_id } = IdObj;
-      if (!product_id) {
-        this.msg.warning('请选择产品!');
-        return;
-      }
-      if (!group_id) {
-        this.msg.warning('请选择分组!');
-        return;
-      }
-      const sendData = Object.assign({}, this.group.value, IdObj);
+      const sendData = Object.assign({}, this.group.value);
       const amount = this.group.value.amount;
       const resData: any = [];
       this.isSpinning = true;
@@ -62,7 +51,7 @@ export class BatchComponent implements OnInit {
       }
     }
   }
-  handleExport(){
+  handleExport() {
     const listColumns = ['ID', '产品ID', '分组ID', '名称', '说明', '日期'];
     const data: any[][] = [];
     data.push(listColumns);

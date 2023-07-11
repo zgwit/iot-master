@@ -1,7 +1,12 @@
 <nz-card nzTitle="批量创建设备">
     <nz-spin [nzSpinning]="isSpinning">
         <form nz-form [formGroup]="group">
-            <app-set-id #childTag></app-set-id>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="product_id">产品</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择产品">
+                    <app-product-select formControlName="product_id"></app-product-select>
+                </nz-form-control>
+            </nz-form-item>
 
             <nz-form-item>
                 <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">名称</nz-form-label>
@@ -29,8 +34,7 @@
         </form>
     </nz-spin>
     <div style="text-align: center;">
-        <button nz-button nzType="primary" style="width:100px;" [nzLoading]="isSpinning"
-            (click)="handleSubmit()">{{btnTitle}}</button>
+        <button nz-button nzType="primary" style="width:100px;" [nzLoading]="isSpinning" (click)="handleSubmit()">{{btnTitle}}</button>
     </div>
 </nz-card>
 <div *ngIf="datum&&datum.length" style="text-align: right;">
@@ -39,8 +43,7 @@
         导出
     </button>
 </div>
-<nz-table *ngIf="datum&&datum.length" #basicTable [nzData]="datum" [nzShowPagination]="false"
-    [nzFrontPagination]="false">
+<nz-table *ngIf="datum&&datum.length" #basicTable [nzData]="datum" [nzShowPagination]="false" [nzFrontPagination]="false">
     <thead>
         <tr>
             <th nzColumnKey="id" [nzSortFn]="true">ID</th>
