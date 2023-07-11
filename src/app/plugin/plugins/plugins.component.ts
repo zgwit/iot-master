@@ -177,6 +177,7 @@ export class PluginsComponent {
             nzStyle: { top: '20px' },
             nzContent: PluginEditComponent,
             nzComponentParams: { id },
+            nzMaskClosable: false,
             nzFooter: [
                 {
                     label: '取消',

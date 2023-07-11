@@ -99,6 +99,7 @@ export class RoleComponent {
       nzStyle: { top: '20px' },
       nzContent: RoleEditComponent,
       nzComponentParams: { id },
+      nzMaskClosable: false,
       nzFooter: [
         {
           label: '取消',
