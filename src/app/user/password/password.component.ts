@@ -32,12 +32,19 @@ export class PasswordComponent {
   }
 
   submit() {
-    let body = {
-      old: Md5.hashStr(this.group.value.old),
-      new: Md5.hashStr(this.group.value.new),
-    }
+
     return new Promise((resolve, reject) => {
       if (this.group.valid) {
+        const { old, repeat } = this.group.value;
+        const newPassword = this.group.value.new;
+        if (newPassword !== repeat) {
+          this.msg.warning("两次密码输入不一致，请确认");
+          return reject();
+        }
+        const body = {
+          old: Md5.hashStr(old),
+          new: Md5.hashStr(newPassword),
+        }
         this.rs.post("password", body).subscribe(res => {
           //清空session
           this.rs.get("logout").subscribe(res => { })
