@@ -127,6 +127,7 @@ export class BrokersComponent {
       nzStyle: { top: '20px' },
       nzContent: BrokerEditComponent,
       nzComponentParams: { id },
+      nzMaskClosable: false,
       nzFooter: [
         {
           label: '取消',

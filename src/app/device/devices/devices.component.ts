@@ -141,6 +141,7 @@ export class DevicesComponent {
       nzStyle: { top: '20px' },
       nzContent: DeviceEditComponent,
       nzComponentParams: { id },
+      nzMaskClosable: false,
       nzFooter: [
         {
           label: '取消',

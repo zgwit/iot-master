@@ -75,7 +75,7 @@
 
     <app-detail [isVisible]="isVisible" [title]="'产品'" [chooseData]="chooseData" (edit)="handleEdit($event)" (delete)="delete($event)" (close)="close()"></app-detail>
 
-    <nz-pagination style="position: fixed;  bottom: 0; right: 10px ; " [nzPageIndex]="pageIndex" [nzTotal]="total" nzShowSizeChanger [nzPageSize]="pageSize" (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"></nz-pagination>
+    <nz-pagination style="position: fixed;  bottom: 0; right: 10px ; " [nzPageIndex]="pageIndex" [nzTotal]="total" nzShowSizeChanger [nzPageSize]="pageSize" (nzPageSizeChange)="pageSizeCardChange($event)" (nzPageIndexChange)="pageIndexCardChange($event)"  ></nz-pagination>
 
 
 </ng-container>

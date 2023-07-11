@@ -112,6 +112,7 @@ export class GatewaysComponent {
       nzStyle: { top: '20px' },
       nzContent: GatewayEditComponent,
       nzComponentParams: { id },
+      nzMaskClosable: false,
       nzFooter: [
         {
           label: '取消',

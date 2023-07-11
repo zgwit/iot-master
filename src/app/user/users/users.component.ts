@@ -101,6 +101,7 @@ export class UsersComponent {
       nzTitle,
       nzStyle: { top: '20px' },
       nzContent: UserEditComponent,
+      nzMaskClosable: false,
       nzComponentParams: { id },
       nzFooter: [
         {
