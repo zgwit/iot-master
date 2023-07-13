@@ -1,11 +1,9 @@
 package api
 
 import (
-	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
-	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
 // @Summary 查询角色数量
@@ -116,19 +114,11 @@ func roleRouter(app *gin.RouterGroup) {
 	app.GET("/list", curd.ApiList[model.Role]())
 
 	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[model.Role](func(m *model.Role) error {
-		exist, err := db.Engine.Exist(&model.Role{Id: m.Id})
-		if err != nil {
+		if err := isExist("ID已存在", &model.Role{Id: m.Id}); err != nil {
 			return err
 		}
-		if exist {
-			return errors.New("ID已存在")
-		}
-		exist, err = db.Engine.Exist(&model.Role{Name: m.Name})
-		if err != nil {
+		if err := isExist("名称已存在", &model.Role{Name: m.Name}); err != nil {
 			return err
-		}
-		if exist {
-			return errors.New("名称已存在")
 		}
 		return nil
 	}, nil))
@@ -136,14 +126,7 @@ func roleRouter(app *gin.RouterGroup) {
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Role]())
 
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Role](func(m *model.Role) error {
-		exist, err := db.Engine.Exist(&model.Role{Name: m.Name})
-		if err != nil {
-			return err
-		}
-		if exist {
-			return errors.New("名称已存在")
-		}
-		return nil
+		return isExist("名称已存在", &model.Role{Id: m.Id})
 	}, nil,
 		"id", "name", "privileges"))
 
