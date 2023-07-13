@@ -5,7 +5,6 @@ import { AttachmentRoutingModule } from './attachment-routing.module';
 import { AttachmentComponent } from './attachment.component';
 import { UploadComponent } from './upload/upload.component';
 import { RenameComponent } from './rename/rename.component';
-import { MoveComponent } from './move/move.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from "ng-zorro-antd/form";
@@ -24,7 +23,6 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
     AttachmentComponent,
     UploadComponent,
     RenameComponent,
-    MoveComponent
   ],
   imports: [
     CommonModule,
