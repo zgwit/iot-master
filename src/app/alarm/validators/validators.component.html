@@ -1,24 +1,11 @@
 <app-toolbar>
-    <nz-space>
-        <button *nzSpaceItem nz-button nzType="primary" (click)="reload()">
-            <i nz-icon nzType="reload" [nzSpin]="loading"></i>
-            刷新
-        </button>
-        <app-search-box *nzSpaceItem placeholder="请输入标题" (onSearch)="search($event)"></app-search-box>
-
-        <button *nzSpaceItem nz-button nzType="primary" (click)="handleNew()">
-            <i nz-icon nzType="plus"></i>
-            创建
-        </button>
-
-        <app-export *nzSpaceItem [href]="'validator/export'"></app-export>
-
-        <app-import *nzSpaceItem [url]="'validator/import'"></app-import>
-
-        <button *nzSpaceItem nz-button nzType="primary" nzDanger (click)="handleBatchDel()">
-            批量删除
-        </button>
-    </nz-space>
+    <app-search-form placeholder="请输入标题"
+        (onSearch)="search($event)"></app-search-form>
+    <app-batch-btn 
+        uploadApi="/api/validator/import"
+        downloadApi="/api/validator/export"
+        (add)="handleNew()"
+        (batchDel)="handleBatchDel()"></app-batch-btn>
 </app-toolbar>
 
 <ng-template #totalTemplate let-total>总共 {{ total }} 条</ng-template>
