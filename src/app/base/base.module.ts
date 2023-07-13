@@ -27,7 +27,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { DetailComponent } from './detail/detail.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import { TableViewComponent } from './table-view/table-view.component';
 import { NzSwitchModule } from "ng-zorro-antd/switch";
 import { SearchFormComponent } from './search-form/search-form.component';
 import { BatchBtnComponent } from './batch-btn/batch-btn.component';
@@ -42,7 +41,6 @@ import { BatchBtnComponent } from './batch-btn/batch-btn.component';
     FullscreamDirective,
     CardComponent,
     DetailComponent,
-    TableViewComponent,
     SearchFormComponent,
     BatchBtnComponent
   ],
