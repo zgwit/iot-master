@@ -60,9 +60,6 @@ export class ProductSelectComponent implements OnInit, ControlValueAccessor {
       nzTitle: '选择产品',
       nzWidth: '700px',
       nzContent: ProductsComponent,
-      nzComponentParams: {
-        showAddBtn: false,
-      },
       nzFooter: null,
     }).afterClose.subscribe((obj) => {
       if (!obj) {

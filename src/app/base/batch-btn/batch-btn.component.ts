@@ -1,17 +1,18 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+
 @Component({
-  selector: 'app-import',
-  templateUrl: './import.component.html',
-  styleUrls: ['./import.component.scss'],
+  selector: 'app-batch-btn',
+  templateUrl: './batch-btn.component.html',
+  styleUrls: ['./batch-btn.component.scss']
 })
-export class ImportComponent {
-  @Input() url!: string;
+export class BatchBtnComponent {
+  @Input() uploadApi!: string ;
+  @Input() downloadApi!: string ;
   @Output() onLoad = new EventEmitter<string>();
-  uploading: Boolean = false;
-  constructor(private msg: NzMessageService
-  ) { }
-  handleChange(info: any): void {
+  @Output() add = new EventEmitter<string>();
+  constructor(private msg: NzMessageService) { }
+  handleUpload(info: any): void {
     if (info.type === 'error') {
       this.msg.error(`上传失败`);
       return;

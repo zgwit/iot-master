@@ -31,8 +31,9 @@ import { DetailComponent } from './detail/detail.component';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { TableViewComponent } from './table-view/table-view.component';
-import { TableEditComponent } from './table-edit/table-edit.component';
-import {NzSwitchModule} from "ng-zorro-antd/switch";
+import { NzSwitchModule } from "ng-zorro-antd/switch";
+import { SearchFormComponent } from './search-form/search-form.component';
+import { BatchBtnComponent } from './batch-btn/batch-btn.component';
 @NgModule({
   declarations: [
     DatePipe,
@@ -48,43 +49,46 @@ import {NzSwitchModule} from "ng-zorro-antd/switch";
     CardComponent,
     DetailComponent,
     TableViewComponent,
-    TableEditComponent
+    SearchFormComponent,
+    BatchBtnComponent
   ],
-    exports: [
-        DatePipe,
-        PageNotFoundComponent,
-        ToolbarComponent,
-        SearchBoxComponent,
-        EditTableComponent,
-        ImportComponent,
-        TableOperComponent,
-        ModalComponent,
-        CardComponent,
-        DetailComponent,
-        ExportComponent
-    ],
-    imports: [
-        CommonModule,
-        NzInputModule,
-        NzModalModule,
-        NzPopconfirmModule,
-        NzButtonModule,
-        NzTabsModule,
-        NzPaginationModule,
-        NzTagModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NzFormModule,
-        DragDropModule,
-        NzSelectModule,
-        NzTableModule,
-        NzIconModule,
-        NzSpaceModule,
-        NzInputNumberModule,
-        NzUploadModule,
-        NzDividerModule,
-        NzSwitchModule
-    ],
+  exports: [
+    DatePipe,
+    PageNotFoundComponent,
+    ToolbarComponent,
+    SearchBoxComponent,
+    EditTableComponent,
+    ImportComponent,
+    TableOperComponent,
+    ModalComponent,
+    CardComponent,
+    DetailComponent,
+    ExportComponent,
+    SearchFormComponent,
+    BatchBtnComponent
+  ],
+  imports: [
+    CommonModule,
+    NzInputModule,
+    NzModalModule,
+    NzPopconfirmModule,
+    NzButtonModule,
+    NzTabsModule,
+    NzPaginationModule,
+    NzTagModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    DragDropModule,
+    NzSelectModule,
+    NzTableModule,
+    NzIconModule,
+    NzSpaceModule,
+    NzInputNumberModule,
+    NzUploadModule,
+    NzDividerModule,
+    NzSwitchModule
+  ],
   providers: [
 
   ]

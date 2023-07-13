@@ -12,7 +12,6 @@ import {
     onAllChecked,
     onItemChecked,
     batchdel,
-    refreshCheckedStatus,
 } from '../../../public';
 @Component({
     selector: 'app-products',
@@ -22,14 +21,12 @@ import {
 export class ProductsComponent {
     isVisible = false;
     chooseData: any = {};
-    href!: string;
     loading = false;
     datum: any[] = [];
     total = 1;
     pageSize = 20;
     pageIndex = 1;
     query: any = {};
-    showAddBtn: Boolean = true;
     columnKeyNameArr: any = ['name', 'desc'];
     uploading: Boolean = false;
     checked = false;
@@ -182,9 +179,6 @@ export class ProductsComponent {
     }
     cancel() {
         this.msg.info('取消操作');
-    }
-    handleExport() {
-        this.href = `/api/product/export`;
     }
 
     getTableHeight() {
