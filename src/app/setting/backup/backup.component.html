@@ -1,11 +1,8 @@
 <app-toolbar>
-  <nz-space>
-    <a *nzSpaceItem download="filename" class="fileButton" href="/api/backup/export">
-      <i nz-icon nzType="cloud-download"></i>
-      导出
-    </a>
-    <app-import *nzSpaceItem url="backup/import"></app-import>
-  </nz-space>
+    <app-batch-btn uploadApi="/api/backup/import"
+        downloadApi="/api/backup/export"
+        [showAddBtn]="false"
+        [showBatchDelBtn]="false"></app-batch-btn>
 </app-toolbar>
 
 <!-- <nz-table #basicTable [nzData]="listOfData">
