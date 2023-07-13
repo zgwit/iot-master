@@ -2,7 +2,7 @@
     <app-search-form placeholder="请输入产品名称"
         (onSearch)="search($event)"></app-search-form>
     <app-batch-btn *ngIf="!ref"
-        [showBatchDelBtn]="false"
+        [showDelBtn]="false"
         uploadApi="/api/product/import"
         downloadApi="/api/product/export"
         (add)="handleEdit()"></app-batch-btn>

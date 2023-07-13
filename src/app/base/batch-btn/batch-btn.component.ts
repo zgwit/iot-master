@@ -12,7 +12,7 @@ export class BatchBtnComponent {
   @Input() showAddBtn: Boolean = true;
   @Input() showExportBtn: Boolean = true;
   @Input() showImportBtn: Boolean = true;
-  @Input() showBatchDelBtn: Boolean = true;
+  @Input() showDelBtn: Boolean = true;
   @Output() onLoad = new EventEmitter<string>();
   @Output() add = new EventEmitter<string>();
   @Output() batchDel = new EventEmitter<string>();
