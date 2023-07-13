@@ -93,13 +93,14 @@ export class ProductsComponent {
                 this.datum = this.datum.filter((d) => d.id !== id);
                 this.isVisible = false;
                 this.load();
-            } else if (size) {
-                this.delResData.push(res);
-                if (size === this.delResData.length) {
-                    this.msg.success('删除成功');
-                     this.isVisible = false;
-                    this.load();
-                }
+                return;
+            }
+            this.delResData.push(res);
+            if (size === this.delResData.length) {
+                this.msg.success('删除成功');
+                this.isVisible = false;
+                this.load();
+                this.delResData = [];
             }
         });
     }
@@ -110,14 +111,14 @@ export class ProductsComponent {
         ParseTableQuery($event, this.query);
         this.load();
     }
-    pageIndexChange(pageIndex: number) { 
-        this.query.skip = pageIndex - 1; 
+    pageIndexChange(pageIndex: number) {
+        this.query.skip = pageIndex - 1;
     }
     pageSizeChange(pageSize: number) {
-        this.query.limit = pageSize; 
+        this.query.limit = pageSize;
     }
-    pageIndexCardChange(pageIndex: number) { 
-        this.query.skip = (pageIndex - 1)*this.pageSize;
+    pageIndexCardChange(pageIndex: number) {
+        this.query.skip = (pageIndex - 1) * this.pageSize;
         this.load();
     }
     pageSizeCardChange(pageSize: number) {
