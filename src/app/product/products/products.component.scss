@@ -1,26 +1,14 @@
- 
-.btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 82px;
-    height: 32px;
-    border-radius: 3px;
-    a {
-        color: white;
-        margin-left: 5px;
-        font-size: 14px;
-    }
-}
-.card {
-    width: 100%;
-    box-sizing: border-box;
-    padding:10px 20px;
-    .card-item {
-        box-sizing: border-box;
-        padding: 5px;
-        &:hover{
-          cursor: pointer;
-        }
-    }
-}
+ .card {
+     width: 100%;
+     box-sizing: border-box;
+     padding: 10px 20px;
+
+     .card-item {
+         box-sizing: border-box;
+         padding: 5px;
+
+         &:hover {
+             cursor: pointer;
+         }
+     }
+ }
