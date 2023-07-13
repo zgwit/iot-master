@@ -30,14 +30,10 @@ export class DevicesComponent {
   pageSize = 20;
   pageIndex = 1;
   query: any = {};
-  showAddBtn: Boolean = true;
-  columnKeyNameArr: any = ['name', 'desc', 'product_id', 'group_id', 'type'];
-  uploading: Boolean = false;
   checked = false;
   indeterminate = false;
   setOfCheckedId = new Set<number>();
   delResData: any = [];
-  href!: string;
 
   constructor(
     @Optional() protected ref: NzModalRef,
@@ -97,12 +93,13 @@ export class DevicesComponent {
       if (!size) {
         this.msg.success('删除成功');
         this.datum = this.datum.filter((d) => d.id !== id);
-      } else if (size) {
-        this.delResData.push(res);
-        if (size === this.delResData.length) {
-          this.msg.success('删除成功');
-          this.load();
-        }
+        return
+      }
+      this.delResData.push(res);
+      if (size === this.delResData.length) {
+        this.msg.success('删除成功');
+        this.delResData = [];
+        this.load();
       }
     });
   }
@@ -167,9 +164,6 @@ export class DevicesComponent {
   }
   cancel() {
     this.msg.info('取消操作');
-  }
-  handleExport() {
-    this.href = `/api/device/export`;
   }
 
   getTableHeight() {

@@ -1,8 +1,4 @@
 <nz-space>
-    <button nz-button
-        *nzSpaceItem
-        nzType="default"
-        (click)="handleClear()">清空搜索条件</button>
     <nz-input-group nzSearch
         *nzSpaceItem
         [nzAddOnAfter]="suffixButton">
@@ -18,4 +14,8 @@
             nzSearch
             (click)="onSearch.emit(text)">{{searchText}}</button>
     </ng-template>
+    <button nz-button
+        *nzSpaceItem
+        nzType="default"
+        (click)="handleClear()">清空搜索条件</button>
 </nz-space>

@@ -1,50 +1,11 @@
 <app-toolbar>
-    <nz-space>
-        <button *nzSpaceItem
-            nz-button
-            nzType="primary"
-            (click)="reload()">
-            <i nz-icon
-                nzType="reload"
-                [nzSpin]="loading"></i>
-            刷新
-        </button>
-        <app-search-box *nzSpaceItem
-            placeholder="请输入设备名称"
-            (onSearch)="search($event)"></app-search-box>
-        <ng-template [ngIf]="showAddBtn">
-            <button *nzSpaceItem
-                nz-button
-                nzType="primary"
-                (click)="handleEdit()">
-                <i nz-icon
-                    nzType="plus"></i>
-                创建设备
-            </button>
-        </ng-template>
-        <button nz-button
-            nzType="primary"
-            *nzSpaceItem
-            class="btn">
-            <span nz-icon
-                nzType="cloud-download"
-                nzTheme="outline"></span>
-            <a (click)="handleExport()"
-                download="filename"
-                [href]="href">导出</a>
-        </button>
-
-        <app-import *nzSpaceItem
-            [url]="'device/import'"></app-import>
-
-        <button *nzSpaceItem
-            nz-button
-            nzType="primary"
-            nzDanger
-            (click)="handleBatchDel()">
-            批量删除
-        </button>
-    </nz-space>
+    <app-search-form placeholder="请输入设备名称"
+        (onSearch)="search($event)"></app-search-form>
+    <app-batch-btn *ngIf="!ref"
+        uploadApi="/api/device/import"
+        downloadApi="/api/device/export"
+        (add)="handleEdit()"
+        (batchDel)="handleBatchDel()"></app-batch-btn>
 </app-toolbar>
 <ng-template #totalTemplate
     let-total>总共 {{ total }} 条</ng-template>

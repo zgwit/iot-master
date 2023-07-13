@@ -8,9 +8,9 @@
         新增
     </button>
 
-    <button nz-button
+    <button *nzSpaceItem
+        nz-button
         nzType="primary"
-        *nzSpaceItem
         class="btn">
         <span nz-icon
             nzType="cloud-download"
@@ -20,8 +20,8 @@
             styl>导出</a>
     </button>
 
-    <nz-upload [nzAction]="uploadApi"
-        *nzSpaceItem
+    <nz-upload *nzSpaceItem
+        [nzAction]="uploadApi"
         [nzShowUploadList]="false"
         (nzChange)="handleUpload($event)">
         <button nz-button
@@ -31,4 +31,14 @@
             导入
         </button>
     </nz-upload>
+
+    <ng-template [ngIf]="showBatchDelBtn">
+        <button *nzSpaceItem
+            nz-button
+            nzType="primary"
+            nzDanger
+            (click)="batchDel.emit()">
+            批量删除
+        </button>
+    </ng-template>
 </nz-space>

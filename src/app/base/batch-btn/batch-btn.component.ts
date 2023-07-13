@@ -7,10 +7,12 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrls: ['./batch-btn.component.scss']
 })
 export class BatchBtnComponent {
-  @Input() uploadApi!: string ;
-  @Input() downloadApi!: string ;
+  @Input() uploadApi!: string;
+  @Input() downloadApi!: string;
+  @Input() showBatchDelBtn: Boolean = true;
   @Output() onLoad = new EventEmitter<string>();
   @Output() add = new EventEmitter<string>();
+  @Output() batchDel = new EventEmitter<string>();
   constructor(private msg: NzMessageService) { }
   handleUpload(info: any): void {
     if (info.type === 'error') {

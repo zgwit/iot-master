@@ -68,7 +68,6 @@ export class DeviceEditComponent implements OnInit {
         nzContent: DevicesComponent,
         nzComponentParams: {
           chooseGateway: true,
-          showAddBtn: false,
         },
         nzFooter: null,
       })
