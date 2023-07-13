@@ -7,8 +7,11 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   styleUrls: ['./batch-btn.component.scss']
 })
 export class BatchBtnComponent {
-  @Input() uploadApi!: string;
-  @Input() downloadApi!: string;
+  @Input() uploadApi: string = '';
+  @Input() downloadApi: string = '';
+  @Input() showAddBtn: Boolean = true;
+  @Input() showExportBtn: Boolean = true;
+  @Input() showImportBtn: Boolean = true;
   @Input() showBatchDelBtn: Boolean = true;
   @Output() onLoad = new EventEmitter<string>();
   @Output() add = new EventEmitter<string>();

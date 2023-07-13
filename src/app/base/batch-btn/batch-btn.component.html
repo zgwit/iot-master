@@ -1,36 +1,42 @@
 <nz-space>
-    <button *nzSpaceItem
-        nz-button
-        nzType="primary"
-        (click)="add.emit()">
-        <i nz-icon
-            nzType="plus"></i>
-        新增
-    </button>
-
-    <button *nzSpaceItem
-        nz-button
-        nzType="primary"
-        class="btn">
-        <span nz-icon
-            nzType="cloud-download"
-            nzTheme="outline"></span>
-        <a download="filename"
-            [href]="downloadApi"
-            styl>导出</a>
-    </button>
-
-    <nz-upload *nzSpaceItem
-        [nzAction]="uploadApi"
-        [nzShowUploadList]="false"
-        (nzChange)="handleUpload($event)">
-        <button nz-button
-            nzType="primary">
-            <span nz-icon
-                nzType="cloud-upload"></span>
-            导入
+    <ng-template [ngIf]="showAddBtn">
+        <button *nzSpaceItem
+            nz-button
+            nzType="primary"
+            (click)="add.emit()">
+            <i nz-icon
+                nzType="plus"></i>
+            新增
         </button>
-    </nz-upload>
+    </ng-template>
+
+    <ng-template [ngIf]="showExportBtn">
+        <button *nzSpaceItem
+            nz-button
+            nzType="primary"
+            class="btn">
+            <span nz-icon
+                nzType="cloud-download"
+                nzTheme="outline"></span>
+            <a download="filename"
+                [href]="downloadApi"
+                styl>导出</a>
+        </button>
+    </ng-template>
+
+    <ng-template [ngIf]="showImportBtn">
+        <nz-upload *nzSpaceItem
+            [nzAction]="uploadApi"
+            [nzShowUploadList]="false"
+            (nzChange)="handleUpload($event)">
+            <button nz-button
+                nzType="primary">
+                <span nz-icon
+                    nzType="cloud-upload"></span>
+                导入
+            </button>
+        </nz-upload>
+    </ng-template>
 
     <ng-template [ngIf]="showBatchDelBtn">
         <button *nzSpaceItem
