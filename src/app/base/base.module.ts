@@ -15,7 +15,6 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDividerModule } from "ng-zorro-antd/divider";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { SearchBoxComponent } from './search-box/search-box.component';
 import { DatePipe } from "./date.pipe";
 import { EditTableComponent } from './edit-table/edit-table.component';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
@@ -37,7 +36,6 @@ import { BatchBtnComponent } from './batch-btn/batch-btn.component';
     DatePipe,
     PageNotFoundComponent,
     ToolbarComponent,
-    SearchBoxComponent,
     EditTableComponent,
     TableOperComponent,
     ModalComponent,
@@ -52,7 +50,6 @@ import { BatchBtnComponent } from './batch-btn/batch-btn.component';
     DatePipe,
     PageNotFoundComponent,
     ToolbarComponent,
-    SearchBoxComponent,
     EditTableComponent,
     TableOperComponent,
     ModalComponent,
