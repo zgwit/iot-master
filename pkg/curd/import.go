@@ -31,6 +31,7 @@ func ApiImport(table string) gin.HandlerFunc {
 
 		//数据解析
 		//var datum []map[string]any
+		var in int64
 		for _, file := range reader.File {
 			if file.FileInfo().IsDir() {
 				continue
@@ -56,18 +57,18 @@ func ApiImport(table string) gin.HandlerFunc {
 				return
 			}
 			if has {
-				_, _ = db.Engine.Table(table).ID(data["id"]).Delete()
+				_, _ = db.Engine.Table(table).Where("id=?", data["id"]).Delete()
 			}
 
 			//插入数据
-			_, err = db.Engine.Table(table).Insert(data)
+			n, err := db.Engine.Table(table).Insert(data)
 			if err != nil {
 				Error(ctx, err)
 				return
 			}
-
+			in += n
 		}
 
-		OK(ctx, nil)
+		OK(ctx, in)
 	}
 }
