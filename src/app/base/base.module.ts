@@ -18,8 +18,6 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
 import { DatePipe } from "./date.pipe";
 import { EditTableComponent } from './edit-table/edit-table.component';
-import { ExportComponent } from './export/export.component';
-import { ImportComponent } from './import/import.component';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { TableOperComponent } from './table-oper/table-oper.component';
 import { ModalComponent } from './modal/modal.component';
@@ -41,8 +39,6 @@ import { BatchBtnComponent } from './batch-btn/batch-btn.component';
     ToolbarComponent,
     SearchBoxComponent,
     EditTableComponent,
-    ExportComponent,
-    ImportComponent,
     TableOperComponent,
     ModalComponent,
     FullscreamDirective,
@@ -58,12 +54,10 @@ import { BatchBtnComponent } from './batch-btn/batch-btn.component';
     ToolbarComponent,
     SearchBoxComponent,
     EditTableComponent,
-    ImportComponent,
     TableOperComponent,
     ModalComponent,
     CardComponent,
     DetailComponent,
-    ExportComponent,
     SearchFormComponent,
     BatchBtnComponent
   ],
