@@ -56,7 +56,7 @@
             <td>{{data.message}}</td>
             <td>{{data.type}}</td>
             <td>{{data.read}}</td>
-            <td>{{data.created | chinaDate:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{data.created | date}}</td>
             <td>
                 <a (click)="read(data)">
                     <i nz-icon

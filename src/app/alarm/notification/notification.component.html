@@ -45,7 +45,7 @@
             <td>{{ data.alarm_id }}</td>
             <td>{{ data.user || data.user_id }}</td>
             <td>{{ data.channels }}</td>
-            <td>{{ data.created | chinaDate:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{ data.created | date }}</td>
             <td>
                 <a (click)="delete(data.id)">
                     <i nz-icon

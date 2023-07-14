@@ -24,7 +24,6 @@ import { NzSelectModule } from "ng-zorro-antd/select";
 import { NzInputModule } from "ng-zorro-antd/input";
 import { NzCheckboxModule } from "ng-zorro-antd/checkbox";
 import { NzSwitchModule } from "ng-zorro-antd/switch";
-import { ChinaDatePipe } from '../china-date.pipe';
 @NgModule({
     declarations: [
         AlarmsComponent,
@@ -33,7 +32,6 @@ import { ChinaDatePipe } from '../china-date.pipe';
         SubscriptionEditComponent,
         ValidatorsComponent,
         ValidatorEditComponent,
-        ChinaDatePipe
     ],
     imports: [
         CommonModule,

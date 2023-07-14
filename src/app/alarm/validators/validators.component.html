@@ -51,7 +51,7 @@
                 <nz-tag nzColor="error" *ngIf="!data.disabled"> 禁用 </nz-tag>
             </td>
 
-            <td>{{ data.created | chinaDate:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{ data.created | date }}</td>
             <td>
                 <a (click)="edit(data.id)">
                     <i nz-icon nzType="edit"></i>
