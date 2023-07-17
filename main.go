@@ -34,7 +34,7 @@ func Startup(engine *web.Engine) error {
 		return err
 	}
 	//defer internal.Close()
-
+	engine.Static("/static", "static")
 	//注册前端接口
 	api.RegisterRoutes(engine.Group("/api"))
 
