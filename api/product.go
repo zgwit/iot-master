@@ -4,6 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/model"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
+	"github.com/zgwit/iot-master/v3/pkg/lib"
+	"reflect"
 )
 
 // @Summary 查询产品数量
@@ -109,9 +111,18 @@ func productRouter(app *gin.RouterGroup) {
 	app.POST("/count", curd.ApiCount[model.Product]())
 	app.POST("/search", curd.ApiSearch[model.Product]())
 	app.GET("/list", curd.ApiList[model.Product]())
-	app.POST("/create", curd.ApiCreateHook[model.Product](curd.GenerateRandomId[model.Product](8), nil))
+	app.POST("/create", curd.ApiCreateHook[model.Product](func(m *model.Product) error {
+		value := reflect.ValueOf(m).Elem()
+		field := value.FieldByName("Id")
+		if field.Len() == 0 {
+			field.SetString(lib.RandomString(8))
+		}
+		return isExist("ID已存在", &model.Product{Id: m.Id})
+	}, nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Product]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Product](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Product](func(m *model.Product) error {
+		return isExist("ID已存在", &model.Product{Id: m.Id})
+	}, nil,
 		"id", "name", "version", "desc", "properties", "functions", "events", "parameters", "validators", "aggregators"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Product](nil, nil))
 	app.GET("/export", curd.ApiExport("product", "产品"))
