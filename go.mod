@@ -1,4 +1,4 @@
-module github.com/zgwit/iot-master/v3
+module github.com/zgwit/iot-master/v4
 
 go 1.18
 

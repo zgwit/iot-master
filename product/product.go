@@ -2,10 +2,10 @@ package product
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/v3/model"
-	"github.com/zgwit/iot-master/v3/pkg/db"
-	"github.com/zgwit/iot-master/v3/pkg/lib"
-	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/pkg/lib"
+	"github.com/zgwit/iot-master/v4/pkg/log"
 )
 
 var products lib.Map[Product]

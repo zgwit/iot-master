@@ -2,7 +2,7 @@ package aggregator
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v4/model"
 )
 
 type Aggregator interface {

@@ -3,10 +3,10 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v3/device"
-	"github.com/zgwit/iot-master/v3/model"
-	"github.com/zgwit/iot-master/v3/pkg/curd"
-	"github.com/zgwit/iot-master/v3/pkg/db"
+	"github.com/zgwit/iot-master/v4/device"
+	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/pkg/curd"
+	"github.com/zgwit/iot-master/v4/pkg/db"
 )
 
 // @Summary 查询设备数量
