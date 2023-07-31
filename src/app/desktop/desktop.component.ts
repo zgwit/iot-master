@@ -5,6 +5,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { AppService } from '../app.service';
 import { UserService } from '../user.service';
 import { PasswordComponent } from '../user/password/password.component';
+import { NzMessageService } from 'ng-zorro-antd/message';
 declare var window: any;
 
 @Component({
@@ -18,21 +19,29 @@ export class DesktopComponent {
     entries: any = [];
     items: any[] = [];
     userInfo: any;
+    showMenu = false;
+    appIndex: any = {};
     oem: any = {
         title: '物联大师',
         logo: '/assets/logo.png',
         company: '无锡真格智能科技有限公司',
-        copyright: '©2016-2023'
-    }
+        copyright: '©2016-2023',
+    };
     constructor(
         private router: Router,
         private rs: RequestService,
         private ms: NzModalService,
         private us: UserService,
-        protected _as: AppService
+        protected _as: AppService,
+        private msg: NzMessageService
     ) {
         this.userInfo = us && us.user;
-
+        this._as.apps
+            ? this._as.apps.filter((item: any, index) => {
+                  this.appIndex[item.name] = index;
+              })
+            : '';
+          
     }
     handlePassword() {
         const modal: NzModalRef = this.ms.create({
@@ -55,7 +64,7 @@ export class DesktopComponent {
                             () => {
                                 modal.destroy();
                             },
-                            () => { }
+                            () => {}
                         );
                     },
                 },
@@ -94,8 +103,7 @@ export class DesktopComponent {
                 item.tab = false;
             }
         });
-        this.setIndex(mes)
-
+        this.setIndex(mes);
     }
 
     open(app: any) {
@@ -115,15 +123,19 @@ export class DesktopComponent {
                 title: app.name,
                 index: 0,
             });
-        this.showTab(app.name)
+        this.showTab(app.name);
         this.setIndex(app.name);
-
     }
+   
 
+    setMenu(status: any, name: any) {  
+       this._as.apps[this.appIndex[name]].status = !status;
+       this.msg.success('设置成功');
+    }
     logout() {
         this.rs
             .get('logout')
-            .subscribe((res) => { })
+            .subscribe((res) => {})
             .add(() => this.router.navigateByUrl('/login'));
     }
 }

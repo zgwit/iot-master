@@ -2,7 +2,7 @@
     <nz-header class="header">
         <div class="system">
             <img class="logo" [src]="oem.logo" alt="logo" />
-            <span class="title">{{oem.title }}</span>
+            <span class="title">{{ oem.title }}</span>
         </div>
         <!-- <a nz-button nzSize="small" routerLink="/admin" style="margin-right: 5px;">
       <span nz-icon nzType="swap" nzTheme="outline"></span>
@@ -14,6 +14,7 @@
         </div>
         <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu>
+                <li nz-menu-item (click)="showMenu = true">菜单设置</li>
                 <li nz-menu-item (click)="handlePassword()">修改密码</li>
                 <li nz-menu-item (click)="logout()">退出登录</li>
             </ul>
@@ -29,7 +30,8 @@
             <nz-col
                 class="app"
                 (click)="open(app)"
-                *ngFor="let app of _as.apps;"
+                *ngFor="let app of _as.apps"
+                [hidden]="app.status"
                 [nzXs]="8"
                 [nzSm]="6"
                 [nzMd]="4"
@@ -57,7 +59,7 @@
 <div class="tab">
     <ng-container *ngFor="let item of items">
         <!-- *ngIf="item.tab" -->
-        <div class="tab-btn"  *ngIf="item.tab">
+        <div class="tab-btn" *ngIf="item.tab">
             <a (click)="showTab(item.title)"> {{ item.title }} </a>
             <a style="margin-left: 5px"
                 ><i
@@ -73,7 +75,7 @@
 
 <ng-container *ngFor="let item of items">
     <app-modal
-    [index]="item.index"
+        [index]="item.index"
         [title]="item.title"
         [show]="item.show"
         [entries]="item.entries"
@@ -83,3 +85,51 @@
     >
     </app-modal>
 </ng-container>
+
+<nz-modal
+    [(nzVisible)]="showMenu"
+    nzTitle="菜单管理"
+    (nzOnCancel)="showMenu = false;"
+    [nzFooter]="null"
+    style="background-color: rgba(0, 0, 0, 0.3)"
+>
+    <ng-container *nzModalContent>
+        <nz-table #basicTable [nzData]="_as.apps"  [nzPageSize]="5">
+            <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicTable.data; let i=index;">
+                    <td>{{ data.name }}</td>
+                    <td>
+                        <nz-tag [nzColor]="data.status ? 'red' : 'green'"
+                            >   {{ data.status ? "隐藏" : "显示" }}</nz-tag
+                        >
+                      
+                    </td>
+                    <td>
+                        <button nz-button nzType="primary" nzSize="small" (click)="setMenu(data.status,data.name)">  {{ data.status ? "显示" : "隐藏" }}</button>
+                       
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+
+        <!-- <nz-col
+          
+            *ngFor="let app of _as.apps;"
+            
+        >
+             
+            <div class="name">
+                <span class="inner">
+                    {{ app.name }}
+                </span>
+            </div>
+        </nz-col> -->
+    </ng-container>
+</nz-modal>

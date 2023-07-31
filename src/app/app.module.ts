@@ -36,7 +36,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
-
+import { NzTagModule } from 'ng-zorro-antd/tag';
 registerLocaleData(zh);
 
 //declare var window: Window;
@@ -127,6 +127,7 @@ const routes: Routes = [
         NzSpaceModule,
         ReactiveFormsModule,
         NzFormModule,
+        NzTagModule,
         NzInputModule,
         NzSwitchModule,
         NzButtonModule,
