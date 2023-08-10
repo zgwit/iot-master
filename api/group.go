@@ -261,7 +261,7 @@ func createGroupByDate(format string) gin.HandlerFunc {
 		if db.Engine.DriverName() == "sqlite" {
 			format = strings.ReplaceAll(format, "%i", "%M") //分钟表示不一致
 			//format = strings.Replace(format, "%i", "%M", 0)
-			dateFormat = "strftime('\" + format + \"', h.time)"
+			dateFormat = "strftime('" + format + "', h.time)"
 		}
 
 		var results []GroupResultTime
