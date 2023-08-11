@@ -134,7 +134,7 @@ func aggregatorRouter(app *gin.RouterGroup) {
 	app.POST("/create", curd.ApiCreateHook[model.Aggregator](curd.GenerateRandomId[model.Aggregator](8), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Aggregator]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Aggregator](nil, nil,
-		"id", "product_id", "name", "desc", "crontab", "aggregators", "disabled"))
+		"id", "product_id", "name", "desc", "crontab", "expression", "type", "assign", "disabled"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Aggregator](nil, nil))
 	app.GET("/export", curd.ApiExport("aggregator", "aggregator"))
 	app.POST("/import", curd.ApiImport("aggregator"))

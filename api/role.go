@@ -113,21 +113,12 @@ func roleRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[model.Role]())
 
-	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[model.Role](func(m *model.Role) error {
-		if err := isExist("ID已存在", &model.Role{Id: m.Id}); err != nil {
-			return err
-		}
-		if err := isExist("名称已存在", &model.Role{Name: m.Name}); err != nil {
-			return err
-		}
-		return nil
-	}, nil))
+	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[model.Role](
+		curd.GenerateRandomId[model.Role](9), nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Role]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Role](func(m *model.Role) error {
-		return isExist("名称已存在", &model.Role{Id: m.Id})
-	}, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Role](nil, nil,
 		"id", "name", "privileges"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Role](nil, nil))

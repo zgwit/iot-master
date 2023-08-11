@@ -61,7 +61,7 @@ func (d *Device) createAggregator(m *model.ModAggregator) error {
 
 func (d *Device) Build() {
 	for _, v := range d.product.Validators {
-		err := d.createValidator(&v)
+		err := d.createValidator(v)
 		if err != nil {
 			log.Error(err)
 		}
@@ -86,7 +86,7 @@ func (d *Device) Build() {
 	}
 
 	for _, v := range d.product.Aggregators {
-		err := d.createAggregator(&v)
+		err := d.createAggregator(v)
 		if err != nil {
 			log.Error(err)
 		}
