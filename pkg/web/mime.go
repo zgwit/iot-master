@@ -1,7 +1,7 @@
 package web
 
 import (
-	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v4/pkg/log"
 	"mime"
 )
 

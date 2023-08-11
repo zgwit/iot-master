@@ -3,8 +3,8 @@ package model
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/v3/pkg/bin"
-	"github.com/zgwit/iot-master/v3/pkg/convert"
+	"github.com/zgwit/iot-master/v4/pkg/bin"
+	"github.com/zgwit/iot-master/v4/pkg/convert"
 	"math"
 	"strings"
 )

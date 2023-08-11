@@ -3,9 +3,9 @@ package device
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/v3/payload"
-	"github.com/zgwit/iot-master/v3/pkg/log"
-	"github.com/zgwit/iot-master/v3/pkg/mqtt"
+	"github.com/zgwit/iot-master/v4/payload"
+	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/pkg/mqtt"
 	"strings"
 	"time"
 )
