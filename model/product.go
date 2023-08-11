@@ -8,13 +8,13 @@ type Product struct {
 	Desc    string `json:"desc,omitempty"`
 	Version string `json:"version,omitempty"`
 
-	Properties []ModProperty  `json:"properties,omitempty" xorm:"json"`
-	Functions  []ModFunction  `json:"functions,omitempty" xorm:"json"`
-	Events     []ModEvent     `json:"events,omitempty" xorm:"json"`
-	Parameters []ModParameter `json:"parameters,omitempty" xorm:"json"`
+	Properties []*ModProperty  `json:"properties,omitempty" xorm:"json"`
+	Functions  []*ModFunction  `json:"functions,omitempty" xorm:"json"`
+	Events     []*ModEvent     `json:"events,omitempty" xorm:"json"`
+	Parameters []*ModParameter `json:"parameters,omitempty" xorm:"json"`
 
-	Validators  []ModValidator  `json:"validators,omitempty" xorm:"json"`
-	Aggregators []ModAggregator `json:"aggregators,omitempty" xorm:"json"`
+	Validators  []*ModValidator  `json:"validators,omitempty" xorm:"json"`
+	Aggregators []*ModAggregator `json:"aggregators,omitempty" xorm:"json"`
 
 	Created time.Time `json:"created,omitempty" xorm:"created"`
 }
@@ -44,12 +44,12 @@ type ModProperty struct {
 }
 
 type ModFunction struct {
-	Name   string        `json:"name"`
-	Label  string        `json:"label"`
-	Desc   string        `json:"desc,omitempty"`
-	Async  bool          `json:"async"`
-	Input  []ModArgument `json:"input"`
-	Output []ModArgument `json:"output"`
+	Name   string         `json:"name"`
+	Label  string         `json:"label"`
+	Desc   string         `json:"desc,omitempty"`
+	Async  bool           `json:"async"`
+	Input  []*ModArgument `json:"input"`
+	Output []*ModArgument `json:"output"`
 }
 
 type ModArgument struct {
@@ -61,9 +61,9 @@ type ModArgument struct {
 }
 
 type ModEvent struct {
-	Name   string        `json:"name"`
-	Label  string        `json:"label"`
-	Desc   string        `json:"desc,omitempty"`
-	Type   string        `json:"type"` //info alert error //Level  uint8         `json:"level"`
-	Output []ModArgument `json:"output"`
+	Name   string         `json:"name"`
+	Label  string         `json:"label"`
+	Desc   string         `json:"desc,omitempty"`
+	Type   string         `json:"type"` //info alert error //Level  uint8         `json:"level"`
+	Output []*ModArgument `json:"output"`
 }
