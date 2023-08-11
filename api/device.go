@@ -1,7 +1,6 @@
 package api
 
 import (
-	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/device"
 	"github.com/zgwit/iot-master/v3/model"
@@ -167,20 +166,11 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[model.Device]())
 
-	app.POST("/create", curd.ApiCreateHook[model.Device](func(m *model.Device) error {
-		fun := curd.GenerateRandomId[model.Device](12)
-		if err := fun(m); err != nil {
-			return err
-		}
-		return isExist("ID已存在", &model.Device{Id: m.Id})
-
-	}, nil))
+	app.POST("/create", curd.ApiCreateHook[model.Device](curd.GenerateRandomId[model.Device](12), nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Device]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Device](func(m *model.Device) error {
-		return isExist("ID已存在", &model.Device{Id: m.Id})
-	}, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Device](nil, nil,
 		"id", "gateway_id", "product_id", "group_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Device](nil, nil))
@@ -227,16 +217,4 @@ func deviceParameters(ctx *gin.Context) {
 	//device.devices.Delete(ctx.GetString("id"))
 
 	curd.OK(ctx, nil)
-}
-func isExist(tip string, data any) (err error) {
-	exist, err := db.Engine.Exist(data)
-	if err != nil {
-		return err
-	}
-	if exist {
-		return errors.New(tip)
-	} else {
-		return nil
-	}
-
 }
