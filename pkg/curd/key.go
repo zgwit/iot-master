@@ -2,7 +2,7 @@ package curd
 
 import (
 	"github.com/google/uuid"
-	"github.com/zgwit/iot-master/v4/pkg/lib"
+	"github.com/zgwit/iot-master/v3/pkg/lib"
 	"reflect"
 )
 

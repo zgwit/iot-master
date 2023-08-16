@@ -2,7 +2,7 @@ package curd
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v3/pkg/db"
 )
 
 func ApiClear[T any]() gin.HandlerFunc {

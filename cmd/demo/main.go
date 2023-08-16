@@ -7,12 +7,13 @@ import (
 	"github.com/iot-master-contrib/modbus"
 	"github.com/iot-master-contrib/scada"
 	"github.com/iot-master-contrib/tsdb"
-	"github.com/zgwit/iot-master/v4/app"
-	"github.com/zgwit/iot-master/v4/pkg/banner"
-	"github.com/zgwit/iot-master/v4/pkg/build"
-	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/web"
+	"github.com/zgwit/iot-master/v3"
+	"github.com/zgwit/iot-master/v3/app"
+	"github.com/zgwit/iot-master/v3/pkg/banner"
+	"github.com/zgwit/iot-master/v3/pkg/build"
+	"github.com/zgwit/iot-master/v3/pkg/db"
+	"github.com/zgwit/iot-master/v3/pkg/log"
+	"github.com/zgwit/iot-master/v3/pkg/web"
 )
 
 func main() {

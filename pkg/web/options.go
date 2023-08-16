@@ -1,8 +1,8 @@
 package web
 
 import (
-	"github.com/zgwit/iot-master/v4/pkg/config"
-	"github.com/zgwit/iot-master/v4/pkg/env"
+	"github.com/zgwit/iot-master/v3/pkg/config"
+	"github.com/zgwit/iot-master/v3/pkg/env"
 )
 
 // Options 参数

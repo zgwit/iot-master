@@ -2,10 +2,10 @@ package device
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/payload"
-	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/pkg/mqtt"
+	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/payload"
+	"github.com/zgwit/iot-master/v3/pkg/db"
+	"github.com/zgwit/iot-master/v3/pkg/mqtt"
 )
 
 type sub struct {

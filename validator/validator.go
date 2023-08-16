@@ -3,9 +3,9 @@ package validator
 import (
 	"context"
 	"github.com/PaesslerAG/gval"
-	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/calc"
-	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/pkg/calc"
+	"github.com/zgwit/iot-master/v3/pkg/log"
 	"time"
 )
 

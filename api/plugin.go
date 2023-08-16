@@ -3,9 +3,9 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
-	"github.com/zgwit/iot-master/v4/plugin"
+	"github.com/zgwit/iot-master/v3/model"
+	"github.com/zgwit/iot-master/v3/pkg/curd"
+	"github.com/zgwit/iot-master/v3/plugin"
 )
 
 // @Summary 查询插件
