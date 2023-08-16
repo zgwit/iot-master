@@ -6,6 +6,7 @@ import { AppService } from '../app.service';
 import { UserService } from '../user.service';
 import { PasswordComponent } from '../user/password/password.component';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { OemService } from './../oem.service';
 declare var window: any;
 
 @Component({
@@ -33,7 +34,8 @@ export class DesktopComponent {
         private ms: NzModalService,
         private us: UserService,
         protected _as: AppService,
-        private msg: NzMessageService
+        private msg: NzMessageService,
+        protected os: OemService
     ) {
         this.userInfo = us && us.user;
         this._as.apps

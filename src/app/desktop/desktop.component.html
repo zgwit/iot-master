@@ -1,8 +1,8 @@
 <nz-layout class="layout">
     <nz-header class="header">
         <div class="system">
-            <img class="logo" [src]="oem.logo" alt="logo" />
-            <span class="title">{{ oem.title }}</span>
+            <img class="logo" [src]="os.oem.logo" alt="logo" />
+            <span class="title">{{ os.oem.title }}</span>
         </div>
         <!-- <a nz-button nzSize="small" routerLink="/admin" style="margin-right: 5px;">
       <span nz-icon nzType="swap" nzTheme="outline"></span>
@@ -52,7 +52,7 @@
     </nz-content>
 
     <nz-footer class="footer">
-        {{ oem.company }} {{ oem.copyright }}
+        {{ os.oem.company }} {{ os.oem.copyright }}
     </nz-footer>
 </nz-layout>
 
