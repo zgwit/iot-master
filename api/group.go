@@ -190,12 +190,13 @@ type GroupResultDate struct {
 }
 
 type ParamGroup struct {
-	Point string `form:"point" json:"point"` //数据点位
-	Start string `form:"start" json:"start"` //起始时间
-	End   string `form:"end" json:"end"`     //结束时间
-	Type  string `form:"type" json:"type"`   //设备类型
-	Area  string `form:"area" json:"area"`   //设备区域
-	Group string `form:"group" json:"group"` //设备分组
+	Device string `form:"device" json:"device"` //设备ID
+	Point  string `form:"point" json:"point"`   //数据点位
+	Start  string `form:"start" json:"start"`   //起始时间
+	End    string `form:"end" json:"end"`       //结束时间
+	Type   string `form:"type" json:"type"`     //设备类型
+	Area   string `form:"area" json:"area"`     //设备区域
+	Group  string `form:"group" json:"group"`   //设备分组
 }
 
 // @Summary 原始数据按时间统计
@@ -229,6 +230,9 @@ func groupHistory(ctx *gin.Context) {
 		if param.Group != "" {
 			query.And("d.group_id = ?", param.Group)
 		}
+	}
+	if param.Device != "" {
+		query.And("h.device_id = ?", param.Device)
 	}
 	query.And("h.point = ?", param.Point)
 	if param.Start != "" {
@@ -281,6 +285,9 @@ func createGroupByDate(format string) gin.HandlerFunc {
 			}
 		}
 
+		if param.Device != "" {
+			query.And("h.device_id = ?", param.Device)
+		}
 		query.And("h.point = ?", param.Point)
 		if param.Start != "" {
 			query.And("h.time >= ?", param.Start)
