@@ -9,8 +9,6 @@ import (
 
 func groupRouter(app *gin.RouterGroup) {
 
-	app.GET("", groupHistory)
-
 	app.GET("/year", createGroupByDate("%Y"))
 
 	app.GET("/month", createGroupByDate("%Y-%m"))
@@ -199,57 +197,6 @@ type ParamGroup struct {
 	Group  string `form:"group" json:"group"`   //设备分组
 }
 
-// @Summary 原始数据按时间统计
-// @Schemes
-// @Description 原始数据按时间统计
-// @Tags group
-// @Param search query ParamGroup true "数据点"
-// @Produce json
-// @Success 200 {object} curd.ReplyData[GroupResult] 返回统计数据
-// @Router /history/group [get]
-func groupHistory(ctx *gin.Context) {
-	var param ParamGroup
-	err := ctx.ShouldBindQuery(&param)
-	if err != nil {
-		curd.Error(ctx, err)
-		return
-	}
-
-	var results []GroupResultDate
-	query := db.Engine.Table([]string{"history", "h"}).
-		Select("h.time, sum(h.value) as total")
-	if param.Type != "" || param.Area != "" || param.Group != "" {
-		query.Join("INNER", []string{"device", "d"}, "d.id = h.device_id")
-
-		if param.Type != "" {
-			query.And("d.type_id = ?", param.Type)
-		}
-		if param.Area != "" {
-			query.And("d.area_id = ?", param.Area)
-		}
-		if param.Group != "" {
-			query.And("d.group_id = ?", param.Group)
-		}
-	}
-	if param.Device != "" {
-		query.And("h.device_id = ?", param.Device)
-	}
-	query.And("h.point = ?", param.Point)
-	if param.Start != "" {
-		query.And("h.time >= ?", param.Start)
-	}
-	if param.End != "" {
-		query.And("h.time <= ?", param.End)
-	}
-	err = query.GroupBy("time").Find(&results)
-	if err != nil {
-		curd.Error(ctx, err)
-		return
-	}
-
-	curd.OK(ctx, results)
-}
-
 func createGroupByDate(format string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var param ParamGroup
@@ -268,7 +215,7 @@ func createGroupByDate(format string) gin.HandlerFunc {
 			dateFormat = "strftime('" + format + "', h.time)"
 		}
 
-		var results []GroupResultTime
+		var results []GroupResultDate
 		query := db.Engine.Table([]string{"history", "h"}).
 			Select(dateFormat + " as date, sum(h.value) as total")
 		if param.Type != "" || param.Area != "" || param.Group != "" {
