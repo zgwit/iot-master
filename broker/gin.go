@@ -38,32 +38,38 @@ func GinHandler(ctx *gin.Context) {
 type wsConn struct {
 	net.Conn
 	Raw *websocket.Conn
+	r   io.Reader
 }
 
 // Read reads the next span of bytes from the websocket connection and returns the number of bytes read.
 func (ws *wsConn) Read(p []byte) (int, error) {
-	op, r, err := ws.Raw.NextReader()
-	if err != nil {
-		return 0, err
+	if ws.r == nil {
+		op, r, err := ws.Raw.NextReader()
+		if err != nil {
+			return 0, err
+		}
+
+		if op != websocket.BinaryMessage {
+			err = errors.New("must be binary")
+			return 0, err
+		}
+
+		ws.r = r
 	}
 
-	if op != websocket.BinaryMessage {
-		err = errors.New("must be binary")
-		return 0, err
-	}
-
+	var err error
 	var n, br int
 	for {
-		br, err = r.Read(p[n:])
+		br, err = ws.r.Read(p[n:])
 		n += br
-		
+
 		if err != nil {
 			if errors.Is(err, io.EOF) {
 				err = nil
 			}
 			return n, err
 		}
-		
+
 		if n == len(p) {
 			return n, err
 		}
