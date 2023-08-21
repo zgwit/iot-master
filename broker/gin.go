@@ -56,10 +56,15 @@ func (ws *wsConn) Read(p []byte) (int, error) {
 	for {
 		br, err = r.Read(p[n:])
 		n += br
+		
 		if err != nil {
 			if errors.Is(err, io.EOF) {
 				err = nil
 			}
+			return n, err
+		}
+		
+		if n == len(p) {
 			return n, err
 		}
 	}
