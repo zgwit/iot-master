@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/PaesslerAG/gval v1.2.2
 	github.com/denisenkom/go-mssqldb v0.12.3
-	github.com/eclipse/paho.mqtt.golang v1.4.3
+	github.com/eclipse/paho.mqtt.golang v1.4.2
 	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-contrib/gzip v0.0.6
 	github.com/gin-contrib/sessions v0.0.5
@@ -23,7 +23,7 @@ require (
 	github.com/iot-master-contrib/tsdb v1.0.1
 	github.com/kardianos/service v1.2.2
 	github.com/lib/pq v1.10.9
-	github.com/mochi-co/mqtt/v2 v2.2.15
+	github.com/mochi-co/mqtt/v2 v2.2.13
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/sirupsen/logrus v1.9.3
@@ -100,7 +100,6 @@ require (
 	github.com/xuri/excelize/v2 v2.7.1 // indirect
 	github.com/xuri/nfp v0.0.0-20230503010013-3f38cdbb0b83 // indirect
 	github.com/yusufpapurcu/wmi v1.2.3 // indirect
-	github.com/zgwit/iot-master/v3 v3.4.6 // indirect
 	go.bug.st/serial v1.5.0 // indirect
 	golang.org/x/arch v0.4.0 // indirect
 	golang.org/x/crypto v0.11.0 // indirect
