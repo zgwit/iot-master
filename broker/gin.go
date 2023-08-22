@@ -64,6 +64,7 @@ func (ws *wsConn) Read(p []byte) (int, error) {
 		n += br
 
 		if err != nil {
+			ws.r = nil
 			if errors.Is(err, io.EOF) {
 				err = nil
 			}
