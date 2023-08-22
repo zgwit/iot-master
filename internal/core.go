@@ -1,7 +1,6 @@
 package internal
 
 import (
-	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v3/aggregator"
 	"github.com/zgwit/iot-master/v3/broker"
 	"github.com/zgwit/iot-master/v3/config"
@@ -10,11 +9,8 @@ import (
 	"github.com/zgwit/iot-master/v3/pkg/db"
 	"github.com/zgwit/iot-master/v3/pkg/log"
 	"github.com/zgwit/iot-master/v3/pkg/mqtt"
-	"github.com/zgwit/iot-master/v3/pkg/vconn"
 	"github.com/zgwit/iot-master/v3/plugin"
 	"github.com/zgwit/iot-master/v3/product"
-	"net"
-	"net/url"
 )
 
 func Open() error {
@@ -57,28 +53,34 @@ func Open() error {
 		return err
 	}
 
-	if broker.Server != nil {
-		err = mqtt.OpenBy(
-			func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
-				c1, c2 := vconn.New()
-				//EstablishConnection会读取connect，导致拥堵
-				go func() {
-					err := broker.Server.EstablishConnection("internal", c1)
-					if err != nil {
-						log.Error(err)
-					}
-				}()
-				return c2, nil
-			})
-		if err != nil {
-			return err
-		}
-	} else {
-		//MQTT总线
-		err = mqtt.Open()
-		if err != nil {
-			return err
-		}
+	//if broker.Server != nil {
+	//	err = mqtt.OpenBy(
+	//		func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
+	//			c1, c2 := vconn.New()
+	//			//EstablishConnection会读取connect，导致拥堵
+	//			go func() {
+	//				err := broker.Server.EstablishConnection("internal", c1)
+	//				if err != nil {
+	//					log.Error(err)
+	//				}
+	//			}()
+	//			return c2, nil
+	//		})
+	//	if err != nil {
+	//		return err
+	//	}
+	//} else {
+	//	//MQTT总线
+	//	err = mqtt.Open()
+	//	if err != nil {
+	//		return err
+	//	}
+	//}
+
+	//临时关掉内部连接
+	err = mqtt.Open()
+	if err != nil {
+		return err
 	}
 
 	err = product.LoadAll()
