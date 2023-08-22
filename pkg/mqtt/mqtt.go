@@ -2,6 +2,9 @@ package mqtt
 
 import (
 	"encoding/json"
+	"fmt"
+	"time"
+
 	paho "github.com/eclipse/paho.mqtt.golang"
 )
 
@@ -14,7 +17,9 @@ func Close() {
 func Open() error {
 	opts := paho.NewClientOptions()
 	opts.AddBroker(options.Url)
-	opts.SetClientID(options.ClientId)
+	// opts.SetClientID(options.ClientId)
+	opts.SetClientID(fmt.Sprintf("%d", time.Now().Unix()))
+
 	opts.SetUsername(options.Username)
 	opts.SetPassword(options.Password)
 	opts.SetConnectRetry(true) //重试
@@ -57,7 +62,23 @@ func PublishRaw(topic string, payload []byte, retain bool, qos byte) error {
 
 func Publish(topic string, payload any) paho.Token {
 	bytes, _ := json.Marshal(payload)
-	return Client.Publish(topic, 0, false, bytes)
+	token := Client.Publish(topic, 0, false, bytes)
+
+	timer := time.Now().Unix()
+	token.WaitTimeout(5 * time.Second)
+	time_internal := time.Now().Unix() - timer
+
+	if time_internal >= 4 {
+		Client.Disconnect(5000)
+
+		timer := time.Now().Unix()
+		Open()
+		time_internal := time.Now().Unix() - timer
+
+		fmt.Println("[connect internal]", time_internal)
+	}
+
+	return token
 }
 
 type Handler func(topic string, payload []byte)
