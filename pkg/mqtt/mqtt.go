@@ -22,6 +22,20 @@ func Open() error {
 	//重连时，恢复订阅
 	opts.SetCleanSession(false)
 	opts.SetResumeSubs(true)
+	
+	//加上订阅处理
+	opts.SetOnConnectHandler(func(client paho.Client) {
+		for topic, _ := range subs {
+			Client.Subscribe(topic, 0, func(client paho.Client, message paho.Message) {
+				//依次处理回调
+				if cbs, ok := subs[topic]; ok {
+					for _, cb := range cbs {
+						cb(message.Topic(), message.Payload())
+					}
+				}
+			})
+		}
+	})
 
 	Client = paho.NewClient(opts)
 	token := Client.Connect()
