@@ -17,16 +17,34 @@ func Close() {
 func Open() error {
 	opts := paho.NewClientOptions()
 	opts.AddBroker(options.Url)
-	// opts.SetClientID(options.ClientId)
-	opts.SetClientID(fmt.Sprintf("%d", time.Now().Unix()))
-
+	opts.SetClientID(options.ClientId)
 	opts.SetUsername(options.Username)
 	opts.SetPassword(options.Password)
 	opts.SetConnectRetry(true) //重试
 
+	opts.SetKeepAlive(20)
+
 	//重连时，恢复订阅
 	opts.SetCleanSession(false)
 	opts.SetResumeSubs(true)
+
+	//加上订阅处理
+	opts.SetOnConnectHandler(func(client paho.Client) {
+
+		for topic, _ := range subs {
+			Client.Subscribe(topic, 0, func(client paho.Client, message paho.Message) {
+
+				go func() {
+					//依次处理回调
+					if cbs, ok := subs[topic]; ok {
+						for _, cb := range cbs {
+							cb(message.Topic(), message.Payload())
+						}
+					}
+				}()
+			})
+		}
+	})
 
 	Client = paho.NewClient(opts)
 	token := Client.Connect()
@@ -63,21 +81,14 @@ func PublishRaw(topic string, payload []byte, retain bool, qos byte) error {
 func Publish(topic string, payload any) paho.Token {
 	bytes, _ := json.Marshal(payload)
 	token := Client.Publish(topic, 0, false, bytes)
-
-	timer := time.Now().Unix()
+	time_begin := time.Now().Unix()
 	token.WaitTimeout(5 * time.Second)
-	time_internal := time.Now().Unix() - timer
+	time_end := time.Now().Unix()
 
-	if time_internal >= 4 {
-		Client.Disconnect(5000)
-
-		timer := time.Now().Unix()
-		Open()
-		time_internal := time.Now().Unix() - timer
-
-		fmt.Println("[connect internal]", time_internal)
+	if time_end-time_begin >= 4 {
+		// Open()
+		fmt.Println("[timeout]", time_end-time_begin)
 	}
-
 	return token
 }
 
@@ -91,12 +102,15 @@ func Subscribe(topic string, cb Handler) paho.Token {
 
 		//统一回调
 		Client.Subscribe(topic, 0, func(client paho.Client, message paho.Message) {
-			//依次处理回调
-			if cbs, ok := subs[topic]; ok {
-				for _, cb := range cbs {
-					cb(message.Topic(), message.Payload())
+
+			go func() {
+				//依次处理回调
+				if cbs, ok := subs[topic]; ok {
+					for _, cb := range cbs {
+						cb(message.Topic(), message.Payload())
+					}
 				}
-			}
+			}()
 		})
 	} else {
 		subs[topic] = append(cbs, cb)
