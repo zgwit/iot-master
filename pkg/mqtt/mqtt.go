@@ -2,6 +2,9 @@ package mqtt
 
 import (
 	"encoding/json"
+	"fmt"
+	"time"
+
 	paho "github.com/eclipse/paho.mqtt.golang"
 )
 
@@ -19,20 +22,27 @@ func Open() error {
 	opts.SetPassword(options.Password)
 	opts.SetConnectRetry(true) //重试
 
+	opts.SetKeepAlive(20)
+
 	//重连时，恢复订阅
 	opts.SetCleanSession(false)
 	opts.SetResumeSubs(true)
-	
+
 	//加上订阅处理
 	opts.SetOnConnectHandler(func(client paho.Client) {
+
 		for topic, _ := range subs {
 			Client.Subscribe(topic, 0, func(client paho.Client, message paho.Message) {
-				//依次处理回调
-				if cbs, ok := subs[topic]; ok {
-					for _, cb := range cbs {
-						cb(message.Topic(), message.Payload())
+
+				go func() {
+
+					//依次处理回调
+					if cbs, ok := subs[topic]; ok {
+						for _, cb := range cbs {
+							cb(message.Topic(), message.Payload())
+						}
 					}
-				}
+				}()
 			})
 		}
 	})
@@ -71,7 +81,16 @@ func PublishRaw(topic string, payload []byte, retain bool, qos byte) error {
 
 func Publish(topic string, payload any) paho.Token {
 	bytes, _ := json.Marshal(payload)
-	return Client.Publish(topic, 0, false, bytes)
+	token := Client.Publish(topic, 0, false, bytes)
+	time_begin := time.Now().Unix()
+	token.WaitTimeout(5 * time.Second)
+	time_end := time.Now().Unix()
+
+	if time_end-time_begin >= 4 {
+		// Open()
+		fmt.Println("[timeout]", time_end-time_begin)
+	}
+	return token
 }
 
 type Handler func(topic string, payload []byte)
@@ -84,12 +103,15 @@ func Subscribe(topic string, cb Handler) paho.Token {
 
 		//统一回调
 		Client.Subscribe(topic, 0, func(client paho.Client, message paho.Message) {
-			//依次处理回调
-			if cbs, ok := subs[topic]; ok {
-				for _, cb := range cbs {
-					cb(message.Topic(), message.Payload())
+
+			go func() {
+				//依次处理回调
+				if cbs, ok := subs[topic]; ok {
+					for _, cb := range cbs {
+						cb(message.Topic(), message.Payload())
+					}
 				}
-			}
+			}()
 		})
 	} else {
 		subs[topic] = append(cbs, cb)
