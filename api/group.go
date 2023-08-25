@@ -1,10 +1,11 @@
 package api
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v3/pkg/curd"
 	"github.com/zgwit/iot-master/v3/pkg/db"
-	"strings"
 )
 
 func groupRouter(app *gin.RouterGroup) {
@@ -212,7 +213,7 @@ func createGroupByDate(format string) gin.HandlerFunc {
 		if db.Engine.DriverName() == "sqlite" {
 			format = strings.ReplaceAll(format, "%i", "%M") //分钟表示不一致
 			//format = strings.Replace(format, "%i", "%M", 0)
-			dateFormat = "strftime('" + format + "', h.time)"
+			dateFormat = "strftime('" + format + "', h.time,'localtime')"
 		}
 
 		var results []GroupResultDate
