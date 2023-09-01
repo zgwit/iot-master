@@ -58,7 +58,7 @@ func Open() error {
 	}
 
 	if broker.Server != nil {
-		err = mqtt.OpenBy(
+		token := mqtt.OpenBy(
 			func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
 				c1, c2 := vconn.New()
 				//EstablishConnection会读取connect，导致拥堵
@@ -70,12 +70,16 @@ func Open() error {
 				}()
 				return c2, nil
 			})
+		token.Wait()
+		err = token.Error()
 		if err != nil {
 			return err
 		}
 	} else {
 		//MQTT总线
-		err = mqtt.Open()
+		token := mqtt.Open()
+		token.Wait()
+		err = token.Error()
 		if err != nil {
 			return err
 		}

@@ -11,7 +11,7 @@ import (
 )
 
 func SubscribeProperty() error {
-	mqtt.SubscribeJson("up/property/+/+", func(topic string, values map[string]any) {
+	mqtt.Subscribe[map[string]any]("up/property/+/+", func(topic string, values *map[string]any) {
 		topics := strings.Split(topic, "/")
 		//pid := topics[2]
 		id := topics[3]
@@ -27,7 +27,7 @@ func SubscribeProperty() error {
 		//for k, v := range values {
 		//	dev.Values[k] = v
 		//}
-		dev.Push(values)
+		dev.Push(*values)
 
 		dev.Online = true
 		dev.Values["$online"] = true

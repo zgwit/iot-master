@@ -48,7 +48,7 @@ func Startup(engine *web.Engine) error {
 	engine.GET("/mqtt", broker.GinBridge)
 
 	//监听插件
-	mqtt.SubscribeStruct[model.App]("master/register", func(topic string, a *model.App) {
+	mqtt.Subscribe[model.App]("master/register", func(topic string, a *model.App) {
 		log.Info("app register ", a.Id, " ", a.Name, " ", a.Type, " ", a.Address)
 		app.Applications.Store(a.Id, a)
 

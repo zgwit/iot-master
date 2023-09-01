@@ -9,7 +9,7 @@ import (
 )
 
 func SubscribeOnline() error {
-	mqtt.Subscribe("online/+/+", func(topic string, payload []byte) {
+	mqtt.Subscribe[any]("online/+/+", func(topic string, _ *any) {
 		topics := strings.Split(topic, "/")
 		//pid := topics[1]
 		id := topics[2]
@@ -23,7 +23,7 @@ func SubscribeOnline() error {
 		dev.Values["$online"] = true
 	})
 
-	mqtt.Subscribe("offline/+/+", func(topic string, payload []byte) {
+	mqtt.Subscribe[any]("offline/+/+", func(topic string, _ *any) {
 		topics := strings.Split(topic, "/")
 		pid := topics[1]
 		id := topics[2]

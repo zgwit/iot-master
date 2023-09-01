@@ -10,7 +10,7 @@ import (
 )
 
 func SubscribeEvent() error {
-	mqtt.SubscribeStruct[payload.Event]("up/event/+/+", func(topic string, event *payload.Event) {
+	mqtt.Subscribe[payload.Event]("up/event/+/+", func(topic string, event *payload.Event) {
 		topics := strings.Split(topic, "/")
 		//pid := topics[2]
 		id := topics[3]

@@ -9,16 +9,16 @@ import (
 
 func SubscribeMaster() error {
 	//注册应用
-	mqtt.SubscribeStruct[model.App]("master/register", func(topic string, app *model.App) {
+	mqtt.Subscribe[model.App]("master/register", func(topic string, app *model.App) {
 		log.Info("app register ", app.Id, " ", app.Name, " ", app.Type, " ", app.Address)
 		app2.Applications.Store(app.Id, app)
 	})
 
 	//反注册
-	mqtt.Subscribe("master/unregister", func(topic string, payload []byte) {
-		id := string(payload)
-		app2.Applications.Delete(id)
-	})
+	//mqtt.Subscribe[any]("master/unregister", func(topic string, payload *any) {
+	//	id := string(payload)
+	//	app2.Applications.Delete(id)
+	//})
 
 	return nil
 }
