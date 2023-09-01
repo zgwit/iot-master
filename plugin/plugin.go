@@ -7,7 +7,6 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/lib"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/mqtt"
-	"github.com/zgwit/iot-master/v4/pkg/oem"
 	"github.com/zgwit/iot-master/v4/pkg/web"
 	"os"
 	"runtime"
@@ -39,10 +38,6 @@ func (p *Plugin) generateEnv(addr string) []string {
 
 	d := db.GetOptions()
 	s = d.ToEnv()
-	ret = append(ret, s...)
-
-	o := oem.GetOptions()
-	s = o.ToEnv()
 	ret = append(ret, s...)
 
 	m := mqtt.GetOptions()

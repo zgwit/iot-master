@@ -6,7 +6,6 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/mqtt"
-	"github.com/zgwit/iot-master/v4/pkg/oem"
 	"github.com/zgwit/iot-master/v4/pkg/web"
 )
 
@@ -40,43 +39,6 @@ func configSetWeb(ctx *gin.Context) {
 	}
 	web.SetOptions(conf)
 	err = web.Store()
-	if err != nil {
-		curd.Error(ctx, err)
-		return
-	}
-	curd.OK(ctx, nil)
-}
-
-// @Summary 查询OEM配置
-// @Schemes
-// @Description 查询OEM配置
-// @Tags config
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[oem.Options] 返回OEM配置
-// @Router /config/oem [get]
-func configGetOem(ctx *gin.Context) {
-	curd.OK(ctx, oem.GetOptions())
-}
-
-// @Summary 修改OEM配置
-// @Schemes
-// @Description 修改OEM配置
-// @Tags config
-// @Param cfg body oem.Options true "OEM配置"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int]
-// @Router /config/oem [post]
-func configSetOem(ctx *gin.Context) {
-	var conf oem.Options
-	err := ctx.BindJSON(&conf)
-	if err != nil {
-		curd.Error(ctx, err)
-		return
-	}
-	oem.SetOptions(conf)
-	err = oem.Store()
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -200,9 +162,6 @@ func configRouter(app *gin.RouterGroup) {
 
 	app.POST("/web", configSetWeb)
 	app.GET("/web", configGetWeb)
-
-	app.POST("/oem", configSetOem)
-	app.GET("/oem", configGetOem)
 
 	app.POST("/log", configSetLog)
 	app.GET("/log", configGetLog)

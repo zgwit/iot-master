@@ -1,6 +1,8 @@
 package log
 
 import (
+	"bytes"
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"os"
 )
@@ -11,19 +13,48 @@ func Open() error {
 		logrus.SetReportCaller(true)
 	}
 
-	logrus.SetFormatter(&logrus.TextFormatter{})
+	logrus.SetFormatter(&formatter{})
 
-	// Output to stdout instead of the default stderr
-	// Can be any io.Writer, see below for File example
 	logrus.SetOutput(os.Stdout)
+	//TODO 日志文件
 
-	// Only log the warning severity or above.
 	level, err := logrus.ParseLevel(options.Level)
 	if err != nil {
 		return err
 	}
 	logrus.SetLevel(level)
+
 	return nil
+}
+
+type formatter struct {
+}
+
+func (f *formatter) Format(entry *logrus.Entry) ([]byte, error) {
+	var b *bytes.Buffer
+	if entry.Buffer != nil {
+		b = entry.Buffer
+	} else {
+		b = &bytes.Buffer{}
+	}
+
+	//打印时间
+	b.WriteString(fmt.Sprintf("%s [%s]", entry.Time.Format("2006-01-02 15:04:05"), entry.Level.String()))
+
+	//打印文件
+	if entry.Caller != nil {
+		b.WriteString(fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line))
+	}
+
+	//打印值
+	for k, v := range entry.Data {
+		b.WriteByte(' ')
+		b.WriteString(k)
+		b.WriteString("=>")
+		b.WriteString(fmt.Sprint(v))
+	}
+
+	return b.Bytes(), nil
 }
 
 type Fields = logrus.Fields

@@ -9,21 +9,19 @@ import (
 type Options struct {
 	Level  string `json:"level"`
 	Caller bool   `json:"caller,omitempty"`
-	Text   bool   `json:"text,omitempty"`
 }
 
 func Default() Options {
 	return Options{
 		Level:  "trace",
 		Caller: true,
-		Text:   true,
 	}
 }
 
 var options Options = Default()
-var configure = config.AppName() + ".log.yaml"
+var configure = "log"
 
-const ENV = "IOT_MASTER_LOG_"
+const ENV = config.ENV_PREFIX + "LOG_"
 
 func GetOptions() Options {
 	return options
@@ -41,7 +39,6 @@ func init() {
 func (options *Options) FromEnv() {
 	options.Level = env.Get(ENV+"LEVEL", options.Level)
 	options.Caller = env.GetBool(ENV+"CALLER", options.Caller)
-	options.Text = env.GetBool(ENV+"TEXT", options.Text)
 }
 
 func (options *Options) ToEnv() []string {
@@ -51,9 +48,6 @@ func (options *Options) ToEnv() []string {
 	}
 	if options.Caller {
 		ret = append(ret, ENV+"CALLER=TRUE")
-	}
-	if options.Text {
-		ret = append(ret, ENV+"TEXT=TRUE")
 	}
 	return ret
 }

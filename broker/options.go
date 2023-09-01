@@ -12,9 +12,9 @@ type Options struct {
 }
 
 var options Options = Default()
-var configure = config.AppName() + ".broker.yaml"
+var configure = "broker"
 
-const ENV = "IOT_MASTER_BROKER_"
+const ENV = config.ENV_PREFIX + "BROKER_"
 
 func GetOptions() Options {
 	return options

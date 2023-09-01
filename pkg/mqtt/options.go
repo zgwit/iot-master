@@ -13,9 +13,9 @@ type Options struct {
 }
 
 var options Options = Default()
-var configure = config.AppName() + ".mqtt.yaml"
+var configure = "mqtt"
 
-const ENV = "IOT_MASTER_MQTT_"
+const ENV = config.ENV_PREFIX + "MQTT_"
 
 func GetOptions() Options {
 	return options

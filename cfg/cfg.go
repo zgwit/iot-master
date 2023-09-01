@@ -1,11 +1,10 @@
-package config
+package cfg
 
 import (
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/mqtt"
-	"github.com/zgwit/iot-master/v4/pkg/oem"
 	"github.com/zgwit/iot-master/v4/pkg/web"
 )
 
@@ -13,7 +12,6 @@ import (
 func Load() {
 	_ = log.Load()
 	_ = web.Load()
-	_ = oem.Load()
 	_ = db.Load()
 	_ = mqtt.Load()
 	_ = broker.Load()

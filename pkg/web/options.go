@@ -23,9 +23,9 @@ func Default() Options {
 }
 
 var options Options = Default()
-var configure = config.AppName() + ".web.yaml"
+var configure = "web"
 
-const ENV = "IOT_MASTER_WEB_"
+const ENV = config.ENV_PREFIX + "WEB_"
 
 func GetOptions() Options {
 	return options

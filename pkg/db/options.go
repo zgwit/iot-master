@@ -16,17 +16,17 @@ type Options struct {
 
 func Default() Options {
 	return Options{
-		Type:     "sqlite",                 //"mysql",
-		URL:      config.AppName() + ".db", //"root:root@tcp(localhost:3306)/master?charset=utf8",
+		Type:     "mysql",
+		URL:      "root:root@tcp(localhost:3306)/master?charset=utf8",
 		Debug:    false,
 		LogLevel: 2,
 	}
 }
 
 var options Options = Default()
-var configure = config.AppName() + ".database.yaml"
+var configure = "database"
 
-const ENV = "IOT_MASTER_DATABASE_"
+const ENV = config.ENV_PREFIX + "DATABASE_"
 
 func GetOptions() Options {
 	return options

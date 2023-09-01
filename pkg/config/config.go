@@ -1,12 +1,16 @@
 package config
 
 import (
+	"fmt"
 	"gopkg.in/yaml.v3"
 	"os"
 	"path/filepath"
 )
 
 var ROOT string
+
+const ENV_PREFIX = "IOT_MASTER_"
+const EXT = ".yaml"
 
 func init() {
 	var err error
@@ -15,11 +19,13 @@ func init() {
 		ROOT = ""
 	} else {
 		ROOT = filepath.Join(ROOT, "iot-master")
+		_ = os.MkdirAll(ROOT, os.ModePerm)
 	}
+	fmt.Println("配置文件根目录", ROOT)
 }
 
 func Load(name string, cfg any) error {
-	fn := filepath.Join(ROOT, name)
+	fn := filepath.Join(ROOT, name+EXT)
 	y, err := os.Open(fn)
 	if err != nil {
 		return err
@@ -36,7 +42,7 @@ func Load(name string, cfg any) error {
 }
 
 func Store(name string, cfg any) error {
-	fn := filepath.Join(ROOT, name)
+	fn := filepath.Join(ROOT, name+EXT)
 	y, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0755) //os.Create(name)
 	if err != nil {
 		return err

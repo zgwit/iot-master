@@ -4,7 +4,7 @@ import (
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v4/aggregator"
 	"github.com/zgwit/iot-master/v4/broker"
-	"github.com/zgwit/iot-master/v4/config"
+	"github.com/zgwit/iot-master/v4/cfg"
 	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/pkg/db"
@@ -19,7 +19,7 @@ import (
 
 func Open() error {
 
-	config.Load()
+	cfg.Load()
 
 	err := log.Open()
 	if err != nil {
