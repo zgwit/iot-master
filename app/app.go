@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/pkg/lib"
-	"github.com/zgwit/iot-master/v4/pkg/web"
+	"github.com/zgwit/iot-master/v4/web"
 	"net/http/httputil"
 )
 

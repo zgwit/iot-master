@@ -2,12 +2,12 @@ package plugin
 
 import (
 	"fmt"
+	db2 "github.com/zgwit/iot-master/v4/db"
+	log2 "github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/pkg/lib"
-	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/mqtt"
-	"github.com/zgwit/iot-master/v4/pkg/web"
+	"github.com/zgwit/iot-master/v4/web"
 	"os"
 	"runtime"
 )
@@ -32,11 +32,11 @@ type Plugin struct {
 func (p *Plugin) generateEnv(addr string) []string {
 	ret := os.Environ()
 
-	l := log.GetOptions()
+	l := log2.GetOptions()
 	s := l.ToEnv()
 	ret = append(ret, s...)
 
-	d := db.GetOptions()
+	d := db2.GetOptions()
 	s = d.ToEnv()
 	ret = append(ret, s...)
 
@@ -85,7 +85,7 @@ func (p *Plugin) Start() error {
 	go func() {
 		state, err := p.Process.Wait()
 		p.Running = false
-		log.Info(state.ExitCode(), err)
+		log2.Info(state.ExitCode(), err)
 
 		//异常退出，重新启动
 		if p.stop {
@@ -94,7 +94,7 @@ func (p *Plugin) Start() error {
 
 		err = p.Start()
 		if err != nil {
-			log.Error(err)
+			log2.Error(err)
 			return
 		}
 	}()
@@ -134,7 +134,7 @@ func Get(id string) *Plugin {
 
 func Load(id string) error {
 	var p model.Plugin
-	get, err := db.Engine.ID(id).Get(&p)
+	get, err := db2.Engine.ID(id).Get(&p)
 	if err != nil {
 		return err
 	}
@@ -161,7 +161,7 @@ func From(model *model.Plugin) error {
 func LoadAll() error {
 	//开机加载所有插件
 	var ps []*model.Plugin
-	err := db.Engine.Find(&ps)
+	err := db2.Engine.Find(&ps)
 	if err != nil {
 		return err
 	}
@@ -172,7 +172,7 @@ func LoadAll() error {
 		}
 		err = From(p)
 		if err != nil {
-			log.Error(err)
+			log2.Error(err)
 			//return err
 		}
 	}

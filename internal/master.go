@@ -2,9 +2,9 @@ package internal
 
 import (
 	app2 "github.com/zgwit/iot-master/v4/app"
+	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/mqtt"
+	"github.com/zgwit/iot-master/v4/mqtt"
 )
 
 func SubscribeMaster() error {
