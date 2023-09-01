@@ -12,6 +12,7 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/mqtt"
 	"github.com/zgwit/iot-master/v4/pkg/vconn"
 	"github.com/zgwit/iot-master/v4/plugin"
+	"github.com/zgwit/iot-master/v4/pool"
 	"github.com/zgwit/iot-master/v4/product"
 	"net"
 	"net/url"
@@ -28,6 +29,12 @@ func Open() error {
 
 	//加载数据库
 	err = db.Open()
+	if err != nil {
+		return err
+	}
+
+	//线程池
+	err = pool.Open()
 	if err != nil {
 		return err
 	}

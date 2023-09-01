@@ -3,6 +3,7 @@ package mqtt
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
+	"github.com/zgwit/iot-master/v4/pool"
 )
 
 var Client paho.Client
@@ -92,11 +93,12 @@ func Subscribe[T any](filter string, cb func(topic string, value *T)) {
 			}
 		}
 
-		//TODO 队列处理
-
 		//回调
 		for _, c := range cs {
-			c(message.Topic(), &value)
+			//放入线程池处理
+			_ = pool.Insert(func() {
+				c(message.Topic(), &value)
+			})
 		}
 	})
 }
