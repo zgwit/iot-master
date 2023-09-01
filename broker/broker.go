@@ -2,21 +2,21 @@ package broker
 
 import (
 	"fmt"
-	"github.com/mochi-co/mqtt/v2"
-	"github.com/mochi-co/mqtt/v2/hooks/auth"
-	"github.com/mochi-co/mqtt/v2/listeners"
+	mochi "github.com/mochi-mqtt/server/v2"
+	"github.com/mochi-mqtt/server/v2/hooks/auth"
+	"github.com/mochi-mqtt/server/v2/listeners"
 	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"xorm.io/xorm"
 )
 
-var Server *mqtt.Server
+var Server *mochi.Server
 
 func Open() error {
 
 	//创建内部Broker
-	Server = mqtt.New(nil)
+	Server = mochi.New(nil)
 
 	//TODO 鉴权
 	_ = Server.AddHook(new(auth.AllowHook), nil)

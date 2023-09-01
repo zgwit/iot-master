@@ -1,6 +1,6 @@
 
 #编译前端
-npm run build
+#npm run build
 
 # 整体编译
 go env -w GOPROXY=https://goproxy.cn,direct
@@ -9,7 +9,7 @@ go env -w GOSUMDB=off
 
 app="iot-master"
 
-pkg="github.com/zgwit/iot-master/v3/pkg/build"
+pkg="github.com/zgwit/iot-master/v4/pkg/build"
 gitTag=$(git tag -l | tail -n 1)
 gitHash=$(git show -s --format=%H)
 buildTime=$(date -d today +"%Y-%m-%d %H:%M:%S")
