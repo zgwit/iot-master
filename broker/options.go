@@ -7,8 +7,8 @@ import (
 
 type Options struct {
 	Enable bool   `json:"enable"`
-	Type   string `json:"type"`
 	Addr   string `json:"addr"`
+	Unix   bool   `json:"unix"`
 }
 
 var options Options = Default()
@@ -31,7 +31,7 @@ func init() {
 
 func FromEnv() {
 	options.Enable = env.GetBool(ENV+"ENABLE", options.Enable)
-	options.Type = env.Get(ENV+"TYPE", options.Type)
+	options.Unix = env.GetBool(ENV+"UNIX", options.Unix)
 	options.Addr = env.Get(ENV+"ADDR", options.Addr)
 }
 
@@ -39,8 +39,8 @@ func ToEnv() []string {
 	var ret []string
 	if options.Enable {
 		ret = append(ret, ENV+"ENABLE=TRUE")
-		if options.Type != "" {
-			ret = append(ret, ENV+"TYPE="+options.Type)
+		if options.Unix {
+			ret = append(ret, ENV+"UNIX=TRUE")
 		}
 		if options.Addr != "" {
 			ret = append(ret, ENV+"ADDR="+options.Addr)

@@ -6,7 +6,7 @@ package broker
 func Default() Options {
 	return Options{
 		Enable: true,
-		Type:   "unix",
-		Addr:   "iot-master.sock",
+		Addr:   ":1843",
+		Unix:   true,
 	}
 }

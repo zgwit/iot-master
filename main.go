@@ -45,7 +45,7 @@ func Startup(engine *web.Engine) error {
 	engine.Static("/attach", "attach")
 
 	//监听Websocket
-	engine.GET("/mqtt", broker.GinHandler)
+	engine.GET("/mqtt", broker.GinBridge)
 
 	//监听插件
 	mqtt.SubscribeStruct[model.App]("master/register", func(topic string, a *model.App) {

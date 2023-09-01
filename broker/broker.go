@@ -21,11 +21,22 @@ func Open() error {
 	//TODO 鉴权
 	_ = Server.AddHook(new(auth.AllowHook), nil)
 
-	err := createEmbedListener(options)
+	//监听默认端口
+	err := Server.AddListener(listeners.NewTCP("embed-tcp", options.Addr, nil))
 	if err != nil {
 		return err
 	}
 
+	//监听UnixSocket，Win10以下版本有问题
+	if options.Unix {
+		err = Server.AddListener(listeners.NewUnixSock("embed-unix", options.Addr))
+		if err != nil {
+			log.Error(err)
+			//return err
+		}
+	}
+
+	//加载其他端口
 	err = loadListeners()
 	if err != nil {
 		return err
@@ -65,18 +76,4 @@ func loadListeners() error {
 	}
 
 	return nil
-}
-
-func createEmbedListener(opts Options) (err error) {
-	id := fmt.Sprintf("embed-%s", opts.Type)
-	if opts.Type == "tcp" {
-		err = Server.AddListener(listeners.NewTCP(id, opts.Addr, nil))
-	} else if opts.Type == "unix" {
-		err = Server.AddListener(listeners.NewUnixSock(id, opts.Addr))
-	} else if opts.Type == "websocket" {
-		err = Server.AddListener(listeners.NewWebsocket(id, opts.Addr, nil))
-	} else {
-		err = fmt.Errorf("unsupport type %s", opts.Type)
-	}
-	return
 }
