@@ -39,12 +39,10 @@ func (f *formatter) Format(entry *logrus.Entry) ([]byte, error) {
 	}
 
 	//打印时间
-	b.WriteString(fmt.Sprintf("%s [%s]", entry.Time.Format("2006-01-02 15:04:05"), entry.Level.String()))
+	b.WriteString(fmt.Sprintf("%s [%s] ", entry.Time.Format("2006-01-02 15:04:05"), entry.Level.String()))
 
-	//打印文件
-	if entry.Caller != nil {
-		b.WriteString(fmt.Sprintf("%s:%d", entry.Caller.File, entry.Caller.Line))
-	}
+	//打印内容
+	b.WriteString(entry.Message)
 
 	//打印值
 	for k, v := range entry.Data {
@@ -53,6 +51,14 @@ func (f *formatter) Format(entry *logrus.Entry) ([]byte, error) {
 		b.WriteString("=>")
 		b.WriteString(fmt.Sprint(v))
 	}
+
+	//打印文件
+	if entry.Caller != nil {
+		b.WriteString(fmt.Sprintf(" %s:%d", entry.Caller.File, entry.Caller.Line))
+	}
+
+	//换行
+	b.WriteByte('\n')
 
 	return b.Bytes(), nil
 }
