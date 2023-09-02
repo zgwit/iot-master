@@ -29,6 +29,7 @@ func Open() error {
 
 	Engine.SetLogLevel(log.LogLevel(options.LogLevel))
 	//Engine.SetLogger(logrus.StandardLogger())
+
 	return nil
 }
 

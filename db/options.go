@@ -18,7 +18,7 @@ func Default() Options {
 	return Options{
 		Type:     "mysql",
 		URL:      "root:root@tcp(localhost:3306)/master?charset=utf8",
-		Debug:    false,
+		Debug:    true,
 		LogLevel: 2,
 	}
 }
