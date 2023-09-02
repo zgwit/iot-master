@@ -3,8 +3,8 @@ package device
 import (
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/mqtt"
+	"github.com/zgwit/iot-master/v4/types"
 	"strings"
 )
 
@@ -37,8 +37,8 @@ func SubscribeOnline() error {
 		dev.Values["$online"] = false
 
 		//产生日志
-		alarm := model.AlarmEx{
-			Alarm: model.Alarm{
+		alarm := types.AlarmEx{
+			Alarm: types.Alarm{
 				ProductId: pid,
 				DeviceId:  id,
 				Type:      "离线", //TODO 在 产品和设备 中配置

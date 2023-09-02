@@ -1,4 +1,4 @@
-package model
+package types
 
 type Variables map[string]any
 

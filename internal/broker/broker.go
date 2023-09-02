@@ -7,7 +7,7 @@ import (
 	"github.com/mochi-mqtt/server/v2/listeners"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/types"
 	"xorm.io/xorm"
 )
 
@@ -58,7 +58,7 @@ func Close() {
 func loadListeners() error {
 	//监听服务
 	//加载数据库中 entrypoint
-	var entries []model.Broker
+	var entries []types.Broker
 	err := db.Engine.Find(&entries)
 	if err != nil && err != xorm.ErrNotExist {
 		return err

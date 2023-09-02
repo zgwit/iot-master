@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd2 "github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	curd "github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 // @Summary 查询角色数量
@@ -24,7 +24,7 @@ func noopRoleCount() {}
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Role] 返回角色信息
+// @Success 200 {object} curd.ReplyList[types.Role] 返回角色信息
 // @Router /role/search [post]
 func noopRoleSearch() {}
 
@@ -35,7 +35,7 @@ func noopRoleSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Role] 返回角色信息
+// @Success 200 {object} curd.ReplyList[types.Role] 返回角色信息
 // @Router /role/list [get]
 func noopRoleList() {}
 
@@ -43,10 +43,10 @@ func noopRoleList() {}
 // @Schemes
 // @Description 创建角色
 // @Tags role
-// @Param search body model.Role true "角色信息"
+// @Param search body types.Role true "角色信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Role] 返回角色信息
+// @Success 200 {object} curd.ReplyData[types.Role] 返回角色信息
 // @Router /role/create [post]
 func noopRoleCreate() {}
 
@@ -55,10 +55,10 @@ func noopRoleCreate() {}
 // @Description 修改角色
 // @Tags role
 // @Param id path string true "角色ID"
-// @Param role body model.Role true "角色信息"
+// @Param role body types.Role true "角色信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Role] 返回角色信息
+// @Success 200 {object} curd.ReplyData[types.Role] 返回角色信息
 // @Router /role/{id} [post]
 func noopRoleUpdate() {}
 
@@ -69,7 +69,7 @@ func noopRoleUpdate() {}
 // @Param id path string true "角色ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Role] 返回角色信息
+// @Success 200 {object} curd.ReplyData[types.Role] 返回角色信息
 // @Router /role/{id} [get]
 func noopRoleGet() {}
 
@@ -80,7 +80,7 @@ func noopRoleGet() {}
 // @Param id path string true "角色ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Role] 返回角色信息
+// @Success 200 {object} curd.ReplyData[types.Role] 返回角色信息
 // @Router /role/{id}/delete [get]
 func noopRoleDelete() {}
 
@@ -90,7 +90,7 @@ func noopRoleDelete() {}
 // @Tags role
 // @Accept json
 // @Produce octet-stream
-// @Success 200 {object} curd.ReplyList[model.Role] 返回压缩包
+// @Success 200 {object} curd.ReplyList[types.Role] 返回压缩包
 // @Router /role/export [get]
 func noopRoleExport() {}
 
@@ -107,24 +107,24 @@ func noopRoleImport() {}
 
 func roleRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd2.ApiCount[model.Role]())
+	app.POST("/count", curd.ApiCount[types.Role]())
 
-	app.POST("/search", curd2.ApiSearch[model.Role]())
+	app.POST("/search", curd.ApiSearch[types.Role]())
 
-	app.GET("/list", curd2.ApiList[model.Role]())
+	app.GET("/list", curd.ApiList[types.Role]())
 
-	app.POST("/create", curd2.ParseParamStringId, curd2.ApiCreateHook[model.Role](
-		curd2.GenerateRandomId[model.Role](9), nil))
+	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[types.Role](
+		curd.GenerateRandomId[types.Role](9), nil))
 
-	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Role]())
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Role]())
 
-	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Role](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Role](nil, nil,
 		"id", "name", "privileges"))
 
-	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Role](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Role](nil, nil))
 
-	app.GET("/export", curd2.ApiExport("role", "角色"))
+	app.GET("/export", curd.ApiExport("role", "角色"))
 
-	app.POST("/import", curd2.ApiImport("role"))
+	app.POST("/import", curd.ApiImport("role"))
 
 }

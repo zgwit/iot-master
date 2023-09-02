@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd2 "github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	curd "github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 // @Summary 查询订阅数量
@@ -24,7 +24,7 @@ func noopSubscriptionCount() {}
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Subscription] 返回订阅信息
+// @Success 200 {object} curd.ReplyList[types.Subscription] 返回订阅信息
 // @Router /subscription/search [post]
 func noopSubscriptionSearch() {}
 
@@ -35,7 +35,7 @@ func noopSubscriptionSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Subscription] 返回订阅信息
+// @Success 200 {object} curd.ReplyList[types.Subscription] 返回订阅信息
 // @Router /subscription/list [get]
 func noopSubscriptionList() {}
 
@@ -43,10 +43,10 @@ func noopSubscriptionList() {}
 // @Schemes
 // @Description 创建订阅
 // @Tags subscription
-// @Param search body model.Subscription true "订阅信息"
+// @Param search body types.Subscription true "订阅信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Subscription] 返回订阅信息
+// @Success 200 {object} curd.ReplyData[types.Subscription] 返回订阅信息
 // @Router /subscription/create [post]
 func noopSubscriptionCreate() {}
 
@@ -55,10 +55,10 @@ func noopSubscriptionCreate() {}
 // @Description 修改订阅
 // @Tags subscription
 // @Param id path int true "订阅ID"
-// @Param subscription body model.Subscription true "订阅信息"
+// @Param subscription body types.Subscription true "订阅信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Subscription] 返回订阅信息
+// @Success 200 {object} curd.ReplyData[types.Subscription] 返回订阅信息
 // @Router /subscription/{id} [post]
 func noopSubscriptionUpdate() {}
 
@@ -69,7 +69,7 @@ func noopSubscriptionUpdate() {}
 // @Param id path int true "订阅ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Subscription] 返回订阅信息
+// @Success 200 {object} curd.ReplyData[types.Subscription] 返回订阅信息
 // @Router /subscription/{id} [get]
 func noopSubscriptionGet() {}
 
@@ -80,7 +80,7 @@ func noopSubscriptionGet() {}
 // @Param id path int true "订阅ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Subscription] 返回订阅信息
+// @Success 200 {object} curd.ReplyData[types.Subscription] 返回订阅信息
 // @Router /subscription/{id}/delete [get]
 func noopSubscriptionDelete() {}
 
@@ -91,7 +91,7 @@ func noopSubscriptionDelete() {}
 // @Param id path int true "订阅ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Subscription] 返回订阅信息
+// @Success 200 {object} curd.ReplyData[types.Subscription] 返回订阅信息
 // @Router /subscription/{id}/enable [get]
 func noopSubscriptionEnable() {}
 
@@ -102,7 +102,7 @@ func noopSubscriptionEnable() {}
 // @Param id path int true "订阅ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Subscription] 返回订阅信息
+// @Success 200 {object} curd.ReplyData[types.Subscription] 返回订阅信息
 // @Router /subscription/{id}/disable [get]
 func noopSubscriptionDisable() {}
 
@@ -128,17 +128,17 @@ func noopSubscriptionImport() {}
 
 func subscriptionRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd2.ApiCount[model.Subscription]())
-	app.POST("/search", curd2.ApiSearch[model.Subscription]())
-	app.GET("/list", curd2.ApiList[model.Subscription]())
-	app.POST("/create", curd2.ApiCreateHook[model.Subscription](nil, nil))
-	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Subscription]())
-	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Subscription](nil, nil,
+	app.POST("/count", curd.ApiCount[types.Subscription]())
+	app.POST("/search", curd.ApiSearch[types.Subscription]())
+	app.GET("/list", curd.ApiList[types.Subscription]())
+	app.POST("/create", curd.ApiCreateHook[types.Subscription](nil, nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Subscription]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Subscription](nil, nil,
 		"user_id", "product_id", "device_id", "level", "channels", "disabled"))
-	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Subscription](nil, nil))
-	app.GET("/export", curd2.ApiExport("subscription", "subscription"))
-	app.POST("/import", curd2.ApiImport("subscription"))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Subscription](nil, nil))
+	app.GET("/export", curd.ApiExport("subscription", "subscription"))
+	app.POST("/import", curd.ApiImport("subscription"))
 
-	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Subscription](true, nil, nil))
-	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Subscription](false, nil, nil))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Subscription](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Subscription](false, nil, nil))
 }

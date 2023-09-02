@@ -2,22 +2,22 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd2 "github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	curd "github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 func appRouter(app *gin.RouterGroup) {
 
-	app.POST("/search", curd2.ApiSearch[model.App]())
+	app.POST("/search", curd.ApiSearch[types.App]())
 
-	app.GET("/list", curd2.ApiList[model.App]())
+	app.GET("/list", curd.ApiList[types.App]())
 
-	app.POST("/create", curd2.ApiCreateHook[model.App](curd2.GenerateRandomId[model.App](8), nil))
+	app.POST("/create", curd.ApiCreateHook[types.App](curd.GenerateRandomId[types.App](8), nil))
 
-	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.App]())
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.App]())
 
-	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.App](nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.App](nil,
 		nil, "id", "name", "type", "address", "desc", "disabled"))
 
-	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.App](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.App](nil, nil))
 }

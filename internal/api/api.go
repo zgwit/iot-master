@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/app"
 	"github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web"
 	"net/http"
 )
@@ -80,8 +80,8 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	router.POST("/password", password)
 
 	router.GET("/apps", func(ctx *gin.Context) {
-		apps := make([]*model.App, 0)
-		app.Applications.Range(func(name string, app *model.App) bool {
+		apps := make([]*types.App, 0)
+		app.Applications.Range(func(name string, app *types.App) bool {
 			if !app.Hidden {
 				apps = append(apps, app)
 			}
@@ -91,7 +91,7 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	})
 
 	router.GET("/privileges", func(ctx *gin.Context) {
-		curd.OK(ctx, model.PRIVILEGES)
+		curd.OK(ctx, types.PRIVILEGES)
 	})
 
 	//注册子接口

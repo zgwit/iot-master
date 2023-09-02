@@ -1,23 +1,23 @@
 package internal
 
 import (
-	app2 "github.com/zgwit/iot-master/v4/app"
+	"github.com/zgwit/iot-master/v4/app"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/mqtt"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 func SubscribeMaster() error {
 	//注册应用
-	mqtt.Subscribe[model.App]("master/register", func(topic string, app *model.App) {
-		log.Info("app register ", app.Id, " ", app.Name, " ", app.Type, " ", app.Address)
-		app2.Applications.Store(app.Id, app)
+	mqtt.Subscribe[types.App]("master/register", func(topic string, a *types.App) {
+		log.Info("a register ", a.Id, " ", a.Name, " ", a.Type, " ", a.Address)
+		app.Applications.Store(a.Id, a)
 	})
 
 	//反注册
 	//mqtt.Subscribe[any]("master/unregister", func(topic string, payload *any) {
 	//	id := string(payload)
-	//	app2.Applications.Delete(id)
+	//	app.Applications.Delete(id)
 	//})
 
 	return nil

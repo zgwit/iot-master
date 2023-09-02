@@ -5,12 +5,12 @@ import (
 	"github.com/PaesslerAG/gval"
 	"github.com/zgwit/iot-master/v4/calc"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/types"
 	"time"
 )
 
 type Validator struct {
-	*model.ModValidator
+	*types.ModValidator
 
 	Expression gval.Evaluable
 
@@ -21,7 +21,7 @@ type Validator struct {
 }
 
 // New 新建
-func New(m *model.ModValidator) (v *Validator, err error) {
+func New(m *types.ModValidator) (v *Validator, err error) {
 	v = &Validator{ModValidator: m}
 	v.Expression, err = calc.New(m.Expression)
 	return

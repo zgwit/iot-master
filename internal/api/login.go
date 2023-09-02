@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 type loginObj struct {
@@ -32,7 +32,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	var user model.User
+	var user types.User
 	has, err := db.Engine.Where("username=?", obj.Username).Get(&user)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -61,7 +61,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	var password model.Password
+	var password types.Password
 	has, err = db.Engine.ID(user.Id).Get(&password)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -86,7 +86,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	//_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user.Id, ModEvent: model.ModEvent{Type: "登录"}})
+	//_, _ = db.Engine.InsertOne(&types.UserEvent{UserId: user.Id, ModEvent: types.ModEvent{Type: "登录"}})
 
 	//存入session
 	session.Set("user", user.Id)
@@ -104,7 +104,7 @@ func logout(ctx *gin.Context) {
 	}
 
 	//user := u.(int64)
-	//_, _ = db.Engine.InsertOne(&model.UserEvent{UserId: user, ModEvent: model.ModEvent{Type: "退出"}})
+	//_, _ = db.Engine.InsertOne(&types.UserEvent{UserId: user, ModEvent: types.ModEvent{Type: "退出"}})
 
 	session.Clear()
 	_ = session.Save()
@@ -124,7 +124,7 @@ func password(ctx *gin.Context) {
 		return
 	}
 
-	var pwd model.Password
+	var pwd types.Password
 	has, err := db.Engine.ID(ctx.GetString("user")).Get(&pwd)
 	if err != nil {
 		curd.Error(ctx, err)

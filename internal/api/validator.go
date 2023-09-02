@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd2 "github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	curd "github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 // @Summary 查询检查数量
@@ -24,7 +24,7 @@ func noopValidatorCount() {}
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Validator] 返回检查信息
+// @Success 200 {object} curd.ReplyList[types.Validator] 返回检查信息
 // @Router /validator/search [post]
 func noopValidatorSearch() {}
 
@@ -35,7 +35,7 @@ func noopValidatorSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Validator] 返回检查信息
+// @Success 200 {object} curd.ReplyList[types.Validator] 返回检查信息
 // @Router /validator/list [get]
 func noopValidatorList() {}
 
@@ -43,10 +43,10 @@ func noopValidatorList() {}
 // @Schemes
 // @Description 创建检查
 // @Tags validator
-// @Param search body model.Validator true "检查信息"
+// @Param search body types.Validator true "检查信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Validator] 返回检查信息
+// @Success 200 {object} curd.ReplyData[types.Validator] 返回检查信息
 // @Router /validator/create [post]
 func noopValidatorCreate() {}
 
@@ -55,10 +55,10 @@ func noopValidatorCreate() {}
 // @Description 修改检查
 // @Tags validator
 // @Param id path int true "检查ID"
-// @Param validator body model.Validator true "检查信息"
+// @Param validator body types.Validator true "检查信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Validator] 返回检查信息
+// @Success 200 {object} curd.ReplyData[types.Validator] 返回检查信息
 // @Router /validator/{id} [post]
 func noopValidatorUpdate() {}
 
@@ -69,7 +69,7 @@ func noopValidatorUpdate() {}
 // @Param id path int true "检查ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Validator] 返回检查信息
+// @Success 200 {object} curd.ReplyData[types.Validator] 返回检查信息
 // @Router /validator/{id} [get]
 func noopValidatorGet() {}
 
@@ -80,7 +80,7 @@ func noopValidatorGet() {}
 // @Param id path int true "检查ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Validator] 返回检查信息
+// @Success 200 {object} curd.ReplyData[types.Validator] 返回检查信息
 // @Router /validator/{id}/delete [get]
 func noopValidatorDelete() {}
 
@@ -91,7 +91,7 @@ func noopValidatorDelete() {}
 // @Param id path int true "检查ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Validator] 返回检查信息
+// @Success 200 {object} curd.ReplyData[types.Validator] 返回检查信息
 // @Router /validator/{id}/enable [get]
 func noopValidatorEnable() {}
 
@@ -102,7 +102,7 @@ func noopValidatorEnable() {}
 // @Param id path int true "检查ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Validator] 返回检查信息
+// @Success 200 {object} curd.ReplyData[types.Validator] 返回检查信息
 // @Router /validator/{id}/disable [get]
 func noopValidatorDisable() {}
 
@@ -128,18 +128,18 @@ func noopValidatorImport() {}
 
 func validatorRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd2.ApiCount[model.Validator]())
-	app.POST("/search", curd2.ApiSearch[model.Validator]())
-	app.GET("/list", curd2.ApiList[model.Validator]())
-	app.POST("/create", curd2.ApiCreateHook[model.Validator](curd2.GenerateRandomId[model.Validator](8), nil))
-	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Validator]())
-	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Validator](nil, nil,
+	app.POST("/count", curd.ApiCount[types.Validator]())
+	app.POST("/search", curd.ApiSearch[types.Validator]())
+	app.GET("/list", curd.ApiList[types.Validator]())
+	app.POST("/create", curd.ApiCreateHook[types.Validator](curd.GenerateRandomId[types.Validator](8), nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Validator]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Validator](nil, nil,
 		"id", "product_id", "expression", "type", "title",
 		"template", "level", "delay", "again", "total", "disabled"))
-	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Validator](nil, nil))
-	app.GET("/export", curd2.ApiExport("validator", "验证器"))
-	app.POST("/import", curd2.ApiImport("validator"))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Validator](nil, nil))
+	app.GET("/export", curd.ApiExport("validator", "验证器"))
+	app.POST("/import", curd.ApiImport("validator"))
 
-	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Validator](true, nil, nil))
-	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Validator](false, nil, nil))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Validator](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Validator](false, nil, nil))
 }

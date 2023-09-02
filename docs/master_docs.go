@@ -69,7 +69,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Aggregator"
+                            "$ref": "#/definitions/types.Aggregator"
                         }
                     }
                 ],
@@ -257,7 +257,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Aggregator"
+                            "$ref": "#/definitions/types.Aggregator"
                         }
                     }
                 ],
@@ -842,7 +842,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Broker"
+                            "$ref": "#/definitions/types.Broker"
                         }
                     }
                 ],
@@ -1037,7 +1037,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Broker"
+                            "$ref": "#/definitions/types.Broker"
                         }
                     }
                 ],
@@ -1476,7 +1476,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Device"
+                            "$ref": "#/definitions/types.Device"
                         }
                     }
                 ],
@@ -1696,7 +1696,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Device"
+                            "$ref": "#/definitions/types.Device"
                         }
                     }
                 ],
@@ -1860,7 +1860,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Gateway"
+                            "$ref": "#/definitions/types.Gateway"
                         }
                     }
                 ],
@@ -2055,7 +2055,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Gateway"
+                            "$ref": "#/definitions/types.Gateway"
                         }
                     }
                 ],
@@ -2954,7 +2954,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Plugin"
+                            "$ref": "#/definitions/types.Plugin"
                         }
                     }
                 ],
@@ -3112,7 +3112,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Plugin"
+                            "$ref": "#/definitions/types.Plugin"
                         }
                     }
                 ],
@@ -3366,7 +3366,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Product"
+                            "$ref": "#/definitions/types.Product"
                         }
                     }
                 ],
@@ -3554,7 +3554,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Product"
+                            "$ref": "#/definitions/types.Product"
                         }
                     }
                 ],
@@ -3654,7 +3654,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Role"
+                            "$ref": "#/definitions/types.Role"
                         }
                     }
                 ],
@@ -3849,7 +3849,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Role"
+                            "$ref": "#/definitions/types.Role"
                         }
                     }
                 ],
@@ -3949,7 +3949,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Subscription"
+                            "$ref": "#/definitions/types.Subscription"
                         }
                     }
                 ],
@@ -4137,7 +4137,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Subscription"
+                            "$ref": "#/definitions/types.Subscription"
                         }
                     }
                 ],
@@ -4301,7 +4301,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.User"
+                            "$ref": "#/definitions/types.User"
                         }
                     }
                 ],
@@ -4484,7 +4484,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.User"
+                            "$ref": "#/definitions/types.User"
                         }
                     }
                 ],
@@ -4648,7 +4648,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Validator"
+                            "$ref": "#/definitions/types.Validator"
                         }
                     }
                 ],
@@ -4836,7 +4836,7 @@ const docTemplatemaster = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Validator"
+                            "$ref": "#/definitions/types.Validator"
                         }
                     }
                 ],
@@ -5118,7 +5118,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Aggregator"
+                    "$ref": "#/definitions/types.Aggregator"
                 },
                 "error": {
                     "type": "string"
@@ -5129,7 +5129,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Alarm"
+                    "$ref": "#/definitions/types.Alarm"
                 },
                 "error": {
                     "type": "string"
@@ -5140,7 +5140,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Broker"
+                    "$ref": "#/definitions/types.Broker"
                 },
                 "error": {
                     "type": "string"
@@ -5151,7 +5151,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Device"
+                    "$ref": "#/definitions/types.Device"
                 },
                 "error": {
                     "type": "string"
@@ -5162,7 +5162,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Gateway"
+                    "$ref": "#/definitions/types.Gateway"
                 },
                 "error": {
                     "type": "string"
@@ -5173,7 +5173,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.History"
+                    "$ref": "#/definitions/types.History"
                 },
                 "error": {
                     "type": "string"
@@ -5184,7 +5184,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Notification"
+                    "$ref": "#/definitions/types.Notification"
                 },
                 "error": {
                     "type": "string"
@@ -5195,7 +5195,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Plugin"
+                    "$ref": "#/definitions/types.Plugin"
                 },
                 "error": {
                     "type": "string"
@@ -5206,7 +5206,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Product"
+                    "$ref": "#/definitions/types.Product"
                 },
                 "error": {
                     "type": "string"
@@ -5217,7 +5217,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Role"
+                    "$ref": "#/definitions/types.Role"
                 },
                 "error": {
                     "type": "string"
@@ -5228,7 +5228,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Subscription"
+                    "$ref": "#/definitions/types.Subscription"
                 },
                 "error": {
                     "type": "string"
@@ -5239,7 +5239,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.User"
+                    "$ref": "#/definitions/types.User"
                 },
                 "error": {
                     "type": "string"
@@ -5250,7 +5250,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Validator"
+                    "$ref": "#/definitions/types.Validator"
                 },
                 "error": {
                     "type": "string"
@@ -5261,7 +5261,7 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Variables"
+                    "$ref": "#/definitions/types.Variables"
                 },
                 "error": {
                     "type": "string"
@@ -5324,7 +5324,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Aggregator"
+                        "$ref": "#/definitions/types.Aggregator"
                     }
                 },
                 "error": {
@@ -5341,7 +5341,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Alarm"
+                        "$ref": "#/definitions/types.Alarm"
                     }
                 },
                 "error": {
@@ -5358,7 +5358,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Broker"
+                        "$ref": "#/definitions/types.Broker"
                     }
                 },
                 "error": {
@@ -5375,7 +5375,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Device"
+                        "$ref": "#/definitions/types.Device"
                     }
                 },
                 "error": {
@@ -5392,7 +5392,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Gateway"
+                        "$ref": "#/definitions/types.Gateway"
                     }
                 },
                 "error": {
@@ -5409,7 +5409,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.History"
+                        "$ref": "#/definitions/types.History"
                     }
                 },
                 "error": {
@@ -5426,7 +5426,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Notification"
+                        "$ref": "#/definitions/types.Notification"
                     }
                 },
                 "error": {
@@ -5443,7 +5443,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Plugin"
+                        "$ref": "#/definitions/types.Plugin"
                     }
                 },
                 "error": {
@@ -5460,7 +5460,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Product"
+                        "$ref": "#/definitions/types.Product"
                     }
                 },
                 "error": {
@@ -5477,7 +5477,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Role"
+                        "$ref": "#/definitions/types.Role"
                     }
                 },
                 "error": {
@@ -5494,7 +5494,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Subscription"
+                        "$ref": "#/definitions/types.Subscription"
                     }
                 },
                 "error": {
@@ -5511,7 +5511,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.User"
+                        "$ref": "#/definitions/types.User"
                     }
                 },
                 "error": {
@@ -5528,7 +5528,7 @@ const docTemplatemaster = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Validator"
+                        "$ref": "#/definitions/types.Validator"
                     }
                 },
                 "error": {
@@ -5570,7 +5570,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Aggregator": {
+        "types.Aggregator": {
             "type": "object",
             "properties": {
                 "assign": {
@@ -5615,7 +5615,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Alarm": {
+        "types.Alarm": {
             "type": "object",
             "properties": {
                 "created": {
@@ -5656,7 +5656,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Broker": {
+        "types.Broker": {
             "type": "object",
             "properties": {
                 "created": {
@@ -5680,7 +5680,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Device": {
+        "types.Device": {
             "type": "object",
             "properties": {
                 "created": {
@@ -5717,7 +5717,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Gateway": {
+        "types.Gateway": {
             "type": "object",
             "properties": {
                 "created": {
@@ -5743,7 +5743,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.History": {
+        "types.History": {
             "type": "object",
             "properties": {
                 "device": {
@@ -5768,7 +5768,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.ModAggregator": {
+        "types.ModAggregator": {
             "type": "object",
             "properties": {
                 "assign": {
@@ -5789,7 +5789,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.ModArgument": {
+        "types.ModArgument": {
             "type": "object",
             "properties": {
                 "desc": {
@@ -5809,7 +5809,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.ModEvent": {
+        "types.ModEvent": {
             "type": "object",
             "properties": {
                 "desc": {
@@ -5824,7 +5824,7 @@ const docTemplatemaster = `{
                 "output": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModArgument"
+                        "$ref": "#/definitions/types.ModArgument"
                     }
                 },
                 "type": {
@@ -5833,7 +5833,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.ModFunction": {
+        "types.ModFunction": {
             "type": "object",
             "properties": {
                 "async": {
@@ -5845,7 +5845,7 @@ const docTemplatemaster = `{
                 "input": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModArgument"
+                        "$ref": "#/definitions/types.ModArgument"
                     }
                 },
                 "label": {
@@ -5857,12 +5857,12 @@ const docTemplatemaster = `{
                 "output": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModArgument"
+                        "$ref": "#/definitions/types.ModArgument"
                     }
                 }
             }
         },
-        "model.ModParameter": {
+        "types.ModParameter": {
             "type": "object",
             "properties": {
                 "default": {
@@ -5882,7 +5882,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.ModProperty": {
+        "types.ModProperty": {
             "type": "object",
             "properties": {
                 "desc": {
@@ -5911,7 +5911,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.ModValidator": {
+        "types.ModValidator": {
             "type": "object",
             "properties": {
                 "again": {
@@ -5943,7 +5943,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Notification": {
+        "types.Notification": {
             "type": "object",
             "properties": {
                 "alarm_id": {
@@ -5966,7 +5966,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Plugin": {
+        "types.Plugin": {
             "type": "object",
             "properties": {
                 "command": {
@@ -6007,13 +6007,13 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Product": {
+        "types.Product": {
             "type": "object",
             "properties": {
                 "aggregators": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModAggregator"
+                        "$ref": "#/definitions/types.ModAggregator"
                     }
                 },
                 "created": {
@@ -6025,13 +6025,13 @@ const docTemplatemaster = `{
                 "events": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModEvent"
+                        "$ref": "#/definitions/types.ModEvent"
                     }
                 },
                 "functions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModFunction"
+                        "$ref": "#/definitions/types.ModFunction"
                     }
                 },
                 "id": {
@@ -6043,19 +6043,19 @@ const docTemplatemaster = `{
                 "parameters": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModParameter"
+                        "$ref": "#/definitions/types.ModParameter"
                     }
                 },
                 "properties": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModProperty"
+                        "$ref": "#/definitions/types.ModProperty"
                     }
                 },
                 "validators": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModValidator"
+                        "$ref": "#/definitions/types.ModValidator"
                     }
                 },
                 "version": {
@@ -6063,7 +6063,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Role": {
+        "types.Role": {
             "type": "object",
             "properties": {
                 "created": {
@@ -6083,7 +6083,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Subscription": {
+        "types.Subscription": {
             "type": "object",
             "properties": {
                 "channels": {
@@ -6125,7 +6125,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.User": {
+        "types.User": {
             "type": "object",
             "properties": {
                 "created": {
@@ -6154,7 +6154,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Validator": {
+        "types.Validator": {
             "type": "object",
             "properties": {
                 "again": {
@@ -6201,7 +6201,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "model.Variables": {
+        "types.Variables": {
             "type": "object",
             "additionalProperties": {}
         },

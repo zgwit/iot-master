@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd2 "github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	curd "github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 // @Summary 查询网关数量
@@ -24,7 +24,7 @@ func noopGatewayCount() {}
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Gateway] 返回网关信息
+// @Success 200 {object} curd.ReplyList[types.Gateway] 返回网关信息
 // @Router /gateway/search [post]
 func noopGatewaySearch() {}
 
@@ -35,7 +35,7 @@ func noopGatewaySearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Gateway] 返回网关信息
+// @Success 200 {object} curd.ReplyList[types.Gateway] 返回网关信息
 // @Router /gateway/list [get]
 func noopGatewayList() {}
 
@@ -43,10 +43,10 @@ func noopGatewayList() {}
 // @Schemes
 // @Description 创建网关
 // @Tags gateway
-// @Param search body model.Gateway true "网关信息"
+// @Param search body types.Gateway true "网关信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Gateway] 返回网关信息
+// @Success 200 {object} curd.ReplyData[types.Gateway] 返回网关信息
 // @Router /gateway/create [post]
 func noopGatewayCreate() {}
 
@@ -55,10 +55,10 @@ func noopGatewayCreate() {}
 // @Description 修改网关
 // @Tags gateway
 // @Param id path int true "网关ID"
-// @Param gateway body model.Gateway true "网关信息"
+// @Param gateway body types.Gateway true "网关信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Gateway] 返回网关信息
+// @Success 200 {object} curd.ReplyData[types.Gateway] 返回网关信息
 // @Router /gateway/{id} [post]
 func noopGatewayUpdate() {}
 
@@ -69,7 +69,7 @@ func noopGatewayUpdate() {}
 // @Param id path string true "网关ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Gateway] 返回网关信息
+// @Success 200 {object} curd.ReplyData[types.Gateway] 返回网关信息
 // @Router /gateway/{id} [get]
 func noopGatewayGet() {}
 
@@ -80,7 +80,7 @@ func noopGatewayGet() {}
 // @Param id path int true "网关ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Gateway] 返回网关信息
+// @Success 200 {object} curd.ReplyData[types.Gateway] 返回网关信息
 // @Router /gateway/{id}/delete [get]
 func noopGatewayDelete() {}
 
@@ -91,7 +91,7 @@ func noopGatewayDelete() {}
 // @Param id path int true "网关ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Gateway] 返回网关信息
+// @Success 200 {object} curd.ReplyData[types.Gateway] 返回网关信息
 // @Router /gateway/{id}/enable [get]
 func noopGatewayEnable() {}
 
@@ -102,7 +102,7 @@ func noopGatewayEnable() {}
 // @Param id path int true "网关ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Gateway] 返回网关信息
+// @Success 200 {object} curd.ReplyData[types.Gateway] 返回网关信息
 // @Router /gateway/{id}/disable [get]
 func noopGatewayDisable() {}
 
@@ -112,7 +112,7 @@ func noopGatewayDisable() {}
 // @Tags gateway
 // @Accept json
 // @Produce octet-stream
-// @Success 200 {object} curd.ReplyList[model.Gateway] 返回压缩包
+// @Success 200 {object} curd.ReplyList[types.Gateway] 返回压缩包
 // @Router /gateway/export [get]
 func noopGatewayExport() {}
 
@@ -129,17 +129,17 @@ func noopGatewayImport() {}
 
 func gatewayRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd2.ApiCount[model.Gateway]())
-	app.POST("/search", curd2.ApiSearch[model.Gateway]())
-	app.GET("/list", curd2.ApiList[model.Gateway]())
-	app.POST("/create", curd2.ApiCreateHook[model.Gateway](curd2.GenerateRandomId[model.Gateway](8), nil))
-	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Gateway]())
-	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Gateway](nil, nil,
+	app.POST("/count", curd.ApiCount[types.Gateway]())
+	app.POST("/search", curd.ApiSearch[types.Gateway]())
+	app.GET("/list", curd.ApiList[types.Gateway]())
+	app.POST("/create", curd.ApiCreateHook[types.Gateway](curd.GenerateRandomId[types.Gateway](8), nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Gateway]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Gateway](nil, nil,
 		"id", "name", "desc", "username", "password", "disabled"))
-	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Gateway](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Gateway](nil, nil))
 
-	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Gateway](true, nil, nil))
-	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Gateway](false, nil, nil))
-	app.GET("/export", curd2.ApiExport("gateway", "网关"))
-	app.POST("/import", curd2.ApiImport("gateway"))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Gateway](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Gateway](false, nil, nil))
+	app.GET("/export", curd.ApiExport("gateway", "网关"))
+	app.POST("/import", curd.ApiImport("gateway"))
 }

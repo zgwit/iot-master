@@ -7,7 +7,7 @@ import (
 	"github.com/zgwit/iot-master/v4/internal/product"
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/validator"
 	"time"
 )
@@ -15,7 +15,7 @@ import (
 var devices lib.Map[Device]
 
 type Device struct {
-	*model.Device
+	*types.Device
 
 	Last   time.Time
 	Values map[string]any
@@ -26,7 +26,7 @@ type Device struct {
 	aggregators []aggregator.Aggregator
 }
 
-func (d *Device) createValidator(m *model.ModValidator) error {
+func (d *Device) createValidator(m *types.ModValidator) error {
 	v, err := validator.New(m)
 	if err != nil {
 		return err
@@ -35,13 +35,13 @@ func (d *Device) createValidator(m *model.ModValidator) error {
 	return nil
 }
 
-func (d *Device) createAggregator(m *model.ModAggregator) error {
+func (d *Device) createAggregator(m *types.ModAggregator) error {
 	a, err := aggregator.New(m, func(val float64, err error) {
 		if err != nil {
 			log.Error(err)
 			return
 		}
-		his := model.History{
+		his := types.History{
 			DeviceId: d.Id,
 			Point:    m.Assign,
 			Value:    val,
@@ -73,7 +73,7 @@ func (d *Device) Build() {
 		}
 	}
 
-	var validators []*model.Validator
+	var validators []*types.Validator
 	err := db.Engine.Where("device_id = ?", d.Id).And("disabled = ?", false).Find(&validators)
 	if err != nil {
 		log.Error(err)
@@ -98,7 +98,7 @@ func (d *Device) Build() {
 		}
 	}
 
-	var aggregators []*model.Aggregator
+	var aggregators []*types.Aggregator
 	err = db.Engine.Where("device_id = ?", d.Id).And("disabled = ?", false).Find(&aggregators)
 	if err != nil {
 		log.Error(err)
@@ -138,8 +138,8 @@ func (d *Device) Validate() {
 		}
 
 		//入库
-		alarm := model.AlarmEx{
-			Alarm: model.Alarm{
+		alarm := types.AlarmEx{
+			Alarm: types.Alarm{
 				ProductId: d.product.Id,
 				DeviceId:  d.Id,
 				Type:      v.Type,
@@ -165,7 +165,7 @@ func (d *Device) Validate() {
 	}
 }
 
-func New(m *model.Device) *Device {
+func New(m *types.Device) *Device {
 	//time.Now().Unix()
 	return &Device{
 		Device: m,
@@ -190,7 +190,7 @@ func Get(id string) *Device {
 }
 
 func Load(id string) error {
-	var dev model.Device
+	var dev types.Device
 	get, err := db.Engine.ID(id).Get(&dev)
 	if err != nil {
 		return err
@@ -201,7 +201,7 @@ func Load(id string) error {
 	return From(&dev)
 }
 
-func From(device *model.Device) error {
+func From(device *types.Device) error {
 	d := New(device)
 
 	//绑定产品

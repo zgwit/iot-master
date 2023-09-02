@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/lib"
-	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web"
 	"net/http/httputil"
 )
@@ -35,8 +35,8 @@ func ProxyApp(ctx *gin.Context) {
 	ctx.Abort()
 }
 
-var Applications lib.Map[model.App]
+var Applications lib.Map[types.App]
 
-func Register(app *model.App) {
+func Register(app *types.App) {
 	Applications.Store(app.Id, app)
 }

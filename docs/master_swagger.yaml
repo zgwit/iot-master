@@ -110,98 +110,98 @@ definitions:
   curd.ReplyData-model_Aggregator:
     properties:
       data:
-        $ref: '#/definitions/model.Aggregator'
+        $ref: '#/definitions/types.Aggregator'
       error:
         type: string
     type: object
   curd.ReplyData-model_Alarm:
     properties:
       data:
-        $ref: '#/definitions/model.Alarm'
+        $ref: '#/definitions/types.Alarm'
       error:
         type: string
     type: object
   curd.ReplyData-model_Broker:
     properties:
       data:
-        $ref: '#/definitions/model.Broker'
+        $ref: '#/definitions/types.Broker'
       error:
         type: string
     type: object
   curd.ReplyData-model_Device:
     properties:
       data:
-        $ref: '#/definitions/model.Device'
+        $ref: '#/definitions/types.Device'
       error:
         type: string
     type: object
   curd.ReplyData-model_Gateway:
     properties:
       data:
-        $ref: '#/definitions/model.Gateway'
+        $ref: '#/definitions/types.Gateway'
       error:
         type: string
     type: object
   curd.ReplyData-model_History:
     properties:
       data:
-        $ref: '#/definitions/model.History'
+        $ref: '#/definitions/types.History'
       error:
         type: string
     type: object
   curd.ReplyData-model_Notification:
     properties:
       data:
-        $ref: '#/definitions/model.Notification'
+        $ref: '#/definitions/types.Notification'
       error:
         type: string
     type: object
   curd.ReplyData-model_Plugin:
     properties:
       data:
-        $ref: '#/definitions/model.Plugin'
+        $ref: '#/definitions/types.Plugin'
       error:
         type: string
     type: object
   curd.ReplyData-model_Product:
     properties:
       data:
-        $ref: '#/definitions/model.Product'
+        $ref: '#/definitions/types.Product'
       error:
         type: string
     type: object
   curd.ReplyData-model_Role:
     properties:
       data:
-        $ref: '#/definitions/model.Role'
+        $ref: '#/definitions/types.Role'
       error:
         type: string
     type: object
   curd.ReplyData-model_Subscription:
     properties:
       data:
-        $ref: '#/definitions/model.Subscription'
+        $ref: '#/definitions/types.Subscription'
       error:
         type: string
     type: object
   curd.ReplyData-model_User:
     properties:
       data:
-        $ref: '#/definitions/model.User'
+        $ref: '#/definitions/types.User'
       error:
         type: string
     type: object
   curd.ReplyData-model_Validator:
     properties:
       data:
-        $ref: '#/definitions/model.Validator'
+        $ref: '#/definitions/types.Validator'
       error:
         type: string
     type: object
   curd.ReplyData-model_Variables:
     properties:
       data:
-        $ref: '#/definitions/model.Variables'
+        $ref: '#/definitions/types.Variables'
       error:
         type: string
     type: object
@@ -241,7 +241,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Aggregator'
+          $ref: '#/definitions/types.Aggregator'
         type: array
       error:
         type: string
@@ -252,7 +252,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Alarm'
+          $ref: '#/definitions/types.Alarm'
         type: array
       error:
         type: string
@@ -263,7 +263,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Broker'
+          $ref: '#/definitions/types.Broker'
         type: array
       error:
         type: string
@@ -274,7 +274,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Device'
+          $ref: '#/definitions/types.Device'
         type: array
       error:
         type: string
@@ -285,7 +285,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Gateway'
+          $ref: '#/definitions/types.Gateway'
         type: array
       error:
         type: string
@@ -296,7 +296,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.History'
+          $ref: '#/definitions/types.History'
         type: array
       error:
         type: string
@@ -307,7 +307,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Notification'
+          $ref: '#/definitions/types.Notification'
         type: array
       error:
         type: string
@@ -318,7 +318,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Plugin'
+          $ref: '#/definitions/types.Plugin'
         type: array
       error:
         type: string
@@ -329,7 +329,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Product'
+          $ref: '#/definitions/types.Product'
         type: array
       error:
         type: string
@@ -340,7 +340,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Role'
+          $ref: '#/definitions/types.Role'
         type: array
       error:
         type: string
@@ -351,7 +351,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Subscription'
+          $ref: '#/definitions/types.Subscription'
         type: array
       error:
         type: string
@@ -362,7 +362,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.User'
+          $ref: '#/definitions/types.User'
         type: array
       error:
         type: string
@@ -373,7 +373,7 @@ definitions:
     properties:
       data:
         items:
-          $ref: '#/definitions/model.Validator'
+          $ref: '#/definitions/types.Validator'
         type: array
       error:
         type: string
@@ -400,7 +400,7 @@ definitions:
       text:
         type: boolean
     type: object
-  model.Aggregator:
+  types.Aggregator:
     properties:
       assign:
         description: 赋值
@@ -432,7 +432,7 @@ definitions:
         description: 聚合算法 inc dec avg count min max sum last first
         type: string
     type: object
-  model.Alarm:
+  types.Alarm:
     properties:
       created:
         type: string
@@ -459,7 +459,7 @@ definitions:
       validator_id:
         type: string
     type: object
-  model.Broker:
+  types.Broker:
     properties:
       created:
         type: string
@@ -475,7 +475,7 @@ definitions:
         description: TODO 添加TLS证书
         type: integer
     type: object
-  model.Device:
+  types.Device:
     properties:
       created:
         type: string
@@ -500,7 +500,7 @@ definitions:
       product_id:
         type: string
     type: object
-  model.Gateway:
+  types.Gateway:
     properties:
       created:
         type: string
@@ -517,7 +517,7 @@ definitions:
       username:
         type: string
     type: object
-  model.History:
+  types.History:
     properties:
       device:
         type: string
@@ -534,7 +534,7 @@ definitions:
         description: 值
         type: number
     type: object
-  model.ModAggregator:
+  types.ModAggregator:
     properties:
       assign:
         description: 赋值
@@ -549,7 +549,7 @@ definitions:
         description: 聚合算法 inc dec avg count min max sum last first
         type: string
     type: object
-  model.ModArgument:
+  types.ModArgument:
     properties:
       desc:
         type: string
@@ -562,7 +562,7 @@ definitions:
       unit:
         type: string
     type: object
-  model.ModEvent:
+  types.ModEvent:
     properties:
       desc:
         type: string
@@ -572,13 +572,13 @@ definitions:
         type: string
       output:
         items:
-          $ref: '#/definitions/model.ModArgument'
+          $ref: '#/definitions/types.ModArgument'
         type: array
       type:
         description: info alert error //Level  uint8         `json:"level"`
         type: string
     type: object
-  model.ModFunction:
+  types.ModFunction:
     properties:
       async:
         type: boolean
@@ -586,7 +586,7 @@ definitions:
         type: string
       input:
         items:
-          $ref: '#/definitions/model.ModArgument'
+          $ref: '#/definitions/types.ModArgument'
         type: array
       label:
         type: string
@@ -594,10 +594,10 @@ definitions:
         type: string
       output:
         items:
-          $ref: '#/definitions/model.ModArgument'
+          $ref: '#/definitions/types.ModArgument'
         type: array
     type: object
-  model.ModParameter:
+  types.ModParameter:
     properties:
       default:
         type: number
@@ -610,7 +610,7 @@ definitions:
       name:
         type: string
     type: object
-  model.ModProperty:
+  types.ModProperty:
     properties:
       desc:
         type: string
@@ -630,7 +630,7 @@ definitions:
       unit:
         type: string
     type: object
-  model.ModValidator:
+  types.ModValidator:
     properties:
       again:
         description: 再次提醒间隔s
@@ -652,7 +652,7 @@ definitions:
       type:
         type: string
     type: object
-  model.Notification:
+  types.Notification:
     properties:
       alarm_id:
         type: string
@@ -667,7 +667,7 @@ definitions:
       user_id:
         type: string
     type: object
-  model.Plugin:
+  types.Plugin:
     properties:
       command:
         type: string
@@ -694,11 +694,11 @@ definitions:
       version:
         type: string
     type: object
-  model.Product:
+  types.Product:
     properties:
       aggregators:
         items:
-          $ref: '#/definitions/model.ModAggregator'
+          $ref: '#/definitions/types.ModAggregator'
         type: array
       created:
         type: string
@@ -706,11 +706,11 @@ definitions:
         type: string
       events:
         items:
-          $ref: '#/definitions/model.ModEvent'
+          $ref: '#/definitions/types.ModEvent'
         type: array
       functions:
         items:
-          $ref: '#/definitions/model.ModFunction'
+          $ref: '#/definitions/types.ModFunction'
         type: array
       id:
         type: string
@@ -718,20 +718,20 @@ definitions:
         type: string
       parameters:
         items:
-          $ref: '#/definitions/model.ModParameter'
+          $ref: '#/definitions/types.ModParameter'
         type: array
       properties:
         items:
-          $ref: '#/definitions/model.ModProperty'
+          $ref: '#/definitions/types.ModProperty'
         type: array
       validators:
         items:
-          $ref: '#/definitions/model.ModValidator'
+          $ref: '#/definitions/types.ModValidator'
         type: array
       version:
         type: string
     type: object
-  model.Role:
+  types.Role:
     properties:
       created:
         type: string
@@ -744,7 +744,7 @@ definitions:
           type: string
         type: array
     type: object
-  model.Subscription:
+  types.Subscription:
     properties:
       channels:
         items:
@@ -772,7 +772,7 @@ definitions:
       validator_id:
         type: string
     type: object
-  model.User:
+  types.User:
     properties:
       created:
         type: string
@@ -791,7 +791,7 @@ definitions:
       username:
         type: string
     type: object
-  model.Validator:
+  types.Validator:
     properties:
       again:
         description: 再次提醒间隔s
@@ -823,7 +823,7 @@ definitions:
       type:
         type: string
     type: object
-  model.Variables:
+  types.Variables:
     additionalProperties: {}
     type: object
   mqtt.Options:
@@ -901,7 +901,7 @@ paths:
         name: aggregator
         required: true
         schema:
-          $ref: '#/definitions/model.Aggregator'
+          $ref: '#/definitions/types.Aggregator'
       produces:
       - application/json
       responses:
@@ -1008,7 +1008,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Aggregator'
+          $ref: '#/definitions/types.Aggregator'
       produces:
       - application/json
       responses:
@@ -1406,7 +1406,7 @@ paths:
         name: broker
         required: true
         schema:
-          $ref: '#/definitions/model.Broker'
+          $ref: '#/definitions/types.Broker'
       produces:
       - application/json
       responses:
@@ -1513,7 +1513,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Broker'
+          $ref: '#/definitions/types.Broker'
       produces:
       - application/json
       responses:
@@ -1820,7 +1820,7 @@ paths:
         name: device
         required: true
         schema:
-          $ref: '#/definitions/model.Device'
+          $ref: '#/definitions/types.Device'
       produces:
       - application/json
       responses:
@@ -1927,7 +1927,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Device'
+          $ref: '#/definitions/types.Device'
       produces:
       - application/json
       responses:
@@ -2071,7 +2071,7 @@ paths:
         name: gateway
         required: true
         schema:
-          $ref: '#/definitions/model.Gateway'
+          $ref: '#/definitions/types.Gateway'
       produces:
       - application/json
       responses:
@@ -2178,7 +2178,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Gateway'
+          $ref: '#/definitions/types.Gateway'
       produces:
       - application/json
       responses:
@@ -2786,7 +2786,7 @@ paths:
         name: plugin
         required: true
         schema:
-          $ref: '#/definitions/model.Plugin'
+          $ref: '#/definitions/types.Plugin'
       produces:
       - application/json
       responses:
@@ -2913,7 +2913,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Plugin'
+          $ref: '#/definitions/types.Plugin'
       produces:
       - application/json
       responses:
@@ -3053,7 +3053,7 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/model.Product'
+          $ref: '#/definitions/types.Product'
       produces:
       - application/json
       responses:
@@ -3118,7 +3118,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Product'
+          $ref: '#/definitions/types.Product'
       produces:
       - application/json
       responses:
@@ -3241,7 +3241,7 @@ paths:
         name: role
         required: true
         schema:
-          $ref: '#/definitions/model.Role'
+          $ref: '#/definitions/types.Role'
       produces:
       - application/json
       responses:
@@ -3306,7 +3306,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Role'
+          $ref: '#/definitions/types.Role'
       produces:
       - application/json
       responses:
@@ -3433,7 +3433,7 @@ paths:
         name: subscription
         required: true
         schema:
-          $ref: '#/definitions/model.Subscription'
+          $ref: '#/definitions/types.Subscription'
       produces:
       - application/json
       responses:
@@ -3540,7 +3540,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Subscription'
+          $ref: '#/definitions/types.Subscription'
       produces:
       - application/json
       responses:
@@ -3663,7 +3663,7 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/model.User'
+          $ref: '#/definitions/types.User'
       produces:
       - application/json
       responses:
@@ -3770,7 +3770,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.User'
+          $ref: '#/definitions/types.User'
       produces:
       - application/json
       responses:
@@ -3889,7 +3889,7 @@ paths:
         name: validator
         required: true
         schema:
-          $ref: '#/definitions/model.Validator'
+          $ref: '#/definitions/types.Validator'
       produces:
       - application/json
       responses:
@@ -3996,7 +3996,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Validator'
+          $ref: '#/definitions/types.Validator'
       produces:
       - application/json
       responses:

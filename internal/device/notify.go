@@ -3,9 +3,9 @@ package device
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/payload"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 type sub struct {
@@ -16,7 +16,7 @@ type sub struct {
 	Channels  []string `json:"channels" xorm:"json"`
 }
 
-func notify(alarm *model.AlarmEx) error {
+func notify(alarm *types.AlarmEx) error {
 	//报警
 	pa := payload.Alarm{
 		Product: alarm.Product,
@@ -64,7 +64,7 @@ func notify(alarm *model.AlarmEx) error {
 
 	//依次通知
 	for _, u := range subs {
-		n := model.Notification{
+		n := types.Notification{
 			AlarmId:  alarm.Id,
 			UserId:   u.Id,
 			Channels: u.Channels,

@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd2 "github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	curd "github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 // @Summary 查询总线数量
@@ -24,7 +24,7 @@ func noopBrokerCount() {}
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Broker] 返回总线信息
+// @Success 200 {object} curd.ReplyList[types.Broker] 返回总线信息
 // @Router /broker/search [post]
 func noopBrokerSearch() {}
 
@@ -35,7 +35,7 @@ func noopBrokerSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Broker] 返回总线信息
+// @Success 200 {object} curd.ReplyList[types.Broker] 返回总线信息
 // @Router /broker/list [get]
 func noopBrokerList() {}
 
@@ -43,10 +43,10 @@ func noopBrokerList() {}
 // @Schemes
 // @Description 创建总线
 // @Tags broker
-// @Param search body model.Broker true "总线信息"
+// @Param search body types.Broker true "总线信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
+// @Success 200 {object} curd.ReplyData[types.Broker] 返回总线信息
 // @Router /broker/create [post]
 func noopBrokerCreate() {}
 
@@ -55,10 +55,10 @@ func noopBrokerCreate() {}
 // @Description 修改总线
 // @Tags broker
 // @Param id path string true "总线ID"
-// @Param broker body model.Broker true "总线信息"
+// @Param broker body types.Broker true "总线信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
+// @Success 200 {object} curd.ReplyData[types.Broker] 返回总线信息
 // @Router /broker/{id} [post]
 func noopBrokerUpdate() {}
 
@@ -69,7 +69,7 @@ func noopBrokerUpdate() {}
 // @Param id path string true "总线ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
+// @Success 200 {object} curd.ReplyData[types.Broker] 返回总线信息
 // @Router /broker/{id} [get]
 func noopBrokerGet() {}
 
@@ -80,7 +80,7 @@ func noopBrokerGet() {}
 // @Param id path string true "总线ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
+// @Success 200 {object} curd.ReplyData[types.Broker] 返回总线信息
 // @Router /broker/{id}/delete [get]
 func noopBrokerDelete() {}
 
@@ -91,7 +91,7 @@ func noopBrokerDelete() {}
 // @Param id path string true "总线ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
+// @Success 200 {object} curd.ReplyData[types.Broker] 返回总线信息
 // @Router /broker/{id}/enable [get]
 func noopBrokerEnable() {}
 
@@ -102,7 +102,7 @@ func noopBrokerEnable() {}
 // @Param id path string true "总线ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Broker] 返回总线信息
+// @Success 200 {object} curd.ReplyData[types.Broker] 返回总线信息
 // @Router /broker/{id}/disable [get]
 func noopBrokerDisable() {}
 
@@ -112,7 +112,7 @@ func noopBrokerDisable() {}
 // @Tags broker
 // @Accept json
 // @Produce octet-stream
-// @Success 200 {object} curd.ReplyList[model.Broker] 返回压缩包
+// @Success 200 {object} curd.ReplyList[types.Broker] 返回压缩包
 // @Router /broker/export [get]
 func noopBrokerExport() {}
 
@@ -129,30 +129,30 @@ func noopBrokerImport() {}
 
 func brokerRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd2.ApiCount[model.Broker]())
-	app.POST("/search", curd2.ApiSearch[model.Broker]())
-	app.GET("/list", curd2.ApiList[model.Broker]())
-	app.POST("/create", curd2.ApiCreateHook[model.Broker](curd2.GenerateRandomId[model.Broker](12), nil))
-	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Broker]())
-	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Broker](nil, nil,
+	app.POST("/count", curd.ApiCount[types.Broker]())
+	app.POST("/search", curd.ApiSearch[types.Broker]())
+	app.GET("/list", curd.ApiList[types.Broker]())
+	app.POST("/create", curd.ApiCreateHook[types.Broker](curd.GenerateRandomId[types.Broker](12), nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Broker]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Broker](nil, nil,
 		"id", "name", "type", "port", "desc", "disabled"))
-	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Broker](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Broker](nil, nil))
 
-	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Broker](true, nil, nil))
-	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Broker](false, nil, nil))
-	app.GET("/export", curd2.ApiExport("broker", "总线"))
-	app.POST("/import", curd2.ApiImport("broker"))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Broker](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Broker](false, nil, nil))
+	app.GET("/export", curd.ApiExport("broker", "总线"))
+	app.POST("/import", curd.ApiImport("broker"))
 }
 
 func afterBrokerCreate(data interface{}) error {
-	//broker := data.(*model.Broker)
+	//broker := data.(*types.Broker)
 
 	//TODO start broker
 	return nil
 }
 
 func afterBrokerUpdate(data interface{}) error {
-	//broker := data.(*model.Broker)
+	//broker := data.(*types.Broker)
 
 	//TODO restart broker
 	return nil

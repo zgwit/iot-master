@@ -2,7 +2,7 @@ package aggregator
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 type Aggregator interface {
@@ -12,7 +12,7 @@ type Aggregator interface {
 }
 
 // New 新建
-func New(m *model.ModAggregator, pop func(float64, error)) (agg Aggregator, err error) {
+func New(m *types.ModAggregator, pop func(float64, error)) (agg Aggregator, err error) {
 	switch m.Type {
 	case "inc", "increase":
 		agg = &incAggregator{}

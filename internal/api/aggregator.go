@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd2 "github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	curd "github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 // @Summary 查询聚合器数量
@@ -24,7 +24,7 @@ func noopAggregatorCount() {}
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Aggregator] 返回聚合器信息
+// @Success 200 {object} curd.ReplyList[types.Aggregator] 返回聚合器信息
 // @Router /aggregator/search [post]
 func noopAggregatorSearch() {}
 
@@ -35,7 +35,7 @@ func noopAggregatorSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Aggregator] 返回聚合器信息
+// @Success 200 {object} curd.ReplyList[types.Aggregator] 返回聚合器信息
 // @Router /aggregator/list [get]
 func noopAggregatorList() {}
 
@@ -43,10 +43,10 @@ func noopAggregatorList() {}
 // @Schemes
 // @Description 创建聚合器
 // @Tags aggregator
-// @Param search body model.Aggregator true "聚合器信息"
+// @Param search body types.Aggregator true "聚合器信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Aggregator] 返回聚合器信息
+// @Success 200 {object} curd.ReplyData[types.Aggregator] 返回聚合器信息
 // @Router /aggregator/create [post]
 func noopAggregatorCreate() {}
 
@@ -55,10 +55,10 @@ func noopAggregatorCreate() {}
 // @Description 修改聚合器
 // @Tags aggregator
 // @Param id path int true "聚合器ID"
-// @Param aggregator body model.Aggregator true "聚合器信息"
+// @Param aggregator body types.Aggregator true "聚合器信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Aggregator] 返回聚合器信息
+// @Success 200 {object} curd.ReplyData[types.Aggregator] 返回聚合器信息
 // @Router /aggregator/{id} [post]
 func noopAggregatorUpdate() {}
 
@@ -69,7 +69,7 @@ func noopAggregatorUpdate() {}
 // @Param id path int true "聚合器ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Aggregator] 返回聚合器信息
+// @Success 200 {object} curd.ReplyData[types.Aggregator] 返回聚合器信息
 // @Router /aggregator/{id} [get]
 func noopAggregatorGet() {}
 
@@ -80,7 +80,7 @@ func noopAggregatorGet() {}
 // @Param id path int true "聚合器ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Aggregator] 返回聚合器信息
+// @Success 200 {object} curd.ReplyData[types.Aggregator] 返回聚合器信息
 // @Router /aggregator/{id}/delete [get]
 func noopAggregatorDelete() {}
 
@@ -91,7 +91,7 @@ func noopAggregatorDelete() {}
 // @Param id path int true "聚合器ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Aggregator] 返回聚合器信息
+// @Success 200 {object} curd.ReplyData[types.Aggregator] 返回聚合器信息
 // @Router /aggregator/{id}/enable [get]
 func noopAggregatorEnable() {}
 
@@ -102,7 +102,7 @@ func noopAggregatorEnable() {}
 // @Param id path int true "聚合器ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Aggregator] 返回聚合器信息
+// @Success 200 {object} curd.ReplyData[types.Aggregator] 返回聚合器信息
 // @Router /aggregator/{id}/disable [get]
 func noopAggregatorDisable() {}
 
@@ -128,17 +128,17 @@ func noopAggregatorImport() {}
 
 func aggregatorRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd2.ApiCount[model.Aggregator]())
-	app.POST("/search", curd2.ApiSearch[model.Aggregator]())
-	app.GET("/list", curd2.ApiList[model.Aggregator]())
-	app.POST("/create", curd2.ApiCreateHook[model.Aggregator](curd2.GenerateRandomId[model.Aggregator](8), nil))
-	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Aggregator]())
-	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Aggregator](nil, nil,
+	app.POST("/count", curd.ApiCount[types.Aggregator]())
+	app.POST("/search", curd.ApiSearch[types.Aggregator]())
+	app.GET("/list", curd.ApiList[types.Aggregator]())
+	app.POST("/create", curd.ApiCreateHook[types.Aggregator](curd.GenerateRandomId[types.Aggregator](8), nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Aggregator]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Aggregator](nil, nil,
 		"id", "product_id", "name", "desc", "crontab", "expression", "type", "assign", "disabled"))
-	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Aggregator](nil, nil))
-	app.GET("/export", curd2.ApiExport("aggregator", "aggregator"))
-	app.POST("/import", curd2.ApiImport("aggregator"))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Aggregator](nil, nil))
+	app.GET("/export", curd.ApiExport("aggregator", "aggregator"))
+	app.POST("/import", curd.ApiImport("aggregator"))
 
-	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Aggregator](true, nil, nil))
-	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Aggregator](false, nil, nil))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Aggregator](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Aggregator](false, nil, nil))
 }

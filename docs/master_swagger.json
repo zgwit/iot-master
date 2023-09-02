@@ -62,7 +62,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Aggregator"
+                            "$ref": "#/definitions/types.Aggregator"
                         }
                     }
                 ],
@@ -250,7 +250,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Aggregator"
+                            "$ref": "#/definitions/types.Aggregator"
                         }
                     }
                 ],
@@ -835,7 +835,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Broker"
+                            "$ref": "#/definitions/types.Broker"
                         }
                     }
                 ],
@@ -1030,7 +1030,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Broker"
+                            "$ref": "#/definitions/types.Broker"
                         }
                     }
                 ],
@@ -1469,7 +1469,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Device"
+                            "$ref": "#/definitions/types.Device"
                         }
                     }
                 ],
@@ -1689,7 +1689,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Device"
+                            "$ref": "#/definitions/types.Device"
                         }
                     }
                 ],
@@ -1853,7 +1853,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Gateway"
+                            "$ref": "#/definitions/types.Gateway"
                         }
                     }
                 ],
@@ -2048,7 +2048,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Gateway"
+                            "$ref": "#/definitions/types.Gateway"
                         }
                     }
                 ],
@@ -2947,7 +2947,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Plugin"
+                            "$ref": "#/definitions/types.Plugin"
                         }
                     }
                 ],
@@ -3105,7 +3105,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Plugin"
+                            "$ref": "#/definitions/types.Plugin"
                         }
                     }
                 ],
@@ -3359,7 +3359,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Product"
+                            "$ref": "#/definitions/types.Product"
                         }
                     }
                 ],
@@ -3547,7 +3547,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Product"
+                            "$ref": "#/definitions/types.Product"
                         }
                     }
                 ],
@@ -3647,7 +3647,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Role"
+                            "$ref": "#/definitions/types.Role"
                         }
                     }
                 ],
@@ -3842,7 +3842,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Role"
+                            "$ref": "#/definitions/types.Role"
                         }
                     }
                 ],
@@ -3942,7 +3942,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Subscription"
+                            "$ref": "#/definitions/types.Subscription"
                         }
                     }
                 ],
@@ -4130,7 +4130,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Subscription"
+                            "$ref": "#/definitions/types.Subscription"
                         }
                     }
                 ],
@@ -4294,7 +4294,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.User"
+                            "$ref": "#/definitions/types.User"
                         }
                     }
                 ],
@@ -4477,7 +4477,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.User"
+                            "$ref": "#/definitions/types.User"
                         }
                     }
                 ],
@@ -4641,7 +4641,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Validator"
+                            "$ref": "#/definitions/types.Validator"
                         }
                     }
                 ],
@@ -4829,7 +4829,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Validator"
+                            "$ref": "#/definitions/types.Validator"
                         }
                     }
                 ],
@@ -5111,7 +5111,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Aggregator"
+                    "$ref": "#/definitions/types.Aggregator"
                 },
                 "error": {
                     "type": "string"
@@ -5122,7 +5122,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Alarm"
+                    "$ref": "#/definitions/types.Alarm"
                 },
                 "error": {
                     "type": "string"
@@ -5133,7 +5133,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Broker"
+                    "$ref": "#/definitions/types.Broker"
                 },
                 "error": {
                     "type": "string"
@@ -5144,7 +5144,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Device"
+                    "$ref": "#/definitions/types.Device"
                 },
                 "error": {
                     "type": "string"
@@ -5155,7 +5155,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Gateway"
+                    "$ref": "#/definitions/types.Gateway"
                 },
                 "error": {
                     "type": "string"
@@ -5166,7 +5166,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.History"
+                    "$ref": "#/definitions/types.History"
                 },
                 "error": {
                     "type": "string"
@@ -5177,7 +5177,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Notification"
+                    "$ref": "#/definitions/types.Notification"
                 },
                 "error": {
                     "type": "string"
@@ -5188,7 +5188,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Plugin"
+                    "$ref": "#/definitions/types.Plugin"
                 },
                 "error": {
                     "type": "string"
@@ -5199,7 +5199,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Product"
+                    "$ref": "#/definitions/types.Product"
                 },
                 "error": {
                     "type": "string"
@@ -5210,7 +5210,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Role"
+                    "$ref": "#/definitions/types.Role"
                 },
                 "error": {
                     "type": "string"
@@ -5221,7 +5221,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Subscription"
+                    "$ref": "#/definitions/types.Subscription"
                 },
                 "error": {
                     "type": "string"
@@ -5232,7 +5232,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.User"
+                    "$ref": "#/definitions/types.User"
                 },
                 "error": {
                     "type": "string"
@@ -5243,7 +5243,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Validator"
+                    "$ref": "#/definitions/types.Validator"
                 },
                 "error": {
                     "type": "string"
@@ -5254,7 +5254,7 @@
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/model.Variables"
+                    "$ref": "#/definitions/types.Variables"
                 },
                 "error": {
                     "type": "string"
@@ -5317,7 +5317,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Aggregator"
+                        "$ref": "#/definitions/types.Aggregator"
                     }
                 },
                 "error": {
@@ -5334,7 +5334,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Alarm"
+                        "$ref": "#/definitions/types.Alarm"
                     }
                 },
                 "error": {
@@ -5351,7 +5351,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Broker"
+                        "$ref": "#/definitions/types.Broker"
                     }
                 },
                 "error": {
@@ -5368,7 +5368,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Device"
+                        "$ref": "#/definitions/types.Device"
                     }
                 },
                 "error": {
@@ -5385,7 +5385,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Gateway"
+                        "$ref": "#/definitions/types.Gateway"
                     }
                 },
                 "error": {
@@ -5402,7 +5402,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.History"
+                        "$ref": "#/definitions/types.History"
                     }
                 },
                 "error": {
@@ -5419,7 +5419,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Notification"
+                        "$ref": "#/definitions/types.Notification"
                     }
                 },
                 "error": {
@@ -5436,7 +5436,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Plugin"
+                        "$ref": "#/definitions/types.Plugin"
                     }
                 },
                 "error": {
@@ -5453,7 +5453,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Product"
+                        "$ref": "#/definitions/types.Product"
                     }
                 },
                 "error": {
@@ -5470,7 +5470,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Role"
+                        "$ref": "#/definitions/types.Role"
                     }
                 },
                 "error": {
@@ -5487,7 +5487,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Subscription"
+                        "$ref": "#/definitions/types.Subscription"
                     }
                 },
                 "error": {
@@ -5504,7 +5504,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.User"
+                        "$ref": "#/definitions/types.User"
                     }
                 },
                 "error": {
@@ -5521,7 +5521,7 @@
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.Validator"
+                        "$ref": "#/definitions/types.Validator"
                     }
                 },
                 "error": {
@@ -5563,7 +5563,7 @@
                 }
             }
         },
-        "model.Aggregator": {
+        "types.Aggregator": {
             "type": "object",
             "properties": {
                 "assign": {
@@ -5608,7 +5608,7 @@
                 }
             }
         },
-        "model.Alarm": {
+        "types.Alarm": {
             "type": "object",
             "properties": {
                 "created": {
@@ -5649,7 +5649,7 @@
                 }
             }
         },
-        "model.Broker": {
+        "types.Broker": {
             "type": "object",
             "properties": {
                 "created": {
@@ -5673,7 +5673,7 @@
                 }
             }
         },
-        "model.Device": {
+        "types.Device": {
             "type": "object",
             "properties": {
                 "created": {
@@ -5710,7 +5710,7 @@
                 }
             }
         },
-        "model.Gateway": {
+        "types.Gateway": {
             "type": "object",
             "properties": {
                 "created": {
@@ -5736,7 +5736,7 @@
                 }
             }
         },
-        "model.History": {
+        "types.History": {
             "type": "object",
             "properties": {
                 "device": {
@@ -5761,7 +5761,7 @@
                 }
             }
         },
-        "model.ModAggregator": {
+        "types.ModAggregator": {
             "type": "object",
             "properties": {
                 "assign": {
@@ -5782,7 +5782,7 @@
                 }
             }
         },
-        "model.ModArgument": {
+        "types.ModArgument": {
             "type": "object",
             "properties": {
                 "desc": {
@@ -5802,7 +5802,7 @@
                 }
             }
         },
-        "model.ModEvent": {
+        "types.ModEvent": {
             "type": "object",
             "properties": {
                 "desc": {
@@ -5817,7 +5817,7 @@
                 "output": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModArgument"
+                        "$ref": "#/definitions/types.ModArgument"
                     }
                 },
                 "type": {
@@ -5826,7 +5826,7 @@
                 }
             }
         },
-        "model.ModFunction": {
+        "types.ModFunction": {
             "type": "object",
             "properties": {
                 "async": {
@@ -5838,7 +5838,7 @@
                 "input": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModArgument"
+                        "$ref": "#/definitions/types.ModArgument"
                     }
                 },
                 "label": {
@@ -5850,12 +5850,12 @@
                 "output": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModArgument"
+                        "$ref": "#/definitions/types.ModArgument"
                     }
                 }
             }
         },
-        "model.ModParameter": {
+        "types.ModParameter": {
             "type": "object",
             "properties": {
                 "default": {
@@ -5875,7 +5875,7 @@
                 }
             }
         },
-        "model.ModProperty": {
+        "types.ModProperty": {
             "type": "object",
             "properties": {
                 "desc": {
@@ -5904,7 +5904,7 @@
                 }
             }
         },
-        "model.ModValidator": {
+        "types.ModValidator": {
             "type": "object",
             "properties": {
                 "again": {
@@ -5936,7 +5936,7 @@
                 }
             }
         },
-        "model.Notification": {
+        "types.Notification": {
             "type": "object",
             "properties": {
                 "alarm_id": {
@@ -5959,7 +5959,7 @@
                 }
             }
         },
-        "model.Plugin": {
+        "types.Plugin": {
             "type": "object",
             "properties": {
                 "command": {
@@ -6000,13 +6000,13 @@
                 }
             }
         },
-        "model.Product": {
+        "types.Product": {
             "type": "object",
             "properties": {
                 "aggregators": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModAggregator"
+                        "$ref": "#/definitions/types.ModAggregator"
                     }
                 },
                 "created": {
@@ -6018,13 +6018,13 @@
                 "events": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModEvent"
+                        "$ref": "#/definitions/types.ModEvent"
                     }
                 },
                 "functions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModFunction"
+                        "$ref": "#/definitions/types.ModFunction"
                     }
                 },
                 "id": {
@@ -6036,19 +6036,19 @@
                 "parameters": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModParameter"
+                        "$ref": "#/definitions/types.ModParameter"
                     }
                 },
                 "properties": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModProperty"
+                        "$ref": "#/definitions/types.ModProperty"
                     }
                 },
                 "validators": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/model.ModValidator"
+                        "$ref": "#/definitions/types.ModValidator"
                     }
                 },
                 "version": {
@@ -6056,7 +6056,7 @@
                 }
             }
         },
-        "model.Role": {
+        "types.Role": {
             "type": "object",
             "properties": {
                 "created": {
@@ -6076,7 +6076,7 @@
                 }
             }
         },
-        "model.Subscription": {
+        "types.Subscription": {
             "type": "object",
             "properties": {
                 "channels": {
@@ -6118,7 +6118,7 @@
                 }
             }
         },
-        "model.User": {
+        "types.User": {
             "type": "object",
             "properties": {
                 "created": {
@@ -6147,7 +6147,7 @@
                 }
             }
         },
-        "model.Validator": {
+        "types.Validator": {
             "type": "object",
             "properties": {
                 "again": {
@@ -6194,7 +6194,7 @@
                 }
             }
         },
-        "model.Variables": {
+        "types.Variables": {
             "type": "object",
             "additionalProperties": {}
         },

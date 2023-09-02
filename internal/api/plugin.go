@@ -3,9 +3,9 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	curd2 "github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	curd "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/plugin"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 // @Summary 查询插件
@@ -15,7 +15,7 @@ import (
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Plugin] 返回插件信息
+// @Success 200 {object} curd.ReplyList[types.Plugin] 返回插件信息
 // @Router /plugin/search [post]
 func noopPluginSearch() {}
 
@@ -26,7 +26,7 @@ func noopPluginSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Plugin] 返回插件信息
+// @Success 200 {object} curd.ReplyList[types.Plugin] 返回插件信息
 // @Router /plugin/list [get]
 func noopPluginList() {}
 
@@ -34,10 +34,10 @@ func noopPluginList() {}
 // @Schemes
 // @Description 创建插件
 // @Tags plugin
-// @Param search body model.Plugin true "插件信息"
+// @Param search body types.Plugin true "插件信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Plugin] 返回插件信息
+// @Success 200 {object} curd.ReplyData[types.Plugin] 返回插件信息
 // @Router /plugin/create [post]
 func noopPluginCreate() {}
 
@@ -46,10 +46,10 @@ func noopPluginCreate() {}
 // @Description 修改插件
 // @Tags plugin
 // @Param id path int true "插件ID"
-// @Param plugin body model.Plugin true "插件信息"
+// @Param plugin body types.Plugin true "插件信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Plugin] 返回插件信息
+// @Success 200 {object} curd.ReplyData[types.Plugin] 返回插件信息
 // @Router /plugin/{id} [post]
 func noopPluginUpdate() {}
 
@@ -60,7 +60,7 @@ func noopPluginUpdate() {}
 // @Param id path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Plugin] 返回插件信息
+// @Success 200 {object} curd.ReplyData[types.Plugin] 返回插件信息
 // @Router /plugin/{id}/delete [get]
 func noopPluginDelete() {}
 
@@ -91,7 +91,7 @@ func noopPluginImport() {}
 // @Param id path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Plugin] 返回插件信息
+// @Success 200 {object} curd.ReplyData[types.Plugin] 返回插件信息
 // @Router /plugin/{id}/enable [get]
 func noopPluginEnable() {}
 
@@ -102,7 +102,7 @@ func noopPluginEnable() {}
 // @Param id path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Plugin] 返回插件信息
+// @Success 200 {object} curd.ReplyData[types.Plugin] 返回插件信息
 // @Router /plugin/{id}/disable [get]
 func noopPluginDisable() {}
 
@@ -113,7 +113,7 @@ func noopPluginDisable() {}
 // @Param id path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Plugin] 返回插件信息
+// @Success 200 {object} curd.ReplyData[types.Plugin] 返回插件信息
 // @Router /plugin/{id}/start [get]
 func noopPluginStart() {}
 
@@ -124,13 +124,13 @@ func noopPluginStart() {}
 // @Param id path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Plugin] 返回插件信息
+// @Success 200 {object} curd.ReplyData[types.Plugin] 返回插件信息
 // @Router /plugin/{id}/stop [get]
 func noopPluginStop() {}
 
 func pluginRouter(app *gin.RouterGroup) {
 
-	app.POST("/search", curd2.ApiSearchHook[model.Plugin](func(datum []*model.Plugin) error {
+	app.POST("/search", curd.ApiSearchHook[types.Plugin](func(datum []*types.Plugin) error {
 		for _, v := range datum {
 			p := plugin.Get(v.Id)
 			if p != nil {
@@ -140,7 +140,7 @@ func pluginRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.GET("/list", curd2.ApiListHook[model.Plugin](func(datum []*model.Plugin) error {
+	app.GET("/list", curd.ApiListHook[types.Plugin](func(datum []*types.Plugin) error {
 		for _, v := range datum {
 			p := plugin.Get(v.Id)
 			if p != nil {
@@ -149,9 +149,9 @@ func pluginRouter(app *gin.RouterGroup) {
 		}
 		return nil
 	}))
-	app.POST("/create", curd2.ApiCreateHook[model.Plugin](curd2.GenerateRandomId[model.Plugin](12), nil))
+	app.POST("/create", curd.ApiCreateHook[types.Plugin](curd.GenerateRandomId[types.Plugin](12), nil))
 
-	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGetHook[model.Plugin](func(m *model.Plugin) error {
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetHook[types.Plugin](func(m *types.Plugin) error {
 		p := plugin.Get(m.Id)
 		if p != nil {
 			m.Running = p.Running
@@ -159,16 +159,16 @@ func pluginRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Plugin](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Plugin](nil, nil,
 		"id", "name", "version", "command", "external", "username", "password", "disabled"))
 
-	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Plugin](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Plugin](nil, nil))
 
-	app.GET("/export", curd2.ApiExport("plugin", "插件"))
+	app.GET("/export", curd.ApiExport("plugin", "插件"))
 
-	app.POST("/import", curd2.ApiImport("plugin"))
+	app.POST("/import", curd.ApiImport("plugin"))
 
-	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Plugin](true, nil, func(id any) error {
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Plugin](true, nil, func(id any) error {
 		p := plugin.Get(id.(string))
 		if p == nil {
 			return errors.New("插件未加载")
@@ -180,31 +180,31 @@ func pluginRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Plugin](false, nil, func(id any) error {
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Plugin](false, nil, func(id any) error {
 		return plugin.Load(id.(string))
 	}))
 
-	app.GET(":id/start", curd2.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET(":id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
 		err := plugin.Load(ctx.GetString("id"))
 		if err != nil {
-			curd2.Error(ctx, err)
+			curd.Error(ctx, err)
 			return
 		}
-		curd2.OK(ctx, nil)
+		curd.OK(ctx, nil)
 	})
 
-	app.GET(":id/stop", curd2.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET(":id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
 		p := plugin.Get(ctx.GetString("id"))
 		if p == nil {
-			curd2.Fail(ctx, "插件未加载")
+			curd.Fail(ctx, "插件未加载")
 			return
 		}
 		err := p.Close()
 		if err != nil {
-			curd2.Error(ctx, err)
+			curd.Error(ctx, err)
 			return
 		}
-		curd2.OK(ctx, nil)
+		curd.OK(ctx, nil)
 	})
 
 }

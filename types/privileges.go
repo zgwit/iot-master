@@ -1,4 +1,4 @@
-package model
+package types
 
 var PRIVILEGES = map[string]string{
 	"ALL":          "全部权限",

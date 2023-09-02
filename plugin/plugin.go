@@ -2,11 +2,11 @@ package plugin
 
 import (
 	"fmt"
-	db2 "github.com/zgwit/iot-master/v4/db"
+	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/lib"
-	log2 "github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/mqtt"
+	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web"
 	"os"
 	"runtime"
@@ -23,7 +23,7 @@ func getPort() int {
 }
 
 type Plugin struct {
-	*model.Plugin
+	*types.Plugin
 
 	stop    bool
 	Process *os.Process
@@ -32,11 +32,11 @@ type Plugin struct {
 func (p *Plugin) generateEnv(addr string) []string {
 	ret := os.Environ()
 
-	l := log2.GetOptions()
+	l := log.GetOptions()
 	s := l.ToEnv()
 	ret = append(ret, s...)
 
-	d := db2.GetOptions()
+	d := db.GetOptions()
 	s = d.ToEnv()
 	ret = append(ret, s...)
 
@@ -85,7 +85,7 @@ func (p *Plugin) Start() error {
 	go func() {
 		state, err := p.Process.Wait()
 		p.Running = false
-		log2.Info(state.ExitCode(), err)
+		log.Info(state.ExitCode(), err)
 
 		//异常退出，重新启动
 		if p.stop {
@@ -94,7 +94,7 @@ func (p *Plugin) Start() error {
 
 		err = p.Start()
 		if err != nil {
-			log2.Error(err)
+			log.Error(err)
 			return
 		}
 	}()
@@ -109,7 +109,7 @@ func (p *Plugin) Close() error {
 
 var plugins lib.Map[Plugin]
 
-func New(model *model.Plugin) *Plugin {
+func New(model *types.Plugin) *Plugin {
 	return &Plugin{
 		Plugin: model,
 		//Values: map[string]float64{},
@@ -133,8 +133,8 @@ func Get(id string) *Plugin {
 }
 
 func Load(id string) error {
-	var p model.Plugin
-	get, err := db2.Engine.ID(id).Get(&p)
+	var p types.Plugin
+	get, err := db.Engine.ID(id).Get(&p)
 	if err != nil {
 		return err
 	}
@@ -145,7 +145,7 @@ func Load(id string) error {
 	return From(&p)
 }
 
-func From(model *model.Plugin) error {
+func From(model *types.Plugin) error {
 	p := New(model)
 
 	err := p.Start()
@@ -160,8 +160,8 @@ func From(model *model.Plugin) error {
 
 func LoadAll() error {
 	//开机加载所有插件
-	var ps []*model.Plugin
-	err := db2.Engine.Find(&ps)
+	var ps []*types.Plugin
+	err := db.Engine.Find(&ps)
 	if err != nil {
 		return err
 	}
@@ -172,7 +172,7 @@ func LoadAll() error {
 		}
 		err = From(p)
 		if err != nil {
-			log2.Error(err)
+			log.Error(err)
 			//return err
 		}
 	}

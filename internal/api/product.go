@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd2 "github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/model"
+	curd "github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 // @Summary 查询产品数量
@@ -24,7 +24,7 @@ func noopProductCount() {}
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Product] 返回产品信息
+// @Success 200 {object} curd.ReplyList[types.Product] 返回产品信息
 // @Router /product/search [post]
 func noopProductSearch() {}
 
@@ -35,7 +35,7 @@ func noopProductSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[model.Product] 返回产品信息
+// @Success 200 {object} curd.ReplyList[types.Product] 返回产品信息
 // @Router /product/list [get]
 func noopProductList() {}
 
@@ -43,10 +43,10 @@ func noopProductList() {}
 // @Schemes
 // @Description 创建产品
 // @Tags product
-// @Param search body model.Product true "产品信息"
+// @Param search body types.Product true "产品信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Product] 返回产品信息
+// @Success 200 {object} curd.ReplyData[types.Product] 返回产品信息
 // @Router /product/create [post]
 func noopProductCreate() {}
 
@@ -55,10 +55,10 @@ func noopProductCreate() {}
 // @Description 修改产品
 // @Tags product
 // @Param id path int true "产品ID"
-// @Param product body model.Product true "产品信息"
+// @Param product body types.Product true "产品信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Product] 返回产品信息
+// @Success 200 {object} curd.ReplyData[types.Product] 返回产品信息
 // @Router /product/{id} [post]
 func noopProductUpdate() {}
 
@@ -69,7 +69,7 @@ func noopProductUpdate() {}
 // @Param id path int true "产品ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Product] 返回产品信息
+// @Success 200 {object} curd.ReplyData[types.Product] 返回产品信息
 // @Router /product/{id} [get]
 func noopProductGet() {}
 
@@ -80,7 +80,7 @@ func noopProductGet() {}
 // @Param id path int true "产品ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[model.Product] 返回产品信息
+// @Success 200 {object} curd.ReplyData[types.Product] 返回产品信息
 // @Router /product/{id}/delete [get]
 func noopProductDelete() {}
 
@@ -106,14 +106,14 @@ func noopProductImport() {}
 
 func productRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd2.ApiCount[model.Product]())
-	app.POST("/search", curd2.ApiSearch[model.Product]())
-	app.GET("/list", curd2.ApiList[model.Product]())
-	app.POST("/create", curd2.ApiCreateHook[model.Product](curd2.GenerateRandomId[model.Product](8), nil))
-	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Product]())
-	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Product](nil, nil,
+	app.POST("/count", curd.ApiCount[types.Product]())
+	app.POST("/search", curd.ApiSearch[types.Product]())
+	app.GET("/list", curd.ApiList[types.Product]())
+	app.POST("/create", curd.ApiCreateHook[types.Product](curd.GenerateRandomId[types.Product](8), nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Product]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Product](nil, nil,
 		"id", "name", "version", "desc", "properties", "functions", "events", "parameters", "validators", "aggregators"))
-	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Product](nil, nil))
-	app.GET("/export", curd2.ApiExport("product", "产品"))
-	app.POST("/import", curd2.ApiImport("product"))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Product](nil, nil))
+	app.GET("/export", curd.ApiExport("product", "产品"))
+	app.POST("/import", curd.ApiImport("product"))
 }

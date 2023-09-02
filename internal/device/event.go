@@ -3,9 +3,9 @@ package device
 import (
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/payload"
+	"github.com/zgwit/iot-master/v4/types"
 	"strings"
 )
 
@@ -22,7 +22,7 @@ func SubscribeEvent() error {
 		}
 
 		//保存数据库
-		_, _ = db.Engine.InsertOne(model.DeviceEvent{
+		_, _ = db.Engine.InsertOne(types.DeviceEvent{
 			DeviceId: id,
 			Name:     event.Name,
 			Label:    event.Title,

@@ -9,9 +9,9 @@ import (
 	"github.com/zgwit/iot-master/v4/internal/api"
 	"github.com/zgwit/iot-master/v4/internal/broker"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/mqtt"
-	web2 "github.com/zgwit/iot-master/v4/web"
+	"github.com/zgwit/iot-master/v4/types"
+	"github.com/zgwit/iot-master/v4/web"
 	"net/http"
 )
 
@@ -26,7 +26,7 @@ var wwwFiles embed.FS
 // @query.collection.format multi
 func main() {}
 
-func Startup(engine *web2.Engine) error {
+func Startup(engine *web.Engine) error {
 
 	//加载主程序
 	err := internal.Open()
@@ -39,7 +39,7 @@ func Startup(engine *web2.Engine) error {
 	api.RegisterRoutes(engine.Group("/api"))
 
 	//注册接口文档
-	web2.RegisterSwaggerDocs(&engine.RouterGroup, "master")
+	web.RegisterSwaggerDocs(&engine.RouterGroup, "master")
 
 	//附件
 	engine.Static("/attach", "attach")
@@ -48,13 +48,13 @@ func Startup(engine *web2.Engine) error {
 	engine.GET("/mqtt", broker.GinBridge)
 
 	//监听插件
-	mqtt.Subscribe[model.App]("master/register", func(topic string, a *model.App) {
+	mqtt.Subscribe[types.App]("master/register", func(topic string, a *types.App) {
 		log.Info("app register ", a.Id, " ", a.Name, " ", a.Type, " ", a.Address)
 		app.Applications.Store(a.Id, a)
 
 		//插件反向代理
 		engine.Any("/app/"+a.Id+"/*path", func(ctx *gin.Context) {
-			rp, err := web2.CreateReverseProxy(a.Type, a.Address)
+			rp, err := web.CreateReverseProxy(a.Type, a.Address)
 			if err != nil {
 				_ = ctx.Error(err)
 				return
@@ -67,7 +67,7 @@ func Startup(engine *web2.Engine) error {
 	return nil
 }
 
-func Static(fs *web2.FileSystem) {
+func Static(fs *web.FileSystem) {
 	//前端静态文件
 	fs.Put("", http.FS(wwwFiles), "www", "index.html")
 }

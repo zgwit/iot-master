@@ -9,10 +9,10 @@ import (
 	device2 "github.com/zgwit/iot-master/v4/internal/device"
 	"github.com/zgwit/iot-master/v4/internal/product"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/pool"
+	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/vconn"
 	"net"
 	"net/url"
@@ -41,13 +41,13 @@ func Open() error {
 
 	//同步表结构
 	err = db.Engine.Sync2(
-		new(model.User), new(model.Password), new(model.Role),
-		new(model.Broker), new(model.Gateway),
-		new(model.Product), new(model.Device),
-		new(model.History), new(model.Aggregator),
-		new(model.Alarm), new(model.Validator),
-		new(model.Subscription), new(model.Notification),
-		new(model.App), new(model.Plugin),
+		new(types.User), new(types.Password), new(types.Role),
+		new(types.Broker), new(types.Gateway),
+		new(types.Product), new(types.Device),
+		new(types.History), new(types.Aggregator),
+		new(types.Alarm), new(types.Validator),
+		new(types.Subscription), new(types.Notification),
+		new(types.App), new(types.Plugin),
 	)
 	if err != nil {
 		return err
