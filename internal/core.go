@@ -5,8 +5,7 @@ import (
 	"github.com/zgwit/iot-master/v4/aggregator"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/internal/broker"
-	"github.com/zgwit/iot-master/v4/internal/cfg"
-	device2 "github.com/zgwit/iot-master/v4/internal/device"
+	"github.com/zgwit/iot-master/v4/internal/device"
 	"github.com/zgwit/iot-master/v4/internal/product"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/mqtt"
@@ -19,8 +18,6 @@ import (
 )
 
 func Open() error {
-
-	cfg.Load()
 
 	err := log.Open()
 	if err != nil {
@@ -115,12 +112,12 @@ func Open() error {
 	//	return err
 	//}
 
-	err = device2.SubscribeEvent()
+	err = device.SubscribeEvent()
 	if err != nil {
 		return err
 	}
 
-	err = device2.SubscribeProperty()
+	err = device.SubscribeProperty()
 	if err != nil {
 		return err
 	}
@@ -130,7 +127,7 @@ func Open() error {
 	//	return err
 	//}
 
-	err = device2.SubscribeOnline()
+	err = device.SubscribeOnline()
 	if err != nil {
 		return err
 	}
