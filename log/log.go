@@ -13,7 +13,9 @@ func Open() error {
 		logrus.SetReportCaller(true)
 	}
 
-	logrus.SetFormatter(&formatter{})
+	if options.Text {
+		logrus.SetFormatter(&formatter{})
+	}
 
 	logrus.SetOutput(os.Stdout)
 	//TODO 日志文件

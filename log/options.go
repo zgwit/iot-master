@@ -8,13 +8,15 @@ import (
 // Options 参数
 type Options struct {
 	Level  string `json:"level"`
-	Caller bool   `json:"caller,omitempty"`
+	Caller bool   `json:"caller"`
+	Text   bool   `json:"text"`
 }
 
 func Default() Options {
 	return Options{
 		Level:  "trace",
 		Caller: true,
+		Text:   true,
 	}
 }
 
@@ -39,6 +41,7 @@ func init() {
 func (options *Options) FromEnv() {
 	options.Level = env.Get(ENV+"LEVEL", options.Level)
 	options.Caller = env.GetBool(ENV+"CALLER", options.Caller)
+	options.Text = env.GetBool(ENV+"TEXT", options.Text)
 }
 
 func (options *Options) ToEnv() []string {
@@ -48,6 +51,9 @@ func (options *Options) ToEnv() []string {
 	}
 	if options.Caller {
 		ret = append(ret, ENV+"CALLER=TRUE")
+	}
+	if options.Text {
+		ret = append(ret, ENV+"TEXT=TRUE")
 	}
 	return ret
 }
