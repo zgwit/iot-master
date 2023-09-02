@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/device"
+	"github.com/zgwit/iot-master/v4/internal/device"
 	"github.com/zgwit/iot-master/v4/model"
 )
 

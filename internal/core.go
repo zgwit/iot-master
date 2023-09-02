@@ -3,16 +3,16 @@ package internal
 import (
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v4/aggregator"
-	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/device"
+	"github.com/zgwit/iot-master/v4/internal/broker"
 	"github.com/zgwit/iot-master/v4/internal/cfg"
+	device2 "github.com/zgwit/iot-master/v4/internal/device"
+	"github.com/zgwit/iot-master/v4/internal/product"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/pool"
-	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/vconn"
 	"net"
 	"net/url"
@@ -115,12 +115,12 @@ func Open() error {
 	//	return err
 	//}
 
-	err = device.SubscribeEvent()
+	err = device2.SubscribeEvent()
 	if err != nil {
 		return err
 	}
 
-	err = device.SubscribeProperty()
+	err = device2.SubscribeProperty()
 	if err != nil {
 		return err
 	}
@@ -130,7 +130,7 @@ func Open() error {
 	//	return err
 	//}
 
-	err = device.SubscribeOnline()
+	err = device2.SubscribeOnline()
 	if err != nil {
 		return err
 	}
