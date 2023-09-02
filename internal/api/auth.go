@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/web"
 )
 
 func auth(ctx *gin.Context) {
@@ -47,7 +48,7 @@ func auth(ctx *gin.Context) {
 	}
 
 	//生成Token
-	token, err := jwtGenerate(user.Id)
+	token, err := web.JwtGenerate(user.Id)
 	if err != nil {
 		return
 	}

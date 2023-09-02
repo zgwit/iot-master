@@ -6,6 +6,7 @@ import (
 	"github.com/zgwit/iot-master/v4/app"
 	"github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
+	"github.com/zgwit/iot-master/v4/web"
 	"net/http"
 )
 
@@ -42,7 +43,7 @@ func mustLogin(ctx *gin.Context) {
 	}
 
 	if token != "" {
-		claims, err := jwtVerify(token)
+		claims, err := web.JwtVerify(token)
 		if err != nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 			ctx.Abort()
