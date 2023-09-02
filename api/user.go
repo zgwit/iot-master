@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 获取用户信息
@@ -130,28 +130,28 @@ func userRouter(app *gin.RouterGroup) {
 
 	app.GET("/me", userMe)
 
-	app.POST("/search", curd.ApiSearch[model.User]())
+	app.POST("/search", curd2.ApiSearch[model.User]())
 
-	app.GET("/list", curd.ApiList[model.User]())
+	app.GET("/list", curd2.ApiList[model.User]())
 
-	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[model.User](curd.GenerateRandomId[model.User](6), nil))
+	app.POST("/create", curd2.ParseParamStringId, curd2.ApiCreateHook[model.User](curd2.GenerateRandomId[model.User](6), nil))
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.User]())
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.User]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.User](nil, nil,
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.User](nil, nil,
 		"username", "name", "cellphone", "email", "roles", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.User](nil, nil))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.User](nil, nil))
 
-	app.GET("/:id/password", curd.ParseParamStringId, userPassword)
+	app.GET("/:id/password", curd2.ParseParamStringId, userPassword)
 
-	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.User](false, nil, nil))
+	app.GET("/:id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.User](false, nil, nil))
 
-	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.User](true, nil, nil))
+	app.GET("/:id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.User](true, nil, nil))
 
-	app.GET("/export", curd.ApiExport("user", "用户"))
+	app.GET("/export", curd2.ApiExport("user", "用户"))
 
-	app.POST("/import", curd.ApiImport("user"))
+	app.POST("/import", curd2.ApiImport("user"))
 
 }
 
@@ -160,14 +160,14 @@ func userMe(ctx *gin.Context) {
 	var user model.User
 	has, err := db.Engine.ID(id).Get(&user)
 	if err != nil {
-		curd.Error(ctx, err)
+		curd2.Error(ctx, err)
 		return
 	}
 	if !has {
-		curd.Fail(ctx, "用户不存在")
+		curd2.Fail(ctx, "用户不存在")
 		return
 	}
-	curd.OK(ctx, &user)
+	curd2.OK(ctx, &user)
 }
 
 func userPassword(ctx *gin.Context) {
@@ -180,9 +180,9 @@ func userPassword(ctx *gin.Context) {
 
 	_, err := db.Engine.Cols("password").Update(&p)
 	if err != nil {
-		curd.Error(ctx, err)
+		curd2.Error(ctx, err)
 		return
 	}
 
-	curd.OK(ctx, nil)
+	curd2.OK(ctx, nil)
 }

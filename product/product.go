@@ -3,9 +3,9 @@ package product
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/v4/db"
+	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/lib"
 )
 
 var products lib.Map[Product]

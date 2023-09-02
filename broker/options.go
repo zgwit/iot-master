@@ -1,8 +1,8 @@
 package broker
 
 import (
-	"github.com/zgwit/iot-master/v4/pkg/config"
-	"github.com/zgwit/iot-master/v4/pkg/env"
+	"github.com/zgwit/iot-master/v4/config"
+	"github.com/zgwit/iot-master/v4/env"
 )
 
 type Options struct {

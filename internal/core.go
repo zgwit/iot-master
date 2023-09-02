@@ -10,10 +10,10 @@ import (
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/mqtt"
-	"github.com/zgwit/iot-master/v4/pkg/vconn"
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/pool"
 	"github.com/zgwit/iot-master/v4/product"
+	"github.com/zgwit/iot-master/v4/vconn"
 	"net"
 	"net/url"
 )

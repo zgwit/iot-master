@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询网关数量
@@ -129,17 +129,17 @@ func noopGatewayImport() {}
 
 func gatewayRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.Gateway]())
-	app.POST("/search", curd.ApiSearch[model.Gateway]())
-	app.GET("/list", curd.ApiList[model.Gateway]())
-	app.POST("/create", curd.ApiCreateHook[model.Gateway](curd.GenerateRandomId[model.Gateway](8), nil))
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Gateway]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Gateway](nil, nil,
+	app.POST("/count", curd2.ApiCount[model.Gateway]())
+	app.POST("/search", curd2.ApiSearch[model.Gateway]())
+	app.GET("/list", curd2.ApiList[model.Gateway]())
+	app.POST("/create", curd2.ApiCreateHook[model.Gateway](curd2.GenerateRandomId[model.Gateway](8), nil))
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Gateway]())
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Gateway](nil, nil,
 		"id", "name", "desc", "username", "password", "disabled"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Gateway](nil, nil))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Gateway](nil, nil))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Gateway](true, nil, nil))
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Gateway](false, nil, nil))
-	app.GET("/export", curd.ApiExport("gateway", "网关"))
-	app.POST("/import", curd.ApiImport("gateway"))
+	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Gateway](true, nil, nil))
+	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Gateway](false, nil, nil))
+	app.GET("/export", curd2.ApiExport("gateway", "网关"))
+	app.POST("/import", curd2.ApiImport("gateway"))
 }

@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询聚合器数量
@@ -128,17 +128,17 @@ func noopAggregatorImport() {}
 
 func aggregatorRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.Aggregator]())
-	app.POST("/search", curd.ApiSearch[model.Aggregator]())
-	app.GET("/list", curd.ApiList[model.Aggregator]())
-	app.POST("/create", curd.ApiCreateHook[model.Aggregator](curd.GenerateRandomId[model.Aggregator](8), nil))
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Aggregator]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Aggregator](nil, nil,
+	app.POST("/count", curd2.ApiCount[model.Aggregator]())
+	app.POST("/search", curd2.ApiSearch[model.Aggregator]())
+	app.GET("/list", curd2.ApiList[model.Aggregator]())
+	app.POST("/create", curd2.ApiCreateHook[model.Aggregator](curd2.GenerateRandomId[model.Aggregator](8), nil))
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Aggregator]())
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Aggregator](nil, nil,
 		"id", "product_id", "name", "desc", "crontab", "expression", "type", "assign", "disabled"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Aggregator](nil, nil))
-	app.GET("/export", curd.ApiExport("aggregator", "aggregator"))
-	app.POST("/import", curd.ApiImport("aggregator"))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Aggregator](nil, nil))
+	app.GET("/export", curd2.ApiExport("aggregator", "aggregator"))
+	app.POST("/import", curd2.ApiImport("aggregator"))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Aggregator](true, nil, nil))
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Aggregator](false, nil, nil))
+	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Aggregator](true, nil, nil))
+	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Aggregator](false, nil, nil))
 }

@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询检查数量
@@ -128,18 +128,18 @@ func noopValidatorImport() {}
 
 func validatorRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.Validator]())
-	app.POST("/search", curd.ApiSearch[model.Validator]())
-	app.GET("/list", curd.ApiList[model.Validator]())
-	app.POST("/create", curd.ApiCreateHook[model.Validator](curd.GenerateRandomId[model.Validator](8), nil))
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Validator]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Validator](nil, nil,
+	app.POST("/count", curd2.ApiCount[model.Validator]())
+	app.POST("/search", curd2.ApiSearch[model.Validator]())
+	app.GET("/list", curd2.ApiList[model.Validator]())
+	app.POST("/create", curd2.ApiCreateHook[model.Validator](curd2.GenerateRandomId[model.Validator](8), nil))
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Validator]())
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Validator](nil, nil,
 		"id", "product_id", "expression", "type", "title",
 		"template", "level", "delay", "again", "total", "disabled"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Validator](nil, nil))
-	app.GET("/export", curd.ApiExport("validator", "验证器"))
-	app.POST("/import", curd.ApiImport("validator"))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Validator](nil, nil))
+	app.GET("/export", curd2.ApiExport("validator", "验证器"))
+	app.POST("/import", curd2.ApiImport("validator"))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Validator](true, nil, nil))
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Validator](false, nil, nil))
+	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Validator](true, nil, nil))
+	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Validator](false, nil, nil))
 }

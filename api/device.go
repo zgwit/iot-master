@@ -2,10 +2,10 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询设备数量
@@ -148,44 +148,44 @@ func deviceStatistic(ctx *gin.Context) {
 	var err error
 	obj.Total, err = db.Engine.Count(model.Device{})
 	if err != nil {
-		curd.Error(ctx, err)
+		curd2.Error(ctx, err)
 		return
 	}
 	obj.Online = device.GetOnlineCount()
 	obj.Offline = obj.Total - obj.Online
-	curd.OK(ctx, &obj)
+	curd2.OK(ctx, &obj)
 }
 
 func deviceRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.Device]())
+	app.POST("/count", curd2.ApiCount[model.Device]())
 
-	app.POST("/search", curd.ApiSearchWith[model.Device]([]*curd.Join{
+	app.POST("/search", curd2.ApiSearchWith[model.Device]([]*curd2.Join{
 		{"product", "product_id", "id", "name", "product"},
 	}, "id", "name", "product_id", "disabled", "created"))
 
-	app.GET("/list", curd.ApiList[model.Device]())
+	app.GET("/list", curd2.ApiList[model.Device]())
 
-	app.POST("/create", curd.ApiCreateHook[model.Device](curd.GenerateRandomId[model.Device](12), nil))
+	app.POST("/create", curd2.ApiCreateHook[model.Device](curd2.GenerateRandomId[model.Device](12), nil))
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Device]())
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Device]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Device](nil, nil,
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Device](nil, nil,
 		"id", "gateway_id", "product_id", "group_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Device](nil, nil))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Device](nil, nil))
 
-	app.GET("/export", curd.ApiExport("device", "设备"))
+	app.GET("/export", curd2.ApiExport("device", "设备"))
 
-	app.POST("/import", curd.ApiImport("device"))
+	app.POST("/import", curd2.ApiImport("device"))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Device](true, nil, nil))
+	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Device](true, nil, nil))
 
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Device](false, nil, nil))
+	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Device](false, nil, nil))
 
-	app.GET("/:id/values", curd.ParseParamStringId, deviceValues)
+	app.GET("/:id/values", curd2.ParseParamStringId, deviceValues)
 
-	app.POST("/:id/parameters", curd.ParseParamStringId, deviceParameters)
+	app.POST("/:id/parameters", curd2.ParseParamStringId, deviceParameters)
 
 	app.GET("/statistic", deviceStatistic)
 }
@@ -193,28 +193,28 @@ func deviceRouter(app *gin.RouterGroup) {
 func deviceValues(ctx *gin.Context) {
 	dev := device.Get(ctx.GetString("id"))
 	if dev == nil {
-		curd.Fail(ctx, "设备未上线")
+		curd2.Fail(ctx, "设备未上线")
 		return
 	}
-	curd.OK(ctx, dev.Values)
+	curd2.OK(ctx, dev.Values)
 }
 
 func deviceParameters(ctx *gin.Context) {
 	var body map[string]float64
 	err := ctx.ShouldBindJSON(body)
 	if err != nil {
-		curd.Error(ctx, err)
+		curd2.Error(ctx, err)
 		return
 	}
 	dev := model.Device{Parameters: body}
 	_, err = db.Engine.ID(ctx.GetString("id")).Update(&dev)
 	if err != nil {
-		curd.Error(ctx, err)
+		curd2.Error(ctx, err)
 		return
 	}
 
 	//TODO 重置设备
 	//device.devices.Delete(ctx.GetString("id"))
 
-	curd.OK(ctx, nil)
+	curd2.OK(ctx, nil)
 }

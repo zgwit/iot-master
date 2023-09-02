@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询总线数量
@@ -129,19 +129,19 @@ func noopBrokerImport() {}
 
 func brokerRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.Broker]())
-	app.POST("/search", curd.ApiSearch[model.Broker]())
-	app.GET("/list", curd.ApiList[model.Broker]())
-	app.POST("/create", curd.ApiCreateHook[model.Broker](curd.GenerateRandomId[model.Broker](12), nil))
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Broker]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Broker](nil, nil,
+	app.POST("/count", curd2.ApiCount[model.Broker]())
+	app.POST("/search", curd2.ApiSearch[model.Broker]())
+	app.GET("/list", curd2.ApiList[model.Broker]())
+	app.POST("/create", curd2.ApiCreateHook[model.Broker](curd2.GenerateRandomId[model.Broker](12), nil))
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Broker]())
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Broker](nil, nil,
 		"id", "name", "type", "port", "desc", "disabled"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Broker](nil, nil))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Broker](nil, nil))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Broker](true, nil, nil))
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Broker](false, nil, nil))
-	app.GET("/export", curd.ApiExport("broker", "总线"))
-	app.POST("/import", curd.ApiImport("broker"))
+	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Broker](true, nil, nil))
+	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Broker](false, nil, nil))
+	app.GET("/export", curd2.ApiExport("broker", "总线"))
+	app.POST("/import", curd2.ApiImport("broker"))
 }
 
 func afterBrokerCreate(data interface{}) error {

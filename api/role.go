@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询角色数量
@@ -107,24 +107,24 @@ func noopRoleImport() {}
 
 func roleRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.Role]())
+	app.POST("/count", curd2.ApiCount[model.Role]())
 
-	app.POST("/search", curd.ApiSearch[model.Role]())
+	app.POST("/search", curd2.ApiSearch[model.Role]())
 
-	app.GET("/list", curd.ApiList[model.Role]())
+	app.GET("/list", curd2.ApiList[model.Role]())
 
-	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[model.Role](
-		curd.GenerateRandomId[model.Role](9), nil))
+	app.POST("/create", curd2.ParseParamStringId, curd2.ApiCreateHook[model.Role](
+		curd2.GenerateRandomId[model.Role](9), nil))
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Role]())
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Role]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Role](nil, nil,
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Role](nil, nil,
 		"id", "name", "privileges"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Role](nil, nil))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Role](nil, nil))
 
-	app.GET("/export", curd.ApiExport("role", "角色"))
+	app.GET("/export", curd2.ApiExport("role", "角色"))
 
-	app.POST("/import", curd.ApiImport("role"))
+	app.POST("/import", curd2.ApiImport("role"))
 
 }

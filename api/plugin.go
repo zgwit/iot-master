@@ -3,8 +3,8 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 	"github.com/zgwit/iot-master/v4/plugin"
 )
 
@@ -130,7 +130,7 @@ func noopPluginStop() {}
 
 func pluginRouter(app *gin.RouterGroup) {
 
-	app.POST("/search", curd.ApiSearchHook[model.Plugin](func(datum []*model.Plugin) error {
+	app.POST("/search", curd2.ApiSearchHook[model.Plugin](func(datum []*model.Plugin) error {
 		for _, v := range datum {
 			p := plugin.Get(v.Id)
 			if p != nil {
@@ -140,7 +140,7 @@ func pluginRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.GET("/list", curd.ApiListHook[model.Plugin](func(datum []*model.Plugin) error {
+	app.GET("/list", curd2.ApiListHook[model.Plugin](func(datum []*model.Plugin) error {
 		for _, v := range datum {
 			p := plugin.Get(v.Id)
 			if p != nil {
@@ -149,9 +149,9 @@ func pluginRouter(app *gin.RouterGroup) {
 		}
 		return nil
 	}))
-	app.POST("/create", curd.ApiCreateHook[model.Plugin](curd.GenerateRandomId[model.Plugin](12), nil))
+	app.POST("/create", curd2.ApiCreateHook[model.Plugin](curd2.GenerateRandomId[model.Plugin](12), nil))
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetHook[model.Plugin](func(m *model.Plugin) error {
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGetHook[model.Plugin](func(m *model.Plugin) error {
 		p := plugin.Get(m.Id)
 		if p != nil {
 			m.Running = p.Running
@@ -159,16 +159,16 @@ func pluginRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Plugin](nil, nil,
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Plugin](nil, nil,
 		"id", "name", "version", "command", "external", "username", "password", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Plugin](nil, nil))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Plugin](nil, nil))
 
-	app.GET("/export", curd.ApiExport("plugin", "插件"))
+	app.GET("/export", curd2.ApiExport("plugin", "插件"))
 
-	app.POST("/import", curd.ApiImport("plugin"))
+	app.POST("/import", curd2.ApiImport("plugin"))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](true, nil, func(id any) error {
+	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Plugin](true, nil, func(id any) error {
 		p := plugin.Get(id.(string))
 		if p == nil {
 			return errors.New("插件未加载")
@@ -180,31 +180,31 @@ func pluginRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Plugin](false, nil, func(id any) error {
+	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Plugin](false, nil, func(id any) error {
 		return plugin.Load(id.(string))
 	}))
 
-	app.GET(":id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET(":id/start", curd2.ParseParamStringId, func(ctx *gin.Context) {
 		err := plugin.Load(ctx.GetString("id"))
 		if err != nil {
-			curd.Error(ctx, err)
+			curd2.Error(ctx, err)
 			return
 		}
-		curd.OK(ctx, nil)
+		curd2.OK(ctx, nil)
 	})
 
-	app.GET(":id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET(":id/stop", curd2.ParseParamStringId, func(ctx *gin.Context) {
 		p := plugin.Get(ctx.GetString("id"))
 		if p == nil {
-			curd.Fail(ctx, "插件未加载")
+			curd2.Fail(ctx, "插件未加载")
 			return
 		}
 		err := p.Close()
 		if err != nil {
-			curd.Error(ctx, err)
+			curd2.Error(ctx, err)
 			return
 		}
-		curd.OK(ctx, nil)
+		curd2.OK(ctx, nil)
 	})
 
 }

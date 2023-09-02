@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询历史数量
@@ -56,9 +56,9 @@ func historyExport(ctx *gin.Context) {
 
 func historyRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.History]())
+	app.POST("/count", curd2.ApiCount[model.History]())
 
-	app.POST("/search", curd.ApiSearchWith[model.HistoryEx]([]*curd.Join{{
+	app.POST("/search", curd2.ApiSearchWith[model.HistoryEx]([]*curd2.Join{{
 		Table:        "device",
 		LocaleField:  "device_id",
 		ForeignField: "id",
@@ -66,9 +66,9 @@ func historyRouter(app *gin.RouterGroup) {
 		As:           "device",
 	}}))
 
-	app.GET("/list", curd.ApiList[model.History]())
+	app.GET("/list", curd2.ApiList[model.History]())
 
-	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.History]())
+	app.GET("/:id/delete", curd2.ParseParamId, curd2.ApiDelete[model.History]())
 
 	app.POST("/export", historyExport)
 }

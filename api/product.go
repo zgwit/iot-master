@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询产品数量
@@ -106,14 +106,14 @@ func noopProductImport() {}
 
 func productRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.Product]())
-	app.POST("/search", curd.ApiSearch[model.Product]())
-	app.GET("/list", curd.ApiList[model.Product]())
-	app.POST("/create", curd.ApiCreateHook[model.Product](curd.GenerateRandomId[model.Product](8), nil))
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Product]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Product](nil, nil,
+	app.POST("/count", curd2.ApiCount[model.Product]())
+	app.POST("/search", curd2.ApiSearch[model.Product]())
+	app.GET("/list", curd2.ApiList[model.Product]())
+	app.POST("/create", curd2.ApiCreateHook[model.Product](curd2.GenerateRandomId[model.Product](8), nil))
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Product]())
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Product](nil, nil,
 		"id", "name", "version", "desc", "properties", "functions", "events", "parameters", "validators", "aggregators"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Product](nil, nil))
-	app.GET("/export", curd.ApiExport("product", "产品"))
-	app.POST("/import", curd.ApiImport("product"))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Product](nil, nil))
+	app.GET("/export", curd2.ApiExport("product", "产品"))
+	app.POST("/import", curd2.ApiImport("product"))
 }

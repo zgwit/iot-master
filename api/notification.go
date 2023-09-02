@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询通知
@@ -50,13 +50,13 @@ func noopNotificationDelete() {}
 
 func notificationRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.Notification]())
+	app.POST("/count", curd2.ApiCount[model.Notification]())
 
-	app.POST("/search", curd.ApiSearch[model.Notification]())
+	app.POST("/search", curd2.ApiSearch[model.Notification]())
 
-	app.GET("/list", curd.ApiList[model.Notification]())
+	app.GET("/list", curd2.ApiList[model.Notification]())
 
-	app.GET("/:id", curd.ParseParamId, curd.ApiGet[model.Notification]())
+	app.GET("/:id", curd2.ParseParamId, curd2.ApiGet[model.Notification]())
 
-	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[model.Notification]())
+	app.GET("/:id/delete", curd2.ParseParamId, curd2.ApiDelete[model.Notification]())
 }

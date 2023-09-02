@@ -1,6 +1,8 @@
 package mqtt
 
-import "github.com/zgwit/iot-master/v4/pkg/lib"
+import (
+	"github.com/zgwit/iot-master/v4/lib"
+)
 
 func Default() Options {
 	return Options{

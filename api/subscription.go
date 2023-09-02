@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	curd2 "github.com/zgwit/iot-master/v4/curd"
 	"github.com/zgwit/iot-master/v4/model"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 )
 
 // @Summary 查询订阅数量
@@ -128,17 +128,17 @@ func noopSubscriptionImport() {}
 
 func subscriptionRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[model.Subscription]())
-	app.POST("/search", curd.ApiSearch[model.Subscription]())
-	app.GET("/list", curd.ApiList[model.Subscription]())
-	app.POST("/create", curd.ApiCreateHook[model.Subscription](nil, nil))
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[model.Subscription]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[model.Subscription](nil, nil,
+	app.POST("/count", curd2.ApiCount[model.Subscription]())
+	app.POST("/search", curd2.ApiSearch[model.Subscription]())
+	app.GET("/list", curd2.ApiList[model.Subscription]())
+	app.POST("/create", curd2.ApiCreateHook[model.Subscription](nil, nil))
+	app.GET("/:id", curd2.ParseParamStringId, curd2.ApiGet[model.Subscription]())
+	app.POST("/:id", curd2.ParseParamStringId, curd2.ApiUpdateHook[model.Subscription](nil, nil,
 		"user_id", "product_id", "device_id", "level", "channels", "disabled"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[model.Subscription](nil, nil))
-	app.GET("/export", curd.ApiExport("subscription", "subscription"))
-	app.POST("/import", curd.ApiImport("subscription"))
+	app.GET("/:id/delete", curd2.ParseParamStringId, curd2.ApiDeleteHook[model.Subscription](nil, nil))
+	app.GET("/export", curd2.ApiExport("subscription", "subscription"))
+	app.POST("/import", curd2.ApiImport("subscription"))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[model.Subscription](true, nil, nil))
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[model.Subscription](false, nil, nil))
+	app.GET(":id/disable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Subscription](true, nil, nil))
+	app.GET(":id/enable", curd2.ParseParamStringId, curd2.ApiDisableHook[model.Subscription](false, nil, nil))
 }
