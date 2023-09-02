@@ -3,11 +3,11 @@ package master
 import (
 	"embed"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/app"
 	"github.com/zgwit/iot-master/v4/broker"
 	_ "github.com/zgwit/iot-master/v4/docs"
 	"github.com/zgwit/iot-master/v4/internal"
+	"github.com/zgwit/iot-master/v4/internal/api"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/model"
 	"github.com/zgwit/iot-master/v4/mqtt"
