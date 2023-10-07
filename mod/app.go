@@ -17,5 +17,5 @@ type App struct {
 	Author       string            `json:"author,omitempty"`       //作者
 	Homepage     string            `json:"homepage,omitempty"`     //主页
 	Bugs         string            `json:"bugs,omitempty"`         //Bug
-	License      string            `json:"license,omitempty"`      //软件协议
+	License      string            `json:"license,omitempty"`      //软件协议：GPL MIT Apache 。。。
 }
