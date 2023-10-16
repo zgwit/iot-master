@@ -3,8 +3,8 @@ package mod
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/v4/bin"
-	"github.com/zgwit/iot-master/v4/convert"
+	"github.com/zgwit/iot-master/v4/pkg/bin"
+	"github.com/zgwit/iot-master/v4/pkg/convert"
 	"math"
 	"strings"
 )

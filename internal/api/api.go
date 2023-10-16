@@ -4,9 +4,9 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/app"
-	"github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/pkg/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web"
 	"github.com/zgwit/iot-master/v4/types"
-	"github.com/zgwit/iot-master/v4/web"
 	"net/http"
 )
 
@@ -103,11 +103,8 @@ func RegisterRoutes(router *gin.RouterGroup) {
 
 	deviceRouter(router.Group("/device"))
 	alarmRouter(router.Group("/alarm"))
-	validatorRouter(router.Group("/validator"))
 	subscriptionRouter(router.Group("/subscription"))
 	notificationRouter(router.Group("/notification"))
-
-	aggregatorRouter(router.Group("/aggregator"))
 
 	historyRouter(router.Group("/history"))
 	groupRouter(router.Group("/history/group"))

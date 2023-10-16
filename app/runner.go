@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pkg/log"
 	"os/exec"
 	"time"
 )

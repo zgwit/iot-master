@@ -2,13 +2,13 @@ package device
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/v4/aggregator"
-	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/internal/product"
 	"github.com/zgwit/iot-master/v4/lib"
-	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pkg/aggregator"
+	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/pkg/validator"
 	"github.com/zgwit/iot-master/v4/types"
-	"github.com/zgwit/iot-master/v4/validator"
 	"time"
 )
 
@@ -35,30 +35,6 @@ func (d *Device) createValidator(m *types.ModValidator) error {
 	return nil
 }
 
-func (d *Device) createAggregator(m *types.ModAggregator) error {
-	a, err := aggregator.New(m, func(val float64, err error) {
-		if err != nil {
-			log.Error(err)
-			return
-		}
-		his := types.History{
-			DeviceId: d.Id,
-			Point:    m.Assign,
-			Value:    val,
-			Time:     time.Now(),
-		}
-		_, err = db.Engine.InsertOne(&his)
-		if err != nil {
-			log.Error(err)
-		}
-	})
-	if err != nil {
-		return err
-	}
-	d.aggregators = append(d.aggregators, a)
-	return nil
-}
-
 func (d *Device) Build() {
 	for _, v := range d.product.Validators {
 		err := d.createValidator(v)
@@ -80,31 +56,6 @@ func (d *Device) Build() {
 	}
 	for _, v := range validators {
 		err := d.createValidator(&v.ModValidator)
-		if err != nil {
-			log.Error(err)
-		}
-	}
-
-	for _, v := range d.product.Aggregators {
-		err := d.createAggregator(v)
-		if err != nil {
-			log.Error(err)
-		}
-	}
-	for _, v := range d.product.ExternalAggregators {
-		err := d.createAggregator(&v.ModAggregator)
-		if err != nil {
-			log.Error(err)
-		}
-	}
-
-	var aggregators []*types.Aggregator
-	err = db.Engine.Where("device_id = ?", d.Id).And("disabled = ?", false).Find(&aggregators)
-	if err != nil {
-		log.Error(err)
-	}
-	for _, v := range aggregators {
-		err := d.createAggregator(&v.ModAggregator)
 		if err != nil {
 			log.Error(err)
 		}

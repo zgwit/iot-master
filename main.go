@@ -4,14 +4,14 @@ import (
 	"embed"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/app"
+	"github.com/zgwit/iot-master/v4/broker"
 	_ "github.com/zgwit/iot-master/v4/docs"
 	"github.com/zgwit/iot-master/v4/internal"
 	"github.com/zgwit/iot-master/v4/internal/api"
-	"github.com/zgwit/iot-master/v4/internal/broker"
-	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/mqtt"
+	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/pkg/mqtt"
+	"github.com/zgwit/iot-master/v4/pkg/web"
 	"github.com/zgwit/iot-master/v4/types"
-	"github.com/zgwit/iot-master/v4/web"
 	"net/http"
 )
 

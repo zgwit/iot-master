@@ -3,7 +3,7 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	curd "github.com/zgwit/iot-master/v4/curd"
+	curd "github.com/zgwit/iot-master/v4/pkg/curd"
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/types"
 )

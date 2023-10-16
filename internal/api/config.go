@@ -2,11 +2,11 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/curd"
-	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/mqtt"
-	"github.com/zgwit/iot-master/v4/web"
+	"github.com/zgwit/iot-master/v4/pkg/curd"
+	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/pkg/mqtt"
+	"github.com/zgwit/iot-master/v4/pkg/web"
 )
 
 // @Summary 查询WEB配置

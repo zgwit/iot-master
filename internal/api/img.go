@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/curd"
+	"github.com/zgwit/iot-master/v4/pkg/curd"
 	"os"
 	"regexp"
 	"time"
