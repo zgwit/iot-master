@@ -1,11 +1,9 @@
 package app
 
-const HUB = "https://hub.iot-noob.com"
+const HUB = "https://hub.iot-master.com"
 
-
-func Download(id string) error {
-	url := HUB + "/app/"+id+"/download"
-	
+func Download(id string, version string) error {
+	//url := HUB + "/app/" + id + "@" + version + "/download"
 
 	return nil
 }
