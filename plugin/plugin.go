@@ -5,8 +5,6 @@ import (
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/mqtt"
-	"github.com/zgwit/iot-master/v4/pkg/web"
 	"github.com/zgwit/iot-master/v4/types"
 	"os"
 	"runtime"
@@ -29,39 +27,12 @@ type Plugin struct {
 	Process *os.Process
 }
 
-func (p *Plugin) generateEnv(addr string) []string {
-	ret := os.Environ()
-
-	l := log.GetOptions()
-	s := l.ToEnv()
-	ret = append(ret, s...)
-
-	d := db.GetOptions()
-	s = d.ToEnv()
-	ret = append(ret, s...)
-
-	m := mqtt.GetOptions()
-	m.ClientId = p.Id
-	m.Username = p.Username
-	m.Password = p.Password
-	s = m.ToEnv()
-	ret = append(ret, s...)
-
-	w := web.GetOptions()
-	w.Addr = addr
-
-	s = w.ToEnv()
-	ret = append(ret, s...)
-
-	return ret
-}
-
 func (p *Plugin) Start() error {
 	var err error
 
 	//TODO linux下使用unix-sock
-	addr := fmt.Sprintf(":%d", getPort())
-	env := p.generateEnv(addr)
+	//addr := fmt.Sprintf(":%d", getPort())
+	//env := p.generateEnv(addr)
 
 	cmd := p.Command
 
@@ -74,7 +45,7 @@ func (p *Plugin) Start() error {
 
 	p.Process, err = os.StartProcess(cmd, []string{p.Id}, &os.ProcAttr{
 		Files: []*os.File{nil, os.Stdout, os.Stderr}, //可以输出到日志文件
-		Env:   env,
+		//Env:   env,
 	})
 	if err != nil {
 		return err

@@ -5,6 +5,7 @@ import (
 	mochi "github.com/mochi-mqtt/server/v2"
 	"github.com/mochi-mqtt/server/v2/hooks/auth"
 	"github.com/mochi-mqtt/server/v2/listeners"
+	"github.com/zgwit/iot-master/v4/config"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/types"
@@ -15,6 +16,10 @@ var Server *mochi.Server
 
 func Open() error {
 
+	if !config.GetBool(MODULE, "enable") {
+		return nil
+	}
+
 	//创建内部Broker
 	Server = mochi.New(nil)
 
@@ -22,19 +27,19 @@ func Open() error {
 	_ = Server.AddHook(new(auth.AllowHook), nil)
 
 	//监听默认端口
-	err := Server.AddListener(listeners.NewTCP("embed-tcp", options.Addr, nil))
+	err := Server.AddListener(listeners.NewTCP("embed-tcp", config.GetString(MODULE, "addr"), nil))
 	if err != nil {
 		return err
 	}
 
 	//监听UnixSocket，Win10以下版本有问题
-	if options.Unix {
-		err = Server.AddListener(listeners.NewUnixSock("embed-unix", options.Addr))
-		if err != nil {
-			log.Error(err)
-			//return err
-		}
-	}
+	//if options.Unix {
+	//	err = Server.AddListener(listeners.NewUnixSock("embed-unix", options.Addr))
+	//	if err != nil {
+	//		log.Error(err)
+	//		//return err
+	//	}
+	//}
 
 	//加载其他端口
 	err = loadListeners()

@@ -1,62 +1,48 @@
 package config
 
 import (
-	"fmt"
-	"gopkg.in/yaml.v3"
-	"os"
-	"path/filepath"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
+	"github.com/zgwit/iot-master/v4/lib"
 )
 
-var ROOT string
-
-const ENV_PREFIX = "IOT_MASTER_"
-const EXT = ".yaml"
-
 func init() {
-	var err error
-	ROOT, err = os.UserConfigDir()
-	if err != nil {
-		ROOT = ""
-	} else {
-		ROOT = filepath.Join(ROOT, "iot-master")
-		//_ = os.MkdirAll(ROOT, os.ModePerm)
-	}
-	fmt.Println("配置文件根目录", ROOT)
+	//取程序名称
+	name := lib.AppName()
+
+	//引入viper配置文件
+	viper.SetConfigName(name)
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")
+	//viper.SetEnvPrefix("database")
+
+	_ = viper.BindPFlags(pflag.CommandLine)
 }
 
-func Load(name string, cfg any) error {
-	fn := filepath.Join(ROOT, name+EXT)
-	y, err := os.Open(fn)
-	if err != nil {
-		return err
-	}
-	defer y.Close()
-
-	d := yaml.NewDecoder(y)
-	err = d.Decode(cfg)
-	if err != nil {
-		return err
-	}
-
-	return nil
+func Load() error {
+	return viper.ReadInConfig()
 }
 
-func Store(name string, cfg any) error {
-	fn := filepath.Join(ROOT, name+EXT)
-	_ = os.MkdirAll(filepath.Dir(fn), os.ModePerm)
-	y, err := os.OpenFile(fn, os.O_RDWR|os.O_CREATE, 0755) //os.Create(name)
-	if err != nil {
-		return err
-	}
-	defer y.Close()
+func Store() error {
+	return viper.SafeWriteConfig()
+}
 
-	e := yaml.NewEncoder(y)
-	defer e.Close()
+func Register(module string, key string, value any) {
+	viper.SetDefault(module+"."+key, value)
+}
 
-	err = e.Encode(cfg)
-	if err != nil {
-		return err
-	}
+func GetBool(module string, key string) bool {
+	return viper.GetBool(module + "." + key)
+}
 
-	return nil
+func GetString(module string, key string) string {
+	return viper.GetString(module + "." + key)
+}
+
+func GetInt(module string, key string) int {
+	return viper.GetInt(module + "." + key)
+}
+
+func GetFloat(module string, key string) float64 {
+	return viper.GetFloat64(module + "." + key)
 }

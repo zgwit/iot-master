@@ -3,6 +3,7 @@ package mqtt
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
+	"github.com/zgwit/iot-master/v4/config"
 	"github.com/zgwit/iot-master/v4/pkg/pool"
 )
 
@@ -14,10 +15,10 @@ func Close() {
 
 func Open() paho.Token {
 	opts := paho.NewClientOptions()
-	opts.AddBroker(options.Url)
-	opts.SetClientID(options.ClientId)
-	opts.SetUsername(options.Username)
-	opts.SetPassword(options.Password)
+	opts.AddBroker(config.GetString(MODULE, "url"))
+	opts.SetClientID(config.GetString(MODULE, "clientId"))
+	opts.SetUsername(config.GetString(MODULE, "username"))
+	opts.SetPassword(config.GetString(MODULE, "password"))
 	opts.SetConnectRetry(true) //重试
 
 	opts.SetKeepAlive(20)

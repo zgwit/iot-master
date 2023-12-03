@@ -5,7 +5,7 @@ import (
 	master "github.com/zgwit/iot-master/v4"
 	_ "github.com/zgwit/iot-master/v4/docs"
 	"github.com/zgwit/iot-master/v4/internal/args"
-	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pkg/log"
 	"os"
 	"os/signal"
 	"syscall"

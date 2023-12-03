@@ -4,23 +4,24 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/sirupsen/logrus"
+	"github.com/zgwit/iot-master/v4/config"
 	"os"
 )
 
 func Open() error {
 
-	if options.Caller {
+	if config.GetBool(MODULE, "caller") {
 		logrus.SetReportCaller(true)
 	}
 
-	if options.Text {
+	if config.GetBool(MODULE, "text") {
 		logrus.SetFormatter(&formatter{})
 	}
 
 	logrus.SetOutput(os.Stdout)
 	//TODO 日志文件
 
-	level, err := logrus.ParseLevel(options.Level)
+	level, err := logrus.ParseLevel(config.GetString(MODULE, "level"))
 	if err != nil {
 		return err
 	}

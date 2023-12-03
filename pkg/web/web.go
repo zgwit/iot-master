@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v4/config"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"net/http"
 	"path"
@@ -17,7 +18,7 @@ type Engine struct {
 }
 
 func CreateEngine() *Engine {
-	if !options.Debug {
+	if !config.GetBool(MODULE, "debug") {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
@@ -26,12 +27,12 @@ func CreateEngine() *Engine {
 	app := gin.New()
 	app.Use(gin.Recovery())
 
-	if options.Debug {
+	if config.GetBool(MODULE, "debug") {
 		app.Use(gin.Logger())
 	}
 
 	//跨域问题
-	if options.Cors {
+	if config.GetBool(MODULE, "cors") {
 		c := cors.DefaultConfig()
 		c.AllowAllOrigins = true
 		c.AllowCredentials = true
@@ -42,7 +43,7 @@ func CreateEngine() *Engine {
 	app.Use(sessions.Sessions("iot-master", cookie.NewStore([]byte("iot-master"))))
 
 	//开启压缩
-	if options.Gzip {
+	if config.GetBool(MODULE, "gzip") {
 		app.Use(gzip.Gzip(gzip.DefaultCompression)) //gzip.WithExcludedPathsRegexs([]string{".*"})
 	}
 
@@ -113,8 +114,8 @@ func (app *Engine) RegisterFS(fs http.FileSystem, prefix, index string) {
 }
 
 func (app *Engine) Serve() {
-	log.Info("Web服务启动 ", options.Addr)
-	err := app.Run(options.Addr)
+	//log.Info("Web服务启动 ", options.Addr)
+	err := app.Run(config.GetString(MODULE, "addr"))
 	if err != nil {
 		log.Fatal("HTTP 服务启动错误", err)
 	}

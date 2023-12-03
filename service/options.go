@@ -1,9 +1,5 @@
 package service
 
-import (
-	"github.com/zgwit/iot-master/v4/config"
-)
-
 // Options 参数
 type Options struct {
 	Name         string            `json:"name,omitempty"`
@@ -33,12 +29,4 @@ func GetOptions() Options {
 
 func SetOptions(opts Options) {
 	options = opts
-}
-
-func Load() error {
-	return config.Load(configure, &options)
-}
-
-func Store() error {
-	return config.Store(configure, &options)
 }

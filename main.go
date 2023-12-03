@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/app"
 	"github.com/zgwit/iot-master/v4/broker"
+	"github.com/zgwit/iot-master/v4/config"
 	_ "github.com/zgwit/iot-master/v4/docs"
 	"github.com/zgwit/iot-master/v4/internal"
 	"github.com/zgwit/iot-master/v4/internal/api"
@@ -28,11 +29,17 @@ func main() {}
 
 func Startup(engine *web.Engine) error {
 
+	err := config.Load()
+	if err != nil {
+		log.Error(err)
+	}
+
 	//加载主程序
-	err := internal.Open()
+	err = internal.Open()
 	if err != nil {
 		return err
 	}
+
 	//defer internal.Close()
 	engine.Static("/static", "static")
 	//注册前端接口

@@ -7,15 +7,16 @@ import (
 	_ "github.com/zgwit/iot-master/v4/docs"
 	"github.com/zgwit/iot-master/v4/internal/args"
 	"github.com/zgwit/iot-master/v4/internal/banner"
-	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/web"
+	"github.com/zgwit/iot-master/v4/lib"
+	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/pkg/web"
 	"os"
 	"os/signal"
 	"syscall"
 )
 
 var serviceConfig = &service.Config{
-	Name:        "iot-master",
+	Name:        lib.AppName(),
 	DisplayName: "物联大师",
 	Description: "物联网数据中台",
 	Arguments:   nil,
