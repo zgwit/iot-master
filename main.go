@@ -32,6 +32,7 @@ func Startup(engine *web.Engine) error {
 	err := config.Load()
 	if err != nil {
 		log.Error(err)
+		_ = config.Store()
 	}
 
 	//加载主程序
