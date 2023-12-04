@@ -46,3 +46,8 @@ func GetInt(module string, key string) int {
 func GetFloat(module string, key string) float64 {
 	return viper.GetFloat64(module + "." + key)
 }
+
+func GetStringSlice(module string, key string) []string {
+	return viper.GetStringSlice(module + "." + key)
+
+}
