@@ -1,7 +1,6 @@
 package config
 
 import (
-	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/lib"
 )
@@ -16,7 +15,8 @@ func init() {
 	viper.AddConfigPath(".")
 	//viper.SetEnvPrefix("database")
 
-	_ = viper.BindPFlags(pflag.CommandLine)
+	//绑定命令行参数
+	//_ = viper.BindPFlags(pflag.CommandLine)
 }
 
 func Load() error {
