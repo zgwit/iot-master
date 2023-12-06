@@ -2,7 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/types"
 )
 
@@ -136,8 +137,8 @@ func subscriptionRouter(app *gin.RouterGroup) {
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Subscription](nil, nil,
 		"user_id", "product_id", "device_id", "level", "channels", "disabled"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Subscription](nil, nil))
-	app.GET("/export", curd.ApiExport("subscription", "subscription"))
-	app.POST("/import", curd.ApiImport("subscription"))
+	app.GET("/export", export.ApiExport("subscription", "subscription"))
+	app.POST("/import", export.ApiImport("subscription"))
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Subscription](true, nil, nil))
 	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Subscription](false, nil, nil))

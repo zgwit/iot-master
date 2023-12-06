@@ -2,8 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/pkg/web/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/types"
 )
 
@@ -149,9 +150,9 @@ func userRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.User](true, nil, nil))
 
-	app.GET("/export", curd.ApiExport("user", "用户"))
+	app.GET("/export", export.ApiExport("user", "用户"))
 
-	app.POST("/import", curd.ApiImport("user"))
+	app.POST("/import", export.ApiImport("user"))
 
 }
 

@@ -3,8 +3,9 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/internal/device"
-	curd "github.com/zgwit/iot-master/v4/pkg/curd"
 	"github.com/zgwit/iot-master/v4/pkg/db"
+	curd "github.com/zgwit/iot-master/v4/pkg/web/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/types"
 )
 
@@ -175,9 +176,9 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Device](nil, nil))
 
-	app.GET("/export", curd.ApiExport("device", "设备"))
+	app.GET("/export", export.ApiExport("device", "设备"))
 
-	app.POST("/import", curd.ApiImport("device"))
+	app.POST("/import", export.ApiImport("device"))
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Device](true, nil, nil))
 

@@ -2,7 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd "github.com/zgwit/iot-master/v4/pkg/curd"
+	curd "github.com/zgwit/iot-master/v4/pkg/web/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/types"
 )
 
@@ -114,6 +115,6 @@ func productRouter(app *gin.RouterGroup) {
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Product](nil, nil,
 		"id", "name", "version", "desc", "properties", "functions", "events", "parameters", "validators", "aggregators"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Product](nil, nil))
-	app.GET("/export", curd.ApiExport("product", "产品"))
-	app.POST("/import", curd.ApiImport("product"))
+	app.GET("/export", export.ApiExport("product", "产品"))
+	app.POST("/import", export.ApiImport("product"))
 }

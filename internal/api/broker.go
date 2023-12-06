@@ -2,7 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd "github.com/zgwit/iot-master/v4/pkg/curd"
+	curd "github.com/zgwit/iot-master/v4/pkg/web/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/types"
 )
 
@@ -140,8 +141,8 @@ func brokerRouter(app *gin.RouterGroup) {
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Broker](true, nil, nil))
 	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Broker](false, nil, nil))
-	app.GET("/export", curd.ApiExport("broker", "总线"))
-	app.POST("/import", curd.ApiImport("broker"))
+	app.GET("/export", export.ApiExport("broker", "总线"))
+	app.POST("/import", export.ApiImport("broker"))
 }
 
 func afterBrokerCreate(data interface{}) error {

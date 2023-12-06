@@ -1,4 +1,4 @@
-package curd
+package export
 
 import (
 	"archive/zip"
@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/pkg/web/curd"
 )
 
 func ApiExport(table, filename string) gin.HandlerFunc {
@@ -21,7 +22,7 @@ func ApiExport(table, filename string) gin.HandlerFunc {
 		}
 		err := query.Find(&datum)
 		if err != nil {
-			Error(ctx, err)
+			curd.Error(ctx, err)
 			return
 		}
 

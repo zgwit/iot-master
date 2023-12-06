@@ -1,10 +1,11 @@
-package curd
+package export
 
 import (
 	"archive/zip"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/pkg/web/curd"
 	"io"
 )
 
@@ -12,20 +13,20 @@ func ApiImport(table string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		formFile, err := ctx.FormFile("file")
 		if err != nil {
-			Error(ctx, err)
+			curd.Error(ctx, err)
 			return
 		}
 
 		file, err := formFile.Open()
 		if err != nil {
-			Error(ctx, err)
+			curd.Error(ctx, err)
 			return
 		}
 		defer file.Close()
 
 		reader, err := zip.NewReader(file, formFile.Size)
 		if err != nil {
-			Error(ctx, err)
+			curd.Error(ctx, err)
 			return
 		}
 
@@ -40,20 +41,20 @@ func ApiImport(table string) gin.HandlerFunc {
 			reader, err := file.Open()
 			buf, err := io.ReadAll(reader)
 			if err != nil {
-				Error(ctx, err)
+				curd.Error(ctx, err)
 				return
 			}
 
 			var data map[string]any
 			err = json.Unmarshal(buf, &data)
 			if err != nil {
-				Error(ctx, err)
+				curd.Error(ctx, err)
 				return
 			}
 
 			has, err := db.Engine.Table(table).ID(data["id"]).Exist()
 			if err != nil {
-				Error(ctx, err)
+				curd.Error(ctx, err)
 				return
 			}
 			if has {
@@ -63,12 +64,12 @@ func ApiImport(table string) gin.HandlerFunc {
 			//插入数据
 			n, err := db.Engine.Table(table).Insert(data)
 			if err != nil {
-				Error(ctx, err)
+				curd.Error(ctx, err)
 				return
 			}
 			in += n
 		}
 
-		OK(ctx, in)
+		curd.OK(ctx, in)
 	}
 }

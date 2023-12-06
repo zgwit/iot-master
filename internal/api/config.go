@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/config"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/curd"
 )
 
 // @Summary 查询配置

@@ -2,7 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/types"
 )
 
@@ -123,8 +124,8 @@ func roleRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Role](nil, nil))
 
-	app.GET("/export", curd.ApiExport("role", "角色"))
+	app.GET("/export", export.ApiExport("role", "角色"))
 
-	app.POST("/import", curd.ApiImport("role"))
+	app.POST("/import", export.ApiImport("role"))
 
 }

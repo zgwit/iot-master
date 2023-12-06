@@ -4,8 +4,8 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/app"
-	"github.com/zgwit/iot-master/v4/pkg/curd"
 	"github.com/zgwit/iot-master/v4/pkg/web"
+	"github.com/zgwit/iot-master/v4/pkg/web/curd"
 	"github.com/zgwit/iot-master/v4/types"
 	"net/http"
 )

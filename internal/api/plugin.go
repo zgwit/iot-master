@@ -3,7 +3,8 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	curd "github.com/zgwit/iot-master/v4/pkg/curd"
+	curd "github.com/zgwit/iot-master/v4/pkg/web/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/types"
 )
@@ -164,9 +165,9 @@ func pluginRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Plugin](nil, nil))
 
-	app.GET("/export", curd.ApiExport("plugin", "插件"))
+	app.GET("/export", export.ApiExport("plugin", "插件"))
 
-	app.POST("/import", curd.ApiImport("plugin"))
+	app.POST("/import", export.ApiImport("plugin"))
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Plugin](true, nil, func(id any) error {
 		p := plugin.Get(id.(string))

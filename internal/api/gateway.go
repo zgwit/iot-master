@@ -2,7 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	curd "github.com/zgwit/iot-master/v4/pkg/curd"
+	curd "github.com/zgwit/iot-master/v4/pkg/web/curd"
+	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/types"
 )
 
@@ -140,6 +141,6 @@ func gatewayRouter(app *gin.RouterGroup) {
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Gateway](true, nil, nil))
 	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Gateway](false, nil, nil))
-	app.GET("/export", curd.ApiExport("gateway", "网关"))
-	app.POST("/import", curd.ApiImport("gateway"))
+	app.GET("/export", export.ApiExport("gateway", "网关"))
+	app.POST("/import", export.ApiImport("gateway"))
 }
