@@ -167,21 +167,23 @@ func ObjectApiMakeDir(root string) gin.HandlerFunc {
 
 func ObjectRouters(root string, app *gin.RouterGroup) {
 
-	app.GET("/:id/attach/list/*name", ObjectApiList(root))
+	group := app.Group("/:id/attach")
 
-	app.GET("/:id/attach/info/*name", ObjectApiInfo(root))
+	group.GET("/list/*name", ObjectApiList(root))
 
-	app.GET("/:id/attach/view/*name", ObjectApiView(root))
+	group.GET("/info/*name", ObjectApiInfo(root))
 
-	app.POST("/:id/attach/upload/*name", ObjectApiUpload(root))
+	group.GET("/view/*name", ObjectApiView(root))
 
-	app.GET("/:id/attach/download/*name", ObjectApiDownload(root))
+	group.POST("/upload/*name", ObjectApiUpload(root))
 
-	app.POST("/:id/attach/rename/*name", ObjectApiRename(root))
+	group.GET("/download/*name", ObjectApiDownload(root))
 
-	app.GET("/:id/attach/remove/*name", ObjectApiRemove(root))
+	group.POST("/rename/*name", ObjectApiRename(root))
 
-	app.POST("/:id/attach/move/*name", ObjectApiMove(root))
+	group.GET("/remove/*name", ObjectApiRemove(root))
 
-	app.GET("/:id/attach/mkdir/*name", ObjectApiMakeDir(root))
+	group.POST("/move/*name", ObjectApiMove(root))
+
+	group.GET("/mkdir/*name", ObjectApiMakeDir(root))
 }

@@ -184,21 +184,21 @@ func ApiMakeDir(root string) gin.HandlerFunc {
 
 func Routers(root string, app *gin.RouterGroup) {
 
-	app.GET("/attach/list/*name", ApiList(root))
+	app.GET("/list/*name", ApiList(root))
 
-	app.GET("/attach/info/*name", ApiInfo(root))
+	app.GET("/info/*name", ApiInfo(root))
 
-	app.GET("/attach/view/*name", ApiView(root))
+	app.GET("/view/*name", ApiView(root))
 
-	app.POST("/attach/upload/*name", ApiUpload(root))
+	app.POST("/upload/*name", ApiUpload(root))
 
-	app.GET("/attach/download/*name", ApiDownload(root))
+	app.GET("/download/*name", ApiDownload(root))
 
-	app.POST("/attach/rename/*name", ApiRename(root))
+	app.POST("/rename/*name", ApiRename(root))
 
-	app.GET("/attach/remove/*name", ApiRemove(root))
+	app.GET("/remove/*name", ApiRemove(root))
 
-	app.POST("/attach/move/*name", ApiMove(root))
+	app.POST("/move/*name", ApiMove(root))
 
-	app.GET("/attach/mkdir/*name", ApiMakeDir(root))
+	app.GET("/mkdir/*name", ApiMakeDir(root))
 }
