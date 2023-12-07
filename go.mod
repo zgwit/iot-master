@@ -2,8 +2,6 @@ module github.com/zgwit/iot-master/v4
 
 go 1.21
 
-toolchain go1.21.4
-
 require (
 	github.com/PaesslerAG/gval v1.2.2
 	github.com/blang/semver/v4 v4.0.0
@@ -25,7 +23,6 @@ require (
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/sirupsen/logrus v1.9.3
-	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.17.0
 	github.com/super-l/machine-code v0.0.0-20210720085303-62525d58dab0
 	github.com/swaggo/gin-swagger v1.6.0
@@ -80,6 +77,7 @@ require (
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
+	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.13 // indirect
 	github.com/tklauser/numcpus v0.7.0 // indirect

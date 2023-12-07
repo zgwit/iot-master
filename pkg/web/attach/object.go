@@ -7,29 +7,12 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"time"
 )
 
-type attachInfo struct {
-	Name   string    `json:"name,omitempty"`
-	Mime   string    `json:"mime,omitempty"`
-	Time   time.Time `json:"time"`
-	Size   int64     `json:"size,omitempty"`
-	Folder bool      `json:"folder,omitempty"`
-}
-
-type RenameBody struct {
-	Name string `json:"name,omitempty"`
-}
-
-type MoveBody struct {
-	Path string `json:"path,omitempty"`
-}
-
-func ApiList(root string) gin.HandlerFunc {
+func ObjectApiList(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//列出目录
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
 		files, err := os.ReadDir(filename)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -55,10 +38,10 @@ func ApiList(root string) gin.HandlerFunc {
 	}
 }
 
-func ApiInfo(root string) gin.HandlerFunc {
+func ObjectApiInfo(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//列出目录
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
 		info, err := os.Stat(filename)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -75,9 +58,9 @@ func ApiInfo(root string) gin.HandlerFunc {
 	}
 }
 
-func ApiUpload(root string) gin.HandlerFunc {
+func ObjectApiUpload(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		dir := filepath.Join(root, ctx.Param("name"))
+		dir := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
 		_ = os.MkdirAll(dir, os.ModePerm) //创建目录
 
 		form, err := ctx.MultipartForm()
@@ -101,22 +84,22 @@ func ApiUpload(root string) gin.HandlerFunc {
 	}
 }
 
-func ApiView(root string) gin.HandlerFunc {
+func ObjectApiView(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
 		http.ServeFile(ctx.Writer, ctx.Request, filename)
 	}
 }
 
-func ApiDownload(root string) gin.HandlerFunc {
+func ObjectApiDownload(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
 		ctx.Header("Content-Disposition", "attachment; filename="+ctx.Param("name"))
 		http.ServeFile(ctx.Writer, ctx.Request, filename)
 	}
 }
 
-func ApiRename(root string) gin.HandlerFunc {
+func ObjectApiRename(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var rename RenameBody
 		err := ctx.ShouldBindJSON(&rename)
@@ -125,7 +108,7 @@ func ApiRename(root string) gin.HandlerFunc {
 			return
 		}
 
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
 		newPath := filepath.Join(filepath.Dir(filename), rename.Name)
 
 		err = os.Rename(filename, newPath)
@@ -137,9 +120,9 @@ func ApiRename(root string) gin.HandlerFunc {
 	}
 }
 
-func ApiRemove(root string) gin.HandlerFunc {
+func ObjectApiRemove(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
 		err := os.Remove(filename)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -149,7 +132,7 @@ func ApiRemove(root string) gin.HandlerFunc {
 	}
 }
 
-func ApiMove(root string) gin.HandlerFunc {
+func ObjectApiMove(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var move MoveBody
 		err := ctx.ShouldBindJSON(&move)
@@ -158,8 +141,8 @@ func ApiMove(root string) gin.HandlerFunc {
 			return
 		}
 
-		filename := filepath.Join(root, ctx.Param("name"))
-		newPath := filepath.Join(root, move.Path, filepath.Base(filename))
+		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
+		newPath := filepath.Join(root, ctx.Param("id"), move.Path, filepath.Base(filename))
 
 		err = os.Rename(filename, newPath)
 		if err != nil {
@@ -170,9 +153,9 @@ func ApiMove(root string) gin.HandlerFunc {
 	}
 }
 
-func ApiMakeDir(root string) gin.HandlerFunc {
+func ObjectApiMakeDir(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
 		err := os.MkdirAll(filename, os.ModePerm)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -182,23 +165,23 @@ func ApiMakeDir(root string) gin.HandlerFunc {
 	}
 }
 
-func Routers(root string, app *gin.RouterGroup) {
+func ObjectRouters(root string, app *gin.RouterGroup) {
 
-	app.GET("/attach/list/*name", ApiList(root))
+	app.GET("/:id/attach/list/*name", ObjectApiList(root))
 
-	app.GET("/attach/info/*name", ApiInfo(root))
+	app.GET("/:id/attach/info/*name", ObjectApiInfo(root))
 
-	app.GET("/attach/view/*name", ApiView(root))
+	app.GET("/:id/attach/view/*name", ObjectApiView(root))
 
-	app.POST("/attach/upload/*name", ApiUpload(root))
+	app.POST("/:id/attach/upload/*name", ObjectApiUpload(root))
 
-	app.GET("/attach/download/*name", ApiDownload(root))
+	app.GET("/:id/attach/download/*name", ObjectApiDownload(root))
 
-	app.POST("/attach/rename/*name", ApiRename(root))
+	app.POST("/:id/attach/rename/*name", ObjectApiRename(root))
 
-	app.GET("/attach/remove/*name", ApiRemove(root))
+	app.GET("/:id/attach/remove/*name", ObjectApiRemove(root))
 
-	app.POST("/attach/move/*name", ApiMove(root))
+	app.POST("/:id/attach/move/*name", ObjectApiMove(root))
 
-	app.GET("/attach/mkdir/*name", ApiMakeDir(root))
+	app.GET("/:id/attach/mkdir/*name", ObjectApiMakeDir(root))
 }
