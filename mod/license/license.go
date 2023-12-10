@@ -1,6 +1,9 @@
-package mod
+package license
 
-import "github.com/blang/semver/v4"
+import (
+	"github.com/blang/semver/v4"
+	"github.com/zgwit/iot-master/v4/types"
+)
 
 type License struct {
 	AppId    string         `json:"app_id"`
@@ -8,6 +11,6 @@ type License struct {
 	User     string         `json:"user,omitempty"`
 	Machine  string         `json:"machine"`
 	Version  semver.Version `json:"version,omitempty"` //版本
-	ExpireAt Time           `json:"expire_at"`
+	ExpireAt types.Time     `json:"expire_at"`
 	Content  string         `json:"content"`
 }

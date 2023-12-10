@@ -1,6 +1,9 @@
 package mod
 
-import "github.com/blang/semver/v4"
+import (
+	"github.com/blang/semver/v4"
+	"github.com/zgwit/iot-master/v4/mod/data"
+)
 
 type Product struct {
 	Id          string         `json:"id" xorm:"pk"`          //ID
@@ -21,19 +24,19 @@ type Product struct {
 }
 
 type Parameter struct {
-	Name        string `json:"name"`
-	Description string `json:"description,omitempty"` //说明
-	Type        Type   `json:"type"`                  //int float ....
-	Unit        string `json:"unit"`                  //单位
-	Default     any    `json:"default,omitempty"`
+	Name        string    `json:"name"`
+	Description string    `json:"description,omitempty"` //说明
+	Type        data.Type `json:"type"`                  //int float ....
+	Unit        string    `json:"unit"`                  //单位
+	Default     any       `json:"default,omitempty"`
 }
 
 type Property struct {
-	Name        string `json:"name"`
-	Description string `json:"description,omitempty"` //说明
-	Type        Type   `json:"type"`                  //int float ....
-	Unit        string `json:"unit"`                  //单位
-	Mode        string `json:"mode"`                  //读取模式 r w rw
+	Name        string    `json:"name"`
+	Description string    `json:"description,omitempty"` //说明
+	Type        data.Type `json:"type"`                  //int float ....
+	Unit        string    `json:"unit"`                  //单位
+	Mode        string    `json:"mode"`                  //读取模式 r w rw
 }
 
 type Function struct {
