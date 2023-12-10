@@ -6,7 +6,7 @@ import (
 )
 
 type App struct {
-	*mod.App
+	*mod.Model
 
 	runner *Runner
 	proxy  *httputil.ReverseProxy

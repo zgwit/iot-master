@@ -1,4 +1,4 @@
-package mod
+package product
 
 import (
 	"github.com/blang/semver/v4"
