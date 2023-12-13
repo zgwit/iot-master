@@ -20,9 +20,9 @@ export class LoginComponent implements OnInit {
     private rs: RequestService,
     private us: UserService,
     private router: Router,
-  //  protected os: OemService
+     protected os: OemService
      ) {
-  //  this.oem = os.oem;
+     this.oem = os.oem;
   }
 
   submitForm(): void {
