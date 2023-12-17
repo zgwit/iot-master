@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v4/pkg/web/attach"
 	curd "github.com/zgwit/iot-master/v4/pkg/web/curd"
 	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/plugin"
@@ -255,4 +256,6 @@ func pluginRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, nil)
 	})
 
+	//附件
+	attach.ObjectRouters("plugin", app.Group(":id"))
 }

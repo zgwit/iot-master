@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v4/pkg/web/attach"
 	curd "github.com/zgwit/iot-master/v4/pkg/web/curd"
 	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/product"
@@ -165,4 +166,7 @@ func productRouter(app *gin.RouterGroup) {
 		}
 		curd.OK(ctx, nil)
 	})
+
+	//附件
+	attach.ObjectRouters("product", app.Group(":id"))
 }
