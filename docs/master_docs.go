@@ -15,358 +15,6 @@ const docTemplatemaster = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/aggregator/count": {
-            "post": {
-                "description": "查询聚合器数量",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "查询聚合器数量",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregator/create": {
-            "post": {
-                "description": "创建聚合器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "创建聚合器",
-                "parameters": [
-                    {
-                        "description": "聚合器信息",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.Aggregator"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregator/export": {
-            "get": {
-                "description": "导出聚合器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "导出聚合器",
-                "responses": {}
-            }
-        },
-        "/aggregator/import": {
-            "post": {
-                "description": "导入聚合器",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "导入聚合器",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "压缩包",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregator/list": {
-            "get": {
-                "description": "查询聚合器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "查询聚合器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Aggregator"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregator/search": {
-            "post": {
-                "description": "查询聚合器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "查询聚合器",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Aggregator"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregator/{id}": {
-            "get": {
-                "description": "获取聚合器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "获取聚合器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "聚合器ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改聚合器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "修改聚合器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "聚合器ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "聚合器信息",
-                        "name": "aggregator",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.Aggregator"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregator/{id}/delete": {
-            "get": {
-                "description": "删除聚合器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "删除聚合器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "聚合器ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregator/{id}/disable": {
-            "get": {
-                "description": "禁用聚合器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "禁用聚合器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "聚合器ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
-                        }
-                    }
-                }
-            }
-        },
-        "/aggregator/{id}/enable": {
-            "get": {
-                "description": "启用聚合器",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "aggregator"
-                ],
-                "summary": "启用聚合器",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "聚合器ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Aggregator"
-                        }
-                    }
-                }
-            }
-        },
         "/alarm/count": {
             "post": {
                 "description": "查询报警",
@@ -427,7 +75,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Alarm"
+                            "$ref": "#/definitions/curd.ReplyList-types_Alarm"
                         }
                     }
                 }
@@ -461,7 +109,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Alarm"
+                            "$ref": "#/definitions/curd.ReplyList-types_Alarm"
                         }
                     }
                 }
@@ -490,7 +138,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Alarm"
+                            "$ref": "#/definitions/curd.ReplyData-types_Alarm"
                         }
                     }
                 }
@@ -519,215 +167,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Alarm"
-                        }
-                    }
-                }
-            }
-        },
-        "/attach/list/{name}": {
-            "get": {
-                "description": "查询附件",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "attach"
-                ],
-                "summary": "查询附件",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "路径",
-                        "name": "name",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-api_attachInfo"
-                        }
-                    }
-                }
-            }
-        },
-        "/attach/mkdir/{name}": {
-            "get": {
-                "description": "创建目录",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "attach"
-                ],
-                "summary": "创建目录",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "路径",
-                        "name": "name",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-any"
-                        }
-                    }
-                }
-            }
-        },
-        "/attach/move/{name}": {
-            "post": {
-                "description": "移动附件",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "attach"
-                ],
-                "summary": "移动附件",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "路径",
-                        "name": "name",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "新路径",
-                        "name": "b",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/api.moveBody"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-any"
-                        }
-                    }
-                }
-            }
-        },
-        "/attach/remove/{name}": {
-            "get": {
-                "description": "删除附件",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "attach"
-                ],
-                "summary": "删除附件",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "路径",
-                        "name": "name",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-any"
-                        }
-                    }
-                }
-            }
-        },
-        "/attach/rename/{name}": {
-            "post": {
-                "description": "重命名附件",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "attach"
-                ],
-                "summary": "重命名附件",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "路径",
-                        "name": "name",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "新名称",
-                        "name": "b",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/api.renameBody"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-any"
-                        }
-                    }
-                }
-            }
-        },
-        "/attach/upload/{name}": {
-            "post": {
-                "description": "上传附件（支持多文件，不用特定为file）",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "attach"
-                ],
-                "summary": "上传附件",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "附件",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "路径",
-                        "name": "name",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-any"
+                            "$ref": "#/definitions/curd.ReplyData-types_Alarm"
                         }
                     }
                 }
@@ -850,7 +290,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                            "$ref": "#/definitions/curd.ReplyData-types_Broker"
                         }
                     }
                 }
@@ -873,7 +313,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Broker"
+                            "$ref": "#/definitions/curd.ReplyList-types_Broker"
                         }
                     }
                 }
@@ -940,7 +380,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Broker"
+                            "$ref": "#/definitions/curd.ReplyList-types_Broker"
                         }
                     }
                 }
@@ -974,7 +414,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Broker"
+                            "$ref": "#/definitions/curd.ReplyList-types_Broker"
                         }
                     }
                 }
@@ -1006,7 +446,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                            "$ref": "#/definitions/curd.ReplyData-types_Broker"
                         }
                     }
                 }
@@ -1045,7 +485,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                            "$ref": "#/definitions/curd.ReplyData-types_Broker"
                         }
                     }
                 }
@@ -1077,7 +517,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                            "$ref": "#/definitions/curd.ReplyData-types_Broker"
                         }
                     }
                 }
@@ -1109,7 +549,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                            "$ref": "#/definitions/curd.ReplyData-types_Broker"
                         }
                     }
                 }
@@ -1141,15 +581,15 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Broker"
+                            "$ref": "#/definitions/curd.ReplyData-types_Broker"
                         }
                     }
                 }
             }
         },
-        "/config/db": {
+        "/config/:module": {
             "get": {
-                "description": "查询数据库配置",
+                "description": "查询配置",
                 "consumes": [
                     "application/json"
                 ],
@@ -1159,18 +599,19 @@ const docTemplatemaster = `{
                 "tags": [
                     "config"
                 ],
-                "summary": "查询数据库配置",
+                "summary": "查询配置",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-db_Options"
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 }
             },
             "post": {
-                "description": "修改数据库配置",
+                "description": "修改配置",
                 "consumes": [
                     "application/json"
                 ],
@@ -1180,235 +621,16 @@ const docTemplatemaster = `{
                 "tags": [
                     "config"
                 ],
-                "summary": "修改数据库配置",
+                "summary": "修改配置",
                 "parameters": [
                     {
-                        "description": "数据库配置",
+                        "description": "配置",
                         "name": "cfg",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/db.Options"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/config/log": {
-            "get": {
-                "description": "查询日志配置",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "config"
-                ],
-                "summary": "查询日志配置",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-log_Options"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改日志配置",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "config"
-                ],
-                "summary": "修改日志配置",
-                "parameters": [
-                    {
-                        "description": "日志配置",
-                        "name": "cfg",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/log.Options"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/config/mqtt": {
-            "get": {
-                "description": "查询MQTT配置",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "config"
-                ],
-                "summary": "查询MQTT配置",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-mqtt_Options"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改MQTT配置",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "config"
-                ],
-                "summary": "修改MQTT配置",
-                "parameters": [
-                    {
-                        "description": "MQTT配置",
-                        "name": "cfg",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/mqtt.Options"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/config/oem": {
-            "get": {
-                "description": "查询OEM配置",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "config"
-                ],
-                "summary": "查询OEM配置",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-oem_Options"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改OEM配置",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "config"
-                ],
-                "summary": "修改OEM配置",
-                "parameters": [
-                    {
-                        "description": "OEM配置",
-                        "name": "cfg",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/oem.Options"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/config/web": {
-            "get": {
-                "description": "查询WEB配置",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "config"
-                ],
-                "summary": "查询WEB配置",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-web_Options"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改WEB配置",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "config"
-                ],
-                "summary": "修改WEB配置",
-                "parameters": [
-                    {
-                        "description": "WEB配置",
-                        "name": "cfg",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/web.Options"
+                            "type": "object",
+                            "additionalProperties": true
                         }
                     }
                 ],
@@ -1484,7 +706,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Device"
+                            "$ref": "#/definitions/curd.ReplyData-types_Device"
                         }
                     }
                 }
@@ -1567,7 +789,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Device"
+                            "$ref": "#/definitions/curd.ReplyList-types_Device"
                         }
                     }
                 }
@@ -1601,7 +823,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Device"
+                            "$ref": "#/definitions/curd.ReplyList-types_Device"
                         }
                     }
                 }
@@ -1665,7 +887,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Device"
+                            "$ref": "#/definitions/curd.ReplyData-types_Device"
                         }
                     }
                 }
@@ -1704,7 +926,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Device"
+                            "$ref": "#/definitions/curd.ReplyData-types_Device"
                         }
                     }
                 }
@@ -1736,7 +958,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Device"
+                            "$ref": "#/definitions/curd.ReplyData-types_Device"
                         }
                     }
                 }
@@ -1768,7 +990,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Device"
+                            "$ref": "#/definitions/curd.ReplyData-types_Device"
                         }
                     }
                 }
@@ -1800,7 +1022,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Variables"
+                            "$ref": "#/definitions/curd.ReplyData-types_Variables"
                         }
                     }
                 }
@@ -1868,7 +1090,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
                         }
                     }
                 }
@@ -1891,7 +1113,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Gateway"
+                            "$ref": "#/definitions/curd.ReplyList-types_Gateway"
                         }
                     }
                 }
@@ -1958,7 +1180,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Gateway"
+                            "$ref": "#/definitions/curd.ReplyList-types_Gateway"
                         }
                     }
                 }
@@ -1992,7 +1214,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Gateway"
+                            "$ref": "#/definitions/curd.ReplyList-types_Gateway"
                         }
                     }
                 }
@@ -2024,7 +1246,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
                         }
                     }
                 }
@@ -2063,7 +1285,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
                         }
                     }
                 }
@@ -2095,7 +1317,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
                         }
                     }
                 }
@@ -2127,7 +1349,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
                         }
                     }
                 }
@@ -2159,7 +1381,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
                         }
                     }
                 }
@@ -2194,64 +1416,6 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/history/group": {
-            "get": {
-                "description": "原始数据按时间统计",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "group"
-                ],
-                "summary": "原始数据按时间统计",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "设备区域",
-                        "name": "area",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "结束时间",
-                        "name": "end",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备分组",
-                        "name": "group",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "数据点位",
-                        "name": "point",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "起始时间",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "设备类型",
-                        "name": "type",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_GroupResult"
                         }
                     }
                 }
@@ -2313,6 +1477,12 @@ const docTemplatemaster = `{
                         "type": "string",
                         "description": "设备区域",
                         "name": "area",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备ID",
+                        "name": "device",
                         "in": "query"
                     },
                     {
@@ -2416,6 +1586,12 @@ const docTemplatemaster = `{
                     },
                     {
                         "type": "string",
+                        "description": "设备ID",
+                        "name": "device",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "结束时间",
                         "name": "end",
                         "in": "query"
@@ -2474,6 +1650,12 @@ const docTemplatemaster = `{
                     },
                     {
                         "type": "string",
+                        "description": "设备ID",
+                        "name": "device",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "结束时间",
                         "name": "end",
                         "in": "query"
@@ -2528,6 +1710,12 @@ const docTemplatemaster = `{
                         "type": "string",
                         "description": "设备区域",
                         "name": "area",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "设备ID",
+                        "name": "device",
                         "in": "query"
                     },
                     {
@@ -2665,6 +1853,12 @@ const docTemplatemaster = `{
                     },
                     {
                         "type": "string",
+                        "description": "设备ID",
+                        "name": "device",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "结束时间",
                         "name": "end",
                         "in": "query"
@@ -2733,7 +1927,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_History"
+                            "$ref": "#/definitions/curd.ReplyList-types_History"
                         }
                     }
                 }
@@ -2767,7 +1961,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_History"
+                            "$ref": "#/definitions/curd.ReplyList-types_History"
                         }
                     }
                 }
@@ -2799,7 +1993,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_History"
+                            "$ref": "#/definitions/curd.ReplyData-types_History"
                         }
                     }
                 }
@@ -2865,7 +2059,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Notification"
+                            "$ref": "#/definitions/curd.ReplyList-types_Notification"
                         }
                     }
                 }
@@ -2899,7 +2093,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Notification"
+                            "$ref": "#/definitions/curd.ReplyList-types_Notification"
                         }
                     }
                 }
@@ -2928,7 +2122,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Notification"
+                            "$ref": "#/definitions/curd.ReplyData-types_Notification"
                         }
                     }
                 }
@@ -2962,7 +2156,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Plugin"
+                            "$ref": "#/definitions/curd.ReplyData-types_Plugin"
                         }
                     }
                 }
@@ -3045,7 +2239,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Plugin"
+                            "$ref": "#/definitions/curd.ReplyList-types_Plugin"
                         }
                     }
                 }
@@ -3079,7 +2273,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Plugin"
+                            "$ref": "#/definitions/curd.ReplyList-types_Plugin"
                         }
                     }
                 }
@@ -3120,7 +2314,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Plugin"
+                            "$ref": "#/definitions/curd.ReplyData-types_Plugin"
                         }
                     }
                 }
@@ -3152,7 +2346,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Plugin"
+                            "$ref": "#/definitions/curd.ReplyData-types_Plugin"
                         }
                     }
                 }
@@ -3184,7 +2378,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Plugin"
+                            "$ref": "#/definitions/curd.ReplyData-types_Plugin"
                         }
                     }
                 }
@@ -3216,7 +2410,39 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Plugin"
+                            "$ref": "#/definitions/curd.ReplyData-types_Plugin"
+                        }
+                    }
+                }
+            }
+        },
+        "/plugin/{id}/manifest": {
+            "get": {
+                "description": "获取插件详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plugin"
+                ],
+                "summary": "获取插件详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "插件ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-plugin_Manifest"
                         }
                     }
                 }
@@ -3248,7 +2474,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Plugin"
+                            "$ref": "#/definitions/curd.ReplyData-types_Plugin"
                         }
                     }
                 }
@@ -3280,7 +2506,37 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Plugin"
+                            "$ref": "#/definitions/curd.ReplyData-types_Plugin"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改插件详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plugin"
+                ],
+                "summary": "修改插件详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "插件ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-plugin_Manifest"
                         }
                     }
                 }
@@ -3374,7 +2630,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Product"
+                            "$ref": "#/definitions/curd.ReplyData-types_Product"
                         }
                     }
                 }
@@ -3457,7 +2713,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Product"
+                            "$ref": "#/definitions/curd.ReplyList-types_Product"
                         }
                     }
                 }
@@ -3491,7 +2747,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Product"
+                            "$ref": "#/definitions/curd.ReplyList-types_Product"
                         }
                     }
                 }
@@ -3523,7 +2779,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Product"
+                            "$ref": "#/definitions/curd.ReplyData-types_Product"
                         }
                     }
                 }
@@ -3562,7 +2818,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Product"
+                            "$ref": "#/definitions/curd.ReplyData-types_Product"
                         }
                     }
                 }
@@ -3594,7 +2850,485 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Product"
+                            "$ref": "#/definitions/curd.ReplyData-types_Product"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{id}/manifest": {
+            "get": {
+                "description": "获取产品详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "获取产品详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "产品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-product_Manifest"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{id}/stop": {
+            "post": {
+                "description": "修改产品详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product"
+                ],
+                "summary": "修改产品详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "产品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-product_Manifest"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/create": {
+            "post": {
+                "description": "创建项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "创建项目",
+                "parameters": [
+                    {
+                        "description": "项目信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.Project"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/export": {
+            "get": {
+                "description": "导出项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "导出项目",
+                "responses": {}
+            }
+        },
+        "/project/import": {
+            "post": {
+                "description": "导入项目",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "导入项目",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/list": {
+            "get": {
+                "description": "查询项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "查询项目",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/search": {
+            "post": {
+                "description": "查询项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "查询项目",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{id}": {
+            "post": {
+                "description": "修改项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "修改项目",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "项目信息",
+                        "name": "project",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.Project"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{id}/delete": {
+            "get": {
+                "description": "删除项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "删除项目",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{id}/disable": {
+            "get": {
+                "description": "禁用项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "禁用项目",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{id}/enable": {
+            "get": {
+                "description": "启用项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "启用项目",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{id}/manifest": {
+            "get": {
+                "description": "获取项目详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "获取项目详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-project_Manifest"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{id}/start": {
+            "get": {
+                "description": "启动项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "启动项目",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/{id}/stop": {
+            "get": {
+                "description": "停止项目",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "停止项目",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改项目详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "修改项目详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-project_Manifest"
                         }
                     }
                 }
@@ -3662,7 +3396,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Role"
+                            "$ref": "#/definitions/curd.ReplyData-types_Role"
                         }
                     }
                 }
@@ -3685,7 +3419,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Role"
+                            "$ref": "#/definitions/curd.ReplyList-types_Role"
                         }
                     }
                 }
@@ -3752,7 +3486,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Role"
+                            "$ref": "#/definitions/curd.ReplyList-types_Role"
                         }
                     }
                 }
@@ -3786,7 +3520,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Role"
+                            "$ref": "#/definitions/curd.ReplyList-types_Role"
                         }
                     }
                 }
@@ -3818,7 +3552,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Role"
+                            "$ref": "#/definitions/curd.ReplyData-types_Role"
                         }
                     }
                 }
@@ -3857,7 +3591,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Role"
+                            "$ref": "#/definitions/curd.ReplyData-types_Role"
                         }
                     }
                 }
@@ -3889,7 +3623,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Role"
+                            "$ref": "#/definitions/curd.ReplyData-types_Role"
                         }
                     }
                 }
@@ -3957,7 +3691,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                            "$ref": "#/definitions/curd.ReplyData-types_Subscription"
                         }
                     }
                 }
@@ -4040,7 +3774,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Subscription"
+                            "$ref": "#/definitions/curd.ReplyList-types_Subscription"
                         }
                     }
                 }
@@ -4074,7 +3808,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Subscription"
+                            "$ref": "#/definitions/curd.ReplyList-types_Subscription"
                         }
                     }
                 }
@@ -4106,7 +3840,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                            "$ref": "#/definitions/curd.ReplyData-types_Subscription"
                         }
                     }
                 }
@@ -4145,7 +3879,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                            "$ref": "#/definitions/curd.ReplyData-types_Subscription"
                         }
                     }
                 }
@@ -4177,7 +3911,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                            "$ref": "#/definitions/curd.ReplyData-types_Subscription"
                         }
                     }
                 }
@@ -4209,7 +3943,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                            "$ref": "#/definitions/curd.ReplyData-types_Subscription"
                         }
                     }
                 }
@@ -4241,7 +3975,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Subscription"
+                            "$ref": "#/definitions/curd.ReplyData-types_Subscription"
                         }
                     }
                 }
@@ -4309,7 +4043,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_User"
+                            "$ref": "#/definitions/curd.ReplyData-types_User"
                         }
                     }
                 }
@@ -4344,7 +4078,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_User"
+                            "$ref": "#/definitions/curd.ReplyList-types_User"
                         }
                     }
                 }
@@ -4364,7 +4098,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_User"
+                            "$ref": "#/definitions/curd.ReplyData-types_User"
                         }
                     }
                 }
@@ -4387,7 +4121,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_User"
+                            "$ref": "#/definitions/curd.ReplyData-types_User"
                         }
                     }
                 }
@@ -4421,7 +4155,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_User"
+                            "$ref": "#/definitions/curd.ReplyList-types_User"
                         }
                     }
                 }
@@ -4453,7 +4187,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_User"
+                            "$ref": "#/definitions/curd.ReplyData-types_User"
                         }
                     }
                 }
@@ -4492,7 +4226,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_User"
+                            "$ref": "#/definitions/curd.ReplyData-types_User"
                         }
                     }
                 }
@@ -4524,7 +4258,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_User"
+                            "$ref": "#/definitions/curd.ReplyData-types_User"
                         }
                     }
                 }
@@ -4556,7 +4290,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_User"
+                            "$ref": "#/definitions/curd.ReplyData-types_User"
                         }
                     }
                 }
@@ -4588,359 +4322,7 @@ const docTemplatemaster = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_User"
-                        }
-                    }
-                }
-            }
-        },
-        "/validator/count": {
-            "post": {
-                "description": "查询检查数量",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "查询检查数量",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/validator/create": {
-            "post": {
-                "description": "创建检查",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "创建检查",
-                "parameters": [
-                    {
-                        "description": "检查信息",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.Validator"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
-                        }
-                    }
-                }
-            }
-        },
-        "/validator/export": {
-            "get": {
-                "description": "导出检查",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "导出检查",
-                "responses": {}
-            }
-        },
-        "/validator/import": {
-            "post": {
-                "description": "导入检查",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "导入检查",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "压缩包",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/validator/list": {
-            "get": {
-                "description": "查询检查",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "查询检查",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Validator"
-                        }
-                    }
-                }
-            }
-        },
-        "/validator/search": {
-            "post": {
-                "description": "查询检查",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "查询检查",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-model_Validator"
-                        }
-                    }
-                }
-            }
-        },
-        "/validator/{id}": {
-            "get": {
-                "description": "获取检查",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "获取检查",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "检查ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改检查",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "修改检查",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "检查ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "检查信息",
-                        "name": "validator",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.Validator"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
-                        }
-                    }
-                }
-            }
-        },
-        "/validator/{id}/delete": {
-            "get": {
-                "description": "删除检查",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "删除检查",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "检查ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
-                        }
-                    }
-                }
-            }
-        },
-        "/validator/{id}/disable": {
-            "get": {
-                "description": "禁用检查",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "禁用检查",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "检查ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
-                        }
-                    }
-                }
-            }
-        },
-        "/validator/{id}/enable": {
-            "get": {
-                "description": "启用检查",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "validator"
-                ],
-                "summary": "启用检查",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "检查ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-model_Validator"
+                            "$ref": "#/definitions/curd.ReplyData-types_User"
                         }
                     }
                 }
@@ -4962,26 +4344,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "api.attachInfo": {
-            "type": "object",
-            "properties": {
-                "folder": {
-                    "type": "boolean"
-                },
-                "mime": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "size": {
-                    "type": "integer"
-                },
-                "time": {
-                    "type": "string"
-                }
-            }
-        },
         "api.deviceStatisticObj": {
             "type": "object",
             "properties": {
@@ -4993,22 +4355,6 @@ const docTemplatemaster = `{
                 },
                 "total": {
                     "type": "integer"
-                }
-            }
-        },
-        "api.moveBody": {
-            "type": "object",
-            "properties": {
-                "path": {
-                    "type": "string"
-                }
-            }
-        },
-        "api.renameBody": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
                 }
             }
         },
@@ -5039,15 +4385,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-any": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ReplyData-api_GroupResult": {
             "type": "object",
             "properties": {
@@ -5064,17 +4401,6 @@ const docTemplatemaster = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/api.deviceStatisticObj"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyData-db_Options": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/db.Options"
                 },
                 "error": {
                     "type": "string"
@@ -5103,29 +4429,40 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-log_Options": {
+        "curd.ReplyData-plugin_Manifest": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/log.Options"
+                    "$ref": "#/definitions/plugin.Manifest"
                 },
                 "error": {
                     "type": "string"
                 }
             }
         },
-        "curd.ReplyData-model_Aggregator": {
+        "curd.ReplyData-product_Manifest": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/types.Aggregator"
+                    "$ref": "#/definitions/product.Manifest"
                 },
                 "error": {
                     "type": "string"
                 }
             }
         },
-        "curd.ReplyData-model_Alarm": {
+        "curd.ReplyData-project_Manifest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/project.Manifest"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-types_Alarm": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5136,7 +4473,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_Broker": {
+        "curd.ReplyData-types_Broker": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5147,7 +4484,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_Device": {
+        "curd.ReplyData-types_Device": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5158,7 +4495,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_Gateway": {
+        "curd.ReplyData-types_Gateway": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5169,7 +4506,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_History": {
+        "curd.ReplyData-types_History": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5180,7 +4517,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_Notification": {
+        "curd.ReplyData-types_Notification": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5191,7 +4528,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_Plugin": {
+        "curd.ReplyData-types_Plugin": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5202,7 +4539,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_Product": {
+        "curd.ReplyData-types_Product": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5213,7 +4550,18 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_Role": {
+        "curd.ReplyData-types_Project": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/types.Project"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-types_Role": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5224,7 +4572,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_Subscription": {
+        "curd.ReplyData-types_Subscription": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5235,7 +4583,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_User": {
+        "curd.ReplyData-types_User": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5246,18 +4594,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-model_Validator": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/types.Validator"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyData-model_Variables": {
+        "curd.ReplyData-types_Variables": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5268,74 +4605,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-mqtt_Options": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/mqtt.Options"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyData-oem_Options": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/oem.Options"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyData-web_Options": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/web.Options"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyList-api_attachInfo": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/api.attachInfo"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "curd.ReplyList-model_Aggregator": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Aggregator"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "curd.ReplyList-model_Alarm": {
+        "curd.ReplyList-types_Alarm": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5352,7 +4622,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_Broker": {
+        "curd.ReplyList-types_Broker": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5369,7 +4639,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_Device": {
+        "curd.ReplyList-types_Device": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5386,7 +4656,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_Gateway": {
+        "curd.ReplyList-types_Gateway": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5403,7 +4673,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_History": {
+        "curd.ReplyList-types_History": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5420,7 +4690,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_Notification": {
+        "curd.ReplyList-types_Notification": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5437,7 +4707,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_Plugin": {
+        "curd.ReplyList-types_Plugin": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5454,7 +4724,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_Product": {
+        "curd.ReplyList-types_Product": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5471,7 +4741,24 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_Role": {
+        "curd.ReplyList-types_Project": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Project"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-types_Role": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5488,7 +4775,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_Subscription": {
+        "curd.ReplyList-types_Subscription": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5505,7 +4792,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_User": {
+        "curd.ReplyList-types_User": {
             "type": "object",
             "properties": {
                 "data": {
@@ -5522,51 +4809,356 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyList-model_Validator": {
+        "plugin.Entry": {
             "type": "object",
             "properties": {
-                "data": {
+                "description": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "plugin.Manifest": {
+            "type": "object",
+            "properties": {
+                "arch": {
+                    "description": "CPU架构：x64 ia32 aarch64",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "author": {
+                    "description": "作者",
+                    "type": "string"
+                },
+                "bugs": {
+                    "description": "Bug",
+                    "type": "string"
+                },
+                "dependencies": {
+                    "description": "应用和版本",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
+                "description": {
+                    "description": "说明",
+                    "type": "string"
+                },
+                "entries": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/plugin.Entry"
+                    }
+                },
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "string"
+                },
+                "keywords": {
+                    "description": "关键字",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "license": {
+                    "description": "软件协议：GPL MIT Apache 。。。",
+                    "type": "string"
+                },
+                "main": {
+                    "description": "入口：程序文件",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "os": {
+                    "description": "操作系统支持：linux windows darwin",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "type": {
+                    "description": "类型：服务、应用、静态页面",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "链接",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "版本 semver.Version",
+                    "type": "string"
+                }
+            }
+        },
+        "product.Event": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "说明",
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "output": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.Parameter"
+                    }
+                },
+                "type": {
+                    "description": "info alert error",
+                    "type": "string"
+                }
+            }
+        },
+        "product.Function": {
+            "type": "object",
+            "properties": {
+                "async": {
+                    "description": "异步接口",
+                    "type": "boolean"
+                },
+                "description": {
+                    "description": "说明",
+                    "type": "string"
+                },
+                "input": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.Parameter"
+                    }
+                },
+                "label": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "output": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.Parameter"
+                    }
+                }
+            }
+        },
+        "product.Manifest": {
+            "type": "object",
+            "properties": {
+                "aggregators": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Aggregator"
+                    }
+                },
+                "description": {
+                    "description": "说明",
+                    "type": "string"
+                },
+                "events": {
+                    "description": "事件",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.Event"
+                    }
+                },
+                "functions": {
+                    "description": "接口",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.Function"
+                    }
+                },
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "string"
+                },
+                "keywords": {
+                    "description": "关键字",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "parameters": {
+                    "description": "参数",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.Parameter"
+                    }
+                },
+                "properties": {
+                    "description": "物模型",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.Property"
+                    }
+                },
+                "url": {
+                    "description": "链接",
+                    "type": "string"
+                },
+                "validators": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/types.Validator"
                     }
                 },
-                "error": {
+                "version": {
+                    "description": "版本 semver.Version",
                     "type": "string"
-                },
-                "total": {
-                    "type": "integer"
                 }
             }
         },
-        "db.Options": {
+        "product.Parameter": {
             "type": "object",
             "properties": {
-                "debug": {
-                    "type": "boolean"
+                "default": {},
+                "description": {
+                    "description": "说明",
+                    "type": "string"
                 },
-                "log_level": {
-                    "type": "integer"
+                "label": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "type": {
-                    "type": "string"
+                    "description": "int float ....",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.Type"
+                        }
+                    ]
                 },
-                "url": {
+                "unit": {
+                    "description": "单位",
                     "type": "string"
                 }
             }
         },
-        "log.Options": {
+        "product.Property": {
             "type": "object",
             "properties": {
-                "caller": {
-                    "type": "boolean"
-                },
-                "level": {
+                "description": {
+                    "description": "说明",
                     "type": "string"
                 },
-                "text": {
-                    "type": "boolean"
+                "label": {
+                    "type": "string"
+                },
+                "mode": {
+                    "description": "读取模式 r w rw",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "store": {
+                    "description": "save diff",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "int float ....",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/types.Type"
+                        }
+                    ]
+                },
+                "unit": {
+                    "description": "单位",
+                    "type": "string"
+                }
+            }
+        },
+        "project.Manifest": {
+            "type": "object",
+            "properties": {
+                "aggregators": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Aggregator"
+                    }
+                },
+                "description": {
+                    "description": "说明",
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "ID",
+                    "type": "string"
+                },
+                "keywords": {
+                    "description": "关键字",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "parameters": {
+                    "description": "参数",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.Parameter"
+                    }
+                },
+                "url": {
+                    "description": "链接",
+                    "type": "string"
+                },
+                "validators": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Validator"
+                    }
+                },
+                "version": {
+                    "description": "版本 semver.Version",
+                    "type": "string"
                 }
             }
         },
@@ -5577,36 +5169,12 @@ const docTemplatemaster = `{
                     "description": "赋值",
                     "type": "string"
                 },
-                "created": {
-                    "type": "string"
-                },
                 "crontab": {
                     "description": "定时计划",
                     "type": "string"
                 },
-                "desc": {
-                    "description": "说明",
-                    "type": "string"
-                },
-                "device_id": {
-                    "type": "string"
-                },
-                "disabled": {
-                    "description": "禁用",
-                    "type": "boolean"
-                },
                 "expression": {
                     "description": "表达式",
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "product_id": {
                     "type": "string"
                 },
                 "type": {
@@ -5621,9 +5189,6 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
-                "device": {
-                    "type": "string"
-                },
                 "device_id": {
                     "type": "string"
                 },
@@ -5636,10 +5201,10 @@ const docTemplatemaster = `{
                 "message": {
                     "type": "string"
                 },
-                "product": {
+                "product_id": {
                     "type": "string"
                 },
-                "product_id": {
+                "project_id": {
                     "type": "string"
                 },
                 "read": {
@@ -5650,9 +5215,6 @@ const docTemplatemaster = `{
                 },
                 "type": {
                     "type": "string"
-                },
-                "validator_id": {
-                    "type": "string"
                 }
             }
         },
@@ -5662,7 +5224,7 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
-                "desc": {
+                "description": {
                     "type": "string"
                 },
                 "disabled": {
@@ -5686,11 +5248,14 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
-                "desc": {
+                "description": {
                     "type": "string"
                 },
                 "disabled": {
                     "type": "boolean"
+                },
+                "gateway": {
+                    "type": "string"
                 },
                 "gateway_id": {
                     "type": "string"
@@ -5712,6 +5277,9 @@ const docTemplatemaster = `{
                         "type": "number"
                     }
                 },
+                "product": {
+                    "type": "string"
+                },
                 "product_id": {
                     "type": "string"
                 }
@@ -5723,7 +5291,7 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
-                "desc": {
+                "description": {
                     "type": "string"
                 },
                 "disabled": {
@@ -5746,9 +5314,6 @@ const docTemplatemaster = `{
         "types.History": {
             "type": "object",
             "properties": {
-                "device": {
-                    "type": "string"
-                },
                 "device_id": {
                     "type": "string"
                 },
@@ -5768,186 +5333,11 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "types.Aggregator": {
-            "type": "object",
-            "properties": {
-                "assign": {
-                    "description": "赋值",
-                    "type": "string"
-                },
-                "crontab": {
-                    "description": "定时计划",
-                    "type": "string"
-                },
-                "expression": {
-                    "description": "表达式",
-                    "type": "string"
-                },
-                "type": {
-                    "description": "聚合算法 inc dec avg count min max sum last first",
-                    "type": "string"
-                }
-            }
-        },
-        "types.ModArgument": {
-            "type": "object",
-            "properties": {
-                "desc": {
-                    "type": "string"
-                },
-                "label": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "unit": {
-                    "type": "string"
-                }
-            }
-        },
-        "types.ModEvent": {
-            "type": "object",
-            "properties": {
-                "desc": {
-                    "type": "string"
-                },
-                "label": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "output": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.ModArgument"
-                    }
-                },
-                "type": {
-                    "description": "info alert error //Level  uint8         ` + "`" + `json:\"level\"` + "`" + `",
-                    "type": "string"
-                }
-            }
-        },
-        "types.ModFunction": {
-            "type": "object",
-            "properties": {
-                "async": {
-                    "type": "boolean"
-                },
-                "desc": {
-                    "type": "string"
-                },
-                "input": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.ModArgument"
-                    }
-                },
-                "label": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "output": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.ModArgument"
-                    }
-                }
-            }
-        },
-        "types.ModParameter": {
-            "type": "object",
-            "properties": {
-                "default": {
-                    "type": "number"
-                },
-                "label": {
-                    "type": "string"
-                },
-                "max": {
-                    "type": "number"
-                },
-                "min": {
-                    "type": "number"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "types.ModProperty": {
-            "type": "object",
-            "properties": {
-                "desc": {
-                    "type": "string"
-                },
-                "label": {
-                    "type": "string"
-                },
-                "mode": {
-                    "description": "r w rw",
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "store": {
-                    "description": "save diff",
-                    "type": "string"
-                },
-                "type": {
-                    "description": "int float ....",
-                    "type": "string"
-                },
-                "unit": {
-                    "type": "string"
-                }
-            }
-        },
-        "types.Validator": {
-            "type": "object",
-            "properties": {
-                "again": {
-                    "description": "再次提醒间隔s",
-                    "type": "integer"
-                },
-                "delay": {
-                    "description": "延迟时间s",
-                    "type": "integer"
-                },
-                "expression": {
-                    "type": "string"
-                },
-                "level": {
-                    "type": "integer"
-                },
-                "template": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "total": {
-                    "description": "总提醒次数",
-                    "type": "integer"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
         "types.Notification": {
             "type": "object",
             "properties": {
                 "alarm_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "channels": {
                     "type": "array",
@@ -5969,37 +5359,21 @@ const docTemplatemaster = `{
         "types.Plugin": {
             "type": "object",
             "properties": {
-                "command": {
-                    "type": "string"
-                },
                 "created": {
                     "type": "string"
                 },
-                "dependencies": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    }
+                "description": {
+                    "type": "string"
                 },
                 "disabled": {
                     "type": "boolean"
                 },
-                "external": {
-                    "type": "boolean"
-                },
                 "id": {
+                    "description": "ID",
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "running": {
-                    "type": "boolean"
-                },
-                "username": {
+                    "description": "名称",
                     "type": "string"
                 },
                 "version": {
@@ -6010,53 +5384,42 @@ const docTemplatemaster = `{
         "types.Product": {
             "type": "object",
             "properties": {
-                "aggregators": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Aggregator"
-                    }
-                },
                 "created": {
                     "type": "string"
                 },
-                "desc": {
+                "description": {
                     "type": "string"
                 },
-                "events": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.ModEvent"
-                    }
+                "id": {
+                    "description": "ID",
+                    "type": "string"
                 },
-                "functions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.ModFunction"
-                    }
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.Project": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "type": "boolean"
                 },
                 "id": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
-                },
-                "parameters": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.ModParameter"
-                    }
-                },
-                "properties": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.ModProperty"
-                    }
-                },
-                "validators": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Validator"
-                    }
                 },
                 "version": {
                     "type": "string"
@@ -6065,6 +5428,9 @@ const docTemplatemaster = `{
         },
         "types.Role": {
             "type": "object",
+            "required": [
+                "name"
+            ],
             "properties": {
                 "created": {
                     "type": "string"
@@ -6117,17 +5483,52 @@ const docTemplatemaster = `{
                 "product_id": {
                     "type": "string"
                 },
-                "user_id": {
+                "project": {
                     "type": "string"
                 },
-                "validator_id": {
+                "project_id": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }
         },
+        "types.Type": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+            ],
+            "x-enum-varnames": [
+                "TypeNONE",
+                "TypeBIT",
+                "TypeBYTE",
+                "TypeWORD",
+                "TypeDWORD",
+                "TypeQWORD",
+                "TypeSHORT",
+                "TypeINTEGER",
+                "TypeLONG",
+                "TypeFLOAT",
+                "TypeDOUBLE"
+            ]
+        },
         "types.User": {
             "type": "object",
             "properties": {
+                "cellphone": {
+                    "type": "string"
+                },
                 "created": {
                     "type": "string"
                 },
@@ -6157,44 +5558,33 @@ const docTemplatemaster = `{
         "types.Validator": {
             "type": "object",
             "properties": {
-                "again": {
-                    "description": "再次提醒间隔s",
-                    "type": "integer"
-                },
-                "created": {
-                    "type": "string"
-                },
                 "delay": {
                     "description": "延迟时间s",
                     "type": "integer"
                 },
-                "device_id": {
-                    "type": "string"
-                },
-                "disabled": {
-                    "type": "boolean"
-                },
                 "expression": {
-                    "type": "string"
-                },
-                "id": {
                     "type": "string"
                 },
                 "level": {
                     "type": "integer"
                 },
-                "product_id": {
-                    "type": "string"
+                "repeat": {
+                    "description": "重启报警",
+                    "type": "boolean"
+                },
+                "repeat_delay": {
+                    "description": "再次提醒间隔s",
+                    "type": "integer"
+                },
+                "repeat_total": {
+                    "description": "总提醒次数",
+                    "type": "integer"
                 },
                 "template": {
                     "type": "string"
                 },
                 "title": {
                     "type": "string"
-                },
-                "total": {
-                    "description": "总提醒次数",
-                    "type": "integer"
                 },
                 "type": {
                     "type": "string"
@@ -6204,57 +5594,6 @@ const docTemplatemaster = `{
         "types.Variables": {
             "type": "object",
             "additionalProperties": {}
-        },
-        "mqtt.Options": {
-            "type": "object",
-            "properties": {
-                "clientId": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "oem.Options": {
-            "type": "object",
-            "properties": {
-                "company": {
-                    "type": "string"
-                },
-                "copyright": {
-                    "type": "string"
-                },
-                "logo": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "web.Options": {
-            "type": "object",
-            "properties": {
-                "addr": {
-                    "type": "string"
-                },
-                "cors": {
-                    "type": "boolean"
-                },
-                "debug": {
-                    "type": "boolean"
-                },
-                "gzip": {
-                    "type": "boolean"
-                }
-            }
         }
     }
 }`

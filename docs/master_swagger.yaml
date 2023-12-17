@@ -9,19 +9,6 @@ definitions:
       total:
         type: number
     type: object
-  api.attachInfo:
-    properties:
-      folder:
-        type: boolean
-      mime:
-        type: string
-      name:
-        type: string
-      size:
-        type: integer
-      time:
-        type: string
-    type: object
   api.deviceStatisticObj:
     properties:
       offline:
@@ -30,16 +17,6 @@ definitions:
         type: integer
       total:
         type: integer
-    type: object
-  api.moveBody:
-    properties:
-      path:
-        type: string
-    type: object
-  api.renameBody:
-    properties:
-      name:
-        type: string
     type: object
   curd.ParamSearch:
     properties:
@@ -59,12 +36,6 @@ definitions:
           type: integer
         type: object
     type: object
-  curd.ReplyData-any:
-    properties:
-      data: {}
-      error:
-        type: string
-    type: object
   curd.ReplyData-api_GroupResult:
     properties:
       data:
@@ -76,13 +47,6 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/api.deviceStatisticObj'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-db_Options:
-    properties:
-      data:
-        $ref: '#/definitions/db.Options'
       error:
         type: string
     type: object
@@ -100,155 +64,119 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-log_Options:
+  curd.ReplyData-plugin_Manifest:
     properties:
       data:
-        $ref: '#/definitions/log.Options'
+        $ref: '#/definitions/plugin.Manifest'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Aggregator:
+  curd.ReplyData-product_Manifest:
     properties:
       data:
-        $ref: '#/definitions/types.Aggregator'
+        $ref: '#/definitions/product.Manifest'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Alarm:
+  curd.ReplyData-project_Manifest:
+    properties:
+      data:
+        $ref: '#/definitions/project.Manifest'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-types_Alarm:
     properties:
       data:
         $ref: '#/definitions/types.Alarm'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Broker:
+  curd.ReplyData-types_Broker:
     properties:
       data:
         $ref: '#/definitions/types.Broker'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Device:
+  curd.ReplyData-types_Device:
     properties:
       data:
         $ref: '#/definitions/types.Device'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Gateway:
+  curd.ReplyData-types_Gateway:
     properties:
       data:
         $ref: '#/definitions/types.Gateway'
       error:
         type: string
     type: object
-  curd.ReplyData-model_History:
+  curd.ReplyData-types_History:
     properties:
       data:
         $ref: '#/definitions/types.History'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Notification:
+  curd.ReplyData-types_Notification:
     properties:
       data:
         $ref: '#/definitions/types.Notification'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Plugin:
+  curd.ReplyData-types_Plugin:
     properties:
       data:
         $ref: '#/definitions/types.Plugin'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Product:
+  curd.ReplyData-types_Product:
     properties:
       data:
         $ref: '#/definitions/types.Product'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Role:
+  curd.ReplyData-types_Project:
+    properties:
+      data:
+        $ref: '#/definitions/types.Project'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-types_Role:
     properties:
       data:
         $ref: '#/definitions/types.Role'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Subscription:
+  curd.ReplyData-types_Subscription:
     properties:
       data:
         $ref: '#/definitions/types.Subscription'
       error:
         type: string
     type: object
-  curd.ReplyData-model_User:
+  curd.ReplyData-types_User:
     properties:
       data:
         $ref: '#/definitions/types.User'
       error:
         type: string
     type: object
-  curd.ReplyData-model_Validator:
-    properties:
-      data:
-        $ref: '#/definitions/types.Validator'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-model_Variables:
+  curd.ReplyData-types_Variables:
     properties:
       data:
         $ref: '#/definitions/types.Variables'
       error:
         type: string
     type: object
-  curd.ReplyData-mqtt_Options:
-    properties:
-      data:
-        $ref: '#/definitions/mqtt.Options'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-oem_Options:
-    properties:
-      data:
-        $ref: '#/definitions/oem.Options'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-web_Options:
-    properties:
-      data:
-        $ref: '#/definitions/web.Options'
-      error:
-        type: string
-    type: object
-  curd.ReplyList-api_attachInfo:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/api.attachInfo'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-model_Aggregator:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.Aggregator'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-model_Alarm:
+  curd.ReplyList-types_Alarm:
     properties:
       data:
         items:
@@ -259,7 +187,7 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Broker:
+  curd.ReplyList-types_Broker:
     properties:
       data:
         items:
@@ -270,7 +198,7 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Device:
+  curd.ReplyList-types_Device:
     properties:
       data:
         items:
@@ -281,7 +209,7 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Gateway:
+  curd.ReplyList-types_Gateway:
     properties:
       data:
         items:
@@ -292,7 +220,7 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_History:
+  curd.ReplyList-types_History:
     properties:
       data:
         items:
@@ -303,7 +231,7 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Notification:
+  curd.ReplyList-types_Notification:
     properties:
       data:
         items:
@@ -314,7 +242,7 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Plugin:
+  curd.ReplyList-types_Plugin:
     properties:
       data:
         items:
@@ -325,7 +253,7 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Product:
+  curd.ReplyList-types_Product:
     properties:
       data:
         items:
@@ -336,7 +264,18 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Role:
+  curd.ReplyList-types_Project:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.Project'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-types_Role:
     properties:
       data:
         items:
@@ -347,7 +286,7 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Subscription:
+  curd.ReplyList-types_Subscription:
     properties:
       data:
         items:
@@ -358,7 +297,7 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_User:
+  curd.ReplyList-types_User:
     properties:
       data:
         items:
@@ -369,64 +308,261 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-model_Validator:
+  plugin.Entry:
     properties:
-      data:
+      description:
+        type: string
+      icon:
+        type: string
+      name:
+        type: string
+      path:
+        type: string
+    type: object
+  plugin.Manifest:
+    properties:
+      arch:
+        description: CPU架构：x64 ia32 aarch64
+        items:
+          type: string
+        type: array
+      author:
+        description: 作者
+        type: string
+      bugs:
+        description: Bug
+        type: string
+      dependencies:
+        additionalProperties:
+          type: string
+        description: 应用和版本
+        type: object
+      description:
+        description: 说明
+        type: string
+      entries:
+        items:
+          $ref: '#/definitions/plugin.Entry'
+        type: array
+      icon:
+        description: 图标
+        type: string
+      id:
+        description: ID
+        type: string
+      keywords:
+        description: 关键字
+        items:
+          type: string
+        type: array
+      license:
+        description: 软件协议：GPL MIT Apache 。。。
+        type: string
+      main:
+        description: 入口：程序文件
+        type: string
+      name:
+        description: 名称
+        type: string
+      os:
+        description: 操作系统支持：linux windows darwin
+        items:
+          type: string
+        type: array
+      type:
+        description: 类型：服务、应用、静态页面
+        type: string
+      url:
+        description: 链接
+        type: string
+      version:
+        description: 版本 semver.Version
+        type: string
+    type: object
+  product.Event:
+    properties:
+      description:
+        description: 说明
+        type: string
+      label:
+        type: string
+      level:
+        type: integer
+      name:
+        type: string
+      output:
+        items:
+          $ref: '#/definitions/product.Parameter'
+        type: array
+      type:
+        description: info alert error
+        type: string
+    type: object
+  product.Function:
+    properties:
+      async:
+        description: 异步接口
+        type: boolean
+      description:
+        description: 说明
+        type: string
+      input:
+        items:
+          $ref: '#/definitions/product.Parameter'
+        type: array
+      label:
+        type: string
+      name:
+        type: string
+      output:
+        items:
+          $ref: '#/definitions/product.Parameter'
+        type: array
+    type: object
+  product.Manifest:
+    properties:
+      aggregators:
+        items:
+          $ref: '#/definitions/types.Aggregator'
+        type: array
+      description:
+        description: 说明
+        type: string
+      events:
+        description: 事件
+        items:
+          $ref: '#/definitions/product.Event'
+        type: array
+      functions:
+        description: 接口
+        items:
+          $ref: '#/definitions/product.Function'
+        type: array
+      icon:
+        description: 图标
+        type: string
+      id:
+        description: ID
+        type: string
+      keywords:
+        description: 关键字
+        items:
+          type: string
+        type: array
+      name:
+        description: 名称
+        type: string
+      parameters:
+        description: 参数
+        items:
+          $ref: '#/definitions/product.Parameter'
+        type: array
+      properties:
+        description: 物模型
+        items:
+          $ref: '#/definitions/product.Property'
+        type: array
+      url:
+        description: 链接
+        type: string
+      validators:
         items:
           $ref: '#/definitions/types.Validator'
         type: array
-      error:
+      version:
+        description: 版本 semver.Version
         type: string
-      total:
-        type: integer
     type: object
-  db.Options:
+  product.Parameter:
     properties:
-      debug:
-        type: boolean
-      log_level:
-        type: integer
+      default: {}
+      description:
+        description: 说明
+        type: string
+      label:
+        type: string
+      name:
+        type: string
       type:
-        type: string
-      url:
+        allOf:
+        - $ref: '#/definitions/types.Type'
+        description: int float ....
+      unit:
+        description: 单位
         type: string
     type: object
-  log.Options:
+  product.Property:
     properties:
-      caller:
-        type: boolean
-      level:
+      description:
+        description: 说明
         type: string
-      text:
-        type: boolean
+      label:
+        type: string
+      mode:
+        description: 读取模式 r w rw
+        type: string
+      name:
+        type: string
+      store:
+        description: save diff
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/types.Type'
+        description: int float ....
+      unit:
+        description: 单位
+        type: string
+    type: object
+  project.Manifest:
+    properties:
+      aggregators:
+        items:
+          $ref: '#/definitions/types.Aggregator'
+        type: array
+      description:
+        description: 说明
+        type: string
+      icon:
+        description: 图标
+        type: string
+      id:
+        description: ID
+        type: string
+      keywords:
+        description: 关键字
+        items:
+          type: string
+        type: array
+      name:
+        description: 名称
+        type: string
+      parameters:
+        description: 参数
+        items:
+          $ref: '#/definitions/product.Parameter'
+        type: array
+      url:
+        description: 链接
+        type: string
+      validators:
+        items:
+          $ref: '#/definitions/types.Validator'
+        type: array
+      version:
+        description: 版本 semver.Version
+        type: string
     type: object
   types.Aggregator:
     properties:
       assign:
         description: 赋值
         type: string
-      created:
-        type: string
       crontab:
         description: 定时计划
         type: string
-      desc:
-        description: 说明
-        type: string
-      device_id:
-        type: string
-      disabled:
-        description: 禁用
-        type: boolean
       expression:
         description: 表达式
-        type: string
-      id:
-        type: string
-      name:
-        description: 名称
-        type: string
-      product_id:
         type: string
       type:
         description: 聚合算法 inc dec avg count min max sum last first
@@ -436,8 +572,6 @@ definitions:
     properties:
       created:
         type: string
-      device:
-        type: string
       device_id:
         type: string
       id:
@@ -446,9 +580,9 @@ definitions:
         type: integer
       message:
         type: string
-      product:
-        type: string
       product_id:
+        type: string
+      project_id:
         type: string
       read:
         type: boolean
@@ -456,14 +590,12 @@ definitions:
         type: string
       type:
         type: string
-      validator_id:
-        type: string
     type: object
   types.Broker:
     properties:
       created:
         type: string
-      desc:
+      description:
         type: string
       disabled:
         type: boolean
@@ -479,10 +611,12 @@ definitions:
     properties:
       created:
         type: string
-      desc:
+      description:
         type: string
       disabled:
         type: boolean
+      gateway:
+        type: string
       gateway_id:
         type: string
       id:
@@ -497,6 +631,8 @@ definitions:
           type: number
         description: 模型参数，用于报警检查
         type: object
+      product:
+        type: string
       product_id:
         type: string
     type: object
@@ -504,7 +640,7 @@ definitions:
     properties:
       created:
         type: string
-      desc:
+      description:
         type: string
       disabled:
         type: boolean
@@ -519,8 +655,6 @@ definitions:
     type: object
   types.History:
     properties:
-      device:
-        type: string
       device_id:
         type: string
       id:
@@ -534,128 +668,10 @@ definitions:
         description: 值
         type: number
     type: object
-  types.ModAggregator:
-    properties:
-      assign:
-        description: 赋值
-        type: string
-      crontab:
-        description: 定时计划
-        type: string
-      expression:
-        description: 表达式
-        type: string
-      type:
-        description: 聚合算法 inc dec avg count min max sum last first
-        type: string
-    type: object
-  types.ModArgument:
-    properties:
-      desc:
-        type: string
-      label:
-        type: string
-      name:
-        type: string
-      type:
-        type: string
-      unit:
-        type: string
-    type: object
-  types.ModEvent:
-    properties:
-      desc:
-        type: string
-      label:
-        type: string
-      name:
-        type: string
-      output:
-        items:
-          $ref: '#/definitions/types.ModArgument'
-        type: array
-      type:
-        description: info alert error //Level  uint8         `json:"level"`
-        type: string
-    type: object
-  types.ModFunction:
-    properties:
-      async:
-        type: boolean
-      desc:
-        type: string
-      input:
-        items:
-          $ref: '#/definitions/types.ModArgument'
-        type: array
-      label:
-        type: string
-      name:
-        type: string
-      output:
-        items:
-          $ref: '#/definitions/types.ModArgument'
-        type: array
-    type: object
-  types.ModParameter:
-    properties:
-      default:
-        type: number
-      label:
-        type: string
-      max:
-        type: number
-      min:
-        type: number
-      name:
-        type: string
-    type: object
-  types.ModProperty:
-    properties:
-      desc:
-        type: string
-      label:
-        type: string
-      mode:
-        description: r w rw
-        type: string
-      name:
-        type: string
-      store:
-        description: save diff
-        type: string
-      type:
-        description: int float ....
-        type: string
-      unit:
-        type: string
-    type: object
-  types.ModValidator:
-    properties:
-      again:
-        description: 再次提醒间隔s
-        type: integer
-      delay:
-        description: 延迟时间s
-        type: integer
-      expression:
-        type: string
-      level:
-        type: integer
-      template:
-        type: string
-      title:
-        type: string
-      total:
-        description: 总提醒次数
-        type: integer
-      type:
-        type: string
-    type: object
   types.Notification:
     properties:
       alarm_id:
-        type: string
+        type: integer
       channels:
         items:
           type: string
@@ -669,65 +685,48 @@ definitions:
     type: object
   types.Plugin:
     properties:
-      command:
-        type: string
       created:
         type: string
-      dependencies:
-        additionalProperties:
-          type: string
-        type: object
+      description:
+        type: string
       disabled:
         type: boolean
-      external:
-        type: boolean
       id:
+        description: ID
         type: string
       name:
-        type: string
-      password:
-        type: string
-      running:
-        type: boolean
-      username:
+        description: 名称
         type: string
       version:
         type: string
     type: object
   types.Product:
     properties:
-      aggregators:
-        items:
-          $ref: '#/definitions/types.ModAggregator'
-        type: array
       created:
         type: string
-      desc:
+      description:
         type: string
-      events:
-        items:
-          $ref: '#/definitions/types.ModEvent'
-        type: array
-      functions:
-        items:
-          $ref: '#/definitions/types.ModFunction'
-        type: array
+      id:
+        description: ID
+        type: string
+      name:
+        description: 名称
+        type: string
+      version:
+        type: string
+    type: object
+  types.Project:
+    properties:
+      created:
+        type: string
+      description:
+        type: string
+      disabled:
+        type: boolean
       id:
         type: string
       name:
         type: string
-      parameters:
-        items:
-          $ref: '#/definitions/types.ModParameter'
-        type: array
-      properties:
-        items:
-          $ref: '#/definitions/types.ModProperty'
-        type: array
-      validators:
-        items:
-          $ref: '#/definitions/types.ModValidator'
-        type: array
       version:
         type: string
     type: object
@@ -743,6 +742,8 @@ definitions:
         items:
           type: string
         type: array
+    required:
+    - name
     type: object
   types.Subscription:
     properties:
@@ -767,13 +768,43 @@ definitions:
         type: string
       product_id:
         type: string
+      project:
+        type: string
+      project_id:
+        type: string
       user_id:
         type: string
-      validator_id:
-        type: string
     type: object
+  types.Type:
+    enum:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    type: integer
+    x-enum-varnames:
+    - TypeNONE
+    - TypeBIT
+    - TypeBYTE
+    - TypeWORD
+    - TypeDWORD
+    - TypeQWORD
+    - TypeSHORT
+    - TypeINTEGER
+    - TypeLONG
+    - TypeFLOAT
+    - TypeDOUBLE
   types.User:
     properties:
+      cellphone:
+        type: string
       created:
         type: string
       disabled:
@@ -793,71 +824,31 @@ definitions:
     type: object
   types.Validator:
     properties:
-      again:
-        description: 再次提醒间隔s
-        type: integer
-      created:
-        type: string
       delay:
         description: 延迟时间s
         type: integer
-      device_id:
-        type: string
-      disabled:
-        type: boolean
       expression:
-        type: string
-      id:
         type: string
       level:
         type: integer
-      product_id:
-        type: string
+      repeat:
+        description: 重启报警
+        type: boolean
+      repeat_delay:
+        description: 再次提醒间隔s
+        type: integer
+      repeat_total:
+        description: 总提醒次数
+        type: integer
       template:
         type: string
       title:
         type: string
-      total:
-        description: 总提醒次数
-        type: integer
       type:
         type: string
     type: object
   types.Variables:
     additionalProperties: {}
-    type: object
-  mqtt.Options:
-    properties:
-      clientId:
-        type: string
-      password:
-        type: string
-      url:
-        type: string
-      username:
-        type: string
-    type: object
-  oem.Options:
-    properties:
-      company:
-        type: string
-      copyright:
-        type: string
-      logo:
-        type: string
-      title:
-        type: string
-    type: object
-  web.Options:
-    properties:
-      addr:
-        type: string
-      cors:
-        type: boolean
-      debug:
-        type: boolean
-      gzip:
-        type: boolean
     type: object
 info:
   contact: {}
@@ -865,236 +856,6 @@ info:
   title: 物联大师接口文档
   version: 3.2 版本
 paths:
-  /aggregator/{id}:
-    get:
-      consumes:
-      - application/json
-      description: 获取聚合器
-      parameters:
-      - description: 聚合器ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
-      summary: 获取聚合器
-      tags:
-      - aggregator
-    post:
-      consumes:
-      - application/json
-      description: 修改聚合器
-      parameters:
-      - description: 聚合器ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 聚合器信息
-        in: body
-        name: aggregator
-        required: true
-        schema:
-          $ref: '#/definitions/types.Aggregator'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
-      summary: 修改聚合器
-      tags:
-      - aggregator
-  /aggregator/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除聚合器
-      parameters:
-      - description: 聚合器ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
-      summary: 删除聚合器
-      tags:
-      - aggregator
-  /aggregator/{id}/disable:
-    get:
-      consumes:
-      - application/json
-      description: 禁用聚合器
-      parameters:
-      - description: 聚合器ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
-      summary: 禁用聚合器
-      tags:
-      - aggregator
-  /aggregator/{id}/enable:
-    get:
-      consumes:
-      - application/json
-      description: 启用聚合器
-      parameters:
-      - description: 聚合器ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
-      summary: 启用聚合器
-      tags:
-      - aggregator
-  /aggregator/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询聚合器数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询聚合器数量
-      tags:
-      - aggregator
-  /aggregator/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建聚合器
-      parameters:
-      - description: 聚合器信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/types.Aggregator'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Aggregator'
-      summary: 创建聚合器
-      tags:
-      - aggregator
-  /aggregator/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出聚合器
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出聚合器
-      tags:
-      - aggregator
-  /aggregator/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入聚合器
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入聚合器
-      tags:
-      - aggregator
-  /aggregator/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询聚合器
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_Aggregator'
-      summary: 查询聚合器
-      tags:
-      - aggregator
-  /aggregator/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询聚合器
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_Aggregator'
-      summary: 查询聚合器
-      tags:
-      - aggregator
   /alarm/{id}/delete:
     get:
       description: 删除报警
@@ -1110,7 +871,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Alarm'
+            $ref: '#/definitions/curd.ReplyData-types_Alarm'
       summary: 删除报警
       tags:
       - alarm
@@ -1129,7 +890,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Alarm'
+            $ref: '#/definitions/curd.ReplyData-types_Alarm'
       summary: 阅读报警
       tags:
       - alarm
@@ -1171,7 +932,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Alarm'
+            $ref: '#/definitions/curd.ReplyList-types_Alarm'
       summary: 查询报警
       tags:
       - alarm
@@ -1193,147 +954,10 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Alarm'
+            $ref: '#/definitions/curd.ReplyList-types_Alarm'
       summary: 查询报警
       tags:
       - alarm
-  /attach/list/{name}:
-    get:
-      description: 查询附件
-      parameters:
-      - description: 路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-api_attachInfo'
-      summary: 查询附件
-      tags:
-      - attach
-  /attach/mkdir/{name}:
-    get:
-      description: 创建目录
-      parameters:
-      - description: 路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-any'
-      summary: 创建目录
-      tags:
-      - attach
-  /attach/move/{name}:
-    post:
-      consumes:
-      - application/json
-      description: 移动附件
-      parameters:
-      - description: 路径
-        in: path
-        name: name
-        required: true
-        type: string
-      - description: 新路径
-        in: body
-        name: b
-        required: true
-        schema:
-          $ref: '#/definitions/api.moveBody'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-any'
-      summary: 移动附件
-      tags:
-      - attach
-  /attach/remove/{name}:
-    get:
-      description: 删除附件
-      parameters:
-      - description: 路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-any'
-      summary: 删除附件
-      tags:
-      - attach
-  /attach/rename/{name}:
-    post:
-      consumes:
-      - application/json
-      description: 重命名附件
-      parameters:
-      - description: 路径
-        in: path
-        name: name
-        required: true
-        type: string
-      - description: 新名称
-        in: body
-        name: b
-        required: true
-        schema:
-          $ref: '#/definitions/api.renameBody'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-any'
-      summary: 重命名附件
-      tags:
-      - attach
-  /attach/upload/{name}:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 上传附件（支持多文件，不用特定为file）
-      parameters:
-      - description: 附件
-        in: formData
-        name: file
-        required: true
-        type: file
-      - description: 路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-any'
-      summary: 上传附件
-      tags:
-      - attach
   /backup/export:
     get:
       consumes:
@@ -1387,7 +1011,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Broker'
+            $ref: '#/definitions/curd.ReplyData-types_Broker'
       summary: 获取总线
       tags:
       - broker
@@ -1413,7 +1037,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Broker'
+            $ref: '#/definitions/curd.ReplyData-types_Broker'
       summary: 修改总线
       tags:
       - broker
@@ -1434,7 +1058,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Broker'
+            $ref: '#/definitions/curd.ReplyData-types_Broker'
       summary: 删除总线
       tags:
       - broker
@@ -1455,7 +1079,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Broker'
+            $ref: '#/definitions/curd.ReplyData-types_Broker'
       summary: 禁用总线
       tags:
       - broker
@@ -1476,7 +1100,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Broker'
+            $ref: '#/definitions/curd.ReplyData-types_Broker'
       summary: 启用总线
       tags:
       - broker
@@ -1520,7 +1144,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Broker'
+            $ref: '#/definitions/curd.ReplyData-types_Broker'
       summary: 创建总线
       tags:
       - broker
@@ -1535,7 +1159,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Broker'
+            $ref: '#/definitions/curd.ReplyList-types_Broker'
       summary: 导出总线
       tags:
       - broker
@@ -1578,7 +1202,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Broker'
+            $ref: '#/definitions/curd.ReplyList-types_Broker'
       summary: 查询总线
       tags:
       - broker
@@ -1600,36 +1224,38 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Broker'
+            $ref: '#/definitions/curd.ReplyList-types_Broker'
       summary: 查询总线
       tags:
       - broker
-  /config/db:
+  /config/:module:
     get:
       consumes:
       - application/json
-      description: 查询数据库配置
+      description: 查询配置
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-db_Options'
-      summary: 查询数据库配置
+            additionalProperties: true
+            type: object
+      summary: 查询配置
       tags:
       - config
     post:
       consumes:
       - application/json
-      description: 修改数据库配置
+      description: 修改配置
       parameters:
-      - description: 数据库配置
+      - description: 配置
         in: body
         name: cfg
         required: true
         schema:
-          $ref: '#/definitions/db.Options'
+          additionalProperties: true
+          type: object
       produces:
       - application/json
       responses:
@@ -1637,151 +1263,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/curd.ReplyData-int'
-      summary: 修改数据库配置
-      tags:
-      - config
-  /config/log:
-    get:
-      consumes:
-      - application/json
-      description: 查询日志配置
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-log_Options'
-      summary: 查询日志配置
-      tags:
-      - config
-    post:
-      consumes:
-      - application/json
-      description: 修改日志配置
-      parameters:
-      - description: 日志配置
-        in: body
-        name: cfg
-        required: true
-        schema:
-          $ref: '#/definitions/log.Options'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 修改日志配置
-      tags:
-      - config
-  /config/mqtt:
-    get:
-      consumes:
-      - application/json
-      description: 查询MQTT配置
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-mqtt_Options'
-      summary: 查询MQTT配置
-      tags:
-      - config
-    post:
-      consumes:
-      - application/json
-      description: 修改MQTT配置
-      parameters:
-      - description: MQTT配置
-        in: body
-        name: cfg
-        required: true
-        schema:
-          $ref: '#/definitions/mqtt.Options'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 修改MQTT配置
-      tags:
-      - config
-  /config/oem:
-    get:
-      consumes:
-      - application/json
-      description: 查询OEM配置
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-oem_Options'
-      summary: 查询OEM配置
-      tags:
-      - config
-    post:
-      consumes:
-      - application/json
-      description: 修改OEM配置
-      parameters:
-      - description: OEM配置
-        in: body
-        name: cfg
-        required: true
-        schema:
-          $ref: '#/definitions/oem.Options'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 修改OEM配置
-      tags:
-      - config
-  /config/web:
-    get:
-      consumes:
-      - application/json
-      description: 查询WEB配置
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-web_Options'
-      summary: 查询WEB配置
-      tags:
-      - config
-    post:
-      consumes:
-      - application/json
-      description: 修改WEB配置
-      parameters:
-      - description: WEB配置
-        in: body
-        name: cfg
-        required: true
-        schema:
-          $ref: '#/definitions/web.Options'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 修改WEB配置
+      summary: 修改配置
       tags:
       - config
   /device/{id}:
@@ -1801,7 +1283,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Device'
+            $ref: '#/definitions/curd.ReplyData-types_Device'
       summary: 获取设备
       tags:
       - device
@@ -1827,7 +1309,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Device'
+            $ref: '#/definitions/curd.ReplyData-types_Device'
       summary: 修改设备
       tags:
       - device
@@ -1848,7 +1330,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Device'
+            $ref: '#/definitions/curd.ReplyData-types_Device'
       summary: 删除设备
       tags:
       - device
@@ -1869,7 +1351,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Device'
+            $ref: '#/definitions/curd.ReplyData-types_Device'
       summary: 修改设备参数
       tags:
       - device
@@ -1890,7 +1372,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Variables'
+            $ref: '#/definitions/curd.ReplyData-types_Variables'
       summary: 设备变量
       tags:
       - device
@@ -1934,7 +1416,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Device'
+            $ref: '#/definitions/curd.ReplyData-types_Device'
       summary: 创建设备
       tags:
       - device
@@ -1988,7 +1470,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Device'
+            $ref: '#/definitions/curd.ReplyList-types_Device'
       summary: 查询设备
       tags:
       - device
@@ -2010,7 +1492,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Device'
+            $ref: '#/definitions/curd.ReplyList-types_Device'
       summary: 查询设备
       tags:
       - device
@@ -2052,7 +1534,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+            $ref: '#/definitions/curd.ReplyData-types_Gateway'
       summary: 获取网关
       tags:
       - gateway
@@ -2078,7 +1560,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+            $ref: '#/definitions/curd.ReplyData-types_Gateway'
       summary: 修改网关
       tags:
       - gateway
@@ -2099,7 +1581,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+            $ref: '#/definitions/curd.ReplyData-types_Gateway'
       summary: 删除网关
       tags:
       - gateway
@@ -2120,7 +1602,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+            $ref: '#/definitions/curd.ReplyData-types_Gateway'
       summary: 禁用网关
       tags:
       - gateway
@@ -2141,7 +1623,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+            $ref: '#/definitions/curd.ReplyData-types_Gateway'
       summary: 启用网关
       tags:
       - gateway
@@ -2185,7 +1667,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Gateway'
+            $ref: '#/definitions/curd.ReplyData-types_Gateway'
       summary: 创建网关
       tags:
       - gateway
@@ -2200,7 +1682,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Gateway'
+            $ref: '#/definitions/curd.ReplyList-types_Gateway'
       summary: 导出网关
       tags:
       - gateway
@@ -2243,7 +1725,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Gateway'
+            $ref: '#/definitions/curd.ReplyList-types_Gateway'
       summary: 查询网关
       tags:
       - gateway
@@ -2265,7 +1747,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Gateway'
+            $ref: '#/definitions/curd.ReplyList-types_Gateway'
       summary: 查询网关
       tags:
       - gateway
@@ -2286,7 +1768,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_History'
+            $ref: '#/definitions/curd.ReplyData-types_History'
       summary: 删除历史
       tags:
       - history
@@ -2312,44 +1794,6 @@ paths:
       summary: 查询历史数量
       tags:
       - history
-  /history/group:
-    get:
-      description: 原始数据按时间统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 原始数据按时间统计
-      tags:
-      - group
   /history/group/area:
     get:
       description: 按区域统计
@@ -2384,6 +1828,10 @@ paths:
       - description: 设备区域
         in: query
         name: area
+        type: string
+      - description: 设备ID
+        in: query
+        name: device
         type: string
       - description: 结束时间
         in: query
@@ -2450,6 +1898,10 @@ paths:
         in: query
         name: area
         type: string
+      - description: 设备ID
+        in: query
+        name: device
+        type: string
       - description: 结束时间
         in: query
         name: end
@@ -2488,6 +1940,10 @@ paths:
         in: query
         name: area
         type: string
+      - description: 设备ID
+        in: query
+        name: device
+        type: string
       - description: 结束时间
         in: query
         name: end
@@ -2525,6 +1981,10 @@ paths:
       - description: 设备区域
         in: query
         name: area
+        type: string
+      - description: 设备ID
+        in: query
+        name: device
         type: string
       - description: 结束时间
         in: query
@@ -2613,6 +2073,10 @@ paths:
         in: query
         name: area
         type: string
+      - description: 设备ID
+        in: query
+        name: device
+        type: string
       - description: 结束时间
         in: query
         name: end
@@ -2661,7 +2125,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_History'
+            $ref: '#/definitions/curd.ReplyList-types_History'
       summary: 查询历史
       tags:
       - history
@@ -2683,7 +2147,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_History'
+            $ref: '#/definitions/curd.ReplyList-types_History'
       summary: 查询历史
       tags:
       - history
@@ -2702,7 +2166,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Notification'
+            $ref: '#/definitions/curd.ReplyData-types_Notification'
       summary: 删除通知
       tags:
       - notification
@@ -2744,7 +2208,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Notification'
+            $ref: '#/definitions/curd.ReplyList-types_Notification'
       summary: 查询通知
       tags:
       - notification
@@ -2766,7 +2230,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Notification'
+            $ref: '#/definitions/curd.ReplyList-types_Notification'
       summary: 查询通知
       tags:
       - notification
@@ -2793,7 +2257,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+            $ref: '#/definitions/curd.ReplyData-types_Plugin'
       summary: 修改插件
       tags:
       - plugin
@@ -2814,7 +2278,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+            $ref: '#/definitions/curd.ReplyData-types_Plugin'
       summary: 删除插件
       tags:
       - plugin
@@ -2835,7 +2299,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+            $ref: '#/definitions/curd.ReplyData-types_Plugin'
       summary: 禁用插件
       tags:
       - plugin
@@ -2856,8 +2320,29 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+            $ref: '#/definitions/curd.ReplyData-types_Plugin'
       summary: 启用插件
+      tags:
+      - plugin
+  /plugin/{id}/manifest:
+    get:
+      consumes:
+      - application/json
+      description: 获取插件详情
+      parameters:
+      - description: 插件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-plugin_Manifest'
+      summary: 获取插件详情
       tags:
       - plugin
   /plugin/{id}/start:
@@ -2877,7 +2362,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+            $ref: '#/definitions/curd.ReplyData-types_Plugin'
       summary: 启动插件
       tags:
       - plugin
@@ -2898,8 +2383,28 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+            $ref: '#/definitions/curd.ReplyData-types_Plugin'
       summary: 停止插件
+      tags:
+      - plugin
+    post:
+      consumes:
+      - application/json
+      description: 修改插件详情
+      parameters:
+      - description: 插件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-plugin_Manifest'
+      summary: 修改插件详情
       tags:
       - plugin
   /plugin/create:
@@ -2920,7 +2425,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Plugin'
+            $ref: '#/definitions/curd.ReplyData-types_Plugin'
       summary: 创建插件
       tags:
       - plugin
@@ -2974,7 +2479,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Plugin'
+            $ref: '#/definitions/curd.ReplyList-types_Plugin'
       summary: 查询插件
       tags:
       - plugin
@@ -2996,7 +2501,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Plugin'
+            $ref: '#/definitions/curd.ReplyList-types_Plugin'
       summary: 查询插件
       tags:
       - plugin
@@ -3034,7 +2539,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Product'
+            $ref: '#/definitions/curd.ReplyData-types_Product'
       summary: 获取产品
       tags:
       - product
@@ -3060,7 +2565,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Product'
+            $ref: '#/definitions/curd.ReplyData-types_Product'
       summary: 修改产品
       tags:
       - product
@@ -3081,8 +2586,50 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Product'
+            $ref: '#/definitions/curd.ReplyData-types_Product'
       summary: 删除产品
+      tags:
+      - product
+  /product/{id}/manifest:
+    get:
+      consumes:
+      - application/json
+      description: 获取产品详情
+      parameters:
+      - description: 产品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-product_Manifest'
+      summary: 获取产品详情
+      tags:
+      - product
+  /product/{id}/stop:
+    post:
+      consumes:
+      - application/json
+      description: 修改产品详情
+      parameters:
+      - description: 产品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-product_Manifest'
+      summary: 修改产品详情
       tags:
       - product
   /product/count:
@@ -3125,7 +2672,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Product'
+            $ref: '#/definitions/curd.ReplyData-types_Product'
       summary: 创建产品
       tags:
       - product
@@ -3179,7 +2726,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Product'
+            $ref: '#/definitions/curd.ReplyList-types_Product'
       summary: 查询产品
       tags:
       - product
@@ -3201,10 +2748,281 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Product'
+            $ref: '#/definitions/curd.ReplyList-types_Product'
       summary: 查询产品
       tags:
       - product
+  /project/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改项目
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 项目信息
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/types.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Project'
+      summary: 修改项目
+      tags:
+      - project
+  /project/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除项目
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Project'
+      summary: 删除项目
+      tags:
+      - project
+  /project/{id}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用项目
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Project'
+      summary: 禁用项目
+      tags:
+      - project
+  /project/{id}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用项目
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Project'
+      summary: 启用项目
+      tags:
+      - project
+  /project/{id}/manifest:
+    get:
+      consumes:
+      - application/json
+      description: 获取项目详情
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-project_Manifest'
+      summary: 获取项目详情
+      tags:
+      - project
+  /project/{id}/start:
+    get:
+      consumes:
+      - application/json
+      description: 启动项目
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Project'
+      summary: 启动项目
+      tags:
+      - project
+  /project/{id}/stop:
+    get:
+      consumes:
+      - application/json
+      description: 停止项目
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Project'
+      summary: 停止项目
+      tags:
+      - project
+    post:
+      consumes:
+      - application/json
+      description: 修改项目详情
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-project_Manifest'
+      summary: 修改项目详情
+      tags:
+      - project
+  /project/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建项目
+      parameters:
+      - description: 项目信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/types.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Project'
+      summary: 创建项目
+      tags:
+      - project
+  /project/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出项目
+      produces:
+      - application/octet-stream
+      responses: {}
+      summary: 导出项目
+      tags:
+      - project
+  /project/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入项目
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入项目
+      tags:
+      - project
+  /project/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询项目
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-types_Project'
+      summary: 查询项目
+      tags:
+      - project
+  /project/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询项目
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-types_Project'
+      summary: 查询项目
+      tags:
+      - project
   /role/{id}:
     get:
       consumes:
@@ -3222,7 +3040,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Role'
+            $ref: '#/definitions/curd.ReplyData-types_Role'
       summary: 获取角色
       tags:
       - role
@@ -3248,7 +3066,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Role'
+            $ref: '#/definitions/curd.ReplyData-types_Role'
       summary: 修改角色
       tags:
       - role
@@ -3269,7 +3087,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Role'
+            $ref: '#/definitions/curd.ReplyData-types_Role'
       summary: 删除角色
       tags:
       - role
@@ -3313,7 +3131,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Role'
+            $ref: '#/definitions/curd.ReplyData-types_Role'
       summary: 创建角色
       tags:
       - role
@@ -3328,7 +3146,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Role'
+            $ref: '#/definitions/curd.ReplyList-types_Role'
       summary: 导出角色
       tags:
       - role
@@ -3371,7 +3189,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Role'
+            $ref: '#/definitions/curd.ReplyList-types_Role'
       summary: 查询角色
       tags:
       - role
@@ -3393,7 +3211,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Role'
+            $ref: '#/definitions/curd.ReplyList-types_Role'
       summary: 查询角色
       tags:
       - role
@@ -3414,7 +3232,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+            $ref: '#/definitions/curd.ReplyData-types_Subscription'
       summary: 获取订阅
       tags:
       - subscription
@@ -3440,7 +3258,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+            $ref: '#/definitions/curd.ReplyData-types_Subscription'
       summary: 修改订阅
       tags:
       - subscription
@@ -3461,7 +3279,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+            $ref: '#/definitions/curd.ReplyData-types_Subscription'
       summary: 删除订阅
       tags:
       - subscription
@@ -3482,7 +3300,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+            $ref: '#/definitions/curd.ReplyData-types_Subscription'
       summary: 禁用订阅
       tags:
       - subscription
@@ -3503,7 +3321,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+            $ref: '#/definitions/curd.ReplyData-types_Subscription'
       summary: 启用订阅
       tags:
       - subscription
@@ -3547,7 +3365,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_Subscription'
+            $ref: '#/definitions/curd.ReplyData-types_Subscription'
       summary: 创建订阅
       tags:
       - subscription
@@ -3601,7 +3419,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Subscription'
+            $ref: '#/definitions/curd.ReplyList-types_Subscription'
       summary: 查询订阅
       tags:
       - subscription
@@ -3623,7 +3441,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_Subscription'
+            $ref: '#/definitions/curd.ReplyList-types_Subscription'
       summary: 查询订阅
       tags:
       - subscription
@@ -3644,7 +3462,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_User'
+            $ref: '#/definitions/curd.ReplyData-types_User'
       summary: 获取用户
       tags:
       - user
@@ -3670,7 +3488,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_User'
+            $ref: '#/definitions/curd.ReplyData-types_User'
       summary: 修改用户
       tags:
       - user
@@ -3691,7 +3509,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_User'
+            $ref: '#/definitions/curd.ReplyData-types_User'
       summary: 删除用户
       tags:
       - user
@@ -3712,7 +3530,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_User'
+            $ref: '#/definitions/curd.ReplyData-types_User'
       summary: 禁用用户
       tags:
       - user
@@ -3733,7 +3551,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_User'
+            $ref: '#/definitions/curd.ReplyData-types_User'
       summary: 启用用户
       tags:
       - user
@@ -3777,7 +3595,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_User'
+            $ref: '#/definitions/curd.ReplyData-types_User'
       summary: 创建用户
       tags:
       - user
@@ -3799,7 +3617,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_User'
+            $ref: '#/definitions/curd.ReplyList-types_User'
       summary: 查询用户
       tags:
       - user
@@ -3812,7 +3630,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_User'
+            $ref: '#/definitions/curd.ReplyData-types_User'
       summary: 获取用户信息
       tags:
       - user
@@ -3827,7 +3645,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-model_User'
+            $ref: '#/definitions/curd.ReplyData-types_User'
       summary: 修改密码
       tags:
       - user
@@ -3849,238 +3667,8 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-model_User'
+            $ref: '#/definitions/curd.ReplyList-types_User'
       summary: 查询用户
       tags:
       - user
-  /validator/{id}:
-    get:
-      consumes:
-      - application/json
-      description: 获取检查
-      parameters:
-      - description: 检查ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Validator'
-      summary: 获取检查
-      tags:
-      - validator
-    post:
-      consumes:
-      - application/json
-      description: 修改检查
-      parameters:
-      - description: 检查ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 检查信息
-        in: body
-        name: validator
-        required: true
-        schema:
-          $ref: '#/definitions/types.Validator'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Validator'
-      summary: 修改检查
-      tags:
-      - validator
-  /validator/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除检查
-      parameters:
-      - description: 检查ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Validator'
-      summary: 删除检查
-      tags:
-      - validator
-  /validator/{id}/disable:
-    get:
-      consumes:
-      - application/json
-      description: 禁用检查
-      parameters:
-      - description: 检查ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Validator'
-      summary: 禁用检查
-      tags:
-      - validator
-  /validator/{id}/enable:
-    get:
-      consumes:
-      - application/json
-      description: 启用检查
-      parameters:
-      - description: 检查ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Validator'
-      summary: 启用检查
-      tags:
-      - validator
-  /validator/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询检查数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询检查数量
-      tags:
-      - validator
-  /validator/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建检查
-      parameters:
-      - description: 检查信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/types.Validator'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-model_Validator'
-      summary: 创建检查
-      tags:
-      - validator
-  /validator/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出检查
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出检查
-      tags:
-      - validator
-  /validator/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入检查
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入检查
-      tags:
-      - validator
-  /validator/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询检查
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_Validator'
-      summary: 查询检查
-      tags:
-      - validator
-  /validator/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询检查
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-model_Validator'
-      summary: 查询检查
-      tags:
-      - validator
 swagger: "2.0"
