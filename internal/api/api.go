@@ -4,6 +4,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/pkg/web"
+	"github.com/zgwit/iot-master/v4/pkg/web/attach"
 	"github.com/zgwit/iot-master/v4/pkg/web/curd"
 	"github.com/zgwit/iot-master/v4/types"
 	"net/http"
@@ -105,11 +106,10 @@ func RegisterRoutes(router *gin.RouterGroup) {
 
 	backupRouter(router.Group("/backup"))
 
-	attachRouter(router.Group("/attach"))
-
 	systemRouter(router.Group("/system"))
 	configRouter(router.Group("/config"))
-	imgRouter(router.Group("/img"))
+
+	attach.Routers("attach", router.Group("/attach"))
 
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）
 	router.Use(func(ctx *gin.Context) {

@@ -192,7 +192,7 @@ func pluginRouter(app *gin.RouterGroup) {
 
 	app.POST("/import", export.ApiImport("plugin"))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Plugin](true, nil, func(id any) error {
+	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Plugin](true, nil, func(id any) error {
 		p := plugin.Get(id.(string))
 		if p == nil {
 			return errors.New("插件未加载")
@@ -204,11 +204,11 @@ func pluginRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Plugin](false, nil, func(id any) error {
+	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Plugin](false, nil, func(id any) error {
 		return plugin.Load(id.(string))
 	}))
 
-	app.GET(":id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET("/:id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
 		err := plugin.Load(ctx.GetString("id"))
 		if err != nil {
 			curd.Error(ctx, err)
@@ -217,7 +217,7 @@ func pluginRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, nil)
 	})
 
-	app.GET(":id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET("/:id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
 		p := plugin.Get(ctx.GetString("id"))
 		if p == nil {
 			curd.Fail(ctx, "插件未加载")
@@ -231,7 +231,7 @@ func pluginRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, nil)
 	})
 
-	app.GET(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
 		p := plugin.Get(ctx.GetString("id"))
 		if p == nil {
 			curd.Fail(ctx, "插件未加载")
@@ -240,7 +240,7 @@ func pluginRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, p.Manifest)
 	})
 
-	app.POST(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.POST("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
 		var m plugin.Manifest
 		err := ctx.BindJSON(&m)
 		if err != nil {
@@ -257,5 +257,5 @@ func pluginRouter(app *gin.RouterGroup) {
 	})
 
 	//附件
-	attach.ObjectRouters("plugin", app.Group(":id"))
+	attach.ObjectRouters("plugin", app.Group("/:id"))
 }

@@ -142,7 +142,7 @@ func productRouter(app *gin.RouterGroup) {
 	app.GET("/export", export.ApiExport("product", "产品"))
 	app.POST("/import", export.ApiImport("product"))
 
-	app.GET(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
 		p := product.Get(ctx.GetString("id"))
 		if p == nil {
 			curd.Fail(ctx, "产品未加载")
@@ -151,7 +151,7 @@ func productRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, p.Manifest)
 	})
 
-	app.POST(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.POST("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
 		var m product.Manifest
 		err := ctx.BindJSON(&m)
 		if err != nil {
@@ -168,5 +168,5 @@ func productRouter(app *gin.RouterGroup) {
 	})
 
 	//附件
-	attach.ObjectRouters("product", app.Group(":id"))
+	attach.ObjectRouters("product", app.Group("/:id"))
 }

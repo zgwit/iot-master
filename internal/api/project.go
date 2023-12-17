@@ -204,11 +204,11 @@ func projectRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Project](false, nil, func(id any) error {
+	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Project](false, nil, func(id any) error {
 		return project.Load(id.(string))
 	}))
 
-	app.GET(":id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET("/:id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
 		err := project.Load(ctx.GetString("id"))
 		if err != nil {
 			curd.Error(ctx, err)
@@ -217,7 +217,7 @@ func projectRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, nil)
 	})
 
-	app.GET(":id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET("/:id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
 		p := project.Get(ctx.GetString("id"))
 		if p == nil {
 			curd.Fail(ctx, "项目未加载")
@@ -231,7 +231,7 @@ func projectRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, nil)
 	})
 
-	app.GET(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.GET("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
 		p := project.Get(ctx.GetString("id"))
 		if p == nil {
 			curd.Fail(ctx, "项目未加载")
@@ -240,7 +240,7 @@ func projectRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, p.Manifest)
 	})
 
-	app.POST(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+	app.POST("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
 		var m project.Manifest
 		err := ctx.BindJSON(&m)
 		if err != nil {
@@ -257,5 +257,5 @@ func projectRouter(app *gin.RouterGroup) {
 	})
 
 	//附件
-	attach.ObjectRouters("project", app.Group(":id"))
+	attach.ObjectRouters("project", app.Group("/:id"))
 }
