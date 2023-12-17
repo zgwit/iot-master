@@ -208,4 +208,29 @@ func pluginRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, nil)
 	})
 
+	app.GET(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+		p := plugin.Get(ctx.GetString("id"))
+		if p == nil {
+			curd.Fail(ctx, "插件未加载")
+			return
+		}
+		curd.OK(ctx, p.Manifest)
+	})
+
+	app.POST(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+		var m plugin.Manifest
+		err := ctx.BindJSON(&m)
+		if err != nil {
+			curd.Error(ctx, err)
+			return
+		}
+
+		err = plugin.Store(ctx.GetString("id"), &m)
+		if err != nil {
+			curd.Error(ctx, err)
+			return
+		}
+		curd.OK(ctx, nil)
+	})
+
 }

@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	curd "github.com/zgwit/iot-master/v4/pkg/web/curd"
 	"github.com/zgwit/iot-master/v4/pkg/web/export"
+	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/types"
 )
 
@@ -117,4 +118,29 @@ func productRouter(app *gin.RouterGroup) {
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Product](nil, nil))
 	app.GET("/export", export.ApiExport("product", "产品"))
 	app.POST("/import", export.ApiImport("product"))
+
+	app.GET(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+		p := product.Get(ctx.GetString("id"))
+		if p == nil {
+			curd.Fail(ctx, "插件未加载")
+			return
+		}
+		curd.OK(ctx, p.Manifest)
+	})
+
+	app.POST(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+		var m product.Manifest
+		err := ctx.BindJSON(&m)
+		if err != nil {
+			curd.Error(ctx, err)
+			return
+		}
+
+		err = product.Store(ctx.GetString("id"), &m)
+		if err != nil {
+			curd.Error(ctx, err)
+			return
+		}
+		curd.OK(ctx, nil)
+	})
 }

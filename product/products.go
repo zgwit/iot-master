@@ -38,6 +38,15 @@ func Load(id string) error {
 	return From(&m)
 }
 
+func Store(id string, m *Manifest) error {
+	fn := fmt.Sprintf("product/%s/manifest.yaml", id)
+	err := lib.StoreYaml(fn, m)
+	if err != nil {
+		return err
+	}
+	return From(m)
+}
+
 func From(product *Manifest) error {
 	p := New(product)
 
