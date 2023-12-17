@@ -44,8 +44,7 @@ func Open() error {
 		new(types.History), new(types.ExternalAggregator),
 		new(types.Alarm), new(types.ExternalValidator),
 		new(types.Subscription), new(types.Notification),
-		new(types.Plugin), new(types.Project),
-		new(types.ProjectUser), new(types.ProjectUserPassword),
+		new(types.Plugin), new(types.Project), new(types.ProjectUser),
 	)
 	if err != nil {
 		return err

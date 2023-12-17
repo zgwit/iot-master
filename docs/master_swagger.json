@@ -2913,6 +2913,246 @@
                 }
             }
         },
+        "/project-user/count": {
+            "post": {
+                "description": "查询项目用户数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "查询项目用户数量",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/project-user/create": {
+            "post": {
+                "description": "创建项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "创建项目用户",
+                "parameters": [
+                    {
+                        "description": "项目用户信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ProjectUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/project-user/list": {
+            "get": {
+                "description": "查询项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "查询项目用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_ProjectUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/project-user/search": {
+            "post": {
+                "description": "这里写描述 get project-users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "查询项目用户",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_ProjectUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/project-user/{id}": {
+            "get": {
+                "description": "获取项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "获取项目用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "项目用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "修改项目用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "项目用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "项目用户信息",
+                        "name": "project-user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ProjectUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/project-user/{id}/delete": {
+            "get": {
+                "description": "删除项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "删除项目用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "项目用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
+                        }
+                    }
+                }
+            }
+        },
         "/project/create": {
             "post": {
                 "description": "创建项目",
@@ -4554,6 +4794,17 @@
                 }
             }
         },
+        "curd.ReplyData-types_ProjectUser": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/types.ProjectUser"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-types_Role": {
             "type": "object",
             "properties": {
@@ -4741,6 +4992,23 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/types.Project"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-types_ProjectUser": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.ProjectUser"
                     }
                 },
                 "error": {
@@ -5415,6 +5683,29 @@
                     "type": "string"
                 },
                 "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.ProjectUser": {
+            "type": "object",
+            "properties": {
+                "admin": {
+                    "type": "boolean"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "project_id": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }

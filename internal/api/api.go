@@ -88,8 +88,11 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	roleRouter(router.Group("/role"))
 
 	pluginRouter(router.Group("/plugin"))
+
 	productRouter(router.Group("/product"))
+
 	projectRouter(router.Group("/project"))
+	projectUserRouter(router.Group("/project-user"))
 
 	gatewayRouter(router.Group("/gateway"))
 

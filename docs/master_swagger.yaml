@@ -148,6 +148,13 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-types_ProjectUser:
+    properties:
+      data:
+        $ref: '#/definitions/types.ProjectUser'
+      error:
+        type: string
+    type: object
   curd.ReplyData-types_Role:
     properties:
       data:
@@ -269,6 +276,17 @@ definitions:
       data:
         items:
           $ref: '#/definitions/types.Project'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-types_ProjectUser:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.ProjectUser'
         type: array
       error:
         type: string
@@ -728,6 +746,21 @@ definitions:
       name:
         type: string
       version:
+        type: string
+    type: object
+  types.ProjectUser:
+    properties:
+      admin:
+        type: boolean
+      created:
+        type: string
+      disabled:
+        type: boolean
+      id:
+        type: string
+      project_id:
+        type: string
+      user_id:
         type: string
     type: object
   types.Role:
@@ -2752,6 +2785,162 @@ paths:
       summary: 查询产品
       tags:
       - product
+  /project-user/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取项目用户
+      parameters:
+      - description: 项目用户ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_ProjectUser'
+      summary: 获取项目用户
+      tags:
+      - project-user
+    post:
+      consumes:
+      - application/json
+      description: 修改项目用户
+      parameters:
+      - description: 项目用户ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 项目用户信息
+        in: body
+        name: project-user
+        required: true
+        schema:
+          $ref: '#/definitions/types.ProjectUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_ProjectUser'
+      summary: 修改项目用户
+      tags:
+      - project-user
+  /project-user/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除项目用户
+      parameters:
+      - description: 项目用户ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_ProjectUser'
+      summary: 删除项目用户
+      tags:
+      - project-user
+  /project-user/count:
+    post:
+      consumes:
+      - application/json
+      description: 查询项目用户数量
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 查询项目用户数量
+      tags:
+      - project-user
+  /project-user/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建项目用户
+      parameters:
+      - description: 项目用户信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/types.ProjectUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_ProjectUser'
+      summary: 创建项目用户
+      tags:
+      - project-user
+  /project-user/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询项目用户
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-types_ProjectUser'
+      summary: 查询项目用户
+      tags:
+      - project-user
+  /project-user/search:
+    post:
+      consumes:
+      - application/json
+      description: 这里写描述 get project-users
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-types_ProjectUser'
+      summary: 查询项目用户
+      tags:
+      - project-user
   /project/{id}:
     post:
       consumes:
