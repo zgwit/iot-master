@@ -1,17 +1,19 @@
 package product
 
-import "github.com/zgwit/iot-master/v4/types"
+import (
+	"github.com/zgwit/iot-master/v4/types"
+)
 
 type Product struct {
-	*Model
+	*Manifest
 
-	ExternalValidators  []*types.Validator
-	ExternalAggregators []*types.Aggregator
+	ExternalValidators  []*types.ExternalValidator
+	ExternalAggregators []*types.ExternalAggregator
 }
 
-func New(model *Model) *Product {
+func New(manifest *Manifest) *Product {
 	return &Product{
-		Model: model,
+		Manifest: manifest,
 		//Values: map[string]float64{},
 	}
 }

@@ -10,7 +10,7 @@ type Role struct {
 }
 
 type Privilege struct {
-	Id   string `json:"id" xorm:"pk"`
-	Name string `json:"name"`
-	Desc string `json:"desc,omitempty"`
+	Id          string `json:"id" xorm:"pk"`
+	Name        string `json:"name"`
+	Description string `json:"description,omitempty"`
 }

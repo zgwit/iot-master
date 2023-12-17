@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	"github.com/zgwit/iot-master/v4/app"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"os"
 	"runtime"
@@ -18,7 +17,10 @@ func getPort() int {
 }
 
 type Plugin struct {
-	*app.Model
+	*Manifest
+
+	Addr    string
+	Running bool
 
 	stop    bool
 	Process *os.Process
@@ -31,7 +33,7 @@ func (p *Plugin) Start() error {
 	//addr := fmt.Sprintf(":%d", getPort())
 	//env := p.generateEnv(addr)
 
-	cmd := p.Command
+	cmd := p.Main //TODO 插件目录
 
 	//TODO 指定plugins目录，例如：plugins/alarm/alarm.exe
 	if runtime.GOOS == "windows" {
@@ -41,6 +43,7 @@ func (p *Plugin) Start() error {
 	}
 
 	p.Process, err = os.StartProcess(cmd, []string{p.Id}, &os.ProcAttr{
+		Dir:   ".",                                   //使用插件目录
 		Files: []*os.File{nil, os.Stdout, os.Stderr}, //可以输出到日志文件
 		//Env:   env,
 	})

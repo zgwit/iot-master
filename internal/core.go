@@ -4,7 +4,6 @@ import (
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/internal/device"
-	"github.com/zgwit/iot-master/v4/internal/product"
 	"github.com/zgwit/iot-master/v4/pkg/aggregator"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
@@ -12,6 +11,7 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/pool"
 	"github.com/zgwit/iot-master/v4/pkg/vconn"
 	"github.com/zgwit/iot-master/v4/plugin"
+	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/types"
 	"net"
 	"net/url"
@@ -41,10 +41,11 @@ func Open() error {
 		new(types.User), new(types.Password), new(types.Role),
 		new(types.Broker), new(types.Gateway),
 		new(types.Product), new(types.Device),
-		new(types.History), new(types.Aggregator),
-		new(types.Alarm), new(types.Validator),
+		new(types.History), new(types.ExternalAggregator),
+		new(types.Alarm), new(types.ExternalValidator),
 		new(types.Subscription), new(types.Notification),
-		new(types.App), new(types.Plugin),
+		new(types.Plugin), new(types.Project),
+		new(types.ProjectUser), new(types.ProjectUserPassword),
 	)
 	if err != nil {
 		return err

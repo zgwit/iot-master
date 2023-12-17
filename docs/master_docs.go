@@ -5768,7 +5768,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "types.ModAggregator": {
+        "types.Aggregator": {
             "type": "object",
             "properties": {
                 "assign": {
@@ -5911,7 +5911,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "types.ModValidator": {
+        "types.Validator": {
             "type": "object",
             "properties": {
                 "again": {
@@ -6013,7 +6013,7 @@ const docTemplatemaster = `{
                 "aggregators": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.ModAggregator"
+                        "$ref": "#/definitions/types.Aggregator"
                     }
                 },
                 "created": {
@@ -6055,7 +6055,7 @@ const docTemplatemaster = `{
                 "validators": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.ModValidator"
+                        "$ref": "#/definitions/types.Validator"
                     }
                 },
                 "version": {

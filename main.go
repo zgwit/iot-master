@@ -2,17 +2,13 @@ package master
 
 import (
 	"embed"
-	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/app"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/config"
 	_ "github.com/zgwit/iot-master/v4/docs"
 	"github.com/zgwit/iot-master/v4/internal"
 	"github.com/zgwit/iot-master/v4/internal/api"
 	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/mqtt"
 	"github.com/zgwit/iot-master/v4/pkg/web"
-	"github.com/zgwit/iot-master/v4/types"
 	"net/http"
 )
 
@@ -56,21 +52,21 @@ func Startup(engine *web.Engine) error {
 	engine.GET("/mqtt", broker.GinBridge)
 
 	//监听插件
-	mqtt.Subscribe[types.App]("master/register", func(topic string, a *types.App) {
-		log.Info("app register ", a.Id, " ", a.Name, " ", a.Type, " ", a.Address)
-		app.Applications.Store(a.Id, a)
-
-		//插件反向代理
-		engine.Any("/app/"+a.Id+"/*path", func(ctx *gin.Context) {
-			rp, err := web.CreateReverseProxy(a.Type, a.Address)
-			if err != nil {
-				_ = ctx.Error(err)
-				return
-			}
-			rp.ServeHTTP(ctx.Writer, ctx.Request)
-			ctx.Abort()
-		})
-	})
+	//mqtt.Subscribe[types.App]("master/register", func(topic string, a *types.App) {
+	//	log.Info("app register ", a.Id, " ", a.Name, " ", a.Type, " ", a.Address)
+	//	plugin.Applications.Store(a.Id, a)
+	//
+	//	//插件反向代理
+	//	engine.Any("/app/"+a.Id+"/*path", func(ctx *gin.Context) {
+	//		rp, err := web.CreateReverseProxy(a.Type, a.Address)
+	//		if err != nil {
+	//			_ = ctx.Error(err)
+	//			return
+	//		}
+	//		rp.ServeHTTP(ctx.Writer, ctx.Request)
+	//		ctx.Abort()
+	//	})
+	//})
 
 	return nil
 }

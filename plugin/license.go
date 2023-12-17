@@ -1,4 +1,4 @@
-package license
+package plugin
 
 import (
 	"github.com/blang/semver/v4"

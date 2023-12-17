@@ -1,4 +1,4 @@
-package app
+package plugin
 
 import (
 	"github.com/zgwit/iot-master/v4/pkg/log"

@@ -1,11 +1,10 @@
-package app
+package plugin
 
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/pkg/web"
-	"github.com/zgwit/iot-master/v4/types"
 	"net/http/httputil"
 )
 
@@ -21,7 +20,7 @@ func ProxyApp(ctx *gin.Context) {
 			return
 		}
 
-		rp, err := web.CreateReverseProxy(app.Type, app.Address)
+		rp, err := web.CreateReverseProxy(app.Type, app.Addr)
 		if err != nil {
 			_ = ctx.Error(err)
 			return
@@ -35,8 +34,8 @@ func ProxyApp(ctx *gin.Context) {
 	ctx.Abort()
 }
 
-var Applications lib.Map[types.App]
+var Applications lib.Map[Plugin]
 
-func Register(app *types.App) {
+func Register(app *Plugin) {
 	Applications.Store(app.Id, app)
 }

@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/app"
 	"github.com/zgwit/iot-master/v4/pkg/web"
 	"github.com/zgwit/iot-master/v4/pkg/web/curd"
 	"github.com/zgwit/iot-master/v4/types"
@@ -79,17 +78,6 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	router.GET("/logout", logout)
 	router.POST("/password", password)
 
-	router.GET("/apps", func(ctx *gin.Context) {
-		apps := make([]*types.App, 0)
-		app.Applications.Range(func(name string, app *types.App) bool {
-			if !app.Hidden {
-				apps = append(apps, app)
-			}
-			return true
-		})
-		curd.OK(ctx, apps)
-	})
-
 	router.GET("/privileges", func(ctx *gin.Context) {
 		curd.OK(ctx, types.PRIVILEGES)
 	})
@@ -112,7 +100,6 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	brokerRouter(router.Group("/broker"))
 
 	pluginRouter(router.Group("/plugin"))
-	appRouter(router.Group("/app"))
 
 	backupRouter(router.Group("/backup"))
 
@@ -121,6 +108,7 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	systemRouter(router.Group("/system"))
 	configRouter(router.Group("/config"))
 	imgRouter(router.Group("/img"))
+
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）
 	router.Use(func(ctx *gin.Context) {
 		curd.Fail(ctx, "Not found")

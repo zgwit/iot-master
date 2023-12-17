@@ -2,12 +2,12 @@ package device
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/v4/internal/product"
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/pkg/aggregator"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/validator"
+	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/types"
 	"time"
 )
@@ -26,7 +26,7 @@ type Device struct {
 	aggregators []aggregator.Aggregator
 }
 
-func (d *Device) createValidator(m *types.ModValidator) error {
+func (d *Device) createValidator(m *types.Validator) error {
 	v, err := validator.New(m)
 	if err != nil {
 		return err
@@ -43,19 +43,19 @@ func (d *Device) Build() {
 		}
 	}
 	for _, v := range d.product.ExternalValidators {
-		err := d.createValidator(&v.ModValidator)
+		err := d.createValidator(&v.Validator)
 		if err != nil {
 			log.Error(err)
 		}
 	}
 
-	var validators []*types.Validator
+	var validators []*types.ExternalValidator
 	err := db.Engine.Where("device_id = ?", d.Id).And("disabled = ?", false).Find(&validators)
 	if err != nil {
 		log.Error(err)
 	}
 	for _, v := range validators {
-		err := d.createValidator(&v.ModValidator)
+		err := d.createValidator(&v.Validator)
 		if err != nil {
 			log.Error(err)
 		}

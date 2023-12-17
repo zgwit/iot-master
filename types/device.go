@@ -9,11 +9,11 @@ type Device struct {
 	Gateway   string `json:"gateway,omitempty" xorm:"<-"`
 	Product   string `json:"product,omitempty" xorm:"<-"`
 
-	Name       string             `json:"name"`
-	Desc       string             `json:"desc,omitempty"`
-	Parameters map[string]float64 `json:"parameters,omitempty" xorm:"json"` //模型参数，用于报警检查
-	Disabled   bool               `json:"disabled,omitempty"`
-	Created    time.Time          `json:"created,omitempty" xorm:"created"`
+	Name        string             `json:"name"`
+	Description string             `json:"description,omitempty"`
+	Parameters  map[string]float64 `json:"parameters,omitempty" xorm:"json"` //模型参数，用于报警检查
+	Disabled    bool               `json:"disabled,omitempty"`
+	Created     time.Time          `json:"created,omitempty" xorm:"created"`
 
 	Online bool `json:"online,omitempty" xorm:"-"`
 }

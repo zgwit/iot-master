@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/types"
 )
 
 var products lib.Map[Product]
@@ -26,19 +27,18 @@ func Get(id string) *Product {
 }
 
 func Load(id string) error {
-	var p Model
-	get, err := db.Engine.ID(id).Get(&p)
+	fn := fmt.Sprintf("product/%s/manifest.yaml", id)
+
+	var m Manifest
+	err := lib.LoadYaml(fn, &m)
 	if err != nil {
 		return err
 	}
-	if !get {
-		return fmt.Errorf("product %s not found", id)
-	}
 
-	return From(&p)
+	return From(&m)
 }
 
-func From(product *Model) error {
+func From(product *Manifest) error {
 	p := New(product)
 
 	products.Store(product.Id, p)
@@ -58,14 +58,14 @@ func From(product *Model) error {
 
 func LoadAll() error {
 	//开机加载所有产品，好像没有必要???
-	var ps []*Model
-	err := db.Engine.Find(&ps)
+	var ps []*types.Product
+	err := db.Engine.Cols("id", "disabled").Find(&ps)
 	if err != nil {
 		return err
 	}
 
 	for _, p := range ps {
-		err = From(p)
+		err = Load(p.Id)
 		if err != nil {
 			log.Error(err)
 			//return err

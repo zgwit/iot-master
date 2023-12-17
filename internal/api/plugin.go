@@ -135,7 +135,7 @@ func pluginRouter(app *gin.RouterGroup) {
 		for _, v := range datum {
 			p := plugin.Get(v.Id)
 			if p != nil {
-				v.Running = p.Running
+				//v.Running = p.Running
 			}
 		}
 		return nil
@@ -145,7 +145,7 @@ func pluginRouter(app *gin.RouterGroup) {
 		for _, v := range datum {
 			p := plugin.Get(v.Id)
 			if p != nil {
-				v.Running = p.Running
+				//v.Running = p.Running
 			}
 		}
 		return nil
@@ -155,7 +155,7 @@ func pluginRouter(app *gin.RouterGroup) {
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetHook[types.Plugin](func(m *types.Plugin) error {
 		p := plugin.Get(m.Id)
 		if p != nil {
-			m.Running = p.Running
+			//m.Running = p.Running
 		}
 		return nil
 	}))

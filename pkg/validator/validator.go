@@ -10,7 +10,7 @@ import (
 )
 
 type Validator struct {
-	*types.ModValidator
+	*types.Validator
 
 	Expression gval.Evaluable
 
@@ -21,8 +21,8 @@ type Validator struct {
 }
 
 // New 新建
-func New(m *types.ModValidator) (v *Validator, err error) {
-	v = &Validator{ModValidator: m}
+func New(m *types.Validator) (v *Validator, err error) {
+	v = &Validator{Validator: m}
 	v.Expression, err = calc.New(m.Expression)
 	return
 }

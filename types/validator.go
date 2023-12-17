@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type ModValidator struct {
+type Validator struct {
 	Expression  string `json:"expression"`
 	Type        string `json:"type"`
 	Title       string `json:"title"`
@@ -16,12 +16,15 @@ type ModValidator struct {
 	RepeatTotal uint   `json:"repeat_total,omitempty"` //总提醒次数
 }
 
-type Validator struct {
-	Id        string    `json:"id" xorm:"pk"`
-	ProductId string    `json:"product_id" xorm:"index"`
-	DeviceId  string    `json:"device_id" xorm:"index"`
-	Disabled  bool      `json:"disabled"`
-	Created   time.Time `json:"created" xorm:"created"`
+type ExternalValidator struct {
+	Id string `json:"id" xorm:"pk"`
 
-	ModValidator `xorm:"extends"`
+	ProjectId string `json:"project_id" xorm:"index"`
+	ProductId string `json:"product_id" xorm:"index"`
+	DeviceId  string `json:"device_id" xorm:"index"`
+
+	Disabled bool      `json:"disabled"`
+	Created  time.Time `json:"created" xorm:"created"`
+
+	Validator `xorm:"extends"`
 }

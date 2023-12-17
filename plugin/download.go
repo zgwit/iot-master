@@ -1,4 +1,4 @@
-package app
+package plugin
 
 const HUB = "https://hub.iot-master.com"
 

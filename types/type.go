@@ -9,12 +9,12 @@ import (
 	"strings"
 )
 
-// DataType 数据类型
-type DataType int
+// Type 数据类型
+type Type int
 
 const (
 	//TypeNONE 空类型
-	TypeNONE DataType = iota
+	TypeNONE Type = iota
 	TypeBIT
 	TypeBYTE
 	TypeWORD
@@ -28,8 +28,8 @@ const (
 )
 
 // Parse 解析类型
-func (dt *DataType) Parse(tp string) error {
-	//var *dt DataType
+func (dt *Type) Parse(tp string) error {
+	//var *dt Type
 	tp = tp[1 : len(tp)-1]
 	//strings.ToLower(tp)
 	switch strings.ToLower(tp) {
@@ -78,7 +78,7 @@ func (dt *DataType) Parse(tp string) error {
 }
 
 // String 转化成字符串
-func (dt *DataType) String() string {
+func (dt *Type) String() string {
 	var str string
 	switch *dt {
 	case TypeBIT:
@@ -107,7 +107,7 @@ func (dt *DataType) String() string {
 	return str
 }
 
-func (dt *DataType) Default() interface{} {
+func (dt *Type) Default() interface{} {
 	switch *dt {
 	case TypeBIT:
 		return false
@@ -134,7 +134,7 @@ func (dt *DataType) Default() interface{} {
 	}
 }
 
-func (dt *DataType) Normalize(val interface{}) interface{} {
+func (dt *Type) Normalize(val interface{}) interface{} {
 	switch *dt {
 	case TypeBIT:
 		return convert.ToBool(val)
@@ -162,7 +162,7 @@ func (dt *DataType) Normalize(val interface{}) interface{} {
 }
 
 // Size 宽度
-func (dt *DataType) Size() int {
+func (dt *Type) Size() int {
 	var s int
 	switch *dt {
 	case TypeBIT:
@@ -192,7 +192,7 @@ func (dt *DataType) Size() int {
 }
 
 // Encode 编码
-func (dt *DataType) Encode(value interface{}, le bool, precision int) []byte {
+func (dt *Type) Encode(value interface{}, le bool, precision int) []byte {
 	buf := make([]byte, 8)
 	switch *dt {
 	case TypeBIT:
@@ -296,7 +296,7 @@ func (dt *DataType) Encode(value interface{}, le bool, precision int) []byte {
 }
 
 // Decode 解码
-func (dt *DataType) Decode(buf []byte, le bool, precision int) (val interface{}, err error) {
+func (dt *Type) Decode(buf []byte, le bool, precision int) (val interface{}, err error) {
 	//避免越界访问
 	if len(buf) < dt.Size() {
 		return nil, fmt.Errorf("长度不够")
@@ -402,11 +402,11 @@ func (dt *DataType) Decode(buf []byte, le bool, precision int) (val interface{},
 }
 
 // MarshalJSON 序列化
-func (dt *DataType) MarshalJSON() ([]byte, error) {
+func (dt *Type) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + dt.String() + `"`), nil
 }
 
 // UnmarshalJSON 解析
-func (dt *DataType) UnmarshalJSON(buf []byte) error {
+func (dt *Type) UnmarshalJSON(buf []byte) error {
 	return dt.Parse(string(buf))
 }
