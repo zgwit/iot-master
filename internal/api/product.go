@@ -106,6 +106,28 @@ func noopProductExport() {}
 // @Router /product/import [post]
 func noopProductImport() {}
 
+// @Summary 获取产品详情
+// @Schemes
+// @Description 获取产品详情
+// @Tags product
+// @Param id path int true "产品ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[product.Manifest] 返回产品信息
+// @Router /product/{id}/manifest [get]
+func noopProductManifestGet() {}
+
+// @Summary 修改产品详情
+// @Schemes
+// @Description 修改产品详情
+// @Tags product
+// @Param id path int true "产品ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[product.Manifest] 返回产品信息
+// @Router /product/{id}/stop [post]
+func noopProductManifestPost() {}
+
 func productRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[types.Product]())
@@ -122,7 +144,7 @@ func productRouter(app *gin.RouterGroup) {
 	app.GET(":id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
 		p := product.Get(ctx.GetString("id"))
 		if p == nil {
-			curd.Fail(ctx, "插件未加载")
+			curd.Fail(ctx, "产品未加载")
 			return
 		}
 		curd.OK(ctx, p.Manifest)

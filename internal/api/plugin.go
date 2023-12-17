@@ -129,6 +129,28 @@ func noopPluginStart() {}
 // @Router /plugin/{id}/stop [get]
 func noopPluginStop() {}
 
+// @Summary 获取插件详情
+// @Schemes
+// @Description 获取插件详情
+// @Tags plugin
+// @Param id path int true "插件ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[plugin.Manifest] 返回插件信息
+// @Router /plugin/{id}/manifest [get]
+func noopPluginManifestGet() {}
+
+// @Summary 修改插件详情
+// @Schemes
+// @Description 修改插件详情
+// @Tags plugin
+// @Param id path int true "插件ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[plugin.Manifest] 返回插件信息
+// @Router /plugin/{id}/stop [post]
+func noopPluginManifestPost() {}
+
 func pluginRouter(app *gin.RouterGroup) {
 
 	app.POST("/search", curd.ApiSearchHook[types.Plugin](func(datum []*types.Plugin) error {

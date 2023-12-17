@@ -86,11 +86,15 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	userRouter(router.Group("/user"))
 	roleRouter(router.Group("/role"))
 
+	pluginRouter(router.Group("/plugin"))
 	productRouter(router.Group("/product"))
+	projectRouter(router.Group("/project"))
+
 	gatewayRouter(router.Group("/gateway"))
 
 	deviceRouter(router.Group("/device"))
 	alarmRouter(router.Group("/alarm"))
+
 	subscriptionRouter(router.Group("/subscription"))
 	notificationRouter(router.Group("/notification"))
 
@@ -98,8 +102,6 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	groupRouter(router.Group("/history/group"))
 
 	brokerRouter(router.Group("/broker"))
-
-	pluginRouter(router.Group("/plugin"))
 
 	backupRouter(router.Group("/backup"))
 

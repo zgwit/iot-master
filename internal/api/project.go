@@ -129,6 +129,28 @@ func noopProjectStart() {}
 // @Router /project/{id}/stop [get]
 func noopProjectStop() {}
 
+// @Summary 获取项目详情
+// @Schemes
+// @Description 获取项目详情
+// @Tags project
+// @Param id path int true "项目ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[project.Manifest] 返回项目信息
+// @Router /project/{id}/manifest [get]
+func noopProjectManifestGet() {}
+
+// @Summary 修改项目详情
+// @Schemes
+// @Description 修改项目详情
+// @Tags project
+// @Param id path int true "项目ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[project.Manifest] 返回项目信息
+// @Router /project/{id}/stop [post]
+func noopProjectManifestPost() {}
+
 func projectRouter(app *gin.RouterGroup) {
 
 	app.POST("/search", curd.ApiSearchHook[types.Project](func(datum []*types.Project) error {
