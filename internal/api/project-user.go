@@ -14,7 +14,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[int64] 返回项目用户数量
-// @Router /project-user/count [post]
+// @Router /project/user/count [post]
 func noopProjectUserCount() {}
 
 // @Summary 查询项目用户
@@ -25,7 +25,7 @@ func noopProjectUserCount() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyList[types.ProjectUser] 返回项目用户信息
-// @Router /project-user/search [post]
+// @Router /project/user/search [post]
 func noopProjectUserSearch() {}
 
 // @Summary 查询项目用户
@@ -36,7 +36,7 @@ func noopProjectUserSearch() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyList[types.ProjectUser] 返回项目用户信息
-// @Router /project-user/list [get]
+// @Router /project/user/list [get]
 func noopProjectUserList() {}
 
 // @Summary 创建项目用户
@@ -47,7 +47,7 @@ func noopProjectUserList() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
-// @Router /project-user/create [post]
+// @Router /project/user/create [post]
 func noopProjectUserCreate() {}
 
 // @Summary 修改项目用户
@@ -59,7 +59,7 @@ func noopProjectUserCreate() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
-// @Router /project-user/{id} [post]
+// @Router /project/user/{id} [post]
 func noopProjectUserUpdate() {}
 
 // @Summary 获取项目用户
@@ -70,7 +70,7 @@ func noopProjectUserUpdate() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
-// @Router /project-user/{id} [get]
+// @Router /project/user/{id} [get]
 func noopProjectUserGet() {}
 
 // @Summary 删除项目用户
@@ -81,7 +81,7 @@ func noopProjectUserGet() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
-// @Router /project-user/{id}/delete [get]
+// @Router /project/user/{id}/delete [get]
 func noopProjectUserDelete() {}
 
 func projectUserRouter(app *gin.RouterGroup) {

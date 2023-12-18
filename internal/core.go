@@ -38,7 +38,7 @@ func Open() error {
 
 	//同步表结构
 	err = db.Engine.Sync2(
-		new(types.User), new(types.Password), new(types.Role),
+		new(types.User), new(types.Password),
 		new(types.Broker), new(types.Gateway),
 		new(types.Product), new(types.Device),
 		new(types.History), new(types.ExternalAggregator),

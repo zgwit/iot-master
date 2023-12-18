@@ -2542,32 +2542,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/privileges": {
-            "get": {
-                "description": "查询所有权限",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "privilege"
-                ],
-                "summary": "查询所有权限",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/product/count": {
             "post": {
                 "description": "查询产品数量",
@@ -2920,246 +2894,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/project-user/count": {
-            "post": {
-                "description": "查询项目用户数量",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-user"
-                ],
-                "summary": "查询项目用户数量",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/project-user/create": {
-            "post": {
-                "description": "创建项目用户",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-user"
-                ],
-                "summary": "创建项目用户",
-                "parameters": [
-                    {
-                        "description": "项目用户信息",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ProjectUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
-                        }
-                    }
-                }
-            }
-        },
-        "/project-user/list": {
-            "get": {
-                "description": "查询项目用户",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-user"
-                ],
-                "summary": "查询项目用户",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_ProjectUser"
-                        }
-                    }
-                }
-            }
-        },
-        "/project-user/search": {
-            "post": {
-                "description": "这里写描述 get project-users",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-user"
-                ],
-                "summary": "查询项目用户",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_ProjectUser"
-                        }
-                    }
-                }
-            }
-        },
-        "/project-user/{id}": {
-            "get": {
-                "description": "获取项目用户",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-user"
-                ],
-                "summary": "获取项目用户",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "项目用户ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改项目用户",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-user"
-                ],
-                "summary": "修改项目用户",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "项目用户ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "项目用户信息",
-                        "name": "project-user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ProjectUser"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
-                        }
-                    }
-                }
-            }
-        },
-        "/project-user/{id}/delete": {
-            "get": {
-                "description": "删除项目用户",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-user"
-                ],
-                "summary": "删除项目用户",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "项目用户ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
-                        }
-                    }
-                }
-            }
-        },
         "/project/create": {
             "post": {
                 "description": "创建项目",
@@ -3306,6 +3040,246 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyList-types_Project"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/user/count": {
+            "post": {
+                "description": "查询项目用户数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "查询项目用户数量",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/user/create": {
+            "post": {
+                "description": "创建项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "创建项目用户",
+                "parameters": [
+                    {
+                        "description": "项目用户信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ProjectUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/user/list": {
+            "get": {
+                "description": "查询项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "查询项目用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_ProjectUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/user/search": {
+            "post": {
+                "description": "这里写描述 get project-users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "查询项目用户",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_ProjectUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/user/{id}": {
+            "get": {
+                "description": "获取项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "获取项目用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "项目用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "修改项目用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "项目用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "项目用户信息",
+                        "name": "project-user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ProjectUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/user/{id}/delete": {
+            "get": {
+                "description": "删除项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "删除项目用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "项目用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectUser"
                         }
                     }
                 }
@@ -3569,301 +3543,6 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-project_Manifest"
-                        }
-                    }
-                }
-            }
-        },
-        "/role/count": {
-            "post": {
-                "description": "查询角色数量",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "role"
-                ],
-                "summary": "查询角色数量",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/role/create": {
-            "post": {
-                "description": "创建角色",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "role"
-                ],
-                "summary": "创建角色",
-                "parameters": [
-                    {
-                        "description": "角色信息",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.Role"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Role"
-                        }
-                    }
-                }
-            }
-        },
-        "/role/export": {
-            "get": {
-                "description": "导出角色",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "role"
-                ],
-                "summary": "导出角色",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Role"
-                        }
-                    }
-                }
-            }
-        },
-        "/role/import": {
-            "post": {
-                "description": "导入角色",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "role"
-                ],
-                "summary": "导入角色",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "压缩包",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
-        "/role/list": {
-            "get": {
-                "description": "查询角色",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "role"
-                ],
-                "summary": "查询角色",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "name": "skip",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Role"
-                        }
-                    }
-                }
-            }
-        },
-        "/role/search": {
-            "post": {
-                "description": "这里写描述 get roles",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "role"
-                ],
-                "summary": "查询角色",
-                "parameters": [
-                    {
-                        "description": "查询参数",
-                        "name": "search",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/curd.ParamSearch"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Role"
-                        }
-                    }
-                }
-            }
-        },
-        "/role/{id}": {
-            "get": {
-                "description": "获取角色",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "role"
-                ],
-                "summary": "获取角色",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "角色ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Role"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改角色",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "role"
-                ],
-                "summary": "修改角色",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "角色ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "角色信息",
-                        "name": "role",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.Role"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Role"
-                        }
-                    }
-                }
-            }
-        },
-        "/role/{id}/delete": {
-            "get": {
-                "description": "删除角色",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "role"
-                ],
-                "summary": "删除角色",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "角色ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Role"
                         }
                     }
                 }
@@ -4812,17 +4491,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-types_Role": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/types.Role"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ReplyData-types_Subscription": {
             "type": "object",
             "properties": {
@@ -5016,23 +4684,6 @@ const docTemplatemaster = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/types.ProjectUser"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "curd.ReplyList-types_Role": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Role"
                     }
                 },
                 "error": {
@@ -5717,29 +5368,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "types.Role": {
-            "type": "object",
-            "required": [
-                "name"
-            ],
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "privileges": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
         "types.Subscription": {
             "type": "object",
             "properties": {
@@ -5817,6 +5445,9 @@ const docTemplatemaster = `{
         "types.User": {
             "type": "object",
             "properties": {
+                "admin": {
+                    "type": "boolean"
+                },
                 "cellphone": {
                     "type": "string"
                 },
@@ -5834,12 +5465,6 @@ const docTemplatemaster = `{
                 },
                 "name": {
                     "type": "string"
-                },
-                "roles": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 },
                 "username": {
                     "type": "string"

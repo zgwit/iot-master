@@ -9,14 +9,9 @@ type User struct {
 	Name      string    `json:"name,omitempty"`
 	Email     string    `json:"email,omitempty"`
 	Cellphone string    `json:"cellphone,omitempty"`
-	Roles     []string  `json:"roles,omitempty" xorm:"json"`
+	Admin     bool      `json:"admin,omitempty"`
 	Disabled  bool      `json:"disabled,omitempty"`
 	Created   time.Time `json:"created,omitempty" xorm:"created"`
-}
-
-type Me struct {
-	User       `xorm:"extends"`
-	Privileges []string `json:"privileges"`
 }
 
 // Password 密码

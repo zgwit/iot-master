@@ -6,7 +6,6 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/web"
 	"github.com/zgwit/iot-master/v4/pkg/web/attach"
 	"github.com/zgwit/iot-master/v4/pkg/web/curd"
-	"github.com/zgwit/iot-master/v4/types"
 	"net/http"
 )
 
@@ -79,20 +78,15 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	router.GET("/logout", logout)
 	router.POST("/password", password)
 
-	router.GET("/privileges", func(ctx *gin.Context) {
-		curd.OK(ctx, types.PRIVILEGES)
-	})
-
 	//注册子接口
 	userRouter(router.Group("/user"))
-	roleRouter(router.Group("/role"))
 
 	pluginRouter(router.Group("/plugin"))
 
 	productRouter(router.Group("/product"))
 
 	projectRouter(router.Group("/project"))
-	projectUserRouter(router.Group("/project-user"))
+	projectUserRouter(router.Group("/project/user"))
 
 	gatewayRouter(router.Group("/gateway"))
 
