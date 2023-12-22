@@ -87,6 +87,7 @@ func RegisterRoutes(router *gin.RouterGroup) {
 
 	projectRouter(router.Group("/project"))
 	projectUserRouter(router.Group("/project/user"))
+	projectPluginRouter(router.Group("/project/plugin"))
 
 	gatewayRouter(router.Group("/gateway"))
 

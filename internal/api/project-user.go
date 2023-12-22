@@ -54,7 +54,7 @@ func noopProjectUserCreate() {}
 // @Schemes
 // @Description 修改项目用户
 // @Tags project-user
-// @Param id path string true "项目用户ID"
+// @Param id path int true "项目用户ID"
 // @Param project-user body types.ProjectUser true "项目用户信息"
 // @Accept json
 // @Produce json
@@ -66,7 +66,7 @@ func noopProjectUserUpdate() {}
 // @Schemes
 // @Description 获取项目用户
 // @Tags project-user
-// @Param id path string true "项目用户ID"
+// @Param id path int true "项目用户ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
@@ -77,7 +77,7 @@ func noopProjectUserGet() {}
 // @Schemes
 // @Description 删除项目用户
 // @Tags project-user
-// @Param id path string true "项目用户ID"
+// @Param id path int true "项目用户ID"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
@@ -92,14 +92,13 @@ func projectUserRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[types.ProjectUser]())
 
-	app.POST("/create", curd.ParseParamStringId, curd.ApiCreateHook[types.ProjectUser](
-		curd.GenerateRandomId[types.ProjectUser](9), nil))
+	app.POST("/create", curd.ApiCreate[types.ProjectUser]())
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.ProjectUser]())
+	app.GET("/:id", curd.ParseParamId, curd.ApiGet[types.ProjectUser]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.ProjectUser](nil, nil,
-		"id", "project_id", "user_id", "admin"))
+	app.POST("/:id", curd.ParseParamId, curd.ApiUpdateHook[types.ProjectUser](nil, nil,
+		"id", "project_id", "user_id", "admin", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.ProjectUser](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDeleteHook[types.ProjectUser](nil, nil))
 
 }
