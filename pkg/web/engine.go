@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/config"
 	"github.com/zgwit/iot-master/v4/pkg/log"
+	"golang.org/x/crypto/acme/autocert"
 	"net/http"
 	"path"
 	"time"
@@ -114,9 +115,46 @@ func (app *Engine) RegisterFS(fs http.FileSystem, prefix, index string) {
 }
 
 func (app *Engine) Serve() {
-	//log.Info("Web服务启动 ", options.Addr)
-	err := app.Run(config.GetString(MODULE, "addr"))
+	addr := config.GetString(MODULE, "addr")
+	log.Info("Web Serve", addr)
+	err := app.Run(addr)
 	if err != nil {
-		log.Fatal("HTTP 服务启动错误", err)
+		log.Fatal(err)
+	}
+}
+
+func (app *Engine) ServeTLS() {
+	cert := config.GetString(MODULE, "cert")
+	key := config.GetString(MODULE, "key")
+	log.Info("Web ServeTLS", cert, key)
+	err := app.RunTLS(":443", cert, key)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (app *Engine) ServeLetsEncrypt() {
+	hosts := config.GetStringSlice(MODULE, "hosts")
+	log.Info("Web ServeLetsEncrypt", hosts)
+
+	//初始化autocert
+	manager := &autocert.Manager{
+		Cache:      autocert.DirCache("certs"),
+		Email:      config.GetString(MODULE, "email"),
+		HostPolicy: autocert.HostWhitelist(hosts...),
+		Prompt:     autocert.AcceptTOS,
+	}
+
+	//创建server
+	svr := &http.Server{
+		Addr:      ":443",
+		TLSConfig: manager.TLSConfig(),
+		Handler:   app,
+	}
+
+	//监听https
+	err := svr.ListenAndServeTLS("", "")
+	if err != nil {
+		log.Fatal(err)
 	}
 }

@@ -46,9 +46,10 @@ func mustLogin(ctx *gin.Context) {
 		if err != nil {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 			ctx.Abort()
+		} else {
+			ctx.Set("user", claims.Id) //与session统一
+			ctx.Next()
 		}
-		ctx.Set("user", claims.Id) //与session统一
-		ctx.Next()
 		return
 	}
 
