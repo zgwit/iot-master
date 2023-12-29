@@ -19,15 +19,23 @@ func Open() error {
 		logrus.SetFormatter(&formatter{})
 	}
 
-	fn := config.GetString(MODULE, "filename")
+	output := config.GetString(MODULE, "output")
 
-	if fn == "" {
+	if output == "stdout" {
 		//标准输出
 		logrus.SetOutput(os.Stdout)
-	} else {
+	} else if output == "file" {
+		file, err := os.OpenFile(
+			config.GetString(MODULE, "filename"),
+			os.O_CREATE|os.O_WRONLY|os.O_APPEND,
+			os.ModePerm)
+		if err != nil {
+			logrus.SetOutput(file)
+		}
+	} else if output == "fileRotate" {
 		//日志文件
 		logFile := &lumberjack.Logger{
-			Filename:   fn,
+			Filename:   config.GetString(MODULE, "filename"),
 			MaxSize:    config.GetInt(MODULE, "max_size"), // MB
 			MaxBackups: config.GetInt(MODULE, "max_backups"),
 			MaxAge:     config.GetInt(MODULE, "max_age"), // days
