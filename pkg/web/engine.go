@@ -11,6 +11,7 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 	"net/http"
 	"path"
+	"strconv"
 	"time"
 )
 
@@ -114,8 +115,23 @@ func (app *Engine) RegisterFS(fs http.FileSystem, prefix, index string) {
 	})
 }
 
+func (app *Engine) Start() {
+
+	go app.Serve()
+
+	https := config.GetString(MODULE, "https")
+
+	if https == "TLS" {
+		go app.ServeTLS()
+	} else if https == "LetsEncrypt" {
+		go app.ServeLetsEncrypt()
+	}
+
+}
+
 func (app *Engine) Serve() {
-	addr := config.GetString(MODULE, "addr")
+	port := config.GetInt(MODULE, "port")
+	addr := ":" + strconv.Itoa(port)
 	log.Info("Web Serve", addr)
 	err := app.Run(addr)
 	if err != nil {
@@ -126,6 +142,7 @@ func (app *Engine) Serve() {
 func (app *Engine) ServeTLS() {
 	cert := config.GetString(MODULE, "cert")
 	key := config.GetString(MODULE, "key")
+
 	log.Info("Web ServeTLS", cert, key)
 	err := app.RunTLS(":443", cert, key)
 	if err != nil {
