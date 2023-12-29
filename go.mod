@@ -30,6 +30,7 @@ require (
 	github.com/syndtr/goleveldb v1.0.0
 	github.com/zgwit/swagger-files v1.0.0
 	golang.org/x/crypto v0.16.0
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1
 	xorm.io/builder v0.3.13
 	xorm.io/xorm v1.3.4

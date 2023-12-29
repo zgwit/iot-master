@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/sirupsen/logrus"
 	"github.com/zgwit/iot-master/v4/config"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
 )
 
@@ -18,8 +19,25 @@ func Open() error {
 		logrus.SetFormatter(&formatter{})
 	}
 
-	logrus.SetOutput(os.Stdout)
-	//TODO 日志文件
+	fn := config.GetString(MODULE, "filename")
+
+	if fn == "" {
+		//标准输出
+		logrus.SetOutput(os.Stdout)
+	} else {
+		//日志文件
+		logFile := &lumberjack.Logger{
+			Filename:   fn,
+			MaxSize:    config.GetInt(MODULE, "max_size"), // MB
+			MaxBackups: config.GetInt(MODULE, "max_backups"),
+			MaxAge:     config.GetInt(MODULE, "max_age"), // days
+			Compress:   config.GetBool(MODULE, "compress"),
+		}
+
+		defer logFile.Close()
+
+		logrus.SetOutput(logFile)
+	}
 
 	level, err := logrus.ParseLevel(config.GetString(MODULE, "level"))
 	if err != nil {
