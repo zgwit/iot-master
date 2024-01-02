@@ -31,7 +31,7 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1
 	xorm.io/builder v0.3.13
-	xorm.io/xorm v1.3.4
+	xorm.io/xorm v1.3.6
 )
 
 require (

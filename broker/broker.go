@@ -9,6 +9,7 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/types"
+	"strconv"
 	"xorm.io/xorm"
 )
 
@@ -27,7 +28,9 @@ func Open() error {
 	_ = Server.AddHook(new(auth.AllowHook), nil)
 
 	//监听默认端口
-	err := Server.AddListener(listeners.NewTCP("embed-tcp", config.GetString(MODULE, "addr"), nil))
+	port := config.GetInt(MODULE, "port")
+	addr := ":" + strconv.Itoa(port)
+	err := Server.AddListener(listeners.NewTCP("embed", addr, nil))
 	if err != nil {
 		return err
 	}
@@ -40,12 +43,6 @@ func Open() error {
 	//		//return err
 	//	}
 	//}
-
-	//加载其他端口
-	err = loadListeners()
-	if err != nil {
-		return err
-	}
 
 	return Server.Serve()
 }

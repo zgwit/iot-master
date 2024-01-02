@@ -3,6 +3,8 @@ package db
 import (
 	"github.com/zgwit/iot-master/v4/config"
 	"xorm.io/xorm"
+	"xorm.io/xorm/log"
+
 	//按需加载数据库驱动
 
 	//_ "github.com/denisenkom/go-mssqldb" //Sql Server
@@ -22,11 +24,11 @@ func Open() error {
 	if err != nil {
 		return err
 	}
-	//if options.Debug {
-	//	Engine.ShowSQL(true)
-	//}
 
-	//Engine.SetLogLevel(log.LogLevel(options.LogLevel))
+	if config.GetBool(MODULE, "debug") {
+		Engine.ShowSQL(true)
+		Engine.SetLogLevel(log.LOG_DEBUG)
+	}
 	//Engine.SetLogger(logrus.StandardLogger())
 
 	return nil

@@ -9,6 +9,13 @@ definitions:
       total:
         type: number
     type: object
+  api.OEM:
+    properties:
+      logo:
+        type: string
+      name:
+        type: string
+    type: object
   api.deviceStatisticObj:
     properties:
       offline:
@@ -43,10 +50,44 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-api_OEM:
+    properties:
+      data:
+        $ref: '#/definitions/api.OEM'
+      error:
+        type: string
+    type: object
   curd.ReplyData-api_deviceStatisticObj:
     properties:
       data:
         $ref: '#/definitions/api.deviceStatisticObj'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-array_types_ProjectDevice:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.ProjectDevice'
+        type: array
+      error:
+        type: string
+    type: object
+  curd.ReplyData-array_types_ProjectPlugin:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.ProjectPlugin'
+        type: array
+      error:
+        type: string
+    type: object
+  curd.ReplyData-array_types_ProjectUser:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.ProjectUser'
+        type: array
       error:
         type: string
     type: object
@@ -145,20 +186,6 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/types.Project'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_ProjectPlugin:
-    properties:
-      data:
-        $ref: '#/definitions/types.ProjectPlugin'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_ProjectUser:
-    properties:
-      data:
-        $ref: '#/definitions/types.ProjectUser'
       error:
         type: string
     type: object
@@ -276,28 +303,6 @@ definitions:
       data:
         items:
           $ref: '#/definitions/types.Project'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-types_ProjectPlugin:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.ProjectPlugin'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-types_ProjectUser:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.ProjectUser'
         type: array
       error:
         type: string
@@ -735,14 +740,24 @@ definitions:
       id:
         type: string
     type: object
+  types.ProjectDevice:
+    properties:
+      created:
+        type: string
+      device_id:
+        type: string
+      name:
+        description: 编程别名
+        type: string
+      project_id:
+        type: string
+    type: object
   types.ProjectPlugin:
     properties:
       created:
         type: string
       disabled:
         type: boolean
-      id:
-        type: integer
       plugin_id:
         type: string
       project_id:
@@ -756,8 +771,6 @@ definitions:
         type: string
       disabled:
         type: boolean
-      id:
-        type: integer
       project_id:
         type: string
       user_id:
@@ -2250,6 +2263,42 @@ paths:
       summary: 查询通知
       tags:
       - notification
+  /oem:
+    get:
+      consumes:
+      - application/json
+      description: 获取oem信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-api_OEM'
+      summary: 获取oem信息
+      tags:
+      - oem
+    post:
+      consumes:
+      - application/json
+      description: 修改oem信息
+      parameters:
+      - description: 信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/api.OEM'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改oem信息
+      tags:
+      - oem
   /plugin/{id}:
     post:
       consumes:
@@ -2798,6 +2847,110 @@ paths:
       summary: 删除项目
       tags:
       - project
+  /project/{id}/device/{device}:
+    get:
+      consumes:
+      - application/json
+      description: 项目设备列表
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_types_ProjectDevice'
+      summary: 项目设备列表
+      tags:
+      - project-device
+    post:
+      consumes:
+      - application/json
+      description: 修改项目设备
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 设备ID
+        in: path
+        name: device
+        required: true
+        type: integer
+      - description: 项目设备信息
+        in: body
+        name: project-device
+        required: true
+        schema:
+          $ref: '#/definitions/types.ProjectDevice'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改项目设备
+      tags:
+      - project-device
+  /project/{id}/device/{device}/bind:
+    get:
+      consumes:
+      - application/json
+      description: 绑定项目设备
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 设备ID
+        in: path
+        name: device
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 绑定项目设备
+      tags:
+      - project-device
+  /project/{id}/device/{device}/unbind:
+    get:
+      consumes:
+      - application/json
+      description: 删除项目设备
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 设备ID
+        in: path
+        name: device
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 删除项目设备
+      tags:
+      - project-device
   /project/{id}/disable:
     get:
       consumes:
@@ -2881,6 +3034,162 @@ paths:
       summary: 修改项目详情
       tags:
       - project
+  /project/{id}/plugin/{plugin}:
+    get:
+      consumes:
+      - application/json
+      description: 项目插件列表
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_types_ProjectPlugin'
+      summary: 项目插件列表
+      tags:
+      - project-plugin
+    post:
+      consumes:
+      - application/json
+      description: 修改项目插件
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 插件ID
+        in: path
+        name: plugin
+        required: true
+        type: integer
+      - description: 项目插件信息
+        in: body
+        name: project-plugin
+        required: true
+        schema:
+          $ref: '#/definitions/types.ProjectPlugin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改项目插件
+      tags:
+      - project-plugin
+  /project/{id}/plugin/{plugin}/bind:
+    get:
+      consumes:
+      - application/json
+      description: 绑定项目插件
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 插件ID
+        in: path
+        name: plugin
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 绑定项目插件
+      tags:
+      - project-plugin
+  /project/{id}/plugin/{plugin}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用项目插件
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 插件ID
+        in: path
+        name: plugin
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 禁用项目插件
+      tags:
+      - project-plugin
+  /project/{id}/plugin/{plugin}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用项目插件
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 插件ID
+        in: path
+        name: plugin
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 启用项目插件
+      tags:
+      - project-plugin
+  /project/{id}/plugin/{plugin}/unbind:
+    get:
+      consumes:
+      - application/json
+      description: 删除项目插件
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 插件ID
+        in: path
+        name: plugin
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 删除项目插件
+      tags:
+      - project-plugin
   /project/{id}/start:
     get:
       consumes:
@@ -2923,6 +3232,162 @@ paths:
       summary: 停止项目
       tags:
       - project
+  /project/{id}/user/{user}:
+    get:
+      consumes:
+      - application/json
+      description: 项目用户列表
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_types_ProjectUser'
+      summary: 项目用户列表
+      tags:
+      - project-user
+    post:
+      consumes:
+      - application/json
+      description: 修改项目用户
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户ID
+        in: path
+        name: user
+        required: true
+        type: integer
+      - description: 项目用户信息
+        in: body
+        name: project-user
+        required: true
+        schema:
+          $ref: '#/definitions/types.ProjectUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改项目用户
+      tags:
+      - project-user
+  /project/{id}/user/{user}/bind:
+    get:
+      consumes:
+      - application/json
+      description: 绑定项目用户
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户ID
+        in: path
+        name: user
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 绑定项目用户
+      tags:
+      - project-user
+  /project/{id}/user/{user}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用项目用户
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户ID
+        in: path
+        name: user
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 禁用项目用户
+      tags:
+      - project-user
+  /project/{id}/user/{user}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用项目用户
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户ID
+        in: path
+        name: user
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 启用项目用户
+      tags:
+      - project-user
+  /project/{id}/user/{user}/unbind:
+    get:
+      consumes:
+      - application/json
+      description: 删除项目用户
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户ID
+        in: path
+        name: user
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 删除项目用户
+      tags:
+      - project-user
   /project/create:
     post:
       consumes:
@@ -2999,162 +3464,6 @@ paths:
       summary: 查询项目
       tags:
       - project
-  /project/plugin/{id}:
-    get:
-      consumes:
-      - application/json
-      description: 获取项目用户
-      parameters:
-      - description: 项目用户ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_ProjectPlugin'
-      summary: 获取项目用户
-      tags:
-      - project-plugin
-    post:
-      consumes:
-      - application/json
-      description: 修改项目用户
-      parameters:
-      - description: 项目用户ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 项目用户信息
-        in: body
-        name: project-plugin
-        required: true
-        schema:
-          $ref: '#/definitions/types.ProjectPlugin'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_ProjectPlugin'
-      summary: 修改项目用户
-      tags:
-      - project-plugin
-  /project/plugin/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除项目用户
-      parameters:
-      - description: 项目用户ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_ProjectPlugin'
-      summary: 删除项目用户
-      tags:
-      - project-plugin
-  /project/plugin/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询项目用户数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询项目用户数量
-      tags:
-      - project-plugin
-  /project/plugin/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建项目用户
-      parameters:
-      - description: 项目用户信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/types.ProjectPlugin'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_ProjectPlugin'
-      summary: 创建项目用户
-      tags:
-      - project-plugin
-  /project/plugin/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询项目用户
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_ProjectPlugin'
-      summary: 查询项目用户
-      tags:
-      - project-plugin
-  /project/plugin/search:
-    post:
-      consumes:
-      - application/json
-      description: 这里写描述 get project-plugins
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_ProjectPlugin'
-      summary: 查询项目用户
-      tags:
-      - project-plugin
   /project/search:
     post:
       consumes:
@@ -3177,162 +3486,6 @@ paths:
       summary: 查询项目
       tags:
       - project
-  /project/user/{id}:
-    get:
-      consumes:
-      - application/json
-      description: 获取项目用户
-      parameters:
-      - description: 项目用户ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_ProjectUser'
-      summary: 获取项目用户
-      tags:
-      - project-user
-    post:
-      consumes:
-      - application/json
-      description: 修改项目用户
-      parameters:
-      - description: 项目用户ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 项目用户信息
-        in: body
-        name: project-user
-        required: true
-        schema:
-          $ref: '#/definitions/types.ProjectUser'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_ProjectUser'
-      summary: 修改项目用户
-      tags:
-      - project-user
-  /project/user/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除项目用户
-      parameters:
-      - description: 项目用户ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_ProjectUser'
-      summary: 删除项目用户
-      tags:
-      - project-user
-  /project/user/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询项目用户数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询项目用户数量
-      tags:
-      - project-user
-  /project/user/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建项目用户
-      parameters:
-      - description: 项目用户信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/types.ProjectUser'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_ProjectUser'
-      summary: 创建项目用户
-      tags:
-      - project-user
-  /project/user/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询项目用户
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_ProjectUser'
-      summary: 查询项目用户
-      tags:
-      - project-user
-  /project/user/search:
-    post:
-      consumes:
-      - application/json
-      description: 这里写描述 get project-users
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_ProjectUser'
-      summary: 查询项目用户
-      tags:
-      - project-user
   /subscription/{id}:
     get:
       consumes:

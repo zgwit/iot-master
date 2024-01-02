@@ -2,103 +2,146 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/web/curd"
 	"github.com/zgwit/iot-master/v4/types"
+	"xorm.io/xorm/schemas"
 )
 
-// @Summary 查询项目用户数量
+// @Summary 项目插件列表
 // @Schemes
-// @Description 查询项目用户数量
+// @Description 项目插件列表
 // @Tags project-plugin
-// @Param search body curd.ParamSearch true "查询参数"
+// @Param id path int true "项目ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[int64] 返回项目用户数量
-// @Router /project/plugin/count [post]
-func noopProjectPluginCount() {}
+// @Success 200 {object} curd.ReplyData[[]types.ProjectPlugin] 返回项目插件信息
+// @Router /project/{id}/plugin/{plugin} [get]
+func projectPluginList(ctx *gin.Context) {
+	var pds []types.ProjectPlugin
+	err := db.Engine.Where("project_id=?", ctx.Param("id")).Find(&pds)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, pds)
+}
 
-// @Summary 查询项目用户
+// @Summary 绑定项目插件
 // @Schemes
-// @Description 这里写描述 get project-plugins
+// @Description 绑定项目插件
 // @Tags project-plugin
-// @Param search body curd.ParamSearch true "查询参数"
+// @Param id path int true "项目ID"
+// @Param plugin path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.ProjectPlugin] 返回项目用户信息
-// @Router /project/plugin/search [post]
-func noopProjectPluginSearch() {}
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/plugin/{plugin}/bind [get]
+func projectPluginBind(ctx *gin.Context) {
+	pd := types.ProjectPlugin{
+		ProjectId: ctx.Param("id"),
+		PluginId:  ctx.Param("plugin"),
+	}
+	_, err := db.Engine.InsertOne(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
 
-// @Summary 查询项目用户
+// @Summary 删除项目插件
 // @Schemes
-// @Description 查询项目用户
+// @Description 删除项目插件
 // @Tags project-plugin
-// @Param search query curd.ParamList true "查询参数"
+// @Param id path int true "项目ID"
+// @Param plugin path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.ProjectPlugin] 返回项目用户信息
-// @Router /project/plugin/list [get]
-func noopProjectPluginList() {}
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/plugin/{plugin}/unbind [get]
+func projectPluginUnbind(ctx *gin.Context) {
+	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("plugin")}).Delete(new(types.ProjectPlugin))
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
 
-// @Summary 创建项目用户
+// @Summary 禁用项目插件
 // @Schemes
-// @Description 创建项目用户
+// @Description 禁用项目插件
 // @Tags project-plugin
-// @Param search body types.ProjectPlugin true "项目用户信息"
+// @Param id path int true "项目ID"
+// @Param plugin path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.ProjectPlugin] 返回项目用户信息
-// @Router /project/plugin/create [post]
-func noopProjectPluginCreate() {}
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/plugin/{plugin}/disable [get]
+func projectPluginDisable(ctx *gin.Context) {
+	pd := types.ProjectPlugin{Disabled: true}
+	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("plugin")}).Cols("disabled").Update(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
 
-// @Summary 修改项目用户
+// @Summary 启用项目插件
 // @Schemes
-// @Description 修改项目用户
+// @Description 启用项目插件
 // @Tags project-plugin
-// @Param id path int true "项目用户ID"
-// @Param project-plugin body types.ProjectPlugin true "项目用户信息"
+// @Param id path int true "项目ID"
+// @Param plugin path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.ProjectPlugin] 返回项目用户信息
-// @Router /project/plugin/{id} [post]
-func noopProjectPluginUpdate() {}
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/plugin/{plugin}/enable [get]
+func projectPluginEnable(ctx *gin.Context) {
+	pd := types.ProjectPlugin{Disabled: false}
+	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("plugin")}).Cols("disabled").Update(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
 
-// @Summary 获取项目用户
+// @Summary 修改项目插件
 // @Schemes
-// @Description 获取项目用户
+// @Description 修改项目插件
 // @Tags project-plugin
-// @Param id path int true "项目用户ID"
+// @Param id path int true "项目ID"
+// @Param plugin path int true "插件ID"
+// @Param project-plugin body types.ProjectPlugin true "项目插件信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.ProjectPlugin] 返回项目用户信息
-// @Router /project/plugin/{id} [get]
-func noopProjectPluginGet() {}
-
-// @Summary 删除项目用户
-// @Schemes
-// @Description 删除项目用户
-// @Tags project-plugin
-// @Param id path int true "项目用户ID"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[types.ProjectPlugin] 返回项目用户信息
-// @Router /project/plugin/{id}/delete [get]
-func noopProjectPluginDelete() {}
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/plugin/{plugin} [post]
+func projectPluginUpdate(ctx *gin.Context) {
+	var pd types.ProjectPlugin
+	err := ctx.ShouldBindJSON(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	_, err = db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("plugin")}).
+		Cols("plugin_id", "name").
+		Update(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
 
 func projectPluginRouter(app *gin.RouterGroup) {
-
-	app.POST("/count", curd.ApiCount[types.ProjectPlugin]())
-
-	app.POST("/search", curd.ApiSearch[types.ProjectPlugin]())
-
-	app.GET("/list", curd.ApiList[types.ProjectPlugin]())
-
-	app.POST("/create", curd.ApiCreate[types.ProjectPlugin]())
-
-	app.GET("/:id", curd.ParseParamId, curd.ApiGet[types.ProjectPlugin]())
-
-	app.POST("/:id", curd.ParseParamId, curd.ApiUpdateHook[types.ProjectPlugin](nil, nil,
-		"id", "project_id", "plugin_id", "disabled"))
-
-	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDeleteHook[types.ProjectPlugin](nil, nil))
-
+	app.GET("", projectPluginList)
+	app.GET("/:plugin/bind", projectPluginBind)
+	app.GET("/:plugin/unbind", projectPluginUnbind)
+	app.GET("/:plugin/disable", projectPluginDisable)
+	app.GET("/:plugin/enable", projectPluginEnable)
+	app.POST("/:plugin", projectPluginUpdate)
 }

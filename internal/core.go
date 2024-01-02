@@ -40,10 +40,12 @@ func Open() error {
 		new(types.User), new(types.Password),
 		new(types.Broker), new(types.Gateway),
 		new(types.Product), new(types.Device),
+		new(types.Plugin),
+		new(types.Project), new(types.ProjectUser),
+		new(types.ProjectPlugin), new(types.ProjectDevice),
 		new(types.History), new(types.ExternalAggregator),
 		new(types.Alarm), new(types.ExternalValidator),
 		new(types.Subscription), new(types.Notification),
-		new(types.Plugin), new(types.Project), new(types.ProjectUser),
 	)
 	if err != nil {
 		return err

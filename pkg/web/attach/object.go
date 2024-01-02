@@ -75,6 +75,7 @@ func ObjectApiUpload(root string) gin.HandlerFunc {
 				filename := filepath.Join(dir, header.Filename)
 				err := ctx.SaveUploadedFile(header, filename)
 				if err != nil {
+					curd.Error(ctx, err)
 					return
 				}
 			}

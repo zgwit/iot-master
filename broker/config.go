@@ -7,6 +7,6 @@ import (
 const MODULE = "broker"
 
 func init() {
-	config.Register(MODULE, "enable", "true")
-	config.Register(MODULE, "addr", ":1843")
+	config.Register(MODULE, "enable", true)
+	config.Register(MODULE, "port", 1843)
 }

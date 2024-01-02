@@ -2,103 +2,146 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/web/curd"
 	"github.com/zgwit/iot-master/v4/types"
+	"xorm.io/xorm/schemas"
 )
 
-// @Summary 查询项目用户数量
+// @Summary 项目用户列表
 // @Schemes
-// @Description 查询项目用户数量
+// @Description 项目用户列表
 // @Tags project-user
-// @Param search body curd.ParamSearch true "查询参数"
+// @Param id path int true "项目ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[int64] 返回项目用户数量
-// @Router /project/user/count [post]
-func noopProjectUserCount() {}
+// @Success 200 {object} curd.ReplyData[[]types.ProjectUser] 返回项目用户信息
+// @Router /project/{id}/user/{user} [get]
+func projectUserList(ctx *gin.Context) {
+	var pds []types.ProjectUser
+	err := db.Engine.Where("project_id=?", ctx.Param("id")).Find(&pds)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, pds)
+}
 
-// @Summary 查询项目用户
+// @Summary 绑定项目用户
 // @Schemes
-// @Description 这里写描述 get project-users
+// @Description 绑定项目用户
 // @Tags project-user
-// @Param search body curd.ParamSearch true "查询参数"
+// @Param id path int true "项目ID"
+// @Param user path int true "用户ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.ProjectUser] 返回项目用户信息
-// @Router /project/user/search [post]
-func noopProjectUserSearch() {}
-
-// @Summary 查询项目用户
-// @Schemes
-// @Description 查询项目用户
-// @Tags project-user
-// @Param search query curd.ParamList true "查询参数"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyList[types.ProjectUser] 返回项目用户信息
-// @Router /project/user/list [get]
-func noopProjectUserList() {}
-
-// @Summary 创建项目用户
-// @Schemes
-// @Description 创建项目用户
-// @Tags project-user
-// @Param search body types.ProjectUser true "项目用户信息"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
-// @Router /project/user/create [post]
-func noopProjectUserCreate() {}
-
-// @Summary 修改项目用户
-// @Schemes
-// @Description 修改项目用户
-// @Tags project-user
-// @Param id path int true "项目用户ID"
-// @Param project-user body types.ProjectUser true "项目用户信息"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
-// @Router /project/user/{id} [post]
-func noopProjectUserUpdate() {}
-
-// @Summary 获取项目用户
-// @Schemes
-// @Description 获取项目用户
-// @Tags project-user
-// @Param id path int true "项目用户ID"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
-// @Router /project/user/{id} [get]
-func noopProjectUserGet() {}
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/user/{user}/bind [get]
+func projectUserBind(ctx *gin.Context) {
+	pd := types.ProjectUser{
+		ProjectId: ctx.Param("id"),
+		UserId:    ctx.Param("user"),
+	}
+	_, err := db.Engine.InsertOne(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
 
 // @Summary 删除项目用户
 // @Schemes
 // @Description 删除项目用户
 // @Tags project-user
-// @Param id path int true "项目用户ID"
+// @Param id path int true "项目ID"
+// @Param user path int true "用户ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.ProjectUser] 返回项目用户信息
-// @Router /project/user/{id}/delete [get]
-func noopProjectUserDelete() {}
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/user/{user}/unbind [get]
+func projectUserUnbind(ctx *gin.Context) {
+	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("user")}).Delete(new(types.ProjectUser))
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
+
+// @Summary 禁用项目用户
+// @Schemes
+// @Description 禁用项目用户
+// @Tags project-user
+// @Param id path int true "项目ID"
+// @Param user path int true "用户ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/user/{user}/disable [get]
+func projectUserDisable(ctx *gin.Context) {
+	pd := types.ProjectUser{Disabled: true}
+	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("user")}).Cols("disabled").Update(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
+
+// @Summary 启用项目用户
+// @Schemes
+// @Description 启用项目用户
+// @Tags project-user
+// @Param id path int true "项目ID"
+// @Param user path int true "用户ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/user/{user}/enable [get]
+func projectUserEnable(ctx *gin.Context) {
+	pd := types.ProjectUser{Disabled: false}
+	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("user")}).Cols("disabled").Update(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
+
+// @Summary 修改项目用户
+// @Schemes
+// @Description 修改项目用户
+// @Tags project-user
+// @Param id path int true "项目ID"
+// @Param user path int true "用户ID"
+// @Param project-user body types.ProjectUser true "项目用户信息"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[int]
+// @Router /project/{id}/user/{user} [post]
+func projectUserUpdate(ctx *gin.Context) {
+	var pd types.ProjectUser
+	err := ctx.ShouldBindJSON(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	_, err = db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("user")}).
+		Cols("user_id", "name").
+		Update(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, nil)
+}
 
 func projectUserRouter(app *gin.RouterGroup) {
-
-	app.POST("/count", curd.ApiCount[types.ProjectUser]())
-
-	app.POST("/search", curd.ApiSearch[types.ProjectUser]())
-
-	app.GET("/list", curd.ApiList[types.ProjectUser]())
-
-	app.POST("/create", curd.ApiCreate[types.ProjectUser]())
-
-	app.GET("/:id", curd.ParseParamId, curd.ApiGet[types.ProjectUser]())
-
-	app.POST("/:id", curd.ParseParamId, curd.ApiUpdateHook[types.ProjectUser](nil, nil,
-		"id", "project_id", "user_id", "admin", "disabled"))
-
-	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDeleteHook[types.ProjectUser](nil, nil))
-
+	app.GET("", projectUserList)
+	app.GET("/:user/bind", projectUserBind)
+	app.GET("/:user/unbind", projectUserUnbind)
+	app.GET("/:user/disable", projectUserDisable)
+	app.GET("/:user/enable", projectUserEnable)
+	app.POST("/:user", projectUserUpdate)
 }

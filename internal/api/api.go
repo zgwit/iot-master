@@ -68,16 +68,19 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	//错误恢复，并返回至前端
 	router.Use(catchError)
 
-	router.GET("/info", info)
-
 	router.GET("/auth", auth)
 	router.POST("/login", login)
+
+	router.GET("/oem", oem)
+	router.GET("/info", info)
 
 	//检查 session，必须登录
 	router.Use(mustLogin)
 
 	router.GET("/logout", logout)
 	router.POST("/password", password)
+
+	oemRouter(router.Group("/oem"))
 
 	//注册子接口
 	userRouter(router.Group("/user"))
@@ -87,8 +90,9 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	productRouter(router.Group("/product"))
 
 	projectRouter(router.Group("/project"))
-	projectUserRouter(router.Group("/project/user"))
-	projectPluginRouter(router.Group("/project/plugin"))
+	projectUserRouter(router.Group("/project/:id/user"))
+	projectPluginRouter(router.Group("/project/:id/plugin"))
+	projectDeviceRouter(router.Group("/project/:id/device"))
 
 	gatewayRouter(router.Group("/gateway"))
 
