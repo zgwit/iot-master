@@ -1,6 +1,6 @@
 
 #编译前端
-npm run build
+#npm run build
 
 # 整体编译
 go env -w GOPROXY=https://goproxy.cn,direct

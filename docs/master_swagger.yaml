@@ -148,6 +148,13 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-types_ProjectPlugin:
+    properties:
+      data:
+        $ref: '#/definitions/types.ProjectPlugin'
+      error:
+        type: string
+    type: object
   curd.ReplyData-types_ProjectUser:
     properties:
       data:
@@ -275,6 +282,17 @@ definitions:
       total:
         type: integer
     type: object
+  curd.ReplyList-types_ProjectPlugin:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.ProjectPlugin'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
   curd.ReplyList-types_ProjectUser:
     properties:
       data:
@@ -308,17 +326,6 @@ definitions:
       total:
         type: integer
     type: object
-  plugin.Entry:
-    properties:
-      description:
-        type: string
-      icon:
-        type: string
-      name:
-        type: string
-      path:
-        type: string
-    type: object
   plugin.Manifest:
     properties:
       arch:
@@ -340,10 +347,6 @@ definitions:
       description:
         description: 说明
         type: string
-      entries:
-        items:
-          $ref: '#/definitions/plugin.Entry'
-        type: array
       icon:
         description: 图标
         type: string
@@ -369,8 +372,12 @@ definitions:
         items:
           type: string
         type: array
+      pages:
+        allOf:
+        - $ref: '#/definitions/plugin.Pages'
+        description: 子页面入口
       type:
-        description: 类型：服务、应用、静态页面
+        description: 类型：应用、外部、静态页面
         type: string
       url:
         description: 链接
@@ -378,6 +385,22 @@ definitions:
       version:
         description: 版本 semver.Version
         type: string
+    type: object
+  plugin.PageEntry:
+    properties:
+      detail:
+        type: string
+      edit:
+        type: string
+    type: object
+  plugin.Pages:
+    properties:
+      device:
+        $ref: '#/definitions/plugin.PageEntry'
+      product:
+        $ref: '#/definitions/plugin.PageEntry'
+      project:
+        $ref: '#/definitions/plugin.PageEntry'
     type: object
   product.Event:
     properties:
@@ -687,47 +710,42 @@ definitions:
     properties:
       created:
         type: string
-      description:
-        type: string
       disabled:
         type: boolean
       id:
         description: ID
-        type: string
-      name:
-        description: 名称
-        type: string
-      version:
         type: string
     type: object
   types.Product:
     properties:
       created:
         type: string
-      description:
-        type: string
+      disabled:
+        type: boolean
       id:
         description: ID
-        type: string
-      name:
-        description: 名称
-        type: string
-      version:
         type: string
     type: object
   types.Project:
     properties:
       created:
         type: string
-      description:
-        type: string
       disabled:
         type: boolean
       id:
         type: string
-      name:
+    type: object
+  types.ProjectPlugin:
+    properties:
+      created:
         type: string
-      version:
+      disabled:
+        type: boolean
+      id:
+        type: integer
+      plugin_id:
+        type: string
+      project_id:
         type: string
     type: object
   types.ProjectUser:
@@ -739,7 +757,7 @@ definitions:
       disabled:
         type: boolean
       id:
-        type: string
+        type: integer
       project_id:
         type: string
       user_id:
@@ -2982,6 +3000,162 @@ paths:
       summary: 查询项目
       tags:
       - project
+  /project/plugin/{id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取项目用户
+      parameters:
+      - description: 项目用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_ProjectPlugin'
+      summary: 获取项目用户
+      tags:
+      - project-plugin
+    post:
+      consumes:
+      - application/json
+      description: 修改项目用户
+      parameters:
+      - description: 项目用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 项目用户信息
+        in: body
+        name: project-plugin
+        required: true
+        schema:
+          $ref: '#/definitions/types.ProjectPlugin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_ProjectPlugin'
+      summary: 修改项目用户
+      tags:
+      - project-plugin
+  /project/plugin/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除项目用户
+      parameters:
+      - description: 项目用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_ProjectPlugin'
+      summary: 删除项目用户
+      tags:
+      - project-plugin
+  /project/plugin/count:
+    post:
+      consumes:
+      - application/json
+      description: 查询项目用户数量
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 查询项目用户数量
+      tags:
+      - project-plugin
+  /project/plugin/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建项目用户
+      parameters:
+      - description: 项目用户信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/types.ProjectPlugin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_ProjectPlugin'
+      summary: 创建项目用户
+      tags:
+      - project-plugin
+  /project/plugin/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询项目用户
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-types_ProjectPlugin'
+      summary: 查询项目用户
+      tags:
+      - project-plugin
+  /project/plugin/search:
+    post:
+      consumes:
+      - application/json
+      description: 这里写描述 get project-plugins
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-types_ProjectPlugin'
+      summary: 查询项目用户
+      tags:
+      - project-plugin
   /project/search:
     post:
       consumes:
@@ -3014,7 +3188,7 @@ paths:
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
@@ -3034,7 +3208,7 @@ paths:
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       - description: 项目用户信息
         in: body
         name: project-user
@@ -3061,7 +3235,7 @@ paths:
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:

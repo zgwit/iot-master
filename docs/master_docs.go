@@ -3011,6 +3011,246 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "/project/plugin/count": {
+            "post": {
+                "description": "查询项目用户数量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-plugin"
+                ],
+                "summary": "查询项目用户数量",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/plugin/create": {
+            "post": {
+                "description": "创建项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-plugin"
+                ],
+                "summary": "创建项目用户",
+                "parameters": [
+                    {
+                        "description": "项目用户信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ProjectPlugin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectPlugin"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/plugin/list": {
+            "get": {
+                "description": "查询项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-plugin"
+                ],
+                "summary": "查询项目用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_ProjectPlugin"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/plugin/search": {
+            "post": {
+                "description": "这里写描述 get project-plugins",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-plugin"
+                ],
+                "summary": "查询项目用户",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_ProjectPlugin"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/plugin/{id}": {
+            "get": {
+                "description": "获取项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-plugin"
+                ],
+                "summary": "获取项目用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectPlugin"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-plugin"
+                ],
+                "summary": "修改项目用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "项目用户信息",
+                        "name": "project-plugin",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ProjectPlugin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectPlugin"
+                        }
+                    }
+                }
+            }
+        },
+        "/project/plugin/{id}/delete": {
+            "get": {
+                "description": "删除项目用户",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-plugin"
+                ],
+                "summary": "删除项目用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_ProjectPlugin"
+                        }
+                    }
+                }
+            }
+        },
         "/project/search": {
             "post": {
                 "description": "查询项目",
@@ -3197,7 +3437,7 @@ const docTemplatemaster = `{
                 "summary": "获取项目用户",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "项目用户ID",
                         "name": "id",
                         "in": "path",
@@ -3227,7 +3467,7 @@ const docTemplatemaster = `{
                 "summary": "修改项目用户",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "项目用户ID",
                         "name": "id",
                         "in": "path",
@@ -3268,7 +3508,7 @@ const docTemplatemaster = `{
                 "summary": "删除项目用户",
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "integer",
                         "description": "项目用户ID",
                         "name": "id",
                         "in": "path",
@@ -4480,6 +4720,17 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyData-types_ProjectPlugin": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/types.ProjectPlugin"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-types_ProjectUser": {
             "type": "object",
             "properties": {
@@ -4677,6 +4928,23 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyList-types_ProjectPlugin": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.ProjectPlugin"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "curd.ReplyList-types_ProjectUser": {
             "type": "object",
             "properties": {
@@ -4728,23 +4996,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "plugin.Entry": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "icon": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "path": {
-                    "type": "string"
-                }
-            }
-        },
         "plugin.Manifest": {
             "type": "object",
             "properties": {
@@ -4773,12 +5024,6 @@ const docTemplatemaster = `{
                 "description": {
                     "description": "说明",
                     "type": "string"
-                },
-                "entries": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/plugin.Entry"
-                    }
                 },
                 "icon": {
                     "description": "图标",
@@ -4814,8 +5059,16 @@ const docTemplatemaster = `{
                         "type": "string"
                     }
                 },
+                "pages": {
+                    "description": "子页面入口",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/plugin.Pages"
+                        }
+                    ]
+                },
                 "type": {
-                    "description": "类型：服务、应用、静态页面",
+                    "description": "类型：应用、外部、静态页面",
                     "type": "string"
                 },
                 "url": {
@@ -4825,6 +5078,31 @@ const docTemplatemaster = `{
                 "version": {
                     "description": "版本 semver.Version",
                     "type": "string"
+                }
+            }
+        },
+        "plugin.PageEntry": {
+            "type": "object",
+            "properties": {
+                "detail": {
+                    "type": "string"
+                },
+                "edit": {
+                    "type": "string"
+                }
+            }
+        },
+        "plugin.Pages": {
+            "type": "object",
+            "properties": {
+                "device": {
+                    "$ref": "#/definitions/plugin.PageEntry"
+                },
+                "product": {
+                    "$ref": "#/definitions/plugin.PageEntry"
+                },
+                "project": {
+                    "$ref": "#/definitions/plugin.PageEntry"
                 }
             }
         },
@@ -5281,21 +5559,11 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
-                "description": {
-                    "type": "string"
-                },
                 "disabled": {
                     "type": "boolean"
                 },
                 "id": {
                     "description": "ID",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "version": {
                     "type": "string"
                 }
             }
@@ -5306,18 +5574,11 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
-                "description": {
-                    "type": "string"
+                "disabled": {
+                    "type": "boolean"
                 },
                 "id": {
                     "description": "ID",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "version": {
                     "type": "string"
                 }
             }
@@ -5328,19 +5589,30 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
-                "description": {
+                "disabled": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.ProjectPlugin": {
+            "type": "object",
+            "properties": {
+                "created": {
                     "type": "string"
                 },
                 "disabled": {
                     "type": "boolean"
                 },
                 "id": {
+                    "type": "integer"
+                },
+                "plugin_id": {
                     "type": "string"
                 },
-                "name": {
-                    "type": "string"
-                },
-                "version": {
+                "project_id": {
                     "type": "string"
                 }
             }
@@ -5358,7 +5630,7 @@ const docTemplatemaster = `{
                     "type": "boolean"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "project_id": {
                     "type": "string"
