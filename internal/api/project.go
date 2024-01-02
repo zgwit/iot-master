@@ -149,7 +149,7 @@ func noopProjectManifestGet() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[project.Manifest] 返回项目信息
-// @Router /project/{id}/stop [post]
+// @Router /project/{id}/manifest [post]
 func noopProjectManifestPost() {}
 
 func projectRouter(app *gin.RouterGroup) {

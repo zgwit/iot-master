@@ -149,7 +149,7 @@ func noopPluginManifestGet() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[plugin.Manifest] 返回插件信息
-// @Router /plugin/{id}/stop [post]
+// @Router /plugin/{id}/manifest [post]
 func noopPluginManifestPost() {}
 
 func pluginRouter(app *gin.RouterGroup) {

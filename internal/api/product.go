@@ -126,7 +126,7 @@ func noopProductManifestGet() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[product.Manifest] 返回产品信息
-// @Router /product/{id}/stop [post]
+// @Router /product/{id}/manifest [post]
 func noopProductManifestPost() {}
 
 func productRouter(app *gin.RouterGroup) {

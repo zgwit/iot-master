@@ -2361,6 +2361,26 @@ paths:
       summary: 获取插件详情
       tags:
       - plugin
+    post:
+      consumes:
+      - application/json
+      description: 修改插件详情
+      parameters:
+      - description: 插件ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-plugin_Manifest'
+      summary: 修改插件详情
+      tags:
+      - plugin
   /plugin/{id}/start:
     get:
       consumes:
@@ -2401,26 +2421,6 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-types_Plugin'
       summary: 停止插件
-      tags:
-      - plugin
-    post:
-      consumes:
-      - application/json
-      description: 修改插件详情
-      parameters:
-      - description: 插件ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-plugin_Manifest'
-      summary: 修改插件详情
       tags:
       - plugin
   /plugin/create:
@@ -2610,7 +2610,6 @@ paths:
       summary: 获取产品详情
       tags:
       - product
-  /product/{id}/stop:
     post:
       consumes:
       - application/json
@@ -2862,6 +2861,26 @@ paths:
       summary: 获取项目详情
       tags:
       - project
+    post:
+      consumes:
+      - application/json
+      description: 修改项目详情
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-project_Manifest'
+      summary: 修改项目详情
+      tags:
+      - project
   /project/{id}/start:
     get:
       consumes:
@@ -2902,26 +2921,6 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-types_Project'
       summary: 停止项目
-      tags:
-      - project
-    post:
-      consumes:
-      - application/json
-      description: 修改项目详情
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-project_Manifest'
-      summary: 修改项目详情
       tags:
       - project
   /project/create:

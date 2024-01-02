@@ -2446,6 +2446,36 @@ const docTemplatemaster = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "修改插件详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plugin"
+                ],
+                "summary": "修改插件详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "插件ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-plugin_Manifest"
+                        }
+                    }
+                }
             }
         },
         "/plugin/{id}/start": {
@@ -2507,36 +2537,6 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-types_Plugin"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改插件详情",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "plugin"
-                ],
-                "summary": "修改插件详情",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "插件ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-plugin_Manifest"
                         }
                     }
                 }
@@ -2860,9 +2860,7 @@ const docTemplatemaster = `{
                         }
                     }
                 }
-            }
-        },
-        "/product/{id}/stop": {
+            },
             "post": {
                 "description": "修改产品详情",
                 "consumes": [
@@ -3692,6 +3690,36 @@ const docTemplatemaster = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "修改项目详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project"
+                ],
+                "summary": "修改项目详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-project_Manifest"
+                        }
+                    }
+                }
             }
         },
         "/project/{id}/start": {
@@ -3753,36 +3781,6 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-types_Project"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改项目详情",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project"
-                ],
-                "summary": "修改项目详情",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-project_Manifest"
                         }
                     }
                 }
