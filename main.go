@@ -16,7 +16,7 @@ import (
 var wwwFiles embed.FS
 
 // @title 物联大师接口文档
-// @version 3.2 版本
+// @version 4.0 版本
 // @description API文档
 // @BasePath /api/
 // @InstanceName master

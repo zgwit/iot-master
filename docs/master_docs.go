@@ -4318,7 +4318,7 @@ const docTemplatemaster = `{
 
 // SwaggerInfomaster holds exported Swagger Info so clients can modify it
 var SwaggerInfomaster = &swag.Spec{
-	Version:          "3.2 版本",
+	Version:          "4.0 版本",
 	Host:             "",
 	BasePath:         "/api/",
 	Schemes:          []string{},

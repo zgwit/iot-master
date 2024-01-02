@@ -153,7 +153,7 @@ func productRouter(app *gin.RouterGroup) {
 
 	app.POST("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
 		var m product.Manifest
-		err := ctx.BindJSON(&m)
+		err := ctx.ShouldBindJSON(&m)
 		if err != nil {
 			curd.Error(ctx, err)
 			return

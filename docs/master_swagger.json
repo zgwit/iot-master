@@ -4,7 +4,7 @@
         "description": "API文档",
         "title": "物联大师接口文档",
         "contact": {},
-        "version": "3.2 版本"
+        "version": "4.0 版本"
     },
     "basePath": "/api/",
     "paths": {

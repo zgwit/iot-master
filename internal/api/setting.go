@@ -35,7 +35,7 @@ func settingSet(ctx *gin.Context) {
 	module := ctx.GetString("module")
 
 	var conf map[string]any
-	err := ctx.BindJSON(&conf)
+	err := ctx.ShouldBindJSON(&conf)
 	if err != nil {
 		curd.Error(ctx, err)
 		return
