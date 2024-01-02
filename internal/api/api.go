@@ -80,7 +80,11 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	router.GET("/logout", logout)
 	router.POST("/password", password)
 
+	//OEM
 	oemRouter(router.Group("/oem"))
+
+	//配置文件
+	settingRouter(router.Group("/setting"))
 
 	//注册子接口
 	userRouter(router.Group("/user"))
@@ -97,21 +101,12 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	gatewayRouter(router.Group("/gateway"))
 
 	deviceRouter(router.Group("/device"))
+
 	alarmRouter(router.Group("/alarm"))
-
-	subscriptionRouter(router.Group("/subscription"))
-	notificationRouter(router.Group("/notification"))
-
-	historyRouter(router.Group("/history"))
-	groupRouter(router.Group("/history/group"))
-
-	brokerRouter(router.Group("/broker"))
 
 	backupRouter(router.Group("/backup"))
 
-	systemRouter(router.Group("/system"))
-	configRouter(router.Group("/config"))
-
+	//附件管理
 	attach.Routers("attach", router.Group("/attach"))
 
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）

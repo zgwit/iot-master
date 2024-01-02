@@ -1,14 +1,5 @@
 basePath: /api/
 definitions:
-  api.GroupResult:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
-      total:
-        type: number
-    type: object
   api.OEM:
     properties:
       logo:
@@ -42,13 +33,6 @@ definitions:
         additionalProperties:
           type: integer
         type: object
-    type: object
-  curd.ReplyData-api_GroupResult:
-    properties:
-      data:
-        $ref: '#/definitions/api.GroupResult'
-      error:
-        type: string
     type: object
   curd.ReplyData-api_OEM:
     properties:
@@ -133,13 +117,6 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-types_Broker:
-    properties:
-      data:
-        $ref: '#/definitions/types.Broker'
-      error:
-        type: string
-    type: object
   curd.ReplyData-types_Device:
     properties:
       data:
@@ -151,20 +128,6 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/types.Gateway'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_History:
-    properties:
-      data:
-        $ref: '#/definitions/types.History'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_Notification:
-    properties:
-      data:
-        $ref: '#/definitions/types.Notification'
       error:
         type: string
     type: object
@@ -186,13 +149,6 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/types.Project'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_Subscription:
-    properties:
-      data:
-        $ref: '#/definitions/types.Subscription'
       error:
         type: string
     type: object
@@ -221,17 +177,6 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-types_Broker:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.Broker'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
   curd.ReplyList-types_Device:
     properties:
       data:
@@ -248,28 +193,6 @@ definitions:
       data:
         items:
           $ref: '#/definitions/types.Gateway'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-types_History:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.History'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-types_Notification:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.Notification'
         type: array
       error:
         type: string
@@ -303,17 +226,6 @@ definitions:
       data:
         items:
           $ref: '#/definitions/types.Project'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-types_Subscription:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.Subscription'
         type: array
       error:
         type: string
@@ -619,22 +531,6 @@ definitions:
       type:
         type: string
     type: object
-  types.Broker:
-    properties:
-      created:
-        type: string
-      description:
-        type: string
-      disabled:
-        type: boolean
-      id:
-        type: string
-      name:
-        type: string
-      port:
-        description: TODO 添加TLS证书
-        type: integer
-    type: object
   types.Device:
     properties:
       created:
@@ -679,36 +575,6 @@ definitions:
       password:
         type: string
       username:
-        type: string
-    type: object
-  types.History:
-    properties:
-      device_id:
-        type: string
-      id:
-        type: integer
-      point:
-        description: 数据点
-        type: string
-      time:
-        type: string
-      value:
-        description: 值
-        type: number
-    type: object
-  types.Notification:
-    properties:
-      alarm_id:
-        type: integer
-      channels:
-        items:
-          type: string
-        type: array
-      created:
-        type: string
-      id:
-        type: integer
-      user_id:
         type: string
     type: object
   types.Plugin:
@@ -771,36 +637,6 @@ definitions:
         type: string
       disabled:
         type: boolean
-      project_id:
-        type: string
-      user_id:
-        type: string
-    type: object
-  types.Subscription:
-    properties:
-      channels:
-        items:
-          type: string
-        type: array
-      created:
-        type: string
-      device:
-        type: string
-      device_id:
-        type: string
-      disabled:
-        description: 禁用
-        type: boolean
-      id:
-        type: integer
-      level:
-        type: integer
-      product:
-        type: string
-      product_id:
-        type: string
-      project:
-        type: string
       project_id:
         type: string
       user_id:
@@ -1023,278 +859,6 @@ paths:
       summary: 导入所有数据
       tags:
       - backup
-  /broker/{id}:
-    get:
-      consumes:
-      - application/json
-      description: 获取总线
-      parameters:
-      - description: 总线ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Broker'
-      summary: 获取总线
-      tags:
-      - broker
-    post:
-      consumes:
-      - application/json
-      description: 修改总线
-      parameters:
-      - description: 总线ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: 总线信息
-        in: body
-        name: broker
-        required: true
-        schema:
-          $ref: '#/definitions/types.Broker'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Broker'
-      summary: 修改总线
-      tags:
-      - broker
-  /broker/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除总线
-      parameters:
-      - description: 总线ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Broker'
-      summary: 删除总线
-      tags:
-      - broker
-  /broker/{id}/disable:
-    get:
-      consumes:
-      - application/json
-      description: 禁用总线
-      parameters:
-      - description: 总线ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Broker'
-      summary: 禁用总线
-      tags:
-      - broker
-  /broker/{id}/enable:
-    get:
-      consumes:
-      - application/json
-      description: 启用总线
-      parameters:
-      - description: 总线ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Broker'
-      summary: 启用总线
-      tags:
-      - broker
-  /broker/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询总线数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询总线数量
-      tags:
-      - broker
-  /broker/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建总线
-      parameters:
-      - description: 总线信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/types.Broker'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Broker'
-      summary: 创建总线
-      tags:
-      - broker
-  /broker/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出总线
-      produces:
-      - application/octet-stream
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Broker'
-      summary: 导出总线
-      tags:
-      - broker
-  /broker/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入总线
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入总线
-      tags:
-      - broker
-  /broker/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询总线
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Broker'
-      summary: 查询总线
-      tags:
-      - broker
-  /broker/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询总线
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Broker'
-      summary: 查询总线
-      tags:
-      - broker
-  /config/:module:
-    get:
-      consumes:
-      - application/json
-      description: 查询配置
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-      summary: 查询配置
-      tags:
-      - config
-    post:
-      consumes:
-      - application/json
-      description: 修改配置
-      parameters:
-      - description: 配置
-        in: body
-        name: cfg
-        required: true
-        schema:
-          additionalProperties: true
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 修改配置
-      tags:
-      - config
   /device/{id}:
     get:
       consumes:
@@ -1780,489 +1344,6 @@ paths:
       summary: 查询网关
       tags:
       - gateway
-  /history/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除历史
-      parameters:
-      - description: 历史ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_History'
-      summary: 删除历史
-      tags:
-      - history
-  /history/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询历史
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询历史数量
-      tags:
-      - history
-  /history/group/area:
-    get:
-      description: 按区域统计
-      parameters:
-      - description: 数据点
-        in: query
-        name: point
-        required: true
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 按区域统计
-      tags:
-      - group
-  /history/group/day:
-    get:
-      description: 按日统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 设备ID
-        in: query
-        name: device
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 按日统计
-      tags:
-      - group
-  /history/group/group:
-    get:
-      description: 按分组统计
-      parameters:
-      - description: 数据点
-        in: query
-        name: point
-        required: true
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 按分组统计
-      tags:
-      - group
-  /history/group/hour:
-    get:
-      description: 按小时统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 设备ID
-        in: query
-        name: device
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 按小时统计
-      tags:
-      - group
-  /history/group/minute:
-    get:
-      description: 按分钟统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 设备ID
-        in: query
-        name: device
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 按分钟统计
-      tags:
-      - group
-  /history/group/month:
-    get:
-      description: 按月统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 设备ID
-        in: query
-        name: device
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 按月统计
-      tags:
-      - group
-  /history/group/point:
-    get:
-      description: 按数据点统计
-      parameters:
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 按数据点统计
-      tags:
-      - group
-  /history/group/type:
-    get:
-      description: 按类型统计
-      parameters:
-      - description: 数据点
-        in: query
-        name: point
-        required: true
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 按类型统计
-      tags:
-      - group
-  /history/group/year:
-    get:
-      description: 按年统计
-      parameters:
-      - description: 设备区域
-        in: query
-        name: area
-        type: string
-      - description: 设备ID
-        in: query
-        name: device
-        type: string
-      - description: 结束时间
-        in: query
-        name: end
-        type: string
-      - description: 设备分组
-        in: query
-        name: group
-        type: string
-      - description: 数据点位
-        in: query
-        name: point
-        type: string
-      - description: 起始时间
-        in: query
-        name: start
-        type: string
-      - description: 设备类型
-        in: query
-        name: type
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-api_GroupResult'
-      summary: 按年统计
-      tags:
-      - group
-  /history/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询历史
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_History'
-      summary: 查询历史
-      tags:
-      - history
-  /history/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询历史
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_History'
-      summary: 查询历史
-      tags:
-      - history
-  /notification/{id}/delete:
-    get:
-      description: 删除通知
-      parameters:
-      - description: 通知ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Notification'
-      summary: 删除通知
-      tags:
-      - notification
-  /notification/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询通知
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询通知
-      tags:
-      - notification
-  /notification/list:
-    get:
-      description: 查询通知
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Notification'
-      summary: 查询通知
-      tags:
-      - notification
-  /notification/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询通知
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Notification'
-      summary: 查询通知
-      tags:
-      - notification
   /oem:
     get:
       consumes:
@@ -3486,236 +2567,55 @@ paths:
       summary: 查询项目
       tags:
       - project
-  /subscription/{id}:
+  /setting/:module:
     get:
       consumes:
       - application/json
-      description: 获取订阅
+      description: 查询配置
       parameters:
-      - description: 订阅ID
+      - description: 模块，web database log ...
         in: path
-        name: id
+        name: module
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Subscription'
-      summary: 获取订阅
+            additionalProperties: true
+            type: object
+      summary: 查询配置
       tags:
-      - subscription
+      - setting
     post:
       consumes:
       - application/json
-      description: 修改订阅
+      description: 修改配置
       parameters:
-      - description: 订阅ID
+      - description: 模块，web database log ...
         in: path
-        name: id
+        name: module
         required: true
-        type: integer
-      - description: 订阅信息
+        type: string
+      - description: 配置内容
         in: body
-        name: subscription
+        name: cfg
         required: true
         schema:
-          $ref: '#/definitions/types.Subscription'
+          additionalProperties: true
+          type: object
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Subscription'
-      summary: 修改订阅
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改配置
       tags:
-      - subscription
-  /subscription/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除订阅
-      parameters:
-      - description: 订阅ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Subscription'
-      summary: 删除订阅
-      tags:
-      - subscription
-  /subscription/{id}/disable:
-    get:
-      consumes:
-      - application/json
-      description: 禁用订阅
-      parameters:
-      - description: 订阅ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Subscription'
-      summary: 禁用订阅
-      tags:
-      - subscription
-  /subscription/{id}/enable:
-    get:
-      consumes:
-      - application/json
-      description: 启用订阅
-      parameters:
-      - description: 订阅ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Subscription'
-      summary: 启用订阅
-      tags:
-      - subscription
-  /subscription/count:
-    post:
-      consumes:
-      - application/json
-      description: 查询订阅数量
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 查询订阅数量
-      tags:
-      - subscription
-  /subscription/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建订阅
-      parameters:
-      - description: 订阅信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/types.Subscription'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Subscription'
-      summary: 创建订阅
-      tags:
-      - subscription
-  /subscription/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出订阅
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出订阅
-      tags:
-      - subscription
-  /subscription/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入订阅
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入订阅
-      tags:
-      - subscription
-  /subscription/list:
-    get:
-      consumes:
-      - application/json
-      description: 查询订阅
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Subscription'
-      summary: 查询订阅
-      tags:
-      - subscription
-  /subscription/search:
-    post:
-      consumes:
-      - application/json
-      description: 查询订阅
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Subscription'
-      summary: 查询订阅
-      tags:
-      - subscription
+      - setting
   /user/{id}:
     get:
       consumes:

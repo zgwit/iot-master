@@ -10,12 +10,13 @@ import (
 // @Summary 查询配置
 // @Schemes
 // @Description 查询配置
-// @Tags config
+// @Tags setting
+// @Param module path string true "模块，web database log ..."
 // @Accept json
 // @Produce json
 // @Success 200 {object} map[string]any 返回配置
-// @Router /config/:module [get]
-func configGet(ctx *gin.Context) {
+// @Router /setting/:module [get]
+func settingGet(ctx *gin.Context) {
 	module := ctx.GetString("module")
 	curd.OK(ctx, viper.GetStringMap(module))
 }
@@ -23,13 +24,14 @@ func configGet(ctx *gin.Context) {
 // @Summary 修改配置
 // @Schemes
 // @Description 修改配置
-// @Tags config
-// @Param cfg body map[string]any true "配置"
+// @Tags setting
+// @Param module path string true "模块，web database log ..."
+// @Param cfg body map[string]any true "配置内容"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[int]
-// @Router /config/:module [post]
-func configSet(ctx *gin.Context) {
+// @Router /setting/:module [post]
+func settingSet(ctx *gin.Context) {
 	module := ctx.GetString("module")
 
 	var conf map[string]any
@@ -50,8 +52,8 @@ func configSet(ctx *gin.Context) {
 	curd.OK(ctx, nil)
 }
 
-func configRouter(app *gin.RouterGroup) {
-	app.POST("/:module", configSet)
-	app.GET("/:module", configGet)
+func settingRouter(app *gin.RouterGroup) {
+	app.POST("/:module", settingSet)
+	app.GET("/:module", settingGet)
 
 }
