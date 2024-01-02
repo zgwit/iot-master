@@ -137,7 +137,7 @@ func productRouter(app *gin.RouterGroup) {
 	app.POST("/create", curd.ApiCreateHook[types.Product](curd.GenerateRandomId[types.Product](8), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Product]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Product](nil, nil,
-		"id", "name", "version", "desc", "properties", "functions", "events", "parameters", "validators", "aggregators"))
+		"id", "disabled"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Product](nil, nil))
 	app.GET("/export", export.ApiExport("product", "产品"))
 	app.POST("/import", export.ApiImport("product"))

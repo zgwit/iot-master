@@ -128,7 +128,7 @@ func projectUserUpdate(ctx *gin.Context) {
 		return
 	}
 	_, err = db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("user")}).
-		Cols("user_id", "name").
+		Cols("user_id", "disabled").
 		Update(&pd)
 	if err != nil {
 		curd.Error(ctx, err)

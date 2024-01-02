@@ -184,7 +184,7 @@ func pluginRouter(app *gin.RouterGroup) {
 	}))
 
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Plugin](nil, nil,
-		"id", "name", "version", "command", "external", "username", "password", "disabled"))
+		"id", "disabled"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Plugin](nil, nil))
 

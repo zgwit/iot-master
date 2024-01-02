@@ -161,9 +161,7 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[types.Device]())
 
-	app.POST("/search", curd.ApiSearchWith[types.Device]([]*curd.Join{
-		{"product", "product_id", "id", "name", "product"},
-	}, "id", "name", "product_id", "disabled", "created"))
+	app.POST("/search", curd.ApiSearch[types.Device]("id", "name", "product_id", "disabled", "created"))
 
 	app.GET("/list", curd.ApiList[types.Device]())
 
@@ -172,7 +170,7 @@ func deviceRouter(app *gin.RouterGroup) {
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Device]())
 
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Device](nil, nil,
-		"id", "gateway_id", "product_id", "group_id", "type", "name", "desc", "username", "password", "parameters", "disabled"))
+		"id", "gateway_id", "product_id", "type", "name", "description", "password", "parameters", "disabled"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Device](nil, nil))
 

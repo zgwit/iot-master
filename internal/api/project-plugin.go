@@ -128,7 +128,7 @@ func projectPluginUpdate(ctx *gin.Context) {
 		return
 	}
 	_, err = db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("plugin")}).
-		Cols("plugin_id", "name").
+		Cols("plugin_id", "disabled").
 		Update(&pd)
 	if err != nil {
 		curd.Error(ctx, err)
