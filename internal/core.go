@@ -11,6 +11,7 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/vconn"
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/product"
+	"github.com/zgwit/iot-master/v4/project"
 	"github.com/zgwit/iot-master/v4/types"
 	"net"
 	"net/url"
@@ -90,17 +91,22 @@ func Open() error {
 		}
 	}
 
-	err = product.LoadAll()
-	if err != nil {
-		return err
-	}
-
 	go func() {
 		err = plugin.LoadAll()
 		if err != nil {
 			log.Error(err)
 		}
 	}()
+
+	err = product.LoadAll()
+	if err != nil {
+		return err
+	}
+
+	err = project.LoadAll()
+	if err != nil {
+		return err
+	}
 
 	//err = LoadDevices()
 	//if err != nil {

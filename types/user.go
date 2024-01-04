@@ -5,7 +5,6 @@ import "time"
 // User 用户
 type User struct {
 	Id        string    `json:"id" xorm:"pk"`
-	Username  string    `json:"username" xorm:"unique"`
 	Name      string    `json:"name,omitempty"`
 	Email     string    `json:"email,omitempty"`
 	Cellphone string    `json:"cellphone,omitempty"`

@@ -27,14 +27,14 @@ func Get(id string) *Project {
 }
 
 func Load(id string) error {
-	fn := fmt.Sprintf("product/%s/manifest.yaml", id)
+	fn := fmt.Sprintf("project/%s/manifest.yaml", id)
 
 	var m Manifest
 	err := lib.LoadYaml(fn, &m)
 	if err != nil {
 		return err
 	}
-	return From(&m)
+	return From(id, &m)
 }
 
 func Store(id string, m *Manifest) error {
@@ -43,20 +43,20 @@ func Store(id string, m *Manifest) error {
 	if err != nil {
 		return err
 	}
-	return From(m)
+	return From(id, m)
 }
 
-func From(project *Manifest) error {
+func From(id string, project *Manifest) error {
 	p := New(project)
 
-	projects.Store(project.Id, p)
+	projects.Store(id, p)
 
-	err := db.Engine.Where("project_id = ?", project.Id).And("disabled = ?", false).Find(&p.ExternalValidators)
+	err := db.Engine.Where("project_id = ?", id).And("disabled = ?", false).Find(&p.ExternalValidators)
 	if err != nil {
 		return err
 	}
 
-	err = db.Engine.Where("project_id = ?", project.Id).And("disabled = ?", false).Find(&p.ExternalAggregators)
+	err = db.Engine.Where("project_id = ?", id).And("disabled = ?", false).Find(&p.ExternalAggregators)
 	if err != nil {
 		return err
 	}

@@ -5,7 +5,7 @@ import (
 )
 
 type Manifest struct {
-	types.ManifestBase
+	types.ManifestBase `yaml:"inline"`
 
 	//物模型
 	Properties []*Property `json:"properties,omitempty"` //属性

@@ -13,7 +13,7 @@ func auth(ctx *gin.Context) {
 	password := ctx.Query("password")
 
 	var user types.User
-	has, err := db.Engine.Where("username=?", username).Get(&user)
+	has, err := db.Engine.Where("id=?", username).Get(&user)
 	if err != nil {
 		curd.Error(ctx, err)
 		return

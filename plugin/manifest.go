@@ -5,7 +5,7 @@ import (
 )
 
 type Manifest struct {
-	types.ManifestBase
+	types.ManifestBase `yaml:"inline"`
 
 	Type         string            `json:"type"`                   //类型：应用、外部、静态页面
 	Main         string            `json:"main,omitempty"`         //入口：程序文件

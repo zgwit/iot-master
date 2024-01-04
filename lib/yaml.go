@@ -3,6 +3,7 @@ package lib
 import (
 	"gopkg.in/yaml.v3"
 	"os"
+	"path/filepath"
 )
 
 func LoadYaml(filename string, cfg any) error {
@@ -21,6 +22,7 @@ func LoadYaml(filename string, cfg any) error {
 }
 
 func StoreYaml(filename string, cfg any) error {
+	_ = os.MkdirAll(filepath.Dir(filename), os.ModePerm)         //创建目录
 	y, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE, 0755) //os.Create(filename)
 	if err != nil {
 		return err

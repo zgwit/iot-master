@@ -35,7 +35,7 @@ func Load(id string) error {
 		return err
 	}
 
-	return From(&m)
+	return From(id, &m)
 }
 
 func Store(id string, m *Manifest) error {
@@ -44,20 +44,20 @@ func Store(id string, m *Manifest) error {
 	if err != nil {
 		return err
 	}
-	return From(m)
+	return From(id, m)
 }
 
-func From(product *Manifest) error {
+func From(id string, product *Manifest) error {
 	p := New(product)
 
 	products.Store(product.Id, p)
 
-	err := db.Engine.Where("product_id = ?", product.Id).And("disabled = ?", false).Find(&p.ExternalValidators)
+	err := db.Engine.Where("product_id = ?", id).And("disabled = ?", false).Find(&p.ExternalValidators)
 	if err != nil {
 		return err
 	}
 
-	err = db.Engine.Where("product_id = ?", product.Id).And("disabled = ?", false).Find(&p.ExternalAggregators)
+	err = db.Engine.Where("product_id = ?", id).And("disabled = ?", false).Find(&p.ExternalAggregators)
 	if err != nil {
 		return err
 	}

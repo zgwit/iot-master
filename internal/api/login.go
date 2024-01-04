@@ -33,7 +33,7 @@ func login(ctx *gin.Context) {
 	}
 
 	var user types.User
-	has, err := db.Engine.Where("username=?", obj.Username).Get(&user)
+	has, err := db.Engine.Where("id=?", obj.Username).Get(&user)
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -43,8 +43,9 @@ func login(ctx *gin.Context) {
 		//管理员自动创建
 		if obj.Username == "admin" {
 			user.Id = "admin"
-			user.Username = obj.Username
 			user.Name = "管理员"
+			user.Admin = true
+
 			_, err = db.Engine.InsertOne(&user)
 			if err != nil {
 				curd.Error(ctx, err)

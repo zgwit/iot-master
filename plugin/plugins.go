@@ -42,7 +42,7 @@ func Load(id string) error {
 		return err
 	}
 
-	return From(&m)
+	return From(id, &m)
 }
 
 func Store(id string, m *Manifest) error {
@@ -51,10 +51,10 @@ func Store(id string, m *Manifest) error {
 	if err != nil {
 		return err
 	}
-	return From(m)
+	return From(id, m)
 }
 
-func From(manifest *Manifest) error {
+func From(id string, manifest *Manifest) error {
 	p := New(manifest)
 
 	err := p.Start()
@@ -62,7 +62,7 @@ func From(manifest *Manifest) error {
 		return err
 	}
 
-	plugins.Store(manifest.Id, p)
+	plugins.Store(id, p)
 
 	return nil
 }

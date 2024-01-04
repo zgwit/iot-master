@@ -6,7 +6,7 @@ import (
 )
 
 type Manifest struct {
-	types.ManifestBase
+	types.ManifestBase `yaml:"inline"`
 
 	//参数
 	Parameters []*product.Parameter `json:"parameters,omitempty"` //参数
