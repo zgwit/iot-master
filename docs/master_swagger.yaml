@@ -103,13 +103,6 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-project_Manifest:
-    properties:
-      data:
-        $ref: '#/definitions/project.Manifest'
-      error:
-        type: string
-    type: object
   curd.ReplyData-types_Alarm:
     properties:
       data:
@@ -261,28 +254,11 @@ definitions:
           type: string
         description: 应用和版本
         type: object
-      description:
-        description: 说明
-        type: string
-      icon:
-        description: 图标
-        type: string
-      id:
-        description: ID
-        type: string
-      keywords:
-        description: 关键字
-        items:
-          type: string
-        type: array
       license:
         description: 软件协议：GPL MIT Apache 。。。
         type: string
       main:
         description: 入口：程序文件
-        type: string
-      name:
-        description: 名称
         type: string
       os:
         description: 操作系统支持：linux windows darwin
@@ -295,12 +271,6 @@ definitions:
         description: 子页面入口
       type:
         description: 类型：应用、外部、静态页面
-        type: string
-      url:
-        description: 链接
-        type: string
-      version:
-        description: 版本 semver.Version
         type: string
     type: object
   plugin.PageEntry:
@@ -365,9 +335,6 @@ definitions:
         items:
           $ref: '#/definitions/types.Aggregator'
         type: array
-      description:
-        description: 说明
-        type: string
       events:
         description: 事件
         items:
@@ -378,20 +345,6 @@ definitions:
         items:
           $ref: '#/definitions/product.Function'
         type: array
-      icon:
-        description: 图标
-        type: string
-      id:
-        description: ID
-        type: string
-      keywords:
-        description: 关键字
-        items:
-          type: string
-        type: array
-      name:
-        description: 名称
-        type: string
       parameters:
         description: 参数
         items:
@@ -402,16 +355,10 @@ definitions:
         items:
           $ref: '#/definitions/product.Property'
         type: array
-      url:
-        description: 链接
-        type: string
       validators:
         items:
           $ref: '#/definitions/types.Validator'
         type: array
-      version:
-        description: 版本 semver.Version
-        type: string
     type: object
   product.Parameter:
     properties:
@@ -452,45 +399,6 @@ definitions:
         description: int float ....
       unit:
         description: 单位
-        type: string
-    type: object
-  project.Manifest:
-    properties:
-      aggregators:
-        items:
-          $ref: '#/definitions/types.Aggregator'
-        type: array
-      description:
-        description: 说明
-        type: string
-      icon:
-        description: 图标
-        type: string
-      id:
-        description: ID
-        type: string
-      keywords:
-        description: 关键字
-        items:
-          type: string
-        type: array
-      name:
-        description: 名称
-        type: string
-      parameters:
-        description: 参数
-        items:
-          $ref: '#/definitions/product.Parameter'
-        type: array
-      url:
-        description: 链接
-        type: string
-      validators:
-        items:
-          $ref: '#/definitions/types.Validator'
-        type: array
-      version:
-        description: 版本 semver.Version
         type: string
     type: object
   types.Aggregator:
@@ -581,29 +489,89 @@ definitions:
     properties:
       created:
         type: string
+      description:
+        description: 说明
+        type: string
       disabled:
         type: boolean
+      icon:
+        description: 图标
+        type: string
       id:
         description: ID
+        type: string
+      keywords:
+        description: 关键字
+        items:
+          type: string
+        type: array
+      name:
+        description: 名称
+        type: string
+      url:
+        description: 链接
+        type: string
+      version:
+        description: 版本 semver.Version
         type: string
     type: object
   types.Product:
     properties:
       created:
         type: string
+      description:
+        description: 说明
+        type: string
       disabled:
         type: boolean
+      icon:
+        description: 图标
+        type: string
       id:
         description: ID
+        type: string
+      keywords:
+        description: 关键字
+        items:
+          type: string
+        type: array
+      name:
+        description: 名称
+        type: string
+      url:
+        description: 链接
+        type: string
+      version:
+        description: 版本 semver.Version
         type: string
     type: object
   types.Project:
     properties:
       created:
         type: string
+      description:
+        description: 说明
+        type: string
       disabled:
         type: boolean
+      icon:
+        description: 图标
+        type: string
       id:
+        type: string
+      keywords:
+        description: 关键字
+        items:
+          type: string
+        type: array
+      name:
+        description: 名称
+        type: string
+      url:
+        description: 链接
+        type: string
+      version:
+        description: 版本 semver.Version
         type: string
     type: object
   types.ProjectDevice:
@@ -683,8 +651,6 @@ definitions:
       id:
         type: string
       name:
-        type: string
-      username:
         type: string
     type: object
   types.Validator:
@@ -2072,47 +2038,6 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-types_Project'
       summary: 启用项目
-      tags:
-      - project
-  /project/{id}/manifest:
-    get:
-      consumes:
-      - application/json
-      description: 获取项目详情
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-project_Manifest'
-      summary: 获取项目详情
-      tags:
-      - project
-    post:
-      consumes:
-      - application/json
-      description: 修改项目详情
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-project_Manifest'
-      summary: 修改项目详情
       tags:
       - project
   /project/{id}/plugin/{plugin}:

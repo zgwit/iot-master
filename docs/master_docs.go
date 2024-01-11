@@ -2234,68 +2234,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/project/{id}/manifest": {
-            "get": {
-                "description": "获取项目详情",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project"
-                ],
-                "summary": "获取项目详情",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-project_Manifest"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改项目详情",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project"
-                ],
-                "summary": "修改项目详情",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-project_Manifest"
-                        }
-                    }
-                }
-            }
-        },
         "/project/{id}/plugin/{plugin}": {
             "get": {
                 "description": "项目插件列表",
@@ -3410,17 +3348,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "curd.ReplyData-project_Manifest": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/project.Manifest"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ReplyData-types_Alarm": {
             "type": "object",
             "properties": {
@@ -3653,35 +3580,12 @@ const docTemplatemaster = `{
                         "type": "string"
                     }
                 },
-                "description": {
-                    "description": "说明",
-                    "type": "string"
-                },
-                "icon": {
-                    "description": "图标",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "ID",
-                    "type": "string"
-                },
-                "keywords": {
-                    "description": "关键字",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
                 "license": {
                     "description": "软件协议：GPL MIT Apache 。。。",
                     "type": "string"
                 },
                 "main": {
                     "description": "入口：程序文件",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "名称",
                     "type": "string"
                 },
                 "os": {
@@ -3701,14 +3605,6 @@ const docTemplatemaster = `{
                 },
                 "type": {
                     "description": "类型：应用、外部、静态页面",
-                    "type": "string"
-                },
-                "url": {
-                    "description": "链接",
-                    "type": "string"
-                },
-                "version": {
-                    "description": "版本 semver.Version",
                     "type": "string"
                 }
             }
@@ -3806,10 +3702,6 @@ const docTemplatemaster = `{
                         "$ref": "#/definitions/types.Aggregator"
                     }
                 },
-                "description": {
-                    "description": "说明",
-                    "type": "string"
-                },
                 "events": {
                     "description": "事件",
                     "type": "array",
@@ -3823,25 +3715,6 @@ const docTemplatemaster = `{
                     "items": {
                         "$ref": "#/definitions/product.Function"
                     }
-                },
-                "icon": {
-                    "description": "图标",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "ID",
-                    "type": "string"
-                },
-                "keywords": {
-                    "description": "关键字",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
                 },
                 "parameters": {
                     "description": "参数",
@@ -3857,19 +3730,11 @@ const docTemplatemaster = `{
                         "$ref": "#/definitions/product.Property"
                     }
                 },
-                "url": {
-                    "description": "链接",
-                    "type": "string"
-                },
                 "validators": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/types.Validator"
                     }
-                },
-                "version": {
-                    "description": "版本 semver.Version",
-                    "type": "string"
                 }
             }
         },
@@ -3932,61 +3797,6 @@ const docTemplatemaster = `{
                 },
                 "unit": {
                     "description": "单位",
-                    "type": "string"
-                }
-            }
-        },
-        "project.Manifest": {
-            "type": "object",
-            "properties": {
-                "aggregators": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Aggregator"
-                    }
-                },
-                "description": {
-                    "description": "说明",
-                    "type": "string"
-                },
-                "icon": {
-                    "description": "图标",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "ID",
-                    "type": "string"
-                },
-                "keywords": {
-                    "description": "关键字",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "parameters": {
-                    "description": "参数",
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/product.Parameter"
-                    }
-                },
-                "url": {
-                    "description": "链接",
-                    "type": "string"
-                },
-                "validators": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Validator"
-                    }
-                },
-                "version": {
-                    "description": "版本 semver.Version",
                     "type": "string"
                 }
             }
@@ -4122,11 +3932,38 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
+                "description": {
+                    "description": "说明",
+                    "type": "string"
+                },
                 "disabled": {
                     "type": "boolean"
                 },
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
+                },
                 "id": {
                     "description": "ID",
+                    "type": "string"
+                },
+                "keywords": {
+                    "description": "关键字",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "链接",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "版本 semver.Version",
                     "type": "string"
                 }
             }
@@ -4137,11 +3974,38 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
+                "description": {
+                    "description": "说明",
+                    "type": "string"
+                },
                 "disabled": {
                     "type": "boolean"
                 },
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
+                },
                 "id": {
                     "description": "ID",
+                    "type": "string"
+                },
+                "keywords": {
+                    "description": "关键字",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "链接",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "版本 semver.Version",
                     "type": "string"
                 }
             }
@@ -4152,10 +4016,37 @@ const docTemplatemaster = `{
                 "created": {
                     "type": "string"
                 },
+                "description": {
+                    "description": "说明",
+                    "type": "string"
+                },
                 "disabled": {
                     "type": "boolean"
                 },
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
+                },
                 "id": {
+                    "type": "string"
+                },
+                "keywords": {
+                    "description": "关键字",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "链接",
+                    "type": "string"
+                },
+                "version": {
+                    "description": "版本 semver.Version",
                     "type": "string"
                 }
             }
@@ -4266,9 +4157,6 @@ const docTemplatemaster = `{
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }
