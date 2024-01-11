@@ -152,6 +152,12 @@ func productRouter(app *gin.RouterGroup) {
 	})
 
 	app.POST("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+		p := product.Get(ctx.GetString("id"))
+		if p == nil {
+			curd.Fail(ctx, "产品未加载")
+			return
+		}
+
 		var m product.Manifest
 		err := ctx.ShouldBindJSON(&m)
 		if err != nil {
@@ -159,7 +165,9 @@ func productRouter(app *gin.RouterGroup) {
 			return
 		}
 
-		err = product.Store(ctx.GetString("id"), &m)
+		p.Manifest = &m
+
+		err = p.StoreManifest()
 		if err != nil {
 			curd.Error(ctx, err)
 			return

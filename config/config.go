@@ -17,6 +17,9 @@ func init() {
 
 	//绑定命令行参数
 	//_ = viper.BindPFlags(pflag.CommandLine)
+
+	//数据目录
+	viper.SetDefault("data", "data")
 }
 
 func Load() error {

@@ -6,7 +6,7 @@ import (
 )
 
 type Project struct {
-	*Manifest
+	*types.Project
 
 	Devices map[string]*device.Device
 
@@ -14,10 +14,10 @@ type Project struct {
 	ExternalAggregators []*types.ExternalAggregator
 }
 
-func New(manifest *Manifest) *Project {
+func New(project *types.Project) *Project {
 	return &Project{
-		Manifest: manifest,
-		Devices:  make(map[string]*device.Device),
+		Project: project,
+		Devices: make(map[string]*device.Device),
 		//Values: map[string]float64{},
 	}
 }

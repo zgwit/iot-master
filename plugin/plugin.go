@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/types"
 	"os"
 	"runtime"
 )
@@ -17,6 +18,7 @@ func getPort() int {
 }
 
 type Plugin struct {
+	*types.Plugin
 	*Manifest
 
 	Addr    string

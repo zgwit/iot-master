@@ -25,6 +25,7 @@ func main() {}
 
 func Startup(engine *web.Engine) error {
 
+	//加载配置文件
 	err := config.Load()
 	if err != nil {
 		log.Error(err)

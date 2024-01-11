@@ -163,9 +163,9 @@ func From(device *types.Device) error {
 	d.product = p
 
 	//复制基础参数
-	for _, v := range p.Parameters {
-		d.Values[v.Name] = v.Default
-	}
+	//for _, v := range p.Parameters {
+	//	d.Values[v.Name] = v.Default
+	//}
 
 	//复制设备参数
 	for k, v := range device.Parameters {

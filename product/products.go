@@ -27,40 +27,32 @@ func Get(id string) *Product {
 }
 
 func Load(id string) error {
-	fn := fmt.Sprintf("product/%s/manifest.yaml", id)
-
-	var m Manifest
-	err := lib.LoadYaml(fn, &m)
+	var m types.Product
+	has, err := db.Engine.ID(id).Get(&m)
 	if err != nil {
 		return err
 	}
-
-	return From(id, &m)
-}
-
-func Store(id string, m *Manifest) error {
-	fn := fmt.Sprintf("product/%s/manifest.yaml", id)
-	err := lib.StoreYaml(fn, m)
-	if err != nil {
-		return err
+	if !has {
+		return fmt.Errorf("找不到设备%s", id)
 	}
-	return From(id, m)
+
+	return From(&m)
 }
 
-func From(id string, product *Manifest) error {
+func From(product *types.Product) error {
 	p := New(product)
 
 	products.Store(product.Id, p)
 
-	err := db.Engine.Where("product_id = ?", id).And("disabled = ?", false).Find(&p.ExternalValidators)
-	if err != nil {
-		return err
-	}
-
-	err = db.Engine.Where("product_id = ?", id).And("disabled = ?", false).Find(&p.ExternalAggregators)
-	if err != nil {
-		return err
-	}
+	//err := db.Engine.Where("product_id = ?", id).And("disabled = ?", false).Find(&p.ExternalValidators)
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//err = db.Engine.Where("product_id = ?", id).And("disabled = ?", false).Find(&p.ExternalAggregators)
+	//if err != nil {
+	//	return err
+	//}
 
 	return nil
 }
@@ -68,7 +60,7 @@ func From(id string, product *Manifest) error {
 func LoadAll() error {
 	//开机加载所有产品，好像没有必要???
 	var ps []*types.Product
-	err := db.Engine.Cols("id", "disabled").Find(&ps)
+	err := db.Engine.Find(&ps)
 	if err != nil {
 		return err
 	}

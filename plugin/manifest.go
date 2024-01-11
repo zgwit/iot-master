@@ -1,12 +1,6 @@
 package plugin
 
-import (
-	"github.com/zgwit/iot-master/v4/types"
-)
-
 type Manifest struct {
-	types.ManifestBase `yaml:"inline"`
-
 	Type         string            `json:"type"`                   //类型：应用、外部、静态页面
 	Main         string            `json:"main,omitempty"`         //入口：程序文件
 	Pages        *Pages            `json:"pages,omitempty"`        //子页面入口
@@ -16,7 +10,6 @@ type Manifest struct {
 	Author       string            `json:"author,omitempty"`       //作者
 	Bugs         string            `json:"bugs,omitempty"`         //Bug
 	License      string            `json:"license,omitempty"`      //软件协议：GPL MIT Apache 。。。
-
 }
 
 type PageEntry struct {

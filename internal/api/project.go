@@ -130,28 +130,6 @@ func noopProjectStart() {}
 // @Router /project/{id}/stop [get]
 func noopProjectStop() {}
 
-// @Summary 获取项目详情
-// @Schemes
-// @Description 获取项目详情
-// @Tags project
-// @Param id path int true "项目ID"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[project.Manifest] 返回项目信息
-// @Router /project/{id}/manifest [get]
-func noopProjectManifestGet() {}
-
-// @Summary 修改项目详情
-// @Schemes
-// @Description 修改项目详情
-// @Tags project
-// @Param id path int true "项目ID"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[project.Manifest] 返回项目信息
-// @Router /project/{id}/manifest [post]
-func noopProjectManifestPost() {}
-
 func projectRouter(app *gin.RouterGroup) {
 
 	app.POST("/search", curd.ApiSearchHook[types.Project](func(datum []*types.Project) error {
@@ -228,31 +206,6 @@ func projectRouter(app *gin.RouterGroup) {
 		//	curd.Error(ctx, err)
 		//	return
 		//}
-		curd.OK(ctx, nil)
-	})
-
-	app.GET("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
-		p := project.Get(ctx.GetString("id"))
-		if p == nil {
-			curd.Fail(ctx, "项目未加载")
-			return
-		}
-		curd.OK(ctx, p.Manifest)
-	})
-
-	app.POST("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
-		var m project.Manifest
-		err := ctx.ShouldBindJSON(&m)
-		if err != nil {
-			curd.Error(ctx, err)
-			return
-		}
-
-		err = project.Store(ctx.GetString("id"), &m)
-		if err != nil {
-			curd.Error(ctx, err)
-			return
-		}
 		curd.OK(ctx, nil)
 	})
 
