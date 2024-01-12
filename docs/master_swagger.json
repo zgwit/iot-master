@@ -2007,162 +2007,6 @@
                 }
             }
         },
-        "/project/{id}/device/{device}": {
-            "get": {
-                "description": "项目设备列表",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-device"
-                ],
-                "summary": "项目设备列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-array_types_ProjectDevice"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "修改项目设备",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-device"
-                ],
-                "summary": "修改项目设备",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "设备ID",
-                        "name": "device",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "项目设备信息",
-                        "name": "project-device",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ProjectDevice"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/project/{id}/device/{device}/bind": {
-            "get": {
-                "description": "绑定项目设备",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-device"
-                ],
-                "summary": "绑定项目设备",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "设备ID",
-                        "name": "device",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/project/{id}/device/{device}/unbind": {
-            "get": {
-                "description": "删除项目设备",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-device"
-                ],
-                "summary": "删除项目设备",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "设备ID",
-                        "name": "device",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
         "/project/{id}/disable": {
             "get": {
                 "description": "禁用项目",
@@ -3255,20 +3099,6 @@
                 }
             }
         },
-        "curd.ReplyData-array_types_ProjectDevice": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.ProjectDevice"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
         "curd.ReplyData-array_types_ProjectPlugin": {
             "type": "object",
             "properties": {
@@ -3890,6 +3720,9 @@
                 },
                 "product_id": {
                     "type": "string"
+                },
+                "project_id": {
+                    "type": "string"
                 }
             }
         },
@@ -4040,24 +3873,6 @@
                 },
                 "version": {
                     "description": "版本 semver.Version",
-                    "type": "string"
-                }
-            }
-        },
-        "types.ProjectDevice": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "device_id": {
-                    "type": "string"
-                },
-                "name": {
-                    "description": "编程别名",
-                    "type": "string"
-                },
-                "project_id": {
                     "type": "string"
                 }
             }

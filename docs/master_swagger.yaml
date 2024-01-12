@@ -48,15 +48,6 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-array_types_ProjectDevice:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.ProjectDevice'
-        type: array
-      error:
-        type: string
-    type: object
   curd.ReplyData-array_types_ProjectPlugin:
     properties:
       data:
@@ -467,6 +458,8 @@ definitions:
         type: string
       product_id:
         type: string
+      project_id:
+        type: string
     type: object
   types.Gateway:
     properties:
@@ -572,18 +565,6 @@ definitions:
         type: string
       version:
         description: 版本 semver.Version
-        type: string
-    type: object
-  types.ProjectDevice:
-    properties:
-      created:
-        type: string
-      device_id:
-        type: string
-      name:
-        description: 编程别名
-        type: string
-      project_id:
         type: string
     type: object
   types.ProjectPlugin:
@@ -1894,110 +1875,6 @@ paths:
       summary: 删除项目
       tags:
       - project
-  /project/{id}/device/{device}:
-    get:
-      consumes:
-      - application/json
-      description: 项目设备列表
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_ProjectDevice'
-      summary: 项目设备列表
-      tags:
-      - project-device
-    post:
-      consumes:
-      - application/json
-      description: 修改项目设备
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 设备ID
-        in: path
-        name: device
-        required: true
-        type: integer
-      - description: 项目设备信息
-        in: body
-        name: project-device
-        required: true
-        schema:
-          $ref: '#/definitions/types.ProjectDevice'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 修改项目设备
-      tags:
-      - project-device
-  /project/{id}/device/{device}/bind:
-    get:
-      consumes:
-      - application/json
-      description: 绑定项目设备
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 设备ID
-        in: path
-        name: device
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 绑定项目设备
-      tags:
-      - project-device
-  /project/{id}/device/{device}/unbind:
-    get:
-      consumes:
-      - application/json
-      description: 删除项目设备
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 设备ID
-        in: path
-        name: device
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 删除项目设备
-      tags:
-      - project-device
   /project/{id}/disable:
     get:
       consumes:
