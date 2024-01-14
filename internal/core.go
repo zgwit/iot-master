@@ -1,9 +1,8 @@
-package core
+package internal
 
 import (
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v4/aggregator"
-	"github.com/zgwit/iot-master/v4/alarm"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/device"
@@ -14,7 +13,6 @@ import (
 	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/project"
 	"github.com/zgwit/iot-master/v4/space"
-	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/vconn"
 	"net"
 	"net/url"
@@ -40,20 +38,20 @@ func Open() error {
 	}
 
 	//同步表结构
-	err = db.Engine.Sync2(
-		new(types.User), new(types.Password),
-		new(types.Broker), new(types.Gateway),
-		new(types.Product), new(types.Device),
-		new(types.Plugin),
-		new(types.Project), new(types.ProjectUser),
-		new(types.ProjectPlugin), new(types.SpaceDevice),
-		new(types.History), new(types.ExternalAggregator),
-		new(alarm.Alarm), new(types.ExternalValidator),
-		new(alarm.Subscription), new(alarm.Notification),
-	)
-	if err != nil {
-		return err
-	}
+	//err = db.Engine.Sync2(
+	//	new(types.User), new(types.Password),
+	//	new(types.Broker), new(types.Gateway),
+	//	new(types.Product), new(types.Device),
+	//	new(types.Plugin),
+	//	new(types.Project), new(types.ProjectUser),
+	//	new(types.ProjectPlugin), new(types.SpaceDevice),
+	//	new(types.History), new(types.ExternalAggregator),
+	//	new(alarm.Alarm), new(types.ExternalValidator),
+	//	new(alarm.Subscription), new(alarm.Notification),
+	//)
+	//if err != nil {
+	//	return err
+	//}
 
 	//db.Engine.SetLogLevel(0)
 	//db.Engine.ShowSQL(true)

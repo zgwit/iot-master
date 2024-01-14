@@ -5,10 +5,10 @@ import (
 	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/config"
-	"github.com/zgwit/iot-master/v4/core"
 	_ "github.com/zgwit/iot-master/v4/docs"
+	"github.com/zgwit/iot-master/v4/internal"
 	"github.com/zgwit/iot-master/v4/log"
-	web2 "github.com/zgwit/iot-master/v4/web"
+	"github.com/zgwit/iot-master/v4/web"
 	"net/http"
 )
 
@@ -23,7 +23,7 @@ var wwwFiles embed.FS
 // @query.collection.format multi
 func main() {}
 
-func Startup(engine *web2.Engine) error {
+func Startup(engine *web.Engine) error {
 
 	//加载配置文件
 	err := config.Load()
@@ -33,7 +33,7 @@ func Startup(engine *web2.Engine) error {
 	}
 
 	//加载主程序
-	err = core.Open()
+	err = internal.Open()
 	if err != nil {
 		return err
 	}
@@ -45,7 +45,7 @@ func Startup(engine *web2.Engine) error {
 	api.RegisterRoutes(engine.Group("/api"))
 
 	//注册接口文档
-	web2.RegisterSwaggerDocs(&engine.RouterGroup, "master")
+	web.RegisterSwaggerDocs(&engine.RouterGroup, "master")
 
 	//附件
 	engine.Static("/attach", "attach")
@@ -73,14 +73,14 @@ func Startup(engine *web2.Engine) error {
 	return nil
 }
 
-func Static(fs *web2.FileSystem) {
+func Static(fs *web.FileSystem) {
 	//前端静态文件
 	fs.Put("", http.FS(wwwFiles), "www", "index.html")
 }
 
 func Shutdown() error {
 
-	core.Close()
+	internal.Close()
 
 	//只关闭Web就行了，其他通过defer关闭
 

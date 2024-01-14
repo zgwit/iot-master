@@ -1,0 +1,15 @@
+package types
+
+import (
+	"github.com/zgwit/iot-master/v4/db"
+)
+
+func init() {
+	db.CreateModel(new(User), new(Password),
+		new(Broker), new(Gateway),
+		new(Product), new(Device),
+		new(Plugin),
+		new(Project), new(ProjectUser), new(ProjectPlugin),
+		new(Space), new(SpaceDevice),
+		new(History))
+}

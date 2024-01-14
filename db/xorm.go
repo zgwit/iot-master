@@ -31,6 +31,13 @@ func Open() error {
 	}
 	//Engine.SetLogger(logrus.StandardLogger())
 
+	if config.GetBool(MODULE, "sync") {
+		err = Engine.Sync2(models...)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
