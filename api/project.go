@@ -3,11 +3,11 @@ package api
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/pkg/web/attach"
-	curd "github.com/zgwit/iot-master/v4/pkg/web/curd"
-	"github.com/zgwit/iot-master/v4/pkg/web/export"
 	"github.com/zgwit/iot-master/v4/project"
 	"github.com/zgwit/iot-master/v4/types"
+	"github.com/zgwit/iot-master/v4/web/attach"
+	"github.com/zgwit/iot-master/v4/web/curd"
+	"github.com/zgwit/iot-master/v4/web/export"
 )
 
 // @Summary 查询项目

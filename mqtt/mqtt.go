@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v4/config"
-	"github.com/zgwit/iot-master/v4/pkg/pool"
+	"github.com/zgwit/iot-master/v4/pool"
 )
 
 var Client paho.Client

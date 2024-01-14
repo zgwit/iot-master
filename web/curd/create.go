@@ -2,22 +2,19 @@ package curd
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/db"
 )
 
-func ApiUpdate[T any](fields ...string) gin.HandlerFunc {
+func ApiCreate[T any]() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var data T
 		err := ctx.ShouldBindJSON(&data)
-		//写入ID
-		id := ctx.MustGet("id")
-		//value.Elem().FieldByName("Id").Set(reflect.ValueOf(id))
-
 		if err != nil {
 			Error(ctx, err)
 			return
 		}
-		_, err = db.Engine.ID(id).Cols(fields...).Update(&data)
+
+		_, err = db.Engine.InsertOne(&data)
 		if err != nil {
 			Error(ctx, err)
 			return
@@ -27,14 +24,10 @@ func ApiUpdate[T any](fields ...string) gin.HandlerFunc {
 	}
 }
 
-func ApiUpdateHook[T any](before, after func(m *T) error, fields ...string) gin.HandlerFunc {
+func ApiCreateHook[T any](before, after func(m *T) error) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var data T
 		err := ctx.ShouldBindJSON(&data)
-		//写入ID
-		id := ctx.MustGet("id")
-		//value.Elem().FieldByName("Id").Set(reflect.ValueOf(id))
-
 		if err != nil {
 			Error(ctx, err)
 			return
@@ -47,7 +40,7 @@ func ApiUpdateHook[T any](before, after func(m *T) error, fields ...string) gin.
 			}
 		}
 
-		_, err = db.Engine.ID(id).Cols(fields...).Update(&data)
+		_, err = db.Engine.InsertOne(&data)
 		if err != nil {
 			Error(ctx, err)
 			return

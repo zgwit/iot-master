@@ -2,7 +2,7 @@ package attach
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/pkg/web/curd"
+	"github.com/zgwit/iot-master/v4/web/curd"
 	"mime"
 	"net/http"
 	"os"

@@ -7,8 +7,8 @@ import (
 	"github.com/zgwit/iot-master/v4/config"
 	"github.com/zgwit/iot-master/v4/core"
 	_ "github.com/zgwit/iot-master/v4/docs"
-	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/web"
+	"github.com/zgwit/iot-master/v4/log"
+	web2 "github.com/zgwit/iot-master/v4/web"
 	"net/http"
 )
 
@@ -23,7 +23,7 @@ var wwwFiles embed.FS
 // @query.collection.format multi
 func main() {}
 
-func Startup(engine *web.Engine) error {
+func Startup(engine *web2.Engine) error {
 
 	//加载配置文件
 	err := config.Load()
@@ -45,7 +45,7 @@ func Startup(engine *web.Engine) error {
 	api.RegisterRoutes(engine.Group("/api"))
 
 	//注册接口文档
-	web.RegisterSwaggerDocs(&engine.RouterGroup, "master")
+	web2.RegisterSwaggerDocs(&engine.RouterGroup, "master")
 
 	//附件
 	engine.Static("/attach", "attach")
@@ -73,7 +73,7 @@ func Startup(engine *web.Engine) error {
 	return nil
 }
 
-func Static(fs *web.FileSystem) {
+func Static(fs *web2.FileSystem) {
 	//前端静态文件
 	fs.Put("", http.FS(wwwFiles), "www", "index.html")
 }

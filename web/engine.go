@@ -7,7 +7,7 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/config"
-	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/log"
 	"golang.org/x/crypto/acme/autocert"
 	"net/http"
 	"path"

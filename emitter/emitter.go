@@ -1,8 +1,8 @@
 package emitter
 
 import (
-	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/pool"
+	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pool"
 )
 
 // Emitter 事件监听器

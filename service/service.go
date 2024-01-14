@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/kardianos/service"
 	"github.com/zgwit/iot-master/v4/config"
-	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/log"
 	"os"
 	"os/signal"
 	"syscall"
