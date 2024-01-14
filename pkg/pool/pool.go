@@ -17,6 +17,7 @@ func Open() (err error) {
 
 func Close() {
 	Pool.Release()
+	Pool = nil
 }
 
 func Insert(task func()) error {
