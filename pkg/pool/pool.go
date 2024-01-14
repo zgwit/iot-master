@@ -23,12 +23,3 @@ func Close() {
 func Insert(task func()) error {
 	return Pool.Submit(task)
 }
-
-func Stats() map[string]int {
-	return map[string]int{
-		"cap":  Pool.Cap(),
-		"free": Pool.Free(),
-		"run":  Pool.Running(),
-		"wait": Pool.Waiting(),
-	}
-}
