@@ -55,11 +55,11 @@ func Startup(engine *web2.Engine) error {
 
 	//监听插件
 	//mqtt.Subscribe[types.App]("master/register", func(topic string, a *types.App) {
-	//	log.Info("app register ", a.Id, " ", a.Name, " ", a.Type, " ", a.Address)
-	//	plugin.Applications.Store(a.Id, a)
+	//	log.Info("app register ", a.id, " ", a.name, " ", a.Type, " ", a.Address)
+	//	plugin.Applications.Store(a.id, a)
 	//
 	//	//插件反向代理
-	//	engine.Any("/app/"+a.Id+"/*path", func(ctx *gin.Context) {
+	//	engine.Any("/app/"+a.id+"/*path", func(ctx *gin.Context) {
 	//		rp, err := web.CreateReverseProxy(a.Type, a.Address)
 	//		if err != nil {
 	//			_ = ctx.Error(err)

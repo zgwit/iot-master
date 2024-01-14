@@ -13,7 +13,7 @@ var plugins lib.Map[Plugin]
 func New(manifest *Manifest) *Plugin {
 	return &Plugin{
 		Manifest: manifest,
-		//Values: map[string]float64{},
+		//values: map[string]float64{},
 	}
 }
 

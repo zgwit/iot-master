@@ -1,4 +1,4 @@
-package types
+package alarm
 
 import (
 	"time"
@@ -8,13 +8,15 @@ type Alarm struct {
 	Id int64 `json:"id"`
 
 	ProjectId string `json:"project_id,omitempty" xorm:"index"`
+	SpaceId   string `json:"space_id,omitempty" xorm:"index"`
 	ProductId string `json:"product_id,omitempty" xorm:"index"`
 	DeviceId  string `json:"device_id,omitempty" xorm:"index"`
 
-	Type    string    `json:"type,omitempty"`
-	Title   string    `json:"title"`
-	Message string    `json:"message,omitempty"`
-	Level   uint      `json:"level"`
+	Type    string `json:"type,omitempty"`
+	Title   string `json:"title,omitempty"`
+	Message string `json:"message,omitempty"`
+	Level   uint   `json:"level,omitempty"`
+
 	Read    bool      `json:"read,omitempty"`
 	Created time.Time `json:"created,omitempty" xorm:"created"`
 }
@@ -22,6 +24,7 @@ type Alarm struct {
 type AlarmEx struct {
 	Alarm   `xorm:"extends"`
 	Project string `json:"project,omitempty" xorm:"<-"`
+	Space   string `json:"space,omitempty" xorm:"<-"`
 	Product string `json:"product,omitempty" xorm:"<-"`
 	Device  string `json:"device,omitempty" xorm:"<-"`
 }

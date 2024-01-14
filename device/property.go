@@ -25,13 +25,13 @@ func SubscribeProperty() error {
 
 		//TODO 此处需要判断是 产品 的属性
 		//for k, v := range values {
-		//	dev.Values[k] = v
+		//	dev.values[k] = v
 		//}
 		dev.Push(*values)
 
-		dev.Online = true
-		dev.Values["$online"] = true
-		dev.Values["$update"] = time.Now()
+		dev.online = true
+		dev.values["$online"] = true
+		dev.values["$update"] = time.Now()
 	})
 
 	return nil
@@ -46,10 +46,10 @@ func mergeProperties(id string, properties []payload.Property) {
 
 	//合并数据
 	for _, p := range properties {
-		dev.Values[p.Name] = p.Value
+		dev.values[p.Name] = p.Value
 	}
-	dev.Values["$online"] = true
-	dev.Values["$update"] = time.Now()
+	dev.values["$online"] = true
+	dev.values["$update"] = time.Now()
 
 }
 

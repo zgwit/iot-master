@@ -195,7 +195,7 @@ func deviceValues(ctx *gin.Context) {
 		curd.Fail(ctx, "设备未上线")
 		return
 	}
-	curd.OK(ctx, dev.Values)
+	curd.OK(ctx, dev.Values())
 }
 
 func deviceParameters(ctx *gin.Context) {

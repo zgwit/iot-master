@@ -5,6 +5,7 @@ import (
 	"github.com/zgwit/iot-master/v4/aggregator"
 	"github.com/zgwit/iot-master/v4/alarm"
 	"github.com/zgwit/iot-master/v4/db"
+	"github.com/zgwit/iot-master/v4/event"
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/product"
@@ -15,18 +16,41 @@ import (
 var devices lib.Map[Device]
 
 type Device struct {
-	Id   string
-	Name string
+	id   string
+	name string
 
-	Online bool
+	online bool
 
-	Last   time.Time
-	Values map[string]any
+	last   time.Time
+	values map[string]any
+
+	//事件监听
+	EventData    event.Emitter[map[string]any]
+	EventError   event.Emitter[error]
+	EventAlarm   event.Emitter[*alarm.Alarm]
+	EventOnline  event.Emitter[any]
+	EventOffline event.Emitter[any]
 
 	product *product.Product
 
 	validators  []*alarm.Validator
 	aggregators []aggregator.Aggregator
+}
+
+func (d *Device) Id() string {
+	return d.id
+}
+
+func (d *Device) Name() string {
+	return d.name
+}
+
+func (d *Device) Online() bool {
+	return d.online
+}
+
+func (d *Device) Values() map[string]any {
+	return d.values
 }
 
 func (d *Device) createValidator(m *types.Validator) error {
@@ -53,7 +77,7 @@ func (d *Device) Build() {
 	}
 
 	var validators []*types.ExternalValidator
-	err := db.Engine.Where("device_id = ?", d.Id).And("disabled = ?", false).Find(&validators)
+	err := db.Engine.Where("device_id = ?", d.id).And("disabled = ?", false).Find(&validators)
 	if err != nil {
 		log.Error(err)
 	}
@@ -68,7 +92,7 @@ func (d *Device) Build() {
 
 func (d *Device) Push(values map[string]any) {
 	for k, v := range values {
-		d.Values[k] = v
+		d.values[k] = v
 	}
 
 	//数据聚合
@@ -85,24 +109,24 @@ func (d *Device) Push(values map[string]any) {
 
 func (d *Device) Validate() {
 	for _, v := range d.validators {
-		ret := v.Validate(d.Values)
+		ret := v.Validate(d.values)
 		if !ret {
 			//检查结果为真时，才产生报警
 			continue
 		}
 
 		//入库
-		alarm := types.AlarmEx{
-			Alarm: types.Alarm{
+		alarm := alarm.AlarmEx{
+			Alarm: alarm.Alarm{
 				ProductId: d.product.Id,
-				DeviceId:  d.Id,
+				DeviceId:  d.id,
 				Type:      v.Type,
 				Title:     v.Title,
 				Level:     v.Level,
 				Message:   v.Template, //TODO 模板格式化
 			},
 			Product: d.product.Name,
-			Device:  d.Name,
+			Device:  d.name,
 		}
 		_, err := db.Engine.Insert(&alarm.Alarm)
 		if err != nil {
@@ -122,9 +146,9 @@ func (d *Device) Validate() {
 func New(m *types.Device) *Device {
 	//time.Now().Unix()
 	return &Device{
-		Id:     m.Id,
-		Name:   m.Name,
-		Values: make(map[string]any),
+		id:     m.Id,
+		name:   m.Name,
+		values: make(map[string]any),
 	}
 }
 
@@ -168,12 +192,12 @@ func From(device *types.Device) error {
 
 	//复制基础参数
 	//for _, v := range p.Parameters {
-	//	d.Values[v.Name] = v.Default
+	//	d.values[v.name] = v.Default
 	//}
 
 	//复制设备参数
 	for k, v := range device.Parameters {
-		d.Values[k] = v
+		d.values[k] = v
 	}
 
 	//构建

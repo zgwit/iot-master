@@ -87,7 +87,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	//_, _ = db.Engine.InsertOne(&types.UserEvent{UserId: user.Id, ModEvent: types.ModEvent{Type: "登录"}})
+	//_, _ = db.Engine.InsertOne(&types.UserEvent{UserId: user.id, ModEvent: types.ModEvent{Type: "登录"}})
 
 	//存入session
 	session.Set("user", user.Id)

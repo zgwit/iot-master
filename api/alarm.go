@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v4/alarm"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -60,7 +60,7 @@ func noopAlarmDelete() {}
 func noopAlarmRead() {}
 
 func alarmRead(ctx *gin.Context) {
-	alarm := types.Alarm{
+	alarm := alarm.Alarm{
 		Read: true,
 	}
 	cnt, err := db.Engine.ID(ctx.GetInt64("id")).Cols("read").Update(alarm)
@@ -73,18 +73,18 @@ func alarmRead(ctx *gin.Context) {
 
 func alarmRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[types.Alarm]())
+	app.POST("/count", curd.ApiCount[alarm.Alarm]())
 
-	app.POST("/search", curd.ApiSearchWith[types.AlarmEx]([]*curd.Join{
+	app.POST("/search", curd.ApiSearchWith[alarm.AlarmEx]([]*curd.Join{
 		{"product", "product_id", "id", "name", "product"},
 		{"device", "device_id", "id", "name", "device"},
 	}))
 
-	app.GET("/list", curd.ApiList[types.Alarm]())
+	app.GET("/list", curd.ApiList[alarm.Alarm]())
 
-	app.GET("/:id", curd.ParseParamId, curd.ApiGet[types.Alarm]())
+	app.GET("/:id", curd.ParseParamId, curd.ApiGet[alarm.Alarm]())
 
-	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[types.Alarm]())
+	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[alarm.Alarm]())
 
 	app.GET("/:id/read", curd.ParseParamId, alarmRead)
 }

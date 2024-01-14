@@ -3,6 +3,7 @@ package core
 import (
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v4/aggregator"
+	"github.com/zgwit/iot-master/v4/alarm"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/log"
@@ -45,8 +46,8 @@ func Open() error {
 		new(types.Project), new(types.ProjectUser),
 		new(types.ProjectPlugin), new(types.ProjectDevice),
 		new(types.History), new(types.ExternalAggregator),
-		new(types.Alarm), new(types.ExternalValidator),
-		new(types.Subscription), new(types.Notification),
+		new(alarm.Alarm), new(types.ExternalValidator),
+		new(alarm.Subscription), new(alarm.Notification),
 	)
 	if err != nil {
 		return err

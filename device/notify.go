@@ -2,10 +2,10 @@ package device
 
 import (
 	"fmt"
+	"github.com/zgwit/iot-master/v4/alarm"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/payload"
-	"github.com/zgwit/iot-master/v4/types"
 )
 
 type sub struct {
@@ -16,17 +16,17 @@ type sub struct {
 	Channels  []string `json:"channels" xorm:"json"`
 }
 
-func notify(alarm *types.AlarmEx) error {
+func notify(al *alarm.AlarmEx) error {
 	//报警
 	pa := payload.Alarm{
-		Product: alarm.Product,
-		Device:  alarm.Device,
-		Type:    alarm.Type,
-		Title:   alarm.Title,
-		Level:   alarm.Level,
-		Message: alarm.Message,
+		Product: al.Product,
+		Device:  al.Device,
+		Type:    al.Type,
+		Title:   al.Title,
+		Level:   al.Level,
+		Message: al.Message,
 	}
-	topic := fmt.Sprintf("alarm/%s/%s", alarm.ProductId, alarm.DeviceId)
+	topic := fmt.Sprintf("al/%s/%s", al.ProductId, al.DeviceId)
 	mqtt.Publish(topic, &pa)
 
 	//找到订阅人
@@ -34,9 +34,9 @@ func notify(alarm *types.AlarmEx) error {
 	err := db.Engine.Table("subscription").
 		Select("user.id, user.name, user.email, user.cellphone, subscription.channels").
 		Join("INNER", "user", "user.id = subscription.user_id").
-		Where("level<=?", alarm.Level).And("subscription.disabled!=1").
-		And("product_id IS NULL OR product_id=\"\" OR product_id=?", alarm.ProductId).
-		And("device_id IS NULL OR device_id=\"\" OR device_id=?", alarm.DeviceId).
+		Where("level<=?", al.Level).And("subscription.disabled!=1").
+		And("product_id IS NULL OR product_id=\"\" OR product_id=?", al.ProductId).
+		And("device_id IS NULL OR device_id=\"\" OR device_id=?", al.DeviceId).
 		Find(&us)
 	if err != nil {
 		return err
@@ -64,8 +64,8 @@ func notify(alarm *types.AlarmEx) error {
 
 	//依次通知
 	for _, u := range subs {
-		n := types.Notification{
-			AlarmId:  alarm.Id,
+		n := alarm.Notification{
+			AlarmId:  al.Id,
 			UserId:   u.Id,
 			Channels: u.Channels,
 		}
@@ -77,14 +77,14 @@ func notify(alarm *types.AlarmEx) error {
 		}
 
 		//MQTT通知，第三方插件来发送
-		//topic := fmt.Sprintf("notify/%s", u.Id)
-		topic := fmt.Sprintf("notify/%s/%s", alarm.ProductId, alarm.DeviceId)
+		//topic := fmt.Sprintf("notify/%s", u.id)
+		topic := fmt.Sprintf("notify/%s/%s", al.ProductId, al.DeviceId)
 		mqtt.Publish(topic, &n)
 
 		//不需要再广播了
 		//nn := payload.Notify{
 		//	Alarm:     pa,
-		//	User:      u.Name,
+		//	User:      u.name,
 		//	Email:     u.Email,
 		//	Cellphone: u.Cellphone,
 		//}

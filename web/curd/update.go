@@ -11,7 +11,7 @@ func ApiUpdate[T any](fields ...string) gin.HandlerFunc {
 		err := ctx.ShouldBindJSON(&data)
 		//写入ID
 		id := ctx.MustGet("id")
-		//value.Elem().FieldByName("Id").Set(reflect.ValueOf(id))
+		//value.Elem().FieldByName("id").Set(reflect.ValueOf(id))
 
 		if err != nil {
 			Error(ctx, err)
@@ -33,7 +33,7 @@ func ApiUpdateHook[T any](before, after func(m *T) error, fields ...string) gin.
 		err := ctx.ShouldBindJSON(&data)
 		//写入ID
 		id := ctx.MustGet("id")
-		//value.Elem().FieldByName("Id").Set(reflect.ValueOf(id))
+		//value.Elem().FieldByName("id").Set(reflect.ValueOf(id))
 
 		if err != nil {
 			Error(ctx, err)

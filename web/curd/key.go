@@ -9,7 +9,7 @@ import (
 func GenerateRandomKey(l int) func(value interface{}) error {
 	return func(data interface{}) error {
 		value := reflect.ValueOf(data).Elem()
-		field := value.FieldByName("Id")
+		field := value.FieldByName("id")
 		//使用UUId作为Id
 		//field.IsZero() 如果为空串时，生成UUID
 		if field.Len() == 0 {
@@ -22,7 +22,7 @@ func GenerateRandomKey(l int) func(value interface{}) error {
 func GenerateRandomId[T any](l int) func(data *T) error {
 	return func(data *T) error {
 		value := reflect.ValueOf(data).Elem()
-		field := value.FieldByName("Id")
+		field := value.FieldByName("id")
 		//使用UUId作为Id
 		//field.IsZero() 如果为空串时，生成UUID
 		if field.Len() == 0 {
@@ -34,7 +34,7 @@ func GenerateRandomId[T any](l int) func(data *T) error {
 
 func GenerateUuidKey(data interface{}) error {
 	value := reflect.ValueOf(data).Elem()
-	field := value.FieldByName("Id")
+	field := value.FieldByName("id")
 	//使用UUId作为Id
 	//field.IsZero() 如果为空串时，生成UUID
 	if field.Len() == 0 {

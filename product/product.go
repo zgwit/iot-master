@@ -23,6 +23,6 @@ func (p Product) StoreManifest() error {
 func New(product *types.Product) *Product {
 	return &Product{
 		Product: product,
-		//Values: map[string]float64{},
+		//values: map[string]float64{},
 	}
 }

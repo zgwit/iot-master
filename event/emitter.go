@@ -1,4 +1,4 @@
-package emitter
+package event
 
 import (
 	"github.com/zgwit/iot-master/v4/log"

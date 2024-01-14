@@ -18,6 +18,6 @@ func New(project *types.Project) *Project {
 	return &Project{
 		Project: project,
 		Devices: make(map[string]*device.Device),
-		//Values: map[string]float64{},
+		//values: map[string]float64{},
 	}
 }

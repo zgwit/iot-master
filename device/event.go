@@ -31,9 +31,9 @@ func SubscribeEvent() error {
 
 		switch event.Name {
 		case "online":
-			dev.Values["$online"] = true
+			dev.values["$online"] = true
 		case "offline":
-			dev.Values["$online"] = false
+			dev.values["$online"] = false
 		}
 	})
 
