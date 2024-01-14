@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/pkg/aggregator"
+	"github.com/zgwit/iot-master/v4/pkg/alarm"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/validator"
 	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/types"
 	"time"
@@ -15,19 +15,22 @@ import (
 var devices lib.Map[Device]
 
 type Device struct {
-	*types.Device
+	Id   string
+	Name string
+
+	Online bool
 
 	Last   time.Time
 	Values map[string]any
 
 	product *product.Product
 
-	validators  []*validator.Validator
+	validators  []*alarm.Validator
 	aggregators []aggregator.Aggregator
 }
 
 func (d *Device) createValidator(m *types.Validator) error {
-	v, err := validator.New(m)
+	v, err := alarm.New(m)
 	if err != nil {
 		return err
 	}
@@ -119,7 +122,8 @@ func (d *Device) Validate() {
 func New(m *types.Device) *Device {
 	//time.Now().Unix()
 	return &Device{
-		Device: m,
+		Id:     m.Id,
+		Name:   m.Name,
 		Values: make(map[string]any),
 	}
 }
