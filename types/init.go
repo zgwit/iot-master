@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	db.CreateModel(new(User), new(Password),
+	db.Register(new(User), new(Password),
 		new(Broker), new(Gateway),
 		new(Product), new(Device),
 		new(Plugin),
