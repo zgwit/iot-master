@@ -5,7 +5,6 @@ import (
 	"github.com/zgwit/iot-master/v4/aggregator"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/plugin"
@@ -105,7 +104,7 @@ func Open() error {
 	}
 
 	//加载设备影子
-	err = device.Boot()
+	err = Boot()
 	if err != nil {
 		return err
 	}

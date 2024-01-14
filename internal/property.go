@@ -1,13 +1,13 @@
-package device
+package internal
 
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
+	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/payload"
 	"strings"
-	"time"
 )
 
 func subscribeProperty() {
@@ -15,7 +15,7 @@ func subscribeProperty() {
 		topics := strings.Split(topic, "/")
 		id := topics[2]
 
-		dev, err := Ensure(id)
+		dev, err := device.Ensure(id)
 		if err != nil {
 			log.Error(err)
 			//TODO 自动创建设备？
@@ -28,14 +28,12 @@ func subscribeProperty() {
 		//}
 		dev.Push(*values)
 
-		dev.online = true
-		dev.values["$online"] = true
-		dev.values["$update"] = time.Now()
+		dev.Online()
 	})
 }
 
 func mergeProperties(id string, properties []payload.Property) {
-	dev, err := Ensure(id)
+	dev, err := device.Ensure(id)
 	if err != nil {
 		log.Error(err)
 		return
@@ -43,11 +41,9 @@ func mergeProperties(id string, properties []payload.Property) {
 
 	//合并数据
 	for _, p := range properties {
-		dev.values[p.Name] = p.Value
+		dev.Values()[p.Name] = p.Value
 	}
-	dev.values["$online"] = true
-	dev.values["$update"] = time.Now()
-
+	dev.Online()
 }
 
 func SubscribePropertyStrict() error {

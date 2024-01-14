@@ -15,8 +15,6 @@ type Device struct {
 	id   string
 	name string
 
-	online bool
-
 	last   time.Time
 	values map[string]any
 
@@ -41,8 +39,12 @@ func (d *Device) Name() string {
 	return d.name
 }
 
-func (d *Device) Online() bool {
-	return d.online
+func (d *Device) Online() {
+	d.values["$online"] = true
+}
+
+func (d *Device) Offline() {
+	d.values["$online"] = false
 }
 
 func (d *Device) Values() map[string]any {
@@ -58,33 +60,34 @@ func (d *Device) createValidator(m *types.Validator) error {
 	return nil
 }
 
-func (d *Device) Build() {
-	for _, v := range d.product.Validators {
-		err := d.createValidator(v)
-		if err != nil {
-			log.Error(err)
-		}
-	}
-	for _, v := range d.product.ExternalValidators {
-		err := d.createValidator(&v.Validator)
-		if err != nil {
-			log.Error(err)
-		}
-	}
-
-	var validators []*types.ExternalValidator
-	err := db.Engine.Where("device_id = ?", d.id).And("disabled = ?", false).Find(&validators)
-	if err != nil {
-		log.Error(err)
-	}
-	for _, v := range validators {
-		err := d.createValidator(&v.Validator)
-		if err != nil {
-			log.Error(err)
-		}
-	}
-
-}
+//
+//func (d *Device) Build() {
+//	for _, v := range d.product.Validators {
+//		err := d.createValidator(v)
+//		if err != nil {
+//			log.Error(err)
+//		}
+//	}
+//	for _, v := range d.product.ExternalValidators {
+//		err := d.createValidator(&v.Validator)
+//		if err != nil {
+//			log.Error(err)
+//		}
+//	}
+//
+//	var validators []*types.ExternalValidator
+//	err := db.Engine.Where("device_id = ?", d.id).And("disabled = ?", false).Find(&validators)
+//	if err != nil {
+//		log.Error(err)
+//	}
+//	for _, v := range validators {
+//		err := d.createValidator(&v.Validator)
+//		if err != nil {
+//			log.Error(err)
+//		}
+//	}
+//
+//}
 
 func (d *Device) Push(values map[string]any) {
 	for k, v := range values {
@@ -100,7 +103,7 @@ func (d *Device) Push(values map[string]any) {
 	}
 
 	//检查数据
-	d.Validate()
+	//d.Validate()
 }
 
 func (d *Device) Validate() {
@@ -131,11 +134,11 @@ func (d *Device) Validate() {
 		}
 
 		//通知
-		err = notify(&al)
-		if err != nil {
-			log.Error(err)
-			//continue
-		}
+		//err = internal.notify(&al)
+		//if err != nil {
+		//	log.Error(err)
+		//	//continue
+		//}
 	}
 }
 

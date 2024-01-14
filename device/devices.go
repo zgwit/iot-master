@@ -59,7 +59,7 @@ func From(device *types.Device) error {
 	}
 
 	//构建
-	d.Build()
+	//d.Build()
 
 	devices.Store(device.Id, d)
 	return nil

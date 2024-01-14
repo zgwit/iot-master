@@ -1,7 +1,8 @@
-package device
+package internal
 
 import (
 	"github.com/zgwit/iot-master/v4/db"
+	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/payload"
@@ -10,12 +11,12 @@ import (
 )
 
 func subscribeEvent() {
-	mqtt.Subscribe[payload.Event]("up/event/+/+", func(topic string, event *payload.Event) {
+	mqtt.Subscribe[payload.Event]("up/event/+", func(topic string, event *payload.Event) {
 		topics := strings.Split(topic, "/")
 		//pid := topics[2]
-		id := topics[3]
+		id := topics[2]
 
-		dev, err := Ensure(id)
+		dev, err := device.Ensure(id)
 		if err != nil {
 			log.Error(err)
 			return
@@ -31,9 +32,9 @@ func subscribeEvent() {
 
 		switch event.Name {
 		case "online":
-			dev.values["$online"] = true
+			dev.Online()
 		case "offline":
-			dev.values["$online"] = false
+			dev.Offline()
 		}
 	})
 

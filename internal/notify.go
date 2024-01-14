@@ -1,4 +1,4 @@
-package device
+package internal
 
 import (
 	"fmt"
