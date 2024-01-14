@@ -116,7 +116,7 @@ func (d *Device) Validate() {
 		}
 
 		//入库
-		alarm := alarm.AlarmEx{
+		al := alarm.AlarmEx{
 			Alarm: alarm.Alarm{
 				ProductId: d.product.Id,
 				DeviceId:  d.id,
@@ -128,14 +128,14 @@ func (d *Device) Validate() {
 			Product: d.product.Name,
 			Device:  d.name,
 		}
-		_, err := db.Engine.Insert(&alarm.Alarm)
+		_, err := db.Engine.Insert(&al.Alarm)
 		if err != nil {
 			log.Error(err)
 			//continue
 		}
 
 		//通知
-		err = notify(&alarm)
+		err = notify(&al)
 		if err != nil {
 			log.Error(err)
 			//continue

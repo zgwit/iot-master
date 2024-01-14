@@ -96,7 +96,9 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	projectRouter(router.Group("/project"))
 	projectUserRouter(router.Group("/project/:id/user"))
 	projectPluginRouter(router.Group("/project/:id/plugin"))
-	//projectDeviceRouter(router.Group("/project/:id/device"))
+
+	spaceRouter(router.Group("/space"))
+	spaceDeviceRouter(router.Group("/space/:id/device"))
 
 	gatewayRouter(router.Group("/gateway"))
 

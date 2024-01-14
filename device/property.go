@@ -10,11 +10,10 @@ import (
 	"time"
 )
 
-func SubscribeProperty() error {
-	mqtt.Subscribe[map[string]any]("up/property/+/+", func(topic string, values *map[string]any) {
+func subscribeProperty() {
+	mqtt.Subscribe[map[string]any]("up/property/+", func(topic string, values *map[string]any) {
 		topics := strings.Split(topic, "/")
-		//pid := topics[2]
-		id := topics[3]
+		id := topics[2]
 
 		dev, err := Ensure(id)
 		if err != nil {
@@ -33,8 +32,6 @@ func SubscribeProperty() error {
 		dev.values["$online"] = true
 		dev.values["$update"] = time.Now()
 	})
-
-	return nil
 }
 
 func mergeProperties(id string, properties []payload.Property) {
@@ -54,7 +51,7 @@ func mergeProperties(id string, properties []payload.Property) {
 }
 
 func SubscribePropertyStrict() error {
-	mqtt.Client.Subscribe("up/property/+/+/strict", 0, func(client paho.Client, message paho.Message) {
+	mqtt.Client.Subscribe("up/property/+/strict", 0, func(client paho.Client, message paho.Message) {
 		var up payload.DevicePropertyUp
 		err := json.Unmarshal(message.Payload(), &up)
 		if err != nil {

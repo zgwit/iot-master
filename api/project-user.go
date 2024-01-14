@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.ProjectUser] 返回项目用户信息
-// @Router /project/{id}/user/{user} [get]
+// @Router /project/{id}/user [get]
 func projectUserList(ctx *gin.Context) {
 	var pds []types.ProjectUser
 	err := db.Engine.Where("project_id=?", ctx.Param("id")).Find(&pds)

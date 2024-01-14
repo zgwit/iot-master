@@ -67,7 +67,7 @@ func From(id string, manifest *Manifest) error {
 	return nil
 }
 
-func LoadAll() error {
+func Boot() error {
 	//开机加载所有插件
 	var ps []*types.Plugin
 	err := db.Engine.Find(&ps)

@@ -36,10 +36,3 @@ type ProjectPlugin struct {
 	Disabled  bool      `json:"disabled,omitempty"`
 	Created   time.Time `json:"created" xorm:"created"`
 }
-
-type ProjectDevice struct {
-	ProjectId string    `json:"project_id" xorm:"pk"`
-	DeviceId  string    `json:"device_id" xorm:"pk"`
-	Name      string    `json:"name,omitempty"` //编程别名
-	Created   time.Time `json:"created" xorm:"created"`
-}

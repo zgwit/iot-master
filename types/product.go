@@ -21,6 +21,3 @@ type ProductExt struct {
 func (p ProductExt) TableName() string {
 	return "product"
 }
-
-type Space struct {
-}

@@ -8,11 +8,11 @@ import (
 	"strings"
 )
 
-func SubscribeOnline() error {
-	mqtt.Subscribe[any]("online/+/+", func(topic string, _ *any) {
+func subscribeOnline() {
+
+	mqtt.Subscribe[any]("online/+", func(topic string, _ *any) {
 		topics := strings.Split(topic, "/")
-		//pid := topics[1]
-		id := topics[2]
+		id := topics[1]
 
 		dev, err := Ensure(id)
 		if err != nil {
@@ -23,10 +23,9 @@ func SubscribeOnline() error {
 		dev.values["$online"] = true
 	})
 
-	mqtt.Subscribe[any]("offline/+/+", func(topic string, _ *any) {
+	mqtt.Subscribe[any]("offline/+", func(topic string, _ *any) {
 		topics := strings.Split(topic, "/")
-		pid := topics[1]
-		id := topics[2]
+		id := topics[1]
 
 		dev, err := Ensure(id)
 		if err != nil {
@@ -37,31 +36,28 @@ func SubscribeOnline() error {
 		dev.values["$online"] = false
 
 		//产生日志
-		alarm := alarm.AlarmEx{
+		al := alarm.AlarmEx{
 			Alarm: alarm.Alarm{
-				ProductId: pid,
-				DeviceId:  id,
-				Type:      "离线", //TODO 在 产品和设备 中配置
-				Title:     "离线",
-				Level:     3,
+				DeviceId: id,
+				Type:     "离线", //TODO 在 产品和设备 中配置
+				Title:    "离线",
+				Level:    3,
 			},
 			Product: dev.product.Name,
 			Device:  dev.name,
 		}
-		_, err = db.Engine.Insert(&alarm.Alarm)
+		_, err = db.Engine.Insert(&al.Alarm)
 		if err != nil {
 			log.Error(err)
 			//continue
 		}
 
 		//通知
-		err = notify(&alarm)
+		err = notify(&al)
 		if err != nil {
 			log.Error(err)
 			//continue
 		}
 
 	})
-
-	return nil
 }

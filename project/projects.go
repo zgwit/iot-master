@@ -57,7 +57,7 @@ func From(project *types.Project) error {
 	return nil
 }
 
-func LoadAll() error {
+func Boot() error {
 	//开机加载所有产品，好像没有必要???
 	var ps []*types.Project
 	err := db.Engine.Find(&ps)

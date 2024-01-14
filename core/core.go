@@ -6,12 +6,14 @@ import (
 	"github.com/zgwit/iot-master/v4/alarm"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/db"
+	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/pool"
 	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/project"
+	"github.com/zgwit/iot-master/v4/space"
 	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/vconn"
 	"net"
@@ -44,7 +46,7 @@ func Open() error {
 		new(types.Product), new(types.Device),
 		new(types.Plugin),
 		new(types.Project), new(types.ProjectUser),
-		new(types.ProjectPlugin), new(types.ProjectDevice),
+		new(types.ProjectPlugin), new(types.SpaceDevice),
 		new(types.History), new(types.ExternalAggregator),
 		new(alarm.Alarm), new(types.ExternalValidator),
 		new(alarm.Subscription), new(alarm.Notification),
@@ -92,53 +94,35 @@ func Open() error {
 		}
 	}
 
-	go func() {
-		err = plugin.LoadAll()
-		if err != nil {
-			log.Error(err)
-		}
-	}()
-
-	err = product.LoadAll()
+	//加载所有插件
+	err = plugin.Boot()
 	if err != nil {
 		return err
 	}
 
-	err = project.LoadAll()
+	//加载产品库
+	err = product.Boot()
 	if err != nil {
 		return err
 	}
 
-	//err = LoadDevices()
-	//if err != nil {
-	//	return err
-	//}
+	//加载设备影子
+	err = device.Boot()
+	if err != nil {
+		return err
+	}
 
-	//webServe(fmt.Sprintf(":%d", config.Config.Web))
-	//err = SubscribeMaster()
-	//if err != nil {
-	//	return err
-	//}
+	//加载空间
+	err = space.Boot()
+	if err != nil {
+		return err
+	}
 
-	//err = device.SubscribeEvent()
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//err = device.SubscribeProperty()
-	//if err != nil {
-	//	return err
-	//}
-	//
-	////err = device.SubscribePropertyStrict()
-	////if err != nil {
-	////	return err
-	////}
-	//
-	//err = device.SubscribeOnline()
-	//if err != nil {
-	//	return err
-	//}
+	//加载项目
+	err = project.Boot()
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -148,4 +132,5 @@ func Close() {
 	broker.Close()
 	mqtt.Close()
 	plugin.Close()
+
 }

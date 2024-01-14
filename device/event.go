@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func SubscribeEvent() error {
+func subscribeEvent() {
 	mqtt.Subscribe[payload.Event]("up/event/+/+", func(topic string, event *payload.Event) {
 		topics := strings.Split(topic, "/")
 		//pid := topics[2]
@@ -37,5 +37,4 @@ func SubscribeEvent() error {
 		}
 	})
 
-	return nil
 }

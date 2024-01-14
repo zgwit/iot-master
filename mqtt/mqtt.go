@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v4/config"
+	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/pool"
 )
 
@@ -90,16 +91,25 @@ func Subscribe[T any](filter string, cb func(topic string, value *T)) {
 		if len(message.Payload()) > 0 {
 			err := json.Unmarshal(message.Payload(), &value)
 			if err != nil {
+				log.Error(err)
 				return
 			}
 		}
 
 		//回调
 		for _, c := range cs {
+			if pool.Pool == nil {
+				go c(message.Topic(), &value)
+				continue
+			}
 			//放入线程池处理
-			_ = pool.Insert(func() {
+			err := pool.Insert(func() {
 				c(message.Topic(), &value)
 			})
+			if err != nil {
+				log.Error(err)
+				go c(message.Topic(), &value)
+			}
 		}
 	})
 }
