@@ -71,20 +71,25 @@ func Publish(topic string, payload any) paho.Token {
 	return Client.Publish(topic, 0, false, bytes)
 }
 
-var subscribes = map[string]any{}
+var subs = map[string]any{}
 
 func Subscribe[T any](filter string, cb func(topic string, value *T)) {
-	callbacks, ok := subscribes[filter]
-	cbs := callbacks.([]func(topic string, value *T))
-	if ok {
-		subscribes[filter] = append(cbs, cb)
+
+	var cbs []func(topic string, value *T)
+
+	//重复订阅，直接入列
+	if callbacks, ok := subs[filter]; ok {
+		cbs = callbacks.([]func(topic string, value *T))
+		subs[filter] = append(cbs, cb)
 		return
 	}
 
+	subs[filter] = append(cbs, cb)
+
 	//初次订阅
 	Client.Subscribe(filter, 0, func(client paho.Client, message paho.Message) {
-		subs := subscribes[filter]
-		cs := subs.([]func(topic string, value *T))
+		cbs := subs[filter]
+		cs := cbs.([]func(topic string, value *T))
 
 		//解析JSON
 		var value T

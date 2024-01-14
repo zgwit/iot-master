@@ -25,7 +25,7 @@ func noopAlarmCount() {}
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.Alarm] 返回报警信息
+// @Success 200 {object} curd.ReplyList[alarm.Alarm] 返回报警信息
 // @Router /alarm/search [post]
 func noopAlarmSearch() {}
 
@@ -35,7 +35,7 @@ func noopAlarmSearch() {}
 // @Tags alarm
 // @Param search query curd.ParamList true "查询参数"
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.Alarm] 返回报警信息
+// @Success 200 {object} curd.ReplyList[alarm.Alarm] 返回报警信息
 // @Router /alarm/list [get]
 func noopAlarmList() {}
 
@@ -45,7 +45,7 @@ func noopAlarmList() {}
 // @Tags alarm
 // @Param id path int true "报警ID"
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Alarm] 返回报警信息
+// @Success 200 {object} curd.ReplyData[alarm.Alarm] 返回报警信息
 // @Router /alarm/{id}/delete [get]
 func noopAlarmDelete() {}
 
@@ -55,7 +55,7 @@ func noopAlarmDelete() {}
 // @Tags alarm
 // @Param id path int true "报警ID"
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Alarm] 返回报警信息
+// @Success 200 {object} curd.ReplyData[alarm.Alarm] 返回报警信息
 // @Router /alarm/{id}/read [get]
 func noopAlarmRead() {}
 

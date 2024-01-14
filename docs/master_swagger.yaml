@@ -1,5 +1,30 @@
 basePath: /api/
 definitions:
+  alarm.Alarm:
+    properties:
+      created:
+        type: string
+      device_id:
+        type: string
+      id:
+        type: integer
+      level:
+        type: integer
+      message:
+        type: string
+      product_id:
+        type: string
+      project_id:
+        type: string
+      read:
+        type: boolean
+      space_id:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    type: object
   api.OEM:
     properties:
       logo:
@@ -34,6 +59,13 @@ definitions:
           type: integer
         type: object
     type: object
+  curd.ReplyData-alarm_Alarm:
+    properties:
+      data:
+        $ref: '#/definitions/alarm.Alarm'
+      error:
+        type: string
+    type: object
   curd.ReplyData-api_OEM:
     properties:
       data:
@@ -66,6 +98,15 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-array_types_SpaceDevice:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.SpaceDevice'
+        type: array
+      error:
+        type: string
+    type: object
   curd.ReplyData-int:
     properties:
       data:
@@ -91,13 +132,6 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/product.Manifest'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_Alarm:
-    properties:
-      data:
-        $ref: '#/definitions/types.Alarm'
       error:
         type: string
     type: object
@@ -136,6 +170,13 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-types_Space:
+    properties:
+      data:
+        $ref: '#/definitions/types.Space'
+      error:
+        type: string
+    type: object
   curd.ReplyData-types_User:
     properties:
       data:
@@ -150,11 +191,11 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyList-types_Alarm:
+  curd.ReplyList-alarm_Alarm:
     properties:
       data:
         items:
-          $ref: '#/definitions/types.Alarm'
+          $ref: '#/definitions/alarm.Alarm'
         type: array
       error:
         type: string
@@ -210,6 +251,17 @@ definitions:
       data:
         items:
           $ref: '#/definitions/types.Project'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-types_Space:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.Space'
         type: array
       error:
         type: string
@@ -407,29 +459,6 @@ definitions:
         description: 聚合算法 inc dec avg count min max sum last first
         type: string
     type: object
-  types.Alarm:
-    properties:
-      created:
-        type: string
-      device_id:
-        type: string
-      id:
-        type: integer
-      level:
-        type: integer
-      message:
-        type: string
-      product_id:
-        type: string
-      project_id:
-        type: string
-      read:
-        type: boolean
-      title:
-        type: string
-      type:
-        type: string
-    type: object
   types.Device:
     properties:
       created:
@@ -591,6 +620,33 @@ definitions:
       user_id:
         type: string
     type: object
+  types.Space:
+    properties:
+      created:
+        type: string
+      description:
+        description: 说明
+        type: string
+      disabled:
+        type: boolean
+      id:
+        type: string
+      name:
+        description: 名称
+        type: string
+    type: object
+  types.SpaceDevice:
+    properties:
+      created:
+        type: string
+      device_id:
+        type: string
+      name:
+        description: 编程别名
+        type: string
+      space_id:
+        type: string
+    type: object
   types.Type:
     enum:
     - 0
@@ -683,7 +739,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Alarm'
+            $ref: '#/definitions/curd.ReplyData-alarm_Alarm'
       summary: 删除报警
       tags:
       - alarm
@@ -702,7 +758,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Alarm'
+            $ref: '#/definitions/curd.ReplyData-alarm_Alarm'
       summary: 阅读报警
       tags:
       - alarm
@@ -744,7 +800,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Alarm'
+            $ref: '#/definitions/curd.ReplyList-alarm_Alarm'
       summary: 查询报警
       tags:
       - alarm
@@ -766,7 +822,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Alarm'
+            $ref: '#/definitions/curd.ReplyList-alarm_Alarm'
       summary: 查询报警
       tags:
       - alarm
@@ -1917,7 +1973,7 @@ paths:
       summary: 启用项目
       tags:
       - project
-  /project/{id}/plugin/{plugin}:
+  /project/{id}/plugin:
     get:
       consumes:
       - application/json
@@ -1938,6 +1994,7 @@ paths:
       summary: 项目插件列表
       tags:
       - project-plugin
+  /project/{id}/plugin/{plugin}:
     post:
       consumes:
       - application/json
@@ -2115,7 +2172,7 @@ paths:
       summary: 停止项目
       tags:
       - project
-  /project/{id}/user/{user}:
+  /project/{id}/user:
     get:
       consumes:
       - application/json
@@ -2136,6 +2193,7 @@ paths:
       summary: 项目用户列表
       tags:
       - project-user
+  /project/{id}/user/{user}:
     post:
       consumes:
       - application/json
@@ -2418,6 +2476,341 @@ paths:
       summary: 修改配置
       tags:
       - setting
+  /space/{id}:
+    post:
+      consumes:
+      - application/json
+      description: 修改空间
+      parameters:
+      - description: 空间ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 空间信息
+        in: body
+        name: space
+        required: true
+        schema:
+          $ref: '#/definitions/types.Space'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Space'
+      summary: 修改空间
+      tags:
+      - space
+  /space/{id}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除空间
+      parameters:
+      - description: 空间ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Space'
+      summary: 删除空间
+      tags:
+      - space
+  /space/{id}/device:
+    get:
+      consumes:
+      - application/json
+      description: 空间设备列表
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_types_SpaceDevice'
+      summary: 空间设备列表
+      tags:
+      - space-device
+  /space/{id}/device/{device}:
+    post:
+      consumes:
+      - application/json
+      description: 修改空间设备
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 设备ID
+        in: path
+        name: device
+        required: true
+        type: integer
+      - description: 空间设备信息
+        in: body
+        name: space-device
+        required: true
+        schema:
+          $ref: '#/definitions/types.SpaceDevice'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改空间设备
+      tags:
+      - space-device
+  /space/{id}/device/{device}/bind:
+    get:
+      consumes:
+      - application/json
+      description: 绑定空间设备
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 设备ID
+        in: path
+        name: device
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 绑定空间设备
+      tags:
+      - space-device
+  /space/{id}/device/{device}/unbind:
+    get:
+      consumes:
+      - application/json
+      description: 删除空间设备
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 设备ID
+        in: path
+        name: device
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 删除空间设备
+      tags:
+      - space-device
+  /space/{id}/disable:
+    get:
+      consumes:
+      - application/json
+      description: 禁用空间
+      parameters:
+      - description: 空间ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Space'
+      summary: 禁用空间
+      tags:
+      - space
+  /space/{id}/enable:
+    get:
+      consumes:
+      - application/json
+      description: 启用空间
+      parameters:
+      - description: 空间ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Space'
+      summary: 启用空间
+      tags:
+      - space
+  /space/{id}/start:
+    get:
+      consumes:
+      - application/json
+      description: 启动空间
+      parameters:
+      - description: 空间ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Space'
+      summary: 启动空间
+      tags:
+      - space
+  /space/{id}/stop:
+    get:
+      consumes:
+      - application/json
+      description: 停止空间
+      parameters:
+      - description: 空间ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Space'
+      summary: 停止空间
+      tags:
+      - space
+  /space/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建空间
+      parameters:
+      - description: 空间信息
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/types.Space'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-types_Space'
+      summary: 创建空间
+      tags:
+      - space
+  /space/export:
+    get:
+      consumes:
+      - application/json
+      description: 导出空间
+      produces:
+      - application/octet-stream
+      responses: {}
+      summary: 导出空间
+      tags:
+      - space
+  /space/import:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 导入空间
+      parameters:
+      - description: 压缩包
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int64'
+      summary: 导入空间
+      tags:
+      - space
+  /space/list:
+    get:
+      consumes:
+      - application/json
+      description: 查询空间
+      parameters:
+      - in: query
+        name: limit
+        type: integer
+      - in: query
+        name: skip
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-types_Space'
+      summary: 查询空间
+      tags:
+      - space
+  /space/search:
+    post:
+      consumes:
+      - application/json
+      description: 查询空间
+      parameters:
+      - description: 查询参数
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/curd.ParamSearch'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyList-types_Space'
+      summary: 查询空间
+      tags:
+      - space
   /user/{id}:
     get:
       consumes:

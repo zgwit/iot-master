@@ -68,7 +68,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Alarm"
+                            "$ref": "#/definitions/curd.ReplyList-alarm_Alarm"
                         }
                     }
                 }
@@ -102,7 +102,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Alarm"
+                            "$ref": "#/definitions/curd.ReplyList-alarm_Alarm"
                         }
                     }
                 }
@@ -131,7 +131,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Alarm"
+                            "$ref": "#/definitions/curd.ReplyData-alarm_Alarm"
                         }
                     }
                 }
@@ -160,7 +160,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Alarm"
+                            "$ref": "#/definitions/curd.ReplyData-alarm_Alarm"
                         }
                     }
                 }
@@ -2071,7 +2071,7 @@
                 }
             }
         },
-        "/project/{id}/plugin/{plugin}": {
+        "/project/{id}/plugin": {
             "get": {
                 "description": "项目插件列表",
                 "consumes": [
@@ -2101,7 +2101,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/project/{id}/plugin/{plugin}": {
             "post": {
                 "description": "修改项目插件",
                 "consumes": [
@@ -2369,7 +2371,7 @@
                 }
             }
         },
-        "/project/{id}/user/{user}": {
+        "/project/{id}/user": {
             "get": {
                 "description": "项目用户列表",
                 "consumes": [
@@ -2399,7 +2401,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/project/{id}/user/{user}": {
             "post": {
                 "description": "修改项目用户",
                 "consumes": [
@@ -2671,6 +2675,516 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/create": {
+            "post": {
+                "description": "创建空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "创建空间",
+                "parameters": [
+                    {
+                        "description": "空间信息",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.Space"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/export": {
+            "get": {
+                "description": "导出空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "导出空间",
+                "responses": {}
+            }
+        },
+        "/space/import": {
+            "post": {
+                "description": "导入空间",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "导入空间",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "压缩包",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int64"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/list": {
+            "get": {
+                "description": "查询空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "查询空间",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "skip",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_Space"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/search": {
+            "post": {
+                "description": "查询空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "查询空间",
+                "parameters": [
+                    {
+                        "description": "查询参数",
+                        "name": "search",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/curd.ParamSearch"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyList-types_Space"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}": {
+            "post": {
+                "description": "修改空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "修改空间",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "空间ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "空间信息",
+                        "name": "space",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.Space"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}/delete": {
+            "get": {
+                "description": "删除空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "删除空间",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "空间ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}/device": {
+            "get": {
+                "description": "空间设备列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space-device"
+                ],
+                "summary": "空间设备列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-array_types_SpaceDevice"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}/device/{device}": {
+            "post": {
+                "description": "修改空间设备",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space-device"
+                ],
+                "summary": "修改空间设备",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "设备ID",
+                        "name": "device",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "空间设备信息",
+                        "name": "space-device",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.SpaceDevice"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}/device/{device}/bind": {
+            "get": {
+                "description": "绑定空间设备",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space-device"
+                ],
+                "summary": "绑定空间设备",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "设备ID",
+                        "name": "device",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}/device/{device}/unbind": {
+            "get": {
+                "description": "删除空间设备",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space-device"
+                ],
+                "summary": "删除空间设备",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "设备ID",
+                        "name": "device",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}/disable": {
+            "get": {
+                "description": "禁用空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "禁用空间",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "空间ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}/enable": {
+            "get": {
+                "description": "启用空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "启用空间",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "空间ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}/start": {
+            "get": {
+                "description": "启动空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "启动空间",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "空间ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                        }
+                    }
+                }
+            }
+        },
+        "/space/{id}/stop": {
+            "get": {
+                "description": "停止空间",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "space"
+                ],
+                "summary": "停止空间",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "空间ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-types_Space"
                         }
                     }
                 }
@@ -3025,6 +3539,44 @@
         }
     },
     "definitions": {
+        "alarm.Alarm": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "project_id": {
+                    "type": "string"
+                },
+                "read": {
+                    "type": "boolean"
+                },
+                "space_id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "api.OEM": {
             "type": "object",
             "properties": {
@@ -3074,6 +3626,17 @@
                     "additionalProperties": {
                         "type": "integer"
                     }
+                }
+            }
+        },
+        "curd.ReplyData-alarm_Alarm": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/alarm.Alarm"
+                },
+                "error": {
+                    "type": "string"
                 }
             }
         },
@@ -3127,6 +3690,20 @@
                 }
             }
         },
+        "curd.ReplyData-array_types_SpaceDevice": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.SpaceDevice"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-int": {
             "type": "object",
             "properties": {
@@ -3165,17 +3742,6 @@
             "properties": {
                 "data": {
                     "$ref": "#/definitions/product.Manifest"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyData-types_Alarm": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/types.Alarm"
                 },
                 "error": {
                     "type": "string"
@@ -3237,6 +3803,17 @@
                 }
             }
         },
+        "curd.ReplyData-types_Space": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/types.Space"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-types_User": {
             "type": "object",
             "properties": {
@@ -3259,13 +3836,13 @@
                 }
             }
         },
-        "curd.ReplyList-types_Alarm": {
+        "curd.ReplyList-alarm_Alarm": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.Alarm"
+                        "$ref": "#/definitions/alarm.Alarm"
                     }
                 },
                 "error": {
@@ -3351,6 +3928,23 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/types.Project"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-types_Space": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Space"
                     }
                 },
                 "error": {
@@ -3645,41 +4239,6 @@
                 }
             }
         },
-        "types.Alarm": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "device_id": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "level": {
-                    "type": "integer"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "product_id": {
-                    "type": "string"
-                },
-                "project_id": {
-                    "type": "string"
-                },
-                "read": {
-                    "type": "boolean"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
         "types.Device": {
             "type": "object",
             "properties": {
@@ -3910,6 +4469,46 @@
                     "type": "string"
                 },
                 "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.Space": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "description": {
+                    "description": "说明",
+                    "type": "string"
+                },
+                "disabled": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                }
+            }
+        },
+        "types.SpaceDevice": {
+            "type": "object",
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "device_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "编程别名",
+                    "type": "string"
+                },
+                "space_id": {
                     "type": "string"
                 }
             }
