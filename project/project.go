@@ -1,7 +1,7 @@
 package project
 
 import (
-	"github.com/zgwit/iot-master/v4/internal/device"
+	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/types"
 )
 

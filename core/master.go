@@ -1,4 +1,4 @@
-package internal
+package core
 
 func SubscribeMaster() error {
 	//注册应用

@@ -2,11 +2,11 @@ package master
 
 import (
 	"embed"
+	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/config"
+	"github.com/zgwit/iot-master/v4/core"
 	_ "github.com/zgwit/iot-master/v4/docs"
-	"github.com/zgwit/iot-master/v4/internal"
-	"github.com/zgwit/iot-master/v4/internal/api"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/web"
 	"net/http"
@@ -33,7 +33,7 @@ func Startup(engine *web.Engine) error {
 	}
 
 	//加载主程序
-	err = internal.Open()
+	err = core.Open()
 	if err != nil {
 		return err
 	}
@@ -80,7 +80,7 @@ func Static(fs *web.FileSystem) {
 
 func Shutdown() error {
 
-	internal.Close()
+	core.Close()
 
 	//只关闭Web就行了，其他通过defer关闭
 
