@@ -1,9 +1,12 @@
 package plugin
 
 import (
+	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/log"
 	"os"
+	"path/filepath"
 	"runtime"
+	"time"
 )
 
 var port = 40000
@@ -33,18 +36,30 @@ func (p *Plugin) Start() error {
 	//addr := fmt.Sprintf(":%d", getPort())
 	//env := p.generateEnv(addr)
 
-	cmd := p.Main //TODO 插件目录
+	if p.Main == "" {
+		return nil
+	}
+
+	cmd := filepath.Join(viper.GetString("data"), "plugin", p.Id, p.Main)
+	dir := filepath.Join(viper.GetString("data"), "plugin", p.Id)
+
+	//绝对路径
+	cmd, err = filepath.Abs(cmd)
+	if err != nil {
+		return err
+	}
+
+	//工作目录
+	//dir := filepath.Dir(cmd)
 
 	//TODO 指定plugins目录，例如：plugins/alarm/alarm.exe
 	if runtime.GOOS == "windows" {
 		cmd = cmd + ".exe"
-	} else {
-		cmd = "./" + cmd
 	}
 
 	p.Process, err = os.StartProcess(cmd, []string{p.Id}, &os.ProcAttr{
-		Dir:   ".",                                   //使用插件目录
-		Files: []*os.File{nil, os.Stdout, os.Stderr}, //可以输出到日志文件
+		Dir:   dir,                                   //使用插件目录
+		Files: []*os.File{nil, os.Stdout, os.Stderr}, //TODO 输出到日志文件
 		//Env:   env,
 	})
 	if err != nil {
@@ -62,6 +77,9 @@ func (p *Plugin) Start() error {
 		if p.stop {
 			return
 		}
+
+		//应该做成智能休眠
+		time.Sleep(time.Second * 5)
 
 		err = p.Start()
 		if err != nil {
