@@ -162,7 +162,7 @@ func projectRouter(app *gin.RouterGroup) {
 	}))
 
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Project](nil, nil,
-		"id", "disabled"))
+		"id", "name", "icon", "description", "keywords", "disabled"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Project](nil, nil))
 

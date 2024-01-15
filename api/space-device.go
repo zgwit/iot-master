@@ -88,7 +88,7 @@ func spaceDeviceUpdate(ctx *gin.Context) {
 		return
 	}
 	_, err = db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("device")}).
-		Cols("device_id", "disabled").
+		Cols("device_id", "name", "disabled").
 		Update(&pd)
 	if err != nil {
 		curd.Error(ctx, err)

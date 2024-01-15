@@ -162,7 +162,7 @@ func spaceRouter(app *gin.RouterGroup) {
 	}))
 
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Space](nil, nil,
-		"id", "disabled"))
+		"id", "name", "description", "disabled"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Space](nil, nil))
 

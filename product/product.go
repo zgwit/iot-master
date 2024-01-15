@@ -15,7 +15,7 @@ type Product struct {
 	ExternalAggregators []*types.ExternalAggregator
 }
 
-func (p Product) StoreManifest() error {
+func (p *Product) StoreManifest() error {
 	fn := fmt.Sprintf("%s/product/%s/manifest.yaml", viper.GetString("data"), p.Id)
 	return lib.StoreYaml(fn, p.Manifest)
 }

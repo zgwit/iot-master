@@ -1,6 +1,13 @@
 package plugin
 
 type Manifest struct {
+	Id           string            `json:"id"`                     //ID
+	Version      string            `json:"version,omitempty"`      //版本 semver.Version
+	Icon         string            `json:"icon,omitempty"`         //图标
+	Name         string            `json:"name,omitempty"`         //名称
+	Url          string            `json:"url,omitempty"`          //链接
+	Description  string            `json:"description,omitempty"`  //说明
+	Keywords     []string          `json:"keywords,omitempty"`     //关键字
 	Type         string            `json:"type"`                   //类型：应用、外部、静态页面
 	Main         string            `json:"main,omitempty"`         //入口：程序文件
 	Pages        *Pages            `json:"pages,omitempty"`        //子页面入口

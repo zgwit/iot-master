@@ -2,11 +2,18 @@ package plugin
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/v4/db"
+	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/types"
+	"os"
+	"path/filepath"
 )
+
+var internals []*Manifest
+
+//func Register(m *Manifest)  {
+//
+//}
 
 var plugins lib.Map[Plugin]
 
@@ -34,7 +41,7 @@ func Get(id string) *Plugin {
 }
 
 func Load(id string) error {
-	fn := fmt.Sprintf("plugin/%s/manifest.yaml", id)
+	fn := fmt.Sprintf("%s/plugin/%s/manifest.yaml", viper.GetString("data"), id)
 
 	var m Manifest
 	err := lib.LoadYaml(fn, &m)
@@ -46,7 +53,7 @@ func Load(id string) error {
 }
 
 func Store(id string, m *Manifest) error {
-	fn := fmt.Sprintf("plugin/%s/manifest.yaml", id)
+	fn := fmt.Sprintf("%s/plugin/%s/manifest.yaml", viper.GetString("data"), id)
 	err := lib.StoreYaml(fn, m)
 	if err != nil {
 		return err
@@ -69,23 +76,23 @@ func From(id string, manifest *Manifest) error {
 
 func Boot() error {
 	//开机加载所有插件
-	var ps []*types.Plugin
-	err := db.Engine.Find(&ps)
+	root := filepath.Join(viper.GetString("data"), "plugin")
+	files, err := os.ReadDir(root)
 	if err != nil {
-		return err
+		//return err
+		log.Error(err)
+		return nil
 	}
 
-	for _, p := range ps {
-		if p.Disabled {
-			continue
-		}
-		err = Load(p.Id)
-		if err != nil {
-			log.Error(err)
-			//return err
+	for _, stat := range files {
+		info, _ := stat.Info()
+		if info.IsDir() {
+			err = Load(info.Name())
+			if err != nil {
+				log.Error(err)
+			}
 		}
 	}
-
 	return nil
 }
 
@@ -94,4 +101,14 @@ func Close() {
 		_ = plugin.Close()
 		return true
 	})
+}
+
+func GetPlugins() []*Manifest {
+	var ps []*Manifest
+	ps = append(ps, internals...)
+	plugins.Range(func(id string, plugin *Plugin) bool {
+		ps = append(ps, plugin.Manifest)
+		return true
+	})
+	return ps
 }
