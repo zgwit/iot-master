@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+var Static FileSystem
+
 type fileItem struct {
 	fs     http.FileSystem
 	path   string
@@ -27,9 +29,10 @@ func (f *FileSystem) Open(name string) (file http.File, err error) {
 	//低效
 	for _, ff := range f.items {
 		//fn := path.Join(ff.prefix, name)
-		if ff.path == "" && !strings.HasPrefix(name, "/app/") ||
+		if ff.path == "" && !strings.HasPrefix(name, "/$") ||
 			ff.path != "" && strings.HasPrefix(name, ff.path) {
 
+			//查找文件
 			file, err = ff.fs.Open(path.Join(ff.prefix, name))
 			if file != nil {
 				fi, _ := file.Stat()
@@ -39,13 +42,16 @@ func (f *FileSystem) Open(name string) (file http.File, err error) {
 			}
 
 			//尝试默认页
-			file, err = ff.fs.Open(path.Join(ff.prefix, ff.index))
-			if file != nil {
-				fi, _ := file.Stat()
-				if !fi.IsDir() {
-					return
+			if ff.index != "" {
+				file, err = ff.fs.Open(path.Join(ff.prefix, ff.index))
+				if file != nil {
+					fi, _ := file.Stat()
+					if !fi.IsDir() {
+						return
+					}
 				}
 			}
+
 			return nil, errors.New("not found")
 		}
 	}

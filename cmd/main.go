@@ -106,20 +106,13 @@ func (p *Program) run() {
 		}
 	}()
 
-	//原本的Main函数
-	engine := web.CreateEngine()
-
 	//启动
-	err := master.Startup(engine)
+	err := master.Startup()
 	if err != nil {
 		log.Fatal(err)
 		//return
 	}
 
-	//注册静态页面
-	fs := engine.FileSystem()
-	master.Static(fs)
-
 	//启动
-	engine.Serve()
+	web.Serve()
 }

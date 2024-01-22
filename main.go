@@ -23,7 +23,7 @@ var wwwFiles embed.FS
 // @query.collection.format multi
 func main() {}
 
-func Startup(engine *web.Engine) error {
+func Startup() error {
 
 	//加载配置文件
 	err := config.Load()
@@ -38,20 +38,25 @@ func Startup(engine *web.Engine) error {
 		return err
 	}
 
+	web.Start()
+
 	//defer internal.Close()
-	engine.Static("/static", "static")
+	web.Engine.Static("/static", "static")
 
 	//注册前端接口
-	api.RegisterRoutes(engine.Group("/api"))
+	api.RegisterRoutes(web.Engine.Group("/api"))
 
 	//注册接口文档
-	web.RegisterSwaggerDocs(&engine.RouterGroup, "master")
+	web.RegisterSwaggerDocs(&web.Engine.RouterGroup, "master")
 
 	//附件
-	engine.Static("/attach", "attach")
+	web.Engine.Static("/attach", "attach")
 
 	//监听Websocket
-	engine.GET("/mqtt", broker.GinBridge)
+	web.Engine.GET("/mqtt", broker.GinBridge)
+
+	//前端
+	web.Static.Put("", http.FS(wwwFiles), "www", "index.html")
 
 	//监听插件
 	//mqtt.Subscribe[types.App]("master/register", func(topic string, a *types.App) {
