@@ -210,5 +210,5 @@ func projectRouter(app *gin.RouterGroup) {
 	})
 
 	//附件
-	attach.ObjectRouters("project", app.Group("/:id"))
+	attach.ObjectRouters("project", app)
 }

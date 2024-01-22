@@ -176,5 +176,5 @@ func productRouter(app *gin.RouterGroup) {
 	})
 
 	//附件
-	attach.ObjectRouters("product", app.Group("/:id"))
+	attach.ObjectRouters("product", app)
 }

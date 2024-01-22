@@ -210,5 +210,5 @@ func spaceRouter(app *gin.RouterGroup) {
 	})
 
 	//附件
-	attach.ObjectRouters("space", app.Group("/:id"))
+	attach.ObjectRouters("space", app)
 }

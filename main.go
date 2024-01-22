@@ -43,14 +43,14 @@ func Startup() error {
 	//defer internal.Close()
 	web.Engine.Static("/static", "static")
 
+	//附件
+	web.Engine.Static("/attach", "attach")
+
 	//注册前端接口
 	api.RegisterRoutes(web.Engine.Group("/api"))
 
 	//注册接口文档
 	web.RegisterSwaggerDocs(&web.Engine.RouterGroup, "master")
-
-	//附件
-	web.Engine.Static("/attach", "attach")
 
 	//监听Websocket
 	web.Engine.GET("/mqtt", broker.GinBridge)
@@ -76,11 +76,6 @@ func Startup() error {
 	//})
 
 	return nil
-}
-
-func Static(fs *web.FileSystem) {
-	//前端静态文件
-	fs.Put("", http.FS(wwwFiles), "www", "index.html")
 }
 
 func Shutdown() error {

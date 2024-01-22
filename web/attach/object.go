@@ -2,7 +2,9 @@ package attach
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/web/curd"
+	"io"
 	"mime"
 	"net/http"
 	"os"
@@ -12,7 +14,7 @@ import (
 func ObjectApiList(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//列出目录
-		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
 		files, err := os.ReadDir(filename)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -41,7 +43,7 @@ func ObjectApiList(root string) gin.HandlerFunc {
 func ObjectApiInfo(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//列出目录
-		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
 		info, err := os.Stat(filename)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -60,7 +62,7 @@ func ObjectApiInfo(root string) gin.HandlerFunc {
 
 func ObjectApiUpload(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		dir := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
+		dir := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
 		_ = os.MkdirAll(dir, os.ModePerm) //创建目录
 
 		form, err := ctx.MultipartForm()
@@ -85,16 +87,37 @@ func ObjectApiUpload(root string) gin.HandlerFunc {
 	}
 }
 
-func ObjectApiView(root string) gin.HandlerFunc {
+func ObjectApiWrite(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
+		_ = os.MkdirAll(filepath.Dir(filename), os.ModePerm) //创建目录
+		f, err := os.OpenFile(filename, os.O_CREATE, os.ModePerm)
+		if err != nil {
+			curd.Error(ctx, err)
+			return
+		}
+		defer f.Close()
+
+		_, err = io.Copy(f, ctx.Request.Body)
+		if err != nil {
+			curd.Error(ctx, err)
+			return
+		}
+
+		curd.OK(ctx, nil)
+	}
+}
+
+func ObjectApiRead(root string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		filename := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
 		http.ServeFile(ctx.Writer, ctx.Request, filename)
 	}
 }
 
 func ObjectApiDownload(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
 		ctx.Header("Content-Disposition", "attachment; filename="+ctx.Param("name"))
 		http.ServeFile(ctx.Writer, ctx.Request, filename)
 	}
@@ -109,7 +132,7 @@ func ObjectApiRename(root string) gin.HandlerFunc {
 			return
 		}
 
-		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
 		newPath := filepath.Join(filepath.Dir(filename), rename.Name)
 
 		err = os.Rename(filename, newPath)
@@ -123,7 +146,7 @@ func ObjectApiRename(root string) gin.HandlerFunc {
 
 func ObjectApiRemove(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
 		err := os.Remove(filename)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -142,8 +165,8 @@ func ObjectApiMove(root string) gin.HandlerFunc {
 			return
 		}
 
-		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
-		newPath := filepath.Join(root, ctx.Param("id"), move.Path, filepath.Base(filename))
+		filename := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
+		newPath := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), move.Path, filepath.Base(filename))
 
 		err = os.Rename(filename, newPath)
 		if err != nil {
@@ -156,7 +179,7 @@ func ObjectApiMove(root string) gin.HandlerFunc {
 
 func ObjectApiMakeDir(root string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("id"), ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, ctx.Param("id"), ctx.Param("name"))
 		err := os.MkdirAll(filename, os.ModePerm)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -174,7 +197,9 @@ func ObjectRouters(root string, app *gin.RouterGroup) {
 
 	group.GET("/info/*name", ObjectApiInfo(root))
 
-	group.GET("/view/*name", ObjectApiView(root))
+	group.GET("/read/*name", ObjectApiRead(root))
+
+	group.POST("/write/*name", ObjectApiWrite(root))
 
 	group.POST("/upload/*name", ObjectApiUpload(root))
 
