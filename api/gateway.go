@@ -133,7 +133,7 @@ func gatewayRouter(app *gin.RouterGroup) {
 	app.POST("/count", curd.ApiCount[types.Gateway]())
 	app.POST("/search", curd.ApiSearch[types.Gateway]())
 	app.GET("/list", curd.ApiList[types.Gateway]())
-	app.POST("/create", curd.ApiCreateHook[types.Gateway](curd.GenerateRandomId[types.Gateway](8), nil))
+	app.POST("/create", curd.ApiCreateHook[types.Gateway](curd.GenerateKSUID[types.Gateway](), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Gateway]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Gateway](nil, nil,
 		"id", "name", "desc", "username", "password", "disabled"))

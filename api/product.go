@@ -134,7 +134,7 @@ func productRouter(app *gin.RouterGroup) {
 	app.POST("/count", curd.ApiCount[types.Product]())
 	app.POST("/search", curd.ApiSearch[types.Product]())
 	app.GET("/list", curd.ApiList[types.Product]())
-	app.POST("/create", curd.ApiCreateHook[types.Product](curd.GenerateRandomId[types.Product](8), nil))
+	app.POST("/create", curd.ApiCreateHook[types.Product](curd.GenerateKSUID[types.Product](), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Product]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Product](nil, nil,
 		"id", "name", "version", "url", "icon", "description", "keywords", "disabled"))
