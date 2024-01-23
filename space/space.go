@@ -14,7 +14,7 @@ type Space struct {
 	devices map[string]*device.Device
 }
 
-func (s Space) PutDevice(name string, dev *device.Device) {
+func (s *Space) PutDevice(name string, dev *device.Device) {
 	s.devices[name] = dev
 	s.values[name] = dev.Values()
 

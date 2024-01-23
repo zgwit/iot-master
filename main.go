@@ -40,12 +40,6 @@ func Startup() error {
 
 	web.Start()
 
-	//defer internal.Close()
-	web.Engine.Static("/static", "static")
-
-	//附件
-	web.Engine.Static("/attach", "attach")
-
 	//注册前端接口
 	api.RegisterRoutes(web.Engine.Group("/api"))
 
@@ -54,6 +48,10 @@ func Startup() error {
 
 	//监听Websocket
 	web.Engine.GET("/mqtt", broker.GinBridge)
+
+	//附件
+	//web.Engine.Static("/static", "static")
+	web.Engine.Static("/attach", "attach")
 
 	//前端
 	web.Static.Put("", http.FS(wwwFiles), "www", "index.html")

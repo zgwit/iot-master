@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/config"
 	"github.com/zgwit/iot-master/v4/log"
-	"golang.org/x/crypto/acme/autocert"
 	"net/http"
 	"path"
 	"strconv"
@@ -48,29 +47,6 @@ func Start() {
 	}
 
 	//Engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
-	//静态文件
-	tm := time.Now()
-	Engine.Use(func(c *gin.Context) {
-		if c.Request.Method == http.MethodGet {
-			f, err := Static.Open(c.Request.URL.Path)
-			if err == nil {
-				defer f.Close()
-				stat, err := f.Stat()
-				if err != nil {
-					c.Next() //500错误
-					return
-				}
-				if !stat.IsDir() {
-					fn := c.Request.URL.Path
-					//fn := c.Request.URL.Path + ".html" //避免DetectContentType
-					http.ServeContent(c.Writer, c.Request, fn, tm, f)
-					return
-				}
-			}
-		}
-	})
-
 }
 
 func _FileSystem2() *FileSystem {
@@ -136,6 +112,28 @@ func _RegisterFS(fs http.FileSystem, prefix, index string) {
 
 func Serve() {
 
+	//静态文件
+	tm := time.Now()
+	Engine.Use(func(c *gin.Context) {
+		if c.Request.Method == http.MethodGet {
+			f, err := Static.Open(c.Request.URL.Path)
+			if err == nil {
+				defer f.Close()
+				stat, err := f.Stat()
+				if err != nil {
+					c.Next() //500错误
+					return
+				}
+				if !stat.IsDir() {
+					fn := c.Request.URL.Path
+					//fn := c.Request.URL.Path + ".html" //避免DetectContentType
+					http.ServeContent(c.Writer, c.Request, fn, tm, f)
+					return
+				}
+			}
+		}
+	})
+
 	go ServeHTTP()
 
 	https := config.GetString(MODULE, "https")
@@ -152,43 +150,6 @@ func ServeHTTP() {
 	addr := ":" + strconv.Itoa(port)
 	log.Info("Web Serve", addr)
 	err := Engine.Run(addr)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func ServeTLS() {
-	cert := config.GetString(MODULE, "cert")
-	key := config.GetString(MODULE, "key")
-
-	log.Info("Web ServeTLS", cert, key)
-	err := Engine.RunTLS(":443", cert, key)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func ServeLetsEncrypt() {
-	hosts := config.GetStringSlice(MODULE, "hosts")
-	log.Info("Web ServeLetsEncrypt", hosts)
-
-	//初始化autocert
-	manager := &autocert.Manager{
-		Cache:      autocert.DirCache("certs"),
-		Email:      config.GetString(MODULE, "email"),
-		HostPolicy: autocert.HostWhitelist(hosts...),
-		Prompt:     autocert.AcceptTOS,
-	}
-
-	//创建server
-	svr := &http.Server{
-		Addr:      ":443",
-		TLSConfig: manager.TLSConfig(),
-		Handler:   Engine,
-	}
-
-	//监听https
-	err := svr.ListenAndServeTLS("", "")
 	if err != nil {
 		log.Fatal(err)
 	}
