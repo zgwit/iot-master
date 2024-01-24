@@ -41,6 +41,29 @@ definitions:
       total:
         type: integer
     type: object
+  attach.MoveBody:
+    properties:
+      path:
+        type: string
+    type: object
+  attach.RenameBody:
+    properties:
+      name:
+        type: string
+    type: object
+  attach.attachInfo:
+    properties:
+      folder:
+        type: boolean
+      mime:
+        type: string
+      name:
+        type: string
+      size:
+        type: integer
+      time:
+        type: string
+    type: object
   curd.ParamSearch:
     properties:
       filter:
@@ -80,6 +103,33 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-array_attach_attachInfo:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/attach.attachInfo'
+        type: array
+      error:
+        type: string
+    type: object
+  curd.ReplyData-array_plugin_Entry:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/plugin.Entry'
+        type: array
+      error:
+        type: string
+    type: object
+  curd.ReplyData-array_plugin_Menu:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/plugin.Menu'
+        type: array
+      error:
+        type: string
+    type: object
   curd.ReplyData-array_types_ProjectPlugin:
     properties:
       data:
@@ -104,6 +154,13 @@ definitions:
         items:
           $ref: '#/definitions/types.SpaceDevice'
         type: array
+      error:
+        type: string
+    type: object
+  curd.ReplyData-attach_attachInfo:
+    properties:
+      data:
+        $ref: '#/definitions/attach.attachInfo'
       error:
         type: string
     type: object
@@ -146,13 +203,6 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/types.Gateway'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_Plugin:
-    properties:
-      data:
-        $ref: '#/definitions/types.Plugin'
       error:
         type: string
     type: object
@@ -202,6 +252,17 @@ definitions:
       total:
         type: integer
     type: object
+  curd.ReplyList-plugin_Manifest:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/plugin.Manifest'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
   curd.ReplyList-types_Device:
     properties:
       data:
@@ -218,17 +279,6 @@ definitions:
       data:
         items:
           $ref: '#/definitions/types.Gateway'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-types_Plugin:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.Plugin'
         type: array
       error:
         type: string
@@ -279,58 +329,97 @@ definitions:
       total:
         type: integer
     type: object
+  plugin.Entry:
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+    type: object
   plugin.Manifest:
     properties:
-      arch:
-        description: CPU架构：x64 ia32 aarch64
-        items:
-          type: string
-        type: array
-      author:
-        description: 作者
-        type: string
-      bugs:
-        description: Bug
-        type: string
       dependencies:
         additionalProperties:
           type: string
-        description: 应用和版本
+        description: 更多
         type: object
-      license:
-        description: 软件协议：GPL MIT Apache 。。。
+      description:
+        description: 说明
         type: string
-      main:
-        description: 入口：程序文件
+      icon:
+        description: 图标
         type: string
-      os:
-        description: 操作系统支持：linux windows darwin
+      id:
+        description: ID
+        type: string
+      keywords:
+        description: 关键字
         items:
           type: string
         type: array
+      main:
+        description: 入口：程序文件
+        type: string
+      menu:
+        allOf:
+        - $ref: '#/definitions/plugin.Menu'
+        description: 菜单入口
+      name:
+        description: 名称
+        type: string
       pages:
         allOf:
         - $ref: '#/definitions/plugin.Pages'
-        description: 子页面入口
+        description: 子页面
+      process:
+        $ref: '#/definitions/plugin.Process'
       type:
-        description: 类型：应用、外部、静态页面
+        description: 外部插件
+        type: string
+      url:
+        description: 链接
+        type: string
+      version:
+        description: 版本 semver.Version
         type: string
     type: object
-  plugin.PageEntry:
+  plugin.Menu:
     properties:
-      detail:
-        type: string
-      edit:
+      first:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/plugin.Entry'
+        type: array
+      name:
         type: string
     type: object
   plugin.Pages:
     properties:
-      device:
-        $ref: '#/definitions/plugin.PageEntry'
-      product:
-        $ref: '#/definitions/plugin.PageEntry'
-      project:
-        $ref: '#/definitions/plugin.PageEntry'
+      device_detail:
+        $ref: '#/definitions/plugin.Entry'
+      device_edit:
+        $ref: '#/definitions/plugin.Entry'
+      product_detail:
+        $ref: '#/definitions/plugin.Entry'
+      product_edit:
+        $ref: '#/definitions/plugin.Entry'
+      project_detail:
+        $ref: '#/definitions/plugin.Entry'
+      project_edit:
+        $ref: '#/definitions/plugin.Entry'
+      space_detail:
+        $ref: '#/definitions/plugin.Entry'
+      space_edit:
+        $ref: '#/definitions/plugin.Entry'
+    type: object
+  plugin.Process:
+    properties:
+      delay:
+        description: 延迟启动 s
+        type: integer
+      main:
+        type: string
     type: object
   product.Event:
     properties:
@@ -507,36 +596,6 @@ definitions:
       username:
         type: string
     type: object
-  types.Plugin:
-    properties:
-      created:
-        type: string
-      description:
-        description: 说明
-        type: string
-      disabled:
-        type: boolean
-      icon:
-        description: 图标
-        type: string
-      id:
-        description: ID
-        type: string
-      keywords:
-        description: 关键字
-        items:
-          type: string
-        type: array
-      name:
-        description: 名称
-        type: string
-      url:
-        description: 链接
-        type: string
-      version:
-        description: 版本 semver.Version
-        type: string
-    type: object
   types.Product:
     properties:
       created:
@@ -589,12 +648,6 @@ definitions:
       name:
         description: 名称
         type: string
-      url:
-        description: 链接
-        type: string
-      version:
-        description: 版本 semver.Version
-        type: string
     type: object
   types.ProjectPlugin:
     properties:
@@ -633,6 +686,8 @@ definitions:
         type: string
       name:
         description: 名称
+        type: string
+      project_id:
         type: string
     type: object
   types.SpaceDevice:
@@ -826,6 +881,228 @@ paths:
       summary: 查询报警
       tags:
       - alarm
+  /attach/download/{name}:
+    get:
+      consumes:
+      - application/json
+      description: 下载附件
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 下载附件
+      tags:
+      - attach
+  /attach/info/{name}:
+    get:
+      consumes:
+      - application/json
+      description: 查询附件信息
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-attach_attachInfo'
+      summary: 查询附件信息
+      tags:
+      - attach
+  /attach/list/{name}:
+    get:
+      consumes:
+      - application/json
+      description: 查询附件
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_attach_attachInfo'
+      summary: 查询附件
+      tags:
+      - attach
+  /attach/makedir/{name}:
+    get:
+      consumes:
+      - application/json
+      description: 创建目录
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 创建目录
+      tags:
+      - attach
+  /attach/move/{name}:
+    post:
+      consumes:
+      - application/json
+      description: 移动附件
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: 移动
+        in: body
+        name: move
+        required: true
+        schema:
+          $ref: '#/definitions/attach.MoveBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 移动附件
+      tags:
+      - attach
+  /attach/read/{name}:
+    get:
+      consumes:
+      - application/json
+      description: 读取附件
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 读取附件
+      tags:
+      - attach
+  /attach/remove/{name}:
+    get:
+      consumes:
+      - application/json
+      description: 删除附件
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 删除附件
+      tags:
+      - attach
+  /attach/rename/{name}:
+    post:
+      consumes:
+      - application/json
+      description: 下载附件
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: 重命名
+        in: body
+        name: rename
+        required: true
+        schema:
+          $ref: '#/definitions/attach.RenameBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 命名
+      tags:
+      - attach
+  /attach/upload/{name}:
+    post:
+      consumes:
+      - application/json
+      description: 上传附件，支持多文件
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 上传附件
+      tags:
+      - attach
+  /attach/write/{name}:
+    post:
+      consumes:
+      - application/json
+      description: 修改附件，body是内容
+      parameters:
+      - description: 文件路径
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改附件
+      tags:
+      - attach
   /backup/export:
     get:
       consumes:
@@ -1383,96 +1660,6 @@ paths:
       summary: 修改oem信息
       tags:
       - oem
-  /plugin/{id}:
-    post:
-      consumes:
-      - application/json
-      description: 修改插件
-      parameters:
-      - description: 插件ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 插件信息
-        in: body
-        name: plugin
-        required: true
-        schema:
-          $ref: '#/definitions/types.Plugin'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Plugin'
-      summary: 修改插件
-      tags:
-      - plugin
-  /plugin/{id}/delete:
-    get:
-      consumes:
-      - application/json
-      description: 删除插件
-      parameters:
-      - description: 插件ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Plugin'
-      summary: 删除插件
-      tags:
-      - plugin
-  /plugin/{id}/disable:
-    get:
-      consumes:
-      - application/json
-      description: 禁用插件
-      parameters:
-      - description: 插件ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Plugin'
-      summary: 禁用插件
-      tags:
-      - plugin
-  /plugin/{id}/enable:
-    get:
-      consumes:
-      - application/json
-      description: 启用插件
-      parameters:
-      - description: 插件ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Plugin'
-      summary: 启用插件
-      tags:
-      - plugin
   /plugin/{id}/manifest:
     get:
       consumes:
@@ -1494,164 +1681,55 @@ paths:
       summary: 获取插件详情
       tags:
       - plugin
-    post:
-      consumes:
-      - application/json
-      description: 修改插件详情
-      parameters:
-      - description: 插件ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-plugin_Manifest'
-      summary: 修改插件详情
-      tags:
-      - plugin
-  /plugin/{id}/start:
-    get:
-      consumes:
-      - application/json
-      description: 启动插件
-      parameters:
-      - description: 插件ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Plugin'
-      summary: 启动插件
-      tags:
-      - plugin
-  /plugin/{id}/stop:
-    get:
-      consumes:
-      - application/json
-      description: 停止插件
-      parameters:
-      - description: 插件ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Plugin'
-      summary: 停止插件
-      tags:
-      - plugin
-  /plugin/create:
-    post:
-      consumes:
-      - application/json
-      description: 创建插件
-      parameters:
-      - description: 插件信息
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/types.Plugin'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_Plugin'
-      summary: 创建插件
-      tags:
-      - plugin
-  /plugin/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出插件
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出插件
-      tags:
-      - plugin
-  /plugin/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入插件
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入插件
-      tags:
-      - plugin
   /plugin/list:
     get:
       consumes:
       - application/json
       description: 查询插件
-      parameters:
-      - in: query
-        name: limit
-        type: integer
-      - in: query
-        name: skip
-        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Plugin'
+            $ref: '#/definitions/curd.ReplyList-plugin_Manifest'
       summary: 查询插件
       tags:
       - plugin
-  /plugin/search:
-    post:
+  /plugin/menus:
+    get:
       consumes:
       - application/json
-      description: 查询插件
-      parameters:
-      - description: 查询参数
-        in: body
-        name: search
-        required: true
-        schema:
-          $ref: '#/definitions/curd.ParamSearch'
+      description: 获取插件菜单
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Plugin'
-      summary: 查询插件
+            $ref: '#/definitions/curd.ReplyData-array_plugin_Menu'
+      summary: 获取插件菜单
+      tags:
+      - plugin
+  /plugin/pages/{entry}:
+    get:
+      consumes:
+      - application/json
+      description: 获取插件入口
+      parameters:
+      - description: 模块
+        in: path
+        name: entry
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_plugin_Entry'
+      summary: 获取插件入口
       tags:
       - plugin
   /product/{id}:

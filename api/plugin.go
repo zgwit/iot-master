@@ -27,6 +27,77 @@ func noopPluginList() {}
 // @Router /plugin/{id}/manifest [get]
 func noopPluginManifestGet() {}
 
+// @Summary 获取插件菜单
+// @Schemes
+// @Description 获取插件菜单
+// @Tags plugin
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[[]plugin.Menu] 返回插件信息
+// @Router /plugin/menus [get]
+func menus(ctx *gin.Context) {
+	var menus []*plugin.Menu
+	for _, p := range plugin.GetPlugins() {
+		if p.Menu != nil {
+			menus = append(menus, p.Menu)
+		}
+	}
+	curd.OK(ctx, menus)
+}
+
+// @Summary 获取插件入口
+// @Schemes
+// @Description 获取插件入口
+// @Tags plugin
+// @Param entry path string true "模块"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[[]plugin.Entry] 返回插件信息
+// @Router /plugin/pages/{entry} [get]
+func pages(ctx *gin.Context) {
+	var entries []*plugin.Entry
+	for _, p := range plugin.GetPlugins() {
+		if p.Pages != nil {
+			switch ctx.Param("entry") {
+			case "product_edit":
+				if p.Pages.ProductEdit != nil {
+					entries = append(entries, p.Pages.ProductEdit)
+				}
+			case "product_detail":
+				if p.Pages.ProductDetail != nil {
+					entries = append(entries, p.Pages.ProductDetail)
+				}
+			case "device_edit":
+				if p.Pages.DeviceEdit != nil {
+					entries = append(entries, p.Pages.DeviceEdit)
+				}
+			case "DeviceDetail":
+				if p.Pages.DeviceDetail != nil {
+					entries = append(entries, p.Pages.DeviceDetail)
+				}
+			case "project_edit":
+				if p.Pages.ProjectEdit != nil {
+					entries = append(entries, p.Pages.ProjectEdit)
+				}
+			case "project_detail":
+				if p.Pages.ProjectDetail != nil {
+					entries = append(entries, p.Pages.ProjectDetail)
+				}
+			case "space_edit":
+				if p.Pages.SpaceEdit != nil {
+					entries = append(entries, p.Pages.SpaceEdit)
+				}
+			case "space_detail":
+				if p.Pages.SpaceDetail != nil {
+					entries = append(entries, p.Pages.SpaceDetail)
+				}
+			}
+
+		}
+	}
+	curd.OK(ctx, menus)
+}
+
 func pluginRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", func(ctx *gin.Context) {
@@ -41,4 +112,8 @@ func pluginRouter(app *gin.RouterGroup) {
 		}
 		curd.OK(ctx, p.Manifest)
 	})
+
+	app.GET("/menus", menus)
+
+	app.GET("/pages/:entry", pages)
 }

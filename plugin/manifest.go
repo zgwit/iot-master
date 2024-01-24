@@ -9,9 +9,15 @@ type Manifest struct {
 	Description string   `json:"description,omitempty"` //说明
 	Keywords    []string `json:"keywords,omitempty"`    //关键字
 
-	//前端入口
-	Menus *[]Entry `json:"menus,omitempty"`
-	Pages *Pages   `json:"pages,omitempty"` //子页面入口
+	//菜单入口
+	Menu *Menu `json:"menu,omitempty"`
+
+	//子页面
+	Pages *Pages `json:"pages,omitempty"`
+
+	Process *Process `json:"process,omitempty"`
+
+	//Pages *Pages   `json:"pages,omitempty"` //子页面入口
 
 	//外部插件
 	Type string `json:"type,omitempty"` //类型：内部、应用、[静态页面]
@@ -32,14 +38,29 @@ type Entry struct {
 	Url  string `json:"url,omitempty"`
 }
 
-type PageEntry struct {
-	Detail *Entry `json:"detail,omitempty"`
-	Edit   *Entry `json:"edit,omitempty"`
+type Menu struct {
+	Name  string  `json:"name"`
+	Items []Entry `json:"items"`
+	First bool    `json:"first,omitempty"`
 }
 
 type Pages struct {
-	Product *PageEntry `json:"product,omitempty"`
-	Device  *PageEntry `json:"device,omitempty"`
-	Project *PageEntry `json:"project,omitempty"`
-	Space   *PageEntry `json:"space,omitempty"`
+	ProductEdit   *Entry `json:"product_edit,omitempty"`
+	ProductDetail *Entry `json:"product_detail,omitempty"`
+	DeviceEdit    *Entry `json:"device_edit,omitempty"`
+	DeviceDetail  *Entry `json:"device_detail,omitempty"`
+	ProjectEdit   *Entry `json:"project_edit,omitempty"`
+	ProjectDetail *Entry `json:"project_detail,omitempty"`
+	SpaceEdit     *Entry `json:"space_edit,omitempty"`
+	SpaceDetail   *Entry `json:"space_detail,omitempty"`
+}
+
+type Process struct {
+	Main  string `json:"main"`
+	Delay int    `json:"delay,omitempty"` //延迟启动 s
+}
+
+type PageEntry struct {
+	Detail *Entry `json:"detail,omitempty"`
+	Edit   *Entry `json:"edit,omitempty"`
 }
