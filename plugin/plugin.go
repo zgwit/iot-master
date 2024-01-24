@@ -26,7 +26,7 @@ type Plugin struct {
 	Running bool
 
 	stop    bool
-	Process *os.Process
+	process *os.Process
 }
 
 func (p *Plugin) Start() error {
@@ -36,11 +36,11 @@ func (p *Plugin) Start() error {
 	//addr := fmt.Sprintf(":%d", getPort())
 	//env := p.generateEnv(addr)
 
-	if p.Main == "" {
+	if p.Process == nil {
 		return nil
 	}
 
-	cmd := filepath.Join(viper.GetString("data"), "plugin", p.Id, p.Main)
+	cmd := filepath.Join(viper.GetString("data"), "plugin", p.Id, p.Process.Main)
 	dir := filepath.Join(viper.GetString("data"), "plugin", p.Id)
 
 	//绝对路径
@@ -57,7 +57,7 @@ func (p *Plugin) Start() error {
 		cmd = cmd + ".exe"
 	}
 
-	p.Process, err = os.StartProcess(cmd, []string{p.Id}, &os.ProcAttr{
+	p.process, err = os.StartProcess(cmd, []string{p.Id}, &os.ProcAttr{
 		Dir:   dir,                                   //使用插件目录
 		Files: []*os.File{nil, os.Stdout, os.Stderr}, //TODO 输出到日志文件
 		//Env:   env,
@@ -69,7 +69,7 @@ func (p *Plugin) Start() error {
 
 	//等待结束
 	go func() {
-		state, err := p.Process.Wait()
+		state, err := p.process.Wait()
 		p.Running = false
 		log.Info(state.ExitCode(), err)
 
@@ -93,5 +93,5 @@ func (p *Plugin) Start() error {
 
 func (p *Plugin) Close() error {
 	p.stop = true
-	return p.Process.Kill()
+	return p.process.Kill()
 }

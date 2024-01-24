@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/log"
@@ -41,7 +40,8 @@ func Get(id string) *Plugin {
 }
 
 func Load(id string) error {
-	fn := fmt.Sprintf("%s/plugin/%s/manifest.yaml", viper.GetString("data"), id)
+	//fn := fmt.Sprintf("%s/plugin/%s/manifest.yaml", viper.GetString("data"), id)
+	fn := filepath.Join(viper.GetString("data"), "plugin", id, "manifest.yaml")
 
 	var m Manifest
 	err := lib.LoadYaml(fn, &m)
@@ -53,7 +53,8 @@ func Load(id string) error {
 }
 
 func Store(id string, m *Manifest) error {
-	fn := fmt.Sprintf("%s/plugin/%s/manifest.yaml", viper.GetString("data"), id)
+	//fn := fmt.Sprintf("%s/plugin/%s/manifest.yaml", viper.GetString("data"), id)
+	fn := filepath.Join(viper.GetString("data"), "plugin", id, "manifest.yaml")
 	err := lib.StoreYaml(fn, m)
 	if err != nil {
 		return err

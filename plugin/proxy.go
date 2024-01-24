@@ -20,7 +20,7 @@ func ProxyApp(ctx *gin.Context) {
 			return
 		}
 
-		rp, err := web.CreateReverseProxy(app.Type, app.Addr)
+		rp, err := web.CreateReverseProxy("", app.Addr)
 		if err != nil {
 			_ = ctx.Error(err)
 			return

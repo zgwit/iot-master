@@ -55,47 +55,17 @@ func menus(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[[]plugin.Entry] 返回插件信息
 // @Router /plugin/pages/{entry} [get]
 func pages(ctx *gin.Context) {
+	entry := ctx.Param("entry")
+
 	var entries []*plugin.Entry
 	for _, p := range plugin.GetPlugins() {
 		if p.Pages != nil {
-			switch ctx.Param("entry") {
-			case "product_edit":
-				if p.Pages.ProductEdit != nil {
-					entries = append(entries, p.Pages.ProductEdit)
-				}
-			case "product_detail":
-				if p.Pages.ProductDetail != nil {
-					entries = append(entries, p.Pages.ProductDetail)
-				}
-			case "device_edit":
-				if p.Pages.DeviceEdit != nil {
-					entries = append(entries, p.Pages.DeviceEdit)
-				}
-			case "DeviceDetail":
-				if p.Pages.DeviceDetail != nil {
-					entries = append(entries, p.Pages.DeviceDetail)
-				}
-			case "project_edit":
-				if p.Pages.ProjectEdit != nil {
-					entries = append(entries, p.Pages.ProjectEdit)
-				}
-			case "project_detail":
-				if p.Pages.ProjectDetail != nil {
-					entries = append(entries, p.Pages.ProjectDetail)
-				}
-			case "space_edit":
-				if p.Pages.SpaceEdit != nil {
-					entries = append(entries, p.Pages.SpaceEdit)
-				}
-			case "space_detail":
-				if p.Pages.SpaceDetail != nil {
-					entries = append(entries, p.Pages.SpaceDetail)
-				}
+			if en, ok := p.Pages[entry]; ok {
+				entries = append(entries, en)
 			}
-
 		}
 	}
-	curd.OK(ctx, menus)
+	curd.OK(ctx, entries)
 }
 
 func pluginRouter(app *gin.RouterGroup) {

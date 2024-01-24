@@ -1,10 +1,10 @@
 package product
 
 import (
-	"fmt"
 	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/types"
+	"path/filepath"
 )
 
 type Product struct {
@@ -16,7 +16,8 @@ type Product struct {
 }
 
 func (p *Product) StoreManifest() error {
-	fn := fmt.Sprintf("%s/product/%s/manifest.yaml", viper.GetString("data"), p.Id)
+	//fn := fmt.Sprintf("%s/product/%s/manifest.yaml", viper.GetString("data"), p.Id)
+	fn := filepath.Join(viper.GetString("data"), "product", p.Id, "manifest.yaml")
 	return lib.StoreYaml(fn, p.Manifest)
 }
 
