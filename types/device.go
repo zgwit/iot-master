@@ -10,6 +10,7 @@ type Device struct {
 
 	Gateway string `json:"gateway,omitempty" xorm:"<-"`
 	Product string `json:"product,omitempty" xorm:"<-"`
+	Project string `json:"project,omitempty" xorm:"<-"`
 
 	Name        string             `json:"name"`
 	Description string             `json:"description,omitempty"`
