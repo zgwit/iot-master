@@ -113,3 +113,7 @@ func GetPlugins() []*Manifest {
 	})
 	return ps
 }
+
+func Register(app *Manifest) {
+	plugins.Store(app.Id, &Plugin{Manifest: app})
+}

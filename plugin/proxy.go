@@ -14,7 +14,7 @@ func ProxyApp(ctx *gin.Context) {
 	p := proxies.Load(ctx.Param("app"))
 
 	if p == nil {
-		app := Applications.Load(ctx.Param("app"))
+		app := plugins.Load(ctx.Param("app"))
 		if app == nil {
 			_ = ctx.Error(errors.New("应用未注册"))
 			return
@@ -32,10 +32,4 @@ func ProxyApp(ctx *gin.Context) {
 	p.ServeHTTP(ctx.Writer, ctx.Request)
 
 	ctx.Abort()
-}
-
-var Applications lib.Map[Plugin]
-
-func Register(app *Plugin) {
-	Applications.Store(app.Id, app)
 }
