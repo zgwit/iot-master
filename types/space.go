@@ -7,6 +7,7 @@ type Space struct {
 	Name        string    `json:"name,omitempty"`        //名称
 	Description string    `json:"description,omitempty"` //说明
 	ProjectId   string    `json:"project_id,omitempty" xorm:"index"`
+	Project     string    `json:"project,omitempty" xorm:"<-"`
 	Disabled    bool      `json:"disabled,omitempty"`
 	Created     time.Time `json:"created" xorm:"created"`
 }

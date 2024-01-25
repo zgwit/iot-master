@@ -132,37 +132,18 @@ func noopSpaceStop() {}
 
 func spaceRouter(app *gin.RouterGroup) {
 
-	app.POST("/search", curd.ApiSearchHook[types.Space](func(datum []*types.Space) error {
-		for _, v := range datum {
-			p := space.Get(v.Id)
-			if p != nil {
-				//v.Running = p.Running
-			}
-		}
-		return nil
-	}))
+	app.POST("/search", curd.ApiSearchWith[types.Space]([]*curd.Join{
+		{"project", "project_id", "id", "name", "project"},
+	}, "id", "name", "project_id", "description", "disabled", "created"))
 
-	app.GET("/list", curd.ApiListHook[types.Space](func(datum []*types.Space) error {
-		for _, v := range datum {
-			p := space.Get(v.Id)
-			if p != nil {
-				//v.Running = p.Running
-			}
-		}
-		return nil
-	}))
+	app.GET("/list", curd.ApiList[types.Space]())
+
 	app.POST("/create", curd.ApiCreateHook[types.Space](curd.GenerateKSUID[types.Space](), nil))
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetHook[types.Space](func(m *types.Space) error {
-		p := space.Get(m.Id)
-		if p != nil {
-			//m.Running = p.Running
-		}
-		return nil
-	}))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Space]())
 
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Space](nil, nil,
-		"id", "name", "description", "disabled"))
+		"id", "name", "project_id", "description", "disabled"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Space](nil, nil))
 
