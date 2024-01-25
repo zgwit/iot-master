@@ -1,25 +1,14 @@
 package main
 
 import (
-	"github.com/kardianos/service"
 	master "github.com/zgwit/iot-master/v4"
 	"github.com/zgwit/iot-master/v4/args"
 	"github.com/zgwit/iot-master/v4/build"
 	_ "github.com/zgwit/iot-master/v4/docs"
-	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/service"
 	"github.com/zgwit/iot-master/v4/web"
-	"os"
-	"os/signal"
-	"syscall"
 )
-
-var serviceConfig = &service.Config{
-	Name:        lib.AppName(),
-	DisplayName: "物联大师",
-	Description: "物联网数据中台",
-	Arguments:   nil,
-}
 
 // @title 物联大师接口文档
 // @version 1.0 版本
@@ -33,23 +22,23 @@ func main() {
 	args.Parse()
 
 	//传递参数到服务
-	serviceConfig.Arguments = []string{"-c", args.ConfigPath}
+	//serviceConfig.Arguments = []string{"-c", args.ConfigPath}
 
-	// 构建服务对象
-	program := &Program{}
-	s, err := service.New(program, serviceConfig)
-	if err != nil {
-		log.Fatal(err)
-	}
+	err := service.Register(func() error {
+		err := master.Startup()
+		if err != nil {
+			return err
+		}
+		web.Serve()
+		return nil
+	}, master.Shutdown)
 
-	// 用于记录系统日志
-	logger, err := s.Logger(nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	if args.Uninstall {
-		err = s.Uninstall()
+		err = service.Uninstall()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -58,7 +47,7 @@ func main() {
 	}
 
 	if args.Install {
-		err = s.Install()
+		err = service.Install()
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -66,53 +55,8 @@ func main() {
 		return
 	}
 
-	err = s.Run()
+	err = service.Run()
 	if err != nil {
-		_ = logger.Error(err)
+		log.Error(err)
 	}
-}
-
-type Program struct{}
-
-func (p *Program) Start(s service.Service) error {
-	//log.Println("===开始服务===")
-	go p.run()
-	return nil
-}
-
-func (p *Program) Stop(s service.Service) error {
-	//log.Println("===停止服务===")
-	_ = master.Shutdown()
-	return nil
-}
-
-func (p *Program) run() {
-
-	// 此处编写具体的服务代码
-	hup := make(chan os.Signal, 2)
-	signal.Notify(hup, syscall.SIGHUP)
-	quit := make(chan os.Signal, 2)
-	signal.Notify(quit, os.Interrupt, os.Kill)
-
-	go func() {
-		for {
-			select {
-			case <-hup:
-			case <-quit:
-				//优雅地结束
-				_ = master.Shutdown()
-				//os.Exit(0)
-			}
-		}
-	}()
-
-	//启动
-	err := master.Startup()
-	if err != nil {
-		log.Fatal(err)
-		//return
-	}
-
-	//启动
-	web.Serve()
 }
