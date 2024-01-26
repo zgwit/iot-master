@@ -3363,29 +3363,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/user/password": {
-            "get": {
-                "description": "修改密码",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "修改密码",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_User"
-                        }
-                    }
-                }
-            }
-        },
         "/user/search": {
             "post": {
                 "description": "查询用户",
@@ -3582,6 +3559,52 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-types_User"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}/password": {
+            "post": {
+                "description": "修改密码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "修改密码",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{id}/projects": {
+            "get": {
+                "description": "获取用户的项目列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获取用户的项目列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-array_types_Project"
                         }
                     }
                 }
@@ -3783,6 +3806,20 @@ const docTemplatemaster = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/plugin.Menu"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-array_types_Project": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/types.Project"
                     }
                 },
                 "error": {

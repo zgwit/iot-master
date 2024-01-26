@@ -130,6 +130,15 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-array_types_Project:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.Project'
+        type: array
+      error:
+        type: string
+    type: object
   curd.ReplyData-array_types_ProjectPlugin:
     properties:
       data:
@@ -2984,6 +2993,36 @@ paths:
       summary: 启用用户
       tags:
       - user
+  /user/{id}/password:
+    post:
+      consumes:
+      - application/json
+      description: 修改密码
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改密码
+      tags:
+      - user
+  /user/{id}/projects:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的项目列表
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_types_Project'
+      summary: 获取用户的项目列表
+      tags:
+      - user
   /user/count:
     post:
       consumes:
@@ -3061,21 +3100,6 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-types_User'
       summary: 获取用户信息
-      tags:
-      - user
-  /user/password:
-    get:
-      consumes:
-      - application/json
-      description: 修改密码
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-types_User'
-      summary: 修改密码
       tags:
       - user
   /user/search:

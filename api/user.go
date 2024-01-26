@@ -101,9 +101,19 @@ func noopUserDelete() {}
 // @Tags user
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.User] 返回用户信息
-// @Router /user/password [get]
+// @Success 200 {object} curd.ReplyData[int] 返回用户信息
+// @Router /user/{id}/password [post]
 func noopUserPassword() {}
+
+// @Summary 获取用户的项目列表
+// @Schemes
+// @Description 获取用户的项目列表
+// @Tags user
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[[]types.Project] 返回项目列表
+// @Router /user/{id}/projects [get]
+func noopUserProjects() {}
 
 // @Summary 启用用户
 // @Schemes
@@ -140,7 +150,7 @@ func userRouter(app *gin.RouterGroup) {
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.User]())
 
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.User](nil, nil,
-		"name", "cellphone", "email", "roles", "disabled"))
+		"id", "name", "cellphone", "email", "admin", "disabled"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.User](nil, nil))
 
@@ -149,6 +159,8 @@ func userRouter(app *gin.RouterGroup) {
 	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.User](false, nil, nil))
 
 	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.User](true, nil, nil))
+
+	app.GET("/:id/projects", curd.ParseParamStringId, userProjects)
 
 	app.GET("/export", export.ApiExport("user", "用户"))
 
@@ -186,4 +198,18 @@ func userPassword(ctx *gin.Context) {
 	}
 
 	curd.OK(ctx, nil)
+}
+
+func userProjects(ctx *gin.Context) {
+	id := ctx.GetString("id")
+
+	var projects []*types.Project
+	err := db.Engine.Join("INNER", "project_user", "project_user.project_id=project.id").
+		Where("project_user.user_id=?", id).Find(&projects)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+
+	curd.OK(ctx, projects)
 }
