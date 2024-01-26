@@ -31,15 +31,20 @@ func noopPluginManifestGet() {}
 // @Schemes
 // @Description 获取插件菜单
 // @Tags plugin
+// @Param entry path string true "模块"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]plugin.Menu] 返回插件信息
-// @Router /plugin/menus [get]
+// @Router /plugin/menus/{entry} [get]
 func menus(ctx *gin.Context) {
+	entry := ctx.Param("entry")
+
 	var menus []*plugin.Menu
 	for _, p := range plugin.GetPlugins() {
-		if p.Menu != nil {
-			menus = append(menus, p.Menu)
+		if p.Menus != nil {
+			if en, ok := p.Menus[entry]; ok {
+				menus = append(menus, en)
+			}
 		}
 	}
 	curd.OK(ctx, menus)
@@ -83,7 +88,7 @@ func pluginRouter(app *gin.RouterGroup) {
 		curd.OK(ctx, p.Manifest)
 	})
 
-	app.GET("/menus", menus)
+	app.GET("/menus/:entry", menus)
 
 	app.GET("/pages/:entry", pages)
 }

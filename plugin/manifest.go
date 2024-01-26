@@ -8,7 +8,7 @@ type Manifest struct {
 	Description string `json:"description,omitempty"` //说明
 
 	//菜单入口
-	Menu *Menu `json:"menu,omitempty"`
+	Menus map[string]*Menu `json:"menus,omitempty"` //admin, project
 
 	//子页面
 	Pages map[string]*Entry `json:"pages,omitempty"`

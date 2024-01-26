@@ -352,33 +352,23 @@ definitions:
       id:
         description: ID
         type: string
-      keywords:
-        description: 关键字
-        items:
-          type: string
-        type: array
-      main:
-        description: 入口：程序文件
-        type: string
-      menu:
-        allOf:
-        - $ref: '#/definitions/plugin.Menu'
+      menus:
+        additionalProperties:
+          $ref: '#/definitions/plugin.Menu'
         description: 菜单入口
+        type: object
       name:
         description: 名称
         type: string
       pages:
-        allOf:
-        - $ref: '#/definitions/plugin.Pages'
+        additionalProperties:
+          $ref: '#/definitions/plugin.Entry'
         description: 子页面
+        type: object
       process:
-        $ref: '#/definitions/plugin.Process'
-      type:
-        description: 外部插件
-        type: string
-      url:
-        description: 链接
-        type: string
+        allOf:
+        - $ref: '#/definitions/plugin.Process'
+        description: 外部插件 进程
       version:
         description: 版本 semver.Version
         type: string
@@ -393,25 +383,6 @@ definitions:
         type: array
       name:
         type: string
-    type: object
-  plugin.Pages:
-    properties:
-      device_detail:
-        $ref: '#/definitions/plugin.Entry'
-      device_edit:
-        $ref: '#/definitions/plugin.Entry'
-      product_detail:
-        $ref: '#/definitions/plugin.Entry'
-      product_edit:
-        $ref: '#/definitions/plugin.Entry'
-      project_detail:
-        $ref: '#/definitions/plugin.Entry'
-      project_edit:
-        $ref: '#/definitions/plugin.Entry'
-      space_detail:
-        $ref: '#/definitions/plugin.Entry'
-      space_edit:
-        $ref: '#/definitions/plugin.Entry'
     type: object
   plugin.Process:
     properties:
@@ -576,6 +547,8 @@ definitions:
         type: string
       product_id:
         type: string
+      project:
+        type: string
       project_id:
         type: string
     type: object
@@ -592,6 +565,10 @@ definitions:
       name:
         type: string
       password:
+        type: string
+      project:
+        type: string
+      project_id:
         type: string
       username:
         type: string
@@ -686,6 +663,8 @@ definitions:
         type: string
       name:
         description: 名称
+        type: string
+      project:
         type: string
       project_id:
         type: string
@@ -1696,11 +1675,17 @@ paths:
       summary: 查询插件
       tags:
       - plugin
-  /plugin/menus:
+  /plugin/menus/{entry}:
     get:
       consumes:
       - application/json
       description: 获取插件菜单
+      parameters:
+      - description: 模块
+        in: path
+        name: entry
+        required: true
+        type: string
       produces:
       - application/json
       responses:

@@ -1387,7 +1387,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/plugin/menus": {
+        "/plugin/menus/{entry}": {
             "get": {
                 "description": "获取插件菜单",
                 "consumes": [
@@ -1400,6 +1400,15 @@ const docTemplatemaster = `{
                     "plugin"
                 ],
                 "summary": "获取插件菜单",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "模块",
+                        "name": "entry",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -4124,24 +4133,12 @@ const docTemplatemaster = `{
                     "description": "ID",
                     "type": "string"
                 },
-                "keywords": {
-                    "description": "关键字",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "main": {
-                    "description": "入口：程序文件",
-                    "type": "string"
-                },
-                "menu": {
+                "menus": {
                     "description": "菜单入口",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/plugin.Menu"
-                        }
-                    ]
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/plugin.Menu"
+                    }
                 },
                 "name": {
                     "description": "名称",
@@ -4149,22 +4146,18 @@ const docTemplatemaster = `{
                 },
                 "pages": {
                     "description": "子页面",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/plugin.Pages"
-                        }
-                    ]
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/plugin.Entry"
+                    }
                 },
                 "process": {
-                    "$ref": "#/definitions/plugin.Process"
-                },
-                "type": {
-                    "description": "外部插件",
-                    "type": "string"
-                },
-                "url": {
-                    "description": "链接",
-                    "type": "string"
+                    "description": "外部插件 进程",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/plugin.Process"
+                        }
+                    ]
                 },
                 "version": {
                     "description": "版本 semver.Version",
@@ -4186,35 +4179,6 @@ const docTemplatemaster = `{
                 },
                 "name": {
                     "type": "string"
-                }
-            }
-        },
-        "plugin.Pages": {
-            "type": "object",
-            "properties": {
-                "device_detail": {
-                    "$ref": "#/definitions/plugin.Entry"
-                },
-                "device_edit": {
-                    "$ref": "#/definitions/plugin.Entry"
-                },
-                "product_detail": {
-                    "$ref": "#/definitions/plugin.Entry"
-                },
-                "product_edit": {
-                    "$ref": "#/definitions/plugin.Entry"
-                },
-                "project_detail": {
-                    "$ref": "#/definitions/plugin.Entry"
-                },
-                "project_edit": {
-                    "$ref": "#/definitions/plugin.Entry"
-                },
-                "space_detail": {
-                    "$ref": "#/definitions/plugin.Entry"
-                },
-                "space_edit": {
-                    "$ref": "#/definitions/plugin.Entry"
                 }
             }
         },
@@ -4459,6 +4423,9 @@ const docTemplatemaster = `{
                 "product_id": {
                     "type": "string"
                 },
+                "project": {
+                    "type": "string"
+                },
                 "project_id": {
                     "type": "string"
                 }
@@ -4483,6 +4450,12 @@ const docTemplatemaster = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                },
+                "project": {
+                    "type": "string"
+                },
+                "project_id": {
                     "type": "string"
                 },
                 "username": {
@@ -4620,6 +4593,9 @@ const docTemplatemaster = `{
                 },
                 "name": {
                     "description": "名称",
+                    "type": "string"
+                },
+                "project": {
                     "type": "string"
                 },
                 "project_id": {
