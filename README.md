@@ -68,5 +68,15 @@
 补充：任何组织或个人都可以免费使用或做二次开发，但不得用于商业售卖，如有需求请联系我们。
 
 
-### 官方插件
-[插件库](https://github.com/orgs/iot-master-contrib/repositories)
+### 官方插件 [链接](https://github.com/orgs/iot-master-contrib/repositories)
+
+- [Modbus网关](https://github.com/iot-master-contrib/modbus)
+- [Web组态](https://github.com/iot-master-contrib/scada)
+- [InfluxDB](https://github.com/iot-master-contrib/influxdb)
+- [IP摄像头](https://github.com/iot-master-contrib/ipc)
+- [短信通知](https://github.com/iot-master-contrib/sms)
+- [西门子PLC](https://github.com/iot-master-contrib/s7)
+- [三菱PLC](https://github.com/iot-master-contrib/melsec)
+- [欧姆龙PLC](https://github.com/iot-master-contrib/fins)
+- [DLT645规约](https://github.com/iot-master-contrib/dlt645)
+
