@@ -27,6 +27,29 @@ func projectUserList(ctx *gin.Context) {
 	curd.OK(ctx, pds)
 }
 
+// @Summary 判断项目用户是否存在
+// @Schemes
+// @Description 判断项目用户是否存在
+// @Tags project-user
+// @Param id path int true "项目ID"
+// @Param user path int true "用户ID"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[bool]
+// @Router /project/{id}/user/{user}/exists [get]
+func projectUserExists(ctx *gin.Context) {
+	pd := types.ProjectUser{
+		ProjectId: ctx.Param("id"),
+		UserId:    ctx.Param("user"),
+	}
+	has, err := db.Engine.Exist(&pd)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, has)
+}
+
 // @Summary 绑定项目用户
 // @Schemes
 // @Description 绑定项目用户
@@ -139,6 +162,7 @@ func projectUserUpdate(ctx *gin.Context) {
 
 func projectUserRouter(app *gin.RouterGroup) {
 	app.GET("", projectUserList)
+	app.GET("/:user/exists", projectUserExists)
 	app.GET("/:user/bind", projectUserBind)
 	app.GET("/:user/unbind", projectUserUnbind)
 	app.GET("/:user/disable", projectUserDisable)
