@@ -15,6 +15,7 @@ type Space struct {
 type SpaceDevice struct {
 	SpaceId  string    `json:"space_id" xorm:"pk"`
 	DeviceId string    `json:"device_id" xorm:"pk"`
+	Device   string    `json:"device,omitempty" xorm:"<-"`
 	Name     string    `json:"name,omitempty"` //编程别名
 	Created  time.Time `json:"created" xorm:"created"`
 }

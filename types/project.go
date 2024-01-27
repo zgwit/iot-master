@@ -23,6 +23,7 @@ func (p ProjectExt) TableName() string {
 type ProjectUser struct {
 	ProjectId string    `json:"project_id" xorm:"pk"`
 	UserId    string    `json:"user_id" xorm:"pk"`
+	User      string    `json:"user,omitempty" xorm:"<-"`
 	Admin     bool      `json:"admin,omitempty"`
 	Disabled  bool      `json:"disabled,omitempty"`
 	Created   time.Time `json:"created" xorm:"created"`

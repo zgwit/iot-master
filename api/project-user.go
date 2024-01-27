@@ -19,7 +19,11 @@ import (
 // @Router /project/{id}/user [get]
 func projectUserList(ctx *gin.Context) {
 	var pds []types.ProjectUser
-	err := db.Engine.Where("project_id=?", ctx.Param("id")).Find(&pds)
+	err := db.Engine.
+		Select("project_user.project_id, project_user.user_id, project_user.admin, project_user.disabled, project_user.created, user.name as user").
+		Join("INNER", "user", "user.id=project_user.user_id").
+		Where("project_user.project_id=?", ctx.Param("id")).
+		Find(&pds)
 	if err != nil {
 		curd.Error(ctx, err)
 		return

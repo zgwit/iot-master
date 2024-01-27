@@ -2618,6 +2618,45 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "/project/{id}/user/{user}/exists": {
+            "get": {
+                "description": "判断项目用户是否存在",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "project-user"
+                ],
+                "summary": "判断项目用户是否存在",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "user",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-bool"
+                        }
+                    }
+                }
+            }
+        },
         "/project/{id}/user/{user}/unbind": {
             "get": {
                 "description": "删除项目用户",
@@ -3880,6 +3919,17 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyData-bool": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "boolean"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-int": {
             "type": "object",
             "properties": {
@@ -4607,6 +4657,9 @@ const docTemplatemaster = `{
                 "project_id": {
                     "type": "string"
                 },
+                "user": {
+                    "type": "string"
+                },
                 "user_id": {
                     "type": "string"
                 }
@@ -4644,6 +4697,9 @@ const docTemplatemaster = `{
             "type": "object",
             "properties": {
                 "created": {
+                    "type": "string"
+                },
+                "device": {
                     "type": "string"
                 },
                 "device_id": {

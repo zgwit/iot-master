@@ -19,7 +19,11 @@ import (
 // @Router /space/{id}/device [get]
 func spaceDeviceList(ctx *gin.Context) {
 	var pds []types.SpaceDevice
-	err := db.Engine.Where("space_id=?", ctx.Param("id")).Find(&pds)
+	err := db.Engine.
+		Select("space_device.space_id, space_device.device_id, space_device.name, space_device.created, device.name as device").
+		Join("INNER", "device", "device.id=space_device.device_id").
+		Where("space_device.space_id=?", ctx.Param("id")).
+		Find(&pds)
 	if err != nil {
 		curd.Error(ctx, err)
 		return

@@ -173,6 +173,13 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-bool:
+    properties:
+      data:
+        type: boolean
+      error:
+        type: string
+    type: object
   curd.ReplyData-int:
     properties:
       data:
@@ -656,6 +663,8 @@ definitions:
         type: boolean
       project_id:
         type: string
+      user:
+        type: string
       user_id:
         type: string
     type: object
@@ -681,6 +690,8 @@ definitions:
   types.SpaceDevice:
     properties:
       created:
+        type: string
+      device:
         type: string
       device_id:
         type: string
@@ -2373,6 +2384,32 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-int'
       summary: 启用项目用户
+      tags:
+      - project-user
+  /project/{id}/user/{user}/exists:
+    get:
+      consumes:
+      - application/json
+      description: 判断项目用户是否存在
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户ID
+        in: path
+        name: user
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-bool'
+      summary: 判断项目用户是否存在
       tags:
       - project-user
   /project/{id}/user/{user}/unbind:
