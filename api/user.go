@@ -141,6 +141,8 @@ func userRouter(app *gin.RouterGroup) {
 
 	app.GET("/me", userMe)
 
+	app.POST("/count", curd.ApiCount[types.User]())
+
 	app.POST("/search", curd.ApiSearch[types.User]())
 
 	app.GET("/list", curd.ApiList[types.User]())

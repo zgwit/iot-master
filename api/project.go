@@ -132,6 +132,8 @@ func noopProjectStop() {}
 
 func projectRouter(app *gin.RouterGroup) {
 
+	app.POST("/count", curd.ApiCount[types.Project]())
+
 	app.POST("/search", curd.ApiSearchHook[types.Project](func(datum []*types.Project) error {
 		for _, v := range datum {
 			p := project.Get(v.Id)
