@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/iot-master-contrib/webui"
 	master "github.com/zgwit/iot-master/v4"
 	"github.com/zgwit/iot-master/v4/args"
 	"github.com/zgwit/iot-master/v4/build"

@@ -1,7 +1,6 @@
 package master
 
 import (
-	"embed"
 	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/config"
@@ -9,11 +8,7 @@ import (
 	"github.com/zgwit/iot-master/v4/internal"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/web"
-	"net/http"
 )
-
-//go:embed all:www
-var wwwFiles embed.FS
 
 // @title 物联大师接口文档
 // @version 4.0 版本
@@ -53,25 +48,8 @@ func Startup() error {
 	//web.Engine.Static("/static", "static")
 	web.Engine.Static("/attach", "attach")
 
-	//前端
-	web.Static.Put("", http.FS(wwwFiles), "www", "index.html")
-
-	//监听插件
-	//mqtt.Subscribe[types.App]("master/register", func(topic string, a *types.App) {
-	//	log.Info("app register ", a.id, " ", a.name, " ", a.Type, " ", a.Address)
-	//	plugin.Applications.Store(a.id, a)
-	//
-	//	//插件反向代理
-	//	engine.Any("/app/"+a.id+"/*path", func(ctx *gin.Context) {
-	//		rp, err := web.CreateReverseProxy(a.Type, a.Address)
-	//		if err != nil {
-	//			_ = ctx.Error(err)
-	//			return
-	//		}
-	//		rp.ServeHTTP(ctx.Writer, ctx.Request)
-	//		ctx.Abort()
-	//	})
-	//})
+	//前端 移入子工程 github.com/iot-master-contrib/webui
+	//web.Static.Put("", http.FS(wwwFiles), "www", "index.html")
 
 	return nil
 }
