@@ -9,6 +9,7 @@ require (
 	github.com/gin-contrib/cors v1.5.0
 	github.com/gin-contrib/gzip v0.0.6
 	github.com/gin-contrib/sessions v0.0.5
+	github.com/gin-gonic/autotls v0.0.5
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/golang-jwt/jwt/v4 v4.5.0

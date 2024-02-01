@@ -110,7 +110,7 @@ func _RegisterFS(fs http.FileSystem, prefix, index string) {
 	})
 }
 
-func Serve() {
+func Serve() error {
 
 	//静态文件
 	tm := time.Now()
@@ -134,23 +134,20 @@ func Serve() {
 		}
 	})
 
-	go ServeHTTP()
-
 	https := config.GetString(MODULE, "https")
 
 	if https == "TLS" {
-		go ServeTLS()
+		return ServeTLS()
 	} else if https == "LetsEncrypt" {
-		go ServeLetsEncrypt()
+		return ServeLetsEncrypt()
+	} else {
+		return ServeHTTP()
 	}
 }
 
-func ServeHTTP() {
+func ServeHTTP() error {
 	port := config.GetInt(MODULE, "port")
 	addr := ":" + strconv.Itoa(port)
-	log.Info("Web Serve", addr)
-	err := Engine.Run(addr)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Info("Web server", addr)
+	return Engine.Run(addr)
 }

@@ -30,10 +30,8 @@ func main() {
 		if err != nil {
 			return err
 		}
-		web.Serve()
-		return nil
+		return web.Serve()
 	}, master.Shutdown)
-
 	if err != nil {
 		log.Fatal(err)
 	}
