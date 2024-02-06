@@ -26,14 +26,15 @@ type Menu struct {
 }
 
 type MenuItem struct {
-	Name string `json:"name,omitempty"`
-	Url  string `json:"url,omitempty"`
+	Name       string `json:"name,omitempty"`
+	Url        string `json:"url,omitempty"`
+	Standalone string `json:"standalone,omitempty"` //独立页面，弹窗显示
 }
 
 type Page struct {
 	Name   string   `json:"name,omitempty"`
 	Url    string   `json:"url,omitempty"`
-	Select []string `json:"select,omitempty"`
+	Select []string `json:"select,omitempty"` //页面选择器，比如：modbus, s7 ...
 }
 
 type Process struct {
