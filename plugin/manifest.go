@@ -28,7 +28,7 @@ type Menu struct {
 type MenuItem struct {
 	Name       string `json:"name,omitempty"`
 	Url        string `json:"url,omitempty"`
-	Standalone string `json:"standalone,omitempty"` //独立页面，弹窗显示
+	Standalone bool   `json:"standalone,omitempty"` //独立页面，弹窗显示
 }
 
 type Page struct {
