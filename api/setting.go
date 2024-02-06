@@ -17,7 +17,7 @@ import (
 // @Success 200 {object} map[string]any 返回配置
 // @Router /setting/:module [get]
 func settingGet(ctx *gin.Context) {
-	module := ctx.GetString("module")
+	module := ctx.Param("module")
 	curd.OK(ctx, viper.GetStringMap(module))
 }
 
@@ -32,7 +32,7 @@ func settingGet(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /setting/:module [post]
 func settingSet(ctx *gin.Context) {
-	module := ctx.GetString("module")
+	module := ctx.Param("module")
 
 	var conf map[string]any
 	err := ctx.ShouldBindJSON(&conf)
