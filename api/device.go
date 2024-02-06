@@ -171,7 +171,7 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[types.Device]())
 
-	app.POST("/create", curd.ApiCreateHook[types.Device](curd.GenerateKSUID[types.Device](), nil))
+	app.POST("/create", curd.ApiCreateHook[types.Device](curd.GenerateID[types.Device](), nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Device]())
 

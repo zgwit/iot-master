@@ -16,5 +16,6 @@ func init() {
 	config.Register(MODULE, "key", "")
 	config.Register(MODULE, "hosts", []string{})
 	config.Register(MODULE, "email", "")
+	config.Register(MODULE, "id", "xid")
 
 }

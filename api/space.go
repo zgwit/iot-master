@@ -140,7 +140,7 @@ func spaceRouter(app *gin.RouterGroup) {
 
 	app.GET("/list", curd.ApiList[types.Space]())
 
-	app.POST("/create", curd.ApiCreateHook[types.Space](curd.GenerateKSUID[types.Space](), nil))
+	app.POST("/create", curd.ApiCreateHook[types.Space](curd.GenerateID[types.Space](), nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Space]())
 

@@ -136,7 +136,7 @@ func gatewayRouter(app *gin.RouterGroup) {
 		{"project", "project_id", "id", "name", "project"},
 	}, "id", "name", "project_id", "disabled", "created"))
 	app.GET("/list", curd.ApiList[types.Gateway]())
-	app.POST("/create", curd.ApiCreateHook[types.Gateway](curd.GenerateKSUID[types.Gateway](), nil))
+	app.POST("/create", curd.ApiCreateHook[types.Gateway](curd.GenerateID[types.Gateway](), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Gateway]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Gateway](nil, nil,
 		"id", "name", "description", "project_id", "username", "password", "disabled"))

@@ -153,7 +153,7 @@ func projectRouter(app *gin.RouterGroup) {
 		}
 		return nil
 	}))
-	app.POST("/create", curd.ApiCreateHook[types.Project](curd.GenerateKSUID[types.Project](), nil))
+	app.POST("/create", curd.ApiCreateHook[types.Project](curd.GenerateID[types.Project](), nil))
 
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetHook[types.Project](func(m *types.Project) error {
 		p := project.Get(m.Id)

@@ -57,12 +57,12 @@ func menus(ctx *gin.Context) {
 // @Param entry path string true "模块"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[[]plugin.Entry] 返回插件信息
+// @Success 200 {object} curd.ReplyData[[]plugin.Page] 返回插件信息
 // @Router /plugin/pages/{entry} [get]
 func pages(ctx *gin.Context) {
 	entry := ctx.Param("entry")
 
-	var entries []*plugin.Entry
+	var entries []*plugin.Page
 	for _, p := range plugin.GetPlugins() {
 		if p.Pages != nil {
 			if en, ok := p.Pages[entry]; ok {

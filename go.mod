@@ -18,9 +18,11 @@ require (
 	github.com/iot-master-contrib/webui v1.0.1
 	github.com/kardianos/service v1.2.2
 	github.com/lib/pq v1.10.9
+	github.com/lithammer/shortuuid/v4 v4.0.0
 	github.com/mochi-mqtt/server/v2 v2.4.5
 	github.com/panjf2000/ants/v2 v2.9.0
 	github.com/robfig/cron/v3 v3.0.1
+	github.com/rs/xid v1.5.0
 	github.com/segmentio/ksuid v1.0.4
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.18.2
@@ -67,7 +69,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
-	github.com/rs/xid v1.5.0 // indirect
 	github.com/sagikazarmark/locafero v0.4.0 // indirect
 	github.com/sagikazarmark/slog-shim v0.1.0 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
