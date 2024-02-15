@@ -3,7 +3,7 @@ package plugin
 import (
 	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/lib"
-	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pkg/log"
 	"os"
 	"path/filepath"
 )

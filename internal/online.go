@@ -2,8 +2,8 @@ package internal
 
 import (
 	"github.com/zgwit/iot-master/v4/device"
-	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/mqtt"
+	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/pkg/mqtt"
 	"strings"
 )
 

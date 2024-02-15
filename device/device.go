@@ -3,9 +3,9 @@ package device
 import (
 	"github.com/zgwit/iot-master/v4/aggregator"
 	"github.com/zgwit/iot-master/v4/alarm"
-	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/event"
-	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/pkg/event"
+	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/types"
 	"time"

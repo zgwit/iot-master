@@ -2,8 +2,8 @@ package pool
 
 import (
 	"github.com/panjf2000/ants/v2"
-	"github.com/zgwit/iot-master/v4/config"
-	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pkg/config"
+	"github.com/zgwit/iot-master/v4/pkg/log"
 )
 
 var Pool *ants.Pool

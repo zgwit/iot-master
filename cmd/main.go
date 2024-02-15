@@ -4,10 +4,10 @@ import (
 	_ "github.com/iot-master-contrib/webui"
 	master "github.com/zgwit/iot-master/v4"
 	"github.com/zgwit/iot-master/v4/args"
-	"github.com/zgwit/iot-master/v4/build"
 	_ "github.com/zgwit/iot-master/v4/docs"
-	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/service"
+	"github.com/zgwit/iot-master/v4/pkg/build"
+	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/pkg/service"
 	"github.com/zgwit/iot-master/v4/web"
 )
 

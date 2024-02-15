@@ -3,9 +3,9 @@ package mqtt
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/v4/config"
-	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/pool"
+	"github.com/zgwit/iot-master/v4/pkg/config"
+	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/pkg/pool"
 )
 
 var Client paho.Client

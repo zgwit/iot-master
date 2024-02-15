@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"github.com/zgwit/iot-master/v4/config"
+	"github.com/zgwit/iot-master/v4/pkg/config"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
 )

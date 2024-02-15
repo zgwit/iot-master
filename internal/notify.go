@@ -3,9 +3,9 @@ package internal
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/v4/alarm"
-	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/payload"
+	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/pkg/mqtt"
 )
 
 type sub struct {

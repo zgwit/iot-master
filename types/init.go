@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/zgwit/iot-master/v4/db"
+	"github.com/zgwit/iot-master/v4/pkg/db"
 )
 
 func init() {

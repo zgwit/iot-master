@@ -2,7 +2,7 @@ package args
 
 import (
 	"flag"
-	"github.com/zgwit/iot-master/v4/build"
+	"github.com/zgwit/iot-master/v4/pkg/build"
 	"os"
 )
 

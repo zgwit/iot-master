@@ -3,10 +3,10 @@ package master
 import (
 	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/broker"
-	"github.com/zgwit/iot-master/v4/config"
 	_ "github.com/zgwit/iot-master/v4/docs"
 	"github.com/zgwit/iot-master/v4/internal"
-	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pkg/config"
+	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/web"
 )
 

@@ -2,8 +2,8 @@ package device
 
 import (
 	"fmt"
-	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/lib"
+	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/types"
 )

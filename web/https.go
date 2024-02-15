@@ -2,8 +2,8 @@ package web
 
 import (
 	"github.com/gin-gonic/autotls"
-	"github.com/zgwit/iot-master/v4/config"
-	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pkg/config"
+	"github.com/zgwit/iot-master/v4/pkg/log"
 	"golang.org/x/crypto/acme/autocert"
 )
 
