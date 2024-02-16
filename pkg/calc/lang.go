@@ -6,6 +6,8 @@ import (
 	"math"
 )
 
+type Expression gval.Evaluable
+
 func toFloat64(val interface{}) float64 {
 	switch x := val.(type) {
 	case float32:
@@ -54,7 +56,7 @@ func tarFunc2(fun func(x, y float64) float64) func(x, y interface{}) float64 {
 	}
 }
 
-//添加了数据函数的gval
+// 添加了数据函数的gval
 var lang = gval.Full(
 	gval.Constant("E", math.E),
 	gval.Constant("LN10", math.Ln10),

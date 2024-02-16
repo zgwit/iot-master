@@ -40,7 +40,7 @@ func subscribeOnline() {
 		//		Title:    "离线",
 		//		Level:    3,
 		//	},
-		//	Product: dev.product.Name,
+		//	Product: dev.product.Assign,
 		//	Device:  dev.name,
 		//}
 		//_, err = db.Engine.Insert(&al.Alarm)
