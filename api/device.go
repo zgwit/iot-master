@@ -155,7 +155,7 @@ func deviceRouter(app *gin.RouterGroup) {
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Device]())
 
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Device](nil, nil,
-		"id", "gateway_id", "product_id", "project_id", "type", "name", "description", "parameters", "disabled"))
+		"id", "gateway_id", "product_id", "product_version", "project_id", "type", "name", "description", "parameters", "disabled"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Device](nil, nil))
 

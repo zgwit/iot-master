@@ -3794,6 +3794,9 @@ const docTemplatemaster = `{
                 "product_id": {
                     "type": "string"
                 },
+                "product_version": {
+                    "type": "string"
+                },
                 "project": {
                     "type": "string"
                 },

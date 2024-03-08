@@ -8,6 +8,8 @@ type Device struct {
 	ProductId string `json:"product_id,omitempty" xorm:"index"`
 	ProjectId string `json:"project_id,omitempty" xorm:"index"`
 
+	ProductVersion string `json:"product_version,omitempty"`
+
 	Gateway string `json:"gateway,omitempty" xorm:"<-"`
 	Product string `json:"product,omitempty" xorm:"<-"`
 	Project string `json:"project,omitempty" xorm:"<-"`
