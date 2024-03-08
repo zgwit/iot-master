@@ -106,27 +106,6 @@ func noopGatewayEnable() {}
 // @Router /gateway/{id}/disable [get]
 func noopGatewayDisable() {}
 
-// @Summary 导出网关
-// @Schemes
-// @Description 导出网关
-// @Tags gateway
-// @Accept json
-// @Produce octet-stream
-// @Success 200 {object} curd.ReplyList[types.Gateway] 返回压缩包
-// @Router /gateway/export [get]
-func noopGatewayExport() {}
-
-// @Summary 导入网关
-// @Schemes
-// @Description 导入网关
-// @Tags gateway
-// @Param file formData file true "压缩包"
-// @Accept mpfd
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int64] 返回网关数量
-// @Router /gateway/import [post]
-func noopGatewayImport() {}
-
 func gatewayRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[types.Gateway]())

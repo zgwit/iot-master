@@ -873,38 +873,6 @@ paths:
       summary: 创建设备
       tags:
       - device
-  /device/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出设备
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出设备
-      tags:
-      - device
-  /device/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入设备
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入设备
-      tags:
-      - device
   /device/list:
     get:
       consumes:
@@ -1122,42 +1090,6 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-types_Gateway'
       summary: 创建网关
-      tags:
-      - gateway
-  /gateway/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出网关
-      produces:
-      - application/octet-stream
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyList-types_Gateway'
-      summary: 导出网关
-      tags:
-      - gateway
-  /gateway/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入网关
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入网关
       tags:
       - gateway
   /gateway/list:
@@ -1386,27 +1318,6 @@ paths:
       summary: 删除产品
       tags:
       - product
-  /product/{id}/version:
-    get:
-      consumes:
-      - application/json
-      description: 产品版本列表
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_ProductVersion'
-      summary: 产品版本列表
-      tags:
-      - product-version
   /product/{id}/version/{version}:
     post:
       consumes:
@@ -1491,6 +1402,27 @@ paths:
       summary: 创建产品版本
       tags:
       - product-version
+  /product/{id}/version/list:
+    get:
+      consumes:
+      - application/json
+      description: 产品版本列表
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_types_ProductVersion'
+      summary: 产品版本列表
+      tags:
+      - product-version
   /product/count:
     post:
       consumes:
@@ -1533,38 +1465,6 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-types_Product'
       summary: 创建产品
-      tags:
-      - product
-  /product/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出产品
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出产品
-      tags:
-      - product
-  /product/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入产品
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入产品
       tags:
       - product
   /product/list:
@@ -1701,27 +1601,6 @@ paths:
       summary: 启用项目
       tags:
       - project
-  /project/{id}/plugin:
-    get:
-      consumes:
-      - application/json
-      description: 项目插件列表
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_ProjectPlugin'
-      summary: 项目插件列表
-      tags:
-      - project-plugin
   /project/{id}/plugin/{plugin}:
     post:
       consumes:
@@ -1858,6 +1737,27 @@ paths:
       summary: 删除项目插件
       tags:
       - project-plugin
+  /project/{id}/plugin/list:
+    get:
+      consumes:
+      - application/json
+      description: 项目插件列表
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_types_ProjectPlugin'
+      summary: 项目插件列表
+      tags:
+      - project-plugin
   /project/{id}/start:
     get:
       consumes:
@@ -1900,27 +1800,6 @@ paths:
       summary: 停止项目
       tags:
       - project
-  /project/{id}/user:
-    get:
-      consumes:
-      - application/json
-      description: 项目用户列表
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_ProjectUser'
-      summary: 项目用户列表
-      tags:
-      - project-user
   /project/{id}/user/{user}:
     post:
       consumes:
@@ -2083,6 +1962,27 @@ paths:
       summary: 删除项目用户
       tags:
       - project-user
+  /project/{id}/user/list:
+    get:
+      consumes:
+      - application/json
+      description: 项目用户列表
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_types_ProjectUser'
+      summary: 项目用户列表
+      tags:
+      - project-user
   /project/create:
     post:
       consumes:
@@ -2103,38 +2003,6 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-types_Project'
       summary: 创建项目
-      tags:
-      - project
-  /project/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出项目
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出项目
-      tags:
-      - project
-  /project/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入项目
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入项目
       tags:
       - project
   /project/list:
@@ -2278,27 +2146,6 @@ paths:
       summary: 删除空间
       tags:
       - space
-  /space/{id}/device:
-    get:
-      consumes:
-      - application/json
-      description: 空间设备列表
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_SpaceDevice'
-      summary: 空间设备列表
-      tags:
-      - space-device
   /space/{id}/device/{device}:
     post:
       consumes:
@@ -2381,6 +2228,27 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-int'
       summary: 删除空间设备
+      tags:
+      - space-device
+  /space/{id}/device/list:
+    get:
+      consumes:
+      - application/json
+      description: 空间设备列表
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_types_SpaceDevice'
+      summary: 空间设备列表
       tags:
       - space-device
   /space/{id}/disable:
@@ -2487,38 +2355,6 @@ paths:
           schema:
             $ref: '#/definitions/curd.ReplyData-types_Space'
       summary: 创建空间
-      tags:
-      - space
-  /space/export:
-    get:
-      consumes:
-      - application/json
-      description: 导出空间
-      produces:
-      - application/octet-stream
-      responses: {}
-      summary: 导出空间
-      tags:
-      - space
-  /space/import:
-    post:
-      consumes:
-      - multipart/form-data
-      description: 导入空间
-      parameters:
-      - description: 压缩包
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int64'
-      summary: 导入空间
       tags:
       - space
   /space/list:

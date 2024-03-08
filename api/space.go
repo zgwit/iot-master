@@ -64,26 +64,6 @@ func noopSpaceUpdate() {}
 // @Router /space/{id}/delete [get]
 func noopSpaceDelete() {}
 
-// @Summary 导出空间
-// @Schemes
-// @Description 导出空间
-// @Tags space
-// @Accept json
-// @Produce octet-stream
-// @Router /space/export [get]
-func noopSpaceExport() {}
-
-// @Summary 导入空间
-// @Schemes
-// @Description 导入空间
-// @Tags space
-// @Param file formData file true "压缩包"
-// @Accept mpfd
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int64] 返回空间数量
-// @Router /space/import [post]
-func noopSpaceImport() {}
-
 // @Summary 启用空间
 // @Schemes
 // @Description 启用空间

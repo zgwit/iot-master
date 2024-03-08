@@ -296,54 +296,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/device/export": {
-            "get": {
-                "description": "导出设备",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "device"
-                ],
-                "summary": "导出设备",
-                "responses": {}
-            }
-        },
-        "/device/import": {
-            "post": {
-                "description": "导入设备",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "device"
-                ],
-                "summary": "导入设备",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "压缩包",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
         "/device/list": {
             "get": {
                 "description": "查询设备",
@@ -675,61 +627,6 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-types_Gateway"
-                        }
-                    }
-                }
-            }
-        },
-        "/gateway/export": {
-            "get": {
-                "description": "导出网关",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "gateway"
-                ],
-                "summary": "导出网关",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Gateway"
-                        }
-                    }
-                }
-            }
-        },
-        "/gateway/import": {
-            "post": {
-                "description": "导入网关",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "gateway"
-                ],
-                "summary": "导入网关",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "压缩包",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
                         }
                     }
                 }
@@ -1213,54 +1110,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/product/export": {
-            "get": {
-                "description": "导出产品",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "product"
-                ],
-                "summary": "导出产品",
-                "responses": {}
-            }
-        },
-        "/product/import": {
-            "post": {
-                "description": "导入产品",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "product"
-                ],
-                "summary": "导入产品",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "压缩包",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
         "/product/list": {
             "get": {
                 "description": "查询产品",
@@ -1433,38 +1282,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/product/{id}/version": {
-            "get": {
-                "description": "产品版本列表",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "product-version"
-                ],
-                "summary": "产品版本列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-array_types_ProductVersion"
-                        }
-                    }
-                }
-            }
-        },
         "/product/{id}/version/create": {
             "post": {
                 "description": "创建产品版本",
@@ -1499,6 +1316,38 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{id}/version/list": {
+            "get": {
+                "description": "产品版本列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product-version"
+                ],
+                "summary": "产品版本列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-array_types_ProductVersion"
                         }
                     }
                 }
@@ -1620,54 +1469,6 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-types_Project"
-                        }
-                    }
-                }
-            }
-        },
-        "/project/export": {
-            "get": {
-                "description": "导出项目",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "project"
-                ],
-                "summary": "导出项目",
-                "responses": {}
-            }
-        },
-        "/project/import": {
-            "post": {
-                "description": "导入项目",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project"
-                ],
-                "summary": "导入项目",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "压缩包",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
                         }
                     }
                 }
@@ -1879,7 +1680,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/project/{id}/plugin": {
+        "/project/{id}/plugin/list": {
             "get": {
                 "description": "项目插件列表",
                 "consumes": [
@@ -2179,7 +1980,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/project/{id}/user": {
+        "/project/{id}/user/list": {
             "get": {
                 "description": "项目用户列表",
                 "consumes": [
@@ -2561,54 +2362,6 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/space/export": {
-            "get": {
-                "description": "导出空间",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/octet-stream"
-                ],
-                "tags": [
-                    "space"
-                ],
-                "summary": "导出空间",
-                "responses": {}
-            }
-        },
-        "/space/import": {
-            "post": {
-                "description": "导入空间",
-                "consumes": [
-                    "multipart/form-data"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "space"
-                ],
-                "summary": "导入空间",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "压缩包",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int64"
-                        }
-                    }
-                }
-            }
-        },
         "/space/list": {
             "get": {
                 "description": "查询空间",
@@ -2751,7 +2504,7 @@ const docTemplatemaster = `{
                 }
             }
         },
-        "/space/{id}/device": {
+        "/space/{id}/device/list": {
             "get": {
                 "description": "空间设备列表",
                 "consumes": [

@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.ProductVersion] 返回产品版本信息
-// @Router /product/{id}/version [get]
+// @Router /product/{id}/version/list [get]
 func productVersionList(ctx *gin.Context) {
 }
 

@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.SpaceDevice] 返回空间设备信息
-// @Router /space/{id}/device [get]
+// @Router /space/{id}/device/list [get]
 func spaceDeviceList(ctx *gin.Context) {
 	var pds []types.SpaceDevice
 	err := db.Engine.
@@ -102,7 +102,7 @@ func spaceDeviceUpdate(ctx *gin.Context) {
 }
 
 func spaceDeviceRouter(app *gin.RouterGroup) {
-	app.GET("", spaceDeviceList)
+	app.GET("/list", spaceDeviceList)
 	app.GET("/:device/bind", spaceDeviceBind)
 	app.GET("/:device/unbind", spaceDeviceUnbind)
 	app.POST("/:device", spaceDeviceUpdate)

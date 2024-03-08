@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.ProjectPlugin] 返回项目插件信息
-// @Router /project/{id}/plugin [get]
+// @Router /project/{id}/plugin/list [get]
 func projectPluginList(ctx *gin.Context) {
 	var pds []types.ProjectPlugin
 	err := db.Engine.Where("project_id=?", ctx.Param("id")).Find(&pds)
@@ -138,7 +138,7 @@ func projectPluginUpdate(ctx *gin.Context) {
 }
 
 func projectPluginRouter(app *gin.RouterGroup) {
-	app.GET("", projectPluginList)
+	app.GET("/list", projectPluginList)
 	app.GET("/:plugin/bind", projectPluginBind)
 	app.GET("/:plugin/unbind", projectPluginUnbind)
 	app.GET("/:plugin/disable", projectPluginDisable)

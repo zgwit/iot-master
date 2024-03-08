@@ -64,26 +64,6 @@ func noopProjectUpdate() {}
 // @Router /project/{id}/delete [get]
 func noopProjectDelete() {}
 
-// @Summary 导出项目
-// @Schemes
-// @Description 导出项目
-// @Tags project
-// @Accept json
-// @Produce octet-stream
-// @Router /project/export [get]
-func noopProjectExport() {}
-
-// @Summary 导入项目
-// @Schemes
-// @Description 导入项目
-// @Tags project
-// @Param file formData file true "压缩包"
-// @Accept mpfd
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int64] 返回项目数量
-// @Router /project/import [post]
-func noopProjectImport() {}
-
 // @Summary 启用项目
 // @Schemes
 // @Description 启用项目

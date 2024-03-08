@@ -84,26 +84,6 @@ func noopProductGet() {}
 // @Router /product/{id}/delete [get]
 func noopProductDelete() {}
 
-// @Summary 导出产品
-// @Schemes
-// @Description 导出产品
-// @Tags product
-// @Accept json
-// @Produce octet-stream
-// @Router /product/export [get]
-func noopProductExport() {}
-
-// @Summary 导入产品
-// @Schemes
-// @Description 导入产品
-// @Tags product
-// @Param file formData file true "压缩包"
-// @Accept mpfd
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int64] 返回产品数量
-// @Router /product/import [post]
-func noopProductImport() {}
-
 func productRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[types.Product]())

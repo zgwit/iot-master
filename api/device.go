@@ -86,26 +86,6 @@ func noopDeviceUpdate() {}
 // @Router /device/{id}/delete [get]
 func noopDeviceDelete() {}
 
-// @Summary 导出设备
-// @Schemes
-// @Description 导出设备
-// @Tags device
-// @Accept json
-// @Produce octet-stream
-// @Router /device/export [get]
-func noopDeviceExport() {}
-
-// @Summary 导入设备
-// @Schemes
-// @Description 导入设备
-// @Tags device
-// @Param file formData file true "压缩包"
-// @Accept mpfd
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int64] 返回设备数量
-// @Router /device/import [post]
-func noopDeviceImport() {}
-
 // @Summary 设备变量
 // @Schemes
 // @Description 设备变量

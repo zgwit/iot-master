@@ -16,7 +16,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.ProjectUser] 返回项目用户信息
-// @Router /project/{id}/user [get]
+// @Router /project/{id}/user/list [get]
 func projectUserList(ctx *gin.Context) {
 	var pds []types.ProjectUser
 	err := db.Engine.
@@ -165,7 +165,7 @@ func projectUserUpdate(ctx *gin.Context) {
 }
 
 func projectUserRouter(app *gin.RouterGroup) {
-	app.GET("", projectUserList)
+	app.GET("/list", projectUserList)
 	app.GET("/:user/exists", projectUserExists)
 	app.GET("/:user/bind", projectUserBind)
 	app.GET("/:user/unbind", projectUserUnbind)
