@@ -146,7 +146,7 @@ func deviceRouter(app *gin.RouterGroup) {
 		{"project", "project_id", "id", "name", "project"},
 		{"product", "product_id", "id", "name", "product"},
 		{"gateway", "gateway_id", "id", "name", "gateway"},
-	}, "id", "name", "project_id", "product_id", "gateway_id", "disabled", "created"))
+	}, "id", "name", "project_id", "product_id", "product_version", "gateway_id", "disabled", "created"))
 
 	app.GET("/list", curd.ApiList[types.Device]())
 
