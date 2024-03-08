@@ -5,7 +5,6 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
-	"github.com/zgwit/iot-master/v4/web/export"
 )
 
 // @Summary 获取用户信息
@@ -163,10 +162,6 @@ func userRouter(app *gin.RouterGroup) {
 	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.User](true, nil, nil))
 
 	app.GET("/:id/projects", curd.ParseParamStringId, userProjects)
-
-	app.GET("/export", export.ApiExport("user", "用户"))
-
-	app.POST("/import", export.ApiImport("user"))
 
 }
 

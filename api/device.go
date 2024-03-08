@@ -6,7 +6,6 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
-	"github.com/zgwit/iot-master/v4/web/export"
 )
 
 // @Summary 查询设备数量
@@ -179,10 +178,6 @@ func deviceRouter(app *gin.RouterGroup) {
 		"id", "gateway_id", "product_id", "project_id", "type", "name", "description", "parameters", "disabled"))
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Device](nil, nil))
-
-	app.GET("/export", export.ApiExport("device", "设备"))
-
-	app.POST("/import", export.ApiImport("device"))
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Device](true, nil, nil))
 

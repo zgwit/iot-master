@@ -66,7 +66,7 @@ func (body *ParamSearch) ToQuery() *xorm.Session {
 			}
 		}
 	} else {
-		op.Desc("id")
+		op.Desc("created")
 	}
 
 	return op
@@ -122,7 +122,7 @@ func (body *ParamSearch) ToJoinQuery(table string) *xorm.Session {
 			}
 		}
 	} else {
-		op.Desc(table + "." + "id")
+		op.Desc(table + "." + "created")
 	}
 
 	return op
@@ -164,11 +164,22 @@ type ParamList struct {
 	Limit int `form:"limit" json:"limit"`
 }
 
+func (body *ParamList) BindQuery(ctx *gin.Context) error {
+	err := ctx.ShouldBindQuery(&body)
+	if err != nil {
+		return err
+	}
+	if body.Limit < 1 {
+		body.Limit = 20
+	}
+	return nil
+}
+
 func (body *ParamList) ToQuery() *xorm.Session {
 	if body.Limit < 1 {
 		body.Limit = 20
 	}
 	op := db.Engine.Limit(body.Limit, body.Skip)
-	op.Desc("id")
+	op.Desc("created")
 	return op
 }

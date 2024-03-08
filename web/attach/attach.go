@@ -2,6 +2,7 @@ package attach
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/web/curd"
 	"io"
 	"mime"
@@ -27,19 +28,18 @@ type MoveBody struct {
 	Path string `json:"path,omitempty"`
 }
 
-// @Summary 查询附件
-// @Schemes
-// @Description 查询附件
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[[]attachInfo] 返回插件信息
-// @Router /attach/list/{name} [get]
-func ApiList(root string) gin.HandlerFunc {
+func getParams(ctx *gin.Context, params []string) []string {
+	var ps []string
+	for _, p := range params {
+		ps = append(ps, ctx.Param(p))
+	}
+	return ps
+}
+
+func ApiList(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//列出目录
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
 		files, err := os.ReadDir(filename)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -65,19 +65,10 @@ func ApiList(root string) gin.HandlerFunc {
 	}
 }
 
-// @Summary 查询附件信息
-// @Schemes
-// @Description 查询附件信息
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[attachInfo] 返回插件信息
-// @Router /attach/info/{name} [get]
-func ApiInfo(root string) gin.HandlerFunc {
+func ApiInfo(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//列出目录
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
 		info, err := os.Stat(filename)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -94,18 +85,9 @@ func ApiInfo(root string) gin.HandlerFunc {
 	}
 }
 
-// @Summary 上传附件
-// @Schemes
-// @Description 上传附件，支持多文件
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int] 返回
-// @Router /attach/upload/{name} [post]
-func ApiUpload(root string) gin.HandlerFunc {
+func ApiUpload(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		dir := filepath.Join(root, ctx.Param("name"))
+		dir := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
 		_ = os.MkdirAll(dir, os.ModePerm) //创建目录
 
 		form, err := ctx.MultipartForm()
@@ -130,18 +112,9 @@ func ApiUpload(root string) gin.HandlerFunc {
 	}
 }
 
-// @Summary 修改附件
-// @Schemes
-// @Description 修改附件，body是内容
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int] 返回
-// @Router /attach/write/{name} [post]
-func ApiWrite(root string) gin.HandlerFunc {
+func ApiWrite(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
 		_ = os.MkdirAll(filepath.Dir(filename), os.ModePerm) //创建目录
 		f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, os.ModePerm)
 		if err != nil {
@@ -160,50 +133,22 @@ func ApiWrite(root string) gin.HandlerFunc {
 	}
 }
 
-// @Summary 读取附件
-// @Schemes
-// @Description 读取附件
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Accept json
-// @Produce json
-// @Success 200 {object} string 返回
-// @Router /attach/read/{name} [get]
-func ApiRead(root string) gin.HandlerFunc {
+func ApiRead(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
 		http.ServeFile(ctx.Writer, ctx.Request, filename)
 	}
 }
 
-// @Summary 下载附件
-// @Schemes
-// @Description 下载附件
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Accept json
-// @Produce json
-// @Success 200 {object} string 返回
-// @Router /attach/download/{name} [get]
-func ApiDownload(root string) gin.HandlerFunc {
+func ApiDownload(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
 		ctx.Header("Content-Disposition", "attachment; filename="+ctx.Param("name"))
 		http.ServeFile(ctx.Writer, ctx.Request, filename)
 	}
 }
 
-// @Summary 命名
-// @Schemes
-// @Description 下载附件
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Param rename body RenameBody true "重命名"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int] 返回
-// @Router /attach/rename/{name} [post]
-func ApiRename(root string) gin.HandlerFunc {
+func ApiRename(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var rename RenameBody
 		err := ctx.ShouldBindJSON(&rename)
@@ -212,7 +157,7 @@ func ApiRename(root string) gin.HandlerFunc {
 			return
 		}
 
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
 		newPath := filepath.Join(filepath.Dir(filename), rename.Name)
 
 		err = os.Rename(filename, newPath)
@@ -224,18 +169,9 @@ func ApiRename(root string) gin.HandlerFunc {
 	}
 }
 
-// @Summary 删除附件
-// @Schemes
-// @Description 删除附件
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int] 返回
-// @Router /attach/remove/{name} [get]
-func ApiRemove(root string) gin.HandlerFunc {
+func ApiRemove(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
 		err := os.Remove(filename)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -245,17 +181,7 @@ func ApiRemove(root string) gin.HandlerFunc {
 	}
 }
 
-// @Summary 移动附件
-// @Schemes
-// @Description 移动附件
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Param move body MoveBody true "移动"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int] 返回
-// @Router /attach/move/{name} [post]
-func ApiMove(root string) gin.HandlerFunc {
+func ApiMove(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var move MoveBody
 		err := ctx.ShouldBindJSON(&move)
@@ -264,8 +190,8 @@ func ApiMove(root string) gin.HandlerFunc {
 			return
 		}
 
-		filename := filepath.Join(root, ctx.Param("name"))
-		newPath := filepath.Join(root, move.Path, filepath.Base(filename))
+		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
+		newPath := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), move.Path, filepath.Base(filename))
 
 		err = os.Rename(filename, newPath)
 		if err != nil {
@@ -276,18 +202,9 @@ func ApiMove(root string) gin.HandlerFunc {
 	}
 }
 
-// @Summary 创建目录
-// @Schemes
-// @Description 创建目录
-// @Tags attach
-// @Param name path string true "文件路径"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[int] 返回
-// @Router /attach/makedir/{name} [get]
-func ApiMakeDir(root string) gin.HandlerFunc {
+func ApiMakeDir(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		filename := filepath.Join(root, ctx.Param("name"))
+		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
 		err := os.MkdirAll(filename, os.ModePerm)
 		if err != nil {
 			curd.Error(ctx, err)
@@ -297,25 +214,25 @@ func ApiMakeDir(root string) gin.HandlerFunc {
 	}
 }
 
-func Routers(root string, app *gin.RouterGroup) {
+func Routers(group *gin.RouterGroup, root string, params ...string) {
 
-	app.GET("/list/*name", ApiList(root))
+	group.GET("/list/*name", ApiList(root, params...))
 
-	app.GET("/info/*name", ApiInfo(root))
+	group.GET("/info/*name", ApiInfo(root, params...))
 
-	app.GET("/read/*name", ApiRead(root))
+	group.GET("/read/*name", ApiRead(root, params...))
 
-	app.POST("/write/*name", ApiWrite(root))
+	group.POST("/write/*name", ApiWrite(root, params...))
 
-	app.POST("/upload/*name", ApiUpload(root))
+	group.POST("/upload/*name", ApiUpload(root, params...))
 
-	app.GET("/download/*name", ApiDownload(root))
+	group.GET("/download/*name", ApiDownload(root, params...))
 
-	app.POST("/rename/*name", ApiRename(root))
+	group.POST("/rename/*name", ApiRename(root, params...))
 
-	app.GET("/remove/*name", ApiRemove(root))
+	group.GET("/remove/*name", ApiRemove(root, params...))
 
-	app.POST("/move/*name", ApiMove(root))
+	group.POST("/move/*name", ApiMove(root, params...))
 
-	app.GET("/mkdir/*name", ApiMakeDir(root))
+	group.GET("/mkdir/*name", ApiMakeDir(root, params...))
 }

@@ -92,13 +92,17 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	pluginRouter(router.Group("/plugin"))
 
 	productRouter(router.Group("/product"))
+	productVersionRouter(router.Group("/product/:id/version"))
+	attach.Routers(router.Group("/product/:id/version/:version/attach"), "product", "id", "version")
 
 	projectRouter(router.Group("/project"))
 	projectUserRouter(router.Group("/project/:id/user"))
 	//projectPluginRouter(router.Group("/project/:id/plugin"))
+	attach.Routers(router.Group("/project/:id/attach"), "project", "id")
 
 	spaceRouter(router.Group("/space"))
 	spaceDeviceRouter(router.Group("/space/:id/device"))
+	attach.Routers(router.Group("/space/:id/attach"), "space", "id")
 
 	gatewayRouter(router.Group("/gateway"))
 
@@ -109,7 +113,7 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	backupRouter(router.Group("/backup"))
 
 	//附件管理
-	attach.Routers("attach", router.Group("/attach"))
+	attach.Routers(router.Group("/attach"), "space")
 
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）
 	router.Use(func(ctx *gin.Context) {

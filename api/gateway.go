@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
-	"github.com/zgwit/iot-master/v4/web/export"
 )
 
 // @Summary 查询网关数量
@@ -144,6 +143,4 @@ func gatewayRouter(app *gin.RouterGroup) {
 
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Gateway](true, nil, nil))
 	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Gateway](false, nil, nil))
-	app.GET("/export", export.ApiExport("gateway", "网关"))
-	app.POST("/import", export.ApiImport("gateway"))
 }

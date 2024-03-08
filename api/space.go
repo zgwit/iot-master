@@ -5,9 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/space"
 	"github.com/zgwit/iot-master/v4/types"
-	"github.com/zgwit/iot-master/v4/web/attach"
 	"github.com/zgwit/iot-master/v4/web/curd"
-	"github.com/zgwit/iot-master/v4/web/export"
 )
 
 // @Summary 查询空间
@@ -149,10 +147,6 @@ func spaceRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Space](nil, nil))
 
-	app.GET("/export", export.ApiExport("space", "空间"))
-
-	app.POST("/import", export.ApiImport("space"))
-
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Space](true, nil, func(id any) error {
 		p := space.Get(id.(string))
 		if p == nil {
@@ -191,7 +185,4 @@ func spaceRouter(app *gin.RouterGroup) {
 		//}
 		curd.OK(ctx, nil)
 	})
-
-	//附件
-	attach.ObjectRouters("space", app)
 }

@@ -2,11 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/types"
-	"github.com/zgwit/iot-master/v4/web/attach"
 	"github.com/zgwit/iot-master/v4/web/curd"
-	"github.com/zgwit/iot-master/v4/web/export"
 )
 
 // @Summary 查询产品数量
@@ -107,28 +104,6 @@ func noopProductExport() {}
 // @Router /product/import [post]
 func noopProductImport() {}
 
-// @Summary 获取产品详情
-// @Schemes
-// @Description 获取产品详情
-// @Tags product
-// @Param id path int true "产品ID"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[product.Manifest] 返回产品信息
-// @Router /product/{id}/manifest [get]
-func noopProductManifestGet() {}
-
-// @Summary 修改产品详情
-// @Schemes
-// @Description 修改产品详情
-// @Tags product
-// @Param id path int true "产品ID"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[product.Manifest] 返回产品信息
-// @Router /product/{id}/manifest [post]
-func noopProductManifestPost() {}
-
 func productRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[types.Product]())
@@ -137,44 +112,7 @@ func productRouter(app *gin.RouterGroup) {
 	app.POST("/create", curd.ApiCreateHook[types.Product](curd.GenerateID[types.Product](), nil))
 	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Product]())
 	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Product](nil, nil,
-		"id", "name", "version", "url", "icon", "description", "keywords", "disabled"))
+		"id", "name", "url", "icon", "description", "keywords", "disabled"))
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Product](nil, nil))
-	app.GET("/export", export.ApiExport("product", "产品"))
-	app.POST("/import", export.ApiImport("product"))
 
-	app.GET("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
-		p := product.Get(ctx.GetString("id"))
-		if p == nil {
-			curd.Fail(ctx, "产品未加载")
-			return
-		}
-		curd.OK(ctx, p.Manifest)
-	})
-
-	app.POST("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
-		p := product.Get(ctx.GetString("id"))
-		if p == nil {
-			curd.Fail(ctx, "产品未加载")
-			return
-		}
-
-		var m product.Manifest
-		err := ctx.ShouldBindJSON(&m)
-		if err != nil {
-			curd.Error(ctx, err)
-			return
-		}
-
-		p.Manifest = &m
-
-		err = p.StoreManifest()
-		if err != nil {
-			curd.Error(ctx, err)
-			return
-		}
-		curd.OK(ctx, nil)
-	})
-
-	//附件
-	attach.ObjectRouters("product", app)
 }

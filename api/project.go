@@ -5,9 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/project"
 	"github.com/zgwit/iot-master/v4/types"
-	"github.com/zgwit/iot-master/v4/web/attach"
 	"github.com/zgwit/iot-master/v4/web/curd"
-	"github.com/zgwit/iot-master/v4/web/export"
 )
 
 // @Summary 查询项目
@@ -168,10 +166,6 @@ func projectRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Project](nil, nil))
 
-	app.GET("/export", export.ApiExport("project", "项目"))
-
-	app.POST("/import", export.ApiImport("project"))
-
 	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Project](true, nil, func(id any) error {
 		p := project.Get(id.(string))
 		if p == nil {
@@ -210,7 +204,4 @@ func projectRouter(app *gin.RouterGroup) {
 		//}
 		curd.OK(ctx, nil)
 	})
-
-	//附件
-	attach.ObjectRouters("project", app)
 }

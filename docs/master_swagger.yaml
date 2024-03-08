@@ -41,29 +41,6 @@ definitions:
       total:
         type: integer
     type: object
-  attach.MoveBody:
-    properties:
-      path:
-        type: string
-    type: object
-  attach.RenameBody:
-    properties:
-      name:
-        type: string
-    type: object
-  attach.attachInfo:
-    properties:
-      folder:
-        type: boolean
-      mime:
-        type: string
-      name:
-        type: string
-      size:
-        type: integer
-      time:
-        type: string
-    type: object
   curd.ParamSearch:
     properties:
       filter:
@@ -103,29 +80,29 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-array_attach_attachInfo:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/attach.attachInfo'
-        type: array
-      error:
-        type: string
-    type: object
-  curd.ReplyData-array_plugin_Entry:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/plugin.Entry'
-        type: array
-      error:
-        type: string
-    type: object
   curd.ReplyData-array_plugin_Menu:
     properties:
       data:
         items:
           $ref: '#/definitions/plugin.Menu'
+        type: array
+      error:
+        type: string
+    type: object
+  curd.ReplyData-array_plugin_Page:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/plugin.Page'
+        type: array
+      error:
+        type: string
+    type: object
+  curd.ReplyData-array_types_ProductVersion:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/types.ProductVersion'
         type: array
       error:
         type: string
@@ -166,13 +143,6 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-attach_attachInfo:
-    properties:
-      data:
-        $ref: '#/definitions/attach.attachInfo'
-      error:
-        type: string
-    type: object
   curd.ReplyData-bool:
     properties:
       data:
@@ -198,13 +168,6 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/plugin.Manifest'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-product_Manifest:
-    properties:
-      data:
-        $ref: '#/definitions/product.Manifest'
       error:
         type: string
     type: object
@@ -345,13 +308,6 @@ definitions:
       total:
         type: integer
     type: object
-  plugin.Entry:
-    properties:
-      name:
-        type: string
-      url:
-        type: string
-    type: object
   plugin.Manifest:
     properties:
       dependencies:
@@ -378,7 +334,7 @@ definitions:
         type: string
       pages:
         additionalProperties:
-          $ref: '#/definitions/plugin.Entry'
+          $ref: '#/definitions/plugin.Page'
         description: 子页面
         type: object
       process:
@@ -391,13 +347,33 @@ definitions:
     type: object
   plugin.Menu:
     properties:
-      first:
-        type: boolean
       items:
         items:
-          $ref: '#/definitions/plugin.Entry'
+          $ref: '#/definitions/plugin.MenuItem'
         type: array
       name:
+        type: string
+    type: object
+  plugin.MenuItem:
+    properties:
+      name:
+        type: string
+      standalone:
+        description: 独立页面，弹窗显示
+        type: boolean
+      url:
+        type: string
+    type: object
+  plugin.Page:
+    properties:
+      name:
+        type: string
+      select:
+        description: 页面选择器，比如：modbus, s7 ...
+        items:
+          type: string
+        type: array
+      url:
         type: string
     type: object
   plugin.Process:
@@ -406,133 +382,6 @@ definitions:
         description: 延迟启动 s
         type: integer
       main:
-        type: string
-    type: object
-  product.Event:
-    properties:
-      description:
-        description: 说明
-        type: string
-      label:
-        type: string
-      level:
-        type: integer
-      name:
-        type: string
-      output:
-        items:
-          $ref: '#/definitions/product.Parameter'
-        type: array
-      type:
-        description: info alert error
-        type: string
-    type: object
-  product.Function:
-    properties:
-      async:
-        description: 异步接口
-        type: boolean
-      description:
-        description: 说明
-        type: string
-      input:
-        items:
-          $ref: '#/definitions/product.Parameter'
-        type: array
-      label:
-        type: string
-      name:
-        type: string
-      output:
-        items:
-          $ref: '#/definitions/product.Parameter'
-        type: array
-    type: object
-  product.Manifest:
-    properties:
-      aggregators:
-        items:
-          $ref: '#/definitions/types.Aggregator'
-        type: array
-      events:
-        description: 事件
-        items:
-          $ref: '#/definitions/product.Event'
-        type: array
-      functions:
-        description: 接口
-        items:
-          $ref: '#/definitions/product.Function'
-        type: array
-      parameters:
-        description: 参数
-        items:
-          $ref: '#/definitions/product.Parameter'
-        type: array
-      properties:
-        description: 物模型
-        items:
-          $ref: '#/definitions/product.Property'
-        type: array
-      validators:
-        items:
-          $ref: '#/definitions/types.Validator'
-        type: array
-    type: object
-  product.Parameter:
-    properties:
-      default: {}
-      description:
-        description: 说明
-        type: string
-      label:
-        type: string
-      name:
-        type: string
-      type:
-        allOf:
-        - $ref: '#/definitions/types.Type'
-        description: int float ....
-      unit:
-        description: 单位
-        type: string
-    type: object
-  product.Property:
-    properties:
-      description:
-        description: 说明
-        type: string
-      label:
-        type: string
-      mode:
-        description: 读取模式 r w rw
-        type: string
-      name:
-        type: string
-      store:
-        description: save diff
-        type: string
-      type:
-        allOf:
-        - $ref: '#/definitions/types.Type'
-        description: int float ....
-      unit:
-        description: 单位
-        type: string
-    type: object
-  types.Aggregator:
-    properties:
-      assign:
-        description: 赋值
-        type: string
-      crontab:
-        description: 定时计划
-        type: string
-      expression:
-        description: 表达式
-        type: string
-      type:
-        description: 聚合算法 inc dec avg count min max sum last first
         type: string
     type: object
   types.Device:
@@ -596,8 +445,6 @@ definitions:
       description:
         description: 说明
         type: string
-      disabled:
-        type: boolean
       icon:
         description: 图标
         type: string
@@ -615,8 +462,15 @@ definitions:
       url:
         description: 链接
         type: string
-      version:
+    type: object
+  types.ProductVersion:
+    properties:
+      created:
+        type: string
+      name:
         description: 版本 semver.Version
+        type: string
+      product_id:
         type: string
     type: object
   types.Project:
@@ -701,32 +555,6 @@ definitions:
       space_id:
         type: string
     type: object
-  types.Type:
-    enum:
-    - 0
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    - 6
-    - 7
-    - 8
-    - 9
-    - 10
-    type: integer
-    x-enum-varnames:
-    - TypeNONE
-    - TypeBIT
-    - TypeBYTE
-    - TypeWORD
-    - TypeDWORD
-    - TypeQWORD
-    - TypeSHORT
-    - TypeINTEGER
-    - TypeLONG
-    - TypeFLOAT
-    - TypeDOUBLE
   types.User:
     properties:
       admin:
@@ -742,31 +570,6 @@ definitions:
       id:
         type: string
       name:
-        type: string
-    type: object
-  types.Validator:
-    properties:
-      delay:
-        description: 延迟时间s
-        type: integer
-      expression:
-        type: string
-      level:
-        type: integer
-      repeat:
-        description: 重启报警
-        type: boolean
-      repeat_delay:
-        description: 再次提醒间隔s
-        type: integer
-      repeat_total:
-        description: 总提醒次数
-        type: integer
-      template:
-        type: string
-      title:
-        type: string
-      type:
         type: string
     type: object
   types.Variables:
@@ -880,228 +683,6 @@ paths:
       summary: 查询报警
       tags:
       - alarm
-  /attach/download/{name}:
-    get:
-      consumes:
-      - application/json
-      description: 下载附件
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: 下载附件
-      tags:
-      - attach
-  /attach/info/{name}:
-    get:
-      consumes:
-      - application/json
-      description: 查询附件信息
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-attach_attachInfo'
-      summary: 查询附件信息
-      tags:
-      - attach
-  /attach/list/{name}:
-    get:
-      consumes:
-      - application/json
-      description: 查询附件
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-array_attach_attachInfo'
-      summary: 查询附件
-      tags:
-      - attach
-  /attach/makedir/{name}:
-    get:
-      consumes:
-      - application/json
-      description: 创建目录
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 创建目录
-      tags:
-      - attach
-  /attach/move/{name}:
-    post:
-      consumes:
-      - application/json
-      description: 移动附件
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      - description: 移动
-        in: body
-        name: move
-        required: true
-        schema:
-          $ref: '#/definitions/attach.MoveBody'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 移动附件
-      tags:
-      - attach
-  /attach/read/{name}:
-    get:
-      consumes:
-      - application/json
-      description: 读取附件
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: string
-      summary: 读取附件
-      tags:
-      - attach
-  /attach/remove/{name}:
-    get:
-      consumes:
-      - application/json
-      description: 删除附件
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 删除附件
-      tags:
-      - attach
-  /attach/rename/{name}:
-    post:
-      consumes:
-      - application/json
-      description: 下载附件
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      - description: 重命名
-        in: body
-        name: rename
-        required: true
-        schema:
-          $ref: '#/definitions/attach.RenameBody'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 命名
-      tags:
-      - attach
-  /attach/upload/{name}:
-    post:
-      consumes:
-      - application/json
-      description: 上传附件，支持多文件
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 上传附件
-      tags:
-      - attach
-  /attach/write/{name}:
-    post:
-      consumes:
-      - application/json
-      description: 修改附件，body是内容
-      parameters:
-      - description: 文件路径
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 修改附件
-      tags:
-      - attach
   /backup/export:
     get:
       consumes:
@@ -1733,7 +1314,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-array_plugin_Entry'
+            $ref: '#/definitions/curd.ReplyData-array_plugin_Page'
       summary: 获取插件入口
       tags:
       - plugin
@@ -1805,13 +1386,13 @@ paths:
       summary: 删除产品
       tags:
       - product
-  /product/{id}/manifest:
+  /product/{id}/version:
     get:
       consumes:
       - application/json
-      description: 获取产品详情
+      description: 产品版本列表
       parameters:
-      - description: 产品ID
+      - description: 项目ID
         in: path
         name: id
         required: true
@@ -1822,18 +1403,56 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-product_Manifest'
-      summary: 获取产品详情
+            $ref: '#/definitions/curd.ReplyData-array_types_ProductVersion'
+      summary: 产品版本列表
       tags:
-      - product
+      - product-version
+  /product/{id}/version/{version}:
     post:
       consumes:
       - application/json
-      description: 修改产品详情
+      description: 修改产品版本
       parameters:
-      - description: 产品ID
+      - description: 项目ID
         in: path
         name: id
+        required: true
+        type: integer
+      - description: 设备ID
+        in: path
+        name: version
+        required: true
+        type: integer
+      - description: 产品版本信息
+        in: body
+        name: product-version
+        required: true
+        schema:
+          $ref: '#/definitions/types.ProductVersion'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改产品版本
+      tags:
+      - product-version
+  /product/{id}/version/{version}/delete:
+    get:
+      consumes:
+      - application/json
+      description: 删除产品版本
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 设备ID
+        in: path
+        name: version
         required: true
         type: integer
       produces:
@@ -1842,10 +1461,36 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-product_Manifest'
-      summary: 修改产品详情
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 删除产品版本
       tags:
-      - product
+      - product-version
+  /product/{id}/version/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建产品版本
+      parameters:
+      - description: 项目ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 设备ID
+        in: path
+        name: version
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 创建产品版本
+      tags:
+      - product-version
   /product/count:
     post:
       consumes:
