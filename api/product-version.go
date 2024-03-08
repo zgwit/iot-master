@@ -99,7 +99,7 @@ func productVersionUpdate(ctx *gin.Context) {
 
 func productVersionRouter(app *gin.RouterGroup) {
 	app.GET("/list", curd.ParseParamStringId, curd.ApiListWithId[types.ProductVersion]("product_id"))
-	app.POST("/:version/create", productVersionCreate)
+	app.POST("/create", productVersionCreate)
 	app.GET("/:version/delete", productVersionDelete)
 	app.POST("/:version", productVersionUpdate)
 }
