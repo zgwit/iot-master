@@ -66,6 +66,12 @@ definitions:
       error:
         type: string
     type: object
+  curd.ReplyData-any:
+    properties:
+      data: {}
+      error:
+        type: string
+    type: object
   curd.ReplyData-api_OEM:
     properties:
       data:
@@ -112,15 +118,6 @@ definitions:
       data:
         items:
           $ref: '#/definitions/types.Project'
-        type: array
-      error:
-        type: string
-    type: object
-  curd.ReplyData-array_types_ProjectPlugin:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.ProjectPlugin'
         type: array
       error:
         type: string
@@ -496,17 +493,6 @@ definitions:
         type: array
       name:
         description: 名称
-        type: string
-    type: object
-  types.ProjectPlugin:
-    properties:
-      created:
-        type: string
-      disabled:
-        type: boolean
-      plugin_id:
-        type: string
-      project_id:
         type: string
     type: object
   types.ProjectUser:
@@ -1326,12 +1312,12 @@ paths:
       - application/json
       description: 修改产品版本
       parameters:
-      - description: 项目ID
+      - description: 产品ID
         in: path
         name: id
         required: true
         type: integer
-      - description: 设备ID
+      - description: 版本ID
         in: path
         name: version
         required: true
@@ -1352,18 +1338,75 @@ paths:
       summary: 修改产品版本
       tags:
       - product-version
+  /product/{id}/version/{version}/config/{config}:
+    get:
+      consumes:
+      - application/json
+      description: 获得产品配置
+      parameters:
+      - description: 产品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 版本ID
+        in: path
+        name: version
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-any'
+      summary: 获得产品配置
+      tags:
+      - product-version
+    post:
+      consumes:
+      - application/json
+      description: 修改产品配置
+      parameters:
+      - description: 产品ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 版本ID
+        in: path
+        name: version
+        required: true
+        type: integer
+      - description: 产品版本信息
+        in: body
+        name: config
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-int'
+      summary: 修改产品配置
+      tags:
+      - product-version
   /product/{id}/version/{version}/delete:
     get:
       consumes:
       - application/json
       description: 删除产品版本
       parameters:
-      - description: 项目ID
+      - description: 产品ID
         in: path
         name: id
         required: true
         type: integer
-      - description: 设备ID
+      - description: 版本ID
         in: path
         name: version
         required: true
@@ -1384,12 +1427,12 @@ paths:
       - application/json
       description: 创建产品版本
       parameters:
-      - description: 项目ID
+      - description: 产品ID
         in: path
         name: id
         required: true
         type: integer
-      - description: 设备ID
+      - description: 版本ID
         in: path
         name: version
         required: true
@@ -1410,7 +1453,7 @@ paths:
       - application/json
       description: 产品版本列表
       parameters:
-      - description: 项目ID
+      - description: 产品ID
         in: path
         name: id
         required: true
@@ -1603,163 +1646,6 @@ paths:
       summary: 启用项目
       tags:
       - project
-  /project/{id}/plugin/{plugin}:
-    post:
-      consumes:
-      - application/json
-      description: 修改项目插件
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 插件ID
-        in: path
-        name: plugin
-        required: true
-        type: integer
-      - description: 项目插件信息
-        in: body
-        name: project-plugin
-        required: true
-        schema:
-          $ref: '#/definitions/types.ProjectPlugin'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 修改项目插件
-      tags:
-      - project-plugin
-  /project/{id}/plugin/{plugin}/bind:
-    get:
-      consumes:
-      - application/json
-      description: 绑定项目插件
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 插件ID
-        in: path
-        name: plugin
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 绑定项目插件
-      tags:
-      - project-plugin
-  /project/{id}/plugin/{plugin}/disable:
-    get:
-      consumes:
-      - application/json
-      description: 禁用项目插件
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 插件ID
-        in: path
-        name: plugin
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 禁用项目插件
-      tags:
-      - project-plugin
-  /project/{id}/plugin/{plugin}/enable:
-    get:
-      consumes:
-      - application/json
-      description: 启用项目插件
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 插件ID
-        in: path
-        name: plugin
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 启用项目插件
-      tags:
-      - project-plugin
-  /project/{id}/plugin/{plugin}/unbind:
-    get:
-      consumes:
-      - application/json
-      description: 删除项目插件
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: 插件ID
-        in: path
-        name: plugin
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-int'
-      summary: 删除项目插件
-      tags:
-      - project-plugin
-  /project/{id}/plugin/list:
-    get:
-      consumes:
-      - application/json
-      description: 项目插件列表
-      parameters:
-      - description: 项目ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_ProjectPlugin'
-      summary: 项目插件列表
-      tags:
-      - project-plugin
   /project/{id}/start:
     get:
       consumes:

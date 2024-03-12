@@ -92,12 +92,13 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	pluginRouter(router.Group("/plugin"))
 
 	productRouter(router.Group("/product"))
+	attach.Routers(router.Group("/product/:id/attach"), "product", "id")
+
 	productVersionRouter(router.Group("/product/:id/version"))
 	attach.Routers(router.Group("/product/:id/version/:version/attach"), "product", "id", "version")
 
 	projectRouter(router.Group("/project"))
 	projectUserRouter(router.Group("/project/:id/user"))
-	//projectPluginRouter(router.Group("/project/:id/plugin"))
 	attach.Routers(router.Group("/project/:id/attach"), "project", "id")
 
 	spaceRouter(router.Group("/space"))

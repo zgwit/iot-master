@@ -1298,14 +1298,14 @@ const docTemplatemaster = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "项目ID",
+                        "description": "产品ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "设备ID",
+                        "description": "版本ID",
                         "name": "version",
                         "in": "path",
                         "required": true
@@ -1337,7 +1337,7 @@ const docTemplatemaster = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "项目ID",
+                        "description": "产品ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1369,14 +1369,14 @@ const docTemplatemaster = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "项目ID",
+                        "description": "产品ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "设备ID",
+                        "description": "版本ID",
                         "name": "version",
                         "in": "path",
                         "required": true
@@ -1388,6 +1388,91 @@ const docTemplatemaster = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/types.ProductVersion"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-int"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/{id}/version/{version}/config/{config}": {
+            "get": {
+                "description": "获得产品配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product-version"
+                ],
+                "summary": "获得产品配置",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "产品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "版本ID",
+                        "name": "version",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-any"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "修改产品配置",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product-version"
+                ],
+                "summary": "修改产品配置",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "产品ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "版本ID",
+                        "name": "version",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "产品版本信息",
+                        "name": "config",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
                         }
                     }
                 ],
@@ -1417,14 +1502,14 @@ const docTemplatemaster = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "项目ID",
+                        "description": "产品ID",
                         "name": "id",
                         "in": "path",
                         "required": true
                     },
                     {
                         "type": "integer",
-                        "description": "设备ID",
+                        "description": "版本ID",
                         "name": "version",
                         "in": "path",
                         "required": true
@@ -1675,242 +1760,6 @@ const docTemplatemaster = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/curd.ReplyData-types_Project"
-                        }
-                    }
-                }
-            }
-        },
-        "/project/{id}/plugin/list": {
-            "get": {
-                "description": "项目插件列表",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-plugin"
-                ],
-                "summary": "项目插件列表",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-array_types_ProjectPlugin"
-                        }
-                    }
-                }
-            }
-        },
-        "/project/{id}/plugin/{plugin}": {
-            "post": {
-                "description": "修改项目插件",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-plugin"
-                ],
-                "summary": "修改项目插件",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "插件ID",
-                        "name": "plugin",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "项目插件信息",
-                        "name": "project-plugin",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ProjectPlugin"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/project/{id}/plugin/{plugin}/bind": {
-            "get": {
-                "description": "绑定项目插件",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-plugin"
-                ],
-                "summary": "绑定项目插件",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "插件ID",
-                        "name": "plugin",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/project/{id}/plugin/{plugin}/disable": {
-            "get": {
-                "description": "禁用项目插件",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-plugin"
-                ],
-                "summary": "禁用项目插件",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "插件ID",
-                        "name": "plugin",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/project/{id}/plugin/{plugin}/enable": {
-            "get": {
-                "description": "启用项目插件",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-plugin"
-                ],
-                "summary": "启用项目插件",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "插件ID",
-                        "name": "plugin",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
-                        }
-                    }
-                }
-            }
-        },
-        "/project/{id}/plugin/{plugin}/unbind": {
-            "get": {
-                "description": "删除项目插件",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "project-plugin"
-                ],
-                "summary": "删除项目插件",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "项目ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "插件ID",
-                        "name": "plugin",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-int"
                         }
                     }
                 }
@@ -3263,6 +3112,15 @@ const docTemplatemaster = `{
                 }
             }
         },
+        "curd.ReplyData-any": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
         "curd.ReplyData-api_OEM": {
             "type": "object",
             "properties": {
@@ -3334,20 +3192,6 @@ const docTemplatemaster = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/types.Project"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyData-array_types_ProjectPlugin": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.ProjectPlugin"
                     }
                 },
                 "error": {
@@ -3916,23 +3760,6 @@ const docTemplatemaster = `{
                 },
                 "name": {
                     "description": "名称",
-                    "type": "string"
-                }
-            }
-        },
-        "types.ProjectPlugin": {
-            "type": "object",
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "disabled": {
-                    "type": "boolean"
-                },
-                "plugin_id": {
-                    "type": "string"
-                },
-                "project_id": {
                     "type": "string"
                 }
             }
