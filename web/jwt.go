@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/zgwit/iot-master/v4/pkg/config"
 	"time"
 )
 
@@ -10,8 +11,8 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-const JwtKey = "iot-master"
-const JwtExpire = time.Hour * 24 * 30
+var JwtKey = "iot-master"
+var JwtExpire = time.Hour * 24 * 30
 
 func JwtGenerate(id string) (string, error) {
 	var claims Claims
@@ -24,7 +25,7 @@ func JwtGenerate(id string) (string, error) {
 func JwtVerify(str string) (*Claims, error) {
 	var claims Claims
 	token, err := jwt.ParseWithClaims(str, &claims, func(token *jwt.Token) (interface{}, error) {
-		return JwtKey, nil
+		return config.GetString(MODULE, "jwt_key"), nil
 	})
 	if token.Valid {
 		return &claims, nil

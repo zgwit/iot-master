@@ -1,6 +1,8 @@
 package web
 
 import (
+	"context"
+	"errors"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/sessions"
@@ -15,6 +17,7 @@ import (
 )
 
 var Engine *gin.Engine
+var Server *http.Server
 
 func Start() {
 	if !config.GetBool(MODULE, "debug") {
@@ -46,7 +49,17 @@ func Start() {
 		Engine.Use(gzip.Gzip(gzip.DefaultCompression)) //gzip.WithExcludedPathsRegexs([]string{".*"})
 	}
 
+	JwtKey = config.GetString(MODULE, "jwt_key")
+	JwtExpire = time.Hour * time.Duration(config.GetInt(MODULE, "jwt_expire"))
+
 	//Engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+}
+
+func Shutdown() error {
+	if Server == nil {
+		return errors.New("服务未启动")
+	}
+	return Server.Shutdown(context.Background())
 }
 
 func _FileSystem2() *FileSystem {
@@ -148,6 +161,8 @@ func Serve() error {
 func ServeHTTP() error {
 	port := config.GetInt(MODULE, "port")
 	addr := ":" + strconv.Itoa(port)
-	log.Info("Web server", addr)
-	return Engine.Run(addr)
+	log.Info("Web Server", addr)
+	//return Engine.Run(addr)
+	Server = &http.Server{Addr: addr, Handler: Engine.Handler()}
+	return Server.ListenAndServe()
 }

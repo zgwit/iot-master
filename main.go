@@ -59,6 +59,5 @@ func Shutdown() error {
 	internal.Close()
 
 	//只关闭Web就行了，其他通过defer关闭
-
-	return nil
+	return web.Shutdown()
 }

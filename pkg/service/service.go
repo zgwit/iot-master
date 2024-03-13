@@ -54,13 +54,11 @@ type Program struct {
 }
 
 func (p *Program) Start(s service.Service) error {
-	//log.Println("===开始服务===")
 	go p.run()
 	return nil
 }
 
 func (p *Program) Stop(s service.Service) error {
-	//log.Println("===停止服务===")
 	return p.Shutdown()
 }
 
@@ -77,9 +75,7 @@ func (p *Program) run() {
 			select {
 			case <-hup:
 			case <-quit:
-				//优雅地结束
-				//_ = master.Shutdown()
-				_ = p.Shutdown
+				_ = p.Shutdown()
 				//os.Exit(0)
 			}
 		}
