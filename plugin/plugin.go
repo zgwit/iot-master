@@ -36,11 +36,11 @@ func (p *Plugin) Start() error {
 	//addr := fmt.Sprintf(":%d", getPort())
 	//env := p.generateEnv(addr)
 
-	if p.Process == nil {
+	if p.Entry == "" {
 		return nil
 	}
 
-	cmd := filepath.Join(viper.GetString("data"), "plugin", p.Id, p.Process.Main)
+	cmd := filepath.Join(viper.GetString("data"), "plugin", p.Id, p.Entry)
 	dir := filepath.Join(viper.GetString("data"), "plugin", p.Id)
 
 	//绝对路径

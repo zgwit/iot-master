@@ -14,10 +14,21 @@ type Manifest struct {
 	Pages map[string]*Page `json:"pages,omitempty"`
 
 	//外部插件 进程
-	Process *Process `json:"process,omitempty"`
+	//Process *Process `json:"process,omitempty"`
+	Entry string `json:"entry,omitempty"`
+	Delay int    `json:"delay,omitempty"` //延迟启动 s
+
+	//启动接口
+	Startup  func() error `json:"-"`
+	Shutdown func() error `json:"-"`
 
 	//更多
-	Dependencies map[string]string `json:"dependencies,omitempty"` //应用和版本
+	Dependencies map[string]string `json:"dependencies,omitempty"` //依赖的插件，应用->版本
+}
+
+type Process struct {
+	Main  string `json:"main"`
+	Delay int    `json:"delay,omitempty"` //延迟启动 s
 }
 
 type Menu struct {
@@ -35,9 +46,4 @@ type Page struct {
 	Name   string   `json:"name,omitempty"`
 	Url    string   `json:"url,omitempty"`
 	Select []string `json:"select,omitempty"` //页面选择器，比如：modbus, s7 ...
-}
-
-type Process struct {
-	Main  string `json:"main"`
-	Delay int    `json:"delay,omitempty"` //延迟启动 s
 }
