@@ -11,7 +11,7 @@ type Manifest struct {
 	Menus map[string]*Menu `json:"menus,omitempty"` //admin, project
 
 	//子页面
-	Pages map[string]*Page `json:"pages,omitempty"`
+	Pages []*Page `json:"pages,omitempty"`
 
 	//外部插件 进程
 	//Process *Process `json:"process,omitempty"`
@@ -43,7 +43,8 @@ type MenuItem struct {
 }
 
 type Page struct {
-	Name   string   `json:"name,omitempty"`
-	Url    string   `json:"url,omitempty"`
+	Target string   `json:"target"`
 	Select []string `json:"select,omitempty"` //页面选择器，比如：modbus, s7 ...
+	Name   string   `json:"name"`
+	Url    string   `json:"url"`
 }

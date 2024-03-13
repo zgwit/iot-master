@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
@@ -61,12 +62,22 @@ func menus(ctx *gin.Context) {
 // @Router /plugin/pages/{entry} [get]
 func pages(ctx *gin.Context) {
 	entry := ctx.Param("entry")
+	tags := ctx.QueryArray("tag")
 
 	var entries []*plugin.Page
 	for _, p := range plugin.GetPlugins() {
 		if p.Pages != nil {
-			if en, ok := p.Pages[entry]; ok {
-				entries = append(entries, en)
+			for _, pp := range p.Pages {
+				if pp.Target == entry {
+					if pp.Select != nil && len(pp.Select) > 0 {
+						if lib.HasIntersection[string](tags, pp.Select) {
+							entries = append(entries, pp)
+						}
+					} else {
+						entries = append(entries, pp)
+					}
+				}
+
 			}
 		}
 	}
