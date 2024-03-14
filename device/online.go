@@ -1,7 +1,6 @@
-package internal
+package device
 
 import (
-	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/mqtt"
 	"strings"
@@ -13,7 +12,7 @@ func subscribeOnline() {
 		topics := strings.Split(topic, "/")
 		id := topics[1]
 
-		dev, err := device.Ensure(id)
+		dev, err := Ensure(id)
 		if err != nil {
 			log.Error(err)
 			return
@@ -25,7 +24,7 @@ func subscribeOnline() {
 		topics := strings.Split(topic, "/")
 		id := topics[1]
 
-		dev, err := device.Ensure(id)
+		dev, err := Ensure(id)
 		if err != nil {
 			log.Error(err)
 			return

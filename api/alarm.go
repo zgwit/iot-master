@@ -60,10 +60,10 @@ func noopAlarmDelete() {}
 func noopAlarmRead() {}
 
 func alarmRead(ctx *gin.Context) {
-	alarm := alarm.Alarm{
+	a := alarm.Alarm{
 		Read: true,
 	}
-	cnt, err := db.Engine.ID(ctx.GetInt64("id")).Cols("read").Update(alarm)
+	cnt, err := db.Engine.ID(ctx.GetInt64("id")).Cols("read").Update(a)
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -75,8 +75,10 @@ func alarmRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[alarm.Alarm]())
 
-	app.POST("/search", curd.ApiSearchWith[alarm.AlarmEx]([]*curd.Join{
+	app.POST("/search", curd.ApiSearchWith[alarm.Alarm]([]*curd.Join{
 		{"product", "product_id", "id", "name", "product"},
+		{"project", "project_id", "id", "name", "project"},
+		{"space", "space_id", "id", "name", "space"},
 		{"device", "device_id", "id", "name", "device"},
 	}))
 

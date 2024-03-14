@@ -6,6 +6,8 @@ func Open() error {
 
 	subscribeEvent()
 
+	subscribeOnline()
+
 	return nil
 }
 

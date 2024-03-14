@@ -104,10 +104,6 @@ func Open() error {
 	}
 
 	//加载设备影子
-	err = Boot()
-	if err != nil {
-		return err
-	}
 
 	//加载空间
 	err = space.Boot()

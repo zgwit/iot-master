@@ -5,5 +5,5 @@ import (
 )
 
 func init() {
-	db.Register(new(Alarm), new(Subscription), new(Notification))
+	db.Register(new(Alarm))
 }

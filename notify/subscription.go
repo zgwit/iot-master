@@ -1,11 +1,12 @@
-package alarm
+package notify
 
-import (
-	"time"
-)
+import "time"
 
-type Alarm struct {
+type Subscription struct {
 	Id int64 `json:"id"`
+
+	UserId string `json:"user_id" xorm:"index"`
+	User   string `json:"user,omitempty" xorm:"<-"`
 
 	ProductId string `json:"product_id,omitempty" xorm:"index"`
 	ProjectId string `json:"project_id,omitempty" xorm:"index"`
@@ -17,11 +18,8 @@ type Alarm struct {
 	Space   string `json:"space,omitempty" xorm:"<-"`
 	Device  string `json:"device,omitempty" xorm:"<-"`
 
-	Level   uint   `json:"level,omitempty"`
-	Type    string `json:"type,omitempty"`
-	Title   string `json:"title,omitempty"`
-	Message string `json:"message,omitempty"`
-
-	Read    bool      `json:"read,omitempty"`
-	Created time.Time `json:"created,omitempty" xorm:"created"`
+	Level    uint      `json:"level"`
+	Channels []string  `json:"channels" xorm:"json"`
+	Disabled bool      `json:"disabled"` //禁用
+	Created  time.Time `json:"created" xorm:"created"`
 }
