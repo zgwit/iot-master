@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/device"
+	"github.com/zgwit/iot-master/v4/history"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
@@ -97,6 +98,21 @@ func noopDeviceDelete() {}
 // @Router /device/{id}/values [get]
 func noopDeviceValues() {}
 
+// @Summary 查询历史数据
+// @Schemes
+// @Description 查询历史数据
+// @Tags device
+// @Param id path string true "设备ID"
+// @Param name path string true "变量名称"
+// @Param start query string false "起始时间"
+// @Param end query string false "结束时间"
+// @Param window query string false "窗口时间"
+// @Param method query string false "算法"
+// @Produce json
+// @Success 200 {object} ReplyData[[]history.Point] 返回报警信息
+// @Router /device/{id}/history/{name} [get]
+func noopDeviceHistory() {}
+
 // @Summary 修改设备参数
 // @Schemes
 // @Description 修改设备参数
@@ -165,6 +181,8 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/values", curd.ParseParamStringId, deviceValues)
 
+	app.GET("/:id/history/:name", curd.ParseParamStringId, deviceHistory)
+
 	app.POST("/:id/parameters", curd.ParseParamStringId, deviceParameters)
 
 	app.GET("/statistic", deviceStatistic)
@@ -177,6 +195,33 @@ func deviceValues(ctx *gin.Context) {
 		return
 	}
 	curd.OK(ctx, dev.Values())
+}
+
+func deviceHistory(ctx *gin.Context) {
+	var dev types.Device
+	has, err := db.Engine.ID(ctx.GetString("id")).Get(&dev)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	if !has {
+		curd.Fail(ctx, "找不到设备")
+		return
+	}
+
+	key := ctx.Param("name")
+	start := ctx.DefaultQuery("start", "-5h")
+	end := ctx.DefaultQuery("end", "0h")
+	window := ctx.DefaultQuery("window", "10m")
+	method := ctx.DefaultQuery("method", "mean") //last
+
+	points, err := history.Query(dev.ProductId, dev.Id, key, start, end, window, method)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+
+	curd.OK(ctx, points)
 }
 
 func deviceParameters(ctx *gin.Context) {

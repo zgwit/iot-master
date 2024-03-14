@@ -71,9 +71,42 @@ func Publish(topic string, payload any) paho.Token {
 	return Client.Publish(topic, 0, false, bytes)
 }
 
+func Subscribe(filter string, cb func(topic string, payload []byte)) paho.Token {
+	return Client.Subscribe(filter, 0, func(client paho.Client, message paho.Message) {
+		err := pool.Insert(func() {
+			//c(message.Topic(), &value)
+			cb(message.Topic(), message.Payload())
+		})
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	})
+}
+
+func SubscribeStruct[T any](filter string, cb func(topic string, data *T)) paho.Token {
+	return Client.Subscribe(filter, 0, func(client paho.Client, message paho.Message) {
+		err := pool.Insert(func() {
+			var value T
+			if len(message.Payload()) > 0 {
+				err := json.Unmarshal(message.Payload(), &value)
+				if err != nil {
+					log.Error(err)
+					return
+				}
+			}
+			cb(message.Topic(), &value)
+		})
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	})
+}
+
 var subs = map[string]any{}
 
-func Subscribe[T any](filter string, cb func(topic string, value *T)) {
+func SubscribeExt[T any](filter string, cb func(topic string, value *T)) {
 
 	var cbs []func(topic string, value *T)
 

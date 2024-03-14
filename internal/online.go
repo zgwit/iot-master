@@ -9,7 +9,7 @@ import (
 
 func subscribeOnline() {
 
-	mqtt.Subscribe[any]("online/+", func(topic string, _ *any) {
+	mqtt.Subscribe("online/+", func(topic string, _ []byte) {
 		topics := strings.Split(topic, "/")
 		id := topics[1]
 
@@ -21,7 +21,7 @@ func subscribeOnline() {
 		dev.Online()
 	})
 
-	mqtt.Subscribe[any]("offline/+", func(topic string, _ *any) {
+	mqtt.Subscribe("offline/+", func(topic string, _ []byte) {
 		topics := strings.Split(topic, "/")
 		id := topics[1]
 
