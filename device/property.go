@@ -12,9 +12,9 @@ import (
 )
 
 func subscribeProperty() {
-	mqtt.SubscribeStruct[map[string]any]("up/property/+", func(topic string, values *map[string]any) {
+	mqtt.SubscribeStruct[map[string]any]("device/+/property", func(topic string, values *map[string]any) {
 		topics := strings.Split(topic, "/")
-		id := topics[2]
+		id := topics[1]
 
 		dev, err := Ensure(id)
 		if err != nil {
@@ -32,7 +32,7 @@ func subscribeProperty() {
 		dev.Online()
 
 		//写入历史
-		err = history.Write(dev.product.Id, dev.id, time.Now().Unix(), *values)
+		err = history.Write(dev.product.Id, dev.id, time.Now().UnixMilli(), *values)
 		if err != nil {
 			log.Error(err)
 		}

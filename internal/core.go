@@ -4,6 +4,7 @@ import (
 	paho "github.com/eclipse/paho.mqtt.golang"
 	"github.com/zgwit/iot-master/v4/aggregator"
 	"github.com/zgwit/iot-master/v4/broker"
+	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/mqtt"
@@ -85,6 +86,10 @@ func Open() error {
 	}
 
 	//加载设备影子
+	err = device.Open()
+	if err != nil {
+		return err
+	}
 
 	//加载空间
 	err = space.Boot()
