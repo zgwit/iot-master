@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/iot-master-contrib/influxdb"
 	_ "github.com/iot-master-contrib/webui"
 	master "github.com/zgwit/iot-master/v4"
 	"github.com/zgwit/iot-master/v4/args"
@@ -30,6 +31,12 @@ func main() {
 		if err != nil {
 			return err
 		}
+
+		err = influxdb.Open()
+		if err != nil {
+			return err
+		}
+
 		return web.Serve()
 	}, master.Shutdown)
 	if err != nil {

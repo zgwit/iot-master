@@ -36,25 +36,6 @@ func Open() error {
 		return err
 	}
 
-	//同步表结构
-	//err = db.Engine.Sync2(
-	//	new(types.User), new(types.Password),
-	//	new(types.Broker), new(types.Gateway),
-	//	new(types.Product), new(types.Device),
-	//	new(types.Plugin),
-	//	new(types.Project), new(types.ProjectUser),
-	//	new(types.ProjectPlugin), new(types.SpaceDevice),
-	//	new(types.History), new(types.ExternalAggregator),
-	//	new(alarm.Alarm), new(types.ExternalValidator),
-	//	new(alarm.Subscription), new(alarm.Notification),
-	//)
-	//if err != nil {
-	//	return err
-	//}
-
-	//db.Engine.SetLogLevel(0)
-	//db.Engine.ShowSQL(true)
-
 	//启动计划任务
 	aggregator.Start()
 
