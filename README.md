@@ -63,9 +63,9 @@
 
 ## 开源协议
 
-[GPL v3](https://github.com/zgwit/iot-master/blob/main/LICENSE)
+[MIT](https://github.com/zgwit/iot-master/blob/main/LICENSE)
 
-补充：任何组织或个人都可以免费使用或做二次开发，但不得用于商业售卖，如有需求请联系我们。
+补充：任何个人、企业或组织都可以自由使用，如果需求商业支持请联系我们。
 
 
 ### 官方插件 [链接](https://github.com/orgs/iot-master-contrib/repositories)
