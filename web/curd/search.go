@@ -160,15 +160,17 @@ func ApiSearchWith[T any](join []*Join, fields ...string) gin.HandlerFunc {
 		//session := query.Table(table)
 
 		//补充字段
-		for _, j := range join {
-			s = append(s, j.Table+"."+db.Engine.Quote(j.Field)+" as "+db.Engine.Quote(j.As))
+		for i, j := range join {
+			name := string(rune('a' + i))
+			s = append(s, name+"."+db.Engine.Quote(j.Field)+" as "+db.Engine.Quote(j.As))
 		}
 		query.Select(strings.Join(s, ","))
 
 		//连接查询
-		for _, j := range join {
-			query.Join("LEFT OUTER", j.Table,
-				j.Table+"."+db.Engine.Quote(j.ForeignField)+"="+
+		for i, j := range join {
+			name := string(rune('a' + i))
+			query.Join("LEFT OUTER", []string{j.Table, name},
+				name+"."+db.Engine.Quote(j.ForeignField)+"="+
 					table+"."+db.Engine.Quote(j.LocaleField))
 		}
 
@@ -217,15 +219,17 @@ func ApiSearchWithHook[T any](join []*Join, after func(datum []*T) error, fields
 		//session := query.Table(table)
 
 		//补充字段
-		for _, j := range join {
-			s = append(s, j.Table+"."+db.Engine.Quote(j.Field)+" as "+db.Engine.Quote(j.As))
+		for i, j := range join {
+			name := string(rune('a' + i))
+			s = append(s, name+"."+db.Engine.Quote(j.Field)+" as "+db.Engine.Quote(j.As))
 		}
 		query.Select(strings.Join(s, ","))
 
 		//连接查询
-		for _, j := range join {
-			query.Join("LEFT OUTER", j.Table,
-				j.Table+"."+db.Engine.Quote(j.ForeignField)+"="+
+		for i, j := range join {
+			name := string(rune('a' + i))
+			query.Join("LEFT OUTER", []string{j.Table, name},
+				name+"."+db.Engine.Quote(j.ForeignField)+"="+
 					table+"."+db.Engine.Quote(j.LocaleField))
 		}
 

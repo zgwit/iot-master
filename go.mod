@@ -19,7 +19,7 @@ require (
 	github.com/kardianos/service v1.2.2
 	github.com/lib/pq v1.10.9
 	github.com/lithammer/shortuuid/v4 v4.0.0
-	github.com/mochi-mqtt/server/v2 v2.4.6
+	github.com/mochi-mqtt/server/v2 v2.6.0
 	github.com/panjf2000/ants/v2 v2.9.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/rs/xid v1.5.0
@@ -34,7 +34,7 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1
 	xorm.io/builder v0.3.13
-	xorm.io/xorm v1.3.8
+	xorm.io/xorm v1.3.9
 )
 
 require (
@@ -86,7 +86,7 @@ require (
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.7.0 // indirect
-	golang.org/x/exp v0.0.0-20240314144324-c7f7c6466f7f // indirect
+	golang.org/x/exp v0.0.0-20240318143956-a85f2c67cd81 // indirect
 	golang.org/x/net v0.22.0 // indirect
 	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect

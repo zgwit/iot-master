@@ -18,6 +18,10 @@ func init() {
 	viper.SetDefault("data", "data")
 }
 
+func Name(name string) {
+	viper.SetConfigName(name)
+}
+
 func Load() error {
 	return viper.ReadInConfig()
 }

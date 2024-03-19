@@ -30,7 +30,11 @@ func Open() error {
 	//监听默认端口
 	port := config.GetInt(MODULE, "port")
 	addr := ":" + strconv.Itoa(port)
-	err := Server.AddListener(listeners.NewTCP("embed", addr, nil))
+	err := Server.AddListener(listeners.NewTCP(listeners.Config{
+		Type:    "tcp",
+		ID:      "embed",
+		Address: addr,
+	}))
 	if err != nil {
 		return err
 	}
@@ -67,9 +71,11 @@ func loadListeners() error {
 	}
 
 	for _, e := range entries {
-		id := fmt.Sprintf("tcp-%s", e.Id)
-		port := fmt.Sprintf(":%d", e.Port)
-		l := listeners.NewTCP(id, port, nil)
+		l := listeners.NewTCP(listeners.Config{
+			Type:    "tcp",
+			ID:      fmt.Sprintf("tcp-%s", e.Id),
+			Address: fmt.Sprintf(":%d", e.Port),
+		})
 		err = Server.AddListener(l)
 		if err != nil {
 			//return err
