@@ -136,7 +136,7 @@ func ApiWrite(root string, params ...string) gin.HandlerFunc {
 func ApiRead(root string, params ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		filename := filepath.Join(viper.GetString("data"), root, filepath.Join(getParams(ctx, params)...), ctx.Param("name"))
-		http.ServeFile(ctx.Writer, ctx.Request, filename)
+		ctx.File(filename)
 	}
 }
 

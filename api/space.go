@@ -112,7 +112,7 @@ func spaceRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[types.Space]())
 
-	app.POST("/search", curd.ApiSearchWith[types.Space]([]*curd.Join{
+	app.POST("/search", curd.ApiSearchWith[types.Space]([]*curd.With{
 		{"project", "project_id", "id", "name", "project"},
 	}, "id", "name", "project_id", "description", "disabled", "created"))
 

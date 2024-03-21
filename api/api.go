@@ -9,6 +9,18 @@ import (
 	"net/http"
 )
 
+type API struct {
+	Method   string
+	Path     string
+	Handlers []gin.HandlerFunc
+}
+
+var apis []*API
+
+func Register(method, path string, handlers ...gin.HandlerFunc) {
+	apis = append(apis, &API{method, path, handlers})
+}
+
 func catchError(ctx *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
@@ -80,6 +92,11 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	router.GET("/logout", logout)
 	router.POST("/password", password)
 
+	//注册接口
+	for _, a := range apis {
+		router.Handle(a.Method, a.Path, a.Handlers...)
+	}
+
 	//OEM
 	oemRouter(router.Group("/oem"))
 
@@ -114,7 +131,7 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	backupRouter(router.Group("/backup"))
 
 	//附件管理
-	attach.Routers(router.Group("/attach"), "space")
+	attach.Routers(router.Group("/attach"), "attach")
 
 	//TODO 报接口错误（以下代码不生效，路由好像不是树形处理）
 	router.Use(func(ctx *gin.Context) {

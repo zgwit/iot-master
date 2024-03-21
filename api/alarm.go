@@ -75,7 +75,7 @@ func alarmRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[alarm.Alarm]())
 
-	app.POST("/search", curd.ApiSearchWith[alarm.Alarm]([]*curd.Join{
+	app.POST("/search", curd.ApiSearchWith[alarm.Alarm]([]*curd.With{
 		{"product", "product_id", "id", "name", "product"},
 		{"project", "project_id", "id", "name", "project"},
 		{"space", "space_id", "id", "name", "space"},

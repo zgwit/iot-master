@@ -110,7 +110,7 @@ func gatewayRouter(app *gin.RouterGroup) {
 
 	app.POST("/count", curd.ApiCount[types.Gateway]())
 	//app.POST("/search", curd.ApiSearch[types.Gateway]())
-	app.POST("/search", curd.ApiSearchWith[types.Gateway]([]*curd.Join{
+	app.POST("/search", curd.ApiSearchWith[types.Gateway]([]*curd.With{
 		{"project", "project_id", "id", "name", "project"},
 	}, "id", "name", "project_id", "disabled", "created"))
 	app.GET("/list", curd.ApiList[types.Gateway]())

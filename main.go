@@ -1,6 +1,7 @@
 package master
 
 import (
+	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/broker"
 	_ "github.com/zgwit/iot-master/v4/docs"
@@ -8,6 +9,7 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/config"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/web"
+	"path/filepath"
 )
 
 // @title 物联大师接口文档
@@ -46,7 +48,7 @@ func Startup() error {
 
 	//附件
 	//web.Engine.Static("/static", "static")
-	web.Engine.Static("/attach", "attach")
+	web.Engine.Static("/attach", filepath.Join(viper.GetString("data"), "attach"))
 
 	//前端 移入子工程 github.com/iot-master-contrib/webui
 	//web.Static.Put("", http.FS(wwwFiles), "www", "index.html")

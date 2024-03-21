@@ -158,7 +158,7 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	//app.POST("/search", curd.ApiSearch[types.Device]("id", "name", "product_id", "disabled", "created"))
 
-	app.POST("/search", curd.ApiSearchWith[types.Device]([]*curd.Join{
+	app.POST("/search", curd.ApiSearchWith[types.Device]([]*curd.With{
 		{"project", "project_id", "id", "name", "project"},
 		{"product", "product_id", "id", "name", "product"},
 		{"gateway", "gateway_id", "id", "name", "gateway"},
