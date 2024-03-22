@@ -2,7 +2,7 @@ package curd
 
 import "github.com/gin-gonic/gin"
 
-func ApiListWithId[T any](field string, fields ...string) gin.HandlerFunc {
+func ApiListById[T any](field string, fields ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var body ParamList
 		err := ctx.ShouldBindQuery(&body)
@@ -25,7 +25,7 @@ func ApiListWithId[T any](field string, fields ...string) gin.HandlerFunc {
 		id := ctx.MustGet("id")
 		query.Where(field+"=?", id)
 
-		var datum []T
+		var datum []*T
 		cnt, err := query.FindAndCount(&datum)
 		if err != nil {
 			Error(ctx, err)
@@ -56,7 +56,7 @@ func ApiList[T any](fields ...string) gin.HandlerFunc {
 			query.Cols(fields...)
 		}
 
-		var datum []T
+		var datum []*T
 		cnt, err := query.FindAndCount(&datum)
 		if err != nil {
 			Error(ctx, err)
