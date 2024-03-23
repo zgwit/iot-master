@@ -15,7 +15,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.1
 	github.com/iot-master-contrib/influxdb v1.0.10
-	github.com/iot-master-contrib/webui v1.0.4
+	github.com/iot-master-contrib/webui v1.0.5
 	github.com/kardianos/service v1.2.2
 	github.com/lib/pq v1.10.9
 	github.com/lithammer/shortuuid/v4 v4.0.0
