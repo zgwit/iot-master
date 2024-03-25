@@ -275,7 +275,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Device"
+                            "$ref": "#/definitions/device.Device"
                         }
                     }
                 ],
@@ -283,7 +283,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Device"
+                            "$ref": "#/definitions/curd.ReplyData-device_Device"
                         }
                     }
                 }
@@ -318,7 +318,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Device"
+                            "$ref": "#/definitions/curd.ReplyList-device_Device"
                         }
                     }
                 }
@@ -352,7 +352,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Device"
+                            "$ref": "#/definitions/curd.ReplyList-device_Device"
                         }
                     }
                 }
@@ -384,7 +384,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-api_deviceStatisticObj"
+                            "$ref": "#/definitions/curd.ReplyData-device_deviceStatisticObj"
                         }
                     }
                 }
@@ -416,7 +416,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Device"
+                            "$ref": "#/definitions/curd.ReplyData-device_Device"
                         }
                     }
                 }
@@ -447,7 +447,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Device"
+                            "$ref": "#/definitions/device.Device"
                         }
                     }
                 ],
@@ -455,7 +455,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Device"
+                            "$ref": "#/definitions/curd.ReplyData-device_Device"
                         }
                     }
                 }
@@ -487,7 +487,67 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Device"
+                            "$ref": "#/definitions/curd.ReplyData-device_Device"
+                        }
+                    }
+                }
+            }
+        },
+        "/device/{id}/history/{name}": {
+            "get": {
+                "description": "查询历史数据",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "device"
+                ],
+                "summary": "查询历史数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "设备ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "变量名称",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "起始时间",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "窗口时间",
+                        "name": "window",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "算法",
+                        "name": "method",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/curd.ReplyData-array_history_Point"
                         }
                     }
                 }
@@ -519,7 +579,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Device"
+                            "$ref": "#/definitions/curd.ReplyData-device_Device"
                         }
                     }
                 }
@@ -611,7 +671,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Gateway"
+                            "$ref": "#/definitions/broker.Gateway"
                         }
                     }
                 ],
@@ -619,7 +679,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-broker_Gateway"
                         }
                     }
                 }
@@ -654,7 +714,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Gateway"
+                            "$ref": "#/definitions/curd.ReplyList-broker_Gateway"
                         }
                     }
                 }
@@ -688,7 +748,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Gateway"
+                            "$ref": "#/definitions/curd.ReplyList-broker_Gateway"
                         }
                     }
                 }
@@ -720,7 +780,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-broker_Gateway"
                         }
                     }
                 }
@@ -751,7 +811,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Gateway"
+                            "$ref": "#/definitions/broker.Gateway"
                         }
                     }
                 ],
@@ -759,7 +819,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-broker_Gateway"
                         }
                     }
                 }
@@ -791,7 +851,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-broker_Gateway"
                         }
                     }
                 }
@@ -823,7 +883,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-broker_Gateway"
                         }
                     }
                 }
@@ -855,7 +915,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Gateway"
+                            "$ref": "#/definitions/curd.ReplyData-broker_Gateway"
                         }
                     }
                 }
@@ -1089,7 +1149,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Product"
+                            "$ref": "#/definitions/product.Product"
                         }
                     }
                 ],
@@ -1097,7 +1157,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Product"
+                            "$ref": "#/definitions/curd.ReplyData-product_Product"
                         }
                     }
                 }
@@ -1132,7 +1192,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Product"
+                            "$ref": "#/definitions/curd.ReplyList-product_Product"
                         }
                     }
                 }
@@ -1166,7 +1226,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Product"
+                            "$ref": "#/definitions/curd.ReplyList-product_Product"
                         }
                     }
                 }
@@ -1198,7 +1258,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Product"
+                            "$ref": "#/definitions/curd.ReplyData-product_Product"
                         }
                     }
                 }
@@ -1229,7 +1289,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Product"
+                            "$ref": "#/definitions/product.Product"
                         }
                     }
                 ],
@@ -1237,7 +1297,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Product"
+                            "$ref": "#/definitions/curd.ReplyData-product_Product"
                         }
                     }
                 }
@@ -1269,7 +1329,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Product"
+                            "$ref": "#/definitions/curd.ReplyData-product_Product"
                         }
                     }
                 }
@@ -1340,7 +1400,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-array_types_ProductVersion"
+                            "$ref": "#/definitions/curd.ReplyData-array_product_ProductVersion"
                         }
                     }
                 }
@@ -1380,7 +1440,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.ProductVersion"
+                            "$ref": "#/definitions/product.ProductVersion"
                         }
                     }
                 ],
@@ -1538,7 +1598,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Project"
+                            "$ref": "#/definitions/project.Project"
                         }
                     }
                 ],
@@ -1546,7 +1606,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                            "$ref": "#/definitions/curd.ReplyData-project_Project"
                         }
                     }
                 }
@@ -1581,7 +1641,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Project"
+                            "$ref": "#/definitions/curd.ReplyList-project_Project"
                         }
                     }
                 }
@@ -1615,7 +1675,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Project"
+                            "$ref": "#/definitions/curd.ReplyList-project_Project"
                         }
                     }
                 }
@@ -1648,7 +1708,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Project"
+                            "$ref": "#/definitions/project.Project"
                         }
                     }
                 ],
@@ -1656,7 +1716,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                            "$ref": "#/definitions/curd.ReplyData-project_Project"
                         }
                     }
                 }
@@ -1688,7 +1748,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                            "$ref": "#/definitions/curd.ReplyData-project_Project"
                         }
                     }
                 }
@@ -1720,7 +1780,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                            "$ref": "#/definitions/curd.ReplyData-project_Project"
                         }
                     }
                 }
@@ -1752,7 +1812,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                            "$ref": "#/definitions/curd.ReplyData-project_Project"
                         }
                     }
                 }
@@ -1784,7 +1844,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                            "$ref": "#/definitions/curd.ReplyData-project_Project"
                         }
                     }
                 }
@@ -1816,7 +1876,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Project"
+                            "$ref": "#/definitions/curd.ReplyData-project_Project"
                         }
                     }
                 }
@@ -1848,7 +1908,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-array_types_ProjectUser"
+                            "$ref": "#/definitions/curd.ReplyData-array_project_ProjectUser"
                         }
                     }
                 }
@@ -1888,7 +1948,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.ProjectUser"
+                            "$ref": "#/definitions/project.ProjectUser"
                         }
                     }
                 ],
@@ -2190,7 +2250,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Space"
+                            "$ref": "#/definitions/space.Space"
                         }
                     }
                 ],
@@ -2198,7 +2258,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                            "$ref": "#/definitions/curd.ReplyData-space_Space"
                         }
                     }
                 }
@@ -2233,7 +2293,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Space"
+                            "$ref": "#/definitions/curd.ReplyList-space_Space"
                         }
                     }
                 }
@@ -2267,7 +2327,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyList-types_Space"
+                            "$ref": "#/definitions/curd.ReplyList-space_Space"
                         }
                     }
                 }
@@ -2300,7 +2360,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.Space"
+                            "$ref": "#/definitions/space.Space"
                         }
                     }
                 ],
@@ -2308,7 +2368,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                            "$ref": "#/definitions/curd.ReplyData-space_Space"
                         }
                     }
                 }
@@ -2340,7 +2400,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                            "$ref": "#/definitions/curd.ReplyData-space_Space"
                         }
                     }
                 }
@@ -2372,7 +2432,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-array_types_SpaceDevice"
+                            "$ref": "#/definitions/curd.ReplyData-array_space_SpaceDevice"
                         }
                     }
                 }
@@ -2412,7 +2472,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.SpaceDevice"
+                            "$ref": "#/definitions/space.SpaceDevice"
                         }
                     }
                 ],
@@ -2530,7 +2590,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                            "$ref": "#/definitions/curd.ReplyData-space_Space"
                         }
                     }
                 }
@@ -2562,7 +2622,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                            "$ref": "#/definitions/curd.ReplyData-space_Space"
                         }
                     }
                 }
@@ -2594,7 +2654,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                            "$ref": "#/definitions/curd.ReplyData-space_Space"
                         }
                     }
                 }
@@ -2626,7 +2686,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-types_Space"
+                            "$ref": "#/definitions/curd.ReplyData-space_Space"
                         }
                     }
                 }
@@ -2996,7 +3056,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/curd.ReplyData-array_types_Project"
+                            "$ref": "#/definitions/curd.ReplyData-array_project_Project"
                         }
                     }
                 }
@@ -3008,6 +3068,9 @@
             "type": "object",
             "properties": {
                 "created": {
+                    "type": "string"
+                },
+                "device": {
                     "type": "string"
                 },
                 "device_id": {
@@ -3022,7 +3085,13 @@
                 "message": {
                     "type": "string"
                 },
+                "product": {
+                    "type": "string"
+                },
                 "product_id": {
+                    "type": "string"
+                },
+                "project": {
                     "type": "string"
                 },
                 "project_id": {
@@ -3030,6 +3099,9 @@
                 },
                 "read": {
                     "type": "boolean"
+                },
+                "space": {
+                    "type": "string"
                 },
                 "space_id": {
                     "type": "string"
@@ -3053,17 +3125,29 @@
                 }
             }
         },
-        "api.deviceStatisticObj": {
+        "broker.Gateway": {
             "type": "object",
             "properties": {
-                "offline": {
-                    "type": "integer"
+                "created": {
+                    "type": "string"
                 },
-                "online": {
-                    "type": "integer"
+                "description": {
+                    "type": "string"
                 },
-                "total": {
-                    "type": "integer"
+                "disabled": {
+                    "type": "boolean"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },
@@ -3125,11 +3209,14 @@
                 }
             }
         },
-        "curd.ReplyData-api_deviceStatisticObj": {
+        "curd.ReplyData-array_history_Point": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/api.deviceStatisticObj"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/history.Point"
+                    }
                 },
                 "error": {
                     "type": "string"
@@ -3164,13 +3251,13 @@
                 }
             }
         },
-        "curd.ReplyData-array_types_ProductVersion": {
+        "curd.ReplyData-array_product_ProductVersion": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.ProductVersion"
+                        "$ref": "#/definitions/product.ProductVersion"
                     }
                 },
                 "error": {
@@ -3178,13 +3265,13 @@
                 }
             }
         },
-        "curd.ReplyData-array_types_Project": {
+        "curd.ReplyData-array_project_Project": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.Project"
+                        "$ref": "#/definitions/project.Project"
                     }
                 },
                 "error": {
@@ -3192,13 +3279,13 @@
                 }
             }
         },
-        "curd.ReplyData-array_types_ProjectUser": {
+        "curd.ReplyData-array_project_ProjectUser": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.ProjectUser"
+                        "$ref": "#/definitions/project.ProjectUser"
                     }
                 },
                 "error": {
@@ -3206,13 +3293,13 @@
                 }
             }
         },
-        "curd.ReplyData-array_types_SpaceDevice": {
+        "curd.ReplyData-array_space_SpaceDevice": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.SpaceDevice"
+                        "$ref": "#/definitions/space.SpaceDevice"
                     }
                 },
                 "error": {
@@ -3225,6 +3312,39 @@
             "properties": {
                 "data": {
                     "type": "boolean"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-broker_Gateway": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/broker.Gateway"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-device_Device": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/device.Device"
+                },
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "curd.ReplyData-device_deviceStatisticObj": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/device.deviceStatisticObj"
                 },
                 "error": {
                     "type": "string"
@@ -3264,55 +3384,33 @@
                 }
             }
         },
-        "curd.ReplyData-types_Device": {
+        "curd.ReplyData-product_Product": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/types.Device"
+                    "$ref": "#/definitions/product.Product"
                 },
                 "error": {
                     "type": "string"
                 }
             }
         },
-        "curd.ReplyData-types_Gateway": {
+        "curd.ReplyData-project_Project": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/types.Gateway"
+                    "$ref": "#/definitions/project.Project"
                 },
                 "error": {
                     "type": "string"
                 }
             }
         },
-        "curd.ReplyData-types_Product": {
+        "curd.ReplyData-space_Space": {
             "type": "object",
             "properties": {
                 "data": {
-                    "$ref": "#/definitions/types.Product"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyData-types_Project": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/types.Project"
-                },
-                "error": {
-                    "type": "string"
-                }
-            }
-        },
-        "curd.ReplyData-types_Space": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "$ref": "#/definitions/types.Space"
+                    "$ref": "#/definitions/space.Space"
                 },
                 "error": {
                     "type": "string"
@@ -3358,6 +3456,40 @@
                 }
             }
         },
+        "curd.ReplyList-broker_Gateway": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/broker.Gateway"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "curd.ReplyList-device_Device": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/device.Device"
+                    }
+                },
+                "error": {
+                    "type": "string"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "curd.ReplyList-plugin_Manifest": {
             "type": "object",
             "properties": {
@@ -3375,13 +3507,13 @@
                 }
             }
         },
-        "curd.ReplyList-types_Device": {
+        "curd.ReplyList-product_Product": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.Device"
+                        "$ref": "#/definitions/product.Product"
                     }
                 },
                 "error": {
@@ -3392,13 +3524,13 @@
                 }
             }
         },
-        "curd.ReplyList-types_Gateway": {
+        "curd.ReplyList-project_Project": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.Gateway"
+                        "$ref": "#/definitions/project.Project"
                     }
                 },
                 "error": {
@@ -3409,47 +3541,13 @@
                 }
             }
         },
-        "curd.ReplyList-types_Product": {
+        "curd.ReplyList-space_Space": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.Product"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "curd.ReplyList-types_Project": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Project"
-                    }
-                },
-                "error": {
-                    "type": "string"
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "curd.ReplyList-types_Space": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/types.Space"
+                        "$ref": "#/definitions/space.Space"
                     }
                 },
                 "error": {
@@ -3477,120 +3575,7 @@
                 }
             }
         },
-        "plugin.Manifest": {
-            "type": "object",
-            "properties": {
-                "dependencies": {
-                    "description": "更多",
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    }
-                },
-                "description": {
-                    "description": "说明",
-                    "type": "string"
-                },
-                "icon": {
-                    "description": "图标",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "ID",
-                    "type": "string"
-                },
-                "menus": {
-                    "description": "菜单入口",
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/plugin.Menu"
-                    }
-                },
-                "name": {
-                    "description": "名称",
-                    "type": "string"
-                },
-                "pages": {
-                    "description": "子页面",
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/plugin.Page"
-                    }
-                },
-                "process": {
-                    "description": "外部插件 进程",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/plugin.Process"
-                        }
-                    ]
-                },
-                "version": {
-                    "description": "版本 semver.Version",
-                    "type": "string"
-                }
-            }
-        },
-        "plugin.Menu": {
-            "type": "object",
-            "properties": {
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/plugin.MenuItem"
-                    }
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "plugin.MenuItem": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "standalone": {
-                    "description": "独立页面，弹窗显示",
-                    "type": "boolean"
-                },
-                "url": {
-                    "type": "string"
-                }
-            }
-        },
-        "plugin.Page": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "select": {
-                    "description": "页面选择器，比如：modbus, s7 ...",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "url": {
-                    "type": "string"
-                }
-            }
-        },
-        "plugin.Process": {
-            "type": "object",
-            "properties": {
-                "delay": {
-                    "description": "延迟启动 s",
-                    "type": "integer"
-                },
-                "main": {
-                    "type": "string"
-                }
-            }
-        },
-        "types.Device": {
+        "device.Device": {
             "type": "object",
             "properties": {
                 "created": {
@@ -3642,39 +3627,132 @@
                 }
             }
         },
-        "types.Gateway": {
+        "device.deviceStatisticObj": {
             "type": "object",
             "properties": {
-                "created": {
-                    "type": "string"
+                "offline": {
+                    "type": "integer"
+                },
+                "online": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "history.Point": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "integer"
+                },
+                "value": {}
+            }
+        },
+        "plugin.Manifest": {
+            "type": "object",
+            "properties": {
+                "delay": {
+                    "description": "延迟启动 s",
+                    "type": "integer"
+                },
+                "dependencies": {
+                    "description": "更多",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "description": {
+                    "description": "说明",
                     "type": "string"
                 },
-                "disabled": {
-                    "type": "boolean"
+                "entry": {
+                    "description": "外部插件 进程\nProcess *Process `json:\"process,omitempty\"`",
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
                 },
                 "id": {
+                    "description": "ID",
                     "type": "string"
+                },
+                "menus": {
+                    "description": "菜单入口",
+                    "type": "object",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/plugin.Menu"
+                    }
                 },
                 "name": {
+                    "description": "名称",
                     "type": "string"
                 },
-                "password": {
-                    "type": "string"
+                "pages": {
+                    "description": "子页面",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/plugin.Page"
+                    }
                 },
-                "project": {
-                    "type": "string"
-                },
-                "project_id": {
-                    "type": "string"
-                },
-                "username": {
+                "version": {
+                    "description": "版本 semver.Version",
                     "type": "string"
                 }
             }
         },
-        "types.Product": {
+        "plugin.Menu": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/plugin.MenuItem"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "plugin.MenuItem": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "standalone": {
+                    "description": "独立页面，弹窗显示",
+                    "type": "boolean"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "plugin.Page": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "select": {
+                    "description": "页面选择器，比如：modbus, s7 ...",
+                    "type": "object",
+                    "additionalProperties": {}
+                },
+                "target": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "product.Product": {
             "type": "object",
             "properties": {
                 "created": {
@@ -3709,7 +3787,7 @@
                 }
             }
         },
-        "types.ProductVersion": {
+        "product.ProductVersion": {
             "type": "object",
             "properties": {
                 "created": {
@@ -3724,7 +3802,7 @@
                 }
             }
         },
-        "types.Project": {
+        "project.Project": {
             "type": "object",
             "properties": {
                 "created": {
@@ -3757,7 +3835,7 @@
                 }
             }
         },
-        "types.ProjectUser": {
+        "project.ProjectUser": {
             "type": "object",
             "properties": {
                 "admin": {
@@ -3780,7 +3858,7 @@
                 }
             }
         },
-        "types.Space": {
+        "space.Space": {
             "type": "object",
             "properties": {
                 "created": {
@@ -3808,7 +3886,7 @@
                 }
             }
         },
-        "types.SpaceDevice": {
+        "space.SpaceDevice": {
             "type": "object",
             "properties": {
                 "created": {

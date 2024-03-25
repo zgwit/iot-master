@@ -106,25 +106,11 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	//注册子接口
 	userRouter(router.Group("/user"))
 
-	pluginRouter(router.Group("/plugin"))
-
-	productRouter(router.Group("/product"))
-	attach.Routers(router.Group("/product/:id/attach"), "product", "id")
-
-	productVersionRouter(router.Group("/product/:id/version"))
-	attach.Routers(router.Group("/product/:id/version/:version/attach"), "product", "id", "version")
-
-	projectRouter(router.Group("/project"))
-	projectUserRouter(router.Group("/project/:id/user"))
-	attach.Routers(router.Group("/project/:id/attach"), "project", "id")
-
-	spaceRouter(router.Group("/space"))
-	spaceDeviceRouter(router.Group("/space/:id/device"))
-	attach.Routers(router.Group("/space/:id/attach"), "space", "id")
-
-	gatewayRouter(router.Group("/gateway"))
-
-	deviceRouter(router.Group("/device"))
+	//附件
+	//attach.Routers(router.Group("/product/:id/attach"), "product", "id")
+	//attach.Routers(router.Group("/product/:id/version/:version/attach"), "product", "id", "version")
+	//attach.Routers(router.Group("/project/:id/attach"), "project", "id")
+	//attach.Routers(router.Group("/space/:id/attach"), "space", "id")
 
 	backupRouter(router.Group("/backup"))
 

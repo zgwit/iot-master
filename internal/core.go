@@ -2,7 +2,6 @@ package internal
 
 import (
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/v4/aggregator"
 	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/pkg/db"
@@ -11,6 +10,7 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/pool"
 	"github.com/zgwit/iot-master/v4/pkg/vconn"
 	"github.com/zgwit/iot-master/v4/plugin"
+	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/project"
 	"net"
 	"net/url"
@@ -35,14 +35,12 @@ func Open() error {
 		return err
 	}
 
-	//启动计划任务
-	aggregator.Start()
-
-	err = broker.Open()
+	err = broker.Boot()
 	if err != nil {
 		return err
 	}
 
+	//内部桥接mqtt
 	if broker.Server != nil {
 		token := mqtt.OpenBy(
 			func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
@@ -78,6 +76,12 @@ func Open() error {
 	}
 
 	//加载设备影子
+	err = product.Boot()
+	if err != nil {
+		return err
+	}
+
+	//加载设备影子
 	err = device.Open()
 	if err != nil {
 		return err
@@ -97,5 +101,4 @@ func Close() {
 	broker.Close()
 	mqtt.Close()
 	plugin.Close()
-
 }

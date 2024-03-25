@@ -1,12 +1,19 @@
-package api
+package space
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/space"
 	"github.com/zgwit/iot-master/v4/web/curd"
 	"xorm.io/xorm/schemas"
 )
+
+func init() {
+	api.Register("GET", "/space/:id/device/list", spaceDeviceList)
+	api.Register("GET", "/space/:id/device/:device/bind", spaceDeviceBind)
+	api.Register("GET", "/space/:id/device/:device/unbind", spaceDeviceUnbind)
+	api.Register("POST", "/space/:id/device/:device", spaceDeviceUpdate)
+}
 
 // @Summary 空间设备列表
 // @Schemes
@@ -15,10 +22,10 @@ import (
 // @Param id path int true "项目ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[[]space.SpaceDevice] 返回空间设备信息
+// @Success 200 {object} curd.ReplyData[[]SpaceDevice] 返回空间设备信息
 // @Router /space/{id}/device/list [get]
 func spaceDeviceList(ctx *gin.Context) {
-	var pds []space.SpaceDevice
+	var pds []SpaceDevice
 	err := db.Engine.
 		Select("space_device.space_id, space_device.device_id, space_device.name, space_device.created, device.name as device").
 		Join("INNER", "device", "device.id=space_device.device_id").
@@ -42,7 +49,7 @@ func spaceDeviceList(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /space/{id}/device/{device}/bind [get]
 func spaceDeviceBind(ctx *gin.Context) {
-	pd := space.SpaceDevice{
+	pd := SpaceDevice{
 		SpaceId:  ctx.Param("id"),
 		DeviceId: ctx.Param("device"),
 	}
@@ -65,7 +72,7 @@ func spaceDeviceBind(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /space/{id}/device/{device}/unbind [get]
 func spaceDeviceUnbind(ctx *gin.Context) {
-	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("device")}).Delete(new(space.SpaceDevice))
+	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("device")}).Delete(new(SpaceDevice))
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -79,13 +86,13 @@ func spaceDeviceUnbind(ctx *gin.Context) {
 // @Tags space-device
 // @Param id path int true "项目ID"
 // @Param device path int true "设备ID"
-// @Param space-device body space.SpaceDevice true "空间设备信息"
+// @Param space-device body SpaceDevice true "空间设备信息"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /space/{id}/device/{device} [post]
 func spaceDeviceUpdate(ctx *gin.Context) {
-	var pd space.SpaceDevice
+	var pd SpaceDevice
 	err := ctx.ShouldBindJSON(&pd)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -99,11 +106,4 @@ func spaceDeviceUpdate(ctx *gin.Context) {
 		return
 	}
 	curd.OK(ctx, nil)
-}
-
-func spaceDeviceRouter(app *gin.RouterGroup) {
-	app.GET("/list", spaceDeviceList)
-	app.GET("/:device/bind", spaceDeviceBind)
-	app.GET("/:device/unbind", spaceDeviceUnbind)
-	app.POST("/:device", spaceDeviceUpdate)
 }

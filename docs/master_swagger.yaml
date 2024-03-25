@@ -4,6 +4,8 @@ definitions:
     properties:
       created:
         type: string
+      device:
+        type: string
       device_id:
         type: string
       id:
@@ -12,12 +14,18 @@ definitions:
         type: integer
       message:
         type: string
+      product:
+        type: string
       product_id:
+        type: string
+      project:
         type: string
       project_id:
         type: string
       read:
         type: boolean
+      space:
+        type: string
       space_id:
         type: string
       title:
@@ -32,14 +40,22 @@ definitions:
       name:
         type: string
     type: object
-  api.deviceStatisticObj:
+  broker.Gateway:
     properties:
-      offline:
-        type: integer
-      online:
-        type: integer
-      total:
-        type: integer
+      created:
+        type: string
+      description:
+        type: string
+      disabled:
+        type: boolean
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
     type: object
   curd.ParamSearch:
     properties:
@@ -79,10 +95,12 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-api_deviceStatisticObj:
+  curd.ReplyData-array_history_Point:
     properties:
       data:
-        $ref: '#/definitions/api.deviceStatisticObj'
+        items:
+          $ref: '#/definitions/history.Point'
+        type: array
       error:
         type: string
     type: object
@@ -104,38 +122,38 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-array_types_ProductVersion:
+  curd.ReplyData-array_product_ProductVersion:
     properties:
       data:
         items:
-          $ref: '#/definitions/types.ProductVersion'
+          $ref: '#/definitions/product.ProductVersion'
         type: array
       error:
         type: string
     type: object
-  curd.ReplyData-array_types_Project:
+  curd.ReplyData-array_project_Project:
     properties:
       data:
         items:
-          $ref: '#/definitions/types.Project'
+          $ref: '#/definitions/project.Project'
         type: array
       error:
         type: string
     type: object
-  curd.ReplyData-array_types_ProjectUser:
+  curd.ReplyData-array_project_ProjectUser:
     properties:
       data:
         items:
-          $ref: '#/definitions/types.ProjectUser'
+          $ref: '#/definitions/project.ProjectUser'
         type: array
       error:
         type: string
     type: object
-  curd.ReplyData-array_types_SpaceDevice:
+  curd.ReplyData-array_space_SpaceDevice:
     properties:
       data:
         items:
-          $ref: '#/definitions/types.SpaceDevice'
+          $ref: '#/definitions/space.SpaceDevice'
         type: array
       error:
         type: string
@@ -144,6 +162,27 @@ definitions:
     properties:
       data:
         type: boolean
+      error:
+        type: string
+    type: object
+  curd.ReplyData-broker_Gateway:
+    properties:
+      data:
+        $ref: '#/definitions/broker.Gateway'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-device_Device:
+    properties:
+      data:
+        $ref: '#/definitions/device.Device'
+      error:
+        type: string
+    type: object
+  curd.ReplyData-device_deviceStatisticObj:
+    properties:
+      data:
+        $ref: '#/definitions/device.deviceStatisticObj'
       error:
         type: string
     type: object
@@ -168,38 +207,24 @@ definitions:
       error:
         type: string
     type: object
-  curd.ReplyData-types_Device:
+  curd.ReplyData-product_Product:
     properties:
       data:
-        $ref: '#/definitions/types.Device'
+        $ref: '#/definitions/product.Product'
       error:
         type: string
     type: object
-  curd.ReplyData-types_Gateway:
+  curd.ReplyData-project_Project:
     properties:
       data:
-        $ref: '#/definitions/types.Gateway'
+        $ref: '#/definitions/project.Project'
       error:
         type: string
     type: object
-  curd.ReplyData-types_Product:
+  curd.ReplyData-space_Space:
     properties:
       data:
-        $ref: '#/definitions/types.Product'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_Project:
-    properties:
-      data:
-        $ref: '#/definitions/types.Project'
-      error:
-        type: string
-    type: object
-  curd.ReplyData-types_Space:
-    properties:
-      data:
-        $ref: '#/definitions/types.Space'
+        $ref: '#/definitions/space.Space'
       error:
         type: string
     type: object
@@ -228,6 +253,28 @@ definitions:
       total:
         type: integer
     type: object
+  curd.ReplyList-broker_Gateway:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/broker.Gateway'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
+  curd.ReplyList-device_Device:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/device.Device'
+        type: array
+      error:
+        type: string
+      total:
+        type: integer
+    type: object
   curd.ReplyList-plugin_Manifest:
     properties:
       data:
@@ -239,55 +286,33 @@ definitions:
       total:
         type: integer
     type: object
-  curd.ReplyList-types_Device:
+  curd.ReplyList-product_Product:
     properties:
       data:
         items:
-          $ref: '#/definitions/types.Device'
+          $ref: '#/definitions/product.Product'
         type: array
       error:
         type: string
       total:
         type: integer
     type: object
-  curd.ReplyList-types_Gateway:
+  curd.ReplyList-project_Project:
     properties:
       data:
         items:
-          $ref: '#/definitions/types.Gateway'
+          $ref: '#/definitions/project.Project'
         type: array
       error:
         type: string
       total:
         type: integer
     type: object
-  curd.ReplyList-types_Product:
+  curd.ReplyList-space_Space:
     properties:
       data:
         items:
-          $ref: '#/definitions/types.Product'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-types_Project:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.Project'
-        type: array
-      error:
-        type: string
-      total:
-        type: integer
-    type: object
-  curd.ReplyList-types_Space:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/types.Space'
+          $ref: '#/definitions/space.Space'
         type: array
       error:
         type: string
@@ -305,83 +330,7 @@ definitions:
       total:
         type: integer
     type: object
-  plugin.Manifest:
-    properties:
-      dependencies:
-        additionalProperties:
-          type: string
-        description: 更多
-        type: object
-      description:
-        description: 说明
-        type: string
-      icon:
-        description: 图标
-        type: string
-      id:
-        description: ID
-        type: string
-      menus:
-        additionalProperties:
-          $ref: '#/definitions/plugin.Menu'
-        description: 菜单入口
-        type: object
-      name:
-        description: 名称
-        type: string
-      pages:
-        additionalProperties:
-          $ref: '#/definitions/plugin.Page'
-        description: 子页面
-        type: object
-      process:
-        allOf:
-        - $ref: '#/definitions/plugin.Process'
-        description: 外部插件 进程
-      version:
-        description: 版本 semver.Version
-        type: string
-    type: object
-  plugin.Menu:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/plugin.MenuItem'
-        type: array
-      name:
-        type: string
-    type: object
-  plugin.MenuItem:
-    properties:
-      name:
-        type: string
-      standalone:
-        description: 独立页面，弹窗显示
-        type: boolean
-      url:
-        type: string
-    type: object
-  plugin.Page:
-    properties:
-      name:
-        type: string
-      select:
-        description: 页面选择器，比如：modbus, s7 ...
-        items:
-          type: string
-        type: array
-      url:
-        type: string
-    type: object
-  plugin.Process:
-    properties:
-      delay:
-        description: 延迟启动 s
-        type: integer
-      main:
-        type: string
-    type: object
-  types.Device:
+  device.Device:
     properties:
       created:
         type: string
@@ -416,28 +365,95 @@ definitions:
       project_id:
         type: string
     type: object
-  types.Gateway:
+  device.deviceStatisticObj:
     properties:
-      created:
-        type: string
+      offline:
+        type: integer
+      online:
+        type: integer
+      total:
+        type: integer
+    type: object
+  history.Point:
+    properties:
+      time:
+        type: integer
+      value: {}
+    type: object
+  plugin.Manifest:
+    properties:
+      delay:
+        description: 延迟启动 s
+        type: integer
+      dependencies:
+        additionalProperties:
+          type: string
+        description: 更多
+        type: object
       description:
+        description: 说明
         type: string
-      disabled:
-        type: boolean
+      entry:
+        description: |-
+          外部插件 进程
+          Process *Process `json:"process,omitempty"`
+        type: string
+      icon:
+        description: 图标
+        type: string
       id:
+        description: ID
         type: string
+      menus:
+        additionalProperties:
+          $ref: '#/definitions/plugin.Menu'
+        description: 菜单入口
+        type: object
       name:
+        description: 名称
         type: string
-      password:
-        type: string
-      project:
-        type: string
-      project_id:
-        type: string
-      username:
+      pages:
+        description: 子页面
+        items:
+          $ref: '#/definitions/plugin.Page'
+        type: array
+      version:
+        description: 版本 semver.Version
         type: string
     type: object
-  types.Product:
+  plugin.Menu:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/plugin.MenuItem'
+        type: array
+      name:
+        type: string
+    type: object
+  plugin.MenuItem:
+    properties:
+      name:
+        type: string
+      standalone:
+        description: 独立页面，弹窗显示
+        type: boolean
+      url:
+        type: string
+    type: object
+  plugin.Page:
+    properties:
+      name:
+        type: string
+      select:
+        additionalProperties: {}
+        description: 页面选择器，比如：modbus, s7 ...
+        type: object
+      target:
+        type: string
+      url:
+        type: string
+    type: object
+  product.Product:
     properties:
       created:
         type: string
@@ -462,7 +478,7 @@ definitions:
         description: 链接
         type: string
     type: object
-  types.ProductVersion:
+  product.ProductVersion:
     properties:
       created:
         type: string
@@ -472,7 +488,7 @@ definitions:
       product_id:
         type: string
     type: object
-  types.Project:
+  project.Project:
     properties:
       created:
         type: string
@@ -495,7 +511,7 @@ definitions:
         description: 名称
         type: string
     type: object
-  types.ProjectUser:
+  project.ProjectUser:
     properties:
       admin:
         type: boolean
@@ -510,7 +526,7 @@ definitions:
       user_id:
         type: string
     type: object
-  types.Space:
+  space.Space:
     properties:
       created:
         type: string
@@ -529,7 +545,7 @@ definitions:
       project_id:
         type: string
     type: object
-  types.SpaceDevice:
+  space.SpaceDevice:
     properties:
       created:
         type: string
@@ -724,7 +740,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Device'
+            $ref: '#/definitions/curd.ReplyData-device_Device'
       summary: 获取设备
       tags:
       - device
@@ -743,14 +759,14 @@ paths:
         name: device
         required: true
         schema:
-          $ref: '#/definitions/types.Device'
+          $ref: '#/definitions/device.Device'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Device'
+            $ref: '#/definitions/curd.ReplyData-device_Device'
       summary: 修改设备
       tags:
       - device
@@ -771,8 +787,48 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Device'
+            $ref: '#/definitions/curd.ReplyData-device_Device'
       summary: 删除设备
+      tags:
+      - device
+  /device/{id}/history/{name}:
+    get:
+      description: 查询历史数据
+      parameters:
+      - description: 设备ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 变量名称
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: 起始时间
+        in: query
+        name: start
+        type: string
+      - description: 结束时间
+        in: query
+        name: end
+        type: string
+      - description: 窗口时间
+        in: query
+        name: window
+        type: string
+      - description: 算法
+        in: query
+        name: method
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/curd.ReplyData-array_history_Point'
+      summary: 查询历史数据
       tags:
       - device
   /device/{id}/parameters:
@@ -792,7 +848,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Device'
+            $ref: '#/definitions/curd.ReplyData-device_Device'
       summary: 修改设备参数
       tags:
       - device
@@ -850,14 +906,14 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/types.Device'
+          $ref: '#/definitions/device.Device'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Device'
+            $ref: '#/definitions/curd.ReplyData-device_Device'
       summary: 创建设备
       tags:
       - device
@@ -879,7 +935,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Device'
+            $ref: '#/definitions/curd.ReplyList-device_Device'
       summary: 查询设备
       tags:
       - device
@@ -901,7 +957,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Device'
+            $ref: '#/definitions/curd.ReplyList-device_Device'
       summary: 查询设备
       tags:
       - device
@@ -922,7 +978,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-api_deviceStatisticObj'
+            $ref: '#/definitions/curd.ReplyData-device_deviceStatisticObj'
       summary: 设备统计
       tags:
       - device
@@ -943,7 +999,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Gateway'
+            $ref: '#/definitions/curd.ReplyData-broker_Gateway'
       summary: 获取网关
       tags:
       - gateway
@@ -962,14 +1018,14 @@ paths:
         name: gateway
         required: true
         schema:
-          $ref: '#/definitions/types.Gateway'
+          $ref: '#/definitions/broker.Gateway'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Gateway'
+            $ref: '#/definitions/curd.ReplyData-broker_Gateway'
       summary: 修改网关
       tags:
       - gateway
@@ -990,7 +1046,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Gateway'
+            $ref: '#/definitions/curd.ReplyData-broker_Gateway'
       summary: 删除网关
       tags:
       - gateway
@@ -1011,7 +1067,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Gateway'
+            $ref: '#/definitions/curd.ReplyData-broker_Gateway'
       summary: 禁用网关
       tags:
       - gateway
@@ -1032,7 +1088,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Gateway'
+            $ref: '#/definitions/curd.ReplyData-broker_Gateway'
       summary: 启用网关
       tags:
       - gateway
@@ -1069,14 +1125,14 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/types.Gateway'
+          $ref: '#/definitions/broker.Gateway'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Gateway'
+            $ref: '#/definitions/curd.ReplyData-broker_Gateway'
       summary: 创建网关
       tags:
       - gateway
@@ -1098,7 +1154,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Gateway'
+            $ref: '#/definitions/curd.ReplyList-broker_Gateway'
       summary: 查询网关
       tags:
       - gateway
@@ -1120,7 +1176,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Gateway'
+            $ref: '#/definitions/curd.ReplyList-broker_Gateway'
       summary: 查询网关
       tags:
       - gateway
@@ -1255,7 +1311,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Product'
+            $ref: '#/definitions/curd.ReplyData-product_Product'
       summary: 获取产品
       tags:
       - product
@@ -1274,14 +1330,14 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/types.Product'
+          $ref: '#/definitions/product.Product'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Product'
+            $ref: '#/definitions/curd.ReplyData-product_Product'
       summary: 修改产品
       tags:
       - product
@@ -1302,7 +1358,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Product'
+            $ref: '#/definitions/curd.ReplyData-product_Product'
       summary: 删除产品
       tags:
       - product
@@ -1327,7 +1383,7 @@ paths:
         name: product-version
         required: true
         schema:
-          $ref: '#/definitions/types.ProductVersion'
+          $ref: '#/definitions/product.ProductVersion'
       produces:
       - application/json
       responses:
@@ -1464,7 +1520,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_ProductVersion'
+            $ref: '#/definitions/curd.ReplyData-array_product_ProductVersion'
       summary: 产品版本列表
       tags:
       - product-version
@@ -1501,14 +1557,14 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/types.Product'
+          $ref: '#/definitions/product.Product'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Product'
+            $ref: '#/definitions/curd.ReplyData-product_Product'
       summary: 创建产品
       tags:
       - product
@@ -1530,7 +1586,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Product'
+            $ref: '#/definitions/curd.ReplyList-product_Product'
       summary: 查询产品
       tags:
       - product
@@ -1552,7 +1608,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Product'
+            $ref: '#/definitions/curd.ReplyList-product_Product'
       summary: 查询产品
       tags:
       - product
@@ -1572,14 +1628,14 @@ paths:
         name: project
         required: true
         schema:
-          $ref: '#/definitions/types.Project'
+          $ref: '#/definitions/project.Project'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Project'
+            $ref: '#/definitions/curd.ReplyData-project_Project'
       summary: 修改项目
       tags:
       - project
@@ -1600,7 +1656,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Project'
+            $ref: '#/definitions/curd.ReplyData-project_Project'
       summary: 删除项目
       tags:
       - project
@@ -1621,7 +1677,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Project'
+            $ref: '#/definitions/curd.ReplyData-project_Project'
       summary: 禁用项目
       tags:
       - project
@@ -1642,7 +1698,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Project'
+            $ref: '#/definitions/curd.ReplyData-project_Project'
       summary: 启用项目
       tags:
       - project
@@ -1663,7 +1719,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Project'
+            $ref: '#/definitions/curd.ReplyData-project_Project'
       summary: 启动项目
       tags:
       - project
@@ -1684,7 +1740,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Project'
+            $ref: '#/definitions/curd.ReplyData-project_Project'
       summary: 停止项目
       tags:
       - project
@@ -1709,7 +1765,7 @@ paths:
         name: project-user
         required: true
         schema:
-          $ref: '#/definitions/types.ProjectUser'
+          $ref: '#/definitions/project.ProjectUser'
       produces:
       - application/json
       responses:
@@ -1867,7 +1923,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_ProjectUser'
+            $ref: '#/definitions/curd.ReplyData-array_project_ProjectUser'
       summary: 项目用户列表
       tags:
       - project-user
@@ -1882,14 +1938,14 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/types.Project'
+          $ref: '#/definitions/project.Project'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Project'
+            $ref: '#/definitions/curd.ReplyData-project_Project'
       summary: 创建项目
       tags:
       - project
@@ -1911,7 +1967,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Project'
+            $ref: '#/definitions/curd.ReplyList-project_Project'
       summary: 查询项目
       tags:
       - project
@@ -1933,7 +1989,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Project'
+            $ref: '#/definitions/curd.ReplyList-project_Project'
       summary: 查询项目
       tags:
       - project
@@ -2002,14 +2058,14 @@ paths:
         name: space
         required: true
         schema:
-          $ref: '#/definitions/types.Space'
+          $ref: '#/definitions/space.Space'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Space'
+            $ref: '#/definitions/curd.ReplyData-space_Space'
       summary: 修改空间
       tags:
       - space
@@ -2030,7 +2086,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Space'
+            $ref: '#/definitions/curd.ReplyData-space_Space'
       summary: 删除空间
       tags:
       - space
@@ -2055,7 +2111,7 @@ paths:
         name: space-device
         required: true
         schema:
-          $ref: '#/definitions/types.SpaceDevice'
+          $ref: '#/definitions/space.SpaceDevice'
       produces:
       - application/json
       responses:
@@ -2135,7 +2191,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_SpaceDevice'
+            $ref: '#/definitions/curd.ReplyData-array_space_SpaceDevice'
       summary: 空间设备列表
       tags:
       - space-device
@@ -2156,7 +2212,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Space'
+            $ref: '#/definitions/curd.ReplyData-space_Space'
       summary: 禁用空间
       tags:
       - space
@@ -2177,7 +2233,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Space'
+            $ref: '#/definitions/curd.ReplyData-space_Space'
       summary: 启用空间
       tags:
       - space
@@ -2198,7 +2254,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Space'
+            $ref: '#/definitions/curd.ReplyData-space_Space'
       summary: 启动空间
       tags:
       - space
@@ -2219,7 +2275,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Space'
+            $ref: '#/definitions/curd.ReplyData-space_Space'
       summary: 停止空间
       tags:
       - space
@@ -2234,14 +2290,14 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/types.Space'
+          $ref: '#/definitions/space.Space'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-types_Space'
+            $ref: '#/definitions/curd.ReplyData-space_Space'
       summary: 创建空间
       tags:
       - space
@@ -2263,7 +2319,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Space'
+            $ref: '#/definitions/curd.ReplyList-space_Space'
       summary: 查询空间
       tags:
       - space
@@ -2285,7 +2341,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyList-types_Space'
+            $ref: '#/definitions/curd.ReplyList-space_Space'
       summary: 查询空间
       tags:
       - space
@@ -2425,7 +2481,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/curd.ReplyData-array_types_Project'
+            $ref: '#/definitions/curd.ReplyData-array_project_Project'
       summary: 获取用户的项目列表
       tags:
       - user

@@ -1,10 +1,30 @@
-package api
+package plugin
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/plugin"
+	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
+
+func init() {
+
+	api.Register("GET", "/plugin/list", func(ctx *gin.Context) {
+		curd.OK(ctx, GetPlugins())
+	})
+
+	api.Register("GET", "/plugin/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
+		p := Get(ctx.GetString("id"))
+		if p == nil {
+			curd.Fail(ctx, "插件未加载")
+			return
+		}
+		curd.OK(ctx, p.Manifest)
+	})
+
+	api.Register("GET", "/plugin/menus/:entry", menus)
+
+	api.Register("GET", "/plugin/pages/:entry", pages)
+}
 
 // @Summary 查询插件
 // @Schemes
@@ -12,7 +32,7 @@ import (
 // @Tags plugin
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[plugin.Manifest] 返回插件信息
+// @Success 200 {object} curd.ReplyList[Manifest] 返回插件信息
 // @Router /plugin/list [get]
 func noopPluginList() {}
 
@@ -23,7 +43,7 @@ func noopPluginList() {}
 // @Param id path int true "插件ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[plugin.Manifest] 返回插件信息
+// @Success 200 {object} curd.ReplyData[Manifest] 返回插件信息
 // @Router /plugin/{id}/manifest [get]
 func noopPluginManifestGet() {}
 
@@ -34,13 +54,13 @@ func noopPluginManifestGet() {}
 // @Param entry path string true "模块"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[[]plugin.Menu] 返回插件信息
+// @Success 200 {object} curd.ReplyData[[]Menu] 返回插件信息
 // @Router /plugin/menus/{entry} [get]
 func menus(ctx *gin.Context) {
 	entry := ctx.Param("entry")
 
-	var menus []*plugin.Menu
-	for _, p := range plugin.GetPlugins() {
+	var menus []*Menu
+	for _, p := range GetPlugins() {
 		if p.Menus != nil {
 			if en, ok := p.Menus[entry]; ok {
 				menus = append(menus, en)
@@ -57,13 +77,13 @@ func menus(ctx *gin.Context) {
 // @Param entry path string true "模块"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[[]plugin.Page] 返回插件信息
+// @Success 200 {object} curd.ReplyData[[]Page] 返回插件信息
 // @Router /plugin/pages/{entry} [get]
 func pages(ctx *gin.Context) {
 	entry := ctx.Param("entry")
 
-	var entries []*plugin.Page
-	for _, p := range plugin.GetPlugins() {
+	var entries []*Page
+	for _, p := range GetPlugins() {
 		if p.Pages != nil {
 			for _, pp := range p.Pages {
 				if pp.Target == entry {
@@ -73,24 +93,4 @@ func pages(ctx *gin.Context) {
 		}
 	}
 	curd.OK(ctx, entries)
-}
-
-func pluginRouter(app *gin.RouterGroup) {
-
-	app.GET("/list", func(ctx *gin.Context) {
-		curd.OK(ctx, plugin.GetPlugins())
-	})
-
-	app.GET("/:id/manifest", curd.ParseParamStringId, func(ctx *gin.Context) {
-		p := plugin.Get(ctx.GetString("id"))
-		if p == nil {
-			curd.Fail(ctx, "插件未加载")
-			return
-		}
-		curd.OK(ctx, p.Manifest)
-	})
-
-	app.GET("/menus/:entry", menus)
-
-	app.GET("/pages/:entry", pages)
 }

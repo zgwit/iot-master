@@ -14,7 +14,7 @@ import (
 
 var Server *mochi.Server
 
-func Open() error {
+func Boot() error {
 
 	if !config.GetBool(MODULE, "enable") {
 		return nil

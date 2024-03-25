@@ -3,7 +3,6 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/project"
 	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
@@ -105,16 +104,6 @@ func noopUserDelete() {}
 // @Router /user/{id}/password [post]
 func noopUserPassword() {}
 
-// @Summary 获取用户的项目列表
-// @Schemes
-// @Description 获取用户的项目列表
-// @Tags user
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[[]types.Project] 返回项目列表
-// @Router /user/{id}/projects [get]
-func noopUserProjects() {}
-
 // @Summary 启用用户
 // @Schemes
 // @Description 启用用户
@@ -161,9 +150,6 @@ func userRouter(app *gin.RouterGroup) {
 	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.User](false, nil, nil))
 
 	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.User](true, nil, nil))
-
-	app.GET("/:id/projects", curd.ParseParamStringId, userProjects)
-
 }
 
 func userMe(ctx *gin.Context) {
@@ -196,18 +182,4 @@ func userPassword(ctx *gin.Context) {
 	}
 
 	curd.OK(ctx, nil)
-}
-
-func userProjects(ctx *gin.Context) {
-	id := ctx.GetString("id")
-
-	var projects []*project.Project
-	err := db.Engine.Join("INNER", "project_user", "project_user.project_id=project.id").
-		Where("project_user.user_id=?", id).Find(&projects)
-	if err != nil {
-		curd.Error(ctx, err)
-		return
-	}
-
-	curd.OK(ctx, projects)
 }

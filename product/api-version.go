@@ -1,17 +1,26 @@
-package api
+package product
 
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/web/curd"
 	"io"
 	"os"
 	"path/filepath"
 	"xorm.io/xorm/schemas"
 )
+
+func init() {
+	api.Register("GET", "/product/:id/version/list", curd.ParseParamStringId, curd.ApiListById[ProductVersion]("product_id"))
+	api.Register("POST", "/product/:id/version/create", productVersionCreate)
+	api.Register("GET", "/product/:id/version/:version/delete", productVersionDelete)
+	api.Register("POST", "/product/:id/version/:version", productVersionUpdate)
+	api.Register("GET", "/product/:id/version/:version/config/:config", productVersionConfigGet)
+	api.Register("POST", "/product/:id/version/:version/config/:config", productVersionConfigSet)
+}
 
 // @Summary 产品版本列表
 // @Schemes
@@ -20,7 +29,7 @@ import (
 // @Param id path int true "产品ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[[]types.ProductVersion] 返回产品版本信息
+// @Success 200 {object} curd.ReplyData[[]ProductVersion] 返回产品版本信息
 // @Router /product/{id}/version/list [get]
 func productVersionList(ctx *gin.Context) {
 }
@@ -40,7 +49,7 @@ type projectVersion struct {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /product/{id}/version/create [post]
 func productVersionCreate(ctx *gin.Context) {
-	var pd product.ProductVersion
+	var pd ProductVersion
 	err := ctx.ShouldBindJSON(&pd)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -68,7 +77,7 @@ func productVersionCreate(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /product/{id}/version/{version}/delete [get]
 func productVersionDelete(ctx *gin.Context) {
-	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("version")}).Delete(new(product.ProductVersion))
+	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("version")}).Delete(new(ProductVersion))
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -82,13 +91,13 @@ func productVersionDelete(ctx *gin.Context) {
 // @Tags product-version
 // @Param id path int true "产品ID"
 // @Param version path int true "版本ID"
-// @Param product-version body types.ProductVersion true "产品版本信息"
+// @Param product-version body ProductVersion true "产品版本信息"
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /product/{id}/version/{version} [post]
 func productVersionUpdate(ctx *gin.Context) {
-	var pd product.ProductVersion
+	var pd ProductVersion
 	err := ctx.ShouldBindJSON(&pd)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -161,15 +170,4 @@ func productVersionConfigSet(ctx *gin.Context) {
 	}
 
 	curd.OK(ctx, nil)
-}
-
-func productVersionRouter(app *gin.RouterGroup) {
-	app.GET("/list", curd.ParseParamStringId, curd.ApiListById[product.ProductVersion]("product_id"))
-	app.POST("/create", productVersionCreate)
-	app.GET("/:version/delete", productVersionDelete)
-	app.POST("/:version", productVersionUpdate)
-
-	app.GET("/:version/config/:config", productVersionConfigGet)
-	app.POST("/:version/config/:config", productVersionConfigSet)
-
 }
