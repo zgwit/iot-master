@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/types"
+	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -86,13 +86,13 @@ func noopProductDelete() {}
 
 func productRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[types.Product]())
-	app.POST("/search", curd.ApiSearch[types.Product]())
-	app.GET("/list", curd.ApiList[types.Product]())
-	app.POST("/create", curd.ApiCreateHook[types.Product](curd.GenerateID[types.Product](), nil))
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Product]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Product](nil, nil,
+	app.POST("/count", curd.ApiCount[product.Product]())
+	app.POST("/search", curd.ApiSearch[product.Product]())
+	app.GET("/list", curd.ApiList[product.Product]())
+	app.POST("/create", curd.ApiCreateHook[product.Product](curd.GenerateID[product.Product](), nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[product.Product]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[product.Product](nil, nil,
 		"id", "name", "url", "icon", "description", "keywords", "disabled"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Product](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[product.Product](nil, nil))
 
 }

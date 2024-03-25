@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/types"
+	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/web/curd"
 	"io"
 	"os"
@@ -40,7 +40,7 @@ type projectVersion struct {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /product/{id}/version/create [post]
 func productVersionCreate(ctx *gin.Context) {
-	var pd types.ProductVersion
+	var pd product.ProductVersion
 	err := ctx.ShouldBindJSON(&pd)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -68,7 +68,7 @@ func productVersionCreate(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /product/{id}/version/{version}/delete [get]
 func productVersionDelete(ctx *gin.Context) {
-	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("version")}).Delete(new(types.ProductVersion))
+	_, err := db.Engine.ID(schemas.PK{ctx.Param("id"), ctx.Param("version")}).Delete(new(product.ProductVersion))
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -88,7 +88,7 @@ func productVersionDelete(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /product/{id}/version/{version} [post]
 func productVersionUpdate(ctx *gin.Context) {
-	var pd types.ProductVersion
+	var pd product.ProductVersion
 	err := ctx.ShouldBindJSON(&pd)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -164,7 +164,7 @@ func productVersionConfigSet(ctx *gin.Context) {
 }
 
 func productVersionRouter(app *gin.RouterGroup) {
-	app.GET("/list", curd.ParseParamStringId, curd.ApiListById[types.ProductVersion]("product_id"))
+	app.GET("/list", curd.ParseParamStringId, curd.ApiListById[product.ProductVersion]("product_id"))
 	app.POST("/create", productVersionCreate)
 	app.GET("/:version/delete", productVersionDelete)
 	app.POST("/:version", productVersionUpdate)

@@ -11,12 +11,3 @@ type History struct {
 	Value    float64   `json:"value"`              //值
 	Time     time.Time `json:"time"`
 }
-
-type HistoryEx struct {
-	History `xorm:"extends"`
-	Device  string `json:"device,omitempty"`
-}
-
-func (h *HistoryEx) TableName() string {
-	return "history"
-}

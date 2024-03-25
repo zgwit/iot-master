@@ -1,6 +1,13 @@
 package types
 
-import "time"
+import (
+	"github.com/zgwit/iot-master/v4/pkg/db"
+	"time"
+)
+
+func init() {
+	db.Register(new(User), new(Password), new(UserHistory))
+}
 
 // User 用户
 type User struct {

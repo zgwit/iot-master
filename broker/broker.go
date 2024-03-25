@@ -8,7 +8,6 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/config"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/types"
 	"strconv"
 	"xorm.io/xorm"
 )
@@ -64,7 +63,7 @@ func Close() {
 func loadListeners() error {
 	//监听服务
 	//加载数据库中 entrypoint
-	var entries []types.Broker
+	var entries []Broker
 	err := db.Engine.Find(&entries)
 	if err != nil && err != xorm.ErrNotExist {
 		return err

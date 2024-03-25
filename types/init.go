@@ -5,9 +5,5 @@ import (
 )
 
 func init() {
-	db.Register(
-		new(User), new(Password),
-		new(Broker), new(Gateway),
-		new(Product), new(ProductVersion),
-		new(History))
+	db.Register(new(User), new(Password))
 }

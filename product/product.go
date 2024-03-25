@@ -1,6 +1,13 @@
-package types
+package product
 
-import "time"
+import (
+	"github.com/zgwit/iot-master/v4/pkg/db"
+	"time"
+)
+
+func init() {
+	db.Register(new(Product), new(ProductVersion))
+}
 
 type Product struct {
 	Id          string    `json:"id" xorm:"pk"`          //ID
@@ -16,12 +23,4 @@ type ProductVersion struct {
 	ProductId string    `json:"product_id,omitempty" xorm:"PK"`
 	Name      string    `json:"name,omitempty" xorm:"PK"` //版本 semver.Version
 	Created   time.Time `json:"created" xorm:"created"`
-}
-
-type ProductExt struct {
-	Product
-}
-
-func (p ProductExt) TableName() string {
-	return "product"
 }

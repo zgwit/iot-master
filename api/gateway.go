@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/types"
+	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -108,18 +108,18 @@ func noopGatewayDisable() {}
 
 func gatewayRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[types.Gateway]())
+	app.POST("/count", curd.ApiCount[broker.Gateway]())
 	//app.POST("/search", curd.ApiSearch[types.Gateway]())
-	app.POST("/search", curd.ApiSearchWith[types.Gateway]([]*curd.With{
+	app.POST("/search", curd.ApiSearchWith[broker.Gateway]([]*curd.With{
 		{"project", "project_id", "id", "name", "project"},
 	}, "id", "name", "project_id", "disabled", "created"))
-	app.GET("/list", curd.ApiList[types.Gateway]())
-	app.POST("/create", curd.ApiCreateHook[types.Gateway](curd.GenerateID[types.Gateway](), nil))
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Gateway]())
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Gateway](nil, nil,
+	app.GET("/list", curd.ApiList[broker.Gateway]())
+	app.POST("/create", curd.ApiCreateHook[broker.Gateway](curd.GenerateID[broker.Gateway](), nil))
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[broker.Gateway]())
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[broker.Gateway](nil, nil,
 		"id", "name", "description", "project_id", "username", "password", "disabled"))
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Gateway](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[broker.Gateway](nil, nil))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Gateway](true, nil, nil))
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Gateway](false, nil, nil))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[broker.Gateway](true, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[broker.Gateway](false, nil, nil))
 }

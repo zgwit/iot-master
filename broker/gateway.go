@@ -1,4 +1,4 @@
-package types
+package broker
 
 import "time"
 
@@ -8,9 +8,6 @@ type Gateway struct {
 	Description string `json:"description,omitempty"`
 	Username    string `json:"username,omitempty"`
 	Password    string `json:"password,omitempty"`
-
-	ProjectId string `json:"project_id,omitempty" xorm:"index"`
-	Project   string `json:"project,omitempty" xorm:"<-"`
 
 	Disabled bool      `json:"disabled,omitempty"`
 	Created  time.Time `json:"created,omitempty" xorm:"created"`
