@@ -31,6 +31,12 @@ type Device struct {
 
 	Online bool `json:"online,omitempty" xorm:"-"`
 
+	//通道ID
+	TunnelId string `json:"tunnel_id,omitempty" xorm:"index"`
+
+	//modbus站号
+	ModbusStation uint8 `json:"modbus_station,omitempty"`
+
 	//变量
 	values map[string]any
 	//last   time.Time

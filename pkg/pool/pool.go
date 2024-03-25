@@ -21,5 +21,8 @@ func Close() {
 }
 
 func Insert(task func()) error {
+	if Pool == nil {
+		go task()
+	}
 	return Pool.Submit(task)
 }

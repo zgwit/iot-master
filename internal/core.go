@@ -12,6 +12,7 @@ import (
 	"github.com/zgwit/iot-master/v4/plugin"
 	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/project"
+	"github.com/zgwit/iot-master/v4/tunnel"
 	"net"
 	"net/url"
 )
@@ -71,6 +72,11 @@ func Open() error {
 
 	//加载所有插件
 	err = plugin.Boot()
+	if err != nil {
+		return err
+	}
+
+	err = tunnel.Boot()
 	if err != nil {
 		return err
 	}
