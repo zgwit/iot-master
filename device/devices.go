@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/product"
-	"github.com/zgwit/iot-master/v4/types"
 )
 
 var devices lib.Map[Device]
@@ -27,7 +25,7 @@ func Get(id string) *Device {
 }
 
 func Load(id string) error {
-	var dev types.Device
+	var dev Device
 	get, err := db.Engine.ID(id).Get(&dev)
 	if err != nil {
 		return err
@@ -35,33 +33,8 @@ func Load(id string) error {
 	if !get {
 		return fmt.Errorf("device %s not found", id)
 	}
-	return From(&dev)
-}
 
-func From(device *types.Device) error {
-	d := New(device)
-
-	//绑定产品
-	p, err := product.Ensure(device.ProductId)
-	if err != nil {
-		return err
-	}
-	d.product = p
-
-	//复制基础参数
-	//for _, v := range p.Parameters {
-	//	d.values[v.name] = v.Default
-	//}
-
-	//复制设备参数
-	for k, v := range device.Parameters {
-		d.values[k] = v
-	}
-
-	//构建
-	//d.Build()
-
-	devices.Store(device.Id, d)
+	devices.Store(id, &dev)
 	return nil
 }
 

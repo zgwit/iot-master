@@ -5,14 +5,21 @@ import (
 	"github.com/PaesslerAG/gval"
 	"github.com/zgwit/iot-master/v4/pkg/calc"
 	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/types"
 	"time"
 )
 
 type Validator struct {
-	*types.Validator
+	Expression  string `json:"expression"`
+	Type        string `json:"type"`
+	Title       string `json:"title"`
+	Level       uint   `json:"level"`
+	Template    string `json:"template"`
+	Delay       uint   `json:"delay,omitempty"`        //延迟时间s
+	Repeat      bool   `json:"repeat,omitempty"`       //重启报警
+	RepeatDelay uint   `json:"repeat_delay,omitempty"` //再次提醒间隔s
+	RepeatTotal uint   `json:"repeat_total,omitempty"` //总提醒次数
 
-	Expression gval.Evaluable
+	evaluable gval.Evaluable
 
 	//again      bool
 	start int64 //开始时间s
@@ -20,15 +27,13 @@ type Validator struct {
 	//reported bool
 }
 
-// New 新建
-func New(m *types.Validator) (v *Validator, err error) {
-	v = &Validator{Validator: m}
-	v.Expression, err = calc.New(m.Expression)
+func (v *Validator) Compile() (err error) {
+	v.evaluable, err = calc.New(v.Expression)
 	return
 }
 
 func (v *Validator) Validate(values map[string]any) bool {
-	ret, err := v.Expression.EvalBool(context.Background(), values)
+	ret, err := v.evaluable.EvalBool(context.Background(), values)
 	if err != nil {
 		log.Error(err)
 		return false

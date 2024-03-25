@@ -5,29 +5,17 @@ import (
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/types"
+	"github.com/zgwit/iot-master/v4/space"
 )
 
 var projects lib.Map[Project]
-
-func Ensure(id string) (*Project, error) {
-	dev := projects.Load(id)
-	if dev == nil {
-		err := Load(id)
-		if err != nil {
-			return nil, err
-		}
-		dev = projects.Load(id)
-	}
-	return dev, nil
-}
 
 func Get(id string) *Project {
 	return projects.Load(id)
 }
 
 func Load(id string) error {
-	var m types.Project
+	var m Project
 	has, err := db.Engine.ID(id).Get(&m)
 	if err != nil {
 		return err
@@ -39,34 +27,36 @@ func Load(id string) error {
 	return From(&m)
 }
 
-func From(project *types.Project) error {
-	p := New(project)
+func From(p *Project) error {
+	projects.Store(p.Id, p)
 
-	projects.Store(project.Id, p)
-	//
-	//err := db.Engine.Where("project_id = ?", id).And("disabled = ?", false).Find(&p.ExternalValidators)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//err = db.Engine.Where("project_id = ?", id).And("disabled = ?", false).Find(&p.ExternalAggregators)
-	//if err != nil {
-	//	return err
-	//}
+	var ds []*space.Space
+	err := db.Engine.Where("project_id=?", p.Id).Find(&ds)
+	if err != nil {
+		return err
+	}
+
+	for _, s := range ds {
+		err := space.From(s)
+		if err != nil {
+			log.Error(err)
+		}
+	}
 
 	return nil
 }
 
 func Boot() error {
-	//开机加载所有产品，好像没有必要???
-	var ps []*types.Project
+	//开机加载所有项目，好像没有必要???
+
+	var ps []*Project
 	err := db.Engine.Find(&ps)
 	if err != nil {
 		return err
 	}
 
 	for _, p := range ps {
-		err = Load(p.Id)
+		err = From(p)
 		if err != nil {
 			log.Error(err)
 			//return err

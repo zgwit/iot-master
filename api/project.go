@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/project"
-	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -15,7 +14,7 @@ import (
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.Project] 返回项目信息
+// @Success 200 {object} curd.ReplyList[project.Project] 返回项目信息
 // @Router /project/search [post]
 func noopProjectSearch() {}
 
@@ -26,7 +25,7 @@ func noopProjectSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.Project] 返回项目信息
+// @Success 200 {object} curd.ReplyList[project.Project] 返回项目信息
 // @Router /project/list [get]
 func noopProjectList() {}
 
@@ -34,10 +33,10 @@ func noopProjectList() {}
 // @Schemes
 // @Description 创建项目
 // @Tags project
-// @Param search body types.Project true "项目信息"
+// @Param search body project.Project true "项目信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Project] 返回项目信息
+// @Success 200 {object} curd.ReplyData[project.Project] 返回项目信息
 // @Router /project/create [post]
 func noopProjectCreate() {}
 
@@ -46,10 +45,10 @@ func noopProjectCreate() {}
 // @Description 修改项目
 // @Tags project
 // @Param id path int true "项目ID"
-// @Param project body types.Project true "项目信息"
+// @Param project body project.Project true "项目信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Project] 返回项目信息
+// @Success 200 {object} curd.ReplyData[project.Project] 返回项目信息
 // @Router /project/{id} [post]
 func noopProjectUpdate() {}
 
@@ -60,7 +59,7 @@ func noopProjectUpdate() {}
 // @Param id path int true "项目ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Project] 返回项目信息
+// @Success 200 {object} curd.ReplyData[project.Project] 返回项目信息
 // @Router /project/{id}/delete [get]
 func noopProjectDelete() {}
 
@@ -71,7 +70,7 @@ func noopProjectDelete() {}
 // @Param id path int true "项目ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Project] 返回项目信息
+// @Success 200 {object} curd.ReplyData[project.Project] 返回项目信息
 // @Router /project/{id}/enable [get]
 func noopProjectEnable() {}
 
@@ -82,7 +81,7 @@ func noopProjectEnable() {}
 // @Param id path int true "项目ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Project] 返回项目信息
+// @Success 200 {object} curd.ReplyData[project.Project] 返回项目信息
 // @Router /project/{id}/disable [get]
 func noopProjectDisable() {}
 
@@ -93,7 +92,7 @@ func noopProjectDisable() {}
 // @Param id path int true "项目ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Project] 返回项目信息
+// @Success 200 {object} curd.ReplyData[project.Project] 返回项目信息
 // @Router /project/{id}/start [get]
 func noopProjectStart() {}
 
@@ -104,15 +103,15 @@ func noopProjectStart() {}
 // @Param id path int true "项目ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Project] 返回项目信息
+// @Success 200 {object} curd.ReplyData[project.Project] 返回项目信息
 // @Router /project/{id}/stop [get]
 func noopProjectStop() {}
 
 func projectRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[types.Project]())
+	app.POST("/count", curd.ApiCount[project.Project]())
 
-	app.POST("/search", curd.ApiSearchHook[types.Project](func(datum []*types.Project) error {
+	app.POST("/search", curd.ApiSearchHook[project.Project](func(datum []*project.Project) error {
 		for _, v := range datum {
 			p := project.Get(v.Id)
 			if p != nil {
@@ -122,7 +121,7 @@ func projectRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.GET("/list", curd.ApiListHook[types.Project](func(datum []*types.Project) error {
+	app.GET("/list", curd.ApiListHook[project.Project](func(datum []*project.Project) error {
 		for _, v := range datum {
 			p := project.Get(v.Id)
 			if p != nil {
@@ -131,9 +130,9 @@ func projectRouter(app *gin.RouterGroup) {
 		}
 		return nil
 	}))
-	app.POST("/create", curd.ApiCreateHook[types.Project](curd.GenerateID[types.Project](), nil))
+	app.POST("/create", curd.ApiCreateHook[project.Project](curd.GenerateID[project.Project](), nil))
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetHook[types.Project](func(m *types.Project) error {
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGetHook[project.Project](func(m *project.Project) error {
 		p := project.Get(m.Id)
 		if p != nil {
 			//m.Running = p.Running
@@ -141,12 +140,12 @@ func projectRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Project](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[project.Project](nil, nil,
 		"id", "name", "icon", "description", "keywords", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Project](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[project.Project](nil, nil))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Project](true, nil, func(id any) error {
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[project.Project](true, nil, func(id any) error {
 		p := project.Get(id.(string))
 		if p == nil {
 			return errors.New("项目未加载")
@@ -158,7 +157,7 @@ func projectRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Project](false, nil, func(id any) error {
+	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[project.Project](false, nil, func(id any) error {
 		return project.Load(id.(string))
 	}))
 

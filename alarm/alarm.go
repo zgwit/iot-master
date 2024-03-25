@@ -1,8 +1,13 @@
 package alarm
 
 import (
+	"github.com/zgwit/iot-master/v4/pkg/db"
 	"time"
 )
+
+func init() {
+	db.Register(new(Alarm))
+}
 
 type Alarm struct {
 	Id int64 `json:"id"`

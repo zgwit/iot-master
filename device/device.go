@@ -1,150 +1,105 @@
 package device
 
 import (
-	"github.com/zgwit/iot-master/v4/aggregator"
-	"github.com/zgwit/iot-master/v4/alarm"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/event"
-	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/product"
-	"github.com/zgwit/iot-master/v4/types"
 	"time"
 )
 
-type Device struct {
-	id   string
-	name string
+func init() {
+	db.Register(new(Device))
+}
 
-	last   time.Time
+type Device struct {
+	Id string `json:"id" xorm:"pk"` //ClientID
+
+	GatewayId string `json:"gateway_id,omitempty" xorm:"index"`
+	Gateway   string `json:"gateway,omitempty" xorm:"<-"`
+
+	ProductId      string `json:"product_id,omitempty" xorm:"index"`
+	Product        string `json:"product,omitempty" xorm:"<-"`
+	ProductVersion string `json:"product_version,omitempty"`
+
+	ProjectId string `json:"project_id,omitempty" xorm:"index"`
+	Project   string `json:"project,omitempty" xorm:"<-"`
+
+	Name        string             `json:"name"`
+	Description string             `json:"description,omitempty"`
+	Parameters  map[string]float64 `json:"parameters,omitempty" xorm:"json"` //模型参数，用于报警检查
+	Disabled    bool               `json:"disabled,omitempty"`
+	Created     time.Time          `json:"created,omitempty" xorm:"created"`
+
+	Online bool `json:"online,omitempty" xorm:"-"`
+
+	//变量
 	values map[string]any
+	//last   time.Time
 
 	//事件监听
-	EventData    event.Emitter[map[string]any]
-	EventError   event.Emitter[error]
-	EventAlarm   event.Emitter[*alarm.Alarm]
-	EventOnline  event.Emitter[any]
-	EventOffline event.Emitter[any]
+	eventData event.Emitter[map[string]any]
 
-	product *product.Product
-
-	validators  []*alarm.Validator
-	aggregators []aggregator.Aggregator
+	//adapter protocol.Adapter
 }
 
-func (d *Device) Id() string {
-	return d.id
+func (d *Device) Watch(fn func(map[string]any)) int {
+	return d.eventData.On(fn)
 }
 
-func (d *Device) Name() string {
-	return d.name
-}
-
-func (d *Device) Online() {
-	d.values["$online"] = true
-}
-
-func (d *Device) Offline() {
-	d.values["$online"] = false
+func (d *Device) UnWatch(handler int) {
+	d.eventData.Off(handler)
 }
 
 func (d *Device) Values() map[string]any {
 	return d.values
 }
 
-func (d *Device) createValidator(m *types.Validator) error {
-	v, err := alarm.New(m)
-	if err != nil {
-		return err
-	}
-	d.validators = append(d.validators, v)
-	return nil
-}
-
-//
-//func (d *Device) Build() {
-//	for _, v := range d.product.Validators {
-//		err := d.createValidator(v)
-//		if err != nil {
-//			log.Error(err)
-//		}
-//	}
-//	for _, v := range d.product.ExternalValidators {
-//		err := d.createValidator(&v.Validator)
-//		if err != nil {
-//			log.Error(err)
-//		}
-//	}
-//
-//	var validators []*types.ExternalValidator
-//	err := db.Engine.Where("device_id = ?", d.id).And("disabled = ?", false).Find(&validators)
-//	if err != nil {
-//		log.Error(err)
-//	}
-//	for _, v := range validators {
-//		err := d.createValidator(&v.Validator)
-//		if err != nil {
-//			log.Error(err)
-//		}
-//	}
-//
-//}
-
 func (d *Device) Push(values map[string]any) {
+
+	//广播
+	d.eventData.Emit(values)
+
+	//赋值
+	if d.values == nil {
+		d.values = make(map[string]any)
+	}
 	for k, v := range values {
 		d.values[k] = v
-	}
-
-	//数据聚合
-	for _, a := range d.aggregators {
-		err := a.Push(values)
-		if err != nil {
-			log.Error(err)
-		}
 	}
 
 	//检查数据
 	//d.Validate()
 }
 
-func (d *Device) Validate() {
-	for _, v := range d.validators {
-		ret := v.Validate(d.values)
-		if !ret {
-			//检查结果为真时，才产生报警
-			continue
-		}
-
-		//入库
-		al := alarm.Alarm{
-			ProductId: d.product.Id,
-			Product:   d.product.Name,
-			DeviceId:  d.id,
-			Device:    d.name,
-			Type:      v.Type,
-			Title:     v.Title,
-			Level:     v.Level,
-			Message:   v.Template, //TODO 模板格式化
-		}
-		_, err := db.Engine.Insert(&al)
-		if err != nil {
-			log.Error(err)
-			//continue
-		}
-
-		//通知
-		//err = internal.notify(&al)
-		//if err != nil {
-		//	log.Error(err)
-		//	//continue
-		//}
-	}
-}
-
-func New(m *types.Device) *Device {
-	//time.Now().Unix()
-	return &Device{
-		id:     m.Id,
-		name:   m.Name,
-		values: make(map[string]any),
-	}
-}
+//func (d *Device) Validate() {
+//	for _, v := range d.validators {
+//		ret := v.Validate(d.values)
+//		if !ret {
+//			//检查结果为真时，才产生报警
+//			continue
+//		}
+//
+//		//入库
+//		al := alarm.Alarm{
+//			ProductId: d.ProductId,
+//			Product:   d.Product,
+//			DeviceId:  d.Id,
+//			Device:    d.Name,
+//			Type:      v.Type,
+//			Title:     v.Title,
+//			Level:     v.Level,
+//			Message:   v.Template, //TODO 模板格式化
+//		}
+//		_, err := db.Engine.Insert(&al)
+//		if err != nil {
+//			log.Error(err)
+//			//continue
+//		}
+//
+//		//通知
+//		//err = internal.notify(&al)
+//		//if err != nil {
+//		//	log.Error(err)
+//		//	//continue
+//		//}
+//	}
+//}

@@ -9,11 +9,12 @@ import (
 	"strings"
 )
 
-func subscribeEvent() {
-	mqtt.SubscribeStruct[payload.Event]("up/event/+", func(topic string, event *payload.Event) {
+func mqttEvent() {
+
+	mqtt.SubscribeStruct[payload.Event]("device/+/event", func(topic string, event *payload.Event) {
 		topics := strings.Split(topic, "/")
 		//pid := topics[2]
-		id := topics[2]
+		id := topics[1]
 
 		dev, err := Ensure(id)
 		if err != nil {
@@ -31,9 +32,9 @@ func subscribeEvent() {
 
 		switch event.Name {
 		case "online":
-			dev.Online()
+			dev.Online = true
 		case "offline":
-			dev.Offline()
+			dev.Online = false
 		}
 	})
 

@@ -5,7 +5,6 @@ import (
 	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/history"
 	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -27,7 +26,7 @@ func noopDeviceCount() {}
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.Device] 返回设备信息
+// @Success 200 {object} curd.ReplyList[device.Device] 返回设备信息
 // @Router /device/search [post]
 func noopDeviceSearch() {}
 
@@ -38,7 +37,7 @@ func noopDeviceSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.Device] 返回设备信息
+// @Success 200 {object} curd.ReplyList[device.Device] 返回设备信息
 // @Router /device/list [get]
 func noopDeviceList() {}
 
@@ -46,10 +45,10 @@ func noopDeviceList() {}
 // @Schemes
 // @Description 创建设备
 // @Tags device
-// @Param search body types.Device true "设备信息"
+// @Param search body device.Device true "设备信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Device] 返回设备信息
+// @Success 200 {object} curd.ReplyData[device.Device] 返回设备信息
 // @Router /device/create [post]
 func noopDeviceCreate() {}
 
@@ -60,7 +59,7 @@ func noopDeviceCreate() {}
 // @Param id path int true "设备ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Device] 返回设备信息
+// @Success 200 {object} curd.ReplyData[device.Device] 返回设备信息
 // @Router /device/{id} [get]
 func noopDeviceGet() {}
 
@@ -69,10 +68,10 @@ func noopDeviceGet() {}
 // @Description 修改设备
 // @Tags device
 // @Param id path int true "设备ID"
-// @Param device body types.Device true "设备信息"
+// @Param device body device.Device true "设备信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Device] 返回设备信息
+// @Success 200 {object} curd.ReplyData[device.Device] 返回设备信息
 // @Router /device/{id} [post]
 func noopDeviceUpdate() {}
 
@@ -83,7 +82,7 @@ func noopDeviceUpdate() {}
 // @Param id path int true "设备ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Device] 返回设备信息
+// @Success 200 {object} curd.ReplyData[device.Device] 返回设备信息
 // @Router /device/{id}/delete [get]
 func noopDeviceDelete() {}
 
@@ -120,7 +119,7 @@ func noopDeviceHistory() {}
 // @Param id path int true "设备ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Device] 返回设备信息
+// @Success 200 {object} curd.ReplyData[device.Device] 返回设备信息
 // @Router /device/{id}/parameters [post]
 func noopDeviceParameters() {}
 
@@ -142,7 +141,7 @@ type deviceStatisticObj struct {
 func deviceStatistic(ctx *gin.Context) {
 	var obj deviceStatisticObj
 	var err error
-	obj.Total, err = db.Engine.Count(types.Device{})
+	obj.Total, err = db.Engine.Count(device.Device{})
 	if err != nil {
 		curd.Error(ctx, err)
 		return
@@ -154,30 +153,30 @@ func deviceStatistic(ctx *gin.Context) {
 
 func deviceRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[types.Device]())
+	app.POST("/count", curd.ApiCount[device.Device]())
 
-	//app.POST("/search", curd.ApiSearch[types.Device]("id", "name", "product_id", "disabled", "created"))
+	//app.POST("/search", curd.ApiSearch[device.Device]("id", "name", "product_id", "disabled", "created"))
 
-	app.POST("/search", curd.ApiSearchWith[types.Device]([]*curd.With{
+	app.POST("/search", curd.ApiSearchWith[device.Device]([]*curd.With{
 		{"project", "project_id", "id", "name", "project"},
 		{"product", "product_id", "id", "name", "product"},
 		{"gateway", "gateway_id", "id", "name", "gateway"},
 	}, "id", "name", "project_id", "product_id", "product_version", "gateway_id", "disabled", "created"))
 
-	app.GET("/list", curd.ApiList[types.Device]())
+	app.GET("/list", curd.ApiList[device.Device]())
 
-	app.POST("/create", curd.ApiCreateHook[types.Device](curd.GenerateID[types.Device](), nil))
+	app.POST("/create", curd.ApiCreateHook[device.Device](curd.GenerateID[device.Device](), nil))
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Device]())
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[device.Device]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Device](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[device.Device](nil, nil,
 		"id", "gateway_id", "product_id", "product_version", "project_id", "type", "name", "description", "parameters", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Device](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[device.Device](nil, nil))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Device](true, nil, nil))
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[device.Device](true, nil, nil))
 
-	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Device](false, nil, nil))
+	app.GET(":id/enable", curd.ParseParamStringId, curd.ApiDisableHook[device.Device](false, nil, nil))
 
 	app.GET("/:id/values", curd.ParseParamStringId, deviceValues)
 
@@ -198,7 +197,7 @@ func deviceValues(ctx *gin.Context) {
 }
 
 func deviceHistory(ctx *gin.Context) {
-	var dev types.Device
+	var dev device.Device
 	has, err := db.Engine.ID(ctx.GetString("id")).Get(&dev)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -231,8 +230,8 @@ func deviceParameters(ctx *gin.Context) {
 		curd.Error(ctx, err)
 		return
 	}
-	dev := types.Device{Parameters: body}
-	_, err = db.Engine.ID(ctx.GetString("id")).Update(&dev)
+	dev := device.Device{Parameters: body}
+	_, err = db.Engine.ID(ctx.GetString("id")).Cols("parameters").Update(&dev)
 	if err != nil {
 		curd.Error(ctx, err)
 		return

@@ -9,8 +9,5 @@ func init() {
 		new(User), new(Password),
 		new(Broker), new(Gateway),
 		new(Product), new(ProductVersion),
-		new(Device),
-		new(Project), new(ProjectUser),
-		new(Space), new(SpaceDevice),
 		new(History))
 }

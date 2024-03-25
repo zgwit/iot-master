@@ -56,19 +56,19 @@ func (e *Emitter[T]) Once(fn func(t T)) int {
 	var id int
 	id = e.On(func(t T) {
 		fn(t)
-		e.Clear(id)
+		e.Off(id)
 	})
 	return id
 }
 
-// Clear 删除监听
-func (e *Emitter[T]) Clear(id int) {
+// Off 删除监听
+func (e *Emitter[T]) Off(id int) {
 	if e.listeners != nil {
 		delete(e.listeners, id)
 	}
 }
 
-// Off 取消所有监听
-func (e *Emitter[T]) Off() {
+// Clear 取消所有监听
+func (e *Emitter[T]) Clear() {
 	e.listeners = nil
 }

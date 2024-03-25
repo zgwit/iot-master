@@ -2,12 +2,30 @@ package space
 
 import (
 	"github.com/zgwit/iot-master/v4/device"
-	"github.com/zgwit/iot-master/v4/types"
+	"github.com/zgwit/iot-master/v4/pkg/db"
+	"time"
 )
 
+func init() {
+	db.Register(new(Space), new(SpaceDevice))
+}
+
+type SpaceDevice struct {
+	SpaceId  string    `json:"space_id" xorm:"pk"`
+	DeviceId string    `json:"device_id" xorm:"pk"`
+	Device   string    `json:"device,omitempty" xorm:"<-"`
+	Name     string    `json:"name,omitempty"` //编程别名
+	Created  time.Time `json:"created" xorm:"created"`
+}
+
 type Space struct {
-	id   string
-	name string
+	Id          string    `json:"id" xorm:"pk"`
+	Name        string    `json:"name,omitempty"`        //名称
+	Description string    `json:"description,omitempty"` //说明
+	ProjectId   string    `json:"project_id,omitempty" xorm:"index"`
+	Project     string    `json:"project,omitempty" xorm:"<-"`
+	Disabled    bool      `json:"disabled,omitempty"`
+	Created     time.Time `json:"created" xorm:"created"`
 
 	values map[string]any
 
@@ -18,17 +36,9 @@ func (s *Space) PutDevice(name string, dev *device.Device) {
 	s.devices[name] = dev
 	s.values[name] = dev.Values()
 
-	dev.EventData.On(func(value map[string]any) {
+	dev.Watch(func(value map[string]any) {
 		//此处用来触发情景模式
+
 	})
 
-}
-
-func New(space *types.Space) *Space {
-	return &Space{
-		id:      space.Id,
-		name:    space.Name,
-		devices: make(map[string]*device.Device),
-		values:  make(map[string]any),
-	}
 }

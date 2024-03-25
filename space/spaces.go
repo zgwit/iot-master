@@ -6,29 +6,16 @@ import (
 	"github.com/zgwit/iot-master/v4/lib"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/types"
 )
 
 var spaces lib.Map[Space]
-
-func Ensure(id string) (*Space, error) {
-	dev := spaces.Load(id)
-	if dev == nil {
-		err := Load(id)
-		if err != nil {
-			return nil, err
-		}
-		dev = spaces.Load(id)
-	}
-	return dev, nil
-}
 
 func Get(id string) *Space {
 	return spaces.Load(id)
 }
 
 func Load(id string) error {
-	var m types.Space
+	var m Space
 	has, err := db.Engine.ID(id).Get(&m)
 	if err != nil {
 		return err
@@ -36,27 +23,14 @@ func Load(id string) error {
 	if !has {
 		return fmt.Errorf("找不到项目%s", id)
 	}
-
 	return From(&m)
 }
 
-func From(space *types.Space) error {
-	p := New(space)
+func From(m *Space) error {
+	spaces.Store(m.Id, m)
 
-	spaces.Store(space.Id, p)
-	//
-	//err := db.Engine.Where("space_id = ?", id).And("disabled = ?", false).Find(&p.ExternalValidators)
-	//if err != nil {
-	//	return err
-	//}
-	//
-	//err = db.Engine.Where("space_id = ?", id).And("disabled = ?", false).Find(&p.ExternalAggregators)
-	//if err != nil {
-	//	return err
-	//}
-
-	var ds []types.SpaceDevice
-	err := db.Engine.Where("space_id=?", space.Id).Find(&ds)
+	var ds []*SpaceDevice
+	err := db.Engine.Where("space_id=?", m.Id).Find(&ds)
 	if err != nil {
 		return err
 	}
@@ -66,28 +40,10 @@ func From(space *types.Space) error {
 		if dev == nil {
 			log.Error("设备未加载", d.DeviceId)
 		} else {
-			p.PutDevice(d.Name, dev)
+			m.PutDevice(d.Name, dev)
 		}
 	}
-
-	return nil
-}
-
-func Boot() error {
-	//开机加载所有空间
-	var ps []*types.Space
-	err := db.Engine.Find(&ps)
-	if err != nil {
-		return err
-	}
-
-	for _, p := range ps {
-		err = From(p)
-		if err != nil {
-			log.Error(err)
-			//return err
-		}
-	}
+	//TODO 设备上线，自动找空间
 
 	return nil
 }

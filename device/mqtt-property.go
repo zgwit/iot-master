@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func subscribeProperty() {
+func mqttProperty() {
 	mqtt.SubscribeStruct[map[string]any]("device/+/property", func(topic string, values *map[string]any) {
 		topics := strings.Split(topic, "/")
 		id := topics[1]
@@ -29,10 +29,10 @@ func subscribeProperty() {
 		//}
 
 		dev.Push(*values)
-		dev.Online()
+		dev.Online = true
 
 		//写入历史
-		err = history.Write(dev.product.Id, dev.id, time.Now().UnixMilli(), *values)
+		err = history.Write(dev.ProductId, dev.Id, time.Now().UnixMilli(), *values)
 		if err != nil {
 			log.Error(err)
 		}
@@ -51,11 +51,11 @@ func mergeProperties(id string, properties []payload.Property) {
 	for _, p := range properties {
 		dev.Values()[p.Name] = p.Value
 	}
-	dev.Online()
+	dev.Online = true
 }
 
 func SubscribePropertyStrict() error {
-	mqtt.Client.Subscribe("up/property/+/strict", 0, func(client paho.Client, message paho.Message) {
+	mqtt.Client.Subscribe("device/+/property/strict", 0, func(client paho.Client, message paho.Message) {
 		var up payload.DevicePropertyUp
 		err := json.Unmarshal(message.Payload(), &up)
 		if err != nil {

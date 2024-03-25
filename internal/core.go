@@ -11,9 +11,7 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/pool"
 	"github.com/zgwit/iot-master/v4/pkg/vconn"
 	"github.com/zgwit/iot-master/v4/plugin"
-	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/project"
-	"github.com/zgwit/iot-master/v4/space"
 	"net"
 	"net/url"
 )
@@ -79,20 +77,8 @@ func Open() error {
 		return err
 	}
 
-	//加载产品库
-	err = product.Boot()
-	if err != nil {
-		return err
-	}
-
 	//加载设备影子
 	err = device.Open()
-	if err != nil {
-		return err
-	}
-
-	//加载空间
-	err = space.Boot()
 	if err != nil {
 		return err
 	}

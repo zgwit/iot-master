@@ -6,9 +6,9 @@ import (
 	"strings"
 )
 
-func subscribeOnline() {
+func mqttOnline() {
 
-	mqtt.Subscribe("online/+", func(topic string, _ []byte) {
+	mqtt.Subscribe("device/+/online", func(topic string, _ []byte) {
 		topics := strings.Split(topic, "/")
 		id := topics[1]
 
@@ -17,10 +17,10 @@ func subscribeOnline() {
 			log.Error(err)
 			return
 		}
-		dev.Online()
+		dev.Online = true
 	})
 
-	mqtt.Subscribe("offline/+", func(topic string, _ []byte) {
+	mqtt.Subscribe("device/+/offline", func(topic string, _ []byte) {
 		topics := strings.Split(topic, "/")
 		id := topics[1]
 
@@ -29,7 +29,7 @@ func subscribeOnline() {
 			log.Error(err)
 			return
 		}
-		dev.Offline()
+		dev.Online = false
 
 		//产生日志
 		//al := alarm.AlarmEx{

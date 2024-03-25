@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/project"
 	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
@@ -200,7 +201,7 @@ func userPassword(ctx *gin.Context) {
 func userProjects(ctx *gin.Context) {
 	id := ctx.GetString("id")
 
-	var projects []*types.Project
+	var projects []*project.Project
 	err := db.Engine.Join("INNER", "project_user", "project_user.project_id=project.id").
 		Where("project_user.user_id=?", id).Find(&projects)
 	if err != nil {

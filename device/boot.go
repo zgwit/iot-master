@@ -2,15 +2,15 @@ package device
 
 func Open() error {
 
-	subscribeProperty()
+	mqttEvent()
 
-	subscribeEvent()
+	mqttOnline()
 
-	subscribeOnline()
+	mqttProperty()
 
 	return nil
 }
 
 func Close() {
-
+	//TODO 取消MQTT订阅
 }

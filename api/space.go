@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/space"
-	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -15,7 +14,7 @@ import (
 // @Param search body curd.ParamSearch true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.Space] 返回空间信息
+// @Success 200 {object} curd.ReplyList[space.Space] 返回空间信息
 // @Router /space/search [post]
 func noopSpaceSearch() {}
 
@@ -26,7 +25,7 @@ func noopSpaceSearch() {}
 // @Param search query curd.ParamList true "查询参数"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyList[types.Space] 返回空间信息
+// @Success 200 {object} curd.ReplyList[space.Space] 返回空间信息
 // @Router /space/list [get]
 func noopSpaceList() {}
 
@@ -34,10 +33,10 @@ func noopSpaceList() {}
 // @Schemes
 // @Description 创建空间
 // @Tags space
-// @Param search body types.Space true "空间信息"
+// @Param search body space.Space true "空间信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Space] 返回空间信息
+// @Success 200 {object} curd.ReplyData[space.Space] 返回空间信息
 // @Router /space/create [post]
 func noopSpaceCreate() {}
 
@@ -46,10 +45,10 @@ func noopSpaceCreate() {}
 // @Description 修改空间
 // @Tags space
 // @Param id path int true "空间ID"
-// @Param space body types.Space true "空间信息"
+// @Param space body space.Space true "空间信息"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Space] 返回空间信息
+// @Success 200 {object} curd.ReplyData[space.Space] 返回空间信息
 // @Router /space/{id} [post]
 func noopSpaceUpdate() {}
 
@@ -60,7 +59,7 @@ func noopSpaceUpdate() {}
 // @Param id path int true "空间ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Space] 返回空间信息
+// @Success 200 {object} curd.ReplyData[space.Space] 返回空间信息
 // @Router /space/{id}/delete [get]
 func noopSpaceDelete() {}
 
@@ -71,7 +70,7 @@ func noopSpaceDelete() {}
 // @Param id path int true "空间ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Space] 返回空间信息
+// @Success 200 {object} curd.ReplyData[space.Space] 返回空间信息
 // @Router /space/{id}/enable [get]
 func noopSpaceEnable() {}
 
@@ -82,7 +81,7 @@ func noopSpaceEnable() {}
 // @Param id path int true "空间ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Space] 返回空间信息
+// @Success 200 {object} curd.ReplyData[space.Space] 返回空间信息
 // @Router /space/{id}/disable [get]
 func noopSpaceDisable() {}
 
@@ -93,7 +92,7 @@ func noopSpaceDisable() {}
 // @Param id path int true "空间ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Space] 返回空间信息
+// @Success 200 {object} curd.ReplyData[space.Space] 返回空间信息
 // @Router /space/{id}/start [get]
 func noopSpaceStart() {}
 
@@ -104,30 +103,30 @@ func noopSpaceStart() {}
 // @Param id path int true "空间ID"
 // @Accept json
 // @Produce json
-// @Success 200 {object} curd.ReplyData[types.Space] 返回空间信息
+// @Success 200 {object} curd.ReplyData[space.Space] 返回空间信息
 // @Router /space/{id}/stop [get]
 func noopSpaceStop() {}
 
 func spaceRouter(app *gin.RouterGroup) {
 
-	app.POST("/count", curd.ApiCount[types.Space]())
+	app.POST("/count", curd.ApiCount[space.Space]())
 
-	app.POST("/search", curd.ApiSearchWith[types.Space]([]*curd.With{
+	app.POST("/search", curd.ApiSearchWith[space.Space]([]*curd.With{
 		{"project", "project_id", "id", "name", "project"},
 	}, "id", "name", "project_id", "description", "disabled", "created"))
 
-	app.GET("/list", curd.ApiList[types.Space]())
+	app.GET("/list", curd.ApiList[space.Space]())
 
-	app.POST("/create", curd.ApiCreateHook[types.Space](curd.GenerateID[types.Space](), nil))
+	app.POST("/create", curd.ApiCreateHook[space.Space](curd.GenerateID[space.Space](), nil))
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.Space]())
+	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[space.Space]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[types.Space](nil, nil,
+	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdateHook[space.Space](nil, nil,
 		"id", "name", "project_id", "description", "disabled"))
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.Space](nil, nil))
+	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[space.Space](nil, nil))
 
-	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.Space](true, nil, func(id any) error {
+	app.GET(":id/disable", curd.ParseParamStringId, curd.ApiDisableHook[space.Space](true, nil, func(id any) error {
 		p := space.Get(id.(string))
 		if p == nil {
 			return errors.New("空间未加载")
@@ -139,7 +138,7 @@ func spaceRouter(app *gin.RouterGroup) {
 		return nil
 	}))
 
-	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.Space](false, nil, func(id any) error {
+	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[space.Space](false, nil, func(id any) error {
 		return space.Load(id.(string))
 	}))
 
