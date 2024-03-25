@@ -180,6 +180,8 @@ func deviceRouter(app *gin.RouterGroup) {
 
 	app.GET("/:id/values", curd.ParseParamStringId, deviceValues)
 
+	app.POST("/:id/values", curd.ParseParamStringId, deviceValuesWrite)
+
 	app.GET("/:id/history/:name", curd.ParseParamStringId, deviceHistory)
 
 	app.POST("/:id/parameters", curd.ParseParamStringId, deviceParameters)
@@ -194,6 +196,29 @@ func deviceValues(ctx *gin.Context) {
 		return
 	}
 	curd.OK(ctx, dev.Values())
+}
+
+func deviceValuesWrite(ctx *gin.Context) {
+	var values map[string]any
+	err := ctx.ShouldBindJSON(&values)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+
+	dev := device.Get(ctx.GetString("id"))
+	if dev == nil {
+		curd.Fail(ctx, "设备未上线")
+		return
+	}
+
+	err = dev.WriteMany(values)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+
+	curd.OK(ctx, nil)
 }
 
 func deviceHistory(ctx *gin.Context) {

@@ -70,6 +70,11 @@ func (d *Device) Push(values map[string]any) {
 	//d.Validate()
 }
 
+func (d *Device) WriteMany(values map[string]any) error {
+
+	return nil
+}
+
 //func (d *Device) Validate() {
 //	for _, v := range d.validators {
 //		ret := v.Validate(d.values)

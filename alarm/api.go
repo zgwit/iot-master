@@ -1,11 +1,30 @@
-package api
+package alarm
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/alarm"
+	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
+
+func init() {
+	api.Register("POST", "/count", curd.ApiCount[Alarm]())
+
+	api.Register("POST", "/search", curd.ApiSearchWith[Alarm]([]*curd.With{
+		{"product", "product_id", "id", "name", "product"},
+		{"project", "project_id", "id", "name", "project"},
+		{"space", "space_id", "id", "name", "space"},
+		{"device", "device_id", "id", "name", "device"},
+	}))
+
+	api.Register("GET", "/list", curd.ApiList[Alarm]())
+
+	api.Register("GET", "/:id", curd.ParseParamId, curd.ApiGet[Alarm]())
+
+	api.Register("GET", "/:id/delete", curd.ParseParamId, curd.ApiDelete[Alarm]())
+
+	api.Register("GET", "/:id/read", curd.ParseParamId, alarmRead)
+}
 
 // @Summary 查询报警
 // @Schemes
@@ -60,7 +79,7 @@ func noopAlarmDelete() {}
 func noopAlarmRead() {}
 
 func alarmRead(ctx *gin.Context) {
-	a := alarm.Alarm{
+	a := Alarm{
 		Read: true,
 	}
 	cnt, err := db.Engine.ID(ctx.GetInt64("id")).Cols("read").Update(a)
@@ -69,24 +88,4 @@ func alarmRead(ctx *gin.Context) {
 		return
 	}
 	curd.OK(ctx, cnt)
-}
-
-func alarmRouter(app *gin.RouterGroup) {
-
-	app.POST("/count", curd.ApiCount[alarm.Alarm]())
-
-	app.POST("/search", curd.ApiSearchWith[alarm.Alarm]([]*curd.With{
-		{"product", "product_id", "id", "name", "product"},
-		{"project", "project_id", "id", "name", "project"},
-		{"space", "space_id", "id", "name", "space"},
-		{"device", "device_id", "id", "name", "device"},
-	}))
-
-	app.GET("/list", curd.ApiList[alarm.Alarm]())
-
-	app.GET("/:id", curd.ParseParamId, curd.ApiGet[alarm.Alarm]())
-
-	app.GET("/:id/delete", curd.ParseParamId, curd.ApiDelete[alarm.Alarm]())
-
-	app.GET("/:id/read", curd.ParseParamId, alarmRead)
 }

@@ -43,8 +43,8 @@ type MenuItem struct {
 }
 
 type Page struct {
-	Target string   `json:"target"`
-	Select []string `json:"select,omitempty"` //页面选择器，比如：modbus, s7 ...
-	Name   string   `json:"name"`
-	Url    string   `json:"url"`
+	Target string         `json:"target"`
+	Select map[string]any `json:"select,omitempty"` //页面选择器，比如：modbus, s7 ...
+	Name   string         `json:"name"`
+	Url    string         `json:"url"`
 }

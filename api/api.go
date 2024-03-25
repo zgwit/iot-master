@@ -126,8 +126,6 @@ func RegisterRoutes(router *gin.RouterGroup) {
 
 	deviceRouter(router.Group("/device"))
 
-	alarmRouter(router.Group("/alarm"))
-
 	backupRouter(router.Group("/backup"))
 
 	//附件管理
