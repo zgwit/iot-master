@@ -9,9 +9,10 @@ import (
 type Factory func(tunnel string, conn connect.Conn, opts types.Options) (device.Adapter, error)
 
 type Protocol struct {
-	Name    string
-	Label   string
-	Factory Factory
-	Options []types.FormItem
-	Mappers []types.FormItem
+	Name    string           `json:"name"`
+	Label   string           `json:"label"`
+	Factory Factory          `json:"-"`
+	Options []types.FormItem `json:"-"`
+	Pollers []types.FormItem `json:"-"`
+	Mappers []types.FormItem `json:"-"`
 }

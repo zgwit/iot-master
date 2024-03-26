@@ -11,7 +11,7 @@ type Product struct {
 	Name string `json:"name,omitempty"` //名称
 	Desc string `json:"desc,omitempty"` //说明
 
-	Mappers     []*Mapper     `json:"mappers" xorm:"json"`
+	Mappers     []*Poller     `json:"mappers" xorm:"json"`
 	Filters     []*Filter     `json:"filters" xorm:"json"`
 	Calculators []*Calculator `json:"calculators" xorm:"json"`
 	Created     time.Time     `json:"created" xorm:"created"` //创建时间

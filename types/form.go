@@ -10,10 +10,12 @@ type FormItem struct {
 	Pattern     string             `json:"pattern,omitempty"`
 	Options     []FormSelectOption `json:"options,omitempty"`
 	Required    bool               `json:"required,omitempty"`
-	Min         int                `json:"min,omitempty"`
-	Max         int                `json:"max,omitempty"`
-	Step        int                `json:"step,omitempty"`
-	Children    []FormItem         `json:"children,omitempty"` //子级？
+	Min         float64            `json:"min,omitempty"`
+	Max         float64            `json:"max,omitempty"`
+	Step        float64            `json:"step,omitempty"`
+
+	Children []FormItem `json:"children,omitempty"` //子级？
+	Array    bool       `json:"array,omitempty"`
 }
 
 type FormSelectOption struct {
