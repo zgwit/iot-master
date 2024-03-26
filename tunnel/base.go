@@ -6,7 +6,6 @@ import (
 	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/protocol"
 	"io"
-	"sync"
 	"time"
 )
 
@@ -40,11 +39,9 @@ type Base struct {
 
 	Running bool `json:"Running,omitempty" xorm:"-"`
 
-	connect.Conn
+	conn connect.Conn
 
 	adapter device.Adapter
-
-	lock sync.Mutex
 
 	closed bool
 
@@ -67,7 +64,7 @@ func (l *Base) Close() error {
 	l.closed = true
 
 	l.onClose()
-	return l.Conn.Close()
+	return l.conn.Close()
 }
 
 func (l *Base) onClose() {
@@ -85,7 +82,7 @@ func (l *Base) Write(data []byte) (int, error) {
 	if l.pipe != nil {
 		return 0, nil //透传模式下，直接抛弃
 	}
-	return l.Conn.Write(data)
+	return l.conn.Write(data)
 }
 
 // Read 读
@@ -98,11 +95,11 @@ func (l *Base) Read(data []byte) (int, error) {
 		//TODO 先read，然后透传
 		return 0, nil //透传模式下，直接抛弃
 	}
-	return l.Conn.Read(data)
+	return l.conn.Read(data)
 }
 
 func (l *Base) start() (err error) {
-	l.adapter, err = protocol.Create(l.Id, l.Conn, l.ProtocolName, l.ProtocolOptions.ProtocolOptions)
+	l.adapter, err = protocol.Create(l.Id, l.conn, l.ProtocolName, l.ProtocolOptions.ProtocolOptions)
 	return
 }
 
@@ -129,7 +126,7 @@ func (l *Base) Pipe(pipe io.ReadWriteCloser) {
 			break
 		}
 		//将收到的数据转发出去
-		n, err = l.Conn.Write(buf[:n])
+		n, err = l.conn.Write(buf[:n])
 		if err != nil {
 			//发送失败，说明连接失效
 			_ = pipe.Close()

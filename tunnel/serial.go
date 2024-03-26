@@ -47,7 +47,7 @@ func (s *Serial) Open() error {
 	}
 
 	s.Running = true
-	s.Conn = port
+	s.conn = port
 
 	//清空重连计数
 	//s.retry = 0

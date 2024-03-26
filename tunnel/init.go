@@ -7,6 +7,10 @@ import (
 	"xorm.io/xorm"
 )
 
+func init() {
+	db.Register(new(Client), new(Server), new(Link), new(Serial))
+}
+
 var serials lib.Map[Serial]
 
 var clients lib.Map[Client]

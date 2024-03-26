@@ -35,7 +35,7 @@ func (client *Client) Open() error {
 		return err
 	}
 	client.retry = 0
-	client.Conn = &netConn{conn}
+	client.conn = &netConn{conn}
 
 	//守护协程
 	go func() {
@@ -87,9 +87,9 @@ func (client *Client) Retry() {
 func (client *Client) Close() error {
 	client.Running = false
 
-	if client.Conn != nil {
-		link := client.Conn
-		client.Conn = nil
+	if client.conn != nil {
+		link := client.conn
+		client.conn = nil
 		return link.Close()
 	}
 	return errors.New("model is closed")
