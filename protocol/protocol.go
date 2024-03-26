@@ -12,4 +12,6 @@ type Protocol struct {
 	Name    string
 	Label   string
 	Factory Factory
+	Options []types.FormItem
+	Mappers []types.FormItem
 }
