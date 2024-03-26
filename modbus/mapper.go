@@ -2,6 +2,7 @@ package modbus
 
 import (
 	"errors"
+	"fmt"
 	"github.com/zgwit/iot-master/v4/pkg/bin"
 	"github.com/zgwit/iot-master/v4/pkg/convert"
 )
@@ -9,18 +10,18 @@ import (
 type Poller struct {
 	Code    uint8  `json:"code"`
 	Address uint16 `json:"address"`
-	Size    uint16 `json:"size"` //长度
+	Length  uint16 `json:"length"` //长度
 }
 
 type Mapper struct {
 	Code      uint8   `json:"code"`
 	Name      string  `json:"name"`              //名称
 	Type      string  `json:"type"`              //类型
-	Address   int     `json:"address"`           //偏移
+	Address   uint16  `json:"address"`           //偏移
 	BigEndian bool    `json:"be,omitempty"`      //大端模式
 	Rate      float64 `json:"rate,omitempty"`    //倍率
 	Correct   float64 `json:"correct,omitempty"` //纠正
-	Bits      []Bit   `json:"bits,omitempty"`    //位，1 2 3...
+	Bits      []*Bit  `json:"bits,omitempty"`    //位，1 2 3...
 }
 
 type Bit struct {
@@ -114,106 +115,119 @@ func (m *Mapper) Encode(data any) ([]byte, error) {
 	return nil, errors.New("找不到点位")
 }
 
-func (m *Mapper) Parse(base uint16, buf []byte) (any, error) {
+func (m *Mapper) Parse(address uint16, buf []byte) (any, error) {
 	l := len(buf)
 
+	//defer recover()
+
 	//识别位
-	if m.Code == 1 || m.Code == 2 {
-		bytes := bin.ExpandBool(buf, int(m.Size))
-		l = len(bytes)
-		for _, p := range m.Points {
-			offset := p.Offset
-			if offset >= l {
-				continue
-			}
-			ret[p.Name] = bytes[p.Offset] > 0
-		}
-		return nil, nil
-	}
+	//if m.Code == 1 || m.Code == 2 {
+	//	bytes := bin.ExpandBool(buf, int(m.Length))
+	//	l = len(bytes)
+	//	for _, p := range m.Points {
+	//		offset := m.Offset
+	//		if offset >= l {
+	//			continue
+	//		}
+	//		ret = bytes[m.Offset] > 0
+	//	}
+	//	return nil, nil
+	//}
 
 	//解析16位
 
-		//offset := p.Offset * 2
-		offset := p.Offset << 1
-		if offset >= l {
-			continue
-		}
-
-		switch p.Type {
-		case "bit", "bool", "boolean":
-			var v uint16
-			if p.BigEndian {
-				v = bin.ParseUint16(buf[offset:])
-			} else {
-				v = bin.ParseUint16LittleEndian(buf[offset:])
-			}
-			ret[p.Name] = 1<<(p.Bits-1)&v != 0
-		case "short", "int16":
-			if p.BigEndian {
-				ret[p.Name] = int16(bin.ParseUint16(buf[offset:]))
-			} else {
-				ret[p.Name] = int16(bin.ParseUint16LittleEndian(buf[offset:]))
-			}
-			if p.Rate != 0 && p.Rate != 1 {
-				ret[p.Name] = float64(ret[p.Name].(int16)) * p.Rate
-			}
-		case "word", "uint16":
-			if p.BigEndian {
-				ret[p.Name] = bin.ParseUint16(buf[offset:])
-			} else {
-				ret[p.Name] = bin.ParseUint16LittleEndian(buf[offset:])
-			}
-			if p.Rate != 0 && p.Rate != 1 {
-				ret[p.Name] = float64(ret[p.Name].(uint16)) * p.Rate
-			}
-			if m.Bits != nil && len(m.Bits) > 0
-		case "int32", "int":
-			if p.BigEndian {
-				ret[p.Name] = int32(bin.ParseUint32(buf[offset:]))
-			} else {
-				ret[p.Name] = int32(bin.ParseUint32LittleEndian(buf[offset:]))
-			}
-			if p.Rate != 0 && p.Rate != 1 {
-				ret[p.Name] = float64(ret[p.Name].(int32)) * p.Rate
-			}
-		case "qword", "uint32", "uint":
-			if p.BigEndian {
-				ret[p.Name] = bin.ParseUint32(buf[offset:])
-			} else {
-				ret[p.Name] = bin.ParseUint32LittleEndian(buf[offset:])
-			}
-			if p.Rate != 0 && p.Rate != 1 {
-				ret[p.Name] = float64(ret[p.Name].(uint32)) * p.Rate
-			}
-		case "float", "float32":
-			if p.BigEndian {
-				ret[p.Name] = bin.ParseFloat32(buf[offset:])
-			} else {
-				ret[p.Name] = bin.ParseFloat32LittleEndian(buf[offset:])
-			}
-			if p.Rate != 0 && p.Rate != 1 {
-				ret[p.Name] = float64(ret[p.Name].(float32)) * p.Rate
-			}
-		case "double", "float64":
-			if p.BigEndian {
-				ret[p.Name] = bin.ParseFloat64(buf[offset:])
-			} else {
-				ret[p.Name] = bin.ParseFloat64LittleEndian(buf[offset:])
-			}
-			if p.Rate != 0 && p.Rate != 1 {
-				ret[p.Name] = ret[p.Name].(float64) * p.Rate
-			}
-		}
-
-}
-
-func lookup(mappers []*Poller, name string) (*Poller, *Mapper) {
-	for _, mapper := range mappers {
-		for _, point := range mapper.Points {
-			if point.Name == name {
-				return mapper, point
-			}
-		}
+	offset := int((m.Address - address) * 2)
+	//offset := m.Offset << 1
+	if offset >= l {
+		return nil, errors.New("长度不够")
 	}
-	return nil, nil
+
+	var ret any
+	switch m.Type {
+	case "short", "int16":
+		if m.BigEndian {
+			ret = int16(bin.ParseUint16(buf[offset:]))
+		} else {
+			ret = int16(bin.ParseUint16LittleEndian(buf[offset:]))
+		}
+		if m.Rate != 0 && m.Rate != 1 {
+			ret = float64(ret.(int16)) * m.Rate
+		}
+		if m.Correct != 0 {
+			ret = float64(ret.(int16)) + m.Correct
+		}
+	case "word", "uint16":
+		if m.BigEndian {
+			ret = bin.ParseUint16(buf[offset:])
+		} else {
+			ret = bin.ParseUint16LittleEndian(buf[offset:])
+		}
+		//取位
+		if m.Bits != nil && len(m.Bits) > 0 {
+			rets := make(map[string]bool)
+			for _, b := range m.Bits {
+				rets[b.Name] = (ret.(uint16))&(1<<b.Bit) > 0
+			}
+			return rets, nil
+		}
+
+		if m.Rate != 0 && m.Rate != 1 {
+			ret = float64(ret.(uint16)) * m.Rate
+		}
+		if m.Correct != 0 {
+			ret = float64(ret.(int16)) + m.Correct
+		}
+	case "int32", "int":
+		if m.BigEndian {
+			ret = int32(bin.ParseUint32(buf[offset:]))
+		} else {
+			ret = int32(bin.ParseUint32LittleEndian(buf[offset:]))
+		}
+		if m.Rate != 0 && m.Rate != 1 {
+			ret = float64(ret.(int32)) * m.Rate
+		}
+		if m.Correct != 0 {
+			ret = float64(ret.(int16)) + m.Correct
+		}
+	case "qword", "uint32", "uint":
+		if m.BigEndian {
+			ret = bin.ParseUint32(buf[offset:])
+		} else {
+			ret = bin.ParseUint32LittleEndian(buf[offset:])
+		}
+		if m.Rate != 0 && m.Rate != 1 {
+			ret = float64(ret.(uint32)) * m.Rate
+		}
+		if m.Correct != 0 {
+			ret = float64(ret.(int16)) + m.Correct
+		}
+	case "float", "float32":
+		if m.BigEndian {
+			ret = bin.ParseFloat32(buf[offset:])
+		} else {
+			ret = bin.ParseFloat32LittleEndian(buf[offset:])
+		}
+		if m.Rate != 0 && m.Rate != 1 {
+			ret = float64(ret.(float32)) * m.Rate
+		}
+		if m.Correct != 0 {
+			ret = float64(ret.(int16)) + m.Correct
+		}
+	case "double", "float64":
+		if m.BigEndian {
+			ret = bin.ParseFloat64(buf[offset:])
+		} else {
+			ret = bin.ParseFloat64LittleEndian(buf[offset:])
+		}
+		if m.Rate != 0 && m.Rate != 1 {
+			ret = ret.(float64) * m.Rate
+		}
+		if m.Correct != 0 {
+			ret = float64(ret.(int16)) + m.Correct
+		}
+	default:
+		return nil, fmt.Errorf("不支持的数据类型 %s", m.Type)
+	}
+
+	return ret, nil
 }

@@ -37,7 +37,6 @@ var mappers = []types.FormItem{
 	{Key: "address", Label: "地址", Type: "number", Required: true, Min: 0, Max: 5000},
 	{Key: "length", Label: "长度", Type: "number", Required: true, Min: 0, Max: 5000},
 	{Key: "type", Label: "数据类型", Type: "select", Options: []types.FormSelectOption{
-		{Label: "BIT", Value: "bit"},
 		{Label: "INT16", Value: "int16"},
 		{Label: "UINT16", Value: "uint16"},
 		{Label: "INT32", Value: "int32"},

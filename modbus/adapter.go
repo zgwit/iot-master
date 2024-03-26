@@ -105,58 +105,60 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 }
 
 func (adapter *Adapter) Get(device *device.Device, name string) (any, error) {
-	prod, err := GetProduct(device.ProductId)
+	prod, err := GetProduct(device.ProductId, device.ProductVersion)
 	if err != nil {
 		return nil, err
 	}
 
-	mapper, _ := lookup(prod.Mappers, name)
+	mapper := prod.Lookup(name)
 	if mapper == nil {
 		return nil, errors.New("找不到数据点")
 	}
 
 	//此处全部读取了，有些冗余
-	data, err := adapter.modbus.Read(device.ModbusStation, mapper.Code, mapper.Address, mapper.Size)
+	data, err := adapter.modbus.Read(device.ModbusStation, mapper.Code, mapper.Address, 2)
 	if err != nil {
 		return nil, err
 	}
 
-	values := make(map[string]any)
-	mapper.Parse(data, values)
-	return values[name], nil
+	return mapper.Parse(mapper.Address, data)
 }
 
 func (adapter *Adapter) Set(device *device.Device, name string, value any) error {
-	prod, err := GetProduct(device.ProductId)
+	prod, err := GetProduct(device.ProductId, device.ProductVersion)
 	if err != nil {
 		return err
 	}
 
-	mapper, point := lookup(prod.Mappers, name)
+	mapper := prod.Lookup(name)
 	if mapper == nil {
 		return errors.New("地址找不到")
 	}
-	_, data, err := mapper.Encode(name, value)
+
+	data, err := mapper.Encode(value)
 	if err != nil {
 		return err
 	}
-	return adapter.modbus.Write(device.ModbusStation, mapper.Code, mapper.Address+uint16(point.Offset), data)
+	return adapter.modbus.Write(device.ModbusStation, mapper.Code, mapper.Address, data)
 }
 
 func (adapter *Adapter) Sync(device *device.Device) (map[string]any, error) {
 	values := make(map[string]any)
 
-	prod, err := GetProduct(device.ProductId)
+	prod, err := GetProduct(device.ProductId, device.ProductVersion)
 	if err != nil {
 		return nil, err
 	}
 
-	for _, mapper := range prod.Mappers {
-		data, err := adapter.modbus.Read(device.ModbusStation, mapper.Code, mapper.Address, mapper.Size)
+	for _, poller := range prod.Pollers {
+		data, err := adapter.modbus.Read(device.ModbusStation, poller.Code, poller.Address, poller.Length)
 		if err != nil {
 			return nil, err
 		}
-		mapper.Parse(data, values)
+		err = poller.Parse(prod.Mappers, data, values)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	//TODO 计算器
