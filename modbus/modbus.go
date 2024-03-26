@@ -66,9 +66,9 @@ var modbusRtu = &protocol.Protocol{
 		}
 		return adapter, nil
 	},
-	Options: options,
-	Mappers: mappers,
-	Pollers: pollers,
+	TunnelOptions:  options,
+	ProductMappers: mappers,
+	ProductPollers: pollers,
 }
 
 var modbusTCP = &protocol.Protocol{
@@ -84,9 +84,9 @@ var modbusTCP = &protocol.Protocol{
 		}
 		return adapter, nil
 	},
-	Options: options,
-	Mappers: mappers,
-	Pollers: pollers,
+	TunnelOptions:  options,
+	ProductMappers: mappers,
+	ProductPollers: pollers,
 }
 
 type Modbus interface {

@@ -17,6 +17,13 @@ func Protocols() []*Protocol {
 	return ps
 }
 
+func Get(name string) (*Protocol, error) {
+	if p, ok := protocols[name]; ok {
+		return p, nil
+	}
+	return nil, fmt.Errorf("协议 %s 找不到", name)
+}
+
 func Register(proto *Protocol) {
 	protocols[proto.Name] = proto
 }

@@ -19,7 +19,7 @@ func init() {
 	api.Register("GET", "/protocol/:name/mappers", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
-			curd.OK(ctx, p.Mappers)
+			curd.OK(ctx, p.ProductMappers)
 		} else {
 			curd.Fail(ctx, "协议找不到")
 		}
@@ -28,7 +28,7 @@ func init() {
 	api.Register("GET", "/protocol/:name/pollers", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
-			curd.OK(ctx, p.Pollers)
+			curd.OK(ctx, p.ProductPollers)
 		} else {
 			curd.Fail(ctx, "协议找不到")
 		}
@@ -37,7 +37,7 @@ func init() {
 	api.Register("GET", "/protocol/:name/options", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
-			curd.OK(ctx, p.Options)
+			curd.OK(ctx, p.TunnelOptions)
 		} else {
 			curd.Fail(ctx, "协议找不到")
 		}
