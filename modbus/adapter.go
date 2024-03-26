@@ -2,11 +2,9 @@ package modbus
 
 import (
 	"errors"
-	"fmt"
 	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/mqtt"
 	"github.com/zgwit/iot-master/v4/types"
 	"go.bug.st/serial"
 	"io"
@@ -16,29 +14,31 @@ import (
 
 type Adapter struct {
 	modbus  Modbus
-	devices map[uint8]*device.Device
+	devices []*Device
+
+	index map[string]*Device
+
+	//index map[string]*device.Device
 }
 
 func (adapter *Adapter) start(tunnel string, opts types.Options) error {
-	var devices []*device.Device
 	err := db.Engine.Where("tunnel_id=?", tunnel).And("disabled!=1").
-		Cols("id", "product_id", "modbus_station").Find(&devices)
+		Asc("modbus_station").Find(&adapter.devices)
 
 	if err != nil {
 		return err
 	}
 
-	if len(devices) == 0 {
+	if len(adapter.devices) == 0 {
 		return errors.New("无设备")
 	}
 
 	//索引
-	adapter.devices = make(map[uint8]*device.Device)
-	for _, d := range devices {
-		adapter.devices[d.ModbusStation], err = device.Ensure(d.Id)
-		if err != nil {
-			log.Error(err)
-		}
+	//adapter.index = make(map[string]*device.Device)
+	adapter.index = make(map[string]*Device)
+	for _, d := range adapter.devices {
+		adapter.index[d.Id] = d
+		//adapter.index[d.Id], err = device.Ensure(d.Id)
 	}
 
 	//开始轮询
@@ -46,7 +46,7 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 
 		//设备上线
 		//!!! 不能这样做，不然启动服务器会产生大量的消息
-		//for _, dev := range adapter.devices {
+		//for _, dev := range adapter.index {
 		//	topic := fmt.Sprintf("device/online/%s", dev.Id)
 		//	_ = mqtt.Publish(topic, nil)
 		//}
@@ -55,7 +55,9 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 		for {
 			start := time.Now().Unix()
 			for _, dev := range adapter.devices {
-				values, err := adapter.Sync(dev)
+				//d := adapter.index[dev.Id]
+				d := device.Get(dev.Id)
+				values, err := adapter.Sync(d)
 				if err != nil {
 					log.Error(err)
 
@@ -77,7 +79,7 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 					}
 				}
 
-				dev.Push(values)
+				d.Push(values)
 				//_ = pool.Insert(func() {
 				//topic := fmt.Sprintf("device/%s/property", dev.Id)
 				//mqtt.Publish(topic, values)
@@ -96,10 +98,10 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 		}
 
 		//设备下线
-		for _, dev := range adapter.devices {
-			topic := fmt.Sprintf("device/%s/offline", dev.Id)
-			_ = mqtt.Publish(topic, nil)
-		}
+		//for _, dev := range adapter.devices {
+		//	topic := fmt.Sprintf("device/%s/offline", dev.Id)
+		//	_ = mqtt.Publish(topic, nil)
+		//}
 	}()
 	return nil
 }
@@ -116,7 +118,7 @@ func (adapter *Adapter) Get(device *device.Device, name string) (any, error) {
 	}
 
 	//此处全部读取了，有些冗余
-	data, err := adapter.modbus.Read(device.ModbusStation, mapper.Code, mapper.Address, 2)
+	data, err := adapter.modbus.Read(adapter.index[device.Id].ModbusStation, mapper.Code, mapper.Address, 2)
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +141,7 @@ func (adapter *Adapter) Set(device *device.Device, name string, value any) error
 	if err != nil {
 		return err
 	}
-	return adapter.modbus.Write(device.ModbusStation, mapper.Code, mapper.Address, data)
+	return adapter.modbus.Write(adapter.index[device.Id].ModbusStation, mapper.Code, mapper.Address, data)
 }
 
 func (adapter *Adapter) Sync(device *device.Device) (map[string]any, error) {
@@ -151,7 +153,7 @@ func (adapter *Adapter) Sync(device *device.Device) (map[string]any, error) {
 	}
 
 	for _, poller := range prod.Pollers {
-		data, err := adapter.modbus.Read(device.ModbusStation, poller.Code, poller.Address, poller.Length)
+		data, err := adapter.modbus.Read(adapter.index[device.Id].ModbusStation, poller.Code, poller.Address, poller.Length)
 		if err != nil {
 			return nil, err
 		}

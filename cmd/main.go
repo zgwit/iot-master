@@ -6,6 +6,7 @@ import (
 	master "github.com/zgwit/iot-master/v4"
 	"github.com/zgwit/iot-master/v4/args"
 	_ "github.com/zgwit/iot-master/v4/docs"
+	_ "github.com/zgwit/iot-master/v4/modbus"
 	"github.com/zgwit/iot-master/v4/pkg/build"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/service"

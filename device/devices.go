@@ -24,6 +24,10 @@ func Get(id string) *Device {
 	return devices.Load(id)
 }
 
+func Set(id string, dev *Device) {
+	devices.Store(id, dev)
+}
+
 func Load(id string) error {
 	var dev Device
 	get, err := db.Engine.ID(id).Get(&dev)
