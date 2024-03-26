@@ -3,7 +3,6 @@ package tunnel
 import (
 	"errors"
 	"github.com/zgwit/iot-master/v4/connect"
-	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/protocol"
 	"io"
 	"time"
@@ -41,7 +40,7 @@ type Base struct {
 
 	conn connect.Conn
 
-	adapter device.Adapter
+	adapter protocol.Adapter
 
 	closed bool
 

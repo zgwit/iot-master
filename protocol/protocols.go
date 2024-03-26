@@ -3,7 +3,6 @@ package protocol
 import (
 	"fmt"
 	"github.com/zgwit/iot-master/v4/connect"
-	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/types"
 )
 
@@ -28,7 +27,7 @@ func Register(proto *Protocol) {
 	protocols[proto.Name] = proto
 }
 
-func Create(tunnel string, conn connect.Conn, name string, opts types.Options) (device.Adapter, error) {
+func Create(tunnel string, conn connect.Conn, name string, opts types.Options) (Adapter, error) {
 	if p, ok := protocols[name]; ok {
 		return p.Factory(tunnel, conn, opts)
 	}

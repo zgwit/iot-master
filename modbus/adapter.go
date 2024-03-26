@@ -55,9 +55,7 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 		for {
 			start := time.Now().Unix()
 			for _, dev := range adapter.devices {
-				//d := adapter.index[dev.Id]
-				d := device.Get(dev.Id)
-				values, err := adapter.Sync(d)
+				values, err := adapter.Sync(dev.Id)
 				if err != nil {
 					log.Error(err)
 
@@ -79,7 +77,11 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 					}
 				}
 
-				d.Push(values)
+				//d := adapter.index[dev.Id]
+				d := device.Get(dev.Id)
+				if d != nil {
+					d.Push(values)
+				}
 				//_ = pool.Insert(func() {
 				//topic := fmt.Sprintf("device/%s/property", dev.Id)
 				//mqtt.Publish(topic, values)
@@ -106,8 +108,14 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 	return nil
 }
 
-func (adapter *Adapter) Get(device *device.Device, name string) (any, error) {
-	prod, err := GetProduct(device.ProductId, device.ProductVersion)
+func (adapter *Adapter) Get(id, name string) (any, error) {
+	dev := device.Get(id)
+	if dev == nil {
+		return nil, errors.New("设备未上线")
+	}
+	station := adapter.index[id].ModbusStation
+
+	prod, err := GetProduct(dev.ProductId, dev.ProductVersion)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +126,7 @@ func (adapter *Adapter) Get(device *device.Device, name string) (any, error) {
 	}
 
 	//此处全部读取了，有些冗余
-	data, err := adapter.modbus.Read(adapter.index[device.Id].ModbusStation, mapper.Code, mapper.Address, 2)
+	data, err := adapter.modbus.Read(station, mapper.Code, mapper.Address, 2)
 	if err != nil {
 		return nil, err
 	}
@@ -126,8 +134,14 @@ func (adapter *Adapter) Get(device *device.Device, name string) (any, error) {
 	return mapper.Parse(mapper.Address, data)
 }
 
-func (adapter *Adapter) Set(device *device.Device, name string, value any) error {
-	prod, err := GetProduct(device.ProductId, device.ProductVersion)
+func (adapter *Adapter) Set(id, name string, value any) error {
+	dev := device.Get(id)
+	if dev == nil {
+		return errors.New("设备未上线")
+	}
+	station := adapter.index[id].ModbusStation
+
+	prod, err := GetProduct(dev.ProductId, dev.ProductVersion)
 	if err != nil {
 		return err
 	}
@@ -141,19 +155,24 @@ func (adapter *Adapter) Set(device *device.Device, name string, value any) error
 	if err != nil {
 		return err
 	}
-	return adapter.modbus.Write(adapter.index[device.Id].ModbusStation, mapper.Code, mapper.Address, data)
+	return adapter.modbus.Write(station, mapper.Code, mapper.Address, data)
 }
 
-func (adapter *Adapter) Sync(device *device.Device) (map[string]any, error) {
-	values := make(map[string]any)
+func (adapter *Adapter) Sync(id string) (map[string]any, error) {
+	dev := device.Get(id)
+	if dev == nil {
+		return nil, errors.New("设备未上线")
+	}
+	station := adapter.index[id].ModbusStation
 
-	prod, err := GetProduct(device.ProductId, device.ProductVersion)
+	prod, err := GetProduct(dev.ProductId, dev.ProductVersion)
 	if err != nil {
 		return nil, err
 	}
 
+	values := make(map[string]any)
 	for _, poller := range prod.Pollers {
-		data, err := adapter.modbus.Read(adapter.index[device.Id].ModbusStation, poller.Code, poller.Address, poller.Length)
+		data, err := adapter.modbus.Read(station, poller.Code, poller.Address, poller.Length)
 		if err != nil {
 			return nil, err
 		}

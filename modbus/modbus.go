@@ -2,7 +2,6 @@ package modbus
 
 import (
 	"github.com/zgwit/iot-master/v4/connect"
-	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/protocol"
 	"github.com/zgwit/iot-master/v4/types"
 )
@@ -27,15 +26,15 @@ var options = []types.FormItem{
 
 var pollers = []types.FormItem{
 	code,
-	{Key: "address", Label: "地址", Type: "number", Min: 0, Max: 5000},
-	{Key: "address", Label: "地址", Type: "number", Min: 0, Max: 5000},
+	{Key: "address", Label: "地址", Type: "number", Required: true, Min: 0, Max: 50000},
+	{Key: "length", Label: "长度", Type: "number", Required: true, Min: 0, Max: 50000},
 }
 
 var mappers = []types.FormItem{
 	code,
 	{Key: "name", Label: "变量", Type: "text", Required: true},
-	{Key: "address", Label: "地址", Type: "number", Required: true, Min: 0, Max: 5000},
-	{Key: "length", Label: "长度", Type: "number", Required: true, Min: 0, Max: 5000},
+	{Key: "address", Label: "地址", Type: "number", Required: true, Min: 0, Max: 50000},
+	{Key: "length", Label: "长度", Type: "number", Required: true, Min: 0, Max: 50000},
 	{Key: "type", Label: "数据类型", Type: "select", Options: []types.FormSelectOption{
 		{Label: "INT16", Value: "int16"},
 		{Label: "UINT16", Value: "uint16"},
@@ -53,10 +52,14 @@ var mappers = []types.FormItem{
 	}},
 }
 
+var stations = []types.FormItem{
+	{Key: "modbus_station", Label: "从站号", Type: "number", Required: true, Min: 1, Max: 255, Step: 1},
+}
+
 var modbusRtu = &protocol.Protocol{
 	Name:  "modbus-rtu",
 	Label: "Modbus RTU",
-	Factory: func(tunnel string, conn connect.Conn, opts types.Options) (device.Adapter, error) {
+	Factory: func(tunnel string, conn connect.Conn, opts types.Options) (protocol.Adapter, error) {
 		adapter := &Adapter{
 			modbus: NewRTU(conn, opts),
 		}
@@ -66,15 +69,16 @@ var modbusRtu = &protocol.Protocol{
 		}
 		return adapter, nil
 	},
-	TunnelOptions:  options,
-	ProductMappers: mappers,
-	ProductPollers: pollers,
+	Options:  options,
+	Mappers:  mappers,
+	Pollers:  pollers,
+	Stations: stations,
 }
 
 var modbusTCP = &protocol.Protocol{
 	Name:  "modbus-tcp",
 	Label: "Modbus TCP",
-	Factory: func(tunnel string, conn connect.Conn, opts types.Options) (device.Adapter, error) {
+	Factory: func(tunnel string, conn connect.Conn, opts types.Options) (protocol.Adapter, error) {
 		adapter := &Adapter{
 			modbus: NewTCP(conn, opts),
 		}
@@ -84,9 +88,10 @@ var modbusTCP = &protocol.Protocol{
 		}
 		return adapter, nil
 	},
-	TunnelOptions:  options,
-	ProductMappers: mappers,
-	ProductPollers: pollers,
+	Options:  options,
+	Mappers:  mappers,
+	Pollers:  pollers,
+	Stations: stations,
 }
 
 type Modbus interface {

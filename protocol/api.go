@@ -19,7 +19,7 @@ func init() {
 	api.Register("GET", "/protocol/:name/mappers", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
-			curd.OK(ctx, p.ProductMappers)
+			curd.OK(ctx, p.Mappers)
 		} else {
 			curd.Fail(ctx, "协议找不到")
 		}
@@ -28,7 +28,7 @@ func init() {
 	api.Register("GET", "/protocol/:name/pollers", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
-			curd.OK(ctx, p.ProductPollers)
+			curd.OK(ctx, p.Pollers)
 		} else {
 			curd.Fail(ctx, "协议找不到")
 		}
@@ -37,7 +37,16 @@ func init() {
 	api.Register("GET", "/protocol/:name/options", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
-			curd.OK(ctx, p.TunnelOptions)
+			curd.OK(ctx, p.Options)
+		} else {
+			curd.Fail(ctx, "协议找不到")
+		}
+	})
+
+	api.Register("GET", "/protocol/:name/stations", func(ctx *gin.Context) {
+		name := ctx.Param("name")
+		if p, ok := protocols[name]; ok {
+			curd.OK(ctx, p.Stations)
 		} else {
 			curd.Fail(ctx, "协议找不到")
 		}
@@ -79,3 +88,12 @@ func noopProtocolPollers() {}
 // @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议映射
 // @Router /protocol/mappers [get]
 func noopProtocolMappers() {}
+
+// @Summary 协议设备站号
+// @Schemes
+// @Description 协议设备站号
+// @Tags protocol
+// @Produce json
+// @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议映射
+// @Router /protocol/stations [get]
+func noopProtocolStations() {}

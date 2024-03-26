@@ -5,6 +5,8 @@ import (
 	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/history"
 	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/product"
+	"github.com/zgwit/iot-master/v4/protocol"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -44,6 +46,10 @@ func init() {
 	api.Register("POST", "/device/:id/parameters", curd.ParseParamStringId, deviceParameters)
 
 	api.Register("GET", "/device/statistic", deviceStatistic)
+
+	api.Register("GET", "/device/:id/stations", curd.ParseParamStringId, deviceStations)
+
+	api.Register("POST", "/device/:id/stations", curd.ParseParamStringId, deviceStationsUpdate)
 }
 
 // @Summary 查询设备数量
@@ -265,5 +271,56 @@ func deviceParameters(ctx *gin.Context) {
 	//TODO 重置设备
 	//devices.Delete(ctx.GetString("id"))
 
+	curd.OK(ctx, nil)
+}
+
+func deviceStations(ctx *gin.Context) {
+	id := ctx.GetString("id")
+
+	var dev Device
+	_, err := db.Engine.ID(id).Get(&dev)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+
+	var prod product.Product
+	_, err = db.Engine.ID(id).Get(&prod)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+
+	p, err := protocol.Get(prod.Protocol)
+	var cols []string
+	for _, s := range p.Stations {
+		cols = append(cols, s.Key)
+	}
+
+	var stations map[string]any
+	_, err = db.Engine.Table(new(Device)).ID(id).Cols(cols...).Get(&stations)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
+	curd.OK(ctx, stations)
+}
+
+func deviceStationsUpdate(ctx *gin.Context) {
+	id := ctx.GetString("id")
+
+	var stations map[string]any
+	err := ctx.BindJSON(&stations)
+
+	var cols []string
+	for k, _ := range stations {
+		cols = append(cols, k)
+	}
+
+	_, err = db.Engine.Table(new(Device)).ID(id).Cols(cols...).Update(&stations)
+	if err != nil {
+		curd.Error(ctx, err)
+		return
+	}
 	curd.OK(ctx, nil)
 }
