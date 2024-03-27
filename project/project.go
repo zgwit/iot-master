@@ -1,9 +1,14 @@
 package project
 
 import (
+	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/space"
 	"time"
 )
+
+func init() {
+	db.Register(new(Project), new(ProjectUser))
+}
 
 type ProjectUser struct {
 	ProjectId string    `json:"project_id" xorm:"pk"`

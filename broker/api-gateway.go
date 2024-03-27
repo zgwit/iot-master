@@ -7,16 +7,13 @@ import (
 
 func init() {
 	api.Register("POST", "/gateway/count", curd.ApiCount[Gateway]())
-	api.Register("POST", "/gateway/search", curd.ApiSearchWith[Gateway]([]*curd.With{
-		{"project", "project_id", "id", "name", "project"},
-	}, "id", "name", "project_id", "disabled", "created"))
+	api.Register("POST", "/gateway/search", curd.ApiSearch[Gateway]("id", "name", "disabled", "created"))
 	api.Register("GET", "/gateway/list", curd.ApiList[Gateway]())
 	api.Register("POST", "/gateway/create", curd.ApiCreateHook[Gateway](curd.GenerateID[Gateway](), nil))
 	api.Register("GET", "/gateway/:id", curd.ParseParamStringId, curd.ApiGet[Gateway]())
 	api.Register("POST", "/gateway/:id", curd.ParseParamStringId, curd.ApiUpdateHook[Gateway](nil, nil,
-		"id", "name", "description", "project_id", "username", "password", "disabled"))
+		"id", "name", "description", "username", "password", "disabled"))
 	api.Register("GET", "/gateway/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Gateway](nil, nil))
-
 	api.Register("GET", "/gateway/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[Gateway](true, nil, nil))
 	api.Register("GET", "/gateway/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[Gateway](false, nil, nil))
 }
