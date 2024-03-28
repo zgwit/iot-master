@@ -22,8 +22,6 @@ func init() {
 	})
 
 	api.Register("GET", "/plugin/menus/:entry", menus)
-
-	api.Register("GET", "/plugin/pages/:entry", pages)
 }
 
 // @Summary 查询插件
@@ -68,29 +66,4 @@ func menus(ctx *gin.Context) {
 		}
 	}
 	curd.OK(ctx, menus)
-}
-
-// @Summary 获取插件入口
-// @Schemes
-// @Description 获取插件入口
-// @Tags plugin
-// @Param entry path string true "模块"
-// @Accept json
-// @Produce json
-// @Success 200 {object} curd.ReplyData[[]Page] 返回插件信息
-// @Router /plugin/pages/{entry} [get]
-func pages(ctx *gin.Context) {
-	entry := ctx.Param("entry")
-
-	var entries []*Page
-	for _, p := range GetPlugins() {
-		if p.Pages != nil {
-			for _, pp := range p.Pages {
-				if pp.Target == entry {
-					entries = append(entries, pp)
-				}
-			}
-		}
-	}
-	curd.OK(ctx, entries)
 }

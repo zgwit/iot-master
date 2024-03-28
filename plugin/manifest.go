@@ -10,9 +10,6 @@ type Manifest struct {
 	//菜单入口
 	Menus map[string]*Menu `json:"menus,omitempty"` //admin, project
 
-	//子页面
-	Pages []*Page `json:"pages,omitempty"`
-
 	//外部插件 进程
 	//Process *Process `json:"process,omitempty"`
 	Entry string `json:"entry,omitempty"`
