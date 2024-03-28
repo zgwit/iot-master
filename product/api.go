@@ -12,7 +12,7 @@ func init() {
 	api.Register("POST", "/product/create", curd.ApiCreateHook[Product](curd.GenerateID[Product](), nil))
 	api.Register("GET", "/product/:id", curd.ParseParamStringId, curd.ApiGet[Product]())
 	api.Register("POST", "/product/:id", curd.ParseParamStringId, curd.ApiUpdateHook[Product](nil, nil,
-		"id", "name", "url", "icon", "description", "keywords", "disabled"))
+		"id", "name", "url", "icon", "description", "keywords", "protocol", "disabled"))
 	api.Register("GET", "/product/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Product](nil, nil))
 }
 

@@ -16,7 +16,7 @@ func init() {
 		curd.OK(ctx, ps)
 	})
 
-	api.Register("GET", "/protocol/:name/mappers", func(ctx *gin.Context) {
+	api.Register("GET", "/protocol/:name/mapper", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
 			curd.OK(ctx, p.Mappers)
@@ -25,7 +25,7 @@ func init() {
 		}
 	})
 
-	api.Register("GET", "/protocol/:name/pollers", func(ctx *gin.Context) {
+	api.Register("GET", "/protocol/:name/poller", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
 			curd.OK(ctx, p.Pollers)
@@ -34,7 +34,7 @@ func init() {
 		}
 	})
 
-	api.Register("GET", "/protocol/:name/options", func(ctx *gin.Context) {
+	api.Register("GET", "/protocol/:name/option", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
 			curd.OK(ctx, p.Options)
@@ -43,7 +43,7 @@ func init() {
 		}
 	})
 
-	api.Register("GET", "/protocol/:name/stations", func(ctx *gin.Context) {
+	api.Register("GET", "/protocol/:name/station", func(ctx *gin.Context) {
 		name := ctx.Param("name")
 		if p, ok := protocols[name]; ok {
 			curd.OK(ctx, p.Stations)
@@ -68,7 +68,7 @@ func noopProtocolList() {}
 // @Tags protocol
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议参数
-// @Router /protocol/options [get]
+// @Router /protocol/option [get]
 func noopProtocolOptions() {}
 
 // @Summary 协议轮询器
@@ -77,7 +77,7 @@ func noopProtocolOptions() {}
 // @Tags protocol
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议轮询器
-// @Router /protocol/pollers [get]
+// @Router /protocol/poller [get]
 func noopProtocolPollers() {}
 
 // @Summary 协议映射
@@ -86,7 +86,7 @@ func noopProtocolPollers() {}
 // @Tags protocol
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议映射
-// @Router /protocol/mappers [get]
+// @Router /protocol/mapper [get]
 func noopProtocolMappers() {}
 
 // @Summary 协议设备站号
@@ -95,5 +95,5 @@ func noopProtocolMappers() {}
 // @Tags protocol
 // @Produce json
 // @Success 200 {object} curd.ReplyData[[]types.FormItem] 返回协议映射
-// @Router /protocol/stations [get]
+// @Router /protocol/station [get]
 func noopProtocolStations() {}

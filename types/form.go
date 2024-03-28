@@ -15,7 +15,6 @@ type FormItem struct {
 	Step        float64            `json:"step,omitempty"`
 
 	Children []FormItem `json:"children,omitempty"` //子级？
-	Array    bool       `json:"array,omitempty"`
 }
 
 type FormSelectOption struct {

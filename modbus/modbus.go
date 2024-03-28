@@ -34,7 +34,6 @@ var mappers = []types.FormItem{
 	code,
 	{Key: "name", Label: "变量", Type: "text", Required: true},
 	{Key: "address", Label: "地址", Type: "number", Required: true, Min: 0, Max: 50000},
-	{Key: "length", Label: "长度", Type: "number", Required: true, Min: 0, Max: 50000},
 	{Key: "type", Label: "数据类型", Type: "select", Options: []types.FormSelectOption{
 		{Label: "INT16", Value: "int16"},
 		{Label: "UINT16", Value: "uint16"},
@@ -46,7 +45,7 @@ var mappers = []types.FormItem{
 	{Key: "be", Label: "大端", Type: "switch", Default: true},
 	{Key: "rate", Label: "倍率", Type: "number", Default: 1},
 	{Key: "correct", Label: "纠正", Type: "number", Default: 0},
-	{Key: "bits", Label: "取位", Type: "object", Array: true, Children: []types.FormItem{
+	{Key: "bits", Label: "取位", Type: "table", Children: []types.FormItem{
 		{Key: "name", Label: "变量", Type: "text", Required: true},
 		{Key: "bit", Label: "位", Type: "number", Required: true, Min: 0, Max: 15},
 	}},
