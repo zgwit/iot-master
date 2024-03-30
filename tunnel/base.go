@@ -90,6 +90,8 @@ func (l *Base) Write(data []byte) (int, error) {
 	}
 	n, err := l.conn.Write(data)
 	if err != nil {
+		//关闭连接
+		_ = l.conn.Close()
 		l.running = false
 	}
 	return n, err
