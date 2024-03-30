@@ -51,6 +51,12 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 		for {
 			start := time.Now().Unix()
 			for _, dev := range adapter.devices {
+				d, err := device.Ensure(dev.Id)
+				if err != nil {
+					log.Error(err)
+					continue
+				}
+
 				values, err := adapter.Sync(dev.Id)
 				if err != nil {
 					log.Error(err)
@@ -73,13 +79,8 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 					}
 				}
 
-				//d := adapter.index[dev.Id]
-				d, err := device.Ensure(dev.Id)
-				if err != nil {
-					log.Error(err)
-				}
 				//d := device.Get(dev.Id)
-				if d != nil {
+				if values != nil && len(values) > 0 {
 					d.Push(values)
 				}
 				//_ = pool.Insert(func() {
@@ -88,7 +89,7 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 			}
 
 			now := time.Now().Unix()
-			interval := opts.Int64("poller_interval", 300) //默认5分钟轮询一次
+			interval := opts.Int64("poller_interval", 60) //默认5分钟轮询一次
 			if now-start < interval {
 				time.Sleep(time.Second * time.Duration(interval-(now-start)))
 			}

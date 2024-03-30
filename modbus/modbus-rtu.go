@@ -15,7 +15,7 @@ type RTU struct {
 	buf       []byte
 }
 
-func NewRTU(tunnel connect.Conn, opts types.Options) *RTU {
+func NewRTU(tunnel connect.Tunnel, opts types.Options) *RTU {
 	rtu := &RTU{
 		messenger: connect.Messenger{
 			Timeout: time.Millisecond * time.Duration(opts.Int64("timeout", 1000)),

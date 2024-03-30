@@ -18,5 +18,5 @@ type Link struct {
 }
 
 func (l *Link) Open() error {
-	return errors.New("conn cannot open")
+	return errors.New("link cannot open")
 }

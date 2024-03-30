@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/protocol"
 	"go.bug.st/serial"
 	"time"
 )
@@ -14,8 +15,7 @@ func init() {
 
 // Serial 串口
 type Serial struct {
-	Base         `xorm:"extends"`
-	RetryOptions `xorm:"extends"`
+	Base `xorm:"extends"`
 
 	PortName   string `json:"port_name,omitempty"`   //port, e.g. COM1 "/dev/ttySerial1".
 	BaudRate   uint   `json:"baud_rate,omitempty"`   //9600 115200
@@ -26,10 +26,15 @@ type Serial struct {
 
 // Open 打开
 func (s *Serial) Open() error {
-	if s.Running {
+	if s.running {
 		return errors.New("serial is opened")
 	}
 	s.closed = false
+
+	//守护
+	if s.keeper == nil {
+		s.keeper = Keep(s)
+	}
 
 	opts := serial.Mode{
 		BaudRate: int(s.BaudRate),
@@ -38,12 +43,12 @@ func (s *Serial) Open() error {
 		Parity:   serial.Parity(s.ParityMode),
 	}
 
+	log.Trace("create serial", opts)
 	port, err := serial.Open(s.PortName, &opts)
 	if err != nil {
-		//TODO 串口重试
-		s.Retry()
 		return err
 	}
+	s.running = true
 
 	//读超时
 	err = port.SetReadTimeout(time.Second * 5)
@@ -51,54 +56,9 @@ func (s *Serial) Open() error {
 		return err
 	}
 
-	s.Running = true
 	s.conn = port
 
-	//清空重连计数
-	//s.retry = 0
-
-	//守护协程
-	go func() {
-		timeout := s.RetryOptions.RetryTimeout
-		if timeout == 0 {
-			timeout = 10
-		}
-		for {
-			time.Sleep(time.Second * time.Duration(timeout))
-			if s.Running {
-				continue
-			}
-			if s.closed {
-				return
-			}
-
-			//如果掉线了，就重新打开
-			err := s.Open()
-			if err != nil {
-				log.Error(err)
-			}
-			break //Open中，会重新启动协程
-		}
-	}()
-
 	//启动轮询
-	return s.start()
-}
-
-func (s *Serial) Retry() {
-	retry := &s.RetryOptions
-	if retry.RetryMaximum == 0 || s.retry < retry.RetryMaximum {
-		s.retry++
-		timeout := retry.RetryTimeout
-		if timeout == 0 {
-			timeout = 10
-		}
-		s.retryTimer = time.AfterFunc(time.Second*time.Duration(timeout), func() {
-			s.retryTimer = nil
-			err := s.Open()
-			if err != nil {
-				log.Error(err)
-			}
-		})
-	}
+	s.adapter, err = protocol.Create(s.Id, s, s.ProtocolName, s.ProtocolOptions.ProtocolOptions)
+	return err
 }

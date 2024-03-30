@@ -6,7 +6,11 @@ type Tunnel interface {
 
 	Open() error
 
+	Close() error
+
 	Running() bool
 
-	Online() bool
+	Closed() bool
+
+	//Online() bool
 }

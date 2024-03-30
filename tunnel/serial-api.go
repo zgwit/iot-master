@@ -18,7 +18,7 @@ func init() {
 		for k, ser := range serials {
 			c := GetSerial(ser.Id)
 			if c != nil {
-				serials[k].Running = c.Running
+				serials[k].running = c.running
 			}
 		}
 		return nil
@@ -33,7 +33,7 @@ func init() {
 	api.Register("GET", "/serial/:id", curd.ParseParamStringId, curd.ApiGetHook[Serial](func(ser *Serial) error {
 		c := GetSerial(ser.Id)
 		if c != nil {
-			ser.Running = c.Running
+			ser.running = c.running
 		}
 		return nil
 	}))

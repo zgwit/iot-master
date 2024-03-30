@@ -27,7 +27,7 @@ func Register(proto *Protocol) {
 	protocols[proto.Name] = proto
 }
 
-func Create(tunnel string, conn connect.Conn, name string, opts types.Options) (Adapter, error) {
+func Create(tunnel string, conn connect.Tunnel, name string, opts types.Options) (Adapter, error) {
 	if p, ok := protocols[name]; ok {
 		return p.Factory(tunnel, conn, opts)
 	}

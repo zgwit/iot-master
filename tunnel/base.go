@@ -27,8 +27,7 @@ type Base struct {
 	Id          string `json:"id,omitempty" xorm:"pk"` //ID
 	Name        string `json:"name,omitempty"`         //名称
 	Description string `json:"description,omitempty"`  //说明
-
-	Heartbeat string `json:"heartbeat,omitempty"` //心跳包
+	Heartbeat   string `json:"heartbeat,omitempty"`    //心跳包
 
 	ProtocolOptions `xorm:"extends"`
 	PollerOptions   `xorm:"extends"`
@@ -36,70 +35,78 @@ type Base struct {
 	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created" xorm:"created"` //创建时间
 
-	Running bool `json:"Running,omitempty" xorm:"-"`
+	running bool
+	closed  bool
 
-	conn connect.Conn
+	//连接
+	conn connect.Conn //`xorm:"-"`
 
 	adapter protocol.Adapter
 
-	closed bool
-
-	retry      uint
-	retryTimer *time.Timer
-
 	//透传
 	pipe io.ReadWriteCloser
+
+	//保持
+	keeper *Keeper
+}
+
+func (l *Base) Running() bool {
+	return l.running
+}
+
+func (l *Base) Closed() bool {
+	return l.closed
 }
 
 // Close 关闭
 func (l *Base) Close() error {
-	if l.retryTimer != nil {
-		l.retryTimer.Stop()
-	}
-	if !l.Running {
-		return errors.New("Tunnel closed")
+	if l.closed {
+		return errors.New("tunnel closed")
 	}
 
+	l.running = false
 	l.closed = true
 
-	l.onClose()
-	return l.conn.Close()
-}
-
-func (l *Base) onClose() {
-	l.Running = false
 	if l.pipe != nil {
 		_ = l.pipe.Close()
 	}
+
+	return l.conn.Close()
 }
 
 // Write 写
 func (l *Base) Write(data []byte) (int, error) {
-	if !l.Running {
-		return 0, errors.New("model closed")
+	if !l.running {
+		return 0, errors.New("tunnel closed")
 	}
 	if l.pipe != nil {
 		return 0, nil //透传模式下，直接抛弃
 	}
-	return l.conn.Write(data)
+	n, err := l.conn.Write(data)
+	if err != nil {
+		l.running = false
+	}
+	return n, err
 }
 
 // Read 读
 func (l *Base) Read(data []byte) (int, error) {
-	if !l.Running {
-		return 0, errors.New("model closed")
+	if !l.running {
+		return 0, errors.New("tunnel closed")
 	}
-
 	if l.pipe != nil {
-		//TODO 先read，然后透传
+		//先read，然后透传
 		return 0, nil //透传模式下，直接抛弃
 	}
-	return l.conn.Read(data)
+	n, err := l.conn.Read(data)
+	if err != nil {
+		l.running = false
+	}
+	return n, err
 }
 
-func (l *Base) start() (err error) {
-	l.adapter, err = protocol.Create(l.Id, l.conn, l.ProtocolName, l.ProtocolOptions.ProtocolOptions)
-	return
+func (l *Base) SetReadTimeout(t time.Duration) error {
+	return l.conn.SetReadTimeout(t)
 }
 
 func (l *Base) Pipe(pipe io.ReadWriteCloser) {

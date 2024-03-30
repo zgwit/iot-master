@@ -14,7 +14,7 @@ func init() {
 			for k, link := range links {
 				c := GetLink(link.Id)
 				if c != nil {
-					links[k].Running = c.Running
+					links[k].running = c.running
 				}
 			}
 			return nil
@@ -27,7 +27,7 @@ func init() {
 	api.Register("GET", "/link/:id", curd.ParseParamStringId, curd.ApiGetHook[Link](func(link *Link) error {
 		c := GetLink(link.Id)
 		if c != nil {
-			link.Running = c.Running
+			link.running = c.running
 		}
 		return nil
 	}))

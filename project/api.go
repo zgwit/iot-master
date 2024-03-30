@@ -15,7 +15,7 @@ func init() {
 		for _, v := range datum {
 			p := Get(v.Id)
 			if p != nil {
-				//v.Running = p.Running
+				//v.running = p.running
 			}
 		}
 		return nil
@@ -25,7 +25,7 @@ func init() {
 		for _, v := range datum {
 			p := Get(v.Id)
 			if p != nil {
-				//v.Running = p.Running
+				//v.running = p.running
 			}
 		}
 		return nil
@@ -35,7 +35,7 @@ func init() {
 	api.Register("GET", "/project/:id", curd.ParseParamStringId, curd.ApiGetHook[Project](func(m *Project) error {
 		p := Get(m.Id)
 		if p != nil {
-			//m.Running = p.Running
+			//m.running = p.running
 		}
 		return nil
 	}))

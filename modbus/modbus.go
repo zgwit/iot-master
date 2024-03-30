@@ -58,7 +58,7 @@ var stations = []types.FormItem{
 var modbusRtu = &protocol.Protocol{
 	Name:  "modbus-rtu",
 	Label: "Modbus RTU",
-	Factory: func(tunnel string, conn connect.Conn, opts types.Options) (protocol.Adapter, error) {
+	Factory: func(tunnel string, conn connect.Tunnel, opts types.Options) (protocol.Adapter, error) {
 		adapter := &Adapter{
 			modbus: NewRTU(conn, opts),
 			index:  make(map[string]*Device),
@@ -78,7 +78,7 @@ var modbusRtu = &protocol.Protocol{
 var modbusTCP = &protocol.Protocol{
 	Name:  "modbus-tcp",
 	Label: "Modbus TCP",
-	Factory: func(tunnel string, conn connect.Conn, opts types.Options) (protocol.Adapter, error) {
+	Factory: func(tunnel string, conn connect.Tunnel, opts types.Options) (protocol.Adapter, error) {
 		adapter := &Adapter{
 			modbus: NewTCP(conn, opts),
 			index:  make(map[string]*Device),
