@@ -107,6 +107,8 @@ func (adapter *Adapter) start(opts types.Options) error {
 			}
 		}
 
+		log.Info("modbus adapter quit", adapter.tunnel.ID())
+
 		//设备下线
 		//for _, dev := range adapter.devices {
 		//	topic := fmt.Sprintf("device/%s/offline", dev.Id)

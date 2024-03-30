@@ -88,6 +88,7 @@ func (l *Base) Write(data []byte) (int, error) {
 	if l.pipe != nil {
 		return 0, nil //透传模式下，直接抛弃
 	}
+	//log.Trace(l.Id, "write", data)
 	n, err := l.conn.Write(data)
 	if err != nil {
 		//关闭连接
@@ -106,6 +107,7 @@ func (l *Base) Read(data []byte) (int, error) {
 		//先read，然后透传
 		return 0, nil //透传模式下，直接抛弃
 	}
+	//log.Trace(l.Id, "read")
 	n, err := l.conn.Read(data)
 	if err != nil {
 		//网络错误（读超时除外）
@@ -123,7 +125,13 @@ func (l *Base) Read(data []byte) (int, error) {
 		//其他错误，关闭连接
 		_ = l.conn.Close()
 		l.running = false
+	} else if n == 0 {
+		//关闭连接（已知 串口会进入假死）
+		_ = l.conn.Close()
+		l.running = false
+		return 0, errors.New("空读取")
 	}
+	//log.Trace(l.Id, "readed", data[:n])
 	return n, err
 }
 
