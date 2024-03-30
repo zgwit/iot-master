@@ -1,8 +1,10 @@
 package device
 
 import (
+	"github.com/zgwit/iot-master/v4/history"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/event"
+	"github.com/zgwit/iot-master/v4/pkg/pool"
 	"time"
 )
 
@@ -72,6 +74,11 @@ func (d *Device) Push(values map[string]any) {
 
 	//检查数据
 	//d.Validate()
+
+	//写入历史
+	_ = pool.Insert(func() {
+		_ = history.Write(d.ProductId, d.Id, time.Now().UnixMilli(), values)
+	})
 }
 
 func (d *Device) WriteMany(values map[string]any) error {

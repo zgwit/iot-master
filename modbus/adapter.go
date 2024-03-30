@@ -50,10 +50,17 @@ func (adapter *Adapter) start(opts types.Options) error {
 		//	topic := fmt.Sprintf("device/online/%s", dev.Id)
 		//	_ = mqtt.Publish(topic, nil)
 		//}
+		interval := opts.Int64("poller_interval", 60) //默认1分钟轮询一次
+		if interval < 1 {
+			interval = 1
+		}
+
+		//按毫秒计时
+		interval *= 1000
 
 		//OUT:
 		for adapter.tunnel.Running() {
-			start := time.Now().Unix()
+			start := time.Now().UnixMilli()
 			for _, dev := range adapter.devices {
 				d, err := device.Ensure(dev.Id)
 				if err != nil {
@@ -69,6 +76,7 @@ func (adapter *Adapter) start(opts types.Options) error {
 
 				//d := device.Get(dev.Id)
 				if values != nil && len(values) > 0 {
+					log.Trace("sync", dev.Id, dev.Station.Slave, values)
 					d.Push(values)
 				}
 				//_ = pool.Insert(func() {
@@ -77,14 +85,14 @@ func (adapter *Adapter) start(opts types.Options) error {
 			}
 
 			//轮询间隔
-			now := time.Now().Unix()
-			interval := opts.Int64("poller_interval", 60) //默认5分钟轮询一次
-			if now-start < interval {
-				time.Sleep(time.Second * time.Duration(interval-(now-start)))
+			now := time.Now().UnixMilli()
+			elapsed := now - start
+			if elapsed < interval {
+				time.Sleep(time.Millisecond * time.Duration(interval-elapsed))
 			}
 
-			//避免空转，睡眠1分钟（可能有点长）
-			if now-start < 1 {
+			//避免空转，睡眠1分钟（延迟10ms太长，睡1分钟也有点长）
+			if elapsed < 10 {
 				time.Sleep(time.Minute)
 			}
 		}

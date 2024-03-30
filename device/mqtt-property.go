@@ -3,12 +3,10 @@ package device
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/v4/history"
 	"github.com/zgwit/iot-master/v4/payload"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/mqtt"
 	"strings"
-	"time"
 )
 
 func mqttProperty() {
@@ -30,13 +28,6 @@ func mqttProperty() {
 
 		dev.Push(*values)
 		dev.Online = true
-
-		//写入历史
-		err = history.Write(dev.ProductId, dev.Id, time.Now().UnixMilli(), *values)
-		if err != nil {
-			log.Error(err)
-		}
-
 	})
 }
 
