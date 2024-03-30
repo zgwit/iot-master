@@ -45,9 +45,7 @@ func init() {
 			log.Error(err)
 		}
 		return LoadSerial(value)
-	},
-		"id", "name", "description", "heartbeat", "poller_period", "poller_interval", "protocol_name", "protocol_options",
-		"port_name", "baud_rate", "data_bits", "stop_bits", "parity_mode", "retry_timeout", "retry_maximum", "disabled"))
+	}))
 
 	api.Register("GET", "/serial/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Serial](nil, func(value interface{}) error {
 		id := value.(string)

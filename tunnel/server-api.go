@@ -44,8 +44,7 @@ func init() {
 			log.Error(err)
 		}
 		return LoadServer(value)
-	},
-		"id", "name", "description", "heartbeat", "poller_period", "poller_interval", "protocol_name", "protocol_options", "retry", "options", "disabled", "port", "standalone", "servers"))
+	}))
 
 	api.Register("GET", "/server/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Server](nil, func(value interface{}) error {
 		id := value.(string)

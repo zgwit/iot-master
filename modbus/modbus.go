@@ -52,7 +52,7 @@ var mappers = []types.FormItem{
 }
 
 var stations = []types.FormItem{
-	{Key: "modbus_station", Label: "从站号", Type: "number", Required: true, Min: 1, Max: 255, Step: 1},
+	{Key: "slave", Label: "Modbus从站号", Type: "number", Required: true, Min: 1, Max: 255, Step: 1, Default: 1},
 }
 
 var modbusRtu = &protocol.Protocol{

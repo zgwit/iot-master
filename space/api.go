@@ -21,8 +21,7 @@ func init() {
 
 	api.Register("GET", "/space/:id", curd.ParseParamStringId, curd.ApiGet[Space]())
 
-	api.Register("POST", "/space/:id", curd.ParseParamStringId, curd.ApiUpdateHook[Space](nil, nil,
-		"id", "name", "project_id", "description", "disabled"))
+	api.Register("POST", "/space/:id", curd.ParseParamStringId, curd.ApiUpdate[Space]())
 
 	api.Register("GET", "/space/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Space](nil, nil))
 

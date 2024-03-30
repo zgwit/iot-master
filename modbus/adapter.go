@@ -22,8 +22,7 @@ type Adapter struct {
 }
 
 func (adapter *Adapter) start(tunnel string, opts types.Options) error {
-	err := db.Engine.Where("tunnel_id=?", tunnel).And("disabled!=1").
-		Asc("modbus_station").Find(&adapter.devices)
+	err := db.Engine.Where("tunnel_id=?", tunnel).And("disabled!=1").Find(&adapter.devices)
 
 	if err != nil {
 		return err
@@ -113,7 +112,7 @@ func (adapter *Adapter) Get(id, name string) (any, error) {
 	if dev == nil {
 		return nil, errors.New("设备未上线")
 	}
-	station := adapter.index[id].ModbusStation
+	station := adapter.index[id].Station.Slave
 
 	prod, err := GetProduct(dev.ProductId, dev.ProductVersion)
 	if err != nil {
@@ -139,7 +138,7 @@ func (adapter *Adapter) Set(id, name string, value any) error {
 	if dev == nil {
 		return errors.New("设备未上线")
 	}
-	station := adapter.index[id].ModbusStation
+	station := adapter.index[id].Station.Slave
 
 	prod, err := GetProduct(dev.ProductId, dev.ProductVersion)
 	if err != nil {
@@ -163,7 +162,7 @@ func (adapter *Adapter) Sync(id string) (map[string]any, error) {
 	if dev == nil {
 		return nil, errors.New("设备未上线")
 	}
-	station := adapter.index[id].ModbusStation
+	station := adapter.index[id].Station.Slave
 
 	prod, err := GetProduct(dev.ProductId, dev.ProductVersion)
 	if err != nil {

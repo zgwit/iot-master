@@ -28,8 +28,7 @@ func init() {
 
 	api.Register("GET", "/device/:id", curd.ParseParamStringId, curd.ApiGet[Device]())
 
-	api.Register("POST", "/device/:id", curd.ParseParamStringId, curd.ApiUpdateHook[Device](nil, nil,
-		"id", "gateway_id", "product_id", "product_version", "project_id", "type", "name", "description", "parameters", "disabled"))
+	api.Register("POST", "/device/:id", curd.ParseParamStringId, curd.ApiUpdate[Device]())
 
 	api.Register("GET", "/device/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Device](nil, nil))
 
@@ -255,7 +254,7 @@ func deviceHistory(ctx *gin.Context) {
 }
 
 func deviceParameters(ctx *gin.Context) {
-	var body map[string]float64
+	var body map[string]any
 	err := ctx.ShouldBindJSON(body)
 	if err != nil {
 		curd.Error(ctx, err)

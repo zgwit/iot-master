@@ -21,6 +21,9 @@ func init() {
 		}))
 
 	api.Register("GET", "/link/list", curd.ApiList[Link]())
+
+	api.Register("POST", "/link/create", curd.ApiCreateHook[Link](curd.GenerateID[Link](), nil))
+
 	api.Register("GET", "/link/:id", curd.ParseParamStringId, curd.ApiGetHook[Link](func(link *Link) error {
 		c := GetLink(link.Id)
 		if c != nil {
@@ -29,8 +32,7 @@ func init() {
 		return nil
 	}))
 
-	api.Register("POST", "/link/:id", curd.ParseParamStringId, curd.ApiUpdateHook[Link](nil, nil,
-		"name", "description", "heartbeat", "poller_period", "poller_interval", "protocol_name", "protocol_options", "disabled"))
+	api.Register("POST", "/link/:id", curd.ParseParamStringId, curd.ApiUpdateHook[Link](nil, nil))
 	api.Register("GET", "/link/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Link](nil, nil))
 
 	api.Register("GET", "/link/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[Link](true, nil, func(value interface{}) error {
@@ -89,6 +91,17 @@ func noopLinkSearch() {}
 // @Success 200 {object} curd.ReplyList[Link] 返回连接信息
 // @Router /link/list [get]
 func noopLinkList() {}
+
+// @Summary 创建连接
+// @Schemes
+// @Description 创建连接
+// @Tags link
+// @Param link body Link true "连接信息"
+// @Accept json
+// @Produce json
+// @Success 200 {object} curd.ReplyData[Link] 返回连接信息
+// @Router /link/create [post]
+func noopLinkCreate() {}
 
 // @Summary 修改连接
 // @Schemes

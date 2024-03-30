@@ -23,16 +23,17 @@ type Device struct {
 	ProjectId string `json:"project_id,omitempty" xorm:"index"`
 	Project   string `json:"project,omitempty" xorm:"<-"`
 
-	Name        string             `json:"name"`
-	Description string             `json:"description,omitempty"`
-	Parameters  map[string]float64 `json:"parameters,omitempty" xorm:"json"` //模型参数，用于报警检查
-	Disabled    bool               `json:"disabled,omitempty"`
-	Created     time.Time          `json:"created,omitempty" xorm:"created"`
+	Name        string         `json:"name"`
+	Description string         `json:"description,omitempty"`
+	Parameters  map[string]any `json:"parameters,omitempty" xorm:"json"` //模型参数，用于报警检查
+	Disabled    bool           `json:"disabled,omitempty"`
+	Created     time.Time      `json:"created,omitempty" xorm:"created"`
 
 	Online bool `json:"online,omitempty" xorm:"-"`
 
 	//通道ID
-	TunnelId string `json:"tunnel_id,omitempty" xorm:"index"`
+	TunnelId string         `json:"tunnel_id,omitempty" xorm:"index"`
+	Station  map[string]any `json:"station,omitempty" xorm:"json"` //通道参数 保存从站号等
 
 	//变量
 	values map[string]any

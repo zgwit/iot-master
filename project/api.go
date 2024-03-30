@@ -40,8 +40,7 @@ func init() {
 		return nil
 	}))
 
-	api.Register("POST", "/project/:id", curd.ParseParamStringId, curd.ApiUpdateHook[Project](nil, nil,
-		"id", "name", "icon", "description", "keywords", "disabled"))
+	api.Register("POST", "/project/:id", curd.ParseParamStringId, curd.ApiUpdate[Project]())
 
 	api.Register("GET", "/project/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Project](nil, nil))
 
