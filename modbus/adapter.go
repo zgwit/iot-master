@@ -59,7 +59,7 @@ func (adapter *Adapter) start(opts types.Options) error {
 		interval *= 1000
 
 		//OUT:
-		for adapter.tunnel.Running() {
+		for {
 			start := time.Now().UnixMilli()
 			for _, dev := range adapter.devices {
 				d, err := device.Ensure(dev.Id)
@@ -74,6 +74,11 @@ func (adapter *Adapter) start(opts types.Options) error {
 					continue
 				}
 
+				//检查连接，若关闭了，就不用再等了
+				if !adapter.tunnel.Running() {
+					break
+				}
+
 				//d := device.Get(dev.Id)
 				if values != nil && len(values) > 0 {
 					log.Trace("sync", dev.Id, dev.Station.Slave, values)
@@ -82,6 +87,11 @@ func (adapter *Adapter) start(opts types.Options) error {
 				//_ = pool.Insert(func() {
 				//topic := fmt.Sprintf("device/%s/property", dev.Id)
 				//mqtt.Publish(topic, values)
+			}
+
+			//检查连接，避免空等待
+			if !adapter.tunnel.Running() {
+				break
 			}
 
 			//轮询间隔
