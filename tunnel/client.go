@@ -47,7 +47,7 @@ func (c *Client) Open() error {
 	c.conn = &netConn{conn}
 
 	//启动轮询
-	c.adapter, err = protocol.Create(c.Id, c, c.ProtocolName, c.ProtocolOptions.ProtocolOptions)
+	c.adapter, err = protocol.Create(c, c.ProtocolName, c.ProtocolOptions.ProtocolOptions)
 
 	return err
 }

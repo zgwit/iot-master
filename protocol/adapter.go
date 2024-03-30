@@ -1,6 +1,10 @@
 package protocol
 
+import "github.com/zgwit/iot-master/v4/connect"
+
 type Adapter interface {
+	Tunnel() connect.Tunnel
+
 	Mount(device string) error
 	Unmount(device string) error
 

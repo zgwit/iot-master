@@ -5,7 +5,7 @@ import (
 	"github.com/zgwit/iot-master/v4/types"
 )
 
-type Factory func(tunnel string, conn connect.Tunnel, opts types.Options) (Adapter, error)
+type Factory func(conn connect.Tunnel, opts types.Options) (Adapter, error)
 
 type Protocol struct {
 	Name    string  `json:"name"`

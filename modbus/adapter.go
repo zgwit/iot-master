@@ -2,18 +2,17 @@ package modbus
 
 import (
 	"errors"
+	"github.com/zgwit/iot-master/v4/connect"
 	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/types"
-	"go.bug.st/serial"
-	"io"
-	"net"
 	"slices"
 	"time"
 )
 
 type Adapter struct {
+	tunnel  connect.Tunnel
 	modbus  Modbus
 	devices []*Device
 
@@ -22,8 +21,13 @@ type Adapter struct {
 	//index map[string]*device.Device
 }
 
-func (adapter *Adapter) start(tunnel string, opts types.Options) error {
-	err := db.Engine.Where("tunnel_id=?", tunnel).And("disabled!=1").Find(&adapter.devices)
+func (adapter *Adapter) Tunnel() connect.Tunnel {
+	return adapter.tunnel
+}
+
+func (adapter *Adapter) start(opts types.Options) error {
+	err := db.Engine.Where("tunnel_id=?", adapter.tunnel.ID()).
+		And("disabled!=1").Find(&adapter.devices)
 	if err != nil {
 		return err
 	}
@@ -47,8 +51,8 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 		//	_ = mqtt.Publish(topic, nil)
 		//}
 
-	OUT:
-		for {
+		//OUT:
+		for adapter.tunnel.Running() {
 			start := time.Now().Unix()
 			for _, dev := range adapter.devices {
 				d, err := device.Ensure(dev.Id)
@@ -60,23 +64,7 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 				values, err := adapter.Sync(dev.Id)
 				if err != nil {
 					log.Error(err)
-
-					//连接断开错误
-					if err == io.EOF {
-						break OUT
-					}
-
-					//网络错误（读超时除外）
-					var ne net.Error
-					if errors.As(err, &ne) && !ne.Timeout() {
-						break OUT
-					}
-
-					//串口错误（读超时除外）
-					var se *serial.PortError
-					if errors.As(err, &se) && (se.Code() != serial.InvalidTimeoutValue) {
-						break OUT
-					}
+					continue
 				}
 
 				//d := device.Get(dev.Id)
@@ -88,6 +76,7 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 				//mqtt.Publish(topic, values)
 			}
 
+			//轮询间隔
 			now := time.Now().Unix()
 			interval := opts.Int64("poller_interval", 60) //默认5分钟轮询一次
 			if now-start < interval {

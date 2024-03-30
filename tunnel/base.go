@@ -4,7 +4,9 @@ import (
 	"errors"
 	"github.com/zgwit/iot-master/v4/connect"
 	"github.com/zgwit/iot-master/v4/protocol"
+	"go.bug.st/serial"
 	"io"
+	"net"
 	"time"
 )
 
@@ -48,6 +50,10 @@ type Base struct {
 
 	//保持
 	keeper *Keeper
+}
+
+func (l *Base) ID() string {
+	return l.Id
 }
 
 func (l *Base) Running() bool {
@@ -100,6 +106,20 @@ func (l *Base) Read(data []byte) (int, error) {
 	}
 	n, err := l.conn.Read(data)
 	if err != nil {
+		//网络错误（读超时除外）
+		var ne net.Error
+		if errors.As(err, &ne) && ne.Timeout() {
+			return 0, err
+		}
+
+		//串口错误（读超时除外）
+		var se *serial.PortError
+		if errors.As(err, &se) && (se.Code() == serial.InvalidTimeoutValue) {
+			return 0, err
+		}
+
+		//其他错误，关闭连接
+		_ = l.conn.Close()
 		l.running = false
 	}
 	return n, err

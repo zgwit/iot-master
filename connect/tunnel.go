@@ -4,6 +4,8 @@ package connect
 type Tunnel interface {
 	Conn
 
+	ID() string
+
 	Open() error
 
 	Close() error

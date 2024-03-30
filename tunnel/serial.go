@@ -59,6 +59,6 @@ func (s *Serial) Open() error {
 	s.conn = port
 
 	//启动轮询
-	s.adapter, err = protocol.Create(s.Id, s, s.ProtocolName, s.ProtocolOptions.ProtocolOptions)
+	s.adapter, err = protocol.Create(s, s.ProtocolName, s.ProtocolOptions.ProtocolOptions)
 	return err
 }

@@ -42,7 +42,7 @@ func (s *Server) handleStandalone(c *net.TCPConn) (err error) {
 	links.Store(s.Id, l)
 
 	//启动轮询
-	l.adapter, err = protocol.Create(l.Id, l, l.ProtocolName, l.ProtocolOptions.ProtocolOptions)
+	l.adapter, err = protocol.Create(l, l.ProtocolName, l.ProtocolOptions.ProtocolOptions)
 	return err
 }
 
@@ -87,7 +87,7 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 	links.Store(l.Id, &l)
 
 	//启动轮询
-	l.adapter, err = protocol.Create(l.Id, &l, l.ProtocolName, l.ProtocolOptions.ProtocolOptions)
+	l.adapter, err = protocol.Create(&l, l.ProtocolName, l.ProtocolOptions.ProtocolOptions)
 	return err
 }
 

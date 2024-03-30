@@ -21,7 +21,8 @@ var code = types.FormItem{Key: "code", Label: "功能码", Type: "select", Optio
 }}
 
 var options = []types.FormItem{
-	{Key: "timeout", Label: "超时", Tips: "毫秒", Type: "number", Min: 1, Max: 5000},
+	{Key: "timeout", Label: "超时", Tips: "毫秒", Type: "number", Min: 1, Max: 5000, Default: 500},
+	{Key: "poller_interval", Label: "轮询间隔", Tips: "秒", Type: "number", Min: 0, Max: 3600 * 24, Default: 60},
 }
 
 var pollers = []types.FormItem{
@@ -58,12 +59,13 @@ var stations = []types.FormItem{
 var modbusRtu = &protocol.Protocol{
 	Name:  "modbus-rtu",
 	Label: "Modbus RTU",
-	Factory: func(tunnel string, conn connect.Tunnel, opts types.Options) (protocol.Adapter, error) {
+	Factory: func(conn connect.Tunnel, opts types.Options) (protocol.Adapter, error) {
 		adapter := &Adapter{
+			tunnel: conn,
 			modbus: NewRTU(conn, opts),
 			index:  make(map[string]*Device),
 		}
-		err := adapter.start(tunnel, opts)
+		err := adapter.start(opts)
 		if err != nil {
 			return nil, err
 		}
@@ -78,12 +80,13 @@ var modbusRtu = &protocol.Protocol{
 var modbusTCP = &protocol.Protocol{
 	Name:  "modbus-tcp",
 	Label: "Modbus TCP",
-	Factory: func(tunnel string, conn connect.Tunnel, opts types.Options) (protocol.Adapter, error) {
+	Factory: func(conn connect.Tunnel, opts types.Options) (protocol.Adapter, error) {
 		adapter := &Adapter{
+			tunnel: conn,
 			modbus: NewTCP(conn, opts),
 			index:  make(map[string]*Device),
 		}
-		err := adapter.start(tunnel, opts)
+		err := adapter.start(opts)
 		if err != nil {
 			return nil, err
 		}
