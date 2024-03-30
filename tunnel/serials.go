@@ -7,23 +7,23 @@ import (
 	"xorm.io/xorm"
 )
 
-var clients lib.Map[Client]
+var serials lib.Map[Serial]
 
-func LoadClients() error {
-	var clients []*Client
-	err := db.Engine.Find(&clients)
+func LoadSerials() error {
+	var serials []*Serial
+	err := db.Engine.Find(&serials)
 	if err != nil {
 		if err == xorm.ErrNotExist {
 			return nil
 		}
 		return err
 	}
-	for _, m := range clients {
+	for _, m := range serials {
 		if m.Disabled {
 			continue
 		}
-		go func(m *Client) {
-			err := LoadClient(m)
+		go func(m *Serial) {
+			err := LoadSerial(m)
 			if err != nil {
 				log.Error(err)
 			}
@@ -32,11 +32,11 @@ func LoadClients() error {
 	return nil
 }
 
-func LoadClient(m *Client) error {
-	clients.Store(m.Id, m)
+func LoadSerial(m *Serial) error {
+	serials.Store(m.Id, m)
 	return m.Open()
 }
 
-func GetClient(id string) *Client {
-	return clients.Load(id)
+func GetSerial(id string) *Serial {
+	return serials.Load(id)
 }

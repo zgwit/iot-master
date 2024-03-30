@@ -8,6 +8,10 @@ import (
 	"net"
 )
 
+func init() {
+	db.Register(new(Server))
+}
+
 // Server TCP服务器
 type Server struct {
 	Base         `xorm:"extends"`

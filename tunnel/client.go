@@ -3,10 +3,15 @@ package tunnel
 import (
 	"errors"
 	"fmt"
+	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"net"
 	"time"
 )
+
+func init() {
+	db.Register(new(Client))
+}
 
 // Client 网络链接
 type Client struct {

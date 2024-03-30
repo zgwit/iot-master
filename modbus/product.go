@@ -69,6 +69,7 @@ func GetProduct(id, version string) (*Product, error) {
 		if err != nil {
 			return nil, err
 		}
+		p = products.Load(id + version)
 	}
 	return p, nil
 }
@@ -87,7 +88,7 @@ func LoadProduct(id, version string) error {
 	var product Product
 	products.Store(id+version, &product)
 
-	fn := filepath.Join(viper.GetString("data"), "product", id, version, "pollers.json")
+	fn := filepath.Join(viper.GetString("data"), "product", id, version, "poller.json")
 	buf, err := os.ReadFile(fn)
 	if err == nil {
 		err = json.Unmarshal(buf, &product.Pollers)
@@ -96,7 +97,7 @@ func LoadProduct(id, version string) error {
 		}
 	}
 
-	fn = filepath.Join(viper.GetString("data"), "product", id, version, "mappers.json")
+	fn = filepath.Join(viper.GetString("data"), "product", id, version, "mapper.json")
 	buf, err = os.ReadFile(fn)
 	if err == nil {
 		err = json.Unmarshal(buf, &product.Mappers)

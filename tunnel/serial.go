@@ -2,10 +2,15 @@ package tunnel
 
 import (
 	"errors"
+	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"go.bug.st/serial"
 	"time"
 )
+
+func init() {
+	db.Register(new(Serial))
+}
 
 // Serial 串口
 type Serial struct {

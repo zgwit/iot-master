@@ -7,23 +7,23 @@ import (
 	"xorm.io/xorm"
 )
 
-var clients lib.Map[Client]
+var servers lib.Map[Server]
 
-func LoadClients() error {
-	var clients []*Client
-	err := db.Engine.Find(&clients)
+func LoadServers() error {
+	var servers []*Server
+	err := db.Engine.Find(&servers)
 	if err != nil {
 		if err == xorm.ErrNotExist {
 			return nil
 		}
 		return err
 	}
-	for _, m := range clients {
+	for _, m := range servers {
 		if m.Disabled {
 			continue
 		}
-		go func(m *Client) {
-			err := LoadClient(m)
+		go func(m *Server) {
+			err := LoadServer(m)
 			if err != nil {
 				log.Error(err)
 			}
@@ -32,11 +32,11 @@ func LoadClients() error {
 	return nil
 }
 
-func LoadClient(m *Client) error {
-	clients.Store(m.Id, m)
+func LoadServer(m *Server) error {
+	servers.Store(m.Id, m)
 	return m.Open()
 }
 
-func GetClient(id string) *Client {
-	return clients.Load(id)
+func GetServer(id string) *Server {
+	return servers.Load(id)
 }

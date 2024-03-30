@@ -9,6 +9,7 @@ import (
 	"go.bug.st/serial"
 	"io"
 	"net"
+	"slices"
 	"time"
 )
 
@@ -23,21 +24,17 @@ type Adapter struct {
 
 func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 	err := db.Engine.Where("tunnel_id=?", tunnel).And("disabled!=1").Find(&adapter.devices)
-
 	if err != nil {
 		return err
 	}
 
-	if len(adapter.devices) == 0 {
-		return errors.New("无设备")
-	}
+	//if len(adapter.devices) == 0 {
+	//	return errors.New("无设备")
+	//}
 
 	//索引
-	//adapter.index = make(map[string]*device.Device)
-	adapter.index = make(map[string]*Device)
 	for _, d := range adapter.devices {
 		adapter.index[d.Id] = d
-		//adapter.index[d.Id], err = device.Ensure(d.Id)
 	}
 
 	//开始轮询
@@ -77,7 +74,11 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 				}
 
 				//d := adapter.index[dev.Id]
-				d := device.Get(dev.Id)
+				d, err := device.Ensure(dev.Id)
+				if err != nil {
+					log.Error(err)
+				}
+				//d := device.Get(dev.Id)
 				if d != nil {
 					d.Push(values)
 				}
@@ -104,6 +105,42 @@ func (adapter *Adapter) start(tunnel string, opts types.Options) error {
 		//	_ = mqtt.Publish(topic, nil)
 		//}
 	}()
+	return nil
+}
+
+func (adapter *Adapter) Mount(device string) error {
+	var dev Device
+	has, err := db.Engine.ID(device).Get(&dev)
+	if err != nil {
+		return err
+	}
+	if !has {
+		return errors.New("找不到设备")
+	}
+
+	found := false
+	for i, d := range adapter.devices {
+		if d.Id == device {
+			adapter.devices[i] = &dev
+			adapter.index[device] = &dev
+			found = true
+		}
+	}
+	if !found {
+		adapter.devices = append(adapter.devices, &dev)
+		adapter.index[device] = &dev
+	}
+	return nil
+}
+
+func (adapter *Adapter) Unmount(device string) error {
+	delete(adapter.index, device)
+	for i, d := range adapter.devices {
+		if d.Id == device {
+			slices.Delete(adapter.devices, i, i+1)
+			return nil
+		}
+	}
 	return nil
 }
 
