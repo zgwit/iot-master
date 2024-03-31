@@ -129,7 +129,7 @@ func (l *Base) Read(data []byte) (int, error) {
 		//关闭连接（已知 串口会进入假死）
 		_ = l.conn.Close()
 		l.running = false
-		return 0, errors.New("空读取")
+		return 0, errors.New("没有读取到数据，但是也没有报错，关掉再试")
 	}
 	//log.Trace(l.Id, "readed", data[:n])
 	return n, err
