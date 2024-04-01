@@ -46,9 +46,9 @@ func init() {
 		return LoadServer(value)
 	}))
 
-	api.Register("GET", "/server/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Server](nil, func(value interface{}) error {
-		id := value.(string)
-		c := GetServer(id)
+	api.Register("GET", "/server/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Server](nil, func(value *Server) error {
+		c := GetServer(value.Id)
+		servers.Delete(value.Id)
 		return c.Close()
 	}))
 

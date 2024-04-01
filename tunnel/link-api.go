@@ -33,7 +33,12 @@ func init() {
 	}))
 
 	api.Register("POST", "/link/:id", curd.ParseParamStringId, curd.ApiUpdateHook[Link](nil, nil))
-	api.Register("GET", "/link/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Link](nil, nil))
+
+	api.Register("GET", "/link/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Link](nil, func(m *Link) error {
+		l := GetLink(m.Id)
+		links.Delete(l.Id)
+		return l.Close()
+	}))
 
 	api.Register("GET", "/link/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[Link](true, nil, func(value interface{}) error {
 		id := value.(string)

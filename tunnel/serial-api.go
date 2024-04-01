@@ -47,9 +47,9 @@ func init() {
 		return LoadSerial(value)
 	}))
 
-	api.Register("GET", "/serial/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Serial](nil, func(value interface{}) error {
-		id := value.(string)
-		c := GetSerial(id)
+	api.Register("GET", "/serial/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Serial](nil, func(value *Serial) error {
+		c := GetSerial(value.Id)
+		serials.Delete(value.Id)
 		return c.Close()
 	}))
 
