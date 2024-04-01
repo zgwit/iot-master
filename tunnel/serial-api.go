@@ -49,8 +49,11 @@ func init() {
 
 	api.Register("GET", "/serial/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Serial](nil, func(value *Serial) error {
 		c := GetSerial(value.Id)
-		serials.Delete(value.Id)
-		return c.Close()
+		if c != nil {
+			serials.Delete(value.Id)
+			return c.Close()
+		}
+		return nil
 	}))
 
 	api.Register("GET", "/serial/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[Serial](true, nil, func(value interface{}) error {

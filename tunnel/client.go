@@ -36,7 +36,7 @@ func (c *Client) Open() error {
 
 	//发起连接
 	addr := fmt.Sprintf("%s:%d", c.Addr, c.Port)
-	log.Trace("create client", addr)
+	log.Trace("create client ", addr)
 	conn, err := net.Dial(c.Net, addr)
 	if err != nil {
 		//time.AfterFunc(time.Minute, client.RetryOptions)

@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -39,17 +38,22 @@ func init() {
 
 	api.Register("POST", "/client/:id", curd.ParseParamStringId, curd.ApiUpdateHook[Client](nil, func(value *Client) error {
 		c := GetClient(value.Id)
-		err := c.Close()
-		if err != nil {
-			log.Error(err)
+		if c != nil {
+			err := c.Close()
+			if err != nil {
+				return err
+			}
 		}
 		return LoadClient(value)
 	}))
 
 	api.Register("GET", "/client/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Client](nil, func(value *Client) error {
 		c := GetClient(value.Id)
-		clients.Delete(value.Id)
-		return c.Close()
+		if c != nil {
+			clients.Delete(value.Id)
+			return c.Close()
+		}
+		return nil
 	}))
 
 	api.Register("GET", "/client/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[Client](true, nil, func(value interface{}) error {

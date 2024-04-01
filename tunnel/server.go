@@ -36,6 +36,8 @@ func (s *Server) handleStandalone(c *net.TCPConn) (err error) {
 		ServerId: s.Id,
 		Remote:   c.RemoteAddr().String(),
 	}
+	l.running = true
+	l.conn = &netConn{c}
 
 	s.children[k] = l
 	//以ServerID保存
@@ -83,6 +85,9 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 		}
 	}
 
+	l.running = true
+	l.conn = &netConn{c}
+
 	s.children[sn] = &l
 	links.Store(l.Id, &l)
 
@@ -98,7 +103,7 @@ func (s *Server) Open() error {
 	}
 	s.closed = false
 
-	log.Trace("create server", s.Port)
+	log.Trace("create server ", s.Port)
 	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", s.Port))
 	if err != nil {
 		return err
@@ -115,6 +120,7 @@ func (s *Server) Open() error {
 	}
 	s.running = true
 
+	s.children = make(map[string]*Link)
 	go func() {
 		for {
 			c, err := s.listener.AcceptTCP()
@@ -131,6 +137,11 @@ func (s *Server) Open() error {
 					log.Error(err)
 				}
 				continue
+			} else {
+				err = s.handleIncoming(c)
+				if err != nil {
+					log.Error(err)
+				}
 			}
 
 		}

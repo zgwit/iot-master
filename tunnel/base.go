@@ -67,7 +67,7 @@ func (l *Base) Closed() bool {
 // Close 关闭
 func (l *Base) Close() error {
 	if l.closed {
-		return errors.New("tunnel closed")
+		return errors.New("tunnel is closed")
 	}
 
 	l.running = false

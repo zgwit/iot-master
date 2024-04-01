@@ -36,8 +36,11 @@ func init() {
 
 	api.Register("GET", "/link/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Link](nil, func(m *Link) error {
 		l := GetLink(m.Id)
-		links.Delete(l.Id)
-		return l.Close()
+		if l != nil {
+			links.Delete(l.Id)
+			return l.Close()
+		}
+		return nil
 	}))
 
 	api.Register("GET", "/link/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[Link](true, nil, func(value interface{}) error {

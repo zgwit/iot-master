@@ -48,8 +48,11 @@ func init() {
 
 	api.Register("GET", "/server/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[Server](nil, func(value *Server) error {
 		c := GetServer(value.Id)
-		servers.Delete(value.Id)
-		return c.Close()
+		if c != nil {
+			servers.Delete(value.Id)
+			return c.Close()
+		}
+		return nil
 	}))
 
 	api.Register("GET", "/server/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[Server](true, nil, func(value interface{}) error {

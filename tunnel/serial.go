@@ -43,7 +43,7 @@ func (s *Serial) Open() error {
 		Parity:   serial.Parity(s.ParityMode),
 	}
 
-	log.Trace("create serial", opts)
+	log.Trace("create serial ", s.PortName, opts)
 	port, err := serial.Open(s.PortName, &opts)
 	if err != nil {
 		return err
