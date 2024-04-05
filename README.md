@@ -36,7 +36,6 @@
 ![web](https://iot-master.com/web1.jpg)
 ![scada](https://iot-master.com/hmi-editor.png)
 
-
 ## 咨询服务
 
 **本公司目前提供免费的物联网方案咨询服务，结合我们十多年的行业经验，给您提供最好的建议，请联系 15161515197（微信同号）**
@@ -57,8 +56,8 @@
 - 邮箱：[jason@zgwit.com](mailto:jason@zgwit.com)
 - 手机：[15161515197](tel:15161515197)(微信同号)
 
-| 技术交流群                                   | 微信                                   |
-|-----------------------------------------|----------------------------------------|
+| 技术交流群                                   | 微信                                      |
+|-----------------------------------------|-----------------------------------------|
 | ![微信群](https://iot-master.com/tech.png) | ![微信](https://iot-master.com/jason.jpg) |
 
 ## 开源协议
@@ -67,16 +66,23 @@
 
 补充：任何个人、企业或组织都可以自由使用，如果需求商业支持请联系我们。
 
-
 ### 官方插件 [链接](https://github.com/orgs/iot-master-contrib/repositories)
 
-- [Modbus网关](https://github.com/iot-master-contrib/modbus)
-- [Web组态](https://github.com/iot-master-contrib/scada)
-- [InfluxDB](https://github.com/iot-master-contrib/influxdb)
-- [IP摄像头](https://github.com/iot-master-contrib/ipc)
-- [短信通知](https://github.com/iot-master-contrib/sms)
-- [西门子PLC](https://github.com/iot-master-contrib/s7)
-- [三菱PLC](https://github.com/iot-master-contrib/melsec)
-- [欧姆龙PLC](https://github.com/iot-master-contrib/fins)
-- [DLT645规约](https://github.com/iot-master-contrib/dlt645)
+-[x] [Web组态](https://github.com/iot-master-contrib/scada)
+-[x] [InfluxDB](https://github.com/iot-master-contrib/influxdb)
+-[ ] [淘思数据库](https://github.com/iot-master-contrib/tdengine)
+-[x] [IP摄像头](https://github.com/iot-master-contrib/camera)
+-[x] [阿里短信通知](https://github.com/iot-master-contrib/sms)
+-[ ] [腾讯电话通知](https://github.com/iot-master-contrib/phone)
+-[ ] [微信鉴权和通知](https://github.com/iot-master-contrib/weixin)
+-[ ] [西门子PLC](https://github.com/iot-master-contrib/s7)
+-[ ] [三菱PLC](https://github.com/iot-master-contrib/melsec)
+-[ ] [欧姆龙PLC](https://github.com/iot-master-contrib/fins)
+-[ ] [电力DLT/645](https://github.com/iot-master-contrib/dlt645)
+-[ ] [电力iec101](https://github.com/iot-master-contrib/iec101)
+-[ ] [电力iec103](https://github.com/iot-master-contrib/iec103)
+-[ ] [电力iec104](https://github.com/iot-master-contrib/iec104)
+-[ ] [电力GB61850](https://github.com/iot-master-contrib/gb61850)
+-[ ] [水文SL651](https://github.com/iot-master-contrib/sl651)
+-[ ] [水文SZY206](https://github.com/iot-master-contrib/szy206)
 
