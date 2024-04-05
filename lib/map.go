@@ -41,9 +41,10 @@ func (c *Map[T]) Range(iterator func(name string, item *T) bool) {
 func (c *Map[T]) Delete(name string) {
 	c.lock.Lock()
 	defer c.lock.Unlock()
-	if c.container == nil {
-		return
-	}
+	delete(c.container, name)
+}
+
+func (c *Map[T]) DeleteRaw(name string) {
 	delete(c.container, name)
 }
 

@@ -7,10 +7,14 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/protocol"
 	"net"
+	"regexp"
 )
+
+var snRegex *regexp.Regexp
 
 func init() {
 	db.Register(new(Server))
+	regexp.MustCompile("^\\w+$")
 }
 
 // Server TCP服务器
@@ -58,13 +62,21 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 	}
 
 	data := buf[:n]
+	//检查，必须是合法的字符串，字母、数字、汉字、下划线
+	//ret, err := regexp.MatchString("^\\w+$", sn)
+	if !snRegex.Match(data) {
+		_, _ = c.Write([]byte("invalid sn"))
+		_ = c.Close()
+		return err
+	}
+
 	sn := string(data)
 
 	var l Link
 	//get, err := db.Engine.Where("server_id=?", s.Id).And("sn=?", sn).Get(&conn)
 	get, err := db.Engine.ID(sn).Get(&l)
 	if err != nil {
-		_, _ = c.Write([]byte(err.Error()))
+		_, _ = c.Write([]byte("database error"))
 		_ = c.Close()
 		return err
 	}
@@ -79,7 +91,7 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 
 		_, err = db.Engine.InsertOne(&l)
 		if err != nil {
-			_, _ = c.Write([]byte(err.Error()))
+			_, _ = c.Write([]byte("database error"))
 			_ = c.Close()
 			return err
 		}
