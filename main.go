@@ -29,13 +29,13 @@ func Startup() error {
 		_ = config.Store()
 	}
 
+	web.Start()
+
 	//加载主程序
 	err = internal.Open()
 	if err != nil {
 		return err
 	}
-
-	web.Start()
 
 	//注册前端接口
 	api.RegisterRoutes(web.Engine.Group("/api"))

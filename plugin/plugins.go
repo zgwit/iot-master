@@ -97,6 +97,24 @@ func Boot() error {
 	return nil
 }
 
+func Open() error {
+	plugins.Range(func(id string, plugin *Plugin) bool {
+		if plugin.Startup != nil {
+			go func() {
+				log.Info("plugin ", id, " starting")
+				err := plugin.Startup()
+				if err != nil {
+					log.Error(err)
+					return
+				}
+				log.Info("plugin ", id, " ok")
+			}()
+		}
+		return true
+	})
+	return nil
+}
+
 func Close() {
 	plugins.Range(func(id string, plugin *Plugin) bool {
 		_ = plugin.Close()

@@ -19,15 +19,21 @@ type SpaceDevice struct {
 }
 
 type Space struct {
-	Id          string    `json:"id" xorm:"pk"`
-	Name        string    `json:"name,omitempty"`        //名称
-	Description string    `json:"description,omitempty"` //说明
-	ProjectId   string    `json:"project_id,omitempty" xorm:"index"`
-	Project     string    `json:"project,omitempty" xorm:"<-"`
-	Disabled    bool      `json:"disabled,omitempty"`
-	Created     time.Time `json:"created" xorm:"created"`
+	Id          string `json:"id" xorm:"pk"`
+	Name        string `json:"name,omitempty"`        //名称
+	Description string `json:"description,omitempty"` //说明
+
+	ProjectId string `json:"project_id,omitempty" xorm:"index"`
+	Project   string `json:"project,omitempty" xorm:"<-"`
+	ParentId  string `json:"parent_id,omitempty" xorm:"index"`
+	Parent    string `json:"parent,omitempty" xorm:"<-"`
+
+	Disabled bool      `json:"disabled,omitempty"`
+	Created  time.Time `json:"created" xorm:"created"`
 
 	values map[string]any
+
+	parent *Space
 
 	devices map[string]*device.Device
 }

@@ -71,7 +71,7 @@ func Open() error {
 	}
 
 	//加载所有插件
-	err = plugin.Boot()
+	err = plugin.Open()
 	if err != nil {
 		return err
 	}
