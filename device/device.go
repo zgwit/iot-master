@@ -1,10 +1,10 @@
 package device
 
 import (
+	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/history"
-	"github.com/zgwit/iot-master/v4/pkg/db"
 	"github.com/zgwit/iot-master/v4/pkg/event"
-	"github.com/zgwit/iot-master/v4/pkg/pool"
+	"github.com/zgwit/iot-master/v4/pool"
 	"time"
 )
 

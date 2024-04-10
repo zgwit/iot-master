@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/zgwit/iot-master/v4/pkg/config"
+	"github.com/zgwit/iot-master/v4/config"
 	"xorm.io/xorm"
 	"xorm.io/xorm/log"
 
@@ -18,7 +18,7 @@ import (
 
 var Engine *xorm.Engine
 
-func Open() error {
+func Startup() error {
 	var err error
 	Engine, err = xorm.NewEngine(config.GetString(MODULE, "type"), config.GetString(MODULE, "url"))
 	if err != nil {
@@ -41,6 +41,6 @@ func Open() error {
 	return nil
 }
 
-func Close() error {
+func Shutdown() error {
 	return Engine.Close()
 }

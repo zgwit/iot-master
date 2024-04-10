@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/sirupsen/logrus"
-	"github.com/zgwit/iot-master/v4/pkg/config"
+	"github.com/zgwit/iot-master/v4/config"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
 )
 
-func Open() error {
+var logFile *lumberjack.Logger
+
+func Startup() error {
 
 	if config.GetBool(MODULE, "caller") {
 		logrus.SetReportCaller(true)
@@ -34,7 +36,7 @@ func Open() error {
 		}
 	} else if output == "fileRotate" {
 		//日志文件
-		logFile := &lumberjack.Logger{
+		logFile = &lumberjack.Logger{
 			Filename:   config.GetString(MODULE, "filename"),
 			MaxSize:    config.GetInt(MODULE, "max_size"), // MB
 			MaxBackups: config.GetInt(MODULE, "max_backups"),
@@ -42,7 +44,7 @@ func Open() error {
 			Compress:   config.GetBool(MODULE, "compress"),
 		}
 
-		defer logFile.Close()
+		//defer logFile.Close()
 
 		logrus.SetOutput(logFile)
 	}
@@ -53,6 +55,13 @@ func Open() error {
 	}
 	logrus.SetLevel(level)
 
+	return nil
+}
+
+func Shutdown() error {
+	if logFile != nil {
+		return logFile.Close()
+	}
 	return nil
 }
 

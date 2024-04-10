@@ -6,7 +6,7 @@ import (
 
 func init() {
 	//引入viper配置文件
-	viper.SetConfigName("iot-master") //name := lib.AppName()
+	viper.SetConfigName("config") //name := lib.AppName()
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
 	//viper.SetEnvPrefix("database")

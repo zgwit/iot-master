@@ -1,8 +1,19 @@
 package tunnel
 
-import "github.com/zgwit/iot-master/v4/pkg/log"
+import (
+	"github.com/zgwit/iot-master/v4/boot"
+	"github.com/zgwit/iot-master/v4/log"
+)
 
-func Boot() error {
+func init() {
+	boot.Register("tunnel", &boot.Task{
+		Startup:  Startup,
+		Shutdown: Shutdown,
+		Depends:  []string{"database"},
+	})
+}
+
+func Startup() error {
 	err := LoadSerials()
 	if err != nil {
 		return err
@@ -18,7 +29,7 @@ func Boot() error {
 	return nil
 }
 
-func Close() {
+func Shutdown() error {
 	links.Range(func(name string, link *Link) bool {
 		err := link.Close()
 		if err != nil {
@@ -26,4 +37,5 @@ func Close() {
 		}
 		return true
 	})
+	return nil
 }

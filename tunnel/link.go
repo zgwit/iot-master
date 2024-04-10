@@ -2,7 +2,7 @@ package tunnel
 
 import (
 	"errors"
-	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/db"
 )
 
 func init() {

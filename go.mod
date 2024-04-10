@@ -19,7 +19,7 @@ require (
 	github.com/kardianos/service v1.2.2
 	github.com/lib/pq v1.10.9
 	github.com/lithammer/shortuuid/v4 v4.0.0
-	github.com/mochi-mqtt/server/v2 v2.6.0
+	github.com/mochi-mqtt/server/v2 v2.6.1
 	github.com/panjf2000/ants/v2 v2.9.1
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/rs/xid v1.5.0
@@ -85,7 +85,7 @@ require (
 	github.com/zgwit/webrtc-streamer v0.0.2 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.7.0 // indirect
-	golang.org/x/exp v0.0.0-20240404231335-c0f41cb1a7a0 // indirect
+	golang.org/x/exp v0.0.0-20240409090435-93d18d7e34b8 // indirect
 	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.19.0 // indirect

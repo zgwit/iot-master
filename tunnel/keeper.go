@@ -2,7 +2,7 @@ package tunnel
 
 import (
 	"github.com/zgwit/iot-master/v4/connect"
-	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/log"
 	"time"
 )
 

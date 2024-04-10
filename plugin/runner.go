@@ -1,7 +1,7 @@
 package plugin
 
 import (
-	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/log"
 	"os/exec"
 	"time"
 )

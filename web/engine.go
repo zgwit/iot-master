@@ -8,8 +8,8 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/zgwit/iot-master/v4/pkg/config"
-	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/config"
+	"github.com/zgwit/iot-master/v4/log"
 	"net/http"
 	"path"
 	"strconv"
@@ -19,7 +19,7 @@ import (
 var Engine *gin.Engine
 var Server *http.Server
 
-func Start() {
+func Startup() error {
 	if !config.GetBool(MODULE, "debug") {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -53,6 +53,7 @@ func Start() {
 	JwtExpire = time.Hour * time.Duration(config.GetInt(MODULE, "jwt_expire"))
 
 	//Engine.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	return nil
 }
 
 func Shutdown() error {

@@ -3,8 +3,8 @@ package tunnel
 import (
 	"errors"
 	"fmt"
-	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/pkg/log"
+	db2 "github.com/zgwit/iot-master/v4/db"
+	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/protocol"
 	"net"
 	"regexp"
@@ -13,7 +13,7 @@ import (
 var snRegex *regexp.Regexp
 
 func init() {
-	db.Register(new(Server))
+	db2.Register(new(Server))
 	regexp.MustCompile("^\\w+$")
 }
 
@@ -74,7 +74,7 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 
 	var l Link
 	//get, err := db.Engine.Where("server_id=?", s.Id).And("sn=?", sn).Get(&conn)
-	get, err := db.Engine.ID(sn).Get(&l)
+	get, err := db2.Engine.ID(sn).Get(&l)
 	if err != nil {
 		_, _ = c.Write([]byte("database error"))
 		_ = c.Close()
@@ -89,7 +89,7 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 		}
 		l.Id = sn //修改ID
 
-		_, err = db.Engine.InsertOne(&l)
+		_, err = db2.Engine.InsertOne(&l)
 		if err != nil {
 			_, _ = c.Write([]byte("database error"))
 			_ = c.Close()

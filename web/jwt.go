@@ -2,7 +2,7 @@ package web
 
 import (
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/zgwit/iot-master/v4/pkg/config"
+	"github.com/zgwit/iot-master/v4/config"
 	"time"
 )
 

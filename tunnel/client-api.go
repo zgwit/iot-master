@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/api"
-	"github.com/zgwit/iot-master/v4/pkg/db"
+	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 

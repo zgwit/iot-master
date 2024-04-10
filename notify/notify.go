@@ -2,9 +2,9 @@ package notify
 
 import (
 	"github.com/zgwit/iot-master/v4/alarm"
-	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/pool"
+	"github.com/zgwit/iot-master/v4/db"
+	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pool"
 )
 
 type Notifier interface {

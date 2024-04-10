@@ -5,7 +5,7 @@ import (
 	"github.com/lithammer/shortuuid/v4"
 	"github.com/rs/xid"
 	"github.com/segmentio/ksuid"
-	"github.com/zgwit/iot-master/v4/pkg/config"
+	"github.com/zgwit/iot-master/v4/config"
 	"github.com/zgwit/iot-master/v4/web"
 	"reflect"
 )

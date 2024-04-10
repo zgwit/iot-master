@@ -100,17 +100,8 @@ func RegisterRoutes(router *gin.RouterGroup) {
 	//OEM
 	oemRouter(router.Group("/oem"))
 
-	//配置文件
-	settingRouter(router.Group("/setting"))
-
 	//注册子接口
 	userRouter(router.Group("/user"))
-
-	//附件
-	//attach.Routers(router.Group("/product/:id/attach"), "product", "id")
-	//attach.Routers(router.Group("/product/:id/version/:version/attach"), "product", "id", "version")
-	//attach.Routers(router.Group("/project/:id/attach"), "project", "id")
-	//attach.Routers(router.Group("/space/:id/attach"), "space", "id")
 
 	backupRouter(router.Group("/backup"))
 

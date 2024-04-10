@@ -1,14 +1,15 @@
 package main
 
 import (
-	_ "github.com/iot-master-contrib/camera"
-	_ "github.com/iot-master-contrib/webui"
+	//_ "github.com/iot-master-contrib/camera"
+	//_ "github.com/iot-master-contrib/webui"
 	master "github.com/zgwit/iot-master/v4"
 	"github.com/zgwit/iot-master/v4/args"
+	"github.com/zgwit/iot-master/v4/config"
 	_ "github.com/zgwit/iot-master/v4/docs"
+	"github.com/zgwit/iot-master/v4/log"
 	_ "github.com/zgwit/iot-master/v4/modbus"
 	"github.com/zgwit/iot-master/v4/pkg/build"
-	"github.com/zgwit/iot-master/v4/pkg/log"
 	"github.com/zgwit/iot-master/v4/pkg/service"
 	"github.com/zgwit/iot-master/v4/web"
 )
@@ -24,17 +25,27 @@ func main() {
 
 	args.Parse()
 
+	config.Name("iot-master")
+
 	//传递参数到服务
 	//serviceConfig.Arguments = []string{"-c", args.ConfigPath}
 
-	err := service.Register(func() error {
+	err := service.Register(func() {
+
 		err := master.Startup()
 		if err != nil {
-			return err
+			log.Error(err)
+			return
 		}
 
-		return web.Serve()
-	}, master.Shutdown)
+		_ = web.Serve()
+	}, func() {
+		err := master.Shutdown()
+		if err != nil {
+			log.Error(err)
+		}
+	})
+
 	if err != nil {
 		log.Fatal(err)
 	}

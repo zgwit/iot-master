@@ -3,11 +3,17 @@ package master
 import (
 	"github.com/spf13/viper"
 	"github.com/zgwit/iot-master/v4/api"
-	"github.com/zgwit/iot-master/v4/broker"
-	_ "github.com/zgwit/iot-master/v4/docs"
-	"github.com/zgwit/iot-master/v4/internal"
-	"github.com/zgwit/iot-master/v4/pkg/config"
-	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/boot"
+	"github.com/zgwit/iot-master/v4/broker"     //内置MQTT服务器
+	_ "github.com/zgwit/iot-master/v4/device"   //设备
+	_ "github.com/zgwit/iot-master/v4/docs"     //文档
+	_ "github.com/zgwit/iot-master/v4/modbus"   //默认集成Modbus协议
+	_ "github.com/zgwit/iot-master/v4/product"  //产品
+	_ "github.com/zgwit/iot-master/v4/project"  //项目
+	_ "github.com/zgwit/iot-master/v4/protocol" //协议
+	_ "github.com/zgwit/iot-master/v4/settings" //设置
+	_ "github.com/zgwit/iot-master/v4/space"    //空间
+	_ "github.com/zgwit/iot-master/v4/tunnel"   //通道
 	"github.com/zgwit/iot-master/v4/web"
 	"path/filepath"
 )
@@ -22,17 +28,7 @@ func main() {}
 
 func Startup() error {
 
-	//加载配置文件
-	err := config.Load()
-	if err != nil {
-		log.Error(err)
-		_ = config.Store()
-	}
-
-	web.Start()
-
-	//加载主程序
-	err = internal.Open()
+	err := boot.Startup()
 	if err != nil {
 		return err
 	}
@@ -57,9 +53,5 @@ func Startup() error {
 }
 
 func Shutdown() error {
-
-	internal.Close()
-
-	//只关闭Web就行了，其他通过defer关闭
-	return web.Shutdown()
+	return boot.Shutdown()
 }

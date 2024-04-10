@@ -3,9 +3,9 @@ package mqtt
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/v4/pkg/config"
-	"github.com/zgwit/iot-master/v4/pkg/log"
-	"github.com/zgwit/iot-master/v4/pkg/pool"
+	"github.com/zgwit/iot-master/v4/config"
+	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pool"
 )
 
 var Client paho.Client
@@ -14,7 +14,7 @@ func Close() {
 	Client.Disconnect(0)
 }
 
-func Open() paho.Token {
+func Startup() error {
 	opts := paho.NewClientOptions()
 	opts.AddBroker(config.GetString(MODULE, "url"))
 	opts.SetClientID(config.GetString(MODULE, "clientId"))
@@ -46,7 +46,14 @@ func Open() paho.Token {
 	})
 
 	Client = paho.NewClient(opts)
-	return Client.Connect()
+	token := Client.Connect()
+	//token.Wait()
+	return token.Error()
+}
+
+func Shutdown() error {
+	Client.Disconnect(0)
+	return nil
 }
 
 func OpenBy(fn paho.OpenConnectionFunc) paho.Token {

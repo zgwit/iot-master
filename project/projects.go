@@ -2,9 +2,9 @@ package project
 
 import (
 	"fmt"
+	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/lib"
-	"github.com/zgwit/iot-master/v4/pkg/db"
-	"github.com/zgwit/iot-master/v4/pkg/log"
+	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/space"
 )
 
@@ -40,26 +40,6 @@ func From(p *Project) error {
 		err := space.From(s)
 		if err != nil {
 			log.Error(err)
-		}
-	}
-
-	return nil
-}
-
-func Boot() error {
-	//开机加载所有项目，好像没有必要???
-
-	var ps []*Project
-	err := db.Engine.Find(&ps)
-	if err != nil {
-		return err
-	}
-
-	for _, p := range ps {
-		err = From(p)
-		if err != nil {
-			log.Error(err)
-			//return err
 		}
 	}
 
