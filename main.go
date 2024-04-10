@@ -11,7 +11,6 @@ import (
 	_ "github.com/zgwit/iot-master/v4/product"  //产品
 	_ "github.com/zgwit/iot-master/v4/project"  //项目
 	_ "github.com/zgwit/iot-master/v4/protocol" //协议
-	_ "github.com/zgwit/iot-master/v4/settings" //设置
 	_ "github.com/zgwit/iot-master/v4/space"    //空间
 	_ "github.com/zgwit/iot-master/v4/tunnel"   //通道
 	"github.com/zgwit/iot-master/v4/web"

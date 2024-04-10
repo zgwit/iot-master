@@ -1,4 +1,4 @@
-package api
+package user
 
 import (
 	"crypto/md5"
@@ -6,7 +6,6 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -32,7 +31,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	var user types.User
+	var user User
 	has, err := db.Engine.Where("id=?", obj.Username).Get(&user)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -62,7 +61,7 @@ func login(ctx *gin.Context) {
 		return
 	}
 
-	var password types.Password
+	var password Password
 	has, err = db.Engine.ID(user.Id).Get(&password)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -125,7 +124,7 @@ func password(ctx *gin.Context) {
 		return
 	}
 
-	var pwd types.Password
+	var pwd Password
 	has, err := db.Engine.ID(ctx.GetString("user")).Get(&pwd)
 	if err != nil {
 		curd.Error(ctx, err)

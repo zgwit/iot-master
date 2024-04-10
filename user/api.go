@@ -1,9 +1,10 @@
-package api
+package user
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/types"
+	"github.com/zgwit/iot-master/v4/web"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -126,34 +127,42 @@ func noopUserEnable() {}
 // @Router /user/{id}/disable [get]
 func noopUserDisable() {}
 
-func userRouter(app *gin.RouterGroup) {
+func init() {
 
-	app.GET("/me", userMe)
+	//鉴权接口
+	web.Engine.GET("api/auth", auth)
+	web.Engine.POST("api/login", login)
 
-	app.POST("/count", curd.ApiCount[types.User]())
+	api.Register("GET", "logout", logout)
 
-	app.POST("/search", curd.ApiSearch[types.User]())
+	api.Register("POST", "password", password)
 
-	app.GET("/list", curd.ApiList[types.User]())
+	api.Register("GET", "user/me", userMe)
 
-	app.POST("/create", curd.ApiCreateHook[types.User](curd.GenerateID[types.User](), nil))
+	api.Register("POST", "user/count", curd.ApiCount[User]())
 
-	app.GET("/:id", curd.ParseParamStringId, curd.ApiGet[types.User]())
+	api.Register("POST", "user/search", curd.ApiSearch[User]())
 
-	app.POST("/:id", curd.ParseParamStringId, curd.ApiUpdate[types.User]())
+	api.Register("GET", "user/list", curd.ApiList[User]())
 
-	app.GET("/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[types.User](nil, nil))
+	api.Register("POST", "user/create", curd.ApiCreateHook[User](curd.GenerateID[User](), nil))
 
-	app.GET("/:id/password", curd.ParseParamStringId, userPassword)
+	api.Register("GET", "user/:id", curd.ParseParamStringId, curd.ApiGet[User]())
 
-	app.GET("/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[types.User](false, nil, nil))
+	api.Register("POST", "user/:id", curd.ParseParamStringId, curd.ApiUpdate[User]())
 
-	app.GET("/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[types.User](true, nil, nil))
+	api.Register("GET", "user/:id/delete", curd.ParseParamStringId, curd.ApiDeleteHook[User](nil, nil))
+
+	api.Register("GET", "user/:id/password", curd.ParseParamStringId, userPassword)
+
+	api.Register("GET", "user/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[User](false, nil, nil))
+
+	api.Register("GET", "user/:id/disable", curd.ParseParamStringId, curd.ApiDisableHook[User](true, nil, nil))
 }
 
 func userMe(ctx *gin.Context) {
 	id := ctx.GetString("user")
-	var user types.User
+	var user User
 	has, err := db.Engine.ID(id).Get(&user)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -167,7 +176,7 @@ func userMe(ctx *gin.Context) {
 }
 
 func userPassword(ctx *gin.Context) {
-	var p types.Password
+	var p Password
 	p.Id = ctx.GetString("id")
 	pwd := ctx.PostForm("password")
 

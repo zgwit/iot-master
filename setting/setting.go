@@ -1,4 +1,4 @@
-package settings
+package setting
 
 import (
 	"github.com/zgwit/iot-master/v4/lib"
@@ -20,4 +20,17 @@ func Register(module string, form *Module) {
 
 func Unregister(module string) {
 	modules.Delete(module)
+}
+
+func Load(module string) *Module {
+	return modules.Load(module)
+}
+
+func Modules() []*Module {
+	var ms []*Module
+	modules.Range(func(_ string, item *Module) bool {
+		ms = append(ms, item)
+		return true
+	})
+	return ms
 }

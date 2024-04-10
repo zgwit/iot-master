@@ -1,6 +1,8 @@
-package types
+package user
 
-import "encoding/gob"
+import (
+	"encoding/gob"
+)
 
 func init() {
 	gob.Register(User{})

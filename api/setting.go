@@ -1,10 +1,10 @@
-package settings
+package api
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/config"
+	"github.com/zgwit/iot-master/v4/setting"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -18,8 +18,7 @@ import (
 // @Success 200 {object} curd.ReplyData[map[string]any] 返回配置
 // @Router /setting/:module [get]
 func settingGet(ctx *gin.Context) {
-	module := ctx.Param("module")
-	curd.OK(ctx, viper.GetStringMap(module))
+	curd.OK(ctx, viper.GetStringMap(ctx.Param("module")))
 }
 
 // @Summary 修改配置
@@ -33,7 +32,7 @@ func settingGet(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[int]
 // @Router /setting/:module [post]
 func settingSet(ctx *gin.Context) {
-	module := ctx.Param("module")
+	m := ctx.Param("module")
 
 	var conf map[string]any
 	err := ctx.ShouldBindJSON(&conf)
@@ -42,7 +41,7 @@ func settingSet(ctx *gin.Context) {
 		return
 	}
 	for k, v := range conf {
-		viper.Set(module+"."+k, v)
+		viper.Set(m+"."+k, v)
 	}
 
 	err = config.Store()
@@ -63,13 +62,13 @@ func settingSet(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[Module] 返回配置表单
 // @Router /setting/:module/form [get]
 func settingForm(ctx *gin.Context) {
-	module := ctx.Param("module")
-	m := modules.Load(module)
-	if m == nil {
+	m := ctx.Param("module")
+	md := setting.Load(m)
+	if md == nil {
 		curd.Fail(ctx, "模块不存在")
 		return
 	}
-	curd.OK(ctx, m)
+	curd.OK(ctx, md)
 }
 
 // @Summary 查询所有配置
@@ -81,17 +80,13 @@ func settingForm(ctx *gin.Context) {
 // @Success 200 {object} curd.ReplyData[[]Module] 返回配置表单
 // @Router /setting/modules [get]
 func settingModules(ctx *gin.Context) {
-	var ms []*Module
-	modules.Range(func(_ string, item *Module) bool {
-		ms = append(ms, item)
-		return true
-	})
+	ms := setting.Modules()
 	curd.OK(ctx, ms)
 }
 
 func init() {
-	api.Register("POST", "setting/:module", settingSet)
-	api.Register("GET", "setting/:module", settingGet)
-	api.Register("GET", "setting/:module/form", settingForm)
-	api.Register("GET", "setting/modules", settingModules)
+	Register("POST", "setting/:module", settingSet)
+	Register("GET", "setting/:module", settingGet)
+	Register("GET", "setting/:module/form", settingForm)
+	Register("GET", "setting/modules", settingModules)
 }

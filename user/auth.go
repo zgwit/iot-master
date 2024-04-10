@@ -1,9 +1,8 @@
-package api
+package user
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/types"
 	"github.com/zgwit/iot-master/v4/web"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
@@ -12,7 +11,7 @@ func auth(ctx *gin.Context) {
 	username := ctx.Query("username")
 	password := ctx.Query("password")
 
-	var user types.User
+	var user User
 	has, err := db.Engine.Where("id=?", username).Get(&user)
 	if err != nil {
 		curd.Error(ctx, err)
@@ -29,7 +28,7 @@ func auth(ctx *gin.Context) {
 		return
 	}
 
-	var obj types.Password
+	var obj Password
 	has, err = db.Engine.ID(user.Id).Get(&obj)
 	if err != nil {
 		curd.Error(ctx, err)

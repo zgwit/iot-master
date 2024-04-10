@@ -1,4 +1,4 @@
-package types
+package user
 
 import (
 	"github.com/zgwit/iot-master/v4/db"
