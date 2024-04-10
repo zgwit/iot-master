@@ -1,8 +1,9 @@
 package main
 
 import (
-	//_ "github.com/iot-master-contrib/camera"
-	//_ "github.com/iot-master-contrib/webui"
+	_ "github.com/iot-master-contrib/camera"
+	_ "github.com/iot-master-contrib/influxdb"
+	_ "github.com/iot-master-contrib/webui"
 	master "github.com/zgwit/iot-master/v4"
 	"github.com/zgwit/iot-master/v4/args"
 	"github.com/zgwit/iot-master/v4/config"
