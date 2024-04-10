@@ -18,9 +18,9 @@ func Startup() error {
 	}
 
 	//没有端口
-	if len(brokers) == 0 {
-		return nil
-	}
+	//if len(brokers) == 0 {
+	//	return nil
+	//}
 
 	Server = mochi.New(nil)
 	//Server.NewClient()
@@ -61,7 +61,6 @@ func Startup() error {
 	//		//return err
 	//	}
 	//}
-
 	return Server.Serve()
 }
 

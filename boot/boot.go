@@ -18,6 +18,10 @@ type Task struct {
 
 var tasks lib.Map[Task]
 
+func Load(name string) *Task {
+	return tasks.Load(name)
+}
+
 func Register(name string, task *Task) {
 	//log.Println("[boot] register", name)
 	tasks.Store(name, task)

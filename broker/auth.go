@@ -15,7 +15,7 @@ type Auth struct {
 
 // ID returns the ID of the hook.
 func (h *Auth) ID() string {
-	return "allow-gateway-auth"
+	return "gateway"
 }
 
 // Provides indicates which hook methods this hook provides.
