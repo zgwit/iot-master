@@ -68,7 +68,7 @@ func settingForm(ctx *gin.Context) {
 		curd.Fail(ctx, "模块不存在")
 		return
 	}
-	curd.OK(ctx, md)
+	curd.OK(ctx, md.Form)
 }
 
 // @Summary 查询所有配置
