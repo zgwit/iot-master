@@ -2,10 +2,14 @@ package broker
 
 import (
 	"fmt"
+	paho "github.com/eclipse/paho.mqtt.golang"
 	mochi "github.com/mochi-mqtt/server/v2"
 	"github.com/mochi-mqtt/server/v2/listeners"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/pkg/vconn"
+	"net"
+	"net/url"
 )
 
 var Server *mochi.Server
@@ -72,27 +76,14 @@ func Shutdown() (err error) {
 	return
 }
 
-func loadListeners() error {
-	//监听服务
-	//加载数据库中 entrypoint
-	var entries []*Broker
-	err := db.Engine.Find(&entries)
-	if err != nil {
-		return err
-	}
-
-	for _, e := range entries {
-		l := listeners.NewTCP(listeners.Config{
-			Type:    "tcp",
-			ID:      fmt.Sprintf("tcp-%s", e.Id),
-			Address: fmt.Sprintf(":%d", e.Port),
-		})
-		err = Server.AddListener(l)
+func CustomOpenConnectionFn(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
+	c1, c2 := vconn.New()
+	//EstablishConnection会读取connect，导致拥堵
+	go func() {
+		err := Server.EstablishConnection("internal", c1)
 		if err != nil {
-			//return err
 			log.Error(err)
 		}
-	}
-
-	return nil
+	}()
+	return c2, nil
 }

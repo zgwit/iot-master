@@ -3,21 +3,14 @@ package mqtt
 import (
 	"encoding/json"
 	paho "github.com/eclipse/paho.mqtt.golang"
-	"github.com/zgwit/iot-master/v4/boot"
-	"github.com/zgwit/iot-master/v4/broker"
 	"github.com/zgwit/iot-master/v4/config"
 	"github.com/zgwit/iot-master/v4/log"
-	"github.com/zgwit/iot-master/v4/pkg/vconn"
 	"github.com/zgwit/iot-master/v4/pool"
-	"net"
-	"net/url"
 )
 
-var Client paho.Client
+var CustomOpenConnectionFn paho.OpenConnectionFunc
 
-func Close() {
-	Client.Disconnect(0)
-}
+var Client paho.Client
 
 func Startup() error {
 
@@ -35,24 +28,8 @@ func Startup() error {
 	opts.SetCleanSession(false)
 	opts.SetResumeSubs(true)
 
-	//内部桥接mqtt
-	b := boot.Load("broker")
-	if b != nil {
-		err := boot.Open("broker")
-		if err != nil {
-			return err
-		}
-		opts.SetCustomOpenConnectionFn(func(uri *url.URL, options paho.ClientOptions) (net.Conn, error) {
-			c1, c2 := vconn.New()
-			//EstablishConnection会读取connect，导致拥堵
-			go func() {
-				err := broker.Server.EstablishConnection("internal", c1)
-				if err != nil {
-					log.Error(err)
-				}
-			}()
-			return c2, nil
-		})
+	if CustomOpenConnectionFn != nil {
+		opts.SetCustomOpenConnectionFn(CustomOpenConnectionFn)
 	}
 
 	//加上订阅处理
