@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zgwit/iot-master/v4/api"
 	"github.com/zgwit/iot-master/v4/db"
-	"github.com/zgwit/iot-master/v4/web"
 	"github.com/zgwit/iot-master/v4/web/curd"
 )
 
@@ -128,10 +127,6 @@ func noopUserEnable() {}
 func noopUserDisable() {}
 
 func init() {
-
-	//鉴权接口
-	web.Engine.GET("api/auth", auth)
-	web.Engine.POST("api/login", login)
 
 	api.Register("GET", "logout", logout)
 

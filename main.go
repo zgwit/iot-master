@@ -13,6 +13,7 @@ import (
 	_ "github.com/zgwit/iot-master/v4/protocol" //协议
 	_ "github.com/zgwit/iot-master/v4/space"    //空间
 	_ "github.com/zgwit/iot-master/v4/tunnel"   //通道
+	_ "github.com/zgwit/iot-master/v4/user"     //通道
 	"github.com/zgwit/iot-master/v4/web"
 	"path/filepath"
 )

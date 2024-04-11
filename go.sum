@@ -102,8 +102,8 @@ github.com/influxdata/influxdb-client-go/v2 v2.13.0 h1:ioBbLmR5NMbAjP4UVA5r9b5xG
 github.com/influxdata/influxdb-client-go/v2 v2.13.0/go.mod h1:k+spCbt9hcvqvUiz0sr5D8LolXHqAAOfPw9v/RIRHl4=
 github.com/influxdata/line-protocol v0.0.0-20210922203350-b1ad95c89adf h1:7JTmneyiNEwVBOHSjoMxiWAqB992atOeepeFYegn5RU=
 github.com/influxdata/line-protocol v0.0.0-20210922203350-b1ad95c89adf/go.mod h1:xaLFMmpvUxqXtVkUJfg9QmT88cDaCJ3ZKgdZ78oO8Qo=
-github.com/iot-master-contrib/camera v1.0.4 h1:wXwss/kw2wmibfOlOS1o8oPlDeGrVQeIt+My7xC9UWA=
-github.com/iot-master-contrib/camera v1.0.4/go.mod h1:fSXWSMzNmL9/fe+9W9krElZOxUv2qicemUUFxKNx6S0=
+github.com/iot-master-contrib/camera v1.0.5 h1:ZzkoMjNqxQ1BEuQqJJXablQ2Vuw79c+314SaqjDqo/c=
+github.com/iot-master-contrib/camera v1.0.5/go.mod h1:fSXWSMzNmL9/fe+9W9krElZOxUv2qicemUUFxKNx6S0=
 github.com/iot-master-contrib/influxdb v1.1.0 h1:h8qsvv3rfV/0WLX/vuiIJnZQfJRF32sb9g4x/XS3ltA=
 github.com/iot-master-contrib/influxdb v1.1.0/go.mod h1:pqawX3KPpISDy0lZMnJSLTH9BEaFGJwzLRTOaPngVu4=
 github.com/iot-master-contrib/webui v1.0.9 h1:fOtd23Q/ZcLrey32QuWQVKyLqS0rKVJQPdqFU40efMQ=

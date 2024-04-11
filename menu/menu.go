@@ -4,14 +4,14 @@ import "github.com/zgwit/iot-master/v4/lib"
 
 type Menu struct {
 	Name       string   `json:"name"`
-	Items      []*Item  `json:"items"`
 	Domain     []string `json:"domain"` //域 admin project 或 dealer等
 	Privileges []string `json:"privileges,omitempty"`
+	Items      []*Item  `json:"items"`
 }
 
 type Item struct {
 	Name       string         `json:"name,omitempty"`
-	Type       string         `json:"type,omitempty"` //internal 内部, external 嵌入web, standalone 独立弹出，默认嵌入web
+	Type       string         `json:"type,omitempty"` //route 路由, web 嵌入web, window 独立弹出
 	Url        string         `json:"url,omitempty"`
 	Query      map[string]any `json:"query,omitempty"`
 	Privileges []string       `json:"privileges,omitempty"`
