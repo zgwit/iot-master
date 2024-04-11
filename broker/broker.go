@@ -32,7 +32,7 @@ func Startup() error {
 	for _, e := range brokers {
 		l := listeners.NewTCP(listeners.Config{
 			Type:    "tcp",
-			ID:      fmt.Sprintf("tcp-%s", e.Id),
+			ID:      e.Id,
 			Address: fmt.Sprintf(":%d", e.Port),
 		})
 		err = Server.AddListener(l)
