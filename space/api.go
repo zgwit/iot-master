@@ -12,8 +12,8 @@ func init() {
 	api.Register("POST", "/space/count", curd.ApiCount[Space]())
 
 	api.Register("POST", "/space/search", curd.ApiSearchWith[Space]([]*curd.With{
-		{"project", "project_id", "id", "name", "project"},
-	}, "id", "name", "project_id", "description", "disabled", "created"))
+		{"space", "parent_id", "id", "name", "parent"},
+	}, "id", "name", "parent_id", "description", "disabled", "created"))
 
 	api.Register("GET", "/space/list", curd.ApiList[Space]())
 

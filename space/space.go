@@ -25,8 +25,9 @@ type Space struct {
 
 	ProjectId string `json:"project_id,omitempty" xorm:"index"`
 	Project   string `json:"project,omitempty" xorm:"<-"`
-	ParentId  string `json:"parent_id,omitempty" xorm:"index"`
-	Parent    string `json:"parent,omitempty" xorm:"<-"`
+	
+	ParentId string `json:"parent_id,omitempty" xorm:"index"`
+	Parent   string `json:"parent,omitempty" xorm:"<-"`
 
 	Disabled bool      `json:"disabled,omitempty"`
 	Created  time.Time `json:"created" xorm:"created"`
