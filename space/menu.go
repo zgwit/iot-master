@@ -6,7 +6,7 @@ func init() {
 	menu.Register("space", &menu.Menu{
 		Name:       "空间管理",
 		Icon:       "appstore",
-		Domain:     []string{"admin"},
+		Domain:     []string{"project"},
 		Privileges: nil,
 		Items: []*menu.Item{
 			{Name: "所有空间", Url: "space", Type: "route"},
