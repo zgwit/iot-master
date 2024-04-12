@@ -4,6 +4,7 @@ import "github.com/zgwit/iot-master/v4/lib"
 
 type Menu struct {
 	Name       string   `json:"name"`
+	Icon       string   `json:"icon,omitempty"`
 	Domain     []string `json:"domain"` //域 admin project 或 dealer等
 	Privileges []string `json:"privileges,omitempty"`
 	Items      []*Item  `json:"items"`

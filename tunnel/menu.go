@@ -5,6 +5,7 @@ import "github.com/zgwit/iot-master/v4/menu"
 func init() {
 	menu.Register("tunnel", &menu.Menu{
 		Name:       "连接管理",
+		Icon:       "link",
 		Domain:     []string{"admin"},
 		Privileges: nil,
 		Items: []*menu.Item{
