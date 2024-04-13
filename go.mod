@@ -14,7 +14,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.1
-	github.com/iot-master-contrib/camera v1.0.5
+	github.com/iot-master-contrib/camera v1.0.6
 	github.com/iot-master-contrib/influxdb v1.1.0
 	github.com/iot-master-contrib/webui v1.0.10
 	github.com/kardianos/service v1.2.2
@@ -87,7 +87,7 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
-	github.com/zgwit/webrtc-streamer v0.0.2 // indirect
+	github.com/zgwit/webrtc-streamer v0.0.3 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.7.0 // indirect
 	golang.org/x/exp v0.0.0-20240409090435-93d18d7e34b8 // indirect

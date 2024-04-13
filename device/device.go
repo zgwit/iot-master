@@ -1,10 +1,12 @@
 package device
 
 import (
+	"errors"
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/history"
 	"github.com/zgwit/iot-master/v4/pkg/event"
 	"github.com/zgwit/iot-master/v4/pool"
+	"github.com/zgwit/iot-master/v4/protocol"
 	"time"
 )
 
@@ -41,7 +43,7 @@ type Device struct {
 	//事件监听
 	eventData event.Emitter[map[string]any]
 
-	//adapter protocol.Adapter
+	adapter protocol.Adapter
 }
 
 func (d *Device) Watch(fn func(map[string]any)) int {
@@ -78,9 +80,28 @@ func (d *Device) Push(values map[string]any) {
 	})
 }
 
-func (d *Device) WriteMany(values map[string]any) error {
+func (d *Device) Write(point string, value any) error {
+	if d.adapter == nil {
+		return errors.New("未连接")
+	}
+	return d.adapter.Set(d.Id, point, value)
+}
 
+func (d *Device) WriteMany(values map[string]any) error {
+	if d.adapter == nil {
+		return errors.New("未连接")
+	}
+	for point, value := range values {
+		err := d.adapter.Set(d.Id, point, value)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
+}
+
+func (d *Device) SetAdapter(adapter protocol.Adapter) {
+	d.adapter = adapter //TODO 会内存泄露，需要手动清空
 }
 
 //func (d *Device) Validate() {

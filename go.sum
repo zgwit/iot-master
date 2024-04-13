@@ -102,8 +102,8 @@ github.com/influxdata/influxdb-client-go/v2 v2.13.0 h1:ioBbLmR5NMbAjP4UVA5r9b5xG
 github.com/influxdata/influxdb-client-go/v2 v2.13.0/go.mod h1:k+spCbt9hcvqvUiz0sr5D8LolXHqAAOfPw9v/RIRHl4=
 github.com/influxdata/line-protocol v0.0.0-20210922203350-b1ad95c89adf h1:7JTmneyiNEwVBOHSjoMxiWAqB992atOeepeFYegn5RU=
 github.com/influxdata/line-protocol v0.0.0-20210922203350-b1ad95c89adf/go.mod h1:xaLFMmpvUxqXtVkUJfg9QmT88cDaCJ3ZKgdZ78oO8Qo=
-github.com/iot-master-contrib/camera v1.0.5 h1:ZzkoMjNqxQ1BEuQqJJXablQ2Vuw79c+314SaqjDqo/c=
-github.com/iot-master-contrib/camera v1.0.5/go.mod h1:fSXWSMzNmL9/fe+9W9krElZOxUv2qicemUUFxKNx6S0=
+github.com/iot-master-contrib/camera v1.0.6 h1:Te2wW7jcK894zbPjP1a+VT9LGiVYwbgpwLanpAFL8jA=
+github.com/iot-master-contrib/camera v1.0.6/go.mod h1:6rlwnW5bUfcXGoJG0dSsCrLb/hS8kpsivxep5PUIjO4=
 github.com/iot-master-contrib/influxdb v1.1.0 h1:h8qsvv3rfV/0WLX/vuiIJnZQfJRF32sb9g4x/XS3ltA=
 github.com/iot-master-contrib/influxdb v1.1.0/go.mod h1:pqawX3KPpISDy0lZMnJSLTH9BEaFGJwzLRTOaPngVu4=
 github.com/iot-master-contrib/webui v1.0.10 h1:ho9X2j8hLNIWnvfOFs7/IhyLpLe4otJkBR97iu7tiTw=
@@ -223,8 +223,8 @@ github.com/ugorji/go/codec v1.2.12/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZ
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 github.com/zgwit/swagger-files v1.0.0 h1:aE0iX7r3Nh/c1CTLHPqX9Oo/14Nti4xssHTNsQpylkc=
 github.com/zgwit/swagger-files v1.0.0/go.mod h1:1d6t8kgfOaE/IZW3KXMjp1K9EftV65QaQPs4LsQMabQ=
-github.com/zgwit/webrtc-streamer v0.0.2 h1:0+3TPlA4kYP73T8XxCf/igDs/uVOTMBX4t0FQauDuP4=
-github.com/zgwit/webrtc-streamer v0.0.2/go.mod h1:1Bx0q4ZSfrTv+y5wD4JJLgYBAcNeld8p9ZpUKtNw278=
+github.com/zgwit/webrtc-streamer v0.0.3 h1:XEeEatIBZWt+yAV8jNgvCySQpZr/fZZ+9METwaTnDwk=
+github.com/zgwit/webrtc-streamer v0.0.3/go.mod h1:4HpAOdaw4G6PWPvH0bwoeaEUGsp+977Xny5Tckbj06Q=
 go.bug.st/serial v1.6.2 h1:kn9LRX3sdm+WxWKufMlIRndwGfPWsH1/9lCWXQCasq8=
 go.bug.st/serial v1.6.2/go.mod h1:UABfsluHAiaNI+La2iESysd9Vetq7VRdpxvjx7CmmOE=
 go.uber.org/multierr v1.11.0 h1:blXXJkSxSSfBVBlC76pxqeO+LN3aDfLQo+309xJstO0=

@@ -39,6 +39,14 @@ func (adapter *Adapter) start(opts types.Options) error {
 	//索引
 	for _, d := range adapter.devices {
 		adapter.index[d.Id] = d
+
+		dev, err := device.Ensure(d.Id)
+		if err != nil {
+			log.Error(err)
+			continue
+		}
+
+		dev.SetAdapter(adapter)
 	}
 
 	//开始轮询
@@ -62,9 +70,8 @@ func (adapter *Adapter) start(opts types.Options) error {
 		for {
 			start := time.Now().UnixMilli()
 			for _, dev := range adapter.devices {
-				d, err := device.Ensure(dev.Id)
-				if err != nil {
-					log.Error(err)
+				d := device.Get(dev.Id)
+				if d == nil {
 					continue
 				}
 
@@ -114,6 +121,8 @@ func (adapter *Adapter) start(opts types.Options) error {
 		//	topic := fmt.Sprintf("device/%s/offline", dev.Id)
 		//	_ = mqtt.Publish(topic, nil)
 		//}
+
+		//TODO d.SetAdapter(nil)
 	}()
 	return nil
 }
