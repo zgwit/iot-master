@@ -44,6 +44,7 @@ func (c *Client) Open() error {
 		return err
 	}
 	c.running = true
+	c.Status = "正常"
 
 	c.conn = &netConn{conn}
 

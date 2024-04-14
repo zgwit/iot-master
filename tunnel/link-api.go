@@ -51,7 +51,7 @@ func init() {
 
 	api.Register("GET", "/link/:id/enable", curd.ParseParamStringId, curd.ApiDisableHook[Link](false, nil, nil))
 
-	api.Register("GET", "/link/:id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
+	api.Register("GET", "/link/:id/close", curd.ParseParamStringId, func(ctx *gin.Context) {
 		id := ctx.GetString("id")
 		c := GetLink(id)
 		if c == nil {
@@ -175,5 +175,5 @@ func noopLinkDisable() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[Link] 返回连接信息
-// @Router /link/{id}/stop [get]
+// @Router /link/{id}/close [get]
 func noopLinkStop() {}

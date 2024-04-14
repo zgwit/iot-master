@@ -74,7 +74,7 @@ func init() {
 		return LoadServer(&m)
 	}))
 
-	api.Register("GET", "/server/:id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
+	api.Register("GET", "/server/:id/open", curd.ParseParamStringId, func(ctx *gin.Context) {
 		id := ctx.GetString("id")
 		c := GetServer(id)
 		if c == nil {
@@ -89,7 +89,7 @@ func init() {
 		curd.OK(ctx, nil)
 	})
 
-	api.Register("GET", "/server/:id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
+	api.Register("GET", "/server/:id/close", curd.ParseParamStringId, func(ctx *gin.Context) {
 		id := ctx.GetString("id")
 		c := GetServer(id)
 		if c == nil {
@@ -214,7 +214,7 @@ func noopServerDisable() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[Server] 返回服务端信息
-// @Router /server/{id}/start [get]
+// @Router /server/{id}/open [get]
 func noopServerStart() {}
 
 // @Summary 停止服务端
@@ -225,5 +225,5 @@ func noopServerStart() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[Server] 返回服务端信息
-// @Router /server/{id}/stop [get]
+// @Router /server/{id}/close [get]
 func noopServerStop() {}

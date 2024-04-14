@@ -49,6 +49,7 @@ func (s *Serial) Open() error {
 		return err
 	}
 	s.running = true
+	s.Status = "正常"
 
 	//读超时
 	err = port.SetReadTimeout(time.Second * 5)

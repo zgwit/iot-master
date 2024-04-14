@@ -75,7 +75,7 @@ func init() {
 		return LoadSerial(&m)
 	}))
 
-	api.Register("GET", "/serial/:id/start", curd.ParseParamStringId, func(ctx *gin.Context) {
+	api.Register("GET", "/serial/:id/open", curd.ParseParamStringId, func(ctx *gin.Context) {
 		id := ctx.GetString("id")
 		c := GetSerial(id)
 		if c == nil {
@@ -90,7 +90,7 @@ func init() {
 		curd.OK(ctx, nil)
 	})
 
-	api.Register("GET", "/serial/:id/stop", curd.ParseParamStringId, func(ctx *gin.Context) {
+	api.Register("GET", "/serial/:id/close", curd.ParseParamStringId, func(ctx *gin.Context) {
 		id := ctx.GetString("id")
 		c := GetSerial(id)
 		if c == nil {
@@ -224,7 +224,7 @@ func noopSerialDisable() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[Serial] 返回串口信息
-// @Router /serial/{id}/start [get]
+// @Router /serial/{id}/open [get]
 func noopSerialStart() {}
 
 // @Summary 停止串口
@@ -235,7 +235,7 @@ func noopSerialStart() {}
 // @Accept json
 // @Produce json
 // @Success 200 {object} curd.ReplyData[Serial] 返回串口信息
-// @Router /serial/{id}/stop [get]
+// @Router /serial/{id}/close [get]
 func noopSerialStop() {}
 
 // @Summary 串口列表

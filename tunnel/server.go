@@ -41,6 +41,7 @@ func (s *Server) handleStandalone(c *net.TCPConn) (err error) {
 		Remote:   c.RemoteAddr().String(),
 	}
 	l.running = true
+	l.Status = "正常"
 	l.conn = &netConn{c}
 
 	s.children[k] = l
@@ -98,6 +99,7 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 	}
 
 	l.running = true
+	l.Status = "正常"
 	l.conn = &netConn{c}
 
 	s.children[sn] = &l
@@ -133,6 +135,7 @@ func (s *Server) Open() error {
 		return err
 	}
 	s.running = true
+	s.Status = "正常"
 
 	s.children = make(map[string]*Link)
 	go func() {
