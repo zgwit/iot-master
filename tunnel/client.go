@@ -40,6 +40,7 @@ func (c *Client) Open() error {
 	conn, err := net.Dial(c.Net, addr)
 	if err != nil {
 		//time.AfterFunc(time.Minute, client.RetryOptions)
+		c.Status = err.Error()
 		return err
 	}
 	c.running = true
@@ -47,7 +48,7 @@ func (c *Client) Open() error {
 	c.conn = &netConn{conn}
 
 	//启动轮询
-	c.adapter, err = protocol.Create(c, c.ProtocolName, c.ProtocolOptions.ProtocolOptions)
+	c.adapter, err = protocol.Create(c, c.ProtocolName, c.ProtocolOptions)
 
 	return err
 }

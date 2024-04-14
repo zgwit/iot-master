@@ -48,7 +48,7 @@ func (s *Server) handleStandalone(c *net.TCPConn) (err error) {
 	links.Store(s.Id, l)
 
 	//启动轮询
-	l.adapter, err = protocol.Create(l, l.ProtocolName, l.ProtocolOptions.ProtocolOptions)
+	l.adapter, err = protocol.Create(l, l.ProtocolName, l.ProtocolOptions)
 	return err
 }
 
@@ -104,7 +104,7 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 	links.Store(l.Id, &l)
 
 	//启动轮询
-	l.adapter, err = protocol.Create(&l, l.ProtocolName, l.ProtocolOptions.ProtocolOptions)
+	l.adapter, err = protocol.Create(&l, l.ProtocolName, l.ProtocolOptions)
 	return err
 }
 
@@ -118,6 +118,7 @@ func (s *Server) Open() error {
 	log.Trace("create server ", s.Port)
 	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", s.Port))
 	if err != nil {
+		s.Status = err.Error()
 		return err
 	}
 
@@ -128,6 +129,7 @@ func (s *Server) Open() error {
 
 	s.listener, err = net.ListenTCP("tcp", addr)
 	if err != nil {
+		s.Status = err.Error()
 		return err
 	}
 	s.running = true
@@ -139,6 +141,7 @@ func (s *Server) Open() error {
 			if err != nil {
 				//TODO 需要正确处理接收错误
 				log.Error(err)
+				s.Status = err.Error()
 				break
 			}
 
@@ -147,12 +150,14 @@ func (s *Server) Open() error {
 				err = s.handleStandalone(c)
 				if err != nil {
 					log.Error(err)
+					s.Status = err.Error()
 				}
 				continue
 			} else {
 				err = s.handleIncoming(c)
 				if err != nil {
 					log.Error(err)
+					s.Status = err.Error()
 				}
 			}
 

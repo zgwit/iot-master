@@ -17,7 +17,7 @@ func init() {
 		for k, server := range servers {
 			c := GetServer(server.Id)
 			if c != nil {
-				servers[k].running = c.running
+				servers[k].Status = c.Status
 			}
 		}
 		return nil
@@ -32,7 +32,7 @@ func init() {
 	api.Register("GET", "/server/:id", curd.ParseParamStringId, curd.ApiGetHook[Server](func(server *Server) error {
 		c := GetServer(server.Id)
 		if c != nil {
-			server.running = c.running
+			server.Status = c.Status
 		}
 		return nil
 	}))

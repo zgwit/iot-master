@@ -31,11 +31,14 @@ type Base struct {
 	Description string `json:"description,omitempty"`  //说明
 	Heartbeat   string `json:"heartbeat,omitempty"`    //心跳包
 
-	ProtocolOptions `xorm:"extends"`
-	PollerOptions   `xorm:"extends"`
+	//协议
+	ProtocolName    string         `json:"protocol_name,omitempty"`
+	ProtocolOptions map[string]any `json:"protocol_options,omitempty"`
 
 	Disabled bool      `json:"disabled"`
 	Created  time.Time `json:"created" xorm:"created"` //创建时间
+
+	Status string `json:"status,omitempty" xorm:"-"` //状态
 
 	running bool
 	closed  bool
@@ -72,6 +75,7 @@ func (l *Base) Close() error {
 
 	l.running = false
 	l.closed = true
+	l.Status = "关闭"
 
 	if l.pipe != nil {
 		_ = l.pipe.Close()
@@ -94,6 +98,7 @@ func (l *Base) Write(data []byte) (int, error) {
 		//关闭连接
 		_ = l.conn.Close()
 		l.running = false
+		l.Status = "关闭"
 	}
 	return n, err
 }
@@ -125,10 +130,12 @@ func (l *Base) Read(data []byte) (int, error) {
 		//其他错误，关闭连接
 		_ = l.conn.Close()
 		l.running = false
+		l.Status = "关闭"
 	} else if n == 0 {
 		//关闭连接（已知 串口会进入假死）
 		_ = l.conn.Close()
 		l.running = false
+		l.Status = "关闭"
 		return 0, errors.New("没有读取到数据，但是也没有报错，关掉再试")
 	}
 	//log.Trace(l.Id, "readed", data[:n])
@@ -146,6 +153,7 @@ func (l *Base) Pipe(pipe io.ReadWriteCloser) {
 	}
 
 	l.pipe = pipe
+
 	//传入空，则关闭
 	if pipe == nil {
 		return

@@ -16,7 +16,7 @@ func init() {
 		for k, client := range clients {
 			c := GetClient(client.Id)
 			if c != nil {
-				clients[k].running = c.running
+				clients[k].Status = c.Status
 			}
 		}
 		return nil
@@ -31,7 +31,7 @@ func init() {
 	api.Register("GET", "/client/:id", curd.ParseParamStringId, curd.ApiGetHook[Client](func(client *Client) error {
 		c := GetClient(client.Id)
 		if c != nil {
-			client.running = c.running
+			client.Status = c.Status
 		}
 		return nil
 	}))

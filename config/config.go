@@ -2,14 +2,16 @@ package config
 
 import (
 	"github.com/spf13/viper"
+	"github.com/zgwit/iot-master/v4/lib"
 )
 
 func init() {
 	//引入viper配置文件
-	viper.SetConfigName("config") //name := lib.AppName()
+	//viper.SetConfigName("config") //name := lib.AppName()
+	viper.SetConfigName(lib.AppName())
 	viper.SetConfigType("yaml")
+	viper.AddConfigPath(lib.AppDir())
 	viper.AddConfigPath(".")
-	//viper.SetEnvPrefix("database")
 
 	//绑定命令行参数
 	//_ = viper.BindPFlags(pflag.CommandLine)
