@@ -15,6 +15,10 @@ func init() {
 }
 
 func Startup() error {
+	return nil
+}
+
+func Startup2() error {
 	//开机加载所有空间，好像没有必要???
 
 	var ps []*Space

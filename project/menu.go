@@ -13,4 +13,14 @@ func init() {
 			{Name: "创建项目", Url: "project/create", Type: "route"},
 		},
 	})
+	menu.Register("project-user", &menu.Menu{
+		Name:       "用户管理",
+		Icon:       "user",
+		Domain:     []string{"project"},
+		Privileges: nil,
+		Items: []*menu.Item{
+			{Name: "用户", Url: "user", Type: "route"},
+			{Name: "角色", Url: "role", Type: "route"},
+		},
+	})
 }
