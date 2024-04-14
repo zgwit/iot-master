@@ -153,8 +153,11 @@ func productVersionConfigGet(ctx *gin.Context) {
 func productVersionConfigSet(ctx *gin.Context) {
 	dir := filepath.Join(viper.GetString("data"), "product", ctx.Param("id"), ctx.Param("version"))
 	_ = os.MkdirAll(dir, os.ModePerm)
-
 	fn := filepath.Join(dir, ctx.Param("config")+".json")
+
+	//清除缓存
+	delete(configs, fn)
+
 	file, err := os.Create(fn)
 	if err != nil {
 		curd.Error(ctx, err)

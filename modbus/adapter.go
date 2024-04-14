@@ -6,6 +6,7 @@ import (
 	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/device"
 	"github.com/zgwit/iot-master/v4/log"
+	"github.com/zgwit/iot-master/v4/product"
 	"github.com/zgwit/iot-master/v4/types"
 	"slices"
 	"time"
@@ -18,6 +19,7 @@ type Adapter struct {
 
 	index map[string]*Device
 
+	options types.Options
 	//index map[string]*device.Device
 }
 
@@ -25,7 +27,7 @@ func (adapter *Adapter) Tunnel() connect.Tunnel {
 	return adapter.tunnel
 }
 
-func (adapter *Adapter) start(opts types.Options) error {
+func (adapter *Adapter) start() error {
 	err := db.Engine.Where("tunnel_id=?", adapter.tunnel.ID()).
 		And("disabled!=1").Find(&adapter.devices)
 	if err != nil {
@@ -36,95 +38,112 @@ func (adapter *Adapter) start(opts types.Options) error {
 	//	return errors.New("无设备")
 	//}
 
-	//索引
 	for _, d := range adapter.devices {
+
+		//索引
 		adapter.index[d.Id] = d
 
+		//找到设备影子
 		dev, err := device.Ensure(d.Id)
 		if err != nil {
 			log.Error(err)
 			continue
 		}
 
+		//加载映射表
+		d.mappers, err = product.LoadConfig[[]*Mapper](dev.ProductId, dev.ProductVersion, "mapper")
+		if err != nil {
+			log.Error(err)
+		}
+
+		//加载轮询表
+		d.pollers, err = product.LoadConfig[[]*Poller](dev.ProductId, dev.ProductVersion, "poller")
+		if err != nil {
+			log.Error(err)
+		}
+
 		dev.SetAdapter(adapter)
 	}
 
 	//开始轮询
-	go func() {
+	go adapter.poll()
+	return nil
+}
 
-		//设备上线
-		//!!! 不能这样做，不然启动服务器会产生大量的消息
-		//for _, dev := range adapter.index {
-		//	topic := fmt.Sprintf("device/online/%s", dev.Id)
-		//	_ = mqtt.Publish(topic, nil)
-		//}
-		interval := opts.Int64("poller_interval", 60) //默认1分钟轮询一次
-		if interval < 1 {
-			interval = 1
-		}
+func (adapter *Adapter) poll() {
 
-		//按毫秒计时
-		interval *= 1000
+	//设备上线
+	//!!! 不能这样做，不然启动服务器会产生大量的消息
+	//for _, dev := range adapter.index {
+	//	topic := fmt.Sprintf("device/online/%s", dev.Id)
+	//	_ = mqtt.Publish(topic, nil)
+	//}
 
-		//OUT:
-		for {
-			start := time.Now().UnixMilli()
-			for _, dev := range adapter.devices {
-				d := device.Get(dev.Id)
-				if d == nil {
-					continue
-				}
+	interval := adapter.options.Int64("poller_interval", 60) //默认1分钟轮询一次
+	if interval < 1 {
+		interval = 1
+	}
 
-				values, err := adapter.Sync(dev.Id)
-				if err != nil {
-					log.Error(err)
-					continue
-				}
+	//按毫秒计时
+	interval *= 1000
 
-				//检查连接，若关闭了，就不用再等了
-				if !adapter.tunnel.Running() {
-					break
-				}
-
-				//d := device.Get(dev.Id)
-				if values != nil && len(values) > 0 {
-					log.Trace("sync", dev.Id, dev.Station.Slave, values)
-					d.Push(values)
-				}
-				//_ = pool.Insert(func() {
-				//topic := fmt.Sprintf("device/%s/property", dev.Id)
-				//mqtt.Publish(topic, values)
+	//OUT:
+	for {
+		start := time.Now().UnixMilli()
+		for _, dev := range adapter.devices {
+			d := device.Get(dev.Id)
+			if d == nil {
+				continue
 			}
 
-			//检查连接，避免空等待
+			values, err := adapter.Sync(dev.Id)
+			if err != nil {
+				log.Error(err)
+				continue
+			}
+
+			//检查连接，若关闭了，就不用再等了
 			if !adapter.tunnel.Running() {
 				break
 			}
 
-			//轮询间隔
-			now := time.Now().UnixMilli()
-			elapsed := now - start
-			if elapsed < interval {
-				time.Sleep(time.Millisecond * time.Duration(interval-elapsed))
+			//d := device.Get(dev.Id)
+			if values != nil && len(values) > 0 {
+				log.Trace("sync", dev.Id, dev.Station.Slave, values)
+				d.Push(values)
 			}
-
-			//避免空转，睡眠1分钟（延迟10ms太长，睡1分钟也有点长）
-			if elapsed < 10 {
-				time.Sleep(time.Minute)
-			}
+			//_ = pool.Insert(func() {
+			//topic := fmt.Sprintf("device/%s/property", dev.Id)
+			//mqtt.Publish(topic, values)
 		}
 
-		log.Info("modbus adapter quit", adapter.tunnel.ID())
+		//检查连接，避免空等待
+		if !adapter.tunnel.Running() {
+			break
+		}
 
-		//设备下线
-		//for _, dev := range adapter.devices {
-		//	topic := fmt.Sprintf("device/%s/offline", dev.Id)
-		//	_ = mqtt.Publish(topic, nil)
-		//}
+		//轮询间隔
+		now := time.Now().UnixMilli()
+		elapsed := now - start
+		if elapsed < interval {
+			time.Sleep(time.Millisecond * time.Duration(interval-elapsed))
+		}
 
-		//TODO d.SetAdapter(nil)
-	}()
-	return nil
+		//避免空转，睡眠1分钟（延迟10ms太长，睡1分钟也有点长）
+		if elapsed < 10 {
+			time.Sleep(time.Minute)
+		}
+	}
+
+	log.Info("modbus adapter quit", adapter.tunnel.ID())
+
+	//设备下线
+	//for _, dev := range adapter.devices {
+	//	topic := fmt.Sprintf("device/%s/offline", dev.Id)
+	//	_ = mqtt.Publish(topic, nil)
+	//}
+
+	//TODO d.SetAdapter(nil)
 }
 
 func (adapter *Adapter) Mount(device string) error {
@@ -164,18 +183,10 @@ func (adapter *Adapter) Unmount(device string) error {
 }
 
 func (adapter *Adapter) Get(id, name string) (any, error) {
-	dev := device.Get(id)
-	if dev == nil {
-		return nil, errors.New("设备未上线")
-	}
-	station := adapter.index[id].Station.Slave
+	d := adapter.index[id]
+	station := d.Station.Slave
 
-	prod, err := GetProduct(dev.ProductId, dev.ProductVersion)
-	if err != nil {
-		return nil, err
-	}
-
-	mapper := prod.Lookup(name)
+	mapper := d.Lookup(name)
 	if mapper == nil {
 		return nil, errors.New("找不到数据点")
 	}
@@ -190,18 +201,10 @@ func (adapter *Adapter) Get(id, name string) (any, error) {
 }
 
 func (adapter *Adapter) Set(id, name string, value any) error {
-	dev := device.Get(id)
-	if dev == nil {
-		return errors.New("设备未上线")
-	}
-	station := adapter.index[id].Station.Slave
+	d := adapter.index[id]
+	station := d.Station.Slave
 
-	prod, err := GetProduct(dev.ProductId, dev.ProductVersion)
-	if err != nil {
-		return err
-	}
-
-	mapper := prod.Lookup(name)
+	mapper := d.Lookup(name)
 	if mapper == nil {
 		return errors.New("地址找不到")
 	}
@@ -214,24 +217,16 @@ func (adapter *Adapter) Set(id, name string, value any) error {
 }
 
 func (adapter *Adapter) Sync(id string) (map[string]any, error) {
-	dev := device.Get(id)
-	if dev == nil {
-		return nil, errors.New("设备未上线")
-	}
-	station := adapter.index[id].Station.Slave
-
-	prod, err := GetProduct(dev.ProductId, dev.ProductVersion)
-	if err != nil {
-		return nil, err
-	}
+	d := adapter.index[id]
+	station := d.Station.Slave
 
 	values := make(map[string]any)
-	for _, poller := range prod.Pollers {
+	for _, poller := range *d.pollers {
 		data, err := adapter.modbus.Read(station, poller.Code, poller.Address, poller.Length)
 		if err != nil {
 			return nil, err
 		}
-		err = poller.Parse(prod.Mappers, data, values)
+		err = poller.Parse(*d.mappers, data, values)
 		if err != nil {
 			return nil, err
 		}

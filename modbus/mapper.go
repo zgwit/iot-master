@@ -7,12 +7,6 @@ import (
 	"github.com/zgwit/iot-master/v4/pkg/convert"
 )
 
-type Poller struct {
-	Code    uint8  `json:"code"`
-	Address uint16 `json:"address"`
-	Length  uint16 `json:"length"` //长度
-}
-
 type Mapper struct {
 	Code      uint8   `json:"code"`
 	Name      string  `json:"name"`              //名称
