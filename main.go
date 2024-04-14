@@ -7,12 +7,12 @@ import (
 	"github.com/zgwit/iot-master/v4/broker"     //内置MQTT服务器
 	_ "github.com/zgwit/iot-master/v4/device"   //设备
 	_ "github.com/zgwit/iot-master/v4/docs"     //文档
+	_ "github.com/zgwit/iot-master/v4/gateway"  //网关
 	_ "github.com/zgwit/iot-master/v4/modbus"   //默认集成Modbus协议
 	_ "github.com/zgwit/iot-master/v4/product"  //产品
 	_ "github.com/zgwit/iot-master/v4/project"  //项目
 	_ "github.com/zgwit/iot-master/v4/protocol" //协议
 	_ "github.com/zgwit/iot-master/v4/space"    //空间
-	_ "github.com/zgwit/iot-master/v4/tunnel"   //通道
 	_ "github.com/zgwit/iot-master/v4/user"     //通道
 	"github.com/zgwit/iot-master/v4/web"
 	"path/filepath"

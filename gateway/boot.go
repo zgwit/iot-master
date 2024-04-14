@@ -1,4 +1,4 @@
-package tunnel
+package gateway
 
 import (
 	"github.com/zgwit/iot-master/v4/boot"
@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	boot.Register("tunnel", &boot.Task{
+	boot.Register("gateway", &boot.Task{
 		Startup:  Startup,
 		Shutdown: Shutdown,
 		Depends:  []string{"database"},

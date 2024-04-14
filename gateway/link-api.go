@@ -1,4 +1,4 @@
-package tunnel
+package gateway
 
 import (
 	"github.com/gin-gonic/gin"

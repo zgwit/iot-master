@@ -1,4 +1,4 @@
-package tunnel
+package gateway
 
 import (
 	"github.com/zgwit/iot-master/v4/connect"
