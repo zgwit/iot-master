@@ -61,11 +61,12 @@ var modbusRtu = &protocol.Protocol{
 	Label: "Modbus RTU",
 	Factory: func(conn connect.Tunnel, opts types.Options) (protocol.Adapter, error) {
 		adapter := &Adapter{
-			tunnel: conn,
-			modbus: NewRTU(conn, opts),
-			index:  make(map[string]*Device),
+			tunnel:  conn,
+			modbus:  NewRTU(conn, opts),
+			index:   make(map[string]*Device),
+			options: opts,
 		}
-		err := adapter.start(opts)
+		err := adapter.start()
 		if err != nil {
 			return nil, err
 		}
@@ -82,11 +83,12 @@ var modbusTCP = &protocol.Protocol{
 	Label: "Modbus TCP",
 	Factory: func(conn connect.Tunnel, opts types.Options) (protocol.Adapter, error) {
 		adapter := &Adapter{
-			tunnel: conn,
-			modbus: NewTCP(conn, opts),
-			index:  make(map[string]*Device),
+			tunnel:  conn,
+			modbus:  NewTCP(conn, opts),
+			index:   make(map[string]*Device),
+			options: opts,
 		}
-		err := adapter.start(opts)
+		err := adapter.start()
 		if err != nil {
 			return nil, err
 		}

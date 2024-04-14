@@ -220,6 +220,11 @@ func (adapter *Adapter) Sync(id string) (map[string]any, error) {
 	d := adapter.index[id]
 	station := d.Station.Slave
 
+	//没有地址表和轮询器，则跳过
+	if d.pollers == nil || d.mappers == nil {
+		return nil, nil
+	}
+
 	values := make(map[string]any)
 	for _, poller := range *d.pollers {
 		data, err := adapter.modbus.Read(station, poller.Code, poller.Address, poller.Length)
