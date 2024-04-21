@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	db.Register(new(Product), new(ProductVersion))
+	db.Register(new(Product))
 }
 
 type Product struct {
@@ -18,10 +18,4 @@ type Product struct {
 	Description string    `json:"description,omitempty"` //说明
 	Keywords    []string  `json:"keywords,omitempty"`    //关键字
 	Created     time.Time `json:"created" xorm:"created"`
-}
-
-type ProductVersion struct {
-	ProductId string    `json:"product_id,omitempty" xorm:"PK"`
-	Name      string    `json:"name,omitempty" xorm:"PK"` //版本 semver.Version
-	Created   time.Time `json:"created" xorm:"created"`
 }
