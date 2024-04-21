@@ -14,8 +14,8 @@ var configs = map[string]any{}
 
 var configsLock sync.RWMutex
 
-func LoadConfig[T any](product, version, config string) (*T, error) {
-	fn := filepath.Join(viper.GetString("data"), "product", product, version, config+".json")
+func LoadConfig[T any](product, config string) (*T, error) {
+	fn := filepath.Join(viper.GetString("data"), "product", product, config+".json")
 
 	configsLock.RLock()
 	//优先从缓存中找

@@ -19,7 +19,7 @@ func init() {
 	api.Register("POST", "/device/search", curd.ApiSearchWith[Device]([]*curd.With{
 		{"project", "project_id", "id", "name", "project"},
 		{"product", "product_id", "id", "name", "product"},
-	}, "id", "name", "project_id", "product_id", "product_version", "disabled", "created"))
+	}, "id", "name", "project_id", "product_id", "disabled", "created"))
 
 	api.Register("GET", "/device/list", curd.ApiList[Device]())
 

@@ -17,9 +17,8 @@ func init() {
 type Device struct {
 	Id string `json:"id" xorm:"pk"` //ClientID
 
-	ProductId      string `json:"product_id,omitempty" xorm:"index"`
-	Product        string `json:"product,omitempty" xorm:"<-"`
-	ProductVersion string `json:"product_version,omitempty"`
+	ProductId string `json:"product_id,omitempty" xorm:"index"`
+	Product   string `json:"product,omitempty" xorm:"<-"`
 
 	ProjectId string `json:"project_id,omitempty" xorm:"index"`
 	Project   string `json:"project,omitempty" xorm:"<-"`

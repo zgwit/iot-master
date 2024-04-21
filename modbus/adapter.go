@@ -51,13 +51,13 @@ func (adapter *Adapter) start() error {
 		}
 
 		//加载映射表
-		d.mappers, err = product.LoadConfig[[]*Mapper](dev.ProductId, dev.ProductVersion, "mapper")
+		d.mappers, err = product.LoadConfig[[]*Mapper](dev.ProductId, "mapper")
 		if err != nil {
 			log.Error(err)
 		}
 
 		//加载轮询表
-		d.pollers, err = product.LoadConfig[[]*Poller](dev.ProductId, dev.ProductVersion, "poller")
+		d.pollers, err = product.LoadConfig[[]*Poller](dev.ProductId, "poller")
 		if err != nil {
 			log.Error(err)
 		}
