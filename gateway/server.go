@@ -3,7 +3,7 @@ package gateway
 import (
 	"errors"
 	"fmt"
-	db2 "github.com/zgwit/iot-master/v4/db"
+	"github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/protocol"
 	"net"
@@ -13,23 +13,27 @@ import (
 var snRegex *regexp.Regexp
 
 func init() {
-	db2.Register(new(Server))
-	regexp.MustCompile("^\\w+$")
+	db.Register(new(Server))
+
+	//限定字符串
+	snRegex = regexp.MustCompile("^\\w+$")
 }
 
 // Server TCP服务器
 type Server struct {
 	Base `xorm:"extends"`
 
-	Port       uint16 `json:"port,omitempty"`       //监听端口
-	Standalone bool   `json:"standalone,omitempty"` //单例模式（不支持注册）
+	Port uint16 `json:"port,omitempty"` //监听端口
+	//Standalone bool   `json:"standalone,omitempty"` //单例模式（不支持注册）
+
+	Mode string `json:"mode,omitempty"` //normal普通，standalone单例，register注册包
 
 	children map[string]*Link
 
 	listener *net.TCPListener
 }
 
-func (s *Server) handleStandalone(c *net.TCPConn) (err error) {
+func (s *Server) handleSingle(c *net.TCPConn) (err error) {
 	const k = "internal"
 	if cc, ok := s.children[k]; ok {
 		_ = cc.Close()
@@ -54,6 +58,17 @@ func (s *Server) handleStandalone(c *net.TCPConn) (err error) {
 }
 
 func (s *Server) handleIncoming(c *net.TCPConn) error {
+	var err error
+	l := &Link{
+		Base:     s.Base,
+		ServerId: s.Id,
+		Remote:   c.RemoteAddr().String(),
+	}
+	s.adapter, err = protocol.Create(l, s.ProtocolName, s.ProtocolOptions)
+	return err
+}
+
+func (s *Server) handleRegister(c *net.TCPConn) error {
 	//TODO 只有配置了注册包，才能正常通讯
 	buf := make([]byte, 128)
 	n, err := c.Read(buf)
@@ -75,7 +90,7 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 
 	var l Link
 	//get, err := db.Engine.Where("server_id=?", s.Id).And("sn=?", sn).Get(&conn)
-	get, err := db2.Engine.ID(sn).Get(&l)
+	get, err := db.Engine.ID(sn).Get(&l)
 	if err != nil {
 		_, _ = c.Write([]byte("database error"))
 		_ = c.Close()
@@ -90,7 +105,7 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 		}
 		l.Id = sn //修改ID
 
-		_, err = db2.Engine.InsertOne(&l)
+		_, err = db.Engine.InsertOne(&l)
 		if err != nil {
 			_, _ = c.Write([]byte("database error"))
 			_ = c.Close()
@@ -148,22 +163,22 @@ func (s *Server) Open() error {
 				break
 			}
 
-			//单例模式，关闭之前的连接
-			if s.Standalone {
-				err = s.handleStandalone(c)
-				if err != nil {
-					log.Error(err)
-					s.Status = err.Error()
-				}
-				continue
-			} else {
+			switch s.Mode {
+			case "register":
+				err = s.handleRegister(c)
+			case "single":
+				err = s.handleSingle(c)
+			case "multiple", "":
 				err = s.handleIncoming(c)
-				if err != nil {
-					log.Error(err)
-					s.Status = err.Error()
-				}
+			default:
+				//应该无法启动
+				_ = c.Close()
 			}
 
+			if err != nil {
+				log.Error(err)
+				s.Status = err.Error()
+			}
 		}
 
 		s.running = false

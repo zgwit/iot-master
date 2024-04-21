@@ -1,7 +1,7 @@
 package device
 
 import (
-	db2 "github.com/zgwit/iot-master/v4/db"
+	db "github.com/zgwit/iot-master/v4/db"
 	"github.com/zgwit/iot-master/v4/log"
 	"github.com/zgwit/iot-master/v4/mqtt"
 	"github.com/zgwit/iot-master/v4/payload"
@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	db2.Register(new(DeviceEvent))
+	db.Register(new(DeviceEvent))
 }
 
 type DeviceEvent struct {
@@ -36,7 +36,7 @@ func mqttEvent() {
 		}
 
 		//保存数据库
-		_, _ = db2.Engine.InsertOne(&DeviceEvent{
+		_, _ = db.Engine.InsertOne(&DeviceEvent{
 			DeviceId: id,
 			Name:     event.Name,
 			Label:    event.Title,
