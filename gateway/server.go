@@ -64,6 +64,11 @@ func (s *Server) handleIncoming(c *net.TCPConn) error {
 		ServerId: s.Id,
 		Remote:   c.RemoteAddr().String(),
 	}
+
+	l.running = true
+	l.Status = "正常"
+	l.conn = &netConn{c}
+
 	s.adapter, err = protocol.Create(l, s.ProtocolName, s.ProtocolOptions)
 	return err
 }
