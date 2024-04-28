@@ -21,17 +21,6 @@ type Device struct {
 
 	//映射和轮询表
 	pollers *[]*Poller
-	mappers *[]*Mapper
-}
 
-func (p *Device) Lookup(name string) *Mapper {
-	if p.mappers == nil {
-		return nil
-	}
-	for _, m := range *p.mappers {
-		if m.Name == name {
-			return m
-		}
-	}
-	return nil
+	mapper *Mapper
 }

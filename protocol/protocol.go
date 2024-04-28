@@ -13,14 +13,14 @@ type Protocol struct {
 	Factory Factory `json:"-"`
 
 	//通道参数
-	Options []types.FormItem `json:"-"`
+	OptionForm []types.FormItem `json:"-"`
 
 	//设备参数
-	Stations []types.FormItem `json:"-"`
+	StationForm []types.FormItem `json:"-"`
 
 	//轮询器
-	Pollers []types.FormItem `json:"-"`
+	PollersForm []types.FormItem `json:"-"`
 
 	//映射表
-	Mappers []types.FormItem `json:"-"`
+	MapperForm []types.FormItem `json:"-"`
 }

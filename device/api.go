@@ -291,7 +291,7 @@ func deviceStations(ctx *gin.Context) {
 
 	p, err := protocol.Get(prod.Protocol)
 	var cols []string
-	for _, s := range p.Stations {
+	for _, s := range p.StationForm {
 		cols = append(cols, s.Key)
 	}
 

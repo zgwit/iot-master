@@ -1,5 +1,7 @@
 package modbus
 
+import "github.com/zgwit/iot-master/v4/log"
+
 type Filter struct {
 	Name       string `json:"name"`       //字段
 	Expression string `json:"expression"` //表达式
@@ -17,25 +19,68 @@ type Poller struct {
 	Length  uint16 `json:"length"` //长度
 }
 
-func (p *Poller) Parse(mappers []*Mapper, buf []byte, values map[string]any) error {
-	for _, m := range mappers {
-		if p.Code == m.Code &&
-			p.Address <= m.Address &&
-			p.Length > m.Address-p.Address {
-			ret, err := m.Parse(p.Address, buf)
-			if err != nil {
-				//log.Error(err)
-				return err
-			}
-			//03指令 的 位类型
-			if rets, ok := ret.(map[string]bool); ok {
-				for k, v := range rets {
-					values[k] = v
+func (p *Poller) Parse(mapper *Mapper, buf []byte, values map[string]any) error {
+	switch p.Code {
+	case 1:
+		for _, m := range mapper.Coils {
+			if p.Address <= m.Address && p.Length > m.Address-p.Address {
+				ret, err := m.Parse(p.Address, buf)
+				if err != nil {
+					log.Error(err)
+					continue
 				}
-			} else {
 				values[m.Name] = ret
 			}
 		}
+	case 2:
+		for _, m := range mapper.DiscreteInputs {
+			if p.Address <= m.Address && p.Length > m.Address-p.Address {
+				ret, err := m.Parse(p.Address, buf)
+				if err != nil {
+					log.Error(err)
+					continue
+				}
+				values[m.Name] = ret
+			}
+		}
+	case 3:
+		for _, m := range mapper.HoldingRegisters {
+			if p.Address <= m.Address && p.Length > m.Address-p.Address {
+				ret, err := m.Parse(p.Address, buf)
+				if err != nil {
+					log.Error(err)
+					continue
+				}
+				//03 指令 的 位类型
+				if rets, ok := ret.(map[string]bool); ok {
+					for k, v := range rets {
+						values[k] = v
+					}
+				} else {
+					values[m.Name] = ret
+				}
+			}
+		}
+	case 4:
+		for _, m := range mapper.HoldingRegisters {
+			if p.Address <= m.Address && p.Length > m.Address-p.Address {
+				ret, err := m.Parse(p.Address, buf)
+				if err != nil {
+					log.Error(err)
+					continue
+				}
+				//04 指令 的 位类型
+				if rets, ok := ret.(map[string]bool); ok {
+					for k, v := range rets {
+						values[k] = v
+					}
+				} else {
+					values[m.Name] = ret
+				}
+			}
+		}
+
 	}
+
 	return nil
 }

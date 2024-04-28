@@ -51,7 +51,7 @@ func (adapter *Adapter) start() error {
 		}
 
 		//加载映射表
-		d.mappers, err = product.LoadConfig[[]*Mapper](dev.ProductId, "mapper")
+		d.mapper, err = product.LoadConfig[Mapper](dev.ProductId, "mapper")
 		if err != nil {
 			log.Error(err)
 		}
@@ -186,25 +186,25 @@ func (adapter *Adapter) Get(id, name string) (any, error) {
 	d := adapter.index[id]
 	station := d.Station.Slave
 
-	mapper := d.Lookup(name)
+	mapper, code, address := d.mapper.Lookup(name)
 	if mapper == nil {
 		return nil, errors.New("找不到数据点")
 	}
 
 	//此处全部读取了，有些冗余
-	data, err := adapter.modbus.Read(station, mapper.Code, mapper.Address, 2)
+	data, err := adapter.modbus.Read(station, code, address, 2)
 	if err != nil {
 		return nil, err
 	}
 
-	return mapper.Parse(mapper.Address, data)
+	return mapper.Parse(address, data)
 }
 
 func (adapter *Adapter) Set(id, name string, value any) error {
 	d := adapter.index[id]
 	station := d.Station.Slave
 
-	mapper := d.Lookup(name)
+	mapper, code, address := d.mapper.Lookup(name)
 	if mapper == nil {
 		return errors.New("地址找不到")
 	}
@@ -213,7 +213,7 @@ func (adapter *Adapter) Set(id, name string, value any) error {
 	if err != nil {
 		return err
 	}
-	return adapter.modbus.Write(station, mapper.Code, mapper.Address, data)
+	return adapter.modbus.Write(station, code, address, data)
 }
 
 func (adapter *Adapter) Sync(id string) (map[string]any, error) {
@@ -221,7 +221,7 @@ func (adapter *Adapter) Sync(id string) (map[string]any, error) {
 	station := d.Station.Slave
 
 	//没有地址表和轮询器，则跳过
-	if d.pollers == nil || d.mappers == nil {
+	if d.pollers == nil || d.mapper == nil {
 		return nil, nil
 	}
 
@@ -231,7 +231,7 @@ func (adapter *Adapter) Sync(id string) (map[string]any, error) {
 		if err != nil {
 			return nil, err
 		}
-		err = poller.Parse(*d.mappers, data, values)
+		err = poller.Parse(d.mapper, data, values)
 		if err != nil {
 			return nil, err
 		}
