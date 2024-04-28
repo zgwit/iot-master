@@ -17,7 +17,7 @@ require (
 	github.com/iot-master-contrib/camera v1.0.6
 	github.com/iot-master-contrib/influxdb v1.1.0
 	github.com/iot-master-contrib/nuwa v0.0.1
-	github.com/iot-master-contrib/webui v1.1.3
+	github.com/iot-master-contrib/webui v1.1.4
 	github.com/kardianos/service v1.2.2
 	github.com/lib/pq v1.10.9
 	github.com/lithammer/shortuuid/v4 v4.0.0
