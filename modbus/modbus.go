@@ -20,19 +20,23 @@ var code = types.FormItem{Key: "code", Label: "功能码", Type: "select", Optio
 	{Value: 4, Label: "输入寄存器 04"},
 }}
 
-var options = []types.FormItem{
+var optionForm = []types.FormItem{
 	{Key: "timeout", Label: "超时", Tips: "毫秒", Type: "number", Min: 1, Max: 5000, Default: 500},
 	{Key: "poller_interval", Label: "轮询间隔", Tips: "秒", Type: "number", Min: 0, Max: 3600 * 24, Default: 60},
 }
 
-var pollers = []types.FormItem{
+var pollersForm = []types.FormItem{
 	code,
 	{Key: "address", Label: "地址", Type: "number", Required: true, Min: 0, Max: 50000},
 	{Key: "length", Label: "长度", Type: "number", Required: true, Min: 0, Max: 50000},
 }
 
-var mappers = []types.FormItem{
-	code,
+var bitPoints = []types.FormItem{
+	{Key: "name", Label: "变量", Type: "text"},
+	{Key: "address", Label: "地址", Type: "number", Required: true, Min: 0, Max: 50000},
+}
+
+var wordPoints = []types.FormItem{
 	{Key: "name", Label: "变量", Type: "text"},
 	{Key: "address", Label: "地址", Type: "number", Required: true, Min: 0, Max: 50000},
 	{Key: "type", Label: "数据类型", Type: "select", Options: []types.FormSelectOption{
@@ -52,7 +56,14 @@ var mappers = []types.FormItem{
 	}},
 }
 
-var stations = []types.FormItem{
+var mapperForm = []types.FormItem{
+	{Key: "coils", Label: "线圈 01", Type: "table", Children: bitPoints},
+	{Key: "discrete_inputs", Label: "离散输入 02", Type: "table", Children: bitPoints},
+	{Key: "holding_registers", Label: "保持寄存器 03", Type: "table", Children: wordPoints},
+	{Key: "input_registers", Label: "输入寄存器 04", Type: "table", Children: wordPoints},
+}
+
+var stationForm = []types.FormItem{
 	{Key: "slave", Label: "Modbus从站号", Type: "number", Min: 1, Max: 255, Step: 1, Default: 1},
 }
 
@@ -72,10 +83,10 @@ var modbusRtu = &protocol.Protocol{
 		}
 		return adapter, nil
 	},
-	OptionForm:  options,
-	MapperForm:  mappers,
-	PollersForm: pollers,
-	StationForm: stations,
+	OptionForm:  optionForm,
+	MapperForm:  mapperForm,
+	PollersForm: pollersForm,
+	StationForm: stationForm,
 }
 
 var modbusTCP = &protocol.Protocol{
@@ -94,10 +105,10 @@ var modbusTCP = &protocol.Protocol{
 		}
 		return adapter, nil
 	},
-	OptionForm:  options,
-	MapperForm:  mappers,
-	PollersForm: pollers,
-	StationForm: stations,
+	OptionForm:  optionForm,
+	StationForm: stationForm,
+	MapperForm:  mapperForm,
+	PollersForm: pollersForm,
 }
 
 type Modbus interface {
