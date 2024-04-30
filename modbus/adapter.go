@@ -51,7 +51,7 @@ func (adapter *Adapter) start() error {
 		}
 
 		//加载映射表
-		d.mapper, err = product.LoadConfig[Mapper](dev.ProductId, "mapperForm")
+		d.mapper, err = product.LoadConfig[Mapper](dev.ProductId, "mapper")
 		if err != nil {
 			log.Error(err)
 		}
