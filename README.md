@@ -1,6 +1,5 @@
 # 物联大师 5.0
 
-
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
 [![codecov](https://codecov.io/gh/zgwit/iot-master/branch/main/graph/badge.svg?token=AK5TD8KQ5C)](https://codecov.io/gh/zgwit/iot-master)
@@ -53,19 +52,17 @@
 
 ## 网关和平台定制服务
 
-- 基于物联大师代码库二次开发
-- 添加通讯协议，自定义协议
-- 定制App和小程序
-- 低于 9.8w 勿扰 🤕
+- 基于物联大师云平台做二次开发
+- 定制物联网网关，添加协议
+- 定制移动App和微信小程序
+- 预算低于 9.8w 勿扰 🤕
 
 ## 联系方式
 
 - 邮箱：[jason@zgwit.com](mailto:jason@zgwit.com)
 - 手机：[15161515197](tel:15161515197)(微信同号)
 
-| 技术交流群                                   | 微信                                      |
-|-----------------------------------------|-----------------------------------------|
-| ![微信群](https://iot-master.com/tech.png) | ![微信](https://iot-master.com/jason.jpg) |
+![微信](https://iot-master.com/jason.jpg)
 
 ## 开源协议
 
