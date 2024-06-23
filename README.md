@@ -1,8 +1,5 @@
-# 物联大师
+# 物联大师 5.0
 
-**前端界面库[github.com/iot-master-contrib/webui](https://github.com/iot-master-contrib/webui)**
-
-### [说明文档](https://iot-master.com/manual)  [演示demo](http://demo.iot-master.com:8080/) 账号密码 admin 123456
 
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
@@ -10,8 +7,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/zgwit/iot-master.svg)](https://pkg.go.dev/github.com/zgwit/iot-master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/zgwit/iot-master)](https://goreportcard.com/report/github.com/zgwit/iot-master)
 
-物联大师是[无锡真格智能科技有限公司](https://zgwit.com)
-推出的开源且免费的物联网云平台，支持Modbus，水务（SL651、SZY206），电力（DL/T645、IEC101、102、103、104、61850）以及一些主流PLC协议，
+物联大师是开源且免费的物联网云平台，支持Modbus，水务（SL651、SZY206），电力（DL/T645、IEC101、102、103、104、61850）以及一些主流PLC协议，
 系统可以通过插件支持数据采集、公式计算、定时控制、异常报警、自动控制策略、流量监控、远程调试、Web组态等功能，
 适用于大部分物联网或工业互联网应用场景。
 系统采用Golang编程实现，支持多种操作系统和CPU架构，可以运行在智能网关上，也可以安装在现场的电脑或工控机上，还能部署到云端服务器。
@@ -22,14 +18,18 @@
 
 ## 项目的优势
 
-- 开源免费，商业应用也不限制
+- 前后端代码完全开源，包括Web组态
 - 单一程序文件，不需要配置运行环境，不依赖第三方服务，放服务器上就能跑
 - 极小内存占用，对于一百节点以内的物联网项目，只需要几十兆内存足够了，~~比起隔壁Java动辄大几百兆内存简直太省了~~
 - 支持工控机和智能网关，边缘计算也没问题
 - 原生支持SaaS模式（通过项目和权限）
 - 内置MQTT总线，无需独立部署
-- 支持大屏展示，Web组态，3D数据孪生 ~~毕竟很多物联网项目都是面子工程~~
+- 支持大屏展示，Web组态 ~~毕竟很多物联网项目都是面子工程~~
 - 支持智能家居应用场景
+
+## 架构设计
+
+还缺个图~~
 
 ## 项目示例（旧版本截图）
 
@@ -50,6 +50,13 @@
 > 6. 自身技术人员能力有限，架构设计有问题
 > 7. 不支持高并发量，市场爆发了，平台反而跟不上
 > 8. 等等
+
+## 网关和平台定制服务
+
+- 基于物联大师代码库二次开发
+- 添加通讯协议，自定义协议
+- 定制App和小程序
+- 低于 9.8w 勿扰 🤕
 
 ## 联系方式
 
@@ -75,9 +82,9 @@
 - [x] [阿里短信通知](https://github.com/iot-master-contrib/sms)
 - [ ] [腾讯电话通知](https://github.com/iot-master-contrib/phone)
 - [ ] [微信鉴权和通知](https://github.com/iot-master-contrib/weixin)
-- [ ] [西门子 S7 PLC](https://github.com/iot-master-contrib/s7)
-- [ ] [三菱 PLC](https://github.com/iot-master-contrib/melsec)
-- [ ] [欧姆龙 PLC](https://github.com/iot-master-contrib/fins)
+- [x] [西门子 S7 PLC](https://github.com/iot-master-contrib/s7)
+- [x] [三菱 PLC](https://github.com/iot-master-contrib/melsec)
+- [x] [欧姆龙 PLC](https://github.com/iot-master-contrib/fins)
 - [ ] [DL/T645-1997、2007](https://github.com/iot-master-contrib/dlt645)
 - [ ] [DL/T698.45-2017](https://github.com/iot-master-contrib/dlt698)
 - [ ] [IEC 101](https://github.com/iot-master-contrib/iec101)

@@ -1,6 +1,6 @@
 module github.com/zgwit/iot-master/v5
 
-go 1.22.4
+go 1.22
 
 require (
 	github.com/god-jason/bucket v0.0.0-20240622152523-3c16cfeba919
