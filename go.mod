@@ -3,7 +3,7 @@ module github.com/zgwit/iot-master/v5
 go 1.22
 
 require (
-	github.com/god-jason/bucket v0.0.0-20240622152523-3c16cfeba919
+	github.com/god-jason/bucket v0.0.0-20240630002455-a1a5f5187740
 	github.com/spf13/viper v1.19.0
 )
 
@@ -14,7 +14,7 @@ require (
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/dlclark/regexp2 v1.11.0 // indirect
-	github.com/dop251/goja v0.0.0-20240610225006-393f6d42497b // indirect
+	github.com/dop251/goja v0.0.0-20240627195025-eb1f15ee67d2 // indirect
 	github.com/dop251/goja_nodejs v0.0.0-20240418154818-2aae10d4cbcf // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.4 // indirect
@@ -30,7 +30,7 @@ require (
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/pprof v0.0.0-20240622144329-c177fd99eaa9 // indirect
+	github.com/google/pprof v0.0.0-20240625030939-27f56978b8b0 // indirect
 	github.com/gorilla/context v1.1.2 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/gorilla/sessions v1.3.0 // indirect
@@ -68,7 +68,7 @@ require (
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20240424034433-3c2c7870ae76 // indirect
-	go.mongodb.org/mongo-driver v1.15.1 // indirect
+	go.mongodb.org/mongo-driver v1.16.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.24.0 // indirect

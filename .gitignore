@@ -58,10 +58,8 @@ testem.log
 Thumbs.db
 /package-lock.json
 /iot-master.yaml
-/test
 /iot-master
 /*.yaml
 /*.db
-/tstorage
 /main
 /data

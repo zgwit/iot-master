@@ -1,0 +1,17 @@
+<nz-card [nzTitle]="'设备'+ (this.id ? '编辑' : '创建') " [nzExtra]="extraTemplate">
+    <im-smart-editor #form [fields]="fields" [values]="data"></im-smart-editor>
+</nz-card>
+
+<ng-template #extraTemplate>
+    <button nz-button nzType="primary" (click)="onSubmit()">保存</button>
+</ng-template>
+<ng-template #chooseProduct let-control="control" let-field="field">
+    <app-input-product [formControl]="control"></app-input-product>
+</ng-template>
+<ng-template #chooseProject let-control="control" let-field="field">
+    <app-input-project [formControl]="control"></app-input-project>
+</ng-template>
+<ng-template #chooseTunnel let-control="control" let-field="field">
+    <app-input-tunnel [formControl]="control"></app-input-tunnel>
+</ng-template>
+
