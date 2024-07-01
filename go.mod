@@ -2,10 +2,7 @@ module github.com/zgwit/iot-master/v5
 
 go 1.22
 
-require (
-	github.com/god-jason/bucket v0.0.0-20240630002455-a1a5f5187740
-	github.com/spf13/viper v1.19.0
-)
+require github.com/god-jason/bucket v0.0.0-20240630160105-7c7f88c7787c
 
 require (
 	github.com/PaesslerAG/gval v1.2.2 // indirect
@@ -61,6 +58,7 @@ require (
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/viper v1.19.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
