@@ -2,7 +2,7 @@ module github.com/zgwit/iot-master/v5
 
 go 1.22
 
-require github.com/god-jason/bucket v0.0.0-20240630160105-7c7f88c7787c
+require github.com/god-jason/bucket v0.0.1
 
 require (
 	github.com/PaesslerAG/gval v1.2.2 // indirect

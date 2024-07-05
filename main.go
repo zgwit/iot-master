@@ -21,9 +21,6 @@ import (
 	"log"
 )
 
-func init() {
-}
-
 func main() {
 	args.Parse()
 
@@ -54,10 +51,10 @@ func main() {
 	}
 }
 
-func Startup() {
+func Startup() error {
 	err := boot.Startup()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	//注册前端接口
@@ -76,15 +73,9 @@ func Startup() {
 	//注册静态文件
 	web.Static.PutDir("", "www", "", "index.html")
 
-	err = web.Serve()
-	if err != nil {
-		log.Fatal(err)
-	}
+	return web.Serve()
 }
 
-func Shutdown() {
-	err := boot.Shutdown()
-	if err != nil {
-		log.Fatal(err)
-	}
+func Shutdown() error {
+	return boot.Shutdown()
 }
