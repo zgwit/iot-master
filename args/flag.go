@@ -12,9 +12,9 @@ var (
 )
 
 func init() {
-	flag.BoolVar(&showHelp, "h", false, "show help")
-	flag.BoolVar(&Install, "i", false, "Install service")
-	flag.BoolVar(&Uninstall, "u", false, "Uninstall service")
+	flag.BoolVar(&showHelp, "h", false, "帮助")
+	flag.BoolVar(&Install, "i", false, "安装服务")
+	flag.BoolVar(&Uninstall, "u", false, "卸载服务")
 }
 
 func Parse() {

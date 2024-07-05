@@ -30,6 +30,12 @@
 
 还缺个图~~
 
+后端：使用Bucket开源物联网数据中台 [链接](https://github.com/god-jason/bucket)
+
+前端：使用Nuwa开源Web组态实现低代码开发 [链接](https://github.com/god-jason/nuwa)
+
+网关：使用iot-gateway开源物联网网关 [链接](https://github.com/zgwit/iot-gateway)
+
 ## 项目示例（旧版本截图）
 
 ![web](https://iot-master.com/web1.jpg)
@@ -66,30 +72,7 @@
 
 ## 开源协议
 
-[MIT](https://github.com/zgwit/iot-master/blob/main/LICENSE)
+[GPL](https://github.com/zgwit/iot-master/blob/main/LICENSE)
 
-补充：任何个人、企业或组织都可以自由使用，如果需求商业支持请联系我们。
-
-### 官方插件 [链接](https://github.com/orgs/iot-master-contrib/repositories)
-
-- [x] [Web组态](https://github.com/iot-master-contrib/scada)
-- [x] [InfluxDB](https://github.com/iot-master-contrib/influxdb)
-- [ ] [淘思数据库](https://github.com/iot-master-contrib/tdengine)
-- [x] [IP摄像头](https://github.com/iot-master-contrib/camera)
-- [x] [阿里短信通知](https://github.com/iot-master-contrib/sms)
-- [ ] [腾讯电话通知](https://github.com/iot-master-contrib/phone)
-- [ ] [微信鉴权和通知](https://github.com/iot-master-contrib/weixin)
-- [x] [西门子 S7 PLC](https://github.com/iot-master-contrib/s7)
-- [x] [三菱 PLC](https://github.com/iot-master-contrib/melsec)
-- [x] [欧姆龙 PLC](https://github.com/iot-master-contrib/fins)
-- [ ] [DL/T645-1997、2007](https://github.com/iot-master-contrib/dlt645)
-- [ ] [DL/T698.45-2017](https://github.com/iot-master-contrib/dlt698)
-- [ ] [IEC 101](https://github.com/iot-master-contrib/iec101)
-- [ ] [IEC 103](https://github.com/iot-master-contrib/iec103)
-- [ ] [IEC 104](https://github.com/iot-master-contrib/iec104)
-- [ ] [IEC 61850](https://github.com/iot-master-contrib/gb61850)
-- [ ] [SL/T427-2021 水资源监测数据传输规约](https://github.com/iot-master-contrib/slt427)
-- [ ] [SL/T651-2014 水文监测数据通信规约](https://github.com/iot-master-contrib/slt651)
-- [ ] [SL/T812.1-2021 水利监测数据传输规约](https://github.com/iot-master-contrib/slt812)
-- [ ] [SZY206-2016 水资源监测数据传输规约](https://github.com/iot-master-contrib/szy206)
+补充：产品仅限个人免费使用，商业需求请联系我们
 
