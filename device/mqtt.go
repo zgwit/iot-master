@@ -29,6 +29,7 @@ func (d *Device) HandleMqtt(typ string, cl *mqtt.Client, payload []byte) {
 	d.gatewayClient = cl
 
 	switch typ {
+	case "property":
 	case "values":
 		var values map[string]any
 		err := json.Unmarshal(payload, &values)

@@ -156,7 +156,7 @@ func (d *Device) PatchValues(values map[string]any) {
 		p := d.product.GetProperty(k)
 		if p != nil {
 			//保存历史
-			if p.Historical {
+			if p.Remember {
 				his[k] = v
 			}
 		}
@@ -231,7 +231,7 @@ func (d *Device) Action(name string, values map[string]any) (map[string]any, err
 	//向网关发送写指令
 	if d.gatewayClient != nil && !d.gatewayClient.Closed() {
 		payload := PayloadActionDown{Id: id, Name: name, Parameters: values}
-		err := publishDirectly(d.gatewayClient, "down/device/"+d.Id+"/name", &payload)
+		err := publishDirectly(d.gatewayClient, "down/device/"+d.Id+"/action", &payload)
 		if err != nil {
 			return nil, err
 		}

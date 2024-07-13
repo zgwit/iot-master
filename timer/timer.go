@@ -12,6 +12,7 @@ import (
 	"github.com/zgwit/iot-master/v5/space"
 	"strconv"
 	"strings"
+	"time"
 )
 
 // Timer 定时场景
@@ -49,6 +50,13 @@ func (s *Timer) Open() (err error) {
 		return exception.New("无效场景")
 	}
 
+	for _, a := range s.Actions {
+		err = a.Init()
+		if err != nil {
+			return err
+		}
+	}
+
 	//星期处理
 	w := "*"
 	if len(s.Weekday) > 0 {
@@ -77,22 +85,46 @@ func (s *Timer) Close() (err error) {
 	return
 }
 
-func (s *Timer) execute(id string, name string, params map[string]any) {
+func (s *Timer) execute(id string, action *base.Action) error {
 	dev := device.Get(id)
 	if dev != nil {
-		_ = pool.Insert(func() {
-			_, err := dev.Action(name, params)
+		args, err := action.Evaluate(dev.Values())
+		if err != nil {
+			return err
+		}
+		//等待
+		if action.Delay > 0 {
+			time.AfterFunc(action.Delay*time.Millisecond, func() {
+				_, err = dev.Action(action.Name, args)
+				if err != nil {
+					log.Error(err)
+				}
+			})
+		} else {
+			_, err = dev.Action(action.Name, args)
 			if err != nil {
-				log.Error(err)
+				return err
 			}
-		})
+		}
+		return nil
 	}
+	return exception.New("找不到设备")
+}
+
+func (s *Timer) executeParallel(id string, action *base.Action) {
+	_ = pool.Insert(func() {
+		err := s.execute(id, action)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	})
 }
 
 func (s *Timer) ExecuteIgnoreError() {
 	for _, a := range s.Actions {
 		if a.DeviceId != "" {
-			s.execute(a.DeviceId, a.Name, a.Parameters)
+			s.executeParallel(a.DeviceId, a)
 		} else if a.ProductId != "" {
 			if s.deviceContainer != nil {
 				ids, err := s.deviceContainer.Devices(a.ProductId)
@@ -101,14 +133,12 @@ func (s *Timer) ExecuteIgnoreError() {
 					continue
 				}
 				for _, d := range ids {
-					s.execute(d, a.Name, a.Parameters)
+					s.executeParallel(d, a)
 				}
 			} else {
 				log.Error("需要指定产品ID")
-				//error
 			}
 		} else {
-			//error
 			log.Error("无效的动作")
 		}
 	}
@@ -117,14 +147,9 @@ func (s *Timer) ExecuteIgnoreError() {
 func (s *Timer) Execute() error {
 	for _, a := range s.Actions {
 		if a.DeviceId != "" {
-			dev := device.Get(a.DeviceId)
-			if dev != nil {
-				_, err := dev.Action(a.Name, a.Parameters)
-				if err != nil {
-					return err
-				}
-			} else {
-				return exception.New("设备找不到")
+			err := s.execute(a.DeviceId, a)
+			if err != nil {
+				return err
 			}
 		} else if a.ProductId != "" {
 			if s.deviceContainer != nil {
@@ -133,14 +158,9 @@ func (s *Timer) Execute() error {
 					return err
 				}
 				for _, d := range ids {
-					dev := device.Get(d)
-					if dev != nil {
-						_, err := dev.Action(a.Name, a.Parameters)
-						if err != nil {
-							return err
-						}
-					} else {
-						return exception.New("设备找不到")
+					err = s.execute(d, a)
+					if err != nil {
+						return err
 					}
 				}
 			} else {

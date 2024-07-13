@@ -66,6 +66,13 @@ func (s *Scene) Open() error {
 	//	}
 	//}
 
+	for _, a := range s.Actions {
+		err := a.Init()
+		if err != nil {
+			return err
+		}
+	}
+
 	return s.Condition.Init()
 }
 
@@ -159,22 +166,47 @@ func (s *Scene) OnDeviceValuesChange(product, device string, values map[string]a
 	s.last = ret
 }
 
-func (s *Scene) execute(id string, name string, params map[string]any) {
+func (s *Scene) execute(id string, action *base.Action) error {
 	dev := device.Get(id)
 	if dev != nil {
-		_ = pool.Insert(func() {
-			_, err := dev.Action(name, params)
+		args, err := action.Evaluate(dev.Values())
+		if err != nil {
+			return err
+		}
+		//等待
+		if action.Delay > 0 {
+			time.AfterFunc(action.Delay*time.Millisecond, func() {
+				_, err = dev.Action(action.Name, args)
+				if err != nil {
+					log.Error(err)
+				}
+			})
+		} else {
+			_, err = dev.Action(action.Name, args)
 			if err != nil {
-				log.Error(err)
+				return err
 			}
-		})
+		}
+
+		return nil
 	}
+	return exception.New("找不到设备")
+}
+
+func (s *Scene) executeParallel(id string, action *base.Action) {
+	_ = pool.Insert(func() {
+		err := s.execute(id, action)
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	})
 }
 
 func (s *Scene) ExecuteIgnoreError() {
 	for _, a := range s.Actions {
 		if a.DeviceId != "" {
-			s.execute(a.DeviceId, a.Name, a.Parameters)
+			s.executeParallel(a.DeviceId, a)
 		} else if a.ProductId != "" {
 			if s.deviceContainer != nil {
 				ids, err := s.deviceContainer.Devices(a.ProductId)
@@ -183,14 +215,12 @@ func (s *Scene) ExecuteIgnoreError() {
 					continue
 				}
 				for _, d := range ids {
-					s.execute(d, a.Name, a.Parameters)
+					s.executeParallel(d, a)
 				}
 			} else {
 				log.Error("需要指定产品ID")
-				//error
 			}
 		} else {
-			//error
 			log.Error("无效的动作")
 		}
 	}
@@ -199,14 +229,9 @@ func (s *Scene) ExecuteIgnoreError() {
 func (s *Scene) Execute() error {
 	for _, a := range s.Actions {
 		if a.DeviceId != "" {
-			dev := device.Get(a.DeviceId)
-			if dev != nil {
-				_, err := dev.Action(a.Name, a.Parameters)
-				if err != nil {
-					return err
-				}
-			} else {
-				return exception.New("设备找不到")
+			err := s.execute(a.DeviceId, a)
+			if err != nil {
+				return err
 			}
 		} else if a.ProductId != "" {
 			if s.deviceContainer != nil {
@@ -215,14 +240,9 @@ func (s *Scene) Execute() error {
 					return err
 				}
 				for _, d := range ids {
-					dev := device.Get(d)
-					if dev != nil {
-						_, err := dev.Action(a.Name, a.Parameters)
-						if err != nil {
-							return err
-						}
-					} else {
-						return exception.New("设备找不到")
+					err = s.execute(d, a)
+					if err != nil {
+						return err
 					}
 				}
 			} else {
