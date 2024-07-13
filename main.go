@@ -9,7 +9,6 @@ import (
 	_ "github.com/god-jason/bucket/table"
 	"github.com/god-jason/bucket/web"
 	_ "github.com/zgwit/iot-master/v5/action"
-	_ "github.com/zgwit/iot-master/v5/alarm"
 	"github.com/zgwit/iot-master/v5/args"
 	_ "github.com/zgwit/iot-master/v5/device"
 	_ "github.com/zgwit/iot-master/v5/gateway"
@@ -18,6 +17,7 @@ import (
 	_ "github.com/zgwit/iot-master/v5/scene"
 	_ "github.com/zgwit/iot-master/v5/timer"
 	_ "github.com/zgwit/iot-master/v5/user"
+	_ "github.com/zgwit/iot-master/v5/validator"
 	"log"
 )
 

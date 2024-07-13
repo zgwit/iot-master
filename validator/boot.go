@@ -1,9 +1,9 @@
-package alarm
+package validator
 
 import "github.com/god-jason/bucket/boot"
 
 func init() {
-	boot.Register("alarm", &boot.Task{
+	boot.Register("validator", &boot.Task{
 		Startup:  Startup, //启动
 		Shutdown: Shutdown,
 		Depends:  []string{"web", "pool", "log", "database", "device"},
