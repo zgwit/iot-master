@@ -1,12 +1,12 @@
 package device
 
 import (
-	"github.com/god-jason/bucket/aggregate/aggregator"
-	"github.com/god-jason/bucket/base"
+	"github.com/god-jason/bucket/aggregator"
 	"github.com/god-jason/bucket/pkg/exception"
 	"github.com/god-jason/bucket/pool"
 	"github.com/mochi-mqtt/server/v2"
 	"github.com/zgwit/iot-master/v5/action"
+	"github.com/zgwit/iot-master/v5/base"
 	"github.com/zgwit/iot-master/v5/product"
 	"github.com/zgwit/iot-master/v5/project"
 	"github.com/zgwit/iot-master/v5/space"

@@ -1,10 +1,10 @@
 package scene
 
 import (
-	"github.com/god-jason/bucket/base"
 	"github.com/god-jason/bucket/log"
 	"github.com/god-jason/bucket/pkg/exception"
 	"github.com/god-jason/bucket/pool"
+	"github.com/zgwit/iot-master/v5/base"
 	"github.com/zgwit/iot-master/v5/device"
 	"github.com/zgwit/iot-master/v5/project"
 	"github.com/zgwit/iot-master/v5/space"

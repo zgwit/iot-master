@@ -1,11 +1,11 @@
 package scene
 
 import (
-	"github.com/god-jason/bucket/base"
 	"github.com/god-jason/bucket/lib"
 	"github.com/god-jason/bucket/log"
 	"github.com/god-jason/bucket/pkg/exception"
 	"github.com/god-jason/bucket/table"
+	"github.com/zgwit/iot-master/v5/base"
 )
 
 var scenes lib.Map[Scene]

@@ -1,9 +1,9 @@
 package validator
 
 import (
-	"github.com/god-jason/bucket/base"
 	"github.com/god-jason/bucket/db"
 	"github.com/god-jason/bucket/table"
+	"github.com/zgwit/iot-master/v5/base"
 )
 
 var _validatorTable = table.Table{

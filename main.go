@@ -1,7 +1,6 @@
 package main
 
 import (
-	_ "github.com/god-jason/bucket/aggregate"
 	"github.com/god-jason/bucket/api"
 	"github.com/god-jason/bucket/boot"
 	_ "github.com/god-jason/bucket/function"
@@ -9,6 +8,7 @@ import (
 	_ "github.com/god-jason/bucket/table"
 	"github.com/god-jason/bucket/web"
 	_ "github.com/zgwit/iot-master/v5/action"
+	_ "github.com/zgwit/iot-master/v5/aggregate"
 	"github.com/zgwit/iot-master/v5/args"
 	_ "github.com/zgwit/iot-master/v5/device"
 	_ "github.com/zgwit/iot-master/v5/gateway"

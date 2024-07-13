@@ -1,10 +1,10 @@
 package device
 
 import (
-	"github.com/god-jason/bucket/base"
 	"github.com/god-jason/bucket/boot"
 	"github.com/god-jason/bucket/db"
 	"github.com/robfig/cron/v3"
+	"github.com/zgwit/iot-master/v5/base"
 	"time"
 )
 

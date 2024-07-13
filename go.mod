@@ -6,7 +6,7 @@ require (
 	github.com/PaesslerAG/gval v1.2.2
 	github.com/gin-contrib/sessions v1.0.1
 	github.com/gin-gonic/gin v1.10.0
-	github.com/god-jason/bucket v0.0.4
+	github.com/god-jason/bucket v0.0.5
 	github.com/gorilla/websocket v1.5.3
 	github.com/mochi-mqtt/server/v2 v2.6.4
 	github.com/robfig/cron/v3 v3.0.1
