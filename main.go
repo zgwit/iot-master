@@ -1,23 +1,23 @@
 package main
 
 import (
-	_ "github.com/god-jason/bucket/action"
 	_ "github.com/god-jason/bucket/aggregate"
-	_ "github.com/god-jason/bucket/alarm"
 	"github.com/god-jason/bucket/api"
 	"github.com/god-jason/bucket/boot"
-	_ "github.com/god-jason/bucket/device"
 	_ "github.com/god-jason/bucket/function"
-	_ "github.com/god-jason/bucket/gateway"
-	_ "github.com/god-jason/bucket/history"
 	"github.com/god-jason/bucket/pkg/service"
-	_ "github.com/god-jason/bucket/product"
-	_ "github.com/god-jason/bucket/scene"
 	_ "github.com/god-jason/bucket/table"
-	_ "github.com/god-jason/bucket/timer"
-	_ "github.com/god-jason/bucket/user"
 	"github.com/god-jason/bucket/web"
+	_ "github.com/zgwit/iot-master/v5/action"
+	_ "github.com/zgwit/iot-master/v5/alarm"
 	"github.com/zgwit/iot-master/v5/args"
+	_ "github.com/zgwit/iot-master/v5/device"
+	_ "github.com/zgwit/iot-master/v5/gateway"
+	_ "github.com/zgwit/iot-master/v5/history"
+	_ "github.com/zgwit/iot-master/v5/product"
+	_ "github.com/zgwit/iot-master/v5/scene"
+	_ "github.com/zgwit/iot-master/v5/timer"
+	_ "github.com/zgwit/iot-master/v5/user"
 	"log"
 )
 
