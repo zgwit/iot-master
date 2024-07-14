@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 import {Router, RouterLink} from "@angular/router";
 import {UserService} from "../user.service";
 import {NzListModule} from "ng-zorro-antd/list";
@@ -22,7 +22,7 @@ export class SelectComponent {
     projects: any = []
     loading = true;
 
-    constructor(private rs: RequestService, private us: UserService, private router: Router) {
+    constructor(private rs: SmartRequestService, private us: UserService, private router: Router) {
         if (us.user.admin) {
             this.router.navigateByUrl('/admin')
             return

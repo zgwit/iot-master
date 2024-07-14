@@ -3,7 +3,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 import {SpacesComponent} from "../../pages/space/spaces/spaces.component";
 
 @Component({
@@ -32,7 +32,7 @@ export class InputSpaceComponent implements OnInit, ControlValueAccessor {
     @Input() data: any
     @Input() placeholder = ''
 
-    constructor(private ms: NzModalService, private rs: RequestService) {
+    constructor(private ms: NzModalService, private rs: SmartRequestService) {
     }
 
     ngOnInit(): void {

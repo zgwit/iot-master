@@ -8,7 +8,7 @@ import {NzModalModule, NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {FormsModule} from '@angular/forms';
 import {UserService} from "../user.service";
 import {PasswordComponent} from "../modals/password/password.component";
-import {RequestService} from 'iot-master-smart';
+import {SmartRequestService} from '@god-jason/smart';
 import {CommonModule} from '@angular/common';
 import {NzBreadCrumbComponent} from "ng-zorro-antd/breadcrumb";
 
@@ -55,7 +55,7 @@ export class ProjectComponent implements OnInit {
         private route: ActivatedRoute,
         private ms: NzModalService,
         protected us: UserService,
-        private rs: RequestService) {
+        private rs: SmartRequestService) {
         this.loadMenu()
     }
 

@@ -4,12 +4,12 @@ import {ActivatedRoute} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {
     ParamSearch,
-    RequestService,
+    SmartRequestService,
     SmartTableButton,
     SmartTableColumn,
     SmartTableComponent,
     SmartTableOperator
-} from "iot-master-smart";
+} from "@god-jason/smart";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {DevicesComponent} from "../../device/devices/devices.component";
 import {GetParentRouteParam, GetParentRouteUrl} from "../../../app.routes";
@@ -62,7 +62,7 @@ export class SpaceDeviceComponent {
     ];
 
     constructor(private route: ActivatedRoute,
-                private rs: RequestService,
+                private rs: SmartRequestService,
                 private msg: NzNotificationService,
                 private ms: NzModalService,
                 @Optional() protected ref: NzModalRef,

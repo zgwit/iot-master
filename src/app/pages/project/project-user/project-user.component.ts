@@ -4,12 +4,12 @@ import {ActivatedRoute} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {
     ParamSearch,
-    RequestService,
+    SmartRequestService,
     SmartTableButton,
     SmartTableColumn,
     SmartTableComponent,
     SmartTableOperator
-} from "iot-master-smart";
+} from "@god-jason/smart";
 import {UsersComponent} from "../../users/users/users.component";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {GetParentRouteParam, GetParentRouteUrl} from "../../../app.routes";
@@ -60,7 +60,7 @@ export class ProjectUserComponent {
     ];
 
     constructor(private route: ActivatedRoute,
-                private rs: RequestService,
+                private rs: SmartRequestService,
                 private msg: NzNotificationService,
                 private ms: NzModalService,
                 @Optional() protected ref: NzModalRef,

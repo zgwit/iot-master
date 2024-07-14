@@ -3,7 +3,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzModalService} from "ng-zorro-antd/modal";
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 import {ProjectsComponent} from "../../pages/project/projects/projects.component";
 
 @Component({
@@ -33,7 +33,7 @@ export class InputProjectComponent implements OnInit, ControlValueAccessor {
 
     protected disabled = false;
 
-    constructor(private ms: NzModalService, private rs: RequestService) {
+    constructor(private ms: NzModalService, private rs: SmartRequestService) {
     }
 
     ngOnInit(): void {

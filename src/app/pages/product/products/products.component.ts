@@ -1,12 +1,12 @@
 import {Component, Optional} from '@angular/core';
 import {
     ParamSearch,
-    RequestService,
+    SmartRequestService,
     SmartTableButton,
     SmartTableColumn,
     SmartTableComponent,
     SmartTableOperator
-} from 'iot-master-smart';
+} from '@god-jason/smart';
 import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {CommonModule} from '@angular/common';
 
@@ -70,7 +70,7 @@ export class ProductsComponent {
         },
     ];
 
-    constructor(private rs: RequestService,
+    constructor(private rs: SmartRequestService,
                 private ms: NzModalService,
                 @Optional() protected ref: NzModalRef) {
     }

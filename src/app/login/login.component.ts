@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {RequestService} from 'iot-master-smart';
+import {SmartRequestService} from '@god-jason/smart';
 import {UserService} from "../user.service";
 
 import {Md5} from 'ts-md5';
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     validateForm!: FormGroup;
 
     constructor(private fb: FormBuilder,
-                private rs: RequestService,
+                private rs: SmartRequestService,
                 private us: UserService,
                 private router: Router,
                 protected os: OemService

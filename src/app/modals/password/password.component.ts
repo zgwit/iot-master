@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Md5} from "ts-md5";
 import {Router} from "@angular/router";
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzFormModule} from "ng-zorro-antd/form";
 
@@ -25,7 +25,7 @@ export class PasswordComponent {
     constructor(
         private fb: FormBuilder,
         private router: Router,
-        private rs: RequestService,
+        private rs: SmartRequestService,
         private msg: NzMessageService) {
         this.build()
     }

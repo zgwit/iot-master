@@ -1,11 +1,10 @@
 import {AfterViewInit, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {RequestService, SmartEditorComponent, SmartField} from 'iot-master-smart';
+import {SmartRequestService, SmartEditorComponent, SmartField} from '@god-jason/smart';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {CommonModule} from '@angular/common';
 import {NzCardComponent} from "ng-zorro-antd/card";
-import {InputProtocolComponent} from "../../../components/input-protocol/input-protocol.component";
 import {InputProjectComponent} from "../../../components/input-project/input-project.component";
 import {ReactiveFormsModule} from "@angular/forms";
 
@@ -19,7 +18,6 @@ import {ReactiveFormsModule} from "@angular/forms";
         RouterLink,
         NzCardComponent,
         SmartEditorComponent,
-        InputProtocolComponent,
         InputProjectComponent,
     ],
     templateUrl: './product-edit.component.html',
@@ -51,7 +49,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit {
 
     constructor(private router: Router,
                 private msg: NzMessageService,
-                private rs: RequestService,
+                private rs: SmartRequestService,
                 private route: ActivatedRoute
     ) {
     }

@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {RequestService, SmartEditorComponent, SmartField} from 'iot-master-smart';
+import {SmartRequestService, SmartEditorComponent, SmartField} from '@god-jason/smart';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {CommonModule} from '@angular/common';
 import {NzCardComponent} from "ng-zorro-antd/card";
@@ -9,7 +9,6 @@ import {InputProductComponent} from "../../../components/input-product/input-pro
 import {InputGatewayComponent} from "../../../components/input-gateway/input-gateway.component";
 import {InputProjectComponent} from "../../../components/input-project/input-project.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {InputTunnelComponent} from "../../../components/input-tunnel/input-tunnel.component";
 import {GetParentRouteParam, GetParentRouteUrl} from "../../../app.routes";
 
 @Component({
@@ -26,7 +25,6 @@ import {GetParentRouteParam, GetParentRouteUrl} from "../../../app.routes";
         InputProductComponent,
         InputGatewayComponent,
         InputProjectComponent,
-        InputTunnelComponent,
     ],
     templateUrl: './device-edit.component.html',
     styleUrl: './device-edit.component.scss',
@@ -69,7 +67,7 @@ export class DeviceEditComponent implements OnInit, AfterViewInit {
 
     constructor(private router: Router,
                 private msg: NzMessageService,
-                private rs: RequestService,
+                private rs: SmartRequestService,
                 private route: ActivatedRoute
     ) {
     }

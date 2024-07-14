@@ -45,7 +45,6 @@ import {
     VideoCameraOutline,
     ControlOutline,
 } from '@ant-design/icons-angular/icons';
-import {API_BASE} from "iot-master-smart";
 import {provideEcharts} from "ngx-echarts";
 
 registerLocaleData(zh);
@@ -95,6 +94,6 @@ export const appConfig: ApplicationConfig = {
         provideEcharts(),
         {provide: NZ_ICONS, useValue: icons},
         {provide: LOCALE_ID, useValue: "zh_CN"},
-        {provide: API_BASE, useValue: "/api/"},
+        //{provide: API_BASE, useValue: "/api/"},
     ]
 };

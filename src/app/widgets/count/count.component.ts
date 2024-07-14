@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NzStatisticComponent} from "ng-zorro-antd/statistic";
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 
 @Component({
     selector: 'app-count',
@@ -19,7 +19,7 @@ export class CountComponent implements OnInit {
 
     count = 0;
 
-    constructor(private rs: RequestService) {
+    constructor(private rs: SmartRequestService) {
     }
 
     ngOnInit(): void {

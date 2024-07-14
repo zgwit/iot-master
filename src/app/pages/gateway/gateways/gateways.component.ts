@@ -2,12 +2,12 @@ import {Component, OnInit, Optional} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {
     ParamSearch,
-    RequestService,
+    SmartRequestService,
     SmartTableButton,
     SmartTableColumn,
     SmartTableComponent,
     SmartTableOperator
-} from 'iot-master-smart';
+} from '@god-jason/smart';
 import {NzModalRef} from 'ng-zorro-antd/modal';
 import {CommonModule} from '@angular/common';
 
@@ -66,7 +66,7 @@ export class GatewaysComponent implements OnInit {
     ];
 
     constructor(private route: ActivatedRoute,
-                private rs: RequestService,
+                private rs: SmartRequestService,
                 @Optional() protected ref: NzModalRef) {
     }
 

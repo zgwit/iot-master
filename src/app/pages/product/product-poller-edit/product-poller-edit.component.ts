@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {RequestService, SmartEditorComponent, SmartField} from "iot-master-smart";
+import {SmartRequestService, SmartEditorComponent, SmartField} from "@god-jason/smart";
 import {NzNotificationService} from "ng-zorro-antd/notification";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzCardComponent} from "ng-zorro-antd/card";
@@ -26,7 +26,7 @@ export class ProductPollerEditComponent {
     ]
 
 
-    constructor(private rs: RequestService, private ms: NzNotificationService) {
+    constructor(private rs: SmartRequestService, private ms: NzNotificationService) {
 
     }
 

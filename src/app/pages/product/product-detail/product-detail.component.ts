@@ -4,7 +4,7 @@ import {NzButtonComponent} from 'ng-zorro-antd/button';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {NzPopconfirmDirective} from 'ng-zorro-antd/popconfirm';
-import {RequestService, SmartInfoComponent, SmartInfoItem} from 'iot-master-smart';
+import {SmartRequestService, SmartInfoComponent, SmartInfoItem} from '@god-jason/smart';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzTabsModule} from "ng-zorro-antd/tabs";
@@ -63,7 +63,7 @@ export class ProductDetailComponent implements OnInit {
     constructor(
         private router: Router,
         private msg: NzMessageService,
-        private rs: RequestService,
+        private rs: SmartRequestService,
         private route: ActivatedRoute
     ) {
     }

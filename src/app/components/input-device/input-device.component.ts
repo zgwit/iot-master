@@ -4,7 +4,7 @@ import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {DevicesComponent} from "../../pages/device/devices/devices.component";
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 
 @Component({
     selector: 'app-input-device',
@@ -32,7 +32,7 @@ export class InputDeviceComponent implements OnInit, ControlValueAccessor {
     @Input() data: any
     @Input() placeholder = ''
 
-    constructor(private ms: NzModalService, private rs: RequestService) {
+    constructor(private ms: NzModalService, private rs: SmartRequestService) {
     }
 
     ngOnInit(): void {

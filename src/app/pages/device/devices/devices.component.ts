@@ -3,12 +3,12 @@ import {ActivatedRoute,} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {
     ParamSearch,
-    RequestService,
+    SmartRequestService,
     SmartTableButton,
     SmartTableColumn,
     SmartTableComponent,
     SmartTableOperator
-} from 'iot-master-smart';
+} from '@god-jason/smart';
 import {NZ_MODAL_DATA, NzModalRef} from 'ng-zorro-antd/modal';
 import {GetParentRouteParam, GetParentRouteUrl} from "../../../app.routes";
 
@@ -76,7 +76,7 @@ export class DevicesComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private rs: RequestService,
+        private rs: SmartRequestService,
         @Optional() protected ref: NzModalRef,
         @Optional() @Inject(NZ_MODAL_DATA) protected data: any
     ) {

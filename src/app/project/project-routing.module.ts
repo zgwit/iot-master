@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {WebViewComponent} from "../components/web-view/web-view.component";
 import {AlarmComponent} from "../pages/alarm/alarm.component";
-import {UnknownComponent} from "iot-master-smart";
+import {UnknownComponent} from "@god-jason/smart";
 import {DevicesComponent} from "../pages/device/devices/devices.component";
 import {DeviceEditComponent} from "../pages/device/device-edit/device-edit.component";
 import {DeviceDetailComponent} from "../pages/device/device-detail/device-detail.component";
@@ -14,6 +14,7 @@ import {SpaceDetailComponent} from "../pages/space/space-detail/space-detail.com
 import {ProjectDashComponent} from "../pages/project/project-dash/project-dash.component";
 import {ProjectUserComponent} from "../pages/project/project-user/project-user.component";
 import {SpaceDeviceComponent} from "../pages/space/space-device/space-device.component";
+import {ProductDetailComponent} from "../pages/product/product-detail/product-detail.component";
 
 const routes: Routes = [
     {path: "", pathMatch: "full", redirectTo: "dash"},

@@ -3,12 +3,12 @@ import {NzModalRef,} from 'ng-zorro-antd/modal';
 import {CommonModule} from '@angular/common';
 import {
     ParamSearch,
-    RequestService,
+    SmartRequestService,
     SmartTableButton,
     SmartTableColumn,
     SmartTableComponent,
     SmartTableOperator
-} from "iot-master-smart";
+} from "@god-jason/smart";
 
 @Component({
     selector: 'app-users',
@@ -55,7 +55,7 @@ export class UsersComponent {
         {label: '选择', action: (data) => this.ref.close(data)},
     ];
 
-    constructor(private rs: RequestService, @Optional() protected ref: NzModalRef) {
+    constructor(private rs: SmartRequestService, @Optional() protected ref: NzModalRef) {
     }
 
 

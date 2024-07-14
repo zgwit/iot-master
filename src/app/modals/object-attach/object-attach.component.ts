@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalService} from 'ng-zorro-antd/modal';
-import {RequestService} from '../../../request.service';
+import {SmartRequestService} from '../../../request.service';
 
 @Component({
     selector: 'app-object-attach',
@@ -12,7 +12,7 @@ import {RequestService} from '../../../request.service';
 })
 export class ObjectAttachComponent implements OnInit {
     constructor(
-        private rs: RequestService,
+        private rs: SmartRequestService,
         private msg: NzMessageService,
         private ms: NzModalService
     ) {

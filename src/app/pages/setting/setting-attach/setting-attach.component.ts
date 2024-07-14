@@ -1,7 +1,7 @@
 import {Component, ViewContainerRef} from '@angular/core';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalModule, NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
-import {RequestService} from 'iot-master-smart';
+import {SmartRequestService} from '@god-jason/smart';
 import {RenameComponent} from './rename/rename.component';
 import {UploadComponent} from './upload/upload.component';
 import {NzTableModule} from 'ng-zorro-antd/table';
@@ -37,7 +37,7 @@ export class SettingAttachComponent {
     fromIframe = true;
 
     constructor(
-        private rs: RequestService,
+        private rs: SmartRequestService,
         private modal: NzModalService,
         private msg: NzMessageService,
         private viewContainerRef: ViewContainerRef,

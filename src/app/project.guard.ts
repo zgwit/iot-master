@@ -2,7 +2,7 @@ import {ActivatedRouteSnapshot, CanMatchFn, ResolveFn, Router, RouterStateSnapsh
 import {inject} from "@angular/core";
 import {UserService} from "./user.service";
 import {Subject} from "rxjs";
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 
 export const ProjectGuard: ResolveFn<any> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
 
@@ -11,7 +11,7 @@ export const ProjectGuard: ResolveFn<any> = (route: ActivatedRouteSnapshot, stat
 
 export const projectGuard: CanMatchFn = () => {
     const us = inject(UserService);
-    const rs = inject(RequestService);
+    const rs = inject(SmartRequestService);
     const route = inject(ActivatedRouteSnapshot);
     const router = inject(Router);
 

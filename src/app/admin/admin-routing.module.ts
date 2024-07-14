@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {WebViewComponent} from "../components/web-view/web-view.component";
 import {AlarmComponent} from "../pages/alarm/alarm.component";
-import {UnknownComponent} from "iot-master-smart";
+import {UnknownComponent} from "@god-jason/smart";
 import {DashComponent} from "../pages/dash/dash.component";
 import {ProductsComponent} from "../pages/product/products/products.component";
 import {ProductEditComponent} from "../pages/product/product-edit/product-edit.component";
@@ -24,21 +24,6 @@ import {UserEditComponent} from "../pages/users/user-edit/user-edit.component";
 import {UserDetailComponent} from "../pages/users/user-detail/user-detail.component";
 import {ProjectUserComponent} from "../pages/project/project-user/project-user.component";
 import {SpaceDeviceComponent} from "../pages/space/space-device/space-device.component";
-import {ServersComponent} from "../pages/server/servers/servers.component";
-import {ServerEditComponent} from "../pages/server/server-edit/server-edit.component";
-import {ServerDetailComponent} from "../pages/server/server-detail/server-detail.component";
-import {LinksComponent} from "../pages/link/links/links.component";
-import {LinkEditComponent} from "../pages/link/link-edit/link-edit.component";
-import {LinkDetailComponent} from "../pages/link/link-detail/link-detail.component";
-import {SerialsComponent} from "../pages/serial/serials/serials.component";
-import {SerialEditComponent} from "../pages/serial/serial-edit/serial-edit.component";
-import {SerialDetailComponent} from "../pages/serial/serial-detail/serial-detail.component";
-import {ClientsComponent} from "../pages/client/clients/clients.component";
-import {ClientEditComponent} from "../pages/client/client-edit/client-edit.component";
-import {ClientDetailComponent} from "../pages/client/client-detail/client-detail.component";
-import {BrokersComponent} from "../pages/broker/brokers/brokers.component";
-import {BrokerEditComponent} from "../pages/broker/broker-edit/broker-edit.component";
-import {BrokerDetailComponent} from "../pages/broker/broker-detail/broker-detail.component";
 import {SettingComponent} from "../pages/setting/setting.component";
 
 const routes: Routes = [
@@ -54,26 +39,6 @@ const routes: Routes = [
     {path: 'device/create', component: DeviceEditComponent, title: "创建设备", data: {breadcrumb: "创建设备"}},
     {path: 'device/:id', component: DeviceDetailComponent, title: "设备详情", data: {breadcrumb: "设备详情"}},
     {path: 'device/:id/edit', component: DeviceEditComponent, title: "编辑设备", data: {breadcrumb: "编辑设备"}},
-
-    {path: 'broker', component: BrokersComponent, title: "MQTT服务器列表", data: {breadcrumb: "MQTT服务器列表"}},
-    {
-        path: 'broker/create',
-        component: BrokerEditComponent,
-        title: "创建MQTT服务器",
-        data: {breadcrumb: "创建MQTT服务器"}
-    },
-    {
-        path: 'broker/:id',
-        component: BrokerDetailComponent,
-        title: "MQTT服务器详情",
-        data: {breadcrumb: "MQTT服务器详情"}
-    },
-    {
-        path: 'broker/:id/edit',
-        component: BrokerEditComponent,
-        title: "编辑MQTT服务器",
-        data: {breadcrumb: "编辑MQTT服务器"}
-    },
 
     {path: 'gateway', component: GatewaysComponent, title: "网关列表", data: {breadcrumb: "网关列表"}},
     {path: 'gateway/create', component: GatewayEditComponent, title: "创建网关", data: {breadcrumb: "创建网关"}},
@@ -91,37 +56,6 @@ const routes: Routes = [
     {path: 'space/:id', component: SpaceDetailComponent, title: "空间详情", data: {breadcrumb: "空间详情"}},
     {path: 'space/:id/edit', component: SpaceEditComponent, title: "空间编辑", data: {breadcrumb: "空间编辑"}},
     {path: 'space/:id/device', component: SpaceDeviceComponent, title: "绑定设备", data: {breadcrumb: "绑定设备"}},
-
-
-    {path: 'server', component: ServersComponent, title: "TCP服务器列表", data: {breadcrumb: "TCP服务器列表"}},
-    {
-        path: 'server/create',
-        component: ServerEditComponent,
-        title: "创建TCP服务器",
-        data: {breadcrumb: "创建TCP服务器"}
-    },
-    {path: 'server/:id', component: ServerDetailComponent, title: "TCP服务器详情", data: {breadcrumb: "TCP服务器详情"}},
-    {
-        path: 'server/:id/edit',
-        component: ServerEditComponent,
-        title: "TCP服务器编辑",
-        data: {breadcrumb: "TCP服务器编辑"}
-    },
-
-    {path: 'link', component: LinksComponent, title: "TCP连接列表", data: {breadcrumb: "TCP连接列表"}},
-    {path: 'link/create', component: LinkEditComponent, title: "创建TCP连接", data: {breadcrumb: "创建TCP连接"}},
-    {path: 'link/:id', component: LinkDetailComponent, title: "TCP连接详情", data: {breadcrumb: "TCP连接详情"}},
-    {path: 'link/:id/edit', component: LinkEditComponent, title: "TCP连接编辑", data: {breadcrumb: "TCP连接编辑"}},
-
-    {path: 'serial', component: SerialsComponent, title: "串口列表", data: {breadcrumb: "串口列表"}},
-    {path: 'serial/create', component: SerialEditComponent, title: "创建串口", data: {breadcrumb: "创建串口"}},
-    {path: 'serial/:id', component: SerialDetailComponent, title: "串口详情", data: {breadcrumb: "串口详情"}},
-    {path: 'serial/:id/edit', component: SerialEditComponent, title: "串口编辑", data: {breadcrumb: "串口编辑"}},
-
-    {path: 'client', component: ClientsComponent, title: "客户端列表", data: {breadcrumb: "客户端列表"}},
-    {path: 'client/create', component: ClientEditComponent, title: "创建客户端", data: {breadcrumb: "创建客户端"}},
-    {path: 'client/:id', component: ClientDetailComponent, title: "客户端详情", data: {breadcrumb: "客户端详情"}},
-    {path: 'client/:id/edit', component: ClientEditComponent, title: "客户端编辑", data: {breadcrumb: "客户端编辑"}},
 
     {path: 'user', component: UsersComponent, title: "用户列表", data: {breadcrumb: "用户列表"}},
     {path: 'user/create', component: UserEditComponent, title: "创建用户", data: {breadcrumb: "创建用户"}},

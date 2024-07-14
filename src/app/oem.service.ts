@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Title} from '@angular/platform-browser';
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +14,7 @@ export class OemService {
         copyright: '©2016-2024'
     }
 
-    constructor(private rs: RequestService, private title: Title) {
+    constructor(private rs: SmartRequestService, private title: Title) {
         //优先从缓存中读取，避免闪烁
         let oem: any = localStorage.getItem("oem");
         if (oem) {

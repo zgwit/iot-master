@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {ParamSearch, RequestService, SmartTableColumn, SmartTableComponent, SmartTableOperator} from 'iot-master-smart';
+import {ParamSearch, SmartRequestService, SmartTableColumn, SmartTableComponent, SmartTableOperator} from '@god-jason/smart';
 import {GetParentRouteParam, GetParentRouteUrl} from "../../app.routes";
 
 @Component({
@@ -49,7 +49,7 @@ export class AlarmComponent implements OnInit {
     ];
 
 
-    constructor(private route: ActivatedRoute, private rs: RequestService) {
+    constructor(private route: ActivatedRoute, private rs: SmartRequestService) {
     }
 
     ngOnInit(): void {

@@ -4,7 +4,7 @@ import {NzCardComponent} from "ng-zorro-antd/card";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 import {GetParentRouteParam, GetParentRouteUrl} from "../../../app.routes";
 
 @Component({
@@ -26,7 +26,7 @@ export class ProjectDashComponent {
     constructor(
         private router: Router,
         private msg: NzMessageService,
-        private rs: RequestService,
+        private rs: SmartRequestService,
         private route: ActivatedRoute
     ) {
     }

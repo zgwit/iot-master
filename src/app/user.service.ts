@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
-import {RequestService} from "iot-master-smart";
+import {SmartRequestService} from "@god-jason/smart";
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,7 @@ export class UserService {
 
     public getting = true;
 
-    constructor(private rs: RequestService) {
+    constructor(private rs: SmartRequestService) {
         //console.log("user me")
         rs.get('user/me').subscribe({
             next: res => {
