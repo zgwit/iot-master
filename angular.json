@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "projects": {
-    "webui": {
+    "iot-master": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -73,22 +73,28 @@
               "outputHashing": "all"
             },
             "development": {
+              "buildOptimizer": false,
               "optimization": false,
+              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "iot-master:build",
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
-              "buildTarget": "webui:build:production"
+              "browserTarget": "iot-master:build:production"
             },
             "development": {
-              "buildTarget": "webui:build:development",
-              "proxyConfig": "proxy.conf.json"
+              "browserTarget": "iot-master:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -96,13 +102,10 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "webui:build"
+            "browserTarget": "iot-master:build"
           }
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }
