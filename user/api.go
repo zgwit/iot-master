@@ -10,7 +10,7 @@ func init() {
 
 	api.Register("GET", "logout", logout)
 	api.Register("POST", "password", password)
-	api.Register("GET", "user/me", userMe)
+	api.Register("GET", "me", userMe)
 	api.Register("POST", "user/count", api.Count(&_table))
 	api.Register("POST", "user/search", api.Search(&_table, nil))
 	api.Register("POST", "user/create", api.Create(&_table, nil))
