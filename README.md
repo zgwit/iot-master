@@ -1,4 +1,4 @@
-# 物联大师迁移至 [github.com/god-jason/bucket](https://github.com/god-jason/bucket) !!!
+# 物联大师迁移至 [github.com/god-jason/iot-master](https://github.com/god-jason/iot-master) !!!
 
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/go.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/go.yml)
 [![Go](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/zgwit/iot-master/actions/workflows/codeql-analysis.yml)
